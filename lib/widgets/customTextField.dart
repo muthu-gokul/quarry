@@ -17,8 +17,8 @@ class AddNewLabelTextField extends StatelessWidget {
   TextInputFormatter textInputFormatter;
   int maxLines;
 
-  AddNewLabelTextField({this.textEditingController,this.labelText,this.scrollPadding,this.textInputType=TextInputType.text,
-    this.prefixIcon,this.ontap,this.onChange,this.textInputFormatter,this.isEnabled=true,this.maxLines=1,this.suffixIcon});
+  AddNewLabelTextField({this.textEditingController,this.labelText,this.scrollPadding,this.textInputType:TextInputType.text,
+    this.prefixIcon,this.ontap,this.onChange,this.textInputFormatter,this.isEnabled=true,this.maxLines:1,this.suffixIcon});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class AddNewLabelTextField extends StatelessWidget {
       height:maxLines>1?(SizeConfig.height100): SizeConfig.height60,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(3),
-        color: Colors.white
+        color: Colors.transparent
       ),
       child:  TextFormField(
          enabled: isEnabled,

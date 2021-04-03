@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:quarry/styles/app_theme.dart';
+import 'package:quarry/styles/size.dart';
 
 class CustomAlert{
   VoidCallback callback;
@@ -118,7 +119,7 @@ class CustomAlert{
               child:Column(
                   children:[
                     SizedBox(height:10),
-                    SvgPicture.asset('assets/errors/error-icon.svg'),
+                    SvgPicture.asset('assets/svg/error-icon.svg'),
                     SizedBox(height:30),
                     Text(title,
                       style:TextStyle(fontFamily:'RM',fontSize:18,color:AppTheme.red),textAlign: TextAlign.center,
@@ -277,8 +278,9 @@ class CustomAlert{
       barrierDismissible: false,
         context: context,
         builder: (ctx) => Dialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0),),
           child: Container(
-              height:360,
+              height:450,
               width:400,
               decoration:BoxDecoration(
                 color:Colors.white,
@@ -287,74 +289,66 @@ class CustomAlert{
 
               child:Column(
                   children:[
-                    SizedBox(height:20),
+                    SizedBox(height:40),
                     // SvgPicture.asset(img),
-                    Image.asset("assets/errors/bill-popup.png"),
+                    Image.asset("assets/images/delete.jpg"),
                     SizedBox(height:20),
                     Text(title, style:TextStyle(fontFamily:'RR',fontSize:23,color:Color(0xFF787878)),textAlign: TextAlign.center,),
 
                     SizedBox(height:10),
-
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-
-                        GestureDetector(
-                          onTap: (){
-                            Navigator.pop(context);
-                          },
-                          child: Container(
-                            height: 60.0,
-                            width: 150.0,
-                            margin: EdgeInsets.only(bottom: 20,top:20),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: Color(0xFFE4E4E4),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color:Color(0xFF808080).withOpacity(0.6),
-                                    offset: const Offset(0, 8.0),
-                                    blurRadius: 15.0,
-                                    // spreadRadius: 2.0,
-                                  ),
-                                ]
-                            ),
-                            child: Center(
-                              child: Text("Cancel",
-                                style: TextStyle(fontFamily:'RR',color: Color(0xFF808080),fontSize: 16),
-                              ),
-                            ),
+                    GestureDetector(
+                      onTap: callback,
+                      child: Container(
+                        height: 50.0,
+                        width: SizeConfig.width120,
+                        margin: EdgeInsets.only(bottom: 20,top:20),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: AppTheme.red,
+                            // boxShadow: [
+                            //   BoxShadow(
+                            //     color:AppTheme.red.withOpacity(0.6),
+                            //     offset: const Offset(0, 8.0),
+                            //     blurRadius: 15.0,
+                            //     // spreadRadius: 2.0,
+                            //   ),
+                            // ]
+                        ),
+                        child: Center(
+                          child: Text("Delete",
+                            style: TextStyle(fontFamily:'RR',color: Colors.white,fontSize: 20),
                           ),
                         ),
+                      ),
+                    ),
+                    SizedBox(height:10),
 
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.pop(context);
+                      },
+                      child: Container(
+                        height: 30.0,
+                        width: SizeConfig.width100,
 
-
-                        GestureDetector(
-                          onTap: callback,
-                          child: Container(
-                            height: 60.0,
-                            width: 150.0,
-                            margin: EdgeInsets.only(bottom: 20,top:20),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: AppTheme.red,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color:AppTheme.red.withOpacity(0.6),
-                                    offset: const Offset(0, 8.0),
-                                    blurRadius: 15.0,
-                                    // spreadRadius: 2.0,
-                                  ),
-                                ]
-                            ),
-                            child: Center(
-                              child: Text("Done",
-                                style: TextStyle(fontFamily:'RR',color: Colors.white,fontSize: 16),
-                              ),
-                            ),
+                        // decoration: BoxDecoration(
+                        //     borderRadius: BorderRadius.circular(5),
+                        //     color: Color(0xFFE4E4E4),
+                        //     // boxShadow: [
+                        //     //   BoxShadow(
+                        //     //     color:Color(0xFF808080).withOpacity(0.6),
+                        //     //     offset: const Offset(0, 8.0),
+                        //     //     blurRadius: 15.0,
+                        //     //     // spreadRadius: 2.0,
+                        //     //   ),
+                        //     // ]
+                        // ),
+                        child: Center(
+                          child: Text("Cancel",
+                            style: TextStyle(fontFamily:'RR',color: Color(0xFF8d8d8d),fontSize: 20),
                           ),
                         ),
-                      ],
+                      ),
                     ),
 
 

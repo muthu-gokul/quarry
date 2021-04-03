@@ -15,7 +15,8 @@ import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:quarry/widgets/reportpdf.dart';
-import 'process/MaterialMaster.dart';
+import 'customerDetails/customerGrid.dart';
+import 'process/MaterialMasterGrid.dart';
 import 'process/processAddNew.dart';
 import 'process/processMaterialsList.dart';
 import 'process/processStoneList.dart';
@@ -23,6 +24,7 @@ import 'qLocMaterials.dart';
 import 'qLocPAyment.dart';
 import 'quarryMaster/quarryLocationAddNew.dart';
 import 'sale/saleAddNew.dart';
+import 'sale/saleGrid.dart';
 import 'vendor/vendorLocAddNew.dart';
 
 
@@ -124,6 +126,8 @@ class _HomePageState extends State<HomePage> {
                                 titleColor: AppTheme.yellowColor,
                                 callback: (){
                                   Provider.of<QuarryNotifier>(context,listen: false).initDropDownValues(context);
+                                  Provider.of<QuarryNotifier>(context,listen: false).GetCustomerDetailDbhit(context);
+                                  Provider.of<QuarryNotifier>(context,listen: false).GetSaleDetailDbhit(context);
                                   setState(() {
                                     menuSelected=4;
                                     scaffoldkey.currentState.openEndDrawer();
@@ -133,14 +137,30 @@ class _HomePageState extends State<HomePage> {
                               DrawerContent(
                                 height: 50,
                                 image: "assets/drawerImages/dashboard.png",
+                                title: 'Customer Detail',
+                                titleColor: AppTheme.yellowColor,
+                                callback: (){
+                                  Provider.of<QuarryNotifier>(context,listen: false).initDropDownValues(context);
+                                  Provider.of<QuarryNotifier>(context,listen: false).GetCustomerDetailDbhit(context);
+                                  setState(() {
+                                    menuSelected=5;
+                                    scaffoldkey.currentState.openEndDrawer();
+                                  });
+                                },
+                              ),
+                              DrawerContent(
+                                height: 50,
+                                image: "assets/drawerImages/dashboard.png",
                                 title: 'Material Detail',
-                                titleColor: AppTheme.grey,
-                                // callback: (){
-                                //   setState(() {
-                                //     menuSelected=2;
-                                //     scaffoldkey.currentState.openEndDrawer();
-                                //   });
-                                // },
+                                titleColor: AppTheme.yellowColor,
+                                callback: (){
+                                  setState(() {
+                                    menuSelected=2;
+                                    Provider.of<QuarryNotifier>(context,listen: false).initDropDownValues(context);
+                                    Provider.of<QuarryNotifier>(context,listen: false).GetMaterialDetailDbhit(context);
+                                    scaffoldkey.currentState.openEndDrawer();
+                                  });
+                                },
                               ),
                               DrawerContent(
                                 height: 50,
@@ -278,7 +298,10 @@ class _HomePageState extends State<HomePage> {
         menuSelected==3?VendorMaster(drawerCallback: (){
           scaffoldkey.currentState.openDrawer();
         },):
-        menuSelected==4?SalesDetail(drawerCallback: (){
+        menuSelected==4?SaleGrid(drawerCallback: (){
+          scaffoldkey.currentState.openDrawer();
+        },):
+        menuSelected==5?CustomerMaster(drawerCallback: (){
           scaffoldkey.currentState.openDrawer();
         },):Container()
     );

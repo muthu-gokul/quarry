@@ -16,118 +16,7 @@ import 'saleAddNew.dart';
 
 
 
-// class SalesDetail extends StatefulWidget {
-//   VoidCallback drawerCallback;
-//   SalesDetail({this.drawerCallback});
-//   @override
-//   _SalesDetailState createState() => _SalesDetailState();
-// }
-//
-// class _SalesDetailState extends State<SalesDetail> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: AnnotatedRegion<SystemUiOverlayStyle>(
-//         value: SystemUiOverlayStyle.light.copyWith(
-//             statusBarColor: Colors.black
-//         ),
-//         child: SafeArea(
-//           child: Consumer<QuarryNotifier>(
-//             builder: (context,qn,child)=>  Stack(
-//               children: [
-//                 Container(
-//                   height: SizeConfig.height50,
-//                   width: SizeConfig.screenWidth,
-//                   child: Row(
-//                     children: [
-//                       IconButton(icon: Icon(Icons.menu), onPressed: widget.drawerCallback),
-//                       SizedBox(width: SizeConfig.width20,),
-//                       Text("Sales Detail",
-//                         style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: SizeConfig.width16),
-//                       ),
-//                       Spacer(),
-//
-//                     ],
-//                   ),
-//                 ),
-//                 Container(
-//                   height: SizeConfig.screenHeight-SizeConfig.height50,
-//                   width: SizeConfig.screenWidth,
-//                   margin: EdgeInsets.only(top: SizeConfig.height50),
-//                   child: SingleChildScrollView(
-//                       scrollDirection: Axis.horizontal,
-//                       child:DataTable(
-//                           headingRowColor:  MaterialStateColor.resolveWith((states) => Color(0xFF367BF5)),
-//                           showBottomBorder: true,
-//                           columns: qn.saleGridCol.map((e) => DataColumn(
-//                             label:Text(e,style: TextStyle(fontFamily: 'RB',fontSize: 16,color: Colors.white),),
-//                           )).toList(),
-//                           rows: qn.saleGridList.map((e) => DataRow(cells: [
-//                             DataCell(Text(e.material,style: TextStyle(fontFamily: 'RR',fontSize: 14,color: Colors.black),),),
-//                             DataCell(Text(e.weight,style: TextStyle(fontFamily: 'RR',fontSize: 14,color: Colors.black),),),
-//                             DataCell(Text(e.price,style: TextStyle(fontFamily: 'RR',fontSize: 14,color: Colors.black),),),
-//                           ])).toList()
-//                       )
-//
-//                   ),
-//                 ),
-//
-//                 Positioned(
-//                   bottom: 20,
-//                   right: 20,
-//                   child: GestureDetector(
-//                     behavior: HitTestBehavior.translucent,
-//                     onTap: (){
-//                       Navigator.of(context).push(_createRoute());
-//
-//
-//
-//                     },
-//                     child: Container(
-//                       margin: EdgeInsets.only(right: SizeConfig.width10),
-//                       height: SizeConfig.width50,
-//                       width: SizeConfig.width50,
-//                       decoration: BoxDecoration(
-//                         shape: BoxShape.circle,
-//                         color: Color(0xFF367BF5),
-//                         boxShadow: [
-//                           BoxShadow(
-//                             color: Color(0xFF367BF5).withOpacity(0.4),
-//                             spreadRadius: 1,
-//                             blurRadius: 5,
-//                             offset: Offset(1, 8), // changes position of shadow
-//                           ),
-//                         ],
-//                       ),
-//                       child: Center(
-//                         child: Icon(Icons.add,size: SizeConfig.height30,color: Colors.white,),
-//                       ),
-//                     ),
-//                   ),
-//                 ),
-//
-//
-//               ],
-//             ),
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-//
-//   Route _createRoute() {
-//     return PageRouteBuilder(
-//       pageBuilder: (context, animation, secondaryAnimation) => SaleAddNew(),
-//       transitionsBuilder: (context, animation, secondaryAnimation, child) {
-//
-//         return FadeTransition(
-//           opacity: Tween(begin: 0.0, end: 1.0).animate(animation),
-//           child: child,
-//         );
-//       },
-//     );
-//   }
-// }
+
 class SalesDetail extends StatefulWidget {
   VoidCallback drawerCallback;
   SalesDetail({this.drawerCallback});
@@ -136,7 +25,7 @@ class SalesDetail extends StatefulWidget {
 }
 
 class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin{
-  TabController tabController;
+
 
   final now = DateTime.now();
   final formatter = DateFormat('dd/MM/yyyy');
@@ -151,13 +40,8 @@ bool isCustomerDetaislOpen=false;
   @override
   void initState() {
     SystemChrome.setEnabledSystemUIOverlays([]);
-   tabController=new TabController(length: 2, vsync: this);
-   tabController.addListener(() {
-     if(tabController.index==1){
-       Provider.of<QuarryNotifier>(context,listen: false).GetSaleDetailDbhit(context);
+       Provider.of<QuarryNotifier>(context,listen: false).initTabController(this,context);
 
-     }
-   });
     super.initState();
   }
   @override
@@ -187,7 +71,7 @@ bool isCustomerDetaislOpen=false;
                           Container(
                             height: SizeConfig.screenHeight-(SizeConfig.height70),
                             child: TabBarView(
-                                controller: tabController,
+                                controller: qn.tabController,
                                 children: [
                                 Container(
                                 height: SizeConfig.screenHeight-(SizeConfig.height70),
@@ -210,7 +94,11 @@ bool isCustomerDetaislOpen=false;
                                           children: [
                                             Row(
                                               children: [
-                                                IconButton(icon: Icon(Icons.menu), onPressed: widget.drawerCallback),
+                                                IconButton(icon: Icon(Icons.arrow_back), onPressed:(){
+                                                  Navigator.pop(context);
+                                                }),
+
+                                                // IconButton(icon: Icon(Icons.menu), onPressed: widget.drawerCallback),
                                                 SizedBox(width: SizeConfig.width20,),
                                                 Text("Sales Detail",
                                                   style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: SizeConfig.width16),
@@ -330,28 +218,28 @@ bool isCustomerDetaislOpen=false;
                                                   ,),
                                               ),
                                               SizedBox(height: SizeConfig.height20,),
-                                              // Align(
-                                              //   alignment: Alignment.centerRight,
-                                              //   child: GestureDetector(
-                                              //     onTap: (){
-                                              //       setState(() {
-                                              //         isCustomerDetaislOpen=true;
-                                              //       });
-                                              //     },
-                                              //     child: Container(
-                                              //       margin: EdgeInsets.only(right: SizeConfig.width20),
-                                              //       height: SizeConfig.height30,
-                                              //       width: SizeConfig.width150,
-                                              //       decoration: BoxDecoration(
-                                              //         borderRadius: BorderRadius.circular(5),
-                                              //         color: AppTheme.bgColor
-                                              //       ),
-                                              //       child: Center(
-                                              //         child: Text("Customer Details",style: AppTheme.TSWhite16,),
-                                              //       ),
-                                              //     ),
-                                              //   ),
-                                              // ),
+                                              Align(
+                                                alignment: Alignment.centerRight,
+                                                child: GestureDetector(
+                                                  onTap: (){
+                                                    setState(() {
+                                                      isCustomerDetaislOpen=true;
+                                                    });
+                                                  },
+                                                  child: Container(
+                                                    margin: EdgeInsets.only(right: SizeConfig.width20),
+                                                    height: SizeConfig.height30,
+                                                    width: SizeConfig.width150,
+                                                    decoration: BoxDecoration(
+                                                      borderRadius: BorderRadius.circular(5),
+                                                      color: AppTheme.bgColor
+                                                    ),
+                                                    child: Center(
+                                                      child: Text("Customer Details",style: AppTheme.TSWhite16,),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
                                               SizedBox(height: SizeConfig.height20,),
                                               GestureDetector(
                                                 onTap: (){
@@ -473,6 +361,7 @@ bool isCustomerDetaislOpen=false;
                                                      },
                                                       value: qn.SS_LoadedVehicleNo,
                                                        controller: qn.searchVehicleNo,
+                                                    reduceWidth: SizeConfig.width40,
                                                       // qtycontroller:qn.brandQtyController,
                                                       // unit: qn.MM_selectPrimaryUnit.toString(),
 
@@ -515,6 +404,7 @@ bool isCustomerDetaislOpen=false;
                                                           qn.SS_PaymentTypeId=qn.saleDetails[index].PaymentCategoryId;
                                                           qn.SS_UpdateSaleId=qn.saleDetails[index].SaleId;
                                                           qn.SS_UpdateSaleNo=qn.saleDetails[index].SaleNumber;
+                                                          qn.SS_selectCustomerId=qn.saleDetails[index].CustomerId;
                                                           qn.SS_TotalWeight=(Decimal.parse(qn.SS_EmptyWeightOfVehicle)+Decimal.parse((qn.SS_RequiredMaterialQty))).toString();
                                                           qn.SS_MaterialUnitPrice=qn.sale_materialList.where((element) => element.MaterialId==qn.saleDetails[index].MaterialId).toList()[0].MaterialUnitPrice;
                                                         });
@@ -841,7 +731,7 @@ bool isCustomerDetaislOpen=false;
                             height: SizeConfig.height70,
                             color: AppTheme.bgColor,
                             child: TabBar(
-                                controller: tabController,
+                                controller: qn.tabController,
                                 indicatorPadding: EdgeInsets.only(top: SizeConfig.height10,bottom: SizeConfig.height10),
 
                                 indicator: BoxDecoration(
@@ -883,10 +773,16 @@ bool isCustomerDetaislOpen=false;
                     color: Colors.black.withOpacity(0.5),
 
                   ),
+
+
+
+
+
+                  ///////////////////////////////// Loader//////////////////////////////////
                   Container(
 
-                    height: qn.insertSaleLoader? SizeConfig.screenHeight:0,
-                    width:qn.insertSaleLoader? SizeConfig.screenWidth:0,
+                    height: qn.insertSaleLoader ||  qn.customerLoader? SizeConfig.screenHeight:0,
+                    width:qn.insertSaleLoader  ||  qn.customerLoader? SizeConfig.screenWidth:0,
                     color: Colors.black.withOpacity(0.5),
                     child: Center(
                       child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(AppTheme.yellowColor),),
@@ -1269,45 +1165,186 @@ bool isCustomerDetaislOpen=false;
                                 borderRadius: BorderRadius.circular(10),
                                 color: Color(0xFFF2F4FA)
                             ),
-                            child: SingleChildScrollView(
+                            child: DefaultTabController(
+                              length: 2,
                               child: Column(
                                 children: [
-                                  AddNewLabelTextField(
-                                    labelText: 'Delivery To',
-
-                                  ),
-                                  AddNewLabelTextField(
-                                    labelText: 'Name',
-
-                                  ),
-                                  AddNewLabelTextField(
-                                    labelText: 'GST No',
-
-                                  ),
-                                  AddNewLabelTextField(
-                                    labelText: 'City',
-                                    scrollPadding: 150,
-                                  ),
-                                  AddNewLabelTextField(
-                                    labelText: 'State',
-                                    scrollPadding: 200,
-                                  ),
-                                  AddNewLabelTextField(
-                                    labelText: 'ZipCode',
-                                    textInputType: TextInputType.number,
-                                    scrollPadding: 200,
-
-                                  ),
                                   Container(
-                                    margin: EdgeInsets.only(top: SizeConfig.height20,bottom: SizeConfig.height50),
-                                    height: SizeConfig.height50,
-                                    width: SizeConfig.width100,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: AppTheme.yellowColor
+                                    height: SizeConfig.height80,
+                                    child: TabBar(
+
+                                        unselectedLabelColor: AppTheme.addNewTextFieldBorder,
+                                        labelColor: AppTheme.addNewTextFieldText,
+                                        indicator: BoxDecoration(
+                                            color: Color(0xFF42425E),
+                                            borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20),bottomRight: Radius.circular(20))
+                                        ),
+                                        indicatorPadding: EdgeInsets.only(bottom: SizeConfig.height70,),
+                                        indicatorSize: TabBarIndicatorSize.label,
+
+                                        unselectedLabelStyle: TextStyle(fontFamily: 'RR',fontSize: 16,color: AppTheme.addNewTextFieldBorder),
+
+                                        tabs: [
+                                          Tab(
+                                            child: Text("Customer Information",
+                                              style: TextStyle(fontFamily: 'RR',fontSize: 16,),textAlign: TextAlign.center,
+                                            ),
+                                          ),
+                                          Tab(
+                                            child: Text("Other Information",
+                                              style: TextStyle(fontFamily: 'RR',fontSize: 16),textAlign: TextAlign.center
+                                            ),
+
+                                          ),
+                                        ]
                                     ),
-                                    child: Center(
-                                      child: Text("Done",style: TextStyle(fontFamily: 'RR',fontSize: 20,color: AppTheme.bgColor,letterSpacing: 0.1),),
+                                  ),
+
+
+                                  Container(
+                                    height: (SizeConfig.screenHeight*0.8)-((SizeConfig.screenHeight*(420/1280))),
+                                    width: SizeConfig.screenWidth-SizeConfig.width40,
+                                    child: TabBarView(
+                                        children: [
+                                          Container(
+                                            height: (SizeConfig.screenHeight*0.8)-((SizeConfig.screenHeight*(420/1280))),
+                                            width: SizeConfig.screenWidth-SizeConfig.width40,
+                                            child: SingleChildScrollView(
+                                              child: Column(
+                                                children: [
+                                                  DropDownField(
+
+                                                    add: (){
+                                                      setState(() {
+                                                        qn.SS_selectCustomerId=null;
+                                                        print("SS_selectCustomerId--${qn.SS_selectCustomerId}");
+                                                        qn.customerContactNumber.clear();
+                                                        qn.customerGstNumber.clear();
+                                                        qn.customerEmail.clear();
+                                                        qn.customerAddress.clear();
+                                                        qn.customerCity.clear();
+                                                        qn.customerState.clear();
+                                                        qn.customerZipcode.clear();
+                                                      });
+                                                      }
+                                                    ,
+                                                    nodeFocus: (){
+                                                      node.unfocus();
+                                                    },
+                                                    value: qn.SS_CustomerName,
+                                                    controller: qn.customerName,
+                                                    reduceWidth: SizeConfig.width80,
+
+                                                    required: false,
+
+
+                                                    hintText: 'Company/Customer Name',
+                                                    textStyle: TextStyle(fontFamily: 'RR',fontSize: 20,color: AppTheme.addNewTextFieldText),
+                                                    items: qn.customerNameList,
+                                                    strict: false,
+                                                    setter: (dynamic newValue) {
+                                                    },
+                                                    onValueChanged: (v){
+                                                      node.unfocus();
+                                                      setState(() {
+                                                        qn.SS_CustomerName=v;
+                                                        int index;
+                                                        index=qn.customersList.indexWhere((element) => element.CustomerName.toLowerCase()==v.toString().toLowerCase()).toInt();
+
+                                                        qn.SS_selectCustomerId=qn.customersList[index].CustomerId;
+                                                        print("SS_selectCustomerId--${qn.SS_selectCustomerId}");
+                                                        qn.customerContactNumber.text=qn.customersList[index].CustomerContactNumber;
+                                                        qn.customerGstNumber.text=qn.customersList[index].CustomerGSTNumber;
+                                                        qn.customerEmail.text=qn.customersList[index].CustomerEmail;
+                                                        qn.customerAddress.text=qn.customersList[index].CustomerAddress;
+                                                        qn.customerCity.text=qn.customersList[index].CustomerCity;
+                                                        qn.customerState.text=qn.customersList[index].CustomerState;
+                                                        qn.customerZipcode.text=qn.customersList[index].CustomerZipCode;
+
+
+                                                      });
+                                                    },
+                                                  ),
+                                                  AddNewLabelTextField(
+                                                    labelText: 'Contact Number',
+                                                    textEditingController: qn.customerContactNumber,
+                                                    textInputType: TextInputType.number,
+
+                                                  ),
+                                                  AddNewLabelTextField(
+                                                    labelText: 'GST No',
+                                                    textEditingController: qn.customerGstNumber,
+                                                    scrollPadding: 100,
+                                                  ),
+                                                  AddNewLabelTextField(
+                                                    labelText: 'Email',
+                                                    textEditingController: qn.customerEmail,
+                                                    textInputType: TextInputType.emailAddress,
+                                                    scrollPadding: 100,
+                                                  ),
+                                                  AddNewLabelTextField(
+                                                    labelText: 'Address',
+                                                    maxLines: 2,
+                                                    textEditingController: qn.customerAddress,
+                                                    scrollPadding: 150,
+                                                  ),
+                                                  AddNewLabelTextField(
+                                                    labelText: 'City',
+                                                    textEditingController: qn.customerCity,
+                                                    scrollPadding: 200,
+                                                  ),
+                                                  AddNewLabelTextField(
+                                                    labelText: 'State',
+                                                    textEditingController: qn.customerState,
+                                                    scrollPadding: 200,
+                                                  ),
+                                                  AddNewLabelTextField(
+                                                    labelText: 'ZipCode',
+                                                    textEditingController: qn.customerZipcode,
+                                                    textInputType: TextInputType.number,
+                                                    scrollPadding: 250,
+
+                                                  ),
+                                                  SizedBox(height: SizeConfig.height50,)
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          Container(
+                                            height: (SizeConfig.screenHeight*0.8)-((SizeConfig.screenHeight*(420/1280))),
+                                            width: SizeConfig.screenWidth-SizeConfig.width40,
+                                            color: Colors.blue,
+                                          ),
+                                    ]
+                                    ),
+                                  ),
+
+
+
+                                  GestureDetector(
+                                    onTap: (){
+                                      setState(() {
+                                        isCustomerDetaislOpen=false;
+                                      });
+                                      if(qn.SS_selectCustomerId==null){
+                                        qn.InsertCustomerDetailDbhit(context);
+                                      }else{
+                                        qn.UpdateCustomerDetailDbhit(context);
+                                      }
+
+
+                                    },
+                                    child: Container(
+                                      margin: EdgeInsets.only(top: SizeConfig.height20,bottom: SizeConfig.height30),
+                                      height: SizeConfig.height50,
+                                      width: SizeConfig.width100,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(5),
+                                        color: AppTheme.yellowColor
+                                      ),
+                                      child: Center(
+                                        child: Text("Done",style: TextStyle(fontFamily: 'RR',fontSize: 20,color: AppTheme.bgColor,letterSpacing: 0.1),),
+                                      ),
                                     ),
                                   )
                                 ],
@@ -1347,7 +1384,8 @@ bool isCustomerDetaislOpen=false;
 
 class SidePopUpParent extends StatelessWidget {
   String text;
-  SidePopUpParent({this.text});
+  Color textColor;
+  SidePopUpParent({this.text,this.textColor});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -1364,7 +1402,7 @@ class SidePopUpParent extends StatelessWidget {
         children: [
           Text(text,style: AppTheme.hintText,),
           Spacer(),
-          Icon(Icons.arrow_forward_ios_outlined,color: AppTheme.grey,size: 20,)
+          Icon(Icons.arrow_forward_ios_outlined,color:textColor==null?Color(0xFF787878) : textColor ,size: 20,)
         ],
       ),
     );

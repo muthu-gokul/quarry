@@ -5,7 +5,9 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:quarry/api/ApiManager.dart';
 import 'package:quarry/api/sp.dart';
+import 'package:quarry/model/customerDetailsModel.dart';
 import 'package:quarry/model/dropDownValues.dart';
+import 'package:quarry/model/materialDetailGridModel.dart';
 import 'package:quarry/model/materialProcessModel.dart';
 import 'package:quarry/model/quarryLocModel.dart';
 import 'package:quarry/model/saleModel.dart';
@@ -318,7 +320,7 @@ class QuarryNotifier extends ChangeNotifier{
       wastage: "100 kg"
     ),
   ];
-  List<String> materialProcessGridCol=["Stone","Material","Weight","Wastage"];
+
 
   TextEditingController processWeight=new TextEditingController();
   TextEditingController processWastage=new TextEditingController();
@@ -406,6 +408,8 @@ class QuarryNotifier extends ChangeNotifier{
   List<VehicleType> vehicleList=[];
   List<MaterialTypelist> sale_materialList=[];
   List<PaymentType> sale_paymentList=[];
+  List<TaxDetails> material_TaxList=[];
+  List<UnitDetails> material_UnitsList=[];
 
   initUserDetail(int userid,String name, String dbname,BuildContext context){
     UserId=userid;
@@ -455,6 +459,8 @@ class QuarryNotifier extends ChangeNotifier{
         vehicleList=t1.map((e) => VehicleType.fromJson(e)).toList();
         sale_materialList=t2.map((e) => MaterialTypelist.fromJson(e)).toList();
         sale_paymentList=t3.map((e) => PaymentType.fromJson(e)).toList();
+        material_TaxList=t5.map((e) => TaxDetails.fromJson(e)).toList();
+        material_UnitsList=t6.map((e) => UnitDetails.fromJson(e)).toList();
 
         updatedropDownLoader(false);
       });
@@ -589,7 +595,7 @@ class QuarryNotifier extends ChangeNotifier{
         {
           "Key": "CustomerId",
           "Type": "int",
-          "Value": null
+          "Value": SS_selectCustomerId
         },
         {
           "Key": "SaleStatus",
@@ -619,7 +625,8 @@ class QuarryNotifier extends ChangeNotifier{
         print(t3);
         //notifyListeners();
         clearEmptyForm();
-        printItemwise(context,t3,t,t2,true);
+        clearCustomerDetails();
+        printItemwise(context,t3,t,t2,t1,true);
         updateInsertSaleLoader(false);
         CustomAlert().billSuccessAlert(context,"","Inward Receipt Successfully Saved","","");
       });
@@ -630,6 +637,7 @@ class QuarryNotifier extends ChangeNotifier{
     }
   }
   UpdateSaleDetailDbhit(BuildContext context) async {
+    print("UPDATE SALE-$SS_selectCustomerId");
     updateInsertSaleLoader(true);
     var body={
       "Fields": [
@@ -722,7 +730,7 @@ class QuarryNotifier extends ChangeNotifier{
         {
           "Key": "CustomerId",
           "Type": "int",
-          "Value": null
+          "Value": SS_selectCustomerId
         },
         {
           "Key": "IsOutUpdate",
@@ -757,7 +765,7 @@ class QuarryNotifier extends ChangeNotifier{
         print(t3);
         //notifyListeners();
         updateInsertSaleLoader(false);
-        printItemwise(context,t3,t,t2,false);
+        printItemwise(context,t3,t,t2,t1,false);
         GetSaleDetailDbhit(context);
         CustomAlert().billSuccessAlert(context,"","Outward Receipt Successfully Saved","","");
       });
@@ -770,7 +778,7 @@ class QuarryNotifier extends ChangeNotifier{
 
 
 
-  Future<void> printItemwise(BuildContext context,var printerList,var companydetails,var sales,bool isEnter) async {
+  Future<void> printItemwise(BuildContext context,var printerList,var companydetails,var sales,var customer,bool isEnter) async {
 
     const PaperSize paper = PaperSize.mm80;
     final profile = await CapabilityProfile.load();
@@ -786,6 +794,19 @@ class QuarryNotifier extends ChangeNotifier{
       for(int i=0;i<splitAddress.length;i++)
         i:splitAddress[i]
     };
+
+     Map<int,String > Customervalues;
+    if(customer.isNotEmpty){
+      if(customer[0]['CustomerAddress']!=null){
+        final customeraddress=customer[0]['CustomerAddress'].toString();
+        final splitCustomerAddress=customeraddress.split(',');
+        Customervalues ={
+          for(int i=0;i<splitCustomerAddress.length;i++)
+            i:splitCustomerAddress[i]
+        };
+      }
+    }
+
 
 
     for(int i=0;i<printerList.length;i++){
@@ -912,9 +933,59 @@ class QuarryNotifier extends ChangeNotifier{
             PosColumn(text: 'GST (${sales[0]['TaxPercentage']??""}%): ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
             PosColumn(text: '${sales[0]['TaxAmount']??""}', width: 6, styles: PosStyles(align: PosAlign.right)),
           ]);
+          printer.emptyLines(1);
           printer.row([
-            PosColumn(text: 'Total: ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
-            PosColumn(text: '${sales[0]['TotalAmount']??""}', width: 6, styles: PosStyles(align: PosAlign.right)),
+            PosColumn(text: '', width: 1),
+            // PosColumn(text: 'Total: ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
+            PosColumn(text: 'Total: ${sales[0]['TotalAmount']??""}', width: 11,
+                styles: PosStyles(align: PosAlign.center,height: PosTextSize.size2,width: PosTextSize.size2)),
+          ]);
+          printer.emptyLines(1);
+        }
+
+        if(customer.isNotEmpty){
+          printer.row([
+            PosColumn(text: '', width: 1),
+            PosColumn(text: 'Customer Details', width: 11, styles: PosStyles(align: PosAlign.center,bold: true,)),
+          ]);
+          printer.emptyLines(1);
+          printer.row([
+            PosColumn(text: '', width: 1),
+            PosColumn(text: 'Name: ${customer[0]['CustomerName']??""}', width: 11, styles: PosStyles(align: PosAlign.center)),
+
+          ]);
+
+          printer.row([
+            PosColumn(text: '', width: 1),
+            PosColumn(text: 'Phone No: ${customer[0]['CustomerContactNumber']??""}', width: 11, styles: PosStyles(align: PosAlign.center,)),
+
+          ]);
+          printer.row([
+            PosColumn(text: '', width: 1),
+            PosColumn(text: 'Email: ${customer[0]['CustomerEmail']??""}', width: 11, styles: PosStyles(align: PosAlign.center,)),
+
+          ]);
+          Customervalues.forEach((key, value) {
+            printer.row([
+              PosColumn(text: '', width: 1),
+              PosColumn(text: '${value}', width: 11,styles: PosStyles(align: PosAlign.center)),
+
+            ]);
+          });
+          printer.row([
+            PosColumn(text: '', width: 1),
+            PosColumn(text: '${customer[0]['CustomerCity']??""} - ${customer[0]['CustomerZipCode']??""}', width: 11, styles: PosStyles(align: PosAlign.center,)),
+
+          ]);
+          printer.row([
+            PosColumn(text: '', width: 1),
+            PosColumn(text: '${customer[0]['CustomerState']??""}.', width: 11, styles: PosStyles(align: PosAlign.center,)),
+
+          ]);
+          printer.row([
+            PosColumn(text: '', width: 1),
+            PosColumn(text: 'GST No: ${customer[0]['CustomerGSTNumber']??""}.', width: 11, styles: PosStyles(align: PosAlign.center,)),
+
           ]);
         }
 
@@ -935,7 +1006,12 @@ class QuarryNotifier extends ChangeNotifier{
 
 
   List<SaleDetails> saleDetails=[];
+  List<SaleDetails> saleDetailsGrid=[];
   List<String> saleVehicleNumberList=[];
+  List<String> saleDetailsGridCol=['Vehicle Number','Material Type','Required Qty','Output Material Qty','Amount','Status'];
+ // List<String> saleDetailsGridCol=["Material Name","Unit","Price","GST","Unit","Price","GST"];
+
+
  TextEditingController searchVehicleNo =new TextEditingController();
  TextEditingController SS_DifferWeightController =new TextEditingController();
   var SS_LoadedVehicleNo=null;
@@ -1044,10 +1120,12 @@ class QuarryNotifier extends ChangeNotifier{
         saleVehicleNumberList.clear();
         print(parsed);
         var t=parsed['Table'] as List;
-        saleDetails=t.map((e) => SaleDetails.fromJson(e)).toList();
+        saleDetailsGrid=t.map((e) => SaleDetails.fromJson(e)).toList();
+        saleDetails=saleDetailsGrid.where((element) => element.SaleStatus=='Open').toList();
         saleDetails.forEach((element) {
           saleVehicleNumberList.add(element.VehicleNumber);
         });
+       print("SALE LEn-${saleDetailsGrid.length}");
        print("SALE LE-${saleDetails.length}");
        print("SALE LE-${saleVehicleNumberList.length}");
         //notifyListeners();
@@ -1080,6 +1158,7 @@ class QuarryNotifier extends ChangeNotifier{
     SS_VehicleTypeId=null;
     SS_MaterialTypeId=null;
     SS_PaymentTypeId=null;
+   SS_selectCustomerId=null;
     SS_Amount=0;
 
     SS_DifferWeight;
@@ -1090,6 +1169,22 @@ class QuarryNotifier extends ChangeNotifier{
     returnMoney="";
   notifyListeners();
  }
+
+  TabController tabController;
+  initTabController(TickerProviderStateMixin tickerProviderStateMixin,BuildContext context){
+    tabController=new TabController(length: 2, vsync: tickerProviderStateMixin);
+    tabController.addListener(() {
+      if(tabController.index==1){
+       GetSaleDetailDbhit(context);
+
+
+      }else if(tabController.index==0){
+        GetCustomerDetailDbhit(context);
+      }
+
+    });
+  }
+
 
 
   ///****************************************************      QUARRY DETAIL   / Company Detail    ****************************************************************/
@@ -1254,9 +1349,565 @@ class QuarryNotifier extends ChangeNotifier{
   }
 
 
+  ///****************************************************     CUSTOMER DETAIL     ****************************************************************/
+
+  TextEditingController customerName=new TextEditingController();
+  TextEditingController customerAddress=new TextEditingController();
+  TextEditingController customerCity=new TextEditingController();
+  TextEditingController customerState=new TextEditingController();
+  TextEditingController customerCountry=new TextEditingController();
+  TextEditingController customerZipcode=new TextEditingController();
+  TextEditingController customerContactNumber=new TextEditingController();
+  TextEditingController customerEmail=new TextEditingController();
+  TextEditingController customerGstNumber=new TextEditingController();
+
+  int SS_selectCustomerId=null;
+  String SS_CustomerName;
+  List<CustomerDetails> customersList=[];
+  List<String> customerNameList=[];
+  List<String> customerGridCol=["Name","Contact No","Email","GST No"];
+
+  GetCustomerDetailDbhit(BuildContext context) async {
+    updatecustomerLoader(true);
+    var body={
+      "Fields": [
+        {
+          "Key": "SpName",
+          "Type": "String",
+          "Value": "${Sp.getCustomerDetail}"
+        },
+        {
+          "Key": "LoginUserId",
+          "Type": "int",
+          "Value": UserId
+        },
+        {
+          "Key": "CustomerId",
+          "Type": "int",
+          "Value": null
+        },
+        {
+          "Key": "database",
+          "Type": "String",
+          "Value": DataBaseName
+        }
+      ]
+    };
+
+    try{
+      await call.ApiCallGetInvoke(body,context).then((value) {
+        customerNameList.clear();
+        var parsed=json.decode(value);
+        var t=parsed['Table'] as List;
+
+        customersList=t.map((e) => CustomerDetails.fromJson(e)).toList();
+        customersList.forEach((element) {
+          customerNameList.add(element.CustomerName);
+        });
+
+        updatecustomerLoader(false);
+        notifyListeners();
+      });
+    }
+    catch(e){
+      updatecustomerLoader(false);
+      CustomAlert().commonErrorAlert(context, "${Sp.getCompanyDetail}" , e.toString());
+    }
+  }
+
+  Future<dynamic> InsertCustomerDetailDbhit(BuildContext context) async {
+    updatecustomerLoader(true);
+    var body={
+      "Fields": [
+        {
+          "Key": "SpName",
+          "Type": "String",
+          "Value": "${Sp.insertCustomerDetail}"
+        },
+        {
+          "Key": "LoginUserId",
+          "Type": "int",
+          "Value": UserId
+        },
+        {
+          "Key": "CustomerName",
+          "Type": "String",
+          "Value": customerName.text
+        },
+        {
+          "Key": "CustomerCode",
+          "Type": "String",
+          "Value": null
+        },
+        {
+          "Key": "CustomerAddress",
+          "Type": "String",
+          "Value": customerAddress.text
+        },
+        {
+          "Key": "CustomerCity",
+          "Type": "String",
+          "Value": customerCity.text
+        },
+        {
+          "Key": "CustomerState",
+          "Type": "String",
+          "Value": customerState.text
+        },
+        {
+          "Key": "CustomerCountry",
+          "Type": "String",
+          "Value": customerCountry.text
+        },
+        {
+          "Key": "CustomerZipCode",
+          "Type": "String",
+          "Value": customerZipcode.text
+        },
+        {
+          "Key": "CustomerContactNumber",
+          "Type": "String",
+          "Value": customerContactNumber.text
+        },
+        {
+          "Key": "CustomerEmail",
+          "Type": "String",
+          "Value": customerEmail.text
+        },
+        {
+          "Key": "CustomerGSTNumber",
+          "Type": "String",
+          "Value": customerGstNumber.text
+        },
+        {
+          "Key": "CustomerLogoFileName",
+          "Type": "String",
+          "Value": null
+        },
+        {
+          "Key": "CustomerLogoFolderName",
+          "Type": "String",
+          "Value": null
+        },
+        {
+          "Key": "database",
+          "Type": "String",
+          "Value": DataBaseName
+        }
+      ]
+    };
+
+    try{
+      await call.ApiCallGetInvoke(body,context).then((value) {
+        var parsed=json.decode(value);
+
+        print(parsed);
+        //notifyListeners();
+        GetCustomerDetailDbhit(context);
+        updatecustomerLoader(false);
+
+      });
+    }
+    catch(e){
+      updatecustomerLoader(false);
+      CustomAlert().commonErrorAlert(context, "${Sp.dropDownValues}" , e.toString());
+    }
+  }
+
+  Future<dynamic> UpdateCustomerDetailDbhit(BuildContext context) async {
+    print("UPDATE--$SS_selectCustomerId");
+    updatecustomerLoader(true);
+    var body={
+      "Fields": [
+        {
+          "Key": "SpName",
+          "Type": "String",
+          "Value": "${Sp.updateCustomerDetail}"
+        },
+        {
+          "Key": "LoginUserId",
+          "Type": "int",
+          "Value": UserId
+        },
+        {
+          "Key": "CustomerId",
+          "Type": "int",
+          "Value": SS_selectCustomerId
+        },
+        {
+          "Key": "CustomerName",
+          "Type": "String",
+          "Value": customerName.text
+        },
+        {
+          "Key": "CustomerCode",
+          "Type": "String",
+          "Value": null
+        },
+        {
+          "Key": "CustomerAddress",
+          "Type": "String",
+          "Value": customerAddress.text
+        },
+        {
+          "Key": "CustomerCity",
+          "Type": "String",
+          "Value": customerCity.text
+        },
+        {
+          "Key": "CustomerState",
+          "Type": "String",
+          "Value": customerState.text
+        },
+        {
+          "Key": "CustomerCountry",
+          "Type": "String",
+          "Value": customerCountry.text
+        },
+        {
+          "Key": "CustomerZipCode",
+          "Type": "String",
+          "Value": customerZipcode.text
+        },
+        {
+          "Key": "CustomerContactNumber",
+          "Type": "String",
+          "Value": customerContactNumber.text
+        },
+        {
+          "Key": "CustomerEmail",
+          "Type": "String",
+          "Value": customerEmail.text
+        },
+        {
+          "Key": "CustomerGSTNumber",
+          "Type": "String",
+          "Value": customerGstNumber.text
+        },
+        {
+          "Key": "CustomerLogoFileName",
+          "Type": "String",
+          "Value": null
+        },
+        {
+          "Key": "CustomerLogoFolderName",
+          "Type": "String",
+          "Value": null
+        },
+        {
+          "Key": "database",
+          "Type": "String",
+          "Value": DataBaseName
+        }
+      ]
+    };
+
+    try{
+      await call.ApiCallGetInvoke(body,context).then((value) {
+        print(value);
+        if(value!=null){
+          var parsed=json.decode(value);
+          print(parsed);
+          GetCustomerDetailDbhit(context);
+        }
+
+        //notifyListeners();
+
+        updatecustomerLoader(false);
+
+      });
+    }
+    catch(e){
+      updatecustomerLoader(false);
+      CustomAlert().commonErrorAlert(context, "${Sp.updateCustomerDetail}" , e.toString());
+    }
+  }
+
+  DeleteCustomerDetailDbhit(BuildContext context,int CustomerId) async {
+    updatecustomerLoader(true);
+    var body={
+      "Fields": [
+        {
+          "Key": "SpName",
+          "Type": "String",
+          "Value": "${Sp.deleteCustomerDetail}"
+        },
+        {
+          "Key": "LoginUserId",
+          "Type": "int",
+          "Value": UserId
+        },
+        {
+          "Key": "CustomerId",
+          "Type": "int",
+          "Value": CustomerId
+        },
+        {
+          "Key": "database",
+          "Type": "String",
+          "Value": DataBaseName
+        }
+      ]
+    };
+
+    try{
+      await call.ApiCallGetInvoke(body,context).then((value) {
+
+
+        print(value);
+        GetCustomerDetailDbhit(context);
+        updatecustomerLoader(false);
+        CustomAlert().billSuccessAlert(context, "", "Successfully Deleted", "", "");
+        notifyListeners();
+      });
+    }
+    catch(e){
+      updatecustomerLoader(false);
+      CustomAlert().commonErrorAlert(context, "${Sp.deleteCustomerDetail}" , e.toString());
+    }
+  }
 
 
 
+  bool isCustomerEdit=false;
+  updateCustomerEdit(bool value){
+    isCustomerEdit=value;
+    notifyListeners();
+  }
+
+
+
+  clearCustomerDetails(){
+     customerName.clear();
+     customerAddress.clear();
+     customerCity.clear();
+     customerState.clear();
+     customerCountry.clear();
+     customerZipcode.clear();
+     customerContactNumber.clear();
+     customerEmail.clear();
+     customerGstNumber.clear();
+     SS_selectCustomerId=null;
+  }
+
+
+
+  ///****************************************************     MATERIAL DETAIL     ****************************************************************/
+   TextEditingController materialName=new TextEditingController();
+   TextEditingController materialDesc=new TextEditingController();
+   TextEditingController materialCode=new TextEditingController();
+   TextEditingController materialUnitPrice=new TextEditingController();
+   TextEditingController materialHSNCode=new TextEditingController();
+   TextEditingController materialGST=new TextEditingController();
+
+   int MM_selectMaterialUnitId=null;
+   String MM_selectMaterialUnitName;
+
+   List<TaxDetails> selectTaxList=[];
+
+
+  List<String> materialProcessGridCol=["Material Name","Unit","Price","GST"];
+   List<MaterialDetailGridModel> materialGridList=[];
+
+  GetMaterialDetailDbhit(BuildContext context) async {
+    updatemasterLoader(true);
+    var body={
+      "Fields": [
+        {
+          "Key": "SpName",
+          "Type": "String",
+          "Value": "${Sp.getMaterialDetail}"
+        },
+        {
+          "Key": "LoginUserId",
+          "Type": "int",
+          "Value": UserId
+        },
+        {
+          "Key": "MaterialId",
+          "Type": "int",
+          "Value": null
+        },
+        {
+          "Key": "database",
+          "Type": "String",
+          "Value": DataBaseName
+        }
+      ]
+    };
+
+    try{
+      await call.ApiCallGetInvoke(body,context).then((value) {
+
+        var parsed=json.decode(value);
+        var t=parsed['Table'] as List;
+
+        materialGridList=t.map((e) => MaterialDetailGridModel.fromJson(e)).toList();
+        updatemasterLoader(false);
+        notifyListeners();
+      });
+    }
+    catch(e){
+      updatemasterLoader(false);
+      CustomAlert().commonErrorAlert(context, "${Sp.getMaterialDetail}" , e.toString());
+    }
+  }
+
+
+  Future<dynamic> InsertMaterialDetailDbhit(BuildContext context) async {
+
+    List<dynamic> js= selectTaxList.map((e) => e.toJson()).toList();
+    print(js);
+
+
+    updatemasterLoader(true);
+    var body={
+      "Fields": [
+        {
+          "Key": "SpName",
+          "Type": "String",
+          "Value": "${Sp.insertMaterialDetail}"
+        },
+        {
+          "Key": "LoginUserId",
+          "Type": "int",
+          "Value": UserId
+        },
+        {
+          "Key": "MaterialName",
+          "Type": "String",
+          "Value": materialName.text
+        },
+        {
+          "Key": "MaterialDescription",
+          "Type": "String",
+          "Value": materialDesc.text
+        },
+        {
+          "Key": "MaterialCode",
+          "Type": "String",
+          "Value": materialCode.text
+        },
+        {
+          "Key": "MaterialUnitId",
+          "Type": "int",
+          "Value": MM_selectMaterialUnitId
+        },
+        {
+          "Key": "MaterialUnitPrice",
+          "Type": "String",
+          "Value": materialUnitPrice.text
+        },
+        {
+          "Key": "MaterialHSNCode",
+          "Type": "String",
+          "Value": materialHSNCode.text
+        },
+        {
+          "Key": "MaterialTaxValue",
+          "Type": "String",
+          "Value": materialGST.text
+        },
+        {
+          "Key": "MaterialTaxMappingList",
+          "Type": "datatable",
+          "Value": js
+        },
+
+        {
+          "Key": "database",
+          "Type": "String",
+          "Value": DataBaseName
+        }
+      ]
+    };
+
+    try{
+      await call.ApiCallGetInvoke(body,context).then((value) {
+        if(value!=null){
+          var parsed=json.decode(value);
+
+          print(parsed);
+          //notifyListeners();
+           GetMaterialDetailDbhit(context);
+          clearMaterialForm();
+
+          Navigator.pop(context);
+        }
+
+        updatemasterLoader(false);
+      });
+    }
+    catch(e){
+      updatemasterLoader(false);
+      CustomAlert().commonErrorAlert(context, "${Sp.insertMaterialDetail}" , e.toString());
+    }
+  }
+
+
+  DeleteMasterDetailDbhit(BuildContext context,int MaterialId) async {
+    print("$MaterialId");
+    updatemasterLoader(true);
+    var body={
+      "Fields": [
+        {
+          "Key": "SpName",
+          "Type": "String",
+          "Value": "${Sp.deleteMaterialDetail}"
+        },
+        {
+          "Key": "LoginUserId",
+          "Type": "int",
+          "Value": UserId
+        },
+        {
+          "Key": "MaterialId",
+          "Type": "int",
+          "Value": MaterialId
+        },
+        {
+          "Key": "database",
+          "Type": "String",
+          "Value": DataBaseName
+        }
+      ]
+    };
+
+    try{
+      await call.ApiCallGetInvoke(body,context).then((value) {
+
+
+        print(value);
+        if(value!=null){
+          GetMaterialDetailDbhit(context);
+          CustomAlert().billSuccessAlert(context, "", "Successfully Deleted", "", "");
+        }
+        updatemasterLoader(false);
+        notifyListeners();
+      });
+    }
+    catch(e){
+      updatemasterLoader(false);
+      CustomAlert().commonErrorAlert(context, "${Sp.deleteCustomerDetail}" , e.toString());
+    }
+  }
+
+
+
+  clearMaterialForm(){
+    materialName.clear();
+    materialDesc.clear();
+    materialCode.clear();
+    MM_selectMaterialUnitId=null;
+    MM_selectMaterialUnitName='';
+
+     materialUnitPrice.clear();
+     materialHSNCode.clear();
+     materialGST.clear();
+    selectTaxList.clear();
+
+
+  }
 
   ///////////////////////LOADERS //////////////////////////////////////
   bool dropDownLoader=false;
@@ -1282,4 +1933,23 @@ class QuarryNotifier extends ChangeNotifier{
     notifyListeners();
   }
 
+
+  bool customerLoader=false;
+  void updatecustomerLoader(bool value){
+    customerLoader=value;
+    notifyListeners();
+  }
+
+  bool masterLoader=false;
+  void updatemasterLoader(bool value){
+    masterLoader=value;
+    notifyListeners();
+  }
+
+}
+
+class SelectTaxMapping{
+  int TaxId;
+  String TaxName;
+  SelectTaxMapping({this.TaxId,this.TaxName});
 }

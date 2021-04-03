@@ -59,6 +59,7 @@ class DropDownField extends FormField<String> {
   VoidCallback nodeFocus;
   VoidCallback add;
   String unit;
+  double reduceWidth;
   /// Controls the text being edited.
   ///
   /// If null, this widget will create its own [TextEditingController] and
@@ -90,6 +91,7 @@ class DropDownField extends FormField<String> {
         this.unit,
         this.nodeFocus,
         this.qtycontroller,
+        this.reduceWidth:0,
         this.strict: true})
       : super(
     key: key,
@@ -137,8 +139,9 @@ class DropDownField extends FormField<String> {
               children: <Widget>[
 
                 Container(
-                  height: 70,
-                  width: SizeConfig.screenWidth-(SizeConfig.width40),
+                  height: SizeConfig.height60,
+                  //width: SizeConfig.screenWidth-(SizeConfig.width40),
+                  width: SizeConfig.screenWidth-(reduceWidth),
 
                   child: TextFormField(
                     onTap: (){
@@ -175,8 +178,10 @@ class DropDownField extends FormField<String> {
                       if(v.isEmpty){
                         state._showdropdown=false;
 
+
                         // print(items.length);
                       }
+                      add();
                       state._getChildren( items);
                       // print(state.noitems);
                     },
@@ -270,7 +275,8 @@ class DropDownField extends FormField<String> {
                 :!state.noitems? Container(
               // alignment: Alignment.centerLeft,
               height: itemsVisibleInDropdown * 48.0, //limit to default 3 items in dropdownlist view and then remaining scrolls
-              width: SizeConfig.screenWidth-(SizeConfig.width40),
+              //width: SizeConfig.screenWidth-(SizeConfig.width40),
+              width: SizeConfig.screenWidth-(reduceWidth),
 
               // margin: EdgeInsets.only(left: 20),
               decoration: BoxDecoration(

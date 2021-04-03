@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+
 class VehicleType{
   int VehicleTypeId;
   String VehicleTypeName;
@@ -78,7 +80,9 @@ class SaleDetails{
   String EmptyWeightOfVehicle;
   String MaterialName;
   String RequiredMaterialQty;
+  String OutputMaterialQty;
   double Amount;
+  double OutputQtyAmount;
   String LoadWeightOfVehicle;
   String PaymentCategoryName;
   String CustomerName;
@@ -90,7 +94,7 @@ class SaleDetails{
   this.VehicleTypeName,this.EmptyWeightOfVehicle,this.MaterialId,this.MaterialName,
  this.RequiredMaterialQty, this.LoadWeightOfVehicle,this.Amount,this.PaymentCategoryId,
   this.PaymentCategoryName,this.CustomerId,this.CustomerName,this.SaleStatus,
-  this.SaleDate,this.UnitName});
+  this.SaleDate,this.UnitName,this.OutputMaterialQty,this.OutputQtyAmount});
 
 
   factory SaleDetails.fromJson(Map<dynamic, dynamic> json) {
@@ -113,8 +117,76 @@ class SaleDetails{
       SaleStatus: json['SaleStatus'],
       SaleDate: json['DateTime'],
       UnitName: json['UnitName'],
+      OutputMaterialQty: json['OutputMaterialQty'],
+      OutputQtyAmount: json['OutputQtyAmount'],
 
     );
   }
 
+}
+
+
+
+
+class TaxDetails{
+  int TaxId;
+  String TaxName;
+
+  int MaterialTaxMappingId;
+  int MaterialId;
+  double MaterialTaxValue;
+  int IsActive;
+
+  TextEditingController taxValue;
+
+  TaxDetails({this.TaxId,this.TaxName,this.MaterialTaxMappingId,this.MaterialTaxValue,this.IsActive,this.MaterialId,this.taxValue});
+
+
+  factory TaxDetails.fromJson(Map<dynamic, dynamic> json) {
+    return new TaxDetails(
+      TaxId: json['TaxId'],
+      TaxName: json['TaxName'],
+    );
+  }
+
+
+  Map<dynamic,dynamic> toJson(){
+    if(taxValue.text.isNotEmpty ){
+      var map = <dynamic, dynamic>{
+        'MaterialTaxMappingId': MaterialTaxMappingId,
+        'MaterialId': MaterialId,
+        'TaxId':TaxId,
+        'MaterialTaxValue':taxValue.text.isNotEmpty?double.parse(taxValue.text):0,
+        'IsActive':IsActive,
+      };
+      return map;
+    }
+    else{
+      var map = <dynamic, dynamic>{
+        'MaterialTaxMappingId': null,
+        'MaterialId': null,
+        'TaxId':null,
+        'MaterialTaxValue':null,
+        'IsActive':null,
+      };
+      return map;
+    }
+  }
+
+
+}
+
+
+class UnitDetails{
+  int UnitId;
+  String UnitName;
+
+  UnitDetails({this.UnitId,this.UnitName});
+
+  factory UnitDetails.fromJson(Map<dynamic, dynamic> json) {
+    return new UnitDetails(
+      UnitId: json['UnitId'],
+      UnitName: json['UnitName'],
+    );
+  }
 }

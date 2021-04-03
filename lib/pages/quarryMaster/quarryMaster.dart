@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
+import 'package:quarry/pages/quarryMaster/quarryLocationAddNew.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
 
@@ -129,7 +130,7 @@ class _QuarryMasterState extends State<QuarryMaster> {
 
   Route _createRoute() {
     return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => QuarryLocationAddNew(),
+      pageBuilder: (context, animation, secondaryAnimation) => QuaryAddNew(),
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
 
         return FadeTransition(

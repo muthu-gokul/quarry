@@ -12,6 +12,7 @@ class AppTheme {
   static const Color addNewTextFieldBorder=Color(0xFFCECECE);
   static const Color addNewTextFieldFocusBorder=Color(0xFF4E4E4E);
   static  Color addNewTextFieldText=Color(0xFF434343);
+  static  Color indicatorColor=Color(0xFF1C1C1C);
 
   static  Color grey=Color(0xFF787878);
 
