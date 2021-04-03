@@ -101,7 +101,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                        labelText: 'Quarry Name',
                                        isEnabled: isEdit,
                                        textEditingController: qn.CD_quarryname,
-                                       maxLines: 2,
+                                       // maxLines: 2,
 
 
                                      ),
@@ -114,7 +114,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                      AddNewLabelTextField(
                                        labelText: 'Address',
                                        isEnabled: isEdit,
-                                       maxLines: 3,
+                                       // maxLines: 3,
                                        textInputType: TextInputType.text,
                                        scrollPadding: 200,
                                        textEditingController: qn.CD_address,

@@ -106,7 +106,7 @@ class _CustomerAddNewState extends State<CustomerAddNew> {
                                     ),
                                     AddNewLabelTextField(
                                       labelText: 'Address',
-                                      maxLines: 2,
+                                      // maxLines: 2,
                                       textEditingController: qn.customerAddress,
                                       scrollPadding: 150,
                                     ),

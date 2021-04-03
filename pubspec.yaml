@@ -85,6 +85,8 @@ flutter:
     - assets/svg/delete.svg
     - assets/svg/edit.svg
     - assets/images/delete.jpg
+    - assets/svg/pdf.svg
+    - assets/svg/print.svg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 

@@ -10,6 +10,7 @@ class Sp{
 
   static String insertSaleDetail="USP_InsertSaleDetail";
   static String updateSaleDetail="USP_UpdateSaleDetail";
+  static String deleteSaleDetail="USP_DeleteSaleDetail";
 
   static String insertCustomerDetail="USP_InsertCustomerDetail";
   static String updateCustomerDetail="USP_UpdateCustomerDetail";

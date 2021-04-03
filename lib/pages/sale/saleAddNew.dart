@@ -30,16 +30,16 @@ class _SaleAddNewState extends State<SaleAddNew> {
                     child: Row(
                       children: [
                         IconButton(icon: Icon(Icons.arrow_back), onPressed: (){
-                          qn.updateSaleAddNew(false);
-                          Timer(Duration(milliseconds: 300), (){
-                            qn.updateSaleAddNewHW(false);
-                            // qn.stoneSelected=null;
-                             qn. MaterialSelected=null;
-
-                            qn.  saleWeight.clear();
-                            qn. salePrice.clear();
-
-                          });
+                          // qn.updateSaleAddNew(false);
+                          // Timer(Duration(milliseconds: 300), (){
+                          //   qn.updateSaleAddNewHW(false);
+                          //   // qn.stoneSelected=null;
+                          //    qn. MaterialSelected=null;
+                          //
+                          //   qn.  saleWeight.clear();
+                          //   qn. salePrice.clear();
+                          //
+                          // });
                         }),
                         SizedBox(width: SizeConfig.width20,),
                         Text("Sales ",

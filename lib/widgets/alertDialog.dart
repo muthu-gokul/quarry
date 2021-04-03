@@ -78,7 +78,7 @@ class CustomAlert{
         context: context,
         builder: (ctx) => Dialog(
           child: Container(
-              height:280,
+              height:des.length>50?400:280,
               width:400,
               decoration:BoxDecoration(
                 color:Colors.white,

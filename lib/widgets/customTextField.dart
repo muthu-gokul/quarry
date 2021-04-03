@@ -15,18 +15,18 @@ class AddNewLabelTextField extends StatelessWidget {
   Function(String) onChange;
   VoidCallback ontap;
   TextInputFormatter textInputFormatter;
-  int maxLines;
+
 
   AddNewLabelTextField({this.textEditingController,this.labelText,this.scrollPadding,this.textInputType:TextInputType.text,
-    this.prefixIcon,this.ontap,this.onChange,this.textInputFormatter,this.isEnabled=true,this.maxLines:1,this.suffixIcon});
+    this.prefixIcon,this.ontap,this.onChange,this.textInputFormatter,this.isEnabled=true,this.suffixIcon});
 
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    return Container(
+    return  Container(
 
       margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,top:SizeConfig.height20,),
-      height:maxLines>1?(SizeConfig.height100): SizeConfig.height60,
+      // height:maxLines>1?(SizeConfig.height100): SizeConfig.height60,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(3),
         color: Colors.transparent
@@ -51,14 +51,14 @@ class AddNewLabelTextField extends StatelessWidget {
               borderSide: BorderSide(color:AppTheme.addNewTextFieldFocusBorder)
           ),
           labelText: labelText,
-          contentPadding: new EdgeInsets.symmetric(vertical: 25.0, horizontal: 20.0),
+          // contentPadding: new EdgeInsets.symmetric(vertical: 25.0, horizontal: 20.0),
           prefixIcon: prefixIcon,
           suffixIcon: suffixIcon
 
 
 
         ),
-        maxLines: maxLines,
+        maxLines: null,
         keyboardType: textInputType,
         textInputAction: TextInputAction.done,
         // inputFormatters:  <TextInputFormatter>[
@@ -75,5 +75,6 @@ class AddNewLabelTextField extends StatelessWidget {
       ),
 
     );
+
   }
 }

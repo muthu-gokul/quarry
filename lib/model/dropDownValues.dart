@@ -115,7 +115,7 @@ class SaleDetails{
       CustomerId: json['CustomerId'],
       CustomerName: json['CustomerName'],
       SaleStatus: json['SaleStatus'],
-      SaleDate: json['DateTime'],
+      SaleDate: json['SaleDate'],
       UnitName: json['UnitName'],
       OutputMaterialQty: json['OutputMaterialQty'],
       OutputQtyAmount: json['OutputQtyAmount'],
@@ -125,6 +125,55 @@ class SaleDetails{
 
 }
 
+class SaleGridReport{
+  double Sale;
+  double PSand;
+  double MSand;
+  int Open;
+  int Closed;
+  double PSandQuantity;
+  double MSandQuantity;
+  double TotalSaleQuantity;
+
+  SaleGridReport({this.Sale,this.PSand,this.MSand,this.Open,this.Closed,this.PSandQuantity,this.MSandQuantity,this.TotalSaleQuantity,
+  });
+
+  factory SaleGridReport.fromJson(Map<dynamic,dynamic> json){
+    return new SaleGridReport(
+      Sale: json['Sale'],
+      PSand: json['P Sand'],
+      MSand: json['M Sand'],
+      Open: json['Open'],
+      Closed: json['Closed'],
+      PSandQuantity: json['P Sand Quantity'],
+      MSandQuantity: json['M Sand Quantity'],
+      TotalSaleQuantity: json['Total Sale Quantity'],
+    );
+  }
+
+
+}
+
+
+class SalePrintersList{
+  String PrinterName;
+  String PrinterTypeName;
+  String PrinterIPAddress;
+  String PrinterPortNumber;
+
+  SalePrintersList({this.PrinterName,this.PrinterTypeName,this.PrinterIPAddress,this.PrinterPortNumber});
+
+  factory SalePrintersList.fromJson(Map<dynamic,dynamic> json){
+    return new SalePrintersList(
+      PrinterName: json['PrinterName'],
+      PrinterTypeName: json['PrinterTypeName'],
+      PrinterIPAddress: json['PrinterIPAddress'],
+      PrinterPortNumber: json['PrinterPortNumber'],
+    );
+  }
+
+
+}
 
 
 

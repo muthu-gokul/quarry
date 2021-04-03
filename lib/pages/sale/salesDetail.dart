@@ -19,7 +19,8 @@ import 'saleAddNew.dart';
 
 class SalesDetail extends StatefulWidget {
   VoidCallback drawerCallback;
-  SalesDetail({this.drawerCallback});
+  bool fromsaleGrid;
+  SalesDetail({this.drawerCallback,this.fromsaleGrid:false});
   @override
   _SalesDetailState createState() => _SalesDetailState();
 }
@@ -40,7 +41,7 @@ bool isCustomerDetaislOpen=false;
   @override
   void initState() {
     SystemChrome.setEnabledSystemUIOverlays([]);
-       Provider.of<QuarryNotifier>(context,listen: false).initTabController(this,context);
+       Provider.of<QuarryNotifier>(context,listen: false).initTabController(this,context,widget.fromsaleGrid);
 
     super.initState();
   }
@@ -96,6 +97,7 @@ bool isCustomerDetaislOpen=false;
                                               children: [
                                                 IconButton(icon: Icon(Icons.arrow_back), onPressed:(){
                                                   Navigator.pop(context);
+                                                  qn.clearCustomerDetails();
                                                 }),
 
                                                 // IconButton(icon: Icon(Icons.menu), onPressed: widget.drawerCallback),
@@ -305,7 +307,11 @@ bool isCustomerDetaislOpen=false;
                                               children: [
                                                 Row(
                                                   children: [
-                                                    IconButton(icon: Icon(Icons.menu), onPressed: widget.drawerCallback),
+                                                    IconButton(icon: Icon(Icons.arrow_back), onPressed: (){
+                                                      Navigator.pop(context);
+                                                      qn.clearCustomerDetails();
+
+                                                    }),
                                                     SizedBox(width: SizeConfig.width20,),
                                                     Text("Sales Detail",
                                                       style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: SizeConfig.width16),
@@ -1284,7 +1290,7 @@ bool isCustomerDetaislOpen=false;
                                                   ),
                                                   AddNewLabelTextField(
                                                     labelText: 'Address',
-                                                    maxLines: 2,
+                                                    // maxLines: 2,
                                                     textEditingController: qn.customerAddress,
                                                     scrollPadding: 150,
                                                   ),

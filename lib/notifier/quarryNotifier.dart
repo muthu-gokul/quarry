@@ -526,6 +526,96 @@ class QuarryNotifier extends ChangeNotifier{
     SS_amount.clear();
   }
 
+  List<DateTime> picked=[];
+
+  GetSaleDetailDbhit(BuildContext context) async {
+
+    String fromDate,toDate;
+
+    if(picked.isEmpty){
+      fromDate=DateFormat("yyyy-MM-dd").format(DateTime.now()).toString();
+      toDate=DateFormat("yyyy-MM-dd").format(DateTime.now()).toString();
+    }
+    else if(picked.length==1){
+      fromDate=DateFormat("yyyy-MM-dd").format(picked[0]).toString();
+      toDate=DateFormat("yyyy-MM-dd").format(picked[0]).toString();
+    }
+    else if(picked.length==2){
+      fromDate=DateFormat("yyyy-MM-dd").format(picked[0]).toString();
+      toDate=DateFormat("yyyy-MM-dd").format(picked[1]).toString();
+    }
+
+
+    updateInsertSaleLoader(true);
+    var body={
+      "Fields": [
+        {
+          "Key": "SpName",
+          "Type": "String",
+          "Value": "USP_GetSaleDetail"
+        },
+        {
+          "Key": "LoginUserId",
+          "Type": "int",
+          "Value": UserId
+        },
+        {
+          "Key": "SaleId",
+          "Type": "int",
+          "Value": null
+        },
+        {
+          "Key": "FromDate",
+          "Type": "String",
+          "Value": fromDate
+        },
+        {
+          "Key": "ToDate",
+          "Type": "String",
+          "Value":toDate
+        },
+        {
+          "Key": "database",
+          "Type": "String",
+          "Value": DataBaseName
+        }
+
+      ]
+    };
+
+    try{
+      await call.ApiCallGetInvoke(body,context).then((value) {
+        var parsed=json.decode(value);
+        saleVehicleNumberList.clear();
+        print(parsed);
+        var t=parsed['Table'] as List;
+        var t1=parsed['Table1'] as List;
+        var t2=parsed['Table2'] as List;
+
+        saleDetailsGrid=t.map((e) => SaleDetails.fromJson(e)).toList();
+        saleGridReportList=t1.map((e) => SaleGridReport.fromJson(e)).toList();
+        saleDetailsGridPrintersList=t2.map((e) => SalePrintersList.fromJson(e)).toList();
+
+        saleDetails=saleDetailsGrid.where((element) => element.SaleStatus=='Open').toList();
+
+        saleDetails.forEach((element) {
+          saleVehicleNumberList.add(element.VehicleNumber);
+        });
+        print("SALE LEn-${saleDetailsGrid.length}");
+        print("SALE LE-${saleDetails.length}");
+        print("SALE LE-${saleVehicleNumberList.length}");
+        //notifyListeners();
+
+        clearIsOpen();
+        updateInsertSaleLoader(false);
+
+      });
+    }
+    catch(e){
+      updateInsertSaleLoader(false);
+      CustomAlert().commonErrorAlert(context, "USP_GetSaleDetail" , e.toString());
+    }
+  }
   InsertSaleDetailDbhit(BuildContext context) async {
 
     updateInsertSaleLoader(true);
@@ -628,6 +718,7 @@ class QuarryNotifier extends ChangeNotifier{
         clearCustomerDetails();
         printItemwise(context,t3,t,t2,t1,true);
         updateInsertSaleLoader(false);
+        GetSaleDetailDbhit(context);
         CustomAlert().billSuccessAlert(context,"","Inward Receipt Successfully Saved","","");
       });
     }
@@ -766,6 +857,8 @@ class QuarryNotifier extends ChangeNotifier{
         //notifyListeners();
         updateInsertSaleLoader(false);
         printItemwise(context,t3,t,t2,t1,false);
+        clearLoaderForm();
+        clearIsOpen();
         GetSaleDetailDbhit(context);
         CustomAlert().billSuccessAlert(context,"","Outward Receipt Successfully Saved","","");
       });
@@ -775,7 +868,49 @@ class QuarryNotifier extends ChangeNotifier{
       CustomAlert().commonErrorAlert(context, "${Sp.insertSaleDetail}" , e.toString());
     }
   }
+  Future<dynamic> DeleteSaleDetailDbhit(BuildContext context,int saleId) async {
+    updateInsertSaleLoader(true);
+    var body={
+      "Fields": [
+        {
+          "Key": "SpName",
+          "Type": "String",
+          "Value": "${Sp.deleteSaleDetail}"
+        },
+        {
+          "Key": "LoginUserId",
+          "Type": "int",
+          "Value": UserId
+        },
+        {
+          "Key": "SaleId",
+          "Type": "int",
+          "Value": saleId
+        },
+        {
+          "Key": "database",
+          "Type": "String",
+          "Value": DataBaseName
+        }
+      ]
+    };
 
+    try{
+      await call.ApiCallGetInvoke(body,context).then((value) {
+
+
+        print(value);
+        GetSaleDetailDbhit(context);
+        updateInsertSaleLoader(false);
+        CustomAlert().billSuccessAlert(context, "", "Successfully Deleted", "", "");
+        notifyListeners();
+      });
+    }
+    catch(e){
+      updateInsertSaleLoader(false);
+      CustomAlert().commonErrorAlert(context, "${Sp.deleteSaleDetail}" , e.toString());
+    }
+  }
 
 
   Future<void> printItemwise(BuildContext context,var printerList,var companydetails,var sales,var customer,bool isEnter) async {
@@ -996,7 +1131,234 @@ class QuarryNotifier extends ChangeNotifier{
         // CustomAlert().show(context, "Printed Successfully", 300);
       }
       else{
-        // CustomAlert().show(context, "Printer Not Connected", 300);
+        print("notConnected");
+        // CustomAlert().(context, "Printer Not Connected", 300);
+      }
+    }
+
+
+  }
+
+
+  Future<void> printClosedReport(BuildContext context,var printerList,var companydetails,var sales,var customer,bool isEnter) async {
+
+    const PaperSize paper = PaperSize.mm80;
+    final profile = await CapabilityProfile.load();
+    final printer = NetworkPrinter(paper, profile);
+
+
+
+    final address=companydetails[0]['CompanyAddress'].toString();
+    final splitAddress=address.split(',');
+
+    final Map<int,String > values ={
+      for(int i=0;i<splitAddress.length;i++)
+        i:splitAddress[i]
+    };
+
+     Map<int,String > Customervalues;
+    if(customer.isNotEmpty){
+      if(customer[0]['CustomerAddress']!=null){
+        final customeraddress=customer[0]['CustomerAddress'].toString();
+        final splitCustomerAddress=customeraddress.split(',');
+        Customervalues ={
+          for(int i=0;i<splitCustomerAddress.length;i++)
+            i:splitCustomerAddress[i]
+        };
+      }
+    }
+
+
+
+    for(int i=0;i<printerList.length;i++){
+      final PosPrintResult res = await printer.connect('${printerList[i]['PrinterIPAddress']}', port: 9100);
+      // Print image
+      // final ByteData data = await rootBundle.load('assets/logo.png');
+      // final Uint8List bytes = data.buffer.asUint8List();
+      // final im.Image image = im.decodeImage(bytes);
+      // printer.image(image);
+      if (res == PosPrintResult.success) {
+
+
+        // printer.row([
+        //   PosColumn(text: '', width: 1),
+        //   PosColumn(text: 'Outlet name', width: 11,styles: PosStyles(align: PosAlign.center, height: bnn.filteruserOutlet[bnn.outletSelected].OutletName.length<15?PosTextSize.size2:PosTextSize.size2,
+        //       width: bnn.filteruserOutlet[bnn.outletSelected].OutletName.length<15?PosTextSize.size2:PosTextSize.size1,bold: true)),
+        // ]);
+        // printer.emptyLines(1);
+        //
+        printer.row([
+          PosColumn(text: '', width: 1),
+          PosColumn(text: '${companydetails[0]['CompanyName']??""}', width: 11,styles: PosStyles(align: PosAlign.center,bold: true)),
+        ]);
+        printer.emptyLines(1);
+        values.forEach((key, value) {
+          printer.row([
+            PosColumn(text: '', width: 1),
+            PosColumn(text: '${value}', width: 11,styles: PosStyles(align: PosAlign.center)),
+          ]);
+        });
+        printer.row([
+          PosColumn(text: '', width: 1),
+          PosColumn(text: '${companydetails[0]['CompanyCity']??""}, ${companydetails[0]['CompanyState']??""}-${companydetails[0]['CompanyZipCode']??""}', width: 11,
+              styles: PosStyles(align: PosAlign.center,height: PosTextSize.size1,width: PosTextSize.size1)),
+        ]);
+        printer.row([
+          PosColumn(text: '', width: 1),
+          PosColumn(text: 'Email: ${companydetails[0]['CompanyEmail']??""}', width: 11,styles: PosStyles(align: PosAlign.center)),
+        ]);
+        printer.row([
+          PosColumn(text: '', width: 1),
+          PosColumn(text: 'Ph No: ${companydetails[0]['CompanyContactNumber']??""}', width: 11,styles: PosStyles(align: PosAlign.center)),
+        ]);
+        printer.row([
+          PosColumn(text: '', width: 1),
+          PosColumn(text: 'GST: ${companydetails[0]['CompanyGSTNumber']??""}', width: 11,styles: PosStyles(align: PosAlign.center)),
+        ]);
+        printer.emptyLines(1);
+
+
+        printer.row([
+          PosColumn(text: '', width: 1),
+          PosColumn(text: isEnter?'Inward Receipt':'Outward Receipt', width: 11,
+              styles: PosStyles(align: PosAlign.center,bold: true,height: PosTextSize.size2,width: PosTextSize.size2)),
+        ]);
+        printer.emptyLines(1);
+        printer.row([
+          PosColumn(text: ' Sale No: ${sales[0]['SaleNumber']??""}', width: 6, styles: PosStyles(align: PosAlign.left,bold: true)),
+          PosColumn(text: '${sales[0]['DateTime']??""}', width: 6, styles: PosStyles(align: PosAlign.right)),
+        ]);
+        printer.emptyLines(1);
+        printer.row([
+          PosColumn(text: 'Vehicle Number: ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
+          PosColumn(text: '${sales[0]['VehicleNumber'].toString().toUpperCase()??""}', width: 6, styles: PosStyles(align: PosAlign.right)),
+        ]);
+        printer.row([
+          PosColumn(text: 'Vehicle Type: ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
+          PosColumn(text: '${sales[0]['VehicleTypeName']??""}', width: 6, styles: PosStyles(align: PosAlign.right)),
+        ]);
+        printer.row([
+          PosColumn(text: 'Empty Vehicle Weight: ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
+          PosColumn(text: '${sales[0]['EmptyWeightOfVehicle']??""} Ton', width: 6, styles: PosStyles(align: PosAlign.right)),
+        ]);
+        printer.row([
+          PosColumn(text: 'Material Name: ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
+          PosColumn(text: '${sales[0]['MaterialName']??""}', width: 6, styles: PosStyles(align: PosAlign.right)),
+        ]);
+        printer.row([
+          PosColumn(text: 'Required Material Qty: ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
+          PosColumn(text: '${sales[0]['RequiredMaterialQty']??""} ${sales[0]['UnitName']??""}', width: 6, styles: PosStyles(align: PosAlign.right)),
+        ]);
+
+        if(!isEnter){
+          printer.row([
+            PosColumn(text: 'Output Material Qty: ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
+            PosColumn(text: '${sales[0]['OutputMaterialQty']??""} ${sales[0]['UnitName']??""}', width: 6, styles: PosStyles(align: PosAlign.right)),
+          ]);
+        }
+
+        printer.row([
+          PosColumn(text: 'Required Qty Amount: ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
+          PosColumn(text: '${sales[0]['RequiredQtyAmount']??""}', width: 6, styles: PosStyles(align: PosAlign.right)),
+        ]);
+
+        if(!isEnter){
+          printer.row([
+            PosColumn(text: 'Output Qty Amount: ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
+            PosColumn(text: '${sales[0]['OutputQtyAmount']??""}', width: 6, styles: PosStyles(align: PosAlign.right)),
+          ]);
+          // printer.row([
+          //   PosColumn(text:sales[0]['OutputQtyAmount']>sales[0]['RequiredQtyAmount'] ? 'Pay: ':'Balance: ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
+          //   PosColumn(text:sales[0]['OutputQtyAmount']>sales[0]['RequiredQtyAmount'] ? '${sales[0]['OutputQtyAmount']-sales[0]['RequiredQtyAmount']}':'${sales[0]['RequiredQtyAmount']-sales[0]['OutputQtyAmount']}',
+          //       width: 6, styles: PosStyles(align: PosAlign.right)),
+          // ]);
+        }
+
+        printer.row([
+          PosColumn(text: 'Payment Type: ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
+          PosColumn(text: '${sales[0]['PaymentCategoryName']??""}', width: 6, styles: PosStyles(align: PosAlign.right)),
+        ]);
+        printer.row([
+          PosColumn(text: 'Material Received: ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
+          PosColumn(text: isEnter?'No / Yes':'Yes', width: 6, styles: PosStyles(align: PosAlign.right)),
+        ]);
+
+        printer.emptyLines(1);
+
+        if(!isEnter){
+          printer.row([
+            PosColumn(text: 'SubTotal: ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
+            PosColumn(text: '${sales[0]['OutputQtyAmount']??""}', width: 6, styles: PosStyles(align: PosAlign.right)),
+          ]);
+          printer.row([
+            PosColumn(text: 'GST (${sales[0]['TaxPercentage']??""}%): ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
+            PosColumn(text: '${sales[0]['TaxAmount']??""}', width: 6, styles: PosStyles(align: PosAlign.right)),
+          ]);
+          printer.emptyLines(1);
+          printer.row([
+            PosColumn(text: '', width: 1),
+            // PosColumn(text: 'Total: ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
+            PosColumn(text: 'Total: ${sales[0]['TotalAmount']??""}', width: 11,
+                styles: PosStyles(align: PosAlign.center,height: PosTextSize.size2,width: PosTextSize.size2)),
+          ]);
+          printer.emptyLines(1);
+        }
+
+        if(customer.isNotEmpty){
+          printer.row([
+            PosColumn(text: '', width: 1),
+            PosColumn(text: 'Customer Details', width: 11, styles: PosStyles(align: PosAlign.center,bold: true,)),
+          ]);
+          printer.emptyLines(1);
+          printer.row([
+            PosColumn(text: '', width: 1),
+            PosColumn(text: 'Name: ${customer[0]['CustomerName']??""}', width: 11, styles: PosStyles(align: PosAlign.center)),
+
+          ]);
+
+          printer.row([
+            PosColumn(text: '', width: 1),
+            PosColumn(text: 'Phone No: ${customer[0]['CustomerContactNumber']??""}', width: 11, styles: PosStyles(align: PosAlign.center,)),
+
+          ]);
+          printer.row([
+            PosColumn(text: '', width: 1),
+            PosColumn(text: 'Email: ${customer[0]['CustomerEmail']??""}', width: 11, styles: PosStyles(align: PosAlign.center,)),
+
+          ]);
+          Customervalues.forEach((key, value) {
+            printer.row([
+              PosColumn(text: '', width: 1),
+              PosColumn(text: '${value}', width: 11,styles: PosStyles(align: PosAlign.center)),
+
+            ]);
+          });
+          printer.row([
+            PosColumn(text: '', width: 1),
+            PosColumn(text: '${customer[0]['CustomerCity']??""} - ${customer[0]['CustomerZipCode']??""}', width: 11, styles: PosStyles(align: PosAlign.center,)),
+
+          ]);
+          printer.row([
+            PosColumn(text: '', width: 1),
+            PosColumn(text: '${customer[0]['CustomerState']??""}.', width: 11, styles: PosStyles(align: PosAlign.center,)),
+
+          ]);
+          printer.row([
+            PosColumn(text: '', width: 1),
+            PosColumn(text: 'GST No: ${customer[0]['CustomerGSTNumber']??""}.', width: 11, styles: PosStyles(align: PosAlign.center,)),
+
+          ]);
+        }
+
+        printer.feed(1);
+
+        printer.cut();
+        printer.disconnect();
+        // CustomAlert().show(context, "Printed Successfully", 300);
+      }
+      else{
+        print("notConnected");
+        // CustomAlert().(context, "Printer Not Connected", 300);
       }
     }
 
@@ -1007,8 +1369,11 @@ class QuarryNotifier extends ChangeNotifier{
 
   List<SaleDetails> saleDetails=[];
   List<SaleDetails> saleDetailsGrid=[];
+  List<SaleGridReport> saleGridReportList=[];
+  List<SalePrintersList> saleDetailsGridPrintersList=[];
   List<String> saleVehicleNumberList=[];
-  List<String> saleDetailsGridCol=['Vehicle Number','Material Type','Required Qty','Output Material Qty','Amount','Status'];
+  //List<String> saleDetailsGridCol=['Vehicle Number','Material Type','Required Qty','Output Material Qty','Amount','Status'];
+  List<String> saleDetailsGridCol=['Date','Sale No','Vehicle Number','Material','Amount'];
  // List<String> saleDetailsGridCol=["Material Name","Unit","Price","GST","Unit","Price","GST"];
 
 
@@ -1084,62 +1449,7 @@ class QuarryNotifier extends ChangeNotifier{
   }
 
 
-  GetSaleDetailDbhit(BuildContext context) async {
-    print("GETSA");
 
-    updateInsertSaleLoader(true);
-    var body={
-      "Fields": [
-        {
-          "Key": "SpName",
-          "Type": "String",
-          "Value": "USP_GetSaleDetail"
-        },
-        {
-          "Key": "LoginUserId",
-          "Type": "int",
-          "Value": UserId
-        },
-        {
-          "Key": "SaleId",
-          "Type": "int",
-          "Value": null
-        },
-        {
-          "Key": "database",
-          "Type": "String",
-          "Value": DataBaseName
-        }
-
-      ]
-    };
-
-    try{
-      await call.ApiCallGetInvoke(body,context).then((value) {
-        var parsed=json.decode(value);
-        saleVehicleNumberList.clear();
-        print(parsed);
-        var t=parsed['Table'] as List;
-        saleDetailsGrid=t.map((e) => SaleDetails.fromJson(e)).toList();
-        saleDetails=saleDetailsGrid.where((element) => element.SaleStatus=='Open').toList();
-        saleDetails.forEach((element) {
-          saleVehicleNumberList.add(element.VehicleNumber);
-        });
-       print("SALE LEn-${saleDetailsGrid.length}");
-       print("SALE LE-${saleDetails.length}");
-       print("SALE LE-${saleVehicleNumberList.length}");
-        //notifyListeners();
-        clearLoaderForm();
-        clearEmptyForm();
-        updateInsertSaleLoader(false);
-
-      });
-    }
-    catch(e){
-      updateInsertSaleLoader(false);
-      CustomAlert().commonErrorAlert(context, "USP_GetSaleDetail" , e.toString());
-    }
-  }
 
 
  clearLoaderForm(){
@@ -1171,11 +1481,14 @@ class QuarryNotifier extends ChangeNotifier{
  }
 
   TabController tabController;
-  initTabController(TickerProviderStateMixin tickerProviderStateMixin,BuildContext context){
+  initTabController(TickerProviderStateMixin tickerProviderStateMixin,BuildContext context,bool fromsaleGrid){
     tabController=new TabController(length: 2, vsync: tickerProviderStateMixin);
     tabController.addListener(() {
       if(tabController.index==1){
-       GetSaleDetailDbhit(context);
+        if(!fromsaleGrid){
+          GetSaleDetailDbhit(context);
+        }
+
 
 
       }else if(tabController.index==0){
@@ -1183,6 +1496,40 @@ class QuarryNotifier extends ChangeNotifier{
       }
 
     });
+    if(fromsaleGrid){
+      tabController.animateTo(1,duration: Duration(milliseconds: 300),curve: Curves.easeIn);
+    }
+
+  }
+
+  editLoader(){
+    SS_LoadedVehicleNo=saleDetails[selectedIndex].VehicleNumber;
+    searchVehicleNo.text=saleDetails[selectedIndex].VehicleNumber;
+
+    SS_EmptyWeightOfVehicle=saleDetails[selectedIndex].EmptyWeightOfVehicle;
+    SS_VehicleTypeName=saleDetails[selectedIndex].VehicleTypeName;
+    SS_VehicleTypeId=saleDetails[selectedIndex].VehicleTypeId;
+    SS_MaterialName=saleDetails[selectedIndex].MaterialName;
+    SS_MaterialTypeId=saleDetails[selectedIndex].MaterialId;
+    SS_RequiredMaterialQty=saleDetails[selectedIndex].RequiredMaterialQty;
+    SS_RequiredMaterialQtyUnit=saleDetails[selectedIndex].UnitName;
+    SS_Amount=saleDetails[selectedIndex].Amount;
+    SS_PaymentCategoryName=saleDetails[selectedIndex].PaymentCategoryName;
+    SS_PaymentTypeId=saleDetails[selectedIndex].PaymentCategoryId;
+    SS_UpdateSaleId=saleDetails[selectedIndex].SaleId;
+    SS_UpdateSaleNo=saleDetails[selectedIndex].SaleNumber;
+    SS_selectCustomerId=saleDetails[selectedIndex].CustomerId;
+    SS_TotalWeight=(Decimal.parse(SS_EmptyWeightOfVehicle)+Decimal.parse((SS_RequiredMaterialQty))).toString();
+    SS_MaterialUnitPrice=sale_materialList.where((element) => element.MaterialId==saleDetails[selectedIndex].MaterialId).toList()[0].MaterialUnitPrice;
+
+    notifyListeners();
+  }
+
+  int selectedIndex=-1;
+
+  clearIsOpen(){
+    selectedIndex=-1;
+    notifyListeners();
   }
 
 
@@ -1499,18 +1846,18 @@ class QuarryNotifier extends ChangeNotifier{
 
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
-        var parsed=json.decode(value);
+        if(value!=null){
+          var parsed=json.decode(value);
+          SS_selectCustomerId=parsed['Table'][0]['CustomerId'];
+          GetCustomerDetailDbhit(context);
+        }
 
-        print(parsed);
-        //notifyListeners();
-        GetCustomerDetailDbhit(context);
         updatecustomerLoader(false);
-
       });
     }
     catch(e){
       updatecustomerLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.dropDownValues}" , e.toString());
+      CustomAlert().commonErrorAlert(context, "${Sp.insertCustomerDetail}" , e.toString());
     }
   }
 
