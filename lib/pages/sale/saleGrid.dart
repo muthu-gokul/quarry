@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -90,6 +92,7 @@ class _SaleGridState extends State<SaleGrid> {
                               else if(picked1!=null && picked1.length ==1){
                                 setState(() {
                                   qn.picked=picked1;
+                                  qn.GetSaleDetailDbhit(context);
                                   // rn.reportDbHit(widget.UserId.toString(), widget.OutletId, DateFormat("dd-MM-yyyy").format( picked[0]).toString(), DateFormat("dd-MM-yyyy").format( picked[0]).toString(),"Itemwise Report", context);
                                 });
                               }
@@ -126,18 +129,21 @@ class _SaleGridState extends State<SaleGrid> {
 
                                 SaleReportHeader(
                                   title: 'Sales',
-                                  value: qn.saleGridReportList.isNotEmpty?qn.saleGridReportList[0].Sale.toString()??"0.00":"0.00",
-                                  qty: qn.saleGridReportList.isNotEmpty?qn.saleGridReportList[0].MSandQuantity.toString()??"0":"0",
+                                  value: qn.saleGridReportList.isNotEmpty?qn.saleGridReportList[0].Sale??0.00:0.00,
+                                  qty: qn.saleGridReportList.isNotEmpty?qn.saleGridReportList[0].TotalSaleQuantity??0:0,
+
                                 ),
                                 SaleReportHeader(
                                   title: 'M Sand',
-                                  value: qn.saleGridReportList.isNotEmpty?qn.saleGridReportList[0].MSand.toString()??"0.00":"0.00",
-                                  qty: qn.saleGridReportList.isNotEmpty?qn.saleGridReportList[0].MSandQuantity.toString()??"0":"0",
+                                  value: qn.saleGridReportList.isNotEmpty?qn.saleGridReportList[0].MSand??0.00:0.00,
+                                  qty: qn.saleGridReportList.isNotEmpty?qn.saleGridReportList[0].MSandQuantity??0:0,
+                                  unit: qn.saleGridReportList.isNotEmpty?qn.saleGridReportList[0].MSandUnit??"":"",
                                 ),
                               SaleReportHeader(
                                 title: 'P Sand',
-                                value: qn.saleGridReportList.isNotEmpty?qn.saleGridReportList[0].PSand.toString()??"0.00":"0.00",
-                                qty: qn.saleGridReportList.isNotEmpty?qn.saleGridReportList[0].PSandQuantity.toString()??"0":"0",
+                                value: qn.saleGridReportList.isNotEmpty?qn.saleGridReportList[0].PSand??0.00:0.00,
+                                qty: qn.saleGridReportList.isNotEmpty?qn.saleGridReportList[0].PSandQuantity??0:0,
+                                unit: qn.saleGridReportList.isNotEmpty?qn.saleGridReportList[0].PSandUnit??"":"",
                               ),
 
 
@@ -302,8 +308,12 @@ class _SaleGridState extends State<SaleGrid> {
                                  if(qn.selectedIndex!=-1 && isOpen){
                                    print("EDit");
                                    Navigator.of(context).push(_createRoute());
-                                   qn.tabController.animateTo(1,duration: Duration(milliseconds: 300),curve: Curves.easeIn);
                                    qn.editLoader();
+                                   Timer(Duration(milliseconds: 300), (){
+                                     qn.tabController.animateTo(1,duration: Duration(milliseconds: 300),curve: Curves.easeIn);
+                                   });
+
+
                                  }
 
 
@@ -315,6 +325,7 @@ class _SaleGridState extends State<SaleGrid> {
                                onTap: (){
                                  if(qn.selectedIndex!=-1 && !isOpen){
                                    print("pribt");
+                                   qn.printClosedReport(context);
                                  }
                                },
                                child: SvgPicture.asset("assets/svg/print.svg",width: 30,height: 30,
@@ -327,7 +338,7 @@ class _SaleGridState extends State<SaleGrid> {
                             onTap: (){
                               if(qn.selectedIndex!=-1 && !isOpen){
 
-                                reportView(context, "muthugokul103031@gmail.com");
+                                reportView(context, "muthugokul103031@gmail.com",qn.selectedIndex);
                                 print("pdf");
                               }
                             },
@@ -531,10 +542,11 @@ class _SaleGridState extends State<SaleGrid> {
 
 class SaleReportHeader extends StatelessWidget {
   String title;
-  String value;
-  String qty;
+  double value;
+  double qty;
+  String unit;
 
-  SaleReportHeader({this.title,this.value,this.qty});
+  SaleReportHeader({this.title,this.value,this.qty,this.unit});
 
   @override
   Widget build(BuildContext context) {
@@ -553,7 +565,7 @@ class SaleReportHeader extends StatelessWidget {
           Text(" ₹ $value",style:TextStyle(fontFamily: 'RR',fontSize: 16,color: AppTheme.yellowColor),),
           Align(
             alignment: Alignment.bottomRight,
-            child:Text(" $qty ",style:TextStyle(fontFamily: 'RR',fontSize: 14,color: AppTheme.addNewTextFieldBorder),),
+            child:Text(" $qty ${unit??""} ",style:TextStyle(fontFamily: 'RR',fontSize: 14,color: AppTheme.addNewTextFieldBorder),),
 
           )
         ],

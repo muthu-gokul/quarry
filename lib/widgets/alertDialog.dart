@@ -138,6 +138,7 @@ class CustomAlert{
 
   void billSuccessAlert(BuildContext context,String img,String title,String des,String amt){
     showDialog(
+      barrierDismissible: false,
         context: context,
         builder: (ctx)
            {

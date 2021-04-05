@@ -40,11 +40,12 @@ bool isCustomerDetaislOpen=false;
 
   @override
   void initState() {
+    print("SALE -INIt");
     SystemChrome.setEnabledSystemUIOverlays([]);
-       Provider.of<QuarryNotifier>(context,listen: false).initTabController(this,context,widget.fromsaleGrid);
-
+   Provider.of<QuarryNotifier>(context,listen: false).initTabController(this,context,widget.fromsaleGrid);
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     final node=FocusScope.of(context);
@@ -1319,7 +1320,20 @@ bool isCustomerDetaislOpen=false;
                                           Container(
                                             height: (SizeConfig.screenHeight*0.8)-((SizeConfig.screenHeight*(420/1280))),
                                             width: SizeConfig.screenWidth-SizeConfig.width40,
-                                            color: Colors.blue,
+                                            child: Column(
+                                              children: [
+                                                AddNewLabelTextField(
+                                                  labelText: 'Driver Name',
+                                                  textEditingController: qn.driverName,
+                                                  scrollPadding: 100,
+                                                ),
+                                                AddNewLabelTextField(
+                                                  labelText: 'Driver Contact No',
+                                                  textEditingController: qn.driverContactNumber,
+                                                  scrollPadding: 100,
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                     ]
                                     ),

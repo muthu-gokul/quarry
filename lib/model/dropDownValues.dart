@@ -83,18 +83,22 @@ class SaleDetails{
   String OutputMaterialQty;
   double Amount;
   double OutputQtyAmount;
+  double TaxPercentage;
+  double TaxAmount;
+  double TotalAmount;
   String LoadWeightOfVehicle;
   String PaymentCategoryName;
   String CustomerName;
   String SaleStatus;
   String SaleDate;
   String UnitName;
+  String AmountInWords;
 
   SaleDetails({this.SaleId,this.SaleNumber,this.VehicleNumber,this.VehicleTypeId,
   this.VehicleTypeName,this.EmptyWeightOfVehicle,this.MaterialId,this.MaterialName,
  this.RequiredMaterialQty, this.LoadWeightOfVehicle,this.Amount,this.PaymentCategoryId,
-  this.PaymentCategoryName,this.CustomerId,this.CustomerName,this.SaleStatus,
-  this.SaleDate,this.UnitName,this.OutputMaterialQty,this.OutputQtyAmount});
+  this.PaymentCategoryName,this.CustomerId,this.CustomerName,this.SaleStatus,this.AmountInWords,
+  this.SaleDate,this.UnitName,this.OutputMaterialQty,this.OutputQtyAmount,this.TaxPercentage,this.TaxAmount,this.TotalAmount});
 
 
   factory SaleDetails.fromJson(Map<dynamic, dynamic> json) {
@@ -119,6 +123,10 @@ class SaleDetails{
       UnitName: json['UnitName'],
       OutputMaterialQty: json['OutputMaterialQty'],
       OutputQtyAmount: json['OutputQtyAmount'],
+      TaxPercentage: json['TaxPercentage'],
+      TaxAmount: json['TaxAmount'],
+      TotalAmount: json['TotalAmount'],
+      AmountInWords: json['AmountInWords'],
 
     );
   }
@@ -134,9 +142,11 @@ class SaleGridReport{
   double PSandQuantity;
   double MSandQuantity;
   double TotalSaleQuantity;
+  String PSandUnit;
+  String MSandUnit;
 
   SaleGridReport({this.Sale,this.PSand,this.MSand,this.Open,this.Closed,this.PSandQuantity,this.MSandQuantity,this.TotalSaleQuantity,
-  });
+  this.PSandUnit,this.MSandUnit});
 
   factory SaleGridReport.fromJson(Map<dynamic,dynamic> json){
     return new SaleGridReport(
@@ -148,6 +158,8 @@ class SaleGridReport{
       PSandQuantity: json['P Sand Quantity'],
       MSandQuantity: json['M Sand Quantity'],
       TotalSaleQuantity: json['Total Sale Quantity'],
+      PSandUnit: json['P Sand Unit'],
+      MSandUnit: json['M Sand Unit'],
     );
   }
 

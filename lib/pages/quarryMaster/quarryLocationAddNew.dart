@@ -112,6 +112,13 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                        textEditingController: qn.CD_contactNo,
                                      ),
                                      AddNewLabelTextField(
+                                       labelText: 'Email',
+                                       isEnabled: isEdit,
+                                       textInputType: TextInputType.emailAddress,
+                                       textEditingController: qn.CD_email,
+                                       scrollPadding: 100,
+                                     ),
+                                     AddNewLabelTextField(
                                        labelText: 'Address',
                                        isEnabled: isEdit,
                                        // maxLines: 3,

@@ -587,7 +587,7 @@ class QuarryNotifier extends ChangeNotifier{
       await call.ApiCallGetInvoke(body,context).then((value) {
         var parsed=json.decode(value);
         saleVehicleNumberList.clear();
-        print(parsed);
+        print("GET sALE -$parsed");
         var t=parsed['Table'] as List;
         var t1=parsed['Table1'] as List;
         var t2=parsed['Table2'] as List;
@@ -608,6 +608,7 @@ class QuarryNotifier extends ChangeNotifier{
 
         clearIsOpen();
         updateInsertSaleLoader(false);
+        GetCustomerDetailDbhit(context);
 
       });
     }
@@ -616,6 +617,7 @@ class QuarryNotifier extends ChangeNotifier{
       CustomAlert().commonErrorAlert(context, "USP_GetSaleDetail" , e.toString());
     }
   }
+
   InsertSaleDetailDbhit(BuildContext context) async {
 
     updateInsertSaleLoader(true);
@@ -675,12 +677,12 @@ class QuarryNotifier extends ChangeNotifier{
         {
           "Key": "DriverName",
           "Type": "String",
-          "Value": ""
+          "Value": driverName.text
         },
         {
           "Key": "DriverContactNumber",
           "Type": "String",
-          "Value":""
+          "Value": driverContactNumber.text
         },
         {
           "Key": "CustomerId",
@@ -999,8 +1001,8 @@ class QuarryNotifier extends ChangeNotifier{
         ]);
         printer.emptyLines(1);
         printer.row([
-          PosColumn(text: ' Sale No: ${sales[0]['SaleNumber']??""}', width: 6, styles: PosStyles(align: PosAlign.left,bold: true)),
-          PosColumn(text: '${sales[0]['DateTime']??""}', width: 6, styles: PosStyles(align: PosAlign.right)),
+          PosColumn(text: ' Sale No: ${sales[0]['SaleNumber']??""}', width: 5, styles: PosStyles(align: PosAlign.left,bold: true)),
+          PosColumn(text: 'Date: ${sales[0]['DateTime']??""}', width: 7, styles: PosStyles(align: PosAlign.right)),
         ]);
         printer.emptyLines(1);
         printer.row([
@@ -1140,15 +1142,19 @@ class QuarryNotifier extends ChangeNotifier{
   }
 
 
-  Future<void> printClosedReport(BuildContext context,var printerList,var companydetails,var sales,var customer,bool isEnter) async {
+  Future<void> printClosedReport(BuildContext context) async {
 
     const PaperSize paper = PaperSize.mm80;
     final profile = await CapabilityProfile.load();
     final printer = NetworkPrinter(paper, profile);
 
+    int customerIndex;
 
+    customerIndex=customersList.indexWhere((element) => element.CustomerId==saleDetailsGrid[selectedIndex].CustomerId).toInt();
 
-    final address=companydetails[0]['CompanyAddress'].toString();
+    print(customerIndex);
+
+    final address=CD_address.text.toString();
     final splitAddress=address.split(',');
 
     final Map<int,String > values ={
@@ -1157,9 +1163,9 @@ class QuarryNotifier extends ChangeNotifier{
     };
 
      Map<int,String > Customervalues;
-    if(customer.isNotEmpty){
-      if(customer[0]['CustomerAddress']!=null){
-        final customeraddress=customer[0]['CustomerAddress'].toString();
+    if(saleDetailsGrid[selectedIndex].CustomerId!=null){
+      if(customersList[customerIndex].CustomerAddress!=null){
+        final customeraddress=customersList[customerIndex].CustomerAddress.toString();
         final splitCustomerAddress=customeraddress.split(',');
         Customervalues ={
           for(int i=0;i<splitCustomerAddress.length;i++)
@@ -1170,8 +1176,8 @@ class QuarryNotifier extends ChangeNotifier{
 
 
 
-    for(int i=0;i<printerList.length;i++){
-      final PosPrintResult res = await printer.connect('${printerList[i]['PrinterIPAddress']}', port: 9100);
+    for(int i=0;i<saleDetailsGridPrintersList.length;i++){
+      final PosPrintResult res = await printer.connect('${saleDetailsGridPrintersList[i].PrinterIPAddress}', port: 9100);
       // Print image
       // final ByteData data = await rootBundle.load('assets/logo.png');
       // final Uint8List bytes = data.buffer.asUint8List();
@@ -1189,7 +1195,7 @@ class QuarryNotifier extends ChangeNotifier{
         //
         printer.row([
           PosColumn(text: '', width: 1),
-          PosColumn(text: '${companydetails[0]['CompanyName']??""}', width: 11,styles: PosStyles(align: PosAlign.center,bold: true)),
+          PosColumn(text: '${CD_quarryname.text??""}', width: 11,styles: PosStyles(align: PosAlign.center,bold: true)),
         ]);
         printer.emptyLines(1);
         values.forEach((key, value) {
@@ -1200,111 +1206,111 @@ class QuarryNotifier extends ChangeNotifier{
         });
         printer.row([
           PosColumn(text: '', width: 1),
-          PosColumn(text: '${companydetails[0]['CompanyCity']??""}, ${companydetails[0]['CompanyState']??""}-${companydetails[0]['CompanyZipCode']??""}', width: 11,
+          PosColumn(text: '${CD_city.text??""}, ${CD_state.text??""}-${CD_zipcode.text??""}', width: 11,
               styles: PosStyles(align: PosAlign.center,height: PosTextSize.size1,width: PosTextSize.size1)),
         ]);
         printer.row([
           PosColumn(text: '', width: 1),
-          PosColumn(text: 'Email: ${companydetails[0]['CompanyEmail']??""}', width: 11,styles: PosStyles(align: PosAlign.center)),
+          PosColumn(text: 'Email: ${CD_email.text??""}', width: 11,styles: PosStyles(align: PosAlign.center)),
         ]);
         printer.row([
           PosColumn(text: '', width: 1),
-          PosColumn(text: 'Ph No: ${companydetails[0]['CompanyContactNumber']??""}', width: 11,styles: PosStyles(align: PosAlign.center)),
+          PosColumn(text: 'Ph No: ${CD_contactNo.text??""}', width: 11,styles: PosStyles(align: PosAlign.center)),
         ]);
         printer.row([
           PosColumn(text: '', width: 1),
-          PosColumn(text: 'GST: ${companydetails[0]['CompanyGSTNumber']??""}', width: 11,styles: PosStyles(align: PosAlign.center)),
+          PosColumn(text: 'GST: ${CD_gstno.text??""}', width: 11,styles: PosStyles(align: PosAlign.center)),
         ]);
         printer.emptyLines(1);
 
 
         printer.row([
           PosColumn(text: '', width: 1),
-          PosColumn(text: isEnter?'Inward Receipt':'Outward Receipt', width: 11,
+          PosColumn(text: 'Outward Receipt', width: 11,
               styles: PosStyles(align: PosAlign.center,bold: true,height: PosTextSize.size2,width: PosTextSize.size2)),
         ]);
         printer.emptyLines(1);
         printer.row([
-          PosColumn(text: ' Sale No: ${sales[0]['SaleNumber']??""}', width: 6, styles: PosStyles(align: PosAlign.left,bold: true)),
-          PosColumn(text: '${sales[0]['DateTime']??""}', width: 6, styles: PosStyles(align: PosAlign.right)),
+          PosColumn(text: ' Sale No: ${saleDetailsGrid[selectedIndex].SaleNumber??""}', width: 6, styles: PosStyles(align: PosAlign.left,bold: true)),
+          PosColumn(text: 'Date: ${saleDetailsGrid[selectedIndex].SaleDate??""}', width: 6, styles: PosStyles(align: PosAlign.right)),
         ]);
         printer.emptyLines(1);
         printer.row([
           PosColumn(text: 'Vehicle Number: ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
-          PosColumn(text: '${sales[0]['VehicleNumber'].toString().toUpperCase()??""}', width: 6, styles: PosStyles(align: PosAlign.right)),
+          PosColumn(text: '${saleDetailsGrid[selectedIndex].VehicleNumber.toUpperCase()??""}', width: 6, styles: PosStyles(align: PosAlign.right)),
         ]);
         printer.row([
           PosColumn(text: 'Vehicle Type: ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
-          PosColumn(text: '${sales[0]['VehicleTypeName']??""}', width: 6, styles: PosStyles(align: PosAlign.right)),
+          PosColumn(text: '${saleDetailsGrid[selectedIndex].VehicleTypeName??""}', width: 6, styles: PosStyles(align: PosAlign.right)),
         ]);
         printer.row([
           PosColumn(text: 'Empty Vehicle Weight: ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
-          PosColumn(text: '${sales[0]['EmptyWeightOfVehicle']??""} Ton', width: 6, styles: PosStyles(align: PosAlign.right)),
+          PosColumn(text: '${saleDetailsGrid[selectedIndex].EmptyWeightOfVehicle??""} Ton', width: 6, styles: PosStyles(align: PosAlign.right)),
         ]);
         printer.row([
           PosColumn(text: 'Material Name: ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
-          PosColumn(text: '${sales[0]['MaterialName']??""}', width: 6, styles: PosStyles(align: PosAlign.right)),
+          PosColumn(text: '${saleDetailsGrid[selectedIndex].MaterialName??""}', width: 6, styles: PosStyles(align: PosAlign.right)),
         ]);
         printer.row([
           PosColumn(text: 'Required Material Qty: ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
-          PosColumn(text: '${sales[0]['RequiredMaterialQty']??""} ${sales[0]['UnitName']??""}', width: 6, styles: PosStyles(align: PosAlign.right)),
+          PosColumn(text: '${saleDetailsGrid[selectedIndex].RequiredMaterialQty??""} ${saleDetailsGrid[selectedIndex].UnitName??""}', width: 6, styles: PosStyles(align: PosAlign.right)),
         ]);
 
-        if(!isEnter){
+        // if(!isEnter){
           printer.row([
             PosColumn(text: 'Output Material Qty: ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
-            PosColumn(text: '${sales[0]['OutputMaterialQty']??""} ${sales[0]['UnitName']??""}', width: 6, styles: PosStyles(align: PosAlign.right)),
+            PosColumn(text: '${saleDetailsGrid[selectedIndex].OutputMaterialQty??""} ${saleDetailsGrid[selectedIndex].UnitName??""}', width: 6, styles: PosStyles(align: PosAlign.right)),
           ]);
-        }
+        // }
 
         printer.row([
           PosColumn(text: 'Required Qty Amount: ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
-          PosColumn(text: '${sales[0]['RequiredQtyAmount']??""}', width: 6, styles: PosStyles(align: PosAlign.right)),
+          PosColumn(text: '${saleDetailsGrid[selectedIndex].Amount??""}', width: 6, styles: PosStyles(align: PosAlign.right)),
         ]);
 
-        if(!isEnter){
+        // if(!isEnter){
           printer.row([
             PosColumn(text: 'Output Qty Amount: ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
-            PosColumn(text: '${sales[0]['OutputQtyAmount']??""}', width: 6, styles: PosStyles(align: PosAlign.right)),
+            PosColumn(text: '${saleDetailsGrid[selectedIndex].OutputQtyAmount??""}', width: 6, styles: PosStyles(align: PosAlign.right)),
           ]);
           // printer.row([
           //   PosColumn(text:sales[0]['OutputQtyAmount']>sales[0]['RequiredQtyAmount'] ? 'Pay: ':'Balance: ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
           //   PosColumn(text:sales[0]['OutputQtyAmount']>sales[0]['RequiredQtyAmount'] ? '${sales[0]['OutputQtyAmount']-sales[0]['RequiredQtyAmount']}':'${sales[0]['RequiredQtyAmount']-sales[0]['OutputQtyAmount']}',
           //       width: 6, styles: PosStyles(align: PosAlign.right)),
           // ]);
-        }
+        // }
 
         printer.row([
           PosColumn(text: 'Payment Type: ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
-          PosColumn(text: '${sales[0]['PaymentCategoryName']??""}', width: 6, styles: PosStyles(align: PosAlign.right)),
+          PosColumn(text: '${saleDetailsGrid[selectedIndex].PaymentCategoryName??""}', width: 6, styles: PosStyles(align: PosAlign.right)),
         ]);
         printer.row([
           PosColumn(text: 'Material Received: ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
-          PosColumn(text: isEnter?'No / Yes':'Yes', width: 6, styles: PosStyles(align: PosAlign.right)),
+          PosColumn(text: 'Yes', width: 6, styles: PosStyles(align: PosAlign.right)),
         ]);
 
         printer.emptyLines(1);
 
-        if(!isEnter){
+        // if(!isEnter){
           printer.row([
             PosColumn(text: 'SubTotal: ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
-            PosColumn(text: '${sales[0]['OutputQtyAmount']??""}', width: 6, styles: PosStyles(align: PosAlign.right)),
+            PosColumn(text: '${saleDetailsGrid[selectedIndex].OutputQtyAmount??""}', width: 6, styles: PosStyles(align: PosAlign.right)),
           ]);
           printer.row([
-            PosColumn(text: 'GST (${sales[0]['TaxPercentage']??""}%): ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
-            PosColumn(text: '${sales[0]['TaxAmount']??""}', width: 6, styles: PosStyles(align: PosAlign.right)),
+            PosColumn(text: 'GST (${saleDetailsGrid[selectedIndex].TaxPercentage??""}%): ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
+            PosColumn(text: '${saleDetailsGrid[selectedIndex].TaxAmount??""}', width: 6, styles: PosStyles(align: PosAlign.right)),
           ]);
           printer.emptyLines(1);
           printer.row([
             PosColumn(text: '', width: 1),
             // PosColumn(text: 'Total: ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
-            PosColumn(text: 'Total: ${sales[0]['TotalAmount']??""}', width: 11,
+            PosColumn(text: 'Total: ${saleDetailsGrid[selectedIndex].TotalAmount??""}', width: 11,
                 styles: PosStyles(align: PosAlign.center,height: PosTextSize.size2,width: PosTextSize.size2)),
           ]);
           printer.emptyLines(1);
-        }
+        // }
 
-        if(customer.isNotEmpty){
+        if(customerIndex!=-1){
           printer.row([
             PosColumn(text: '', width: 1),
             PosColumn(text: 'Customer Details', width: 11, styles: PosStyles(align: PosAlign.center,bold: true,)),
@@ -1312,18 +1318,18 @@ class QuarryNotifier extends ChangeNotifier{
           printer.emptyLines(1);
           printer.row([
             PosColumn(text: '', width: 1),
-            PosColumn(text: 'Name: ${customer[0]['CustomerName']??""}', width: 11, styles: PosStyles(align: PosAlign.center)),
+            PosColumn(text: 'Name: ${customersList[customerIndex].CustomerName??""}', width: 11, styles: PosStyles(align: PosAlign.center)),
 
           ]);
 
           printer.row([
             PosColumn(text: '', width: 1),
-            PosColumn(text: 'Phone No: ${customer[0]['CustomerContactNumber']??""}', width: 11, styles: PosStyles(align: PosAlign.center,)),
+            PosColumn(text: 'Phone No: ${customersList[customerIndex].CustomerContactNumber??""}', width: 11, styles: PosStyles(align: PosAlign.center,)),
 
           ]);
           printer.row([
             PosColumn(text: '', width: 1),
-            PosColumn(text: 'Email: ${customer[0]['CustomerEmail']??""}', width: 11, styles: PosStyles(align: PosAlign.center,)),
+            PosColumn(text: 'Email: ${customersList[customerIndex].CustomerEmail??""}', width: 11, styles: PosStyles(align: PosAlign.center,)),
 
           ]);
           Customervalues.forEach((key, value) {
@@ -1335,17 +1341,17 @@ class QuarryNotifier extends ChangeNotifier{
           });
           printer.row([
             PosColumn(text: '', width: 1),
-            PosColumn(text: '${customer[0]['CustomerCity']??""} - ${customer[0]['CustomerZipCode']??""}', width: 11, styles: PosStyles(align: PosAlign.center,)),
+            PosColumn(text: '${customersList[customerIndex].CustomerCity??""} - ${customersList[customerIndex].CustomerZipCode??""}', width: 11, styles: PosStyles(align: PosAlign.center,)),
 
           ]);
           printer.row([
             PosColumn(text: '', width: 1),
-            PosColumn(text: '${customer[0]['CustomerState']??""}.', width: 11, styles: PosStyles(align: PosAlign.center,)),
+            PosColumn(text: '${customersList[customerIndex].CustomerState??""}.', width: 11, styles: PosStyles(align: PosAlign.center,)),
 
           ]);
           printer.row([
             PosColumn(text: '', width: 1),
-            PosColumn(text: 'GST No: ${customer[0]['CustomerGSTNumber']??""}.', width: 11, styles: PosStyles(align: PosAlign.center,)),
+            PosColumn(text: 'GST No: ${customersList[customerIndex].CustomerGSTNumber??""}.', width: 11, styles: PosStyles(align: PosAlign.center,)),
 
           ]);
         }
@@ -1354,6 +1360,8 @@ class QuarryNotifier extends ChangeNotifier{
 
         printer.cut();
         printer.disconnect();
+        CustomAlert().billSuccessAlert(context,"","Outward Receipt Successfully Printed","","");
+        selectedIndex=-1;
         // CustomAlert().show(context, "Printed Successfully", 300);
       }
       else{
@@ -1707,6 +1715,8 @@ class QuarryNotifier extends ChangeNotifier{
   TextEditingController customerContactNumber=new TextEditingController();
   TextEditingController customerEmail=new TextEditingController();
   TextEditingController customerGstNumber=new TextEditingController();
+  TextEditingController driverName=new TextEditingController();
+  TextEditingController driverContactNumber=new TextEditingController();
 
   int SS_selectCustomerId=null;
   String SS_CustomerName;
@@ -2035,6 +2045,8 @@ class QuarryNotifier extends ChangeNotifier{
      customerEmail.clear();
      customerGstNumber.clear();
      SS_selectCustomerId=null;
+     driverName.clear();
+     driverContactNumber.clear();
   }
 
 
