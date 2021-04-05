@@ -509,6 +509,42 @@ reportView(context,String mailid,int saleIndex) async {
                                         ]
                                     )
                                 ),
+
+
+
+
+                                   qn.saleDetailsGrid[saleIndex].RoundOffAmount!=null ?
+                                   qn.saleDetailsGrid[saleIndex].RoundOffAmount>0 || qn.saleDetailsGrid[saleIndex].RoundOffAmount<0?
+                                   pw.Container(
+                                    height: 30,
+                                    decoration: pw.BoxDecoration(
+                                        border: pw.Border(top: pw.BorderSide(color: PdfColors.black))
+                                    ),
+                                    child: pw.Row(
+                                        children: [
+                                          pw.Container(
+                                              height: 30,
+                                              width: 140,
+                                              padding: pw.EdgeInsets.only(right: 10),
+                                              alignment: pw.Alignment.centerRight,
+                                              decoration: pw.BoxDecoration(
+                                                  border: pw.Border(right: pw.BorderSide(color: PdfColors.black))
+                                              ),
+                                              child: pw.Text("RoundOff",style: pw.TextStyle(fontWeight: pw.FontWeight.bold))
+                                          ),
+
+                                          pw.Container(
+                                              height: 30,
+                                              width: 70,
+                                              // padding: pw.EdgeInsets.only(right: 10),
+                                              alignment: pw.Alignment.centerRight,
+                                              child: pw.Text("${qn.saleDetailsGrid[saleIndex].RoundOffAmount}",style: pw.TextStyle(fontWeight: pw.FontWeight.bold))
+                                          )
+
+                                        ]
+                                    )
+                                ):pw.Container():pw.Container(),
+
                                 pw.Container(
                                     height: 30,
                                     decoration: pw.BoxDecoration(
@@ -524,7 +560,7 @@ reportView(context,String mailid,int saleIndex) async {
                                               decoration: pw.BoxDecoration(
                                                   border: pw.Border(right: pw.BorderSide(color: PdfColors.black))
                                               ),
-                                              child: pw.Text("Total",)
+                                              child: pw.Text("Total",style: pw.TextStyle(fontWeight: pw.FontWeight.bold))
                                           ),
 
                                           pw.Container(
@@ -532,7 +568,7 @@ reportView(context,String mailid,int saleIndex) async {
                                               width: 70,
                                               // padding: pw.EdgeInsets.only(right: 10),
                                               alignment: pw.Alignment.centerRight,
-                                              child: pw.Text("${qn.saleDetailsGrid[saleIndex].TotalAmount}")
+                                              child: pw.Text("${qn.saleDetailsGrid[saleIndex].TotalAmount}",style: pw.TextStyle(fontWeight: pw.FontWeight.bold))
                                           )
 
                                         ]

@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -29,9 +28,14 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
+
   final GlobalKey<FormState> _loginFormKey = GlobalKey<FormState>();
+
   TextEditingController username = new TextEditingController();
   TextEditingController password = new TextEditingController();
+
+  TextEditingController jfdgj=new TextEditingController();
+
   bool passwordvisible;
   bool loginvalidation;
   AnimationController shakecontroller;
@@ -48,6 +52,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
   static const String passwordd = 'password';
 
   void _loadCredentials() {
+
     setState(() {
       this.prefEmail = this._Loginprefs.getString(useremail) ?? "";
       this.prefPassword = this._Loginprefs.getString(passwordd) ?? "";
@@ -75,6 +80,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
   void initState() {
     SystemChrome.setEnabledSystemUIOverlays([]);
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+
     passwordvisible = true;
     loginvalidation=false;
     shakecontroller = AnimationController(duration: const Duration(milliseconds: 500), vsync: this);
@@ -104,14 +110,21 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
 
    }
 
+
   @override
   Widget build(BuildContext context) {
+
     double _width = MediaQuery.of(context).size.width;
     double _height = MediaQuery.of(context).size.height;
+
+
+
     var quarryNotifier=Provider.of<QuarryNotifier>(context, listen: false);
     var loginNotifier=Provider.of<LoginNotifier>(context, listen: false);
      // var inn=Provider.of<InternetNotifier>(context, listen: false);
     final node=FocusScope.of(context);
+
+
      SizeConfig().init(context);
 
      SystemChrome.setEnabledSystemUIOverlays([]);
@@ -130,8 +143,8 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
-        height: _height,
-        width: _width,
+        height: SizeConfig.screenHeight,
+        width: SizeConfig.screenWidth,
         decoration: BoxDecoration(
           image: DecorationImage(
             image: AssetImage("assets/images/login-bg.jpg"),
@@ -219,7 +232,9 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
 
                                         ),
                                         keyboardType: TextInputType.emailAddress,
+
                                         validator:(value){
+
 
                                           Pattern pattern =
                                               r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
@@ -303,7 +318,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                                         onEditingComplete: () async {
                                           node.unfocus();
                                           SystemChannels.textInput.invokeMethod('TextInput.hide');
-                                          if(_loginFormKey.currentState.validate()){
+                                          if(_loginFormKey.currentState.validate() && !isEmailInvalid && !ispasswordInvalid){
                                             setState(() {
                                               isLoading=true;
                                             });
@@ -413,6 +428,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                                         child: Text("* Password is required",style: TextStyle(color: Colors.red,fontSize: 18,fontFamily: 'RR'),textAlign: TextAlign.left,)
                                     ):Container(height: 0,width: 0,),
                                     SizedBox(height: 30,),
+
                                     Consumer<LoginNotifier>(
                                       builder: (context,loginNotifier,child)=>  Container(
                                           width: _width > 420? 200:200,

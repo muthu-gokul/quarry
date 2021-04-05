@@ -325,28 +325,28 @@ class _MaterialAddNewState extends State<MaterialAddNew> {
 
                                     ),
 
-                                    Align(
-                                      alignment: Alignment.centerRight,
-                                      child: GestureDetector(
-                                        onTap: (){
-                                          setState(() {
-
-                                          });
-                                        },
-                                        child: Container(
-                                          margin: EdgeInsets.only(right: SizeConfig.width20,top: SizeConfig.height10),
-                                          height: SizeConfig.height30,
-                                          width: SizeConfig.width150,
-                                          decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(3),
-                                              color: AppTheme.bgColor
-                                          ),
-                                          child: Center(
-                                            child: Text("Notes",style: AppTheme.TSWhite16,),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
+                                    // Align(
+                                    //   alignment: Alignment.centerRight,
+                                    //   child: GestureDetector(
+                                    //     onTap: (){
+                                    //       setState(() {
+                                    //
+                                    //       });
+                                    //     },
+                                    //     child: Container(
+                                    //       margin: EdgeInsets.only(right: SizeConfig.width20,top: SizeConfig.height10),
+                                    //       height: SizeConfig.height30,
+                                    //       width: SizeConfig.width150,
+                                    //       decoration: BoxDecoration(
+                                    //           borderRadius: BorderRadius.circular(3),
+                                    //           color: AppTheme.bgColor
+                                    //       ),
+                                    //       child: Center(
+                                    //         child: Text("Notes",style: AppTheme.TSWhite16,),
+                                    //       ),
+                                    //     ),
+                                    //   ),
+                                    // ),
                                     AddNewLabelTextField(
                                       labelText: 'GST',
                                       textInputType: TextInputType.number,
@@ -354,38 +354,38 @@ class _MaterialAddNewState extends State<MaterialAddNew> {
                                       textEditingController: qn.materialGST,
 
                                     ),
-                                    Align(
-                                      alignment: Alignment.centerRight,
-                                      child: GestureDetector(
-                                        onTap: (){
-                                          setState(() {
-                                            qn.selectTaxList.add(TaxDetails(
-                                             TaxId: null,
-                                             MaterialTaxMappingId: null,
-                                             MaterialTaxValue: 0,
-                                             TaxName: null,
-                                             IsActive: 1 ,
-                                             MaterialId: null,
-                                             taxValue: TextEditingController()
-                                            )
-                                            );
-
-                                          });
-                                        },
-                                        child: Container(
-                                          margin: EdgeInsets.only(right: SizeConfig.width20,top: SizeConfig.height10),
-                                          height: SizeConfig.height30,
-                                          width: SizeConfig.width150,
-                                          decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(3),
-                                              color: AppTheme.bgColor
-                                          ),
-                                          child: Center(
-                                            child: Text("Add GST",style: AppTheme.TSWhite16,),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
+                                    // Align(
+                                    //   alignment: Alignment.centerRight,
+                                    //   child: GestureDetector(
+                                    //     onTap: (){
+                                    //       setState(() {
+                                    //         qn.selectTaxList.add(TaxDetails(
+                                    //          TaxId: null,
+                                    //          MaterialTaxMappingId: null,
+                                    //          MaterialTaxValue: 0,
+                                    //          TaxName: null,
+                                    //          IsActive: 1 ,
+                                    //          MaterialId: null,
+                                    //          taxValue: TextEditingController()
+                                    //         )
+                                    //         );
+                                    //
+                                    //       });
+                                    //     },
+                                    //     child: Container(
+                                    //       margin: EdgeInsets.only(right: SizeConfig.width20,top: SizeConfig.height10),
+                                    //       height: SizeConfig.height30,
+                                    //       width: SizeConfig.width150,
+                                    //       decoration: BoxDecoration(
+                                    //           borderRadius: BorderRadius.circular(3),
+                                    //           color: AppTheme.bgColor
+                                    //       ),
+                                    //       child: Center(
+                                    //         child: Text("Add GST",style: AppTheme.TSWhite16,),
+                                    //       ),
+                                    //     ),
+                                    //   ),
+                                    // ),
 
                                    for(int i=0;i<qn.selectTaxList.length;i++)
 

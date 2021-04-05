@@ -1330,6 +1330,7 @@ bool isCustomerDetaislOpen=false;
                                                 AddNewLabelTextField(
                                                   labelText: 'Driver Contact No',
                                                   textEditingController: qn.driverContactNumber,
+                                                  textInputType: TextInputType.number,
                                                   scrollPadding: 100,
                                                 ),
                                               ],

@@ -131,6 +131,7 @@ class _SaleGridState extends State<SaleGrid> {
                                   title: 'Sales',
                                   value: qn.saleGridReportList.isNotEmpty?qn.saleGridReportList[0].Sale??0.00:0.00,
                                   qty: qn.saleGridReportList.isNotEmpty?qn.saleGridReportList[0].TotalSaleQuantity??0:0,
+                                  unit: "Ton",
 
                                 ),
                                 SaleReportHeader(
@@ -241,7 +242,7 @@ class _SaleGridState extends State<SaleGrid> {
                                           }
                                         });
                                       }),
-                              DataCell(Text(e.Amount.toString()??"0",style: TextStyle(fontFamily: 'RR',fontSize: 14,color:qn.selectedIndex==i?Colors.white: Colors.black),),
+                              DataCell(Text("${e.TotalAmount??"0"}",style: TextStyle(fontFamily: 'RR',fontSize: 14,color:qn.selectedIndex==i?Colors.white: Colors.black),),
                                   onTap: (){
                                     setState(() {
                                       if(qn.selectedIndex==-1 || qn.selectedIndex!=i){

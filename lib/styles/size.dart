@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 
 class SizeConfig {
+
   static MediaQueryData mediaQueryData;
   static double screenWidth;
   static double screenHeight;
   static double blockSizeHorizontal;
   static double blockSizeVertical;
  static  double height4,height10,height12,height16,height20,height25,height26,height30,height35,height40,height50,height55,height60,height70,height80,height90,height100,height114,height130,height140,height150,height180,height200,height250,height270,height400,height600,height690;
-  static  double width5,width10,width12,width14,width16,width18,width20,width25,width30,width35,width40,width45,width50,width70,width80,width90,width100,width116,width120,width130,width140,width150,width179,width186,width200,width250,width320,width265,width400,width410,width500;
+  static  double width5,width10,width12,width14,width16,width18,width20,width25,width30,width35,width40,width45,width50,width70,width80,width90,width100,width116,width120,width125,width130,width140,width150,width179,width186,width200,width250,width320,width265,width400,width410,width500;
   void init(BuildContext context) {
     mediaQueryData = MediaQuery.of(context);
     screenWidth = mediaQueryData.size.width;
@@ -35,6 +36,7 @@ class SizeConfig {
     width100=screenWidth>420?screenWidth*(100/600):screenWidth*(100/320);
     width116=screenWidth>420?screenWidth*(116/600):screenWidth*(116/320);
     width120=screenWidth>420?screenWidth*(120/600):screenWidth*(120/320);
+    width125=screenWidth>420?screenWidth*(125/600):screenWidth*(125/320);
     width130=screenWidth>420?screenWidth*(130/600):screenWidth*(130/320);
     width140=screenWidth>420?screenWidth*(140/600):screenWidth*(140/320);
     width150=screenWidth>420?screenWidth*(150/600):screenWidth*(150/320);
@@ -84,3 +86,5 @@ class SizeConfig {
 
   }
 }
+
+

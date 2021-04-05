@@ -86,6 +86,7 @@ class SaleDetails{
   double TaxPercentage;
   double TaxAmount;
   double TotalAmount;
+  double RoundOffAmount;
   String LoadWeightOfVehicle;
   String PaymentCategoryName;
   String CustomerName;
@@ -97,7 +98,7 @@ class SaleDetails{
   SaleDetails({this.SaleId,this.SaleNumber,this.VehicleNumber,this.VehicleTypeId,
   this.VehicleTypeName,this.EmptyWeightOfVehicle,this.MaterialId,this.MaterialName,
  this.RequiredMaterialQty, this.LoadWeightOfVehicle,this.Amount,this.PaymentCategoryId,
-  this.PaymentCategoryName,this.CustomerId,this.CustomerName,this.SaleStatus,this.AmountInWords,
+  this.PaymentCategoryName,this.CustomerId,this.CustomerName,this.SaleStatus,this.AmountInWords,this.RoundOffAmount,
   this.SaleDate,this.UnitName,this.OutputMaterialQty,this.OutputQtyAmount,this.TaxPercentage,this.TaxAmount,this.TotalAmount});
 
 
@@ -127,6 +128,7 @@ class SaleDetails{
       TaxAmount: json['TaxAmount'],
       TotalAmount: json['TotalAmount'],
       AmountInWords: json['AmountInWords'],
+      RoundOffAmount: json['RoundOffAmount'],
 
     );
   }

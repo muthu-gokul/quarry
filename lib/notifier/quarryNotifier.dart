@@ -1070,6 +1070,16 @@ class QuarryNotifier extends ChangeNotifier{
             PosColumn(text: 'GST (${sales[0]['TaxPercentage']??""}%): ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
             PosColumn(text: '${sales[0]['TaxAmount']??""}', width: 6, styles: PosStyles(align: PosAlign.right)),
           ]);
+          if(sales[0]['RoundOffAmount']!=null){
+            if(sales[0]['RoundOffAmount']>0 || sales[0]['RoundOffAmount']<0){
+              printer.row([
+                PosColumn(text: 'RoundOff: ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
+                PosColumn(text: '${sales[0]['RoundOffAmount']??""}', width: 6, styles: PosStyles(align: PosAlign.right)),
+              ]);
+            }
+          }
+
+
           printer.emptyLines(1);
           printer.row([
             PosColumn(text: '', width: 1),
@@ -1300,6 +1310,17 @@ class QuarryNotifier extends ChangeNotifier{
             PosColumn(text: 'GST (${saleDetailsGrid[selectedIndex].TaxPercentage??""}%): ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
             PosColumn(text: '${saleDetailsGrid[selectedIndex].TaxAmount??""}', width: 6, styles: PosStyles(align: PosAlign.right)),
           ]);
+
+          if(saleDetailsGrid[selectedIndex].RoundOffAmount!=null){
+            if(saleDetailsGrid[selectedIndex].RoundOffAmount>0 || saleDetailsGrid[selectedIndex].RoundOffAmount<0){
+              printer.row([
+                PosColumn(text: 'RoundOff: ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
+                PosColumn(text: '${saleDetailsGrid[selectedIndex].RoundOffAmount??""}', width: 6, styles: PosStyles(align: PosAlign.right)),
+              ]);
+            }
+          }
+
+
           printer.emptyLines(1);
           printer.row([
             PosColumn(text: '', width: 1),
@@ -1362,6 +1383,7 @@ class QuarryNotifier extends ChangeNotifier{
         printer.disconnect();
         CustomAlert().billSuccessAlert(context,"","Outward Receipt Successfully Printed","","");
         selectedIndex=-1;
+        notifyListeners();
         // CustomAlert().show(context, "Printed Successfully", 300);
       }
       else{
