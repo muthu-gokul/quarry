@@ -1241,8 +1241,8 @@ class QuarryNotifier extends ChangeNotifier{
         ]);
         printer.emptyLines(1);
         printer.row([
-          PosColumn(text: ' Sale No: ${saleDetailsGrid[selectedIndex].SaleNumber??""}', width: 6, styles: PosStyles(align: PosAlign.left,bold: true)),
-          PosColumn(text: 'Date: ${saleDetailsGrid[selectedIndex].SaleDate??""}', width: 6, styles: PosStyles(align: PosAlign.right)),
+          PosColumn(text: ' Sale No: ${saleDetailsGrid[selectedIndex].SaleNumber??""}', width: 5, styles: PosStyles(align: PosAlign.left,bold: true)),
+          PosColumn(text: 'Date: ${saleDetailsGrid[selectedIndex].SaleDate??""}', width: 7, styles: PosStyles(align: PosAlign.right)),
         ]);
         printer.emptyLines(1);
         printer.row([
