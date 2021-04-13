@@ -93,6 +93,19 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
 
         _loadCredentials();
       });
+    offsetAnimation = Tween(begin: 0.0, end: 28.0)
+        .chain(CurveTween(curve: Curves.elasticIn))
+        .animate(shakecontroller)
+      ..addStatusListener((status) {
+        if (status == AnimationStatus.completed) {
+          shakecontroller.reverse().whenComplete(() {
+            setState(() {
+              loginvalidation=false;
+            });
+          });
+        }
+      });
+
     super.initState();
   }
    //
@@ -113,7 +126,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-
+    SystemChrome.setEnabledSystemUIOverlays([]);
     double _width = MediaQuery.of(context).size.width;
     double _height = MediaQuery.of(context).size.height;
 
@@ -125,37 +138,30 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
     final node=FocusScope.of(context);
 
 
-     SizeConfig().init(context);
 
-     SystemChrome.setEnabledSystemUIOverlays([]);
-    offsetAnimation = Tween(begin: 0.0, end: 28.0)
-        .chain(CurveTween(curve: Curves.elasticIn))
-        .animate(shakecontroller)
-          ..addStatusListener((status) {
-            if (status == AnimationStatus.completed) {
-              shakecontroller.reverse().whenComplete(() {
-                setState(() {
-                  loginvalidation=false;
-                });
-              });
-            }
-          });
+   SizeConfig().init(context);
+
+
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
-        height: SizeConfig.screenHeight,
-        width: SizeConfig.screenWidth,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/images/login-bg.jpg"),
-            fit: BoxFit.fill
-          ),
-
+      body: Container(
+      height: _height,
+      width: _width,
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage("assets/images/login-bg.jpg"),
+          fit: BoxFit.fill
         ),
 
-        child: Stack(
-          children: [
-            Column(
+
+      ),
+
+      child: Stack(
+
+        children: [
+          Container(
+            height: _height,
+            width: _width,
+            child: Column(
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(top:8.0),
@@ -186,17 +192,19 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                   ),
                   SizedBox(height: _height * 0.15,),
                   SvgPicture.asset("assets/svg/logo.svg"),
+
                   Form(
-                      key: _loginFormKey,
+                     key: _loginFormKey,
+
                       child: AnimatedBuilder(
                           animation: offsetAnimation,
                           builder: (context, child) {
                             return Container(
 
-                              padding: EdgeInsets.only(
-                                  left: offsetAnimation.value + 30.0,
+                              padding: EdgeInsets.only(left: offsetAnimation.value + 30.0,
                                   right: 30.0 - offsetAnimation.value),
                               child: Container(
+
                                 // margin: EdgeInsets.only(top: _height * 0.28),
                                 child: Column(
 
@@ -205,9 +213,10 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                                     SizedBox(height: 10,),
                                     Container(
 
-                                      height: _width > 420?68:60,
-                                       width:double.maxFinite ,
-                                    //  width:_width > 420? _width * 0.4:_width*0.8,
+                                    //  height: _width > 420?68:60,
+                                      height:60,
+                                      width:double.maxFinite ,
+                                      //  width:_width > 420? _width * 0.4:_width*0.8,
                                       margin: EdgeInsets.only(left:SizeConfig.width10,right:SizeConfig.width10,),
                                       padding: EdgeInsets.only(left:SizeConfig.width10,),
                                       decoration: BoxDecoration(
@@ -221,13 +230,13 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                                         //TextStyle(color: loginvalidation?Colors.red:Colors.black),
                                         controller: username,
                                         decoration: InputDecoration(
-                                            border: InputBorder.none,
-                                            enabledBorder: InputBorder.none,
-                                            focusedBorder: InputBorder.none,
-                                            hintText: "Enter User Email",
-                                            hintStyle: TextStyle(color:loginvalidation?Colors.red: AppTheme.yellowColor,fontSize: 18,fontFamily: 'RL'),
+                                          border: InputBorder.none,
+                                          enabledBorder: InputBorder.none,
+                                          focusedBorder: InputBorder.none,
+                                          hintText: "Enter User Email",
+                                          hintStyle: TextStyle(color:loginvalidation?Colors.red: AppTheme.yellowColor,fontSize: 18,fontFamily: 'RL'),
 
-                                            fillColor: loginvalidation?Color(0xFF1C1F32):Colors.white,
+                                          fillColor: loginvalidation?Color(0xFF1C1F32):Colors.white,
                                           contentPadding: new EdgeInsets.only(top: 10),
 
                                         ),
@@ -243,7 +252,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                                             setState(() {
                                               isEmailInvalid=true;
                                             });
-                                           // return 'Email format is invalid';
+                                            // return 'Email format is invalid';
                                           } else {
                                             setState(() {
                                               isEmailInvalid=false;
@@ -264,7 +273,8 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
 
                                     SizedBox(height: 20,),
                                     Container(
-                                      height: _width > 420?68:60,
+                                   //   height: _width > 420?68:60,
+                                      height: 60,
                                       width:double.maxFinite ,
                                       //  width:_width > 420? _width * 0.4:_width*0.8,
                                       margin: EdgeInsets.only(left:SizeConfig.width10,right:SizeConfig.width10,),
@@ -279,51 +289,52 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                                         //   //   _loginFormKey.currentState.reset();
                                         //   // }
                                         // },
-                                        style:TextStyle(color:loginvalidation?Colors.red:Colors.white,fontSize:18,fontFamily: 'RR' ),
-                                        controller: password,
-                                        obscureText: passwordvisible,
-                                        obscuringCharacter: '*',
-                                        decoration: InputDecoration(
-                                            border: InputBorder.none,
-                                            enabledBorder: InputBorder.none,
-                                            focusedBorder: InputBorder.none,
-                                            hintText: "Enter Password",
-                                            hintStyle: TextStyle(color:loginvalidation?Colors.red: AppTheme.yellowColor,fontSize: 18,fontFamily: 'RL'),
+                                          style:TextStyle(color:loginvalidation?Colors.red:Colors.white,fontSize:18,fontFamily: 'RR' ),
+                                          controller: password,
+                                          obscureText: passwordvisible,
+                                          obscuringCharacter: '*',
+                                          decoration: InputDecoration(
+                                              border: InputBorder.none,
+                                              enabledBorder: InputBorder.none,
+                                              focusedBorder: InputBorder.none,
+                                              hintText: "Enter Password",
+                                              hintStyle: TextStyle(color:loginvalidation?Colors.red: AppTheme.yellowColor,fontSize: 18,fontFamily: 'RL'),
 
-                                            fillColor: loginvalidation?Color(0xFF1C1F32):Colors.white,
-                                            contentPadding: new EdgeInsets.only(top: 20),
-                                            suffixIconConstraints: BoxConstraints(
-                                              minHeight: 55,
-                                              maxWidth: 55
-                                            ),
-                                            suffixIcon: IconButton(icon: Icon(passwordvisible?Icons.visibility_off:Icons.visibility,size: 30,color: Colors.grey,),
-                                                onPressed: (){
+                                              fillColor: loginvalidation?Color(0xFF1C1F32):Colors.white,
+                                              contentPadding: new EdgeInsets.only(top: 20),
+                                              suffixIconConstraints: BoxConstraints(
+                                                  minHeight: 55,
+                                                  maxWidth: 55
+                                              ),
+                                              suffixIcon: IconButton(icon: Icon(passwordvisible?Icons.visibility_off:Icons.visibility,size: 30,color: Colors.grey,),
+                                                  onPressed: (){
+                                                    setState(() {
+                                                      passwordvisible=!passwordvisible;
+                                                    });
+                                                  })
+                                          ),
+                                          validator:(value){
+                                            if(value.isEmpty){
                                               setState(() {
-                                                passwordvisible=!passwordvisible;
+                                                ispasswordInvalid=true;
                                               });
-                                          })
-                                        ),
-                                        validator:(value){
-                                          if(value.isEmpty){
-                                           setState(() {
-                                             ispasswordInvalid=true;
-                                           });
-                                          }
-                                          else{
-                                            setState(() {
-                                              ispasswordInvalid=false;
-                                            });
-                                          }
-                                        },
-                                        onEditingComplete: () async {
-                                          node.unfocus();
-                                          SystemChannels.textInput.invokeMethod('TextInput.hide');
-                                          if(_loginFormKey.currentState.validate() && !isEmailInvalid && !ispasswordInvalid){
-                                            setState(() {
-                                              isLoading=true;
-                                            });
+                                            }
+                                            else{
+                                              setState(() {
+                                                ispasswordInvalid=false;
+                                              });
+                                            }
+                                          },
+                                          onEditingComplete: () async {
+                                            node.unfocus();
+                                            SystemChannels.textInput.invokeMethod('TextInput.hide');
+                                            if(_loginFormKey.currentState.validate() && !isEmailInvalid && !ispasswordInvalid){
+                                              setState(() {
+                                                isLoading=true;
+                                              });
 
                                               var loginurl = 'http://183.82.32.76/restroApi///api/Mobile/GetInvokeforlogin';
+                                              //var loginurl="http://117.247.181.35/restroApi///api/Mobile/GetInvokeforlogin";
                                               var body = {
                                                 "Fields": [
                                                   {
@@ -361,9 +372,9 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                                                       _setCredentials(username.text, password.text);
                                                     }
                                                     quarryNotifier.initUserDetail(loginNotifier.userDetail.loginTable[0].UserId,
-                                                      loginNotifier.userDetail.loginTable[0].UserName,
-                                                      loginNotifier.userDetail.loginTable[0].DataBaseName,context);
-                                                      Provider.of<QuarryNotifier>(context,listen: false).GetQuarryDetailDbhit(context);
+                                                        loginNotifier.userDetail.loginTable[0].UserName,
+                                                        loginNotifier.userDetail.loginTable[0].DataBaseName,context);
+                                                    Provider.of<QuarryNotifier>(context,listen: false).GetQuarryDetailDbhit(context);
 
                                                     Navigator.of(context).pushReplacement(PageRouteBuilder(
                                                       pageBuilder: (context, animation, secondaryAnimation) =>HomePage(),
@@ -431,266 +442,271 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
 
                                     Consumer<LoginNotifier>(
                                       builder: (context,loginNotifier,child)=>  Container(
-                                          width: _width > 420? 200:200,
-                                          height: 80,
-                                          child:
-                                          //loginNotifier.loading?Center(child: CircularProgressIndicator()):
-                                          SpringButton(
-                                            SpringButtonType.OnlyScale,
-                                              Padding(
-                                                padding: EdgeInsets.all(12.5),
-                                                child: Container(
-                                                  decoration: BoxDecoration(
-                                                    color: AppTheme.yellowColor,
-                                                    borderRadius: const BorderRadius.all(const Radius.circular(3.0)),
-                                                  ),
-                                                  child: Center(
-                                                    child: Text(
-                                                      "Login",
-                                                      style: const TextStyle(
-                                                        fontFamily: 'RR',
-                                                        color: AppTheme.bgColor,
-                                                        fontSize:18,
-                                                      ),
-                                                    ),
+                                        width:200,
+                                        height: 80,
+                                        child:
+                                        //loginNotifier.loading?Center(child: CircularProgressIndicator()):
+                                        SpringButton(
+                                          SpringButtonType.OnlyScale,
+                                          Padding(
+                                            padding: EdgeInsets.all(12.5),
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                color: AppTheme.yellowColor,
+                                                borderRadius: const BorderRadius.all(const Radius.circular(3.0)),
+                                              ),
+                                              child: Center(
+                                                child: Text(
+                                                  "Login",
+                                                  style: const TextStyle(
+                                                    fontFamily: 'RR',
+                                                    color: AppTheme.bgColor,
+                                                    fontSize:18,
                                                   ),
                                                 ),
                                               ),
-                                            onTap: () async{
-                                              node.unfocus();
-                                              if(_loginFormKey.currentState.validate() && !isEmailInvalid && !ispasswordInvalid){
-                                                setState(() {
-                                                  isLoading=true;
-                                                });
+                                            ),
+                                          ),
+                                          onTap: () async{
+                                            node.unfocus();
+                                            if(_loginFormKey.currentState.validate() && !isEmailInvalid && !ispasswordInvalid){
+                                              setState(() {
+                                                isLoading=true;
+                                              });
 
-                                                var loginurl = 'http://183.82.32.76/restroApi///api/Mobile/GetInvokeforlogin';
-                                                var body = {
-                                                  "Fields": [
-                                                    {
-                                                      "Key": "SpName",
-                                                      "Type": "String",
-                                                      "Value": "${Sp.LoginSp}"
-                                                    },
-                                                    {
-                                                      "Key": "UserName",
-                                                      "Type": "String",
-                                                      "Value": "${username.text}"
-                                                    },
-                                                    {
-                                                      "Key": "Password",
-                                                      "Type": "String",
-                                                      "Value": "${password.text}"
-                                                    },
+                                              var loginurl = 'http://183.82.32.76/restroApi///api/Mobile/GetInvokeforlogin';
+                                              //var loginurl="http://117.247.181.35/restroApi///api/Mobile/GetInvokeforlogin";
+                                              var body = {
+                                                "Fields": [
+                                                  {
+                                                    "Key": "SpName",
+                                                    "Type": "String",
+                                                    "Value": "${Sp.LoginSp}"
+                                                  },
+                                                  {
+                                                    "Key": "UserName",
+                                                    "Type": "String",
+                                                    "Value": "${username.text}"
+                                                  },
+                                                  {
+                                                    "Key": "Password",
+                                                    "Type": "String",
+                                                    "Value": "${password.text}"
+                                                  },
 
-                                                  ]
-                                                };
+                                                ]
+                                              };
 
-                                                final response = await http.post(
-                                                    Uri.parse(loginurl), headers: {"Content-Type": "application/json"},
-                                                    body: json.encode(body)
-                                                ).then((value) async {
-                                                  var parsed = json.decode(value.body);
-                                                  print("DATA -$parsed");
+                                              final response = await http.post(
+                                                  Uri.parse(loginurl), headers: {"Content-Type": "application/json"},
+                                                  body: json.encode(body)
+                                              ).then((value) async {
+                                                var parsed = json.decode(value.body);
+                                                print("DATA -$parsed");
 
 
-                                                  if (parsed["Table"] != null) {
-                                                    loginNotifier.fetchUserDetails(parsed);
+                                                if (parsed["Table"] != null) {
+                                                  loginNotifier.fetchUserDetails(parsed);
 
-                                                    if (loginNotifier.userDetail.loginTblOutput[0].Status == 'True') {
+                                                  if (loginNotifier.userDetail.loginTblOutput[0].Status == 'True') {
 
-                                                      if(prefEmail.isEmpty && prefPassword.isEmpty){
-                                                        _setCredentials(username.text, password.text);
-                                                      }
+                                                    if(prefEmail.isEmpty && prefPassword.isEmpty){
+                                                      _setCredentials(username.text, password.text);
+                                                    }
 
-                                                      print(loginNotifier.userDetail.loginTable[0].DataBaseName);
+                                                    print(loginNotifier.userDetail.loginTable[0].DataBaseName);
 
-                                                      quarryNotifier.initUserDetail(loginNotifier.userDetail.loginTable[0].UserId,
+                                                    quarryNotifier.initUserDetail(loginNotifier.userDetail.loginTable[0].UserId,
                                                         loginNotifier.userDetail.loginTable[0].UserName,
                                                         loginNotifier.userDetail.loginTable[0].DataBaseName,context);
-                                                      Provider.of<QuarryNotifier>(context,listen: false).GetQuarryDetailDbhit(context);
+                                                    Provider.of<QuarryNotifier>(context,listen: false).GetQuarryDetailDbhit(context);
 
-                                                      Navigator.of(context).pushReplacement(PageRouteBuilder(
-                                                        pageBuilder: (context, animation, secondaryAnimation) =>HomePage(),
+                                                    Navigator.of(context).pushReplacement(PageRouteBuilder(
+                                                      pageBuilder: (context, animation, secondaryAnimation) =>HomePage(),
 
-                                                        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                                                          var begin = Offset(0.0, -1.0);
-                                                          var end = Offset.zero;
-                                                          var curve = Curves.ease;
-                                                          animation = CurvedAnimation(curve: Curves.easeIn, parent: animation);
+                                                      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                                        var begin = Offset(0.0, -1.0);
+                                                        var end = Offset.zero;
+                                                        var curve = Curves.ease;
+                                                        animation = CurvedAnimation(curve: Curves.easeIn, parent: animation);
 
-                                                          return FadeTransition(
-                                                            opacity: animation,
-                                                            child: child,
-                                                          );
-                                                        },
-                                                      )
-                                                      );
-
-
+                                                        return FadeTransition(
+                                                          opacity: animation,
+                                                          child: child,
+                                                        );
+                                                      },
+                                                    )
+                                                    );
 
 
-                                                      setState(() {
-                                                        loginvalidation = false;
 
-                                                        node.unfocus();
-                                                        isLoading=false;
-                                                      });
-                                                    } else {
-                                                      setState(() {
-                                                        isLoading=false;
-                                                        loginvalidation = true;
-                                                        shakecontroller.forward(from: 0.0);
-                                                      });
-                                                    }
+
+                                                    setState(() {
+                                                      loginvalidation = false;
+
+                                                      node.unfocus();
+                                                      isLoading=false;
+                                                    });
                                                   } else {
-
                                                     setState(() {
                                                       isLoading=false;
                                                       loginvalidation = true;
                                                       shakecontroller.forward(from: 0.0);
                                                     });
                                                   }
-                                                });
+                                                } else {
 
-                                                // }catch(e){
-                                                //   CustomAlert().showDialog2(context, e.toString(), "Internet OR Server Issue");
-                                                // }
-                                              }
+                                                  setState(() {
+                                                    isLoading=false;
+                                                    loginvalidation = true;
+                                                    shakecontroller.forward(from: 0.0);
+                                                  });
+                                                }
+                                              });
+
+                                              // }catch(e){
+                                              //   CustomAlert().showDialog2(context, e.toString(), "Internet OR Server Issue");
+                                              // }
+                                            }
 
 
-                                            },
+                                          },
 
-                                          ),
                                         ),
+                                      ),
 
                                     )
                                   ],
                                 ),
                               ),
                             );
-                          })),
-                  Spacer(),
-                  Stack(
-                    children: [
-                      // Align(
-                      //     alignment: Alignment.bottomLeft,
-                      //     child:
-                      //     // Container(
-                      //     //   margin: EdgeInsets.only(bottom: 5),
-                      //     //   height: 50,
-                      //     //   width: 50,
-                      //     //   color: Colors.red,
-                      //     // )
-                      //     //Text("${Provider.of<BillingNotifier>(context,listen:false).deviceData['id']}"),
-                      //   IconButton(icon: Icon(Icons.info_outline,color: Colors.white,),
-                      //       onPressed:(){
-                      //
-                      //
-                      //         showGeneralDialog(
-                      //             barrierColor: Colors.black.withOpacity(0.5),
-                      //             transitionBuilder: (context, a1, a2, widget) {
-                      //              var scaleAnimation = new Tween(begin: 0.0, end: 1.0)
-                      //                  .animate(new CurvedAnimation(parent: a1, curve: Curves.easeIn));
-                      //               return Transform.scale(
-                      //                 scale: scaleAnimation.value,
-                      //                 child: Dialog(
-                      //                   backgroundColor: Colors.white,
-                      //                   shape: RoundedRectangleBorder(
-                      //                       borderRadius: BorderRadius.circular(10.0)
-                      //                   ),
-                      //                   child: Container(
-                      //                     height: 530,
-                      //                     width: 560,
-                      //                     decoration: BoxDecoration(
-                      //                         borderRadius: BorderRadius.circular(10)
-                      //                     ),
-                      //                     child: Column(
-                      //                       mainAxisAlignment: MainAxisAlignment.start,
-                      //                       crossAxisAlignment: CrossAxisAlignment.center,
-                      //
-                      //                       children: [
-                      //                         SvgPicture.asset(
-                      //                           'assets/cliparts/device-info-clipart.svg',
-                      //                           width: 230,
-                      //                           height: 370,
-                      //                         ),
-                      //                         Text("Your Device Id",style: TextStyle(fontFamily: 'RL',fontSize: 20,color: Color(0xFF555555)),),
-                      //                         SizedBox(height: 20,),
-                      //                         Container(
-                      //                           height: 50,
-                      //                           width: 450,
-                      //                           decoration: BoxDecoration(
-                      //                               borderRadius: BorderRadius.circular(5),
-                      //                               color: Color(0xFFF1F1F1)
-                      //                           ),
-                      //                           child: Center(
-                      //                             child:Text("${Provider.of<InventoryNotifier>(context,listen:false).deviceData['id']}",
-                      //                                 style: AppTheme.textStyle),
-                      //                           ),
-                      //                         ),
-                      //
-                      //                       ],
-                      //                     ),
-                      //                   ),
-                      //
-                      //                 ),
-                      //               );
-                      //             },
-                      //             transitionDuration: Duration(milliseconds: 300),
-                      //             barrierDismissible: true,
-                      //             barrierLabel: '',
-                      //             context: context,
-                      //             pageBuilder: (context, animation1, animation2) {}
-                      //             );
-                      //
-                      //       }
-                      //     ),
-                      // ),
-
-                      Align(
-                        alignment: Alignment.bottomCenter,
-                        child: Container(
-                          height: 50,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-
-                            children: [
-                              Text(
-                                "@${DateFormat('yyyy').format(DateTime.now())}. All Rights Reserved. Designed by Tetrosoft",
-                                style: TextStyle(fontFamily: 'RR',  color: AppTheme.grey,fontSize: 12 ),
-
-                              ),
-                              // Text("Ver: 1.0.1",
-                              //   style: TextStyle(fontFamily: 'RR',color: Colors.white,fontWeight: FontWeight.normal,),
-                              // ),
-                            ],
-                          ),
-                        ),
-                      )
-                    ],
+                          })
                   ),
+
+
+
+                  // Spacer(),
+                  // Stack(
+                  //   children: [
+                  //     // Align(
+                  //     //     alignment: Alignment.bottomLeft,
+                  //     //     child:
+                  //     //     // Container(
+                  //     //     //   margin: EdgeInsets.only(bottom: 5),
+                  //     //     //   height: 50,
+                  //     //     //   width: 50,
+                  //     //     //   color: Colors.red,
+                  //     //     // )
+                  //     //     //Text("${Provider.of<BillingNotifier>(context,listen:false).deviceData['id']}"),
+                  //     //   IconButton(icon: Icon(Icons.info_outline,color: Colors.white,),
+                  //     //       onPressed:(){
+                  //     //
+                  //     //
+                  //     //         showGeneralDialog(
+                  //     //             barrierColor: Colors.black.withOpacity(0.5),
+                  //     //             transitionBuilder: (context, a1, a2, widget) {
+                  //     //              var scaleAnimation = new Tween(begin: 0.0, end: 1.0)
+                  //     //                  .animate(new CurvedAnimation(parent: a1, curve: Curves.easeIn));
+                  //     //               return Transform.scale(
+                  //     //                 scale: scaleAnimation.value,
+                  //     //                 child: Dialog(
+                  //     //                   backgroundColor: Colors.white,
+                  //     //                   shape: RoundedRectangleBorder(
+                  //     //                       borderRadius: BorderRadius.circular(10.0)
+                  //     //                   ),
+                  //     //                   child: Container(
+                  //     //                     height: 530,
+                  //     //                     width: 560,
+                  //     //                     decoration: BoxDecoration(
+                  //     //                         borderRadius: BorderRadius.circular(10)
+                  //     //                     ),
+                  //     //                     child: Column(
+                  //     //                       mainAxisAlignment: MainAxisAlignment.start,
+                  //     //                       crossAxisAlignment: CrossAxisAlignment.center,
+                  //     //
+                  //     //                       children: [
+                  //     //                         SvgPicture.asset(
+                  //     //                           'assets/cliparts/device-info-clipart.svg',
+                  //     //                           width: 230,
+                  //     //                           height: 370,
+                  //     //                         ),
+                  //     //                         Text("Your Device Id",style: TextStyle(fontFamily: 'RL',fontSize: 20,color: Color(0xFF555555)),),
+                  //     //                         SizedBox(height: 20,),
+                  //     //                         Container(
+                  //     //                           height: 50,
+                  //     //                           width: 450,
+                  //     //                           decoration: BoxDecoration(
+                  //     //                               borderRadius: BorderRadius.circular(5),
+                  //     //                               color: Color(0xFFF1F1F1)
+                  //     //                           ),
+                  //     //                           child: Center(
+                  //     //                             child:Text("${Provider.of<InventoryNotifier>(context,listen:false).deviceData['id']}",
+                  //     //                                 style: AppTheme.textStyle),
+                  //     //                           ),
+                  //     //                         ),
+                  //     //
+                  //     //                       ],
+                  //     //                     ),
+                  //     //                   ),
+                  //     //
+                  //     //                 ),
+                  //     //               );
+                  //     //             },
+                  //     //             transitionDuration: Duration(milliseconds: 300),
+                  //     //             barrierDismissible: true,
+                  //     //             barrierLabel: '',
+                  //     //             context: context,
+                  //     //             pageBuilder: (context, animation1, animation2) {}
+                  //     //             );
+                  //     //
+                  //     //       }
+                  //     //     ),
+                  //     // ),
+                  //
+                  //     // Align(
+                  //     //   alignment: Alignment.bottomCenter,
+                  //     //   child: Container(
+                  //     //     height: 50,
+                  //     //     child: Column(
+                  //     //       mainAxisAlignment: MainAxisAlignment.end,
+                  //     //
+                  //     //       children: [
+                  //     //         Text(
+                  //     //           "@${DateFormat('yyyy').format(DateTime.now())}. All Rights Reserved. Designed by Tetrosoft",
+                  //     //           style: TextStyle(fontFamily: 'RR',  color: AppTheme.grey,fontSize: 12 ),
+                  //     //
+                  //     //         ),
+                  //     //         // Text("Ver: 1.0.1",
+                  //     //         //   style: TextStyle(fontFamily: 'RR',color: Colors.white,fontWeight: FontWeight.normal,),
+                  //     //         // ),
+                  //     //       ],
+                  //     //     ),
+                  //     //   ),
+                  //     // )
+                  //   ],
+                  // ),
                 ],
               ),
-            isLoading?Container(
-              height: _height,
-              width: _width,
-              color: Colors.black.withOpacity(0.5),
-              child: Center(
-                child: Container(
-                  child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(AppTheme.yellowColor),),
-                   // height: 100,
-                   //  width: 100,
-                   //  decoration: BoxDecoration(
-                   //    shape: BoxShape.circle,
-                   //  ),
-                   // child: Image.asset("assets/images/Loader.gif",filterQuality: FilterQuality.high,gaplessPlayback: true,isAntiAlias: true,)
-                    // child: Image.asset("assets/images/sucess.gif",filterQuality: FilterQuality.high,gaplessPlayback: true,isAntiAlias: true,)
-                ),
+          ),
+          isLoading?Container(
+            height: _height,
+            width: _width,
+            color: Colors.black.withOpacity(0.5),
+            child: Center(
+              child: Container(
+                child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(AppTheme.yellowColor),),
+                 // height: 100,
+                 //  width: 100,
+                 //  decoration: BoxDecoration(
+                 //    shape: BoxShape.circle,
+                 //  ),
+                 // child: Image.asset("assets/images/Loader.gif",filterQuality: FilterQuality.high,gaplessPlayback: true,isAntiAlias: true,)
+                  // child: Image.asset("assets/images/sucess.gif",filterQuality: FilterQuality.high,gaplessPlayback: true,isAntiAlias: true,)
               ),
-            ):Container(width: 0,height: 0,)
-          ],
-        ),
-        ),
+            ),
+          ):Container(width: 0,height: 0,)
+        ],
+      ),
       ),
     );
   }
