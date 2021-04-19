@@ -82,6 +82,7 @@ class SaleDetails{
   String RequiredMaterialQty;
   String OutputMaterialQty;
   double Amount;
+  double MaterialUnitPrice;
   double OutputQtyAmount;
   double TaxPercentage;
   double TaxAmount;
@@ -97,7 +98,7 @@ class SaleDetails{
 
   SaleDetails({this.SaleId,this.SaleNumber,this.VehicleNumber,this.VehicleTypeId,
   this.VehicleTypeName,this.EmptyWeightOfVehicle,this.MaterialId,this.MaterialName,
- this.RequiredMaterialQty, this.LoadWeightOfVehicle,this.Amount,this.PaymentCategoryId,
+ this.RequiredMaterialQty, this.LoadWeightOfVehicle,this.Amount,this.PaymentCategoryId,this.MaterialUnitPrice,
   this.PaymentCategoryName,this.CustomerId,this.CustomerName,this.SaleStatus,this.AmountInWords,this.RoundOffAmount,
   this.SaleDate,this.UnitName,this.OutputMaterialQty,this.OutputQtyAmount,this.TaxPercentage,this.TaxAmount,this.TotalAmount});
 
@@ -112,6 +113,7 @@ class SaleDetails{
       EmptyWeightOfVehicle: json['EmptyWeightOfVehicle'],
       MaterialId: json['MaterialId'],
       MaterialName: json['MaterialName'],
+      MaterialUnitPrice: json['MaterialUnitPrice'],
       RequiredMaterialQty: json['RequiredMaterialQty'],
       LoadWeightOfVehicle: json['LoadWeightOfVehicle'],
       Amount: json['RequiredQtyAmount'],

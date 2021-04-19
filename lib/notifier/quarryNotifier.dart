@@ -944,9 +944,10 @@ class QuarryNotifier extends ChangeNotifier{
       }
     }
 
-
+    print("sales--$sales");
 
     for(int i=0;i<printerList.length;i++){
+      print(sales);
       final PosPrintResult res = await printer.connect('${printerList[i]['PrinterIPAddress']}', port: 9100);
       // Print image
       // final ByteData data = await rootBundle.load('assets/logo.png');
@@ -1061,7 +1062,33 @@ class QuarryNotifier extends ChangeNotifier{
 
         printer.emptyLines(1);
 
+
+
+
+
+
         if(!isEnter){
+
+
+          printer.hr(ch: "=");
+
+          printer.row([
+            PosColumn(text: ' Material Name', width: 4, styles: PosStyles(align: PosAlign.left)),
+            PosColumn(text: 'Rate', width: 2, styles: PosStyles(align: PosAlign.right)),
+            PosColumn(text: 'Qty', width: 3, styles: PosStyles(align: PosAlign.right)),
+            PosColumn(text: 'Amt', width: 3, styles: PosStyles(align: PosAlign.right)),
+          ]);
+          printer.hr(ch: "=");
+
+          printer.row([
+            PosColumn(text: ' ${sales[0]['MaterialName']??""}', width: 4, styles: PosStyles(align: PosAlign.left)),
+            PosColumn(text: '${sales[0]['MaterialUnitPrice']}', width: 2, styles: PosStyles(align: PosAlign.right)),
+            PosColumn(text: '${sales[0]['OutputMaterialQty']} ${sales[0]['UnitName']}', width: 3, styles: PosStyles(align: PosAlign.right)),
+            PosColumn(text: '${sales[0]['OutputQtyAmount']??""}', width: 3, styles: PosStyles(align: PosAlign.right)),
+          ]);
+          printer.hr();
+          printer.emptyLines(1);
+
           printer.row([
             PosColumn(text: 'SubTotal: ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
             PosColumn(text: '${sales[0]['OutputQtyAmount']??""}', width: 6, styles: PosStyles(align: PosAlign.right)),
@@ -1300,6 +1327,28 @@ class QuarryNotifier extends ChangeNotifier{
         ]);
 
         printer.emptyLines(1);
+
+
+
+
+        printer.hr(ch: "=");
+        printer.row([
+          PosColumn(text: ' Material Name', width: 4, styles: PosStyles(align: PosAlign.left)),
+          PosColumn(text: 'Rate', width: 2, styles: PosStyles(align: PosAlign.right)),
+          PosColumn(text: 'Qty', width: 3, styles: PosStyles(align: PosAlign.right)),
+          PosColumn(text: 'Amt', width: 3, styles: PosStyles(align: PosAlign.right)),
+        ]);
+        printer.hr(ch: "=");
+        printer.row([
+          PosColumn(text: ' ${saleDetailsGrid[selectedIndex].MaterialName??""}', width: 4, styles: PosStyles(align: PosAlign.left)),
+          PosColumn(text: '${saleDetailsGrid[selectedIndex].MaterialUnitPrice}', width: 2, styles: PosStyles(align: PosAlign.right)),
+          PosColumn(text: '${saleDetailsGrid[selectedIndex].OutputMaterialQty} ${saleDetailsGrid[selectedIndex].UnitName??""}', width: 3, styles: PosStyles(align: PosAlign.right)),
+          PosColumn(text: '${saleDetailsGrid[selectedIndex].OutputQtyAmount??""}', width: 3, styles: PosStyles(align: PosAlign.right)),
+        ]);
+        printer.hr();
+        printer.emptyLines(1);
+
+
 
         // if(!isEnter){
           printer.row([
