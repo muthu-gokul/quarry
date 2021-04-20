@@ -35,12 +35,12 @@ class AddNewLabelTextField extends StatelessWidget {
          enabled: isEnabled,
          onTap: ontap,
          scrollPadding: EdgeInsets.only(bottom: scrollPadding),
-        style:  TextStyle(fontFamily: 'RR',fontSize: 20,color:AppTheme.addNewTextFieldText),
+        style:  TextStyle(fontFamily: 'RL',fontSize: 15,color:AppTheme.addNewTextFieldText,letterSpacing: 0.2),
         controller: textEditingController,
         decoration: InputDecoration(
           fillColor: Colors.white,
           filled: true,
-          labelStyle: TextStyle(fontFamily: 'RR',fontSize: 20,color: AppTheme.addNewTextFieldText.withOpacity(0.5)),
+          labelStyle: TextStyle(fontFamily: 'RL',fontSize: 16,color: AppTheme.addNewTextFieldText.withOpacity(0.5)),
           border:  OutlineInputBorder(
               borderSide: BorderSide(color: AppTheme.addNewTextFieldBorder)
           ),
@@ -51,7 +51,7 @@ class AddNewLabelTextField extends StatelessWidget {
               borderSide: BorderSide(color:AppTheme.addNewTextFieldFocusBorder)
           ),
           labelText: labelText,
-          // contentPadding: new EdgeInsets.symmetric(vertical: 25.0, horizontal: 20.0),
+           contentPadding: new EdgeInsets.symmetric(vertical: 10.0, horizontal: 8.0),
           prefixIcon: prefixIcon,
           suffixIcon: suffixIcon
 
