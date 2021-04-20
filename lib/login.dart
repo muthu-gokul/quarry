@@ -586,109 +586,110 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
 
 
 
-                    // Spacer(),
-                    // Stack(
-                    //   children: [
-                    //     // Align(
-                    //     //     alignment: Alignment.bottomLeft,
-                    //     //     child:
-                    //     //     // Container(
-                    //     //     //   margin: EdgeInsets.only(bottom: 5),
-                    //     //     //   height: 50,
-                    //     //     //   width: 50,
-                    //     //     //   color: Colors.red,
-                    //     //     // )
-                    //     //     //Text("${Provider.of<BillingNotifier>(context,listen:false).deviceData['id']}"),
-                    //     //   IconButton(icon: Icon(Icons.info_outline,color: Colors.white,),
-                    //     //       onPressed:(){
-                    //     //
-                    //     //
-                    //     //         showGeneralDialog(
-                    //     //             barrierColor: Colors.black.withOpacity(0.5),
-                    //     //             transitionBuilder: (context, a1, a2, widget) {
-                    //     //              var scaleAnimation = new Tween(begin: 0.0, end: 1.0)
-                    //     //                  .animate(new CurvedAnimation(parent: a1, curve: Curves.easeIn));
-                    //     //               return Transform.scale(
-                    //     //                 scale: scaleAnimation.value,
-                    //     //                 child: Dialog(
-                    //     //                   backgroundColor: Colors.white,
-                    //     //                   shape: RoundedRectangleBorder(
-                    //     //                       borderRadius: BorderRadius.circular(10.0)
-                    //     //                   ),
-                    //     //                   child: Container(
-                    //     //                     height: 530,
-                    //     //                     width: 560,
-                    //     //                     decoration: BoxDecoration(
-                    //     //                         borderRadius: BorderRadius.circular(10)
-                    //     //                     ),
-                    //     //                     child: Column(
-                    //     //                       mainAxisAlignment: MainAxisAlignment.start,
-                    //     //                       crossAxisAlignment: CrossAxisAlignment.center,
-                    //     //
-                    //     //                       children: [
-                    //     //                         SvgPicture.asset(
-                    //     //                           'assets/cliparts/device-info-clipart.svg',
-                    //     //                           width: 230,
-                    //     //                           height: 370,
-                    //     //                         ),
-                    //     //                         Text("Your Device Id",style: TextStyle(fontFamily: 'RL',fontSize: 20,color: Color(0xFF555555)),),
-                    //     //                         SizedBox(height: 20,),
-                    //     //                         Container(
-                    //     //                           height: 50,
-                    //     //                           width: 450,
-                    //     //                           decoration: BoxDecoration(
-                    //     //                               borderRadius: BorderRadius.circular(5),
-                    //     //                               color: Color(0xFFF1F1F1)
-                    //     //                           ),
-                    //     //                           child: Center(
-                    //     //                             child:Text("${Provider.of<InventoryNotifier>(context,listen:false).deviceData['id']}",
-                    //     //                                 style: AppTheme.textStyle),
-                    //     //                           ),
-                    //     //                         ),
-                    //     //
-                    //     //                       ],
-                    //     //                     ),
-                    //     //                   ),
-                    //     //
-                    //     //                 ),
-                    //     //               );
-                    //     //             },
-                    //     //             transitionDuration: Duration(milliseconds: 300),
-                    //     //             barrierDismissible: true,
-                    //     //             barrierLabel: '',
-                    //     //             context: context,
-                    //     //             pageBuilder: (context, animation1, animation2) {}
-                    //     //             );
-                    //     //
-                    //     //       }
-                    //     //     ),
-                    //     // ),
-                    //
-                    //     // Align(
-                    //     //   alignment: Alignment.bottomCenter,
-                    //     //   child: Container(
-                    //     //     height: 50,
-                    //     //     child: Column(
-                    //     //       mainAxisAlignment: MainAxisAlignment.end,
-                    //     //
-                    //     //       children: [
-                    //     //         Text(
-                    //     //           "@${DateFormat('yyyy').format(DateTime.now())}. All Rights Reserved. Designed by Tetrosoft",
-                    //     //           style: TextStyle(fontFamily: 'RR',  color: AppTheme.grey,fontSize: 12 ),
-                    //     //
-                    //     //         ),
-                    //     //         // Text("Ver: 1.0.1",
-                    //     //         //   style: TextStyle(fontFamily: 'RR',color: Colors.white,fontWeight: FontWeight.normal,),
-                    //     //         // ),
-                    //     //       ],
-                    //     //     ),
-                    //     //   ),
-                    //     // )
-                    //   ],
-                    // ),
+
+
                   ],
                 ),
             ),
+          ),
+          Stack(
+            children: [
+              /* Align(
+                            alignment: Alignment.bottomLeft,
+                            child:
+                            // Container(
+                            //   margin: EdgeInsets.only(bottom: 5),
+                            //   height: 50,
+                            //   width: 50,
+                            //   color: Colors.red,
+                            // )
+                            //Text("${Provider.of<BillingNotifier>(context,listen:false).deviceData['id']}"),
+                          IconButton(icon: Icon(Icons.info_outline,color: Colors.white,),
+                              onPressed:(){
+
+
+                                showGeneralDialog(
+                                    barrierColor: Colors.black.withOpacity(0.5),
+                                    transitionBuilder: (context, a1, a2, widget) {
+                                     var scaleAnimation = new Tween(begin: 0.0, end: 1.0)
+                                         .animate(new CurvedAnimation(parent: a1, curve: Curves.easeIn));
+                                      return Transform.scale(
+                                        scale: scaleAnimation.value,
+                                        child: Dialog(
+                                          backgroundColor: Colors.white,
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(10.0)
+                                          ),
+                                          child: Container(
+                                            height: 530,
+                                            width: 560,
+                                            decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(10)
+                                            ),
+                                            child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.start,
+                                              crossAxisAlignment: CrossAxisAlignment.center,
+
+                                              children: [
+                                                SvgPicture.asset(
+                                                  'assets/cliparts/device-info-clipart.svg',
+                                                  width: 230,
+                                                  height: 370,
+                                                ),
+                                                Text("Your Device Id",style: TextStyle(fontFamily: 'RL',fontSize: 20,color: Color(0xFF555555)),),
+                                                SizedBox(height: 20,),
+                                                Container(
+                                                  height: 50,
+                                                  width: 450,
+                                                  decoration: BoxDecoration(
+                                                      borderRadius: BorderRadius.circular(5),
+                                                      color: Color(0xFFF1F1F1)
+                                                  ),
+                                                  child: Center(
+                                                    child:Text("${Provider.of<InventoryNotifier>(context,listen:false).deviceData['id']}",
+                                                        style: AppTheme.textStyle),
+                                                  ),
+                                                ),
+
+                                              ],
+                                            ),
+                                          ),
+
+                                        ),
+                                      );
+                                    },
+                                    transitionDuration: Duration(milliseconds: 300),
+                                    barrierDismissible: true,
+                                    barrierLabel: '',
+                                    context: context,
+                                    pageBuilder: (context, animation1, animation2) {}
+                                    );
+
+                              }
+                            ),
+                        ),*/
+
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                  height: 50,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+
+                    children: [
+                      Text(
+                        "@${DateFormat('yyyy').format(DateTime.now())}. All Rights Reserved. Designed by Tetrosoft",
+                        style: TextStyle(fontFamily: 'RR',  color: AppTheme.grey,fontSize: 12 ),
+
+                      ),
+                      Text("Ver: 1.0.1",
+                        style: TextStyle(fontFamily: 'RR',color: Colors.white,fontWeight: FontWeight.normal,),
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            ],
           ),
           isLoading?Container(
             height: _height,
