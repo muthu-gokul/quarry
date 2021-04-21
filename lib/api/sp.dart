@@ -5,6 +5,9 @@ class Sp{
   static String LoginSp="USP_UserSignInDetail";
   static String dropDownValues="USP_GetQuarryMasterDetail";
 
+
+  static String MasterdropDown="USP_GetMasterDetail";
+
   static String getCompanyDetail="USP_GetCompanyDetail";
   static String updateCompanyDetail="USP_UpdateCompanyDetail";
 

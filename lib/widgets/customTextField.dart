@@ -35,12 +35,12 @@ class AddNewLabelTextField extends StatelessWidget {
          enabled: isEnabled,
          onTap: ontap,
          scrollPadding: EdgeInsets.only(bottom: scrollPadding),
-        style:  TextStyle(fontFamily: 'RL',fontSize: 15,color:AppTheme.addNewTextFieldText,letterSpacing: 0.2),
+        style:  TextStyle(fontFamily: 'RR',fontSize: 15,color:AppTheme.addNewTextFieldText,letterSpacing: 0.2),
         controller: textEditingController,
         decoration: InputDecoration(
           fillColor: Colors.white,
           filled: true,
-          labelStyle: TextStyle(fontFamily: 'RL',fontSize: 16,color: AppTheme.addNewTextFieldText.withOpacity(0.5)),
+          labelStyle: TextStyle(fontFamily: 'RL',fontSize: 15,color: AppTheme.addNewTextFieldText.withOpacity(0.5)),
           border:  OutlineInputBorder(
               borderSide: BorderSide(color: AppTheme.addNewTextFieldBorder)
           ),

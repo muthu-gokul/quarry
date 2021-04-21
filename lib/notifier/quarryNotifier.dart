@@ -7,11 +7,13 @@ import 'package:quarry/api/ApiManager.dart';
 import 'package:quarry/api/sp.dart';
 import 'package:quarry/model/customerDetailsModel.dart';
 import 'package:quarry/model/dropDownValues.dart';
+import 'package:quarry/model/machineDetailsModel/machineGridModel.dart';
 import 'package:quarry/model/materialDetailGridModel.dart';
 import 'package:quarry/model/materialProcessModel.dart';
 import 'package:quarry/model/quarryLocModel.dart';
 import 'package:quarry/model/saleModel.dart';
 import 'package:quarry/model/vendorModel.dart';
+import 'package:quarry/pages/machineDetails/machineDetailsGrid.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/decimal.dart';
@@ -414,7 +416,9 @@ class QuarryNotifier extends ChangeNotifier{
   initUserDetail(int userid,String name, String dbname,BuildContext context){
     UserId=userid;
     Name=name;
-    DataBaseName=dbname;
+    //DataBaseName=dbname;
+    DataBaseName="TetroPOS_QMS";
+    print(DataBaseName);
     initDropDownValues(context);
   }
 
@@ -2338,6 +2342,44 @@ class QuarryNotifier extends ChangeNotifier{
 
 
   }
+
+
+
+
+
+
+  ///****************************************************     MACHINE DETAIL(MD)     ****************************************************************/
+
+
+
+  List<String> machineGridCol=["Machine Name","Type","Model","Weight"];
+  List<MachineGridModel> machineGridList=[];
+
+
+  TextEditingController MD_machineName=new TextEditingController();
+  TextEditingController MD_machineType=new TextEditingController();
+  TextEditingController MD_machineModel=new TextEditingController();
+  TextEditingController MD_machineCapacity=new TextEditingController();
+  TextEditingController MD_machinePower=new TextEditingController();
+  TextEditingController MD_machineWeight=new TextEditingController();
+
+
+  bool isMachineEdit=false;
+  updateMachineEditEdit(bool value){
+    isMachineEdit=value;
+    notifyListeners();
+  }
+
+
+
+
+
+
+
+
+
+
+
 
   ///////////////////////LOADERS //////////////////////////////////////
   bool dropDownLoader=false;

@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
-import 'package:quarry/pages/process/processMaterialsList.dart';
+import 'package:quarry/pages/material/processMaterialsList.dart';
 import 'package:quarry/styles/size.dart';
 
 class SaleAddNew extends StatefulWidget {

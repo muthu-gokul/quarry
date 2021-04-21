@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
-import 'package:quarry/pages/process/processAddNew.dart';
+import 'package:quarry/pages/material/processAddNew.dart';
 import 'package:quarry/pages/vendor/vendorLocAddNew.dart';
 import 'package:quarry/styles/size.dart';
 

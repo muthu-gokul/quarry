@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:quarry/notifier/materialNotifier.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/pages/quarryMaster/quarryMaster.dart';
 import 'package:quarry/pages/sale/salesDetail.dart';
@@ -16,10 +17,13 @@ import 'package:quarry/styles/size.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:quarry/widgets/reportpdf.dart';
 import 'customerDetails/customerGrid.dart';
-import 'process/MaterialMasterGrid.dart';
-import 'process/processAddNew.dart';
-import 'process/processMaterialsList.dart';
-import 'process/processStoneList.dart';
+import 'machineDetails/machineDetailsAddNew.dart';
+import 'machineDetails/machineDetailsGrid.dart';
+import 'material/MaterialMasterGrid.dart';
+import 'material/processAddNew.dart';
+import 'material/processMaterialsList.dart';
+import 'material/processStoneList.dart';
+import 'materialDetails/materialDetailsGrid.dart';
 import 'qLocMaterials.dart';
 import 'qLocPAyment.dart';
 import 'quarryMaster/quarryLocationAddNew.dart';
@@ -125,9 +129,9 @@ class _HomePageState extends State<HomePage> {
                                 title: 'Sales Detail',
                                 titleColor: AppTheme.yellowColor,
                                 callback: (){
-                                  Provider.of<QuarryNotifier>(context,listen: false).initDropDownValues(context);
+                                /*  Provider.of<QuarryNotifier>(context,listen: false).initDropDownValues(context);
                                   Provider.of<QuarryNotifier>(context,listen: false).GetCustomerDetailDbhit(context);
-                                  Provider.of<QuarryNotifier>(context,listen: false).GetSaleDetailDbhit(context);
+                                  Provider.of<QuarryNotifier>(context,listen: false).GetSaleDetailDbhit(context);*/
                                   setState(() {
                                     menuSelected=4;
                                     scaffoldkey.currentState.openEndDrawer();
@@ -140,8 +144,8 @@ class _HomePageState extends State<HomePage> {
                                 title: 'Customer Detail',
                                 titleColor: AppTheme.yellowColor,
                                 callback: (){
-                                  Provider.of<QuarryNotifier>(context,listen: false).initDropDownValues(context);
-                                  Provider.of<QuarryNotifier>(context,listen: false).GetCustomerDetailDbhit(context);
+                                /*  Provider.of<QuarryNotifier>(context,listen: false).initDropDownValues(context);
+                                  Provider.of<QuarryNotifier>(context,listen: false).GetCustomerDetailDbhit(context);*/
                                   setState(() {
                                     menuSelected=5;
                                     scaffoldkey.currentState.openEndDrawer();
@@ -156,8 +160,21 @@ class _HomePageState extends State<HomePage> {
                                 callback: (){
                                   setState(() {
                                     menuSelected=2;
-                                    Provider.of<QuarryNotifier>(context,listen: false).initDropDownValues(context);
-                                    Provider.of<QuarryNotifier>(context,listen: false).GetMaterialDetailDbhit(context);
+                                    scaffoldkey.currentState.openEndDrawer();
+                                  });
+                                  Provider.of<MaterialNotifier>(context,listen: false).GetMaterialDbHit(context,null);
+                                },
+                              ),
+                              DrawerContent(
+                                height: 50,
+                                image: "assets/drawerImages/dashboard.png",
+                                title: 'Machine Detail',
+                                titleColor: AppTheme.yellowColor,
+                                callback: (){
+                                  setState(() {
+                                    menuSelected=6;
+                                    // Provider.of<QuarryNotifier>(context,listen: false).initDropDownValues(context);
+                                    // Provider.of<QuarryNotifier>(context,listen: false).GetMaterialDetailDbhit(context);
                                     scaffoldkey.currentState.openEndDrawer();
                                   });
                                 },
@@ -292,7 +309,7 @@ class _HomePageState extends State<HomePage> {
         body: menuSelected==1?QuaryAddNew(drawerCallback: (){
           scaffoldkey.currentState.openDrawer();
         },):
-        menuSelected==2?MaterialMaster(drawerCallback: (){
+        menuSelected==2?MaterialDetailsGrid(drawerCallback: (){
           scaffoldkey.currentState.openDrawer();
         },):
         menuSelected==3?VendorMaster(drawerCallback: (){
@@ -303,7 +320,11 @@ class _HomePageState extends State<HomePage> {
         },):
         menuSelected==5?CustomerMaster(drawerCallback: (){
           scaffoldkey.currentState.openDrawer();
-        },):Container()
+        },):
+        menuSelected==6?MachineDetailsGrid(drawerCallback: (){
+          scaffoldkey.currentState.openDrawer();
+        },):
+            Container()
     );
   }
 }

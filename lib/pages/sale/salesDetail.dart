@@ -1406,13 +1406,14 @@ bool isCustomerDetaislOpen=false;
 class SidePopUpParent extends StatelessWidget {
   String text;
   Color textColor;
-  SidePopUpParent({this.text,this.textColor});
+  Color iconColor;
+  SidePopUpParent({this.text,this.textColor,this.iconColor});
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,top:SizeConfig.height20,),
-      padding: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20),
-      height: SizeConfig.height60,
+      padding: EdgeInsets.only(left:SizeConfig.width10,right:SizeConfig.width10),
+      height: SizeConfig.height50,
       width: double.maxFinite,
       alignment: Alignment.centerLeft,
       decoration: BoxDecoration(
@@ -1421,9 +1422,17 @@ class SidePopUpParent extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Text(text,style: AppTheme.hintText,),
+          Text(text,style: TextStyle(fontFamily: 'RR',fontSize: 16,color: textColor),),
           Spacer(),
-          Icon(Icons.arrow_forward_ios_outlined,color:textColor==null?Color(0xFF787878) : textColor ,size: 20,)
+          Container(
+              height: SizeConfig.height25,
+              width: SizeConfig.height25,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: iconColor
+              ),
+
+              child: Center(child: Icon(Icons.arrow_forward_ios_outlined,color:Colors.white ,size: 14,)))
         ],
       ),
     );
