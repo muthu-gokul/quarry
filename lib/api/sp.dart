@@ -25,5 +25,12 @@ class Sp{
   static String updateMaterialDetail="USP_UpdateMaterialDetail";
   static String getMaterialDetail="USP_GetMaterialDetail";
   static String deleteMaterialDetail="USP_DeleteMaterialDetail";
+
+
+
+  static String insertVehicleDetail="USP_InsertVehicleDetail";
+  static String updateVehicleDetail="USP_UpdateVehicleDetail";
+  static String getVehicleDetail="USP_GetVehicleDetail";
+  static String deleteVehicleDetail="USP_DeleteVehicleDetail";
 }
 
