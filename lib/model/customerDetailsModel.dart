@@ -12,10 +12,12 @@ class CustomerDetails{
   String CustomerGSTNumber;
   String CustomerLogoFileName;
   String CustomerLogoFolderName;
+  String CustomerCreditLimit;
+  String Location;
 
   CustomerDetails({this.CustomerId,this.CustomerName,this.CustomerCode,this.CustomerContactNumber,this.CustomerEmail,
   this.CustomerAddress,this.CustomerCity,this.CustomerState,this.CustomerCountry,this.CustomerZipCode,this.CustomerGSTNumber,
-  this.CustomerLogoFileName,this.CustomerLogoFolderName});
+  this.CustomerLogoFileName,this.CustomerLogoFolderName,this.CustomerCreditLimit,this.Location});
 
   factory CustomerDetails.fromJson(Map<dynamic, dynamic> json){
     return new CustomerDetails(
@@ -32,6 +34,8 @@ class CustomerDetails{
       CustomerGSTNumber: json['CustomerGSTNumber'],
       CustomerLogoFileName : json['CustomerLogoFileName'],
       CustomerLogoFolderName : json['CustomerLogoFolderName'],
+      Location : json['Location'],
+
     );
   }
 

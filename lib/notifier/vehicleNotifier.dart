@@ -28,6 +28,7 @@ class VehicleNotifier extends ChangeNotifier{
   int selectedVehicleTypeId=null;
   var selectedVehicleTypeName=null;
 
+  int editVehicleId=null;
 
   List<VehicleTypeModel> vehicleTypeList=[];
 
@@ -37,28 +38,28 @@ class VehicleNotifier extends ChangeNotifier{
     updatevehicleLoader(true);
     var body={
       "Fields": [
-      {
-        "Key": "SpName",
-        "Type": "String",
-        "Value": "${Sp.MasterdropDown}"
-      },
-      {
-      "Key": "LoginUserId",
-      "Type": "int",
-      "Value": Provider.of<QuarryNotifier>(context,listen: false).UserId
-    },
-      {
-        "Key": "TypeName",
-        "Type": "String",
-        "Value": "VehicleType"
-      },
+        {
+          "Key": "SpName",
+          "Type": "String",
+          "Value": "${Sp.MasterdropDown}"
+        },
+        {
+          "Key": "LoginUserId",
+          "Type": "int",
+          "Value": Provider.of<QuarryNotifier>(context,listen: false).UserId
+        },
+        {
+          "Key": "TypeName",
+          "Type": "String",
+          "Value": "VehicleType"
+        },
         {
           "Key": "database",
           "Type": "String",
           "Value": Provider.of<QuarryNotifier>(context,listen: false).DataBaseName
         },
-     ]
-  };
+      ]
+    };
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
         var parsed=json.decode(value);
@@ -97,6 +98,11 @@ class VehicleNotifier extends ChangeNotifier{
           "Key": "VehicleNumber",
           "Type": "String",
           "Value": VehicleNo.text
+        },
+        {
+          "Key": "VehicleId",
+          "Type": "int",
+          "Value": editVehicleId
         },
         {
           "Key": "VehicleDescription",
@@ -151,8 +157,7 @@ class VehicleNotifier extends ChangeNotifier{
 
 
   GetVehicleDbHit(BuildContext context,int vehicleId)  async{
-    print(Provider.of<QuarryNotifier>(context,listen: false).DataBaseName);
-    print(Provider.of<QuarryNotifier>(context,listen: false).UserId);
+
     updatevehicleLoader(true);
 
     var body={
@@ -160,7 +165,7 @@ class VehicleNotifier extends ChangeNotifier{
         {
           "Key": "SpName",
           "Type": "String",
-       //   "Value": "${Sp.getVehicleDetail}"
+          //   "Value": "${Sp.getVehicleDetail}"
           "Value": "USP_GetVehicleDetail"
         },
         {
@@ -191,7 +196,13 @@ class VehicleNotifier extends ChangeNotifier{
 
 
           if(vehicleId!=null){
-
+            editVehicleId=t[0]['VehicleId'];
+            VehicleNo.text=t[0]['VehicleNumber'];
+            VehicleDescript.text=t[0]['VehicleDescription'];
+            selectedVehicleTypeName=t[0]['VehicleTypeName'];
+            selectedVehicleTypeId=t[0]['VehicleTypeId'];
+            VehicleModel.text=t[0]['VehicleModel'];
+            VehicleWeight.text=t[0]['EmptyWeightOfVehicle'];
           }
           else{
             vehicleGridList=t.map((e) => VehicleGridModel.fromJson(e)).toList();
@@ -224,14 +235,14 @@ class VehicleNotifier extends ChangeNotifier{
   }
 
   clearVehicleDetailForm(){
-  VehicleNo.clear();
-  VehicleModel.clear();
+    VehicleNo.clear();
+    VehicleModel.clear();
 
-  VehicleDescript.clear();
-  VehicleWeight.clear();
-  selectedVehicleTypeName=null;
-  selectedVehicleTypeId=null;
-}
+    VehicleDescript.clear();
+    VehicleWeight.clear();
+    selectedVehicleTypeName=null;
+    selectedVehicleTypeId=null;
+  }
 
 }
 

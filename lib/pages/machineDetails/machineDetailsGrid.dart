@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:quarry/notifier/machineNotifier.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/pages/customerDetails/customerAddNew.dart';
 import 'package:quarry/pages/material/processAddNew.dart';
@@ -25,7 +26,7 @@ class MachineDetailsGrid extends StatefulWidget {
 class MachineDetailsGridState extends State<MachineDetailsGrid> {
 
   bool showEdit=false;
-  int selectedIndex;
+  int selectedIndex=-1;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +36,7 @@ class MachineDetailsGridState extends State<MachineDetailsGrid> {
             statusBarColor: Colors.black
         ),
         child: SafeArea(
-          child: Consumer<QuarryNotifier>(
+          child: Consumer<MachineNotifier>(
             builder: (context,qn,child)=>  Stack(
               children: [
                 Container(
@@ -74,13 +75,21 @@ class MachineDetailsGridState extends State<MachineDetailsGrid> {
                           rows: qn.machineGridList.asMap().map((i,e) => MapEntry(i,
 
                               DataRow(
+                                  color:  MaterialStateColor.resolveWith((states) =>selectedIndex==i? AppTheme.yellowColor:Colors.white),
+
                                   cells: [
                                     DataCell(Text(e.machineName,style: TextStyle(fontFamily: 'RR',fontSize: 14,color: AppTheme.grey),),
                                         onTap: (){
-                                          setState(() {
-                                            selectedIndex=i;
-                                            showEdit=!showEdit;
-                                          });
+                                      setState(() {
+                                        if(selectedIndex==i){
+                                          selectedIndex=-1;
+                                          showEdit=false;
+                                        } else{
+                                          selectedIndex=i;
+                                          showEdit=true;
+                                        }
+                                      });
+
                                         }
                                     ),
                                     DataCell(Text(e.machineType,style: TextStyle(fontFamily: 'RR',fontSize: 14,color: Colors.black),),
@@ -122,7 +131,7 @@ class MachineDetailsGridState extends State<MachineDetailsGrid> {
                     behavior: HitTestBehavior.translucent,
                     onTap: (){
 
-                      qn.updateMachineEditEdit(false);
+                      qn.updateMachineEdit(false);
                       Navigator.of(context).push(_createRoute());
 
 
@@ -162,18 +171,11 @@ class MachineDetailsGridState extends State<MachineDetailsGrid> {
                         children: [
                           GestureDetector(
                             onTap: (){
-                              qn.updateMachineEditEdit(true);
+                              qn.updateMachineEdit(true);
+                              qn.GetMachineDbHit(context, qn.machineGridList[selectedIndex].machineId);
                               setState(() {
                                 showEdit=false;
-                           /*     qn.SS_selectCustomerId=qn.customersList[selectedIndex].CustomerId;
-                                qn.customerName.text=qn.customersList[selectedIndex].CustomerName;
-                                qn.customerContactNumber.text=qn.customersList[selectedIndex].CustomerContactNumber;
-                                qn.customerGstNumber.text=qn.customersList[selectedIndex].CustomerGSTNumber;
-                                qn.customerEmail.text=qn.customersList[selectedIndex].CustomerEmail;
-                                qn.customerAddress.text=qn.customersList[selectedIndex].CustomerAddress;
-                                qn.customerCity.text=qn.customersList[selectedIndex].CustomerCity;
-                                qn.customerState.text=qn.customersList[selectedIndex].CustomerState;
-                                qn.customerZipcode.text=qn.customersList[selectedIndex].CustomerZipCode;*/
+                                selectedIndex=-1;
                               });
                               Navigator.of(context).push(_createRoute());
                             },
@@ -206,7 +208,7 @@ class MachineDetailsGridState extends State<MachineDetailsGrid> {
                               CustomAlert(
                                   callback: (){
                                     Navigator.pop(context);
-                                    qn.DeleteCustomerDetailDbhit(context, qn.customersList[selectedIndex].CustomerId);
+                                    // qn.DeleteMachineDetailDbhit(context, qn.machineGridList[selectedIndex].machineId);
                                   }
 
                               ).yesOrNoDialog(context, "", "Are you sure want to Delete?");
@@ -242,8 +244,8 @@ class MachineDetailsGridState extends State<MachineDetailsGrid> {
 
                 Container(
 
-                  height: qn.customerLoader? SizeConfig.screenHeight:0,
-                  width: qn.customerLoader? SizeConfig.screenWidth:0,
+                  height: qn.machineLoader? SizeConfig.screenHeight:0,
+                  width: qn.machineLoader? SizeConfig.screenWidth:0,
                   color: Colors.black.withOpacity(0.5),
                   child: Center(
                     child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(AppTheme.yellowColor),),

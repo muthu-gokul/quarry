@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:quarry/notifier/machineNotifier.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/pages/quarryMaster/quarryLocationAddNew.dart';
 import 'package:quarry/styles/app_theme.dart';
@@ -54,10 +55,12 @@ class _MachineDetailAddNewState extends State<MachineDetailAddNew> with TickerPr
 
   @override
   Widget build(BuildContext context) {
+
+    final node=FocusScope.of(context);
     SizeConfig().init(context);
     return Scaffold(
       key: scaffoldkey,
-     body: Consumer<QuarryNotifier>(
+     body: Consumer<MachineNotifier>(
          builder: (context,qn,child)=> Stack(
            children: [
 
@@ -113,31 +116,37 @@ class _MachineDetailAddNewState extends State<MachineDetailAddNew> with TickerPr
                          children: [
                            AddNewLabelTextField(
                              labelText: 'Machine Name',
-                             textEditingController: qn.MD_machineName,
+                             textEditingController: qn.MachineName,
                            ),
                            AddNewLabelTextField(
                              labelText: 'Machine Type',
-                             textEditingController: qn.MD_machineType,
+                             textEditingController: qn.MachineType,
                            ),
                            AddNewLabelTextField(
                              labelText: 'Machine Model',
-                             textEditingController: qn.MD_machineModel,
+                             textEditingController: qn.MachineModel,
                            ),
+
                            AddNewLabelTextField(
                              labelText: 'Capacity',
-                             textEditingController: qn.MD_machineCapacity,
+                             textEditingController: qn.Capacity,
                              scrollPadding: 100,
                            ),
                            AddNewLabelTextField(
-                             labelText: 'Motor Power',
-                             textEditingController: qn.MD_machinePower,
+                              labelText: 'MoterPower',
+                              textEditingController: qn.MoterPower,
                              scrollPadding: 100,
-                           ),
+                            ),
                            AddNewLabelTextField(
-                             labelText: 'Weight',
-                             textEditingController: qn.MD_machineWeight,
+                             labelText: 'MachineWeight',
+                             textEditingController: qn.MachineWeight,
                              scrollPadding: 100,
                            ),
+                           // // AddNewLabelTextField(
+                           // //   labelText: 'Weight',
+                           // //   textEditingController: qn.MD_machineWeight,
+                           // //   scrollPadding: 100,
+                           // // ),
 
                            SizedBox(height: SizeConfig.height100,)
                          ],
@@ -153,6 +162,7 @@ class _MachineDetailAddNewState extends State<MachineDetailAddNew> with TickerPr
                child: Row(
                  children: [
                    IconButton(icon: Icon(Icons.arrow_back), onPressed: (){
+                     qn.clearMachineDetailForm();
                      Navigator.pop(context);
                    }),
                    SizedBox(width: SizeConfig.width5,),
@@ -173,7 +183,8 @@ class _MachineDetailAddNewState extends State<MachineDetailAddNew> with TickerPr
                  child: Center(
                    child: GestureDetector(
                      onTap: (){
-
+                       node.unfocus();
+                       qn.InsertVehicleDbHit(context);
 
                      },
                      child: Container(
@@ -194,8 +205,8 @@ class _MachineDetailAddNewState extends State<MachineDetailAddNew> with TickerPr
 
              Container(
 
-               height: qn.insertCompanyLoader? SizeConfig.screenHeight:0,
-               width: qn.insertCompanyLoader? SizeConfig.screenWidth:0,
+               height: qn.machineLoader? SizeConfig.screenHeight:0,
+               width: qn.machineLoader? SizeConfig.screenWidth:0,
                color: Colors.black.withOpacity(0.5),
                child: Center(
                  child:CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(AppTheme.yellowColor),),

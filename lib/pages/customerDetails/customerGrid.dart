@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:quarry/notifier/customerNotifier.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/pages/customerDetails/customerAddNew.dart';
 import 'package:quarry/pages/material/processAddNew.dart';
@@ -32,7 +33,7 @@ class _CustomerMasterState extends State<CustomerMaster> {
             statusBarColor: Colors.black
         ),
         child: SafeArea(
-          child: Consumer<QuarryNotifier>(
+          child: Consumer<CustomerNotifier>(
             builder: (context,qn,child)=>  Stack(
               children: [
                 Container(
@@ -51,16 +52,16 @@ class _CustomerMasterState extends State<CustomerMaster> {
                   ),
                 ),
                 Container(
-                  height: SizeConfig.screenHeight-SizeConfig.height50,
-                  width: SizeConfig.screenWidth,
-                  margin: EdgeInsets.only(top: SizeConfig.height50),
-                  child: SingleChildScrollView(
+                    height: SizeConfig.screenHeight-SizeConfig.height50,
+                    width: SizeConfig.screenWidth,
+                    margin: EdgeInsets.only(top: SizeConfig.height50),
+                    child: SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child:DataTable(
                           headingRowColor:  MaterialStateColor.resolveWith((states) => AppTheme.bgColor),
                           showBottomBorder: true,
                           columns: qn.customerGridCol.map((e) => DataColumn(
-                            label: Text(e,style: TextStyle(fontFamily: 'RB',fontSize: 16,color: Colors.white),textAlign: TextAlign.center,)
+                              label: Text(e,style: TextStyle(fontFamily: 'RB',fontSize: 16,color: Colors.white),textAlign: TextAlign.center,)
                             // label:Container(
                             //     width: 100,
                             //     child: Center(
@@ -68,48 +69,64 @@ class _CustomerMasterState extends State<CustomerMaster> {
                             //     )
                             // ),
                           )).toList(),
-                          rows: qn.customersList.asMap().map((i,e) => MapEntry(i,
+                          rows: qn.customerGridList.asMap().map((i,e) => MapEntry(i,
 
                               DataRow(
-                                  cells: [
-                            DataCell(Text(e.CustomerName,style: TextStyle(fontFamily: 'RR',fontSize: 14,color: AppTheme.grey),),
-                            onTap: (){
-                              setState(() {
-                                selectedIndex=i;
-                                showEdit=!showEdit;
-                              });
-                            }
-                            ),
-                            DataCell(Text(e.CustomerContactNumber,style: TextStyle(fontFamily: 'RR',fontSize: 14,color: Colors.black),),
-                                onTap: (){
-                                  setState(() {
-                                    selectedIndex=i;
-                                    showEdit=!showEdit;
-                                  });
-                                }
-                            ),
-                            DataCell(Text(e.CustomerEmail,style: TextStyle(fontFamily: 'RR',fontSize: 14,color: Colors.black),),
-                                onTap: (){
-                                  setState(() {
-                                    selectedIndex=i;
-                                    showEdit=!showEdit;
-                                  });
-                                }
-                            ),
-                            DataCell(Text(e.CustomerGSTNumber,style: TextStyle(fontFamily: 'RR',fontSize: 14,color: Colors.black),),
-                                onTap: (){
-                                  setState(() {
-                                    selectedIndex=i;
-                                    showEdit=!showEdit;
-                                  });
-                                }
-                            ),
-                          ])
-                          )
-                      ).values.toList()
+                                  color:  MaterialStateColor.resolveWith((states) =>selectedIndex==i? AppTheme.yellowColor:Colors.white),
 
-                  ),
-                  )
+                                  cells: [
+                                    DataCell(Text(e.CustomerName??"",style: TextStyle(fontFamily: 'RR',fontSize: 14,color: AppTheme.grey),),
+                                        onTap: (){
+                                          setState(() {
+                                            if(selectedIndex==i){
+                                              selectedIndex=-1;
+                                              showEdit=false;
+                                            } else{
+                                              selectedIndex=i;
+                                              showEdit=true;
+
+                                            }
+                                          });
+                                        }
+                                    ),
+                                    DataCell(Text(e.Location??"",style: TextStyle(fontFamily: 'RR',fontSize: 14,color: Colors.black),),
+                                        onTap: (){
+                                          setState(() {
+                                            selectedIndex=i;
+                                            showEdit=!showEdit;
+                                          });
+                                        }
+                                    ),
+                                    DataCell(Text(e.CustomerContactNumber??"",style: TextStyle(fontFamily: 'RR',fontSize: 14,color: Colors.black),),
+                                        onTap: (){
+                                          setState(() {
+                                            selectedIndex=i;
+                                            showEdit=!showEdit;
+                                          });
+                                        }
+                                    ),
+                                    DataCell(Text(e.CustomerEmail??"",style: TextStyle(fontFamily: 'RR',fontSize: 14,color: Colors.black),),
+                                        onTap: (){
+                                          setState(() {
+                                            selectedIndex=i;
+                                            showEdit=!showEdit;
+                                          });
+                                        }
+                                    ),
+                                    DataCell(Text(e.CustomerCreditLimit??"",style: TextStyle(fontFamily: 'RR',fontSize: 14,color: Colors.black),),
+                                        onTap: (){
+                                          setState(() {
+                                            selectedIndex=i;
+                                            showEdit=!showEdit;
+                                          });
+                                        }
+                                    ),
+                                  ])
+                          )
+                          ).values.toList()
+
+                      ),
+                    )
                 ),
 
                 Positioned(
@@ -160,26 +177,19 @@ class _CustomerMasterState extends State<CustomerMaster> {
                           GestureDetector(
                             onTap: (){
                               qn.updateCustomerEdit(true);
+                              qn.GetCustomerDetailDbhit(context, qn.customerGridList[selectedIndex].CustomerId);
+                              Navigator.of(context).push(_createRoute());
                               setState(() {
                                 showEdit=false;
-                                qn.SS_selectCustomerId=qn.customersList[selectedIndex].CustomerId;
-                                qn.customerName.text=qn.customersList[selectedIndex].CustomerName;
-                                qn.customerContactNumber.text=qn.customersList[selectedIndex].CustomerContactNumber;
-                                qn.customerGstNumber.text=qn.customersList[selectedIndex].CustomerGSTNumber;
-                                qn.customerEmail.text=qn.customersList[selectedIndex].CustomerEmail;
-                                qn.customerAddress.text=qn.customersList[selectedIndex].CustomerAddress;
-                                qn.customerCity.text=qn.customersList[selectedIndex].CustomerCity;
-                                qn.customerState.text=qn.customersList[selectedIndex].CustomerState;
-                                qn.customerZipcode.text=qn.customersList[selectedIndex].CustomerZipCode;
+                                selectedIndex=-1;
                               });
-                              Navigator.of(context).push(_createRoute());
                             },
                             child: Container(
                               height: 50,
                               width: SizeConfig.width150,
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(25),
-                                color: AppTheme.indicatorColor
+                                  borderRadius: BorderRadius.circular(25),
+                                  color: AppTheme.indicatorColor
                               ),
                               child: Center(
                                 child: Row(
@@ -201,10 +211,10 @@ class _CustomerMasterState extends State<CustomerMaster> {
                                 showEdit=false;
                               });
                               CustomAlert(
-                                callback: (){
-                                  Navigator.pop(context);
-                                  qn.DeleteCustomerDetailDbhit(context, qn.customersList[selectedIndex].CustomerId);
-                                }
+                                  callback: (){
+                                    Navigator.pop(context);
+
+                                  }
 
                               ).yesOrNoDialog(context, "", "Are you sure want to Delete?");
                             },
@@ -212,8 +222,8 @@ class _CustomerMasterState extends State<CustomerMaster> {
                               height: 50,
                               width: SizeConfig.width150,
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(25),
-                                color: AppTheme.indicatorColor
+                                  borderRadius: BorderRadius.circular(25),
+                                  color: AppTheme.indicatorColor
                               ),
                               child: Center(
                                 child: Row(
@@ -258,7 +268,7 @@ class _CustomerMasterState extends State<CustomerMaster> {
 
   Route _createRoute() {
     return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => CustomerAddNew(),
+      pageBuilder: (context, animation, secondaryAnimation) => CustomerDetailAddNew(),
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
 
         return FadeTransition(

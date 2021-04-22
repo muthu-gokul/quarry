@@ -7,13 +7,14 @@ import 'package:quarry/api/ApiManager.dart';
 import 'package:quarry/api/sp.dart';
 import 'package:quarry/model/customerDetailsModel.dart';
 import 'package:quarry/model/dropDownValues.dart';
-import 'package:quarry/model/machineDetailsModel/machineGridModel.dart';
 import 'package:quarry/model/materialDetailGridModel.dart';
 import 'package:quarry/model/materialProcessModel.dart';
+import 'package:quarry/model/plantDetailsModel/plantGridModel.dart';
+import 'package:quarry/model/plantDetailsModel/plantLicenseModel.dart';
+import 'package:quarry/model/plantDetailsModel/plantTypeModel.dart';
 import 'package:quarry/model/quarryLocModel.dart';
 import 'package:quarry/model/saleModel.dart';
 import 'package:quarry/model/vendorModel.dart';
-import 'package:quarry/pages/machineDetails/machineDetailsGrid.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/decimal.dart';
@@ -419,7 +420,7 @@ class QuarryNotifier extends ChangeNotifier{
     //DataBaseName=dbname;
     DataBaseName="TetroPOS_QMS";
     print(DataBaseName);
-    initDropDownValues(context);
+/*    initDropDownValues(context);*/
   }
 
   final call=ApiManager();
@@ -1626,6 +1627,8 @@ class QuarryNotifier extends ChangeNotifier{
   TextEditingController CD_state= new TextEditingController();
   TextEditingController CD_zipcode= new TextEditingController();
   TextEditingController CD_gstno= new TextEditingController();
+  TextEditingController CD_Panno= new TextEditingController();
+  TextEditingController CD_Cinno= new TextEditingController();
   TextEditingController CD_email= new TextEditingController();
   TextEditingController CD_website= new TextEditingController();
 
@@ -1656,22 +1659,27 @@ class QuarryNotifier extends ChangeNotifier{
 
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
-        var parsed=json.decode(value);
 
-        var t1=parsed['Table'] as List;
+        if(value!=null){
+          var parsed=json.decode(value);
+          print(parsed);
 
-        CD_quarryname.text= t1[0]['CompanyName'];
-        CD_contactNo.text= t1[0]['CompanyContactNumber'];
-        CD_address.text= t1[0]['CompanyAddress'];
-        CD_city.text= t1[0]['CompanyCity'];
-        CD_state.text= t1[0]['CompanyState'];
-        CD_zipcode.text= t1[0]['CompanyZipCode'];
-        CD_gstno.text= t1[0]['CompanyGSTNumber'];
-        CD_email.text= t1[0]['CompanyEmail'];
-        CD_website.text= t1[0]['CompanyWebsite'];
-        CompanyLogo= t1[0]['CompanyLogo'];
-        CompanyLogoFolder= t1[0]['CompanyLogoFolderName']??"";
-        //notifyListeners();
+          var t1=parsed['Table'] as List;
+
+          CD_quarryname.text= t1[0]['CompanyName'];
+          CD_contactNo.text= t1[0]['CompanyContactNumber'];
+          CD_address.text= t1[0]['CompanyAddress'];
+          CD_city.text= t1[0]['CompanyCity'];
+          CD_state.text= t1[0]['CompanyState'];
+          CD_zipcode.text= t1[0]['CompanyZipCode'];
+          CD_gstno.text= t1[0]['CompanyGSTNumber'];
+          CD_Panno.text= t1[0]['CompanyPANNumber'];
+          CD_Cinno.text= t1[0]['CompanyCINNumber'];
+          CD_email.text= t1[0]['CompanyEmail'];
+          CD_website.text= t1[0]['CompanyWebsite'];
+          CompanyLogo= t1[0]['CompanyLogo'];
+          CompanyLogoFolder= t1[0]['CompanyLogoFolderName']??"";
+        }
 
         updateInsertCompanyLoader(false);
 
@@ -1685,7 +1693,9 @@ class QuarryNotifier extends ChangeNotifier{
 
   UpdateQuarryDetailDbhit(BuildContext context) async {
     print("USERID-$UserId");
+    print("DataBaseName-$DataBaseName");
     updateInsertCompanyLoader(true);
+
     var body={
       "Fields": [
         {
@@ -1744,6 +1754,16 @@ class QuarryNotifier extends ChangeNotifier{
           "Value": CD_gstno.text
         },
         {
+          "Key": "CompanyPANNumber",
+          "Type": "String",
+          "Value": CD_Panno.text
+        },
+        {
+          "Key": "CompanyCINNumber",
+          "Type": "String",
+          "Value": CD_Cinno.text
+        },
+        {
           "Key": "CompanyLogoFileName",
           "Type": "String",
           "Value": CompanyLogo
@@ -1763,10 +1783,137 @@ class QuarryNotifier extends ChangeNotifier{
 
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
-        var parsed=json.decode(value);
+        if(value!=null){
+          var parsed=json.decode(value);
+          print(parsed);
+          updateInsertCompanyLoader(false);
+        }
 
-        print(parsed);
-        //notifyListeners();
+
+
+      });
+    }
+    catch(e){
+      updateInsertCompanyLoader(false);
+      CustomAlert().commonErrorAlert(context, "${Sp.updateCompanyDetail}" , e.toString());
+    }
+  }
+
+
+
+
+
+  //**********************************************    plant Details  *********************************************************//
+
+  List<PlantTypeModel> plantTypeList=[];
+  PlantDropDownValues(BuildContext context) async {
+    updateInsertCompanyLoader(true);
+    var body={
+      "Fields": [
+        {
+          "Key": "SpName",
+          "Type": "String",
+          "Value": "${Sp.MasterdropDown}"
+        },
+        {
+          "Key": "LoginUserId",
+          "Type": "int",
+          "Value": UserId
+        },
+        {
+          "Key": "TypeName",
+          "Type": "String",
+          "Value": "PlantType"
+        },
+        {
+          "Key": "database",
+          "Type": "String",
+          "Value": DataBaseName
+        },
+      ]
+    };
+    try{
+      await call.ApiCallGetInvoke(body,context).then((value) {
+       if(value!=null){
+         var parsed=json.decode(value);
+         var t=parsed['Table'] as List;
+         plantTypeList=t.map((e) => PlantTypeModel.fromJson(e)).toList();
+       }
+
+        updateInsertCompanyLoader(false);
+      });
+    }
+    catch(e){
+      updateInsertCompanyLoader(false);
+      CustomAlert().commonErrorAlert(context, "${Sp.MasterdropDown}" , e.toString());
+    }
+  }
+
+  List<PlantGridModel> plantGridList=[];
+
+  GetplantDetailDbhit(BuildContext context,int plantId) async {
+    updateInsertCompanyLoader(true);
+    var body={
+      "Fields": [
+        {
+          "Key": "SpName",
+          "Type": "String",
+          "Value": "${Sp.getPlantDetail}"
+        },
+        {
+          "Key": "LoginUserId",
+          "Type": "int",
+          "Value": UserId
+        },
+        {
+          "Key": "PlantId",
+          "Type": "int",
+          "Value": plantId
+        },
+        {
+          "Key": "database",
+          "Type": "String",
+          "Value": DataBaseName
+        }
+      ]
+    };
+
+    try{
+      await call.ApiCallGetInvoke(body,context).then((value) {
+
+        if(value!=null){
+          var parsed=json.decode(value);
+          print(parsed);
+          var t=parsed['Table'] as List;
+
+
+          if(plantId!=null){
+            var t1=parsed['Table1'] as List;
+            PD_plantTypeId=t[0]['PlantTypeId'];
+            PD_plantTypeName=t[0]['PlantTypeName'];
+            editPlantId=t[0]['PlantId'];
+
+            PD_quarryname.text=t[0]['PlantName'];
+            PD_contactNo.text=t[0]['PlantContactNumber'];
+            PD_address.text=t[0]['PlantAddress'];
+            PD_city.text=t[0]['PlantCity'];
+            PD_state.text=t[0]['PlantState'];
+            PD_country.text=t[0]['PlantCountry'];
+            PD_zipcode.text=t[0]['PlantZipCode'];
+
+            PD_email.text=t[0]['PlantEmail'];
+            PD_website.text=t[0]['PlantWebsite'];
+            PD_ContactPersonName.text=t[0]['PlantContactPersonName'];
+            PD_Designation.text=t[0]['PlantContactPersonDesignation'];
+
+            PO_PlantLicenseList=t1.map((e) => PlantLicenseModel.fromJson(e)).toList();
+            updatePlantDetailEdit(true);
+          }
+          else{
+            plantGridList=t.map((e) => PlantGridModel.fromJson(e)).toList();
+          }
+
+        }
 
         updateInsertCompanyLoader(false);
 
@@ -1774,10 +1921,199 @@ class QuarryNotifier extends ChangeNotifier{
     }
     catch(e){
       updateInsertCompanyLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.dropDownValues}" , e.toString());
+      CustomAlert().commonErrorAlert(context, "${Sp.getPlantDetail}" , e.toString());
     }
   }
 
+  TextEditingController PD_quarryname= new TextEditingController();
+  TextEditingController PD_contactNo= new TextEditingController();
+  TextEditingController PD_address= new TextEditingController();
+  TextEditingController PD_city= new TextEditingController();
+  TextEditingController PD_state= new TextEditingController();
+  TextEditingController PD_country= new TextEditingController();
+  TextEditingController PD_zipcode= new TextEditingController();
+  TextEditingController PD_gstno= new TextEditingController();
+  TextEditingController PD_Panno= new TextEditingController();
+  TextEditingController PD_Cinno= new TextEditingController();
+  TextEditingController PD_email= new TextEditingController();
+  TextEditingController PD_website= new TextEditingController();
+  TextEditingController PD_ContactPersonName= new TextEditingController();
+  TextEditingController PD_Designation= new TextEditingController();
+
+
+  TextEditingController PD_LicenseNo= new TextEditingController();
+  TextEditingController PD_LicenseDesc= new TextEditingController();
+ DateTime PD_fromDate;
+ DateTime PD_toDate;
+
+  int PD_plantTypeId=null;
+  String PD_plantTypeName=null;
+
+  int editPlantId=null;
+
+  List<PlantLicenseModel> PO_PlantLicenseList=[];
+
+
+  InsertPlantDetailDbhit(BuildContext context) async {
+    updateInsertCompanyLoader(true);
+    List js=[];
+    js=PO_PlantLicenseList.map((e) => e.toJson()).toList();
+    print(js);
+    var body={
+      "Fields": [
+        {
+          "Key": "SpName",
+          "Type": "String",
+          "Value": isPlantDetailsEdit?"${Sp.updatePlantDetail}":"${Sp.insertPlantDetail}"
+        },
+        {
+          "Key": "LoginUserId",
+          "Type": "int",
+          "Value": UserId
+        },
+        {
+          "Key": "PlantId",
+          "Type": "int",
+          "Value": editPlantId
+        },
+        {
+          "Key": "PlantName",
+          "Type": "String",
+          "Value": PD_quarryname.text
+        },
+        {
+          "Key": "PlantAddress",
+          "Type": "String",
+          "Value": PD_address.text
+        },
+        {
+          "Key": "PlantCity",
+          "Type": "String",
+          "Value": PD_city.text
+        },
+        {
+          "Key": "PlantState",
+          "Type": "String",
+          "Value": PD_state.text
+        },
+        {
+          "Key": "PlantCountry",
+          "Type": "String",
+          "Value": PD_country.text
+        },
+        {
+          "Key": "PlantZipCode",
+          "Type": "String",
+          "Value": PD_zipcode.text
+        },
+        {
+          "Key": "PlantContactNumber",
+          "Type": "String",
+          "Value": PD_contactNo.text
+        },
+        {
+          "Key": "PlantEmail",
+          "Type": "String",
+          "Value": PD_email.text
+        },
+        {
+          "Key": "PlantWebsite",
+          "Type": "String",
+          "Value": PD_website.text
+        },
+        {
+          "Key": "PlantTypeId",
+          "Type": "int",
+          "Value": PD_plantTypeId
+        },
+        {
+          "Key": "PlantContactPersonName",
+          "Type": "String",
+          "Value": PD_ContactPersonName.text
+        },
+        {
+          "Key": "PlantContactPersonDesignation",
+          "Type": "String",
+          "Value": PD_Designation.text
+        },
+        {
+          "Key": "PlantLicenseList",
+          "Type": "datatable",
+          "Value": js
+        },
+
+        {
+          "Key": "database",
+          "Type": "String",
+          "Value": DataBaseName
+        }
+      ]
+    };
+
+    try{
+      await call.ApiCallGetInvoke(body,context).then((value) {
+        if(value!=null){
+          var parsed=json.decode(value);
+          print(parsed);
+
+          clearPlantForm();
+          Navigator.pop(context);
+          GetplantDetailDbhit(context, null);
+        }
+
+        updateInsertCompanyLoader(false);
+
+      });
+    }
+    catch(e){
+      updateInsertCompanyLoader(false);
+      CustomAlert().commonErrorAlert(context, "${Sp.updateCompanyDetail}" , e.toString());
+    }
+  }
+
+
+
+ clearPlantLicenseForm(){
+   PD_fromDate=DateTime.now();
+   PD_toDate=DateTime.now();
+   PD_LicenseNo.clear();
+   PD_LicenseDesc.clear();
+   notifyListeners();
+ }
+
+ clearPlantForm(){
+    PD_plantTypeId=null;
+    PD_plantTypeName=null;
+    editPlantId=null;
+    PO_PlantLicenseList.clear();
+    PD_quarryname.clear();
+    PD_contactNo.clear();
+    PD_address.clear();
+    PD_city.clear();
+    PD_state.clear();
+    PD_country.clear();
+    PD_zipcode.clear();
+    PD_gstno.clear();
+    PD_Panno.clear();
+    PD_Cinno.clear();
+    PD_email.clear();
+    PD_website.clear();
+    PD_ContactPersonName.clear();
+    PD_Designation.clear();
+ }
+
+
+
+
+
+
+
+
+  bool isPlantDetailsEdit=false;
+  updatePlantDetailEdit(bool value){
+    isPlantDetailsEdit=value;
+    notifyListeners();
+  }
 
   ///****************************************************     CUSTOMER DETAIL     ****************************************************************/
 
@@ -2344,31 +2680,6 @@ class QuarryNotifier extends ChangeNotifier{
   }
 
 
-
-
-
-
-  ///****************************************************     MACHINE DETAIL(MD)     ****************************************************************/
-
-
-
-  List<String> machineGridCol=["Machine Name","Type","Model","Weight"];
-  List<MachineGridModel> machineGridList=[];
-
-
-  TextEditingController MD_machineName=new TextEditingController();
-  TextEditingController MD_machineType=new TextEditingController();
-  TextEditingController MD_machineModel=new TextEditingController();
-  TextEditingController MD_machineCapacity=new TextEditingController();
-  TextEditingController MD_machinePower=new TextEditingController();
-  TextEditingController MD_machineWeight=new TextEditingController();
-
-
-  bool isMachineEdit=false;
-  updateMachineEditEdit(bool value){
-    isMachineEdit=value;
-    notifyListeners();
-  }
 
 
 

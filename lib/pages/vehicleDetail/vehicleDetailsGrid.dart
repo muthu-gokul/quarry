@@ -190,6 +190,7 @@ class VehicleDetailsGridState extends State<VehicleDetailsGrid> {
                           GestureDetector(
                             onTap: (){
                               mn.updateVehicleEdit(true);
+                              mn.vehicleDropDownValues(context);
                               mn.GetVehicleDbHit(context, mn.vehicleGridList[selectedIndex].VehicleId);
                               setState(() {
                                 showEdit=false;

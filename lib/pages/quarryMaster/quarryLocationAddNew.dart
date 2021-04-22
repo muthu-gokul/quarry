@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
+import 'package:quarry/pages/quarryMaster/plantDetailsGrid.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/autocompleteText.dart';
@@ -12,6 +13,7 @@ import 'package:quarry/widgets/customTextField.dart';
 
 import '../qLocMaterials.dart';
 import '../qLocPAyment.dart';
+import 'plantDetailsAddNew.dart';
 
 
 
@@ -65,7 +67,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
       // });
 
       listViewController.addListener(() {
-         print("List SCROLL--${listViewController.offset}");
+         // print("List SCROLL--${listViewController.offset}");
         if(listViewController.offset>20){
 
             scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
@@ -226,25 +228,12 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
 
                                children: [
                                  AddNewLabelTextField(
-                                   labelText: 'Quarry Name',
+                                   labelText: 'Company Name',
                                    isEnabled: isEdit,
                                    textEditingController: qn.CD_quarryname,
                                    // maxLines: 2,
 
 
-                                 ),
-                                 AddNewLabelTextField(
-                                   labelText: 'Contact Number',
-                                   isEnabled: isEdit,
-                                   textInputType: TextInputType.number,
-                                   textEditingController: qn.CD_contactNo,
-                                 ),
-                                 AddNewLabelTextField(
-                                   labelText: 'Email',
-                                   isEnabled: isEdit,
-                                   textInputType: TextInputType.emailAddress,
-                                   textEditingController: qn.CD_email,
-                                   scrollPadding: 100,
                                  ),
                                  AddNewLabelTextField(
                                    labelText: 'Address',
@@ -254,7 +243,6 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                    scrollPadding: 200,
                                    textEditingController: qn.CD_address,
                                  ),
-
                                  AddNewLabelTextField(
                                    labelText: 'City',
                                    isEnabled: isEdit,
@@ -275,11 +263,149 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                    textEditingController: qn.CD_zipcode,
                                  ),
                                  AddNewLabelTextField(
+                                   labelText: 'Contact Number',
+                                   isEnabled: isEdit,
+                                   textInputType: TextInputType.number,
+                                   textEditingController: qn.CD_contactNo,
+                                 ),
+                                 AddNewLabelTextField(
+                                   labelText: 'Email',
+                                   isEnabled: isEdit,
+                                   textInputType: TextInputType.emailAddress,
+                                   textEditingController: qn.CD_email,
+                                   scrollPadding: 100,
+                                 ),
+                                 AddNewLabelTextField(
+                                   labelText: 'Website',
+                                   isEnabled: isEdit,
+                                   textEditingController: qn.CD_website,
+                                   scrollPadding: 100,
+                                 ),
+
+                                 AddNewLabelTextField(
                                    labelText: 'GST No',
                                    isEnabled: isEdit,
                                    scrollPadding: 200,
                                    textEditingController: qn.CD_gstno,
                                  ),
+                                 AddNewLabelTextField(
+                                   labelText: 'PAN No',
+                                   isEnabled: isEdit,
+                                   scrollPadding: 200,
+                                   textEditingController: qn.CD_Panno,
+                                 ),
+                                 AddNewLabelTextField(
+                                   labelText: 'CIN No',
+                                   isEnabled: isEdit,
+                                   scrollPadding: 200,
+                                   textEditingController: qn.CD_Cinno,
+                                 ),
+
+                                 SizedBox(height: SizeConfig.height20,),
+
+                                 Container(
+                                   height: SizeConfig.height70,
+                                   width: SizeConfig.height70,
+                                   decoration: BoxDecoration(
+                                     shape: BoxShape.circle,
+                                     border: Border.all(color: AppTheme.uploadColor,width: 2)
+                                   ),
+                                   child: Center(
+                                     child: Icon(Icons.upload_rounded,color: AppTheme.yellowColor,),
+                                   ),
+                                 ),
+                                 SizedBox(height: SizeConfig.height20,),
+
+                                 Align(
+                                   alignment: Alignment.center,
+                                   child: Text("Upload Your Company Logo",
+                                   style: TextStyle(fontFamily: 'RR',fontSize: 14,color: AppTheme.gridTextColor),
+                                   ),
+                                 ),
+                                 SizedBox(height: SizeConfig.height10,),
+
+                                 Container(
+
+                                  margin: EdgeInsets.only(left: SizeConfig.width90,right:  SizeConfig.width90,),
+                                   height:45,
+                                   decoration: BoxDecoration(
+                                     borderRadius: BorderRadius.circular(25.0),
+                                     color: AppTheme.yellowColor,
+                                     boxShadow: [
+                                       BoxShadow(
+                                         color: AppTheme.yellowColor.withOpacity(0.4),
+                                         spreadRadius: 1,
+                                         blurRadius: 5,
+                                         offset: Offset(1, 8), // changes position of shadow
+                                       ),
+                                     ],
+                                   ),
+                                   child: Center(
+                                       child: Text("Choose File",style: TextStyle(color:AppTheme.bgColor,fontSize:16,fontFamily: 'RM'),
+                                       )
+                                   ),
+
+
+                                 ),
+
+                                 SizedBox(height: 70),
+
+
+                                 Container(
+                                   height: SizeConfig.height70,
+                                   width: SizeConfig.height70,
+                                   decoration: BoxDecoration(
+                                       shape: BoxShape.circle,
+                                       border: Border.all(color: AppTheme.uploadColor,width: 2)
+                                   ),
+                                   child: Center(
+                                     child: Icon(Icons.upload_rounded,color: AppTheme.yellowColor,),
+                                   ),
+                                 ),
+                                 SizedBox(height: SizeConfig.height20,),
+                                 Align(
+                                   alignment: Alignment.center,
+                                   child: Text("Do you want to add Plant?",
+                                     style: TextStyle(fontFamily: 'RR',fontSize: 14,color: AppTheme.gridTextColor),
+                                   ),
+                                 ),
+                                 SizedBox(height: SizeConfig.height10,),
+
+                                 GestureDetector(
+                                   onTap: (){
+                                     if(qn.plantGridList.isEmpty){
+                                       Navigator.push(context, _createRoutePlantDetailsAddNew());
+                                     }
+                                     else{
+                                       Navigator.push(context, _createRoute());
+                                     }
+                                   },
+                                   child: Container(
+                                     margin: EdgeInsets.only(left: SizeConfig.width90,right:  SizeConfig.width90,),
+                                     height:45,
+                                     decoration: BoxDecoration(
+                                       borderRadius: BorderRadius.circular(25.0),
+                                       color: AppTheme.yellowColor,
+                                       boxShadow: [
+                                         BoxShadow(
+                                           color: AppTheme.yellowColor.withOpacity(0.4),
+                                           spreadRadius: 1,
+                                           blurRadius: 5,
+                                           offset: Offset(1, 8), // changes position of shadow
+                                         ),
+                                       ],
+                                     ),
+                                     child: Center(
+                                         child: Text(qn.plantGridList.isEmpty?"+ Add Plant":"Plants",
+                                           style: TextStyle(color:AppTheme.bgColor,fontSize:16,fontFamily: 'RM'),
+                                         )
+                                     ),
+
+
+                                   ),
+                                 ),
+
+
                                  SizedBox(height: SizeConfig.height100,)
                                ],
                              ),
@@ -355,6 +481,32 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                  ],
                )
           );
+  }
+
+
+  Route _createRoute() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => PlantDetailsGrid(),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+
+        return FadeTransition(
+          opacity: Tween(begin: 0.0, end: 1.0).animate(animation),
+          child: child,
+        );
+      },
+    );
+  }
+  Route _createRoutePlantDetailsAddNew() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => PlantDetailsAddNew(),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+
+        return FadeTransition(
+          opacity: Tween(begin: 0.0, end: 1.0).animate(animation),
+          child: child,
+        );
+      },
+    );
   }
 }
 

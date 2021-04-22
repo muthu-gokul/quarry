@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:quarry/notifier/customerNotifier.dart';
+import 'package:quarry/notifier/machineNotifier.dart';
 import 'package:quarry/notifier/materialNotifier.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/notifier/vehicleNotifier.dart';
@@ -119,6 +121,7 @@ class _HomePageState extends State<HomePage> {
                                 titleColor: AppTheme.yellowColor,
                                 callback: (){
                                   Provider.of<QuarryNotifier>(context,listen: false).GetQuarryDetailDbhit(context);
+                                  Provider.of<QuarryNotifier>(context,listen: false).GetplantDetailDbhit(context,null);
                                   setState(() {
                                     menuSelected=1;
                                     scaffoldkey.currentState.openEndDrawer();
@@ -146,8 +149,7 @@ class _HomePageState extends State<HomePage> {
                                 title: 'Customer Detail',
                                 titleColor: AppTheme.yellowColor,
                                 callback: (){
-                                /*  Provider.of<QuarryNotifier>(context,listen: false).initDropDownValues(context);
-                                  Provider.of<QuarryNotifier>(context,listen: false).GetCustomerDetailDbhit(context);*/
+                                  Provider.of<CustomerNotifier>(context,listen: false).GetCustomerDetailDbhit(context,null);
                                   setState(() {
                                     menuSelected=5;
                                     scaffoldkey.currentState.openEndDrawer();
@@ -175,8 +177,7 @@ class _HomePageState extends State<HomePage> {
                                 callback: (){
                                   setState(() {
                                     menuSelected=6;
-                                    // Provider.of<QuarryNotifier>(context,listen: false).initDropDownValues(context);
-                                    // Provider.of<QuarryNotifier>(context,listen: false).GetMaterialDetailDbhit(context);
+                                    Provider.of<MachineNotifier>(context,listen: false).GetMachineDbHit(context,null);
                                     scaffoldkey.currentState.openEndDrawer();
                                   });
                                 },

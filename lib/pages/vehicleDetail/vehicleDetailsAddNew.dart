@@ -335,6 +335,7 @@ class VehicleDetailAddNewState extends State<VehicleDetailAddNew> with TickerPro
                               ),
 
                               Container(
+
                                 width:150,
                                 height:SizeConfig.height50,
                                 decoration: BoxDecoration(

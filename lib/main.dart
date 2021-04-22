@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/login.dart';
+import 'package:quarry/notifier/customerNotifier.dart';
 import 'package:quarry/notifier/loginNotifier.dart';
+import 'package:quarry/notifier/machineNotifier.dart';
 import 'package:quarry/notifier/materialNotifier.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/notifier/vehicleNotifier.dart';
@@ -23,6 +25,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<LoginNotifier>(create:(_)=>LoginNotifier()),
         ChangeNotifierProvider<MaterialNotifier>(create:(_)=>MaterialNotifier()),
         ChangeNotifierProvider<VehicleNotifier>(create:(_)=>VehicleNotifier()),
+        ChangeNotifierProvider<MachineNotifier>(create:(_)=>MachineNotifier()),
+        ChangeNotifierProvider<CustomerNotifier>(create:(_)=>CustomerNotifier()),
       ],
       child: MaterialApp(
         title: 'Quarry Management',

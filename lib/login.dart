@@ -376,7 +376,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                                                           loginNotifier.userDetail.loginTable[0].UserName,
                                                           loginNotifier.userDetail.loginTable[0].DataBaseName,context);
                                                       Provider.of<QuarryNotifier>(context,listen: false).GetQuarryDetailDbhit(context);
-
+                                                      Provider.of<QuarryNotifier>(context,listen: false).GetplantDetailDbhit(context,null);
                                                       Navigator.of(context).pushReplacement(PageRouteBuilder(
                                                         pageBuilder: (context, animation, secondaryAnimation) =>HomePage(),
 
@@ -521,7 +521,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                                                           loginNotifier.userDetail.loginTable[0].UserName,
                                                           loginNotifier.userDetail.loginTable[0].DataBaseName,context);
                                                       Provider.of<QuarryNotifier>(context,listen: false).GetQuarryDetailDbhit(context);
-
+                                                      Provider.of<QuarryNotifier>(context,listen: false).GetplantDetailDbhit(context,null);
                                                       Navigator.of(context).pushReplacement(PageRouteBuilder(
                                                         pageBuilder: (context, animation, secondaryAnimation) =>HomePage(),
 

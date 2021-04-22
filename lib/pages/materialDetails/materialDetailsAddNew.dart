@@ -24,6 +24,7 @@ class MaterialDetailAddNewState extends State<MaterialDetailAddNew> with TickerP
   ScrollController listViewController;
 
   bool _keyboardVisible = false;
+
   bool materialCategoryOpen = false;
   bool materialUnitOpen = false;
 

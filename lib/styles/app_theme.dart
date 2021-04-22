@@ -9,7 +9,7 @@ class AppTheme {
   static const Color yellowColor=Color(0xFFFFC010);
   static const Color bgColor=Color(0xFF3B3B3D);
   static const Color red=Color(0xFFE34343);
-  static const Color addNewTextFieldBorder=Color(0xFFCECECE);
+  static const Color addNewTextFieldBorder=Color(0xFFCDCDCD);
   static const Color addNewTextFieldFocusBorder=Color(0xFF6B6B6B);
 
   static  Color addNewTextFieldText=Color(0xFF787878);
@@ -19,6 +19,8 @@ class AppTheme {
   static  Color grey=Color(0xFF787878);
   static  Color gridTextColor=Color(0xFF787878);
 
+  static  Color uploadColor=Color(0xFFC7D0D8);
+
 
   static  TextStyle hintText=TextStyle(fontFamily: 'RR',fontSize: 16,color: addNewTextFieldText.withOpacity(0.5));
   static TextStyle TSWhite20=TextStyle(fontFamily: 'RR',fontSize: 20,color: Colors.white,letterSpacing: 0.1);
@@ -26,5 +28,15 @@ class AppTheme {
 
 
   static const Color popUpSelectedColor=Color(0xFF3B3B3D);
+
+
+  //yellow BoxShadow
+static BoxShadow yellowShadow=  BoxShadow(
+  color: AppTheme.yellowColor.withOpacity(0.4),
+  spreadRadius: 1,
+  blurRadius: 5,
+  offset: Offset(1, 8), // changes position of shadow
+  );
+
 
 }
