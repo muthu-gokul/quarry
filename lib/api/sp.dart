@@ -43,5 +43,11 @@ class Sp{
   static String updateMachineDetail="USP_UpdateMachineDetail";
   static String getMachineDetail="USP_GetMachineDetail";
   static String deleteMachineDetail="USP_DeleteMachineDetail";
+
+  static String insertSupplierDetail="USP_InsertSupplierDetail";
+  static String updateSupplierDetail="USP_UpdateSupplierDetail";
+  static String getSupplierDetail="USP_GetSupplierDetail";
+  static String deleteSupplierDetail="USP_DeleteSupplierDetail";
+
 }
 

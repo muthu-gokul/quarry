@@ -36,8 +36,15 @@ class _MachineDetailAddNewState extends State<MachineDetailAddNew> with TickerPr
       });
 
 
-      listViewController.addListener(() {
+     /* scrollController.addListener(() {
+        if(scrollController.offset>20){
+          scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
 
+        }
+      });*/
+
+      listViewController.addListener(() {
+         print("LISt-${listViewController.offset}");
         if(listViewController.offset>20){
 
           scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
@@ -167,6 +174,9 @@ class _MachineDetailAddNewState extends State<MachineDetailAddNew> with TickerPr
                    }),
                    SizedBox(width: SizeConfig.width5,),
                    Text("Machine Detail",
+                     style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: SizeConfig.width16),
+                   ),
+                   Text(qn.isMachineEdit?" / Edit":" / Add New",
                      style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: SizeConfig.width16),
                    ),
                    Spacer(),
