@@ -6,7 +6,10 @@ import 'package:quarry/api/ApiManager.dart';
 import 'package:quarry/api/sp.dart';
 import 'package:quarry/model/materialCategoryModel.dart';
 import 'package:quarry/model/materialDetailsModel/materialGridModel.dart';
+import 'package:quarry/model/supplierDetailModel/SupplierMaterialMappingListModel.dart';
+import 'package:quarry/model/supplierDetailModel/supplierCategoryModel.dart';
 import 'package:quarry/model/supplierDetailModel/supplierGridModel.dart';
+import 'package:quarry/model/supplierDetailModel/supplierMaterialModel.dart';
 import 'package:quarry/model/unitDetailModel.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/widgets/alertDialog.dart';
@@ -31,8 +34,19 @@ class SupplierNotifier extends ChangeNotifier{
   int supplierCategoryId=null;
   var supplierCategoryName=null;
 
+  int supplierMaterialId=null;
+  var supplierMaterialName=null;
+  var supplierMaterialUnitName=null;
 
-  int supplierIdEdit=null;
+  TextEditingController materialPrice=new TextEditingController();
+
+  List<SupplierCategoryModel> supplierCategoryList=[];
+  List<SupplierMaterialModel> supplierMaterialList=[];
+  List<SupplierMaterialMappingListModel> supplierMaterialMappingList=[];
+
+
+
+  int supplierEditId=null;
 
 
 
@@ -56,7 +70,7 @@ class SupplierNotifier extends ChangeNotifier{
         {
           "Key": "TypeName",
           "Type": "String",
-          "Value": "Supplier"
+          "Value": "SupplierCategory"
         },
         {
           "Key": "database",
@@ -68,12 +82,14 @@ class SupplierNotifier extends ChangeNotifier{
 
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
-        var parsed=json.decode(value);
-
-        var t=parsed['Table'] as List;
-        var t1=parsed['Table1'] as List;
-
-        clearForm();
+        if(value!=null){
+          var parsed=json.decode(value);
+          var t=parsed['Table'] as List;
+          var t1=parsed['Table1'] as List;
+          supplierCategoryList=t.map((e) => SupplierCategoryModel.fromJson(e)).toList();
+          supplierMaterialList=t1.map((e) => SupplierMaterialModel.fromJson(e)).toList();
+          clearForm();
+        }
         updateSupplierLoader(false);
       });
     }
@@ -100,8 +116,13 @@ class SupplierNotifier extends ChangeNotifier{
 
 
 
-  InsertSupplierDbHit(BuildContext context)  async{
+  InsertSupplierDbHit(BuildContext context,TickerProviderStateMixin tickerProviderStateMixin)  async{
     updateSupplierLoader(true);
+
+    List js=[];
+    js=supplierMaterialMappingList.map((e) => e.toJson()).toList();
+    print(js);
+
     var body={
       "Fields": [
         {
@@ -118,7 +139,7 @@ class SupplierNotifier extends ChangeNotifier{
         {
           "Key": "SupplierId",
           "Type": "int",
-          "Value": supplierIdEdit
+          "Value": supplierEditId
         },
         {
           "Key": "SupplierName",
@@ -173,7 +194,7 @@ class SupplierNotifier extends ChangeNotifier{
         {
           "Key": "SupplierMaterialMappingList",
           "Type": "datatable",
-          "Value": ""
+          "Value": js
         },
         {
           "Key": "database",
@@ -190,7 +211,7 @@ class SupplierNotifier extends ChangeNotifier{
           var parsed=json.decode(value);
           Navigator.pop(context);
           clearForm();
-          GetSupplierDbHit(context, null);
+          GetSupplierDbHit(context, null,tickerProviderStateMixin);
         }
 
         updateSupplierLoader(false);
@@ -209,8 +230,7 @@ class SupplierNotifier extends ChangeNotifier{
   List<SupplierGridModel> supplierGridList=[];
 
 
-  GetSupplierDbHit(BuildContext context,int materialId)  async{
-    print(materialId);
+  GetSupplierDbHit(BuildContext context,int supplierId,TickerProviderStateMixin tickerProviderStateMixin)  async{
     updateSupplierLoader(true);
 
     var body={
@@ -228,7 +248,7 @@ class SupplierNotifier extends ChangeNotifier{
         {
           "Key": "SupplierId",
           "Type": "int",
-          "Value": materialId
+          "Value": supplierId
         },
         {
           "Key": "database",
@@ -245,8 +265,30 @@ class SupplierNotifier extends ChangeNotifier{
           var t=parsed['Table'] as List;
 
           print(t);
-          if(materialId!=null){
+          if(supplierId!=null){
+            var t1=parsed['Table1'] as List;
+            print(t1);
 
+            supplierCategoryName=t[0]['SupplierCategoryName'];
+            supplierCategoryId=t[0]['SupplierCategoryId'];
+            supplierEditId=t[0]['SupplierId'];
+            supplierMaterialId=null;
+            supplierMaterialName=null;
+            supplierName.text=t[0]['SupplierName'];
+            supplierAddress.text=t[0]['SupplierAddress'];
+            supplierCity.text=t[0]['SupplierCity'];
+            supplierState.text=t[0]['SupplierState'];
+            supplierCountry.text=t[0]['SupplierCountry'];
+            supplierZipcode.text=t[0]['SupplierZipCode'];
+            supplierContactNumber.text=t[0]['SupplierContactNumber'];
+            supplierEmail.text=t[0]['SupplierEmail'];
+            supplierGstNo.text=t[0]['SupplierGSTNumber'];
+
+
+            supplierMaterialMappingList=t1.map((e) => SupplierMaterialMappingListModel.fromJson(e,tickerProviderStateMixin)).toList();
+
+
+            notifyListeners();
           }
           else{
             supplierGridList=t.map((e) => SupplierGridModel.fromJson(e)).toList();
@@ -271,10 +313,18 @@ class SupplierNotifier extends ChangeNotifier{
 
   }
 
+  clearMappingList(){
+    supplierMaterialId=null;
+    supplierMaterialName=null;
+    materialPrice.clear();
+    notifyListeners();
+  }
 
   clearForm(){
     supplierCategoryName=null;
     supplierCategoryId=null;
+    supplierMaterialId=null;
+    supplierMaterialName=null;
      supplierName.clear();
      supplierAddress.clear();
      supplierCity.clear();
@@ -284,6 +334,7 @@ class SupplierNotifier extends ChangeNotifier{
      supplierContactNumber.clear();
      supplierEmail.clear();
      supplierGstNo.clear();
+     supplierMaterialMappingList.clear();
   }
 
   bool isSupplierEdit=false;

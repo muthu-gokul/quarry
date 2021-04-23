@@ -78,7 +78,7 @@ class MachineDetailsGridState extends State<MachineDetailsGrid> {
                                   color:  MaterialStateColor.resolveWith((states) =>selectedIndex==i? AppTheme.yellowColor:Colors.white),
 
                                   cells: [
-                                    DataCell(Text(e.machineName,style: TextStyle(fontFamily: 'RR',fontSize: 14,color: AppTheme.grey),),
+                                    DataCell(Text(e.machineName,style: TextStyle(fontFamily: 'RR',fontSize: 14,color:selectedIndex==i? AppTheme.bgColor: AppTheme.gridTextColor),),
                                         onTap: (){
                                       setState(() {
                                         if(selectedIndex==i){
@@ -92,27 +92,42 @@ class MachineDetailsGridState extends State<MachineDetailsGrid> {
 
                                         }
                                     ),
-                                    DataCell(Text(e.machineType,style: TextStyle(fontFamily: 'RR',fontSize: 14,color: Colors.black),),
+                                    DataCell(Text(e.machineType,style: TextStyle(fontFamily: 'RR',fontSize: 14,color:selectedIndex==i? AppTheme.bgColor: AppTheme.gridTextColor),),
                                         onTap: (){
                                           setState(() {
-                                            selectedIndex=i;
-                                            showEdit=!showEdit;
+                                            if(selectedIndex==i){
+                                              selectedIndex=-1;
+                                              showEdit=false;
+                                            } else{
+                                              selectedIndex=i;
+                                              showEdit=true;
+                                            }
                                           });
                                         }
                                     ),
-                                    DataCell(Text(e.machineModel,style: TextStyle(fontFamily: 'RR',fontSize: 14,color: Colors.black),),
+                                    DataCell(Text(e.machineModel,style: TextStyle(fontFamily: 'RR',fontSize: 14,color:selectedIndex==i? AppTheme.bgColor: AppTheme.gridTextColor),),
                                         onTap: (){
                                           setState(() {
-                                            selectedIndex=i;
-                                            showEdit=!showEdit;
+                                            if(selectedIndex==i){
+                                              selectedIndex=-1;
+                                              showEdit=false;
+                                            } else{
+                                              selectedIndex=i;
+                                              showEdit=true;
+                                            }
                                           });
                                         }
                                     ),
-                                    DataCell(Text(e.machineWeight,style: TextStyle(fontFamily: 'RR',fontSize: 14,color: Colors.black),),
+                                    DataCell(Text(e.machineWeight,style: TextStyle(fontFamily: 'RR',fontSize: 14,color:selectedIndex==i? AppTheme.bgColor: AppTheme.gridTextColor),),
                                         onTap: (){
                                           setState(() {
-                                            selectedIndex=i;
-                                            showEdit=!showEdit;
+                                            if(selectedIndex==i){
+                                              selectedIndex=-1;
+                                              showEdit=false;
+                                            } else{
+                                              selectedIndex=i;
+                                              showEdit=true;
+                                            }
                                           });
                                         }
                                     ),

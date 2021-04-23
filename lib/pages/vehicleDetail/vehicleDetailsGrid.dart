@@ -102,32 +102,52 @@ class VehicleDetailsGridState extends State<VehicleDetailsGrid> {
                                     DataCell(Text(e.VehicleTypeName,style: TextStyle(fontFamily: 'RR',fontSize: 16,color: selectedIndex==i? AppTheme.bgColor: AppTheme.gridTextColor),),
                                         onTap: (){
                                           setState(() {
-                                            selectedIndex=i;
-                                            showEdit=!showEdit;
+                                            if(selectedIndex==i){
+                                              selectedIndex=-1;
+                                              showEdit=false;
+                                            } else{
+                                              selectedIndex=i;
+                                              showEdit=true;
+                                            }
                                           });
                                         }
                                     ),
                                     DataCell(Text(e.VehicleModel,style: TextStyle(fontFamily: 'RR',fontSize: 16,color:selectedIndex==i? AppTheme.bgColor:  AppTheme.gridTextColor),),
                                         onTap: (){
                                           setState(() {
-                                            selectedIndex=i;
-                                            showEdit=!showEdit;
+                                            if(selectedIndex==i){
+                                              selectedIndex=-1;
+                                              showEdit=false;
+                                            } else{
+                                              selectedIndex=i;
+                                              showEdit=true;
+                                            }
                                           });
                                         }
                                     ),
                                     DataCell(Text("${e.EmptyWeight}",style: TextStyle(fontFamily: 'RR',fontSize: 16,color:selectedIndex==i? AppTheme.bgColor:  AppTheme.gridTextColor),),
                                         onTap: (){
                                           setState(() {
-                                            selectedIndex=i;
-                                            showEdit=!showEdit;
+                                            if(selectedIndex==i){
+                                              selectedIndex=-1;
+                                              showEdit=false;
+                                            } else{
+                                              selectedIndex=i;
+                                              showEdit=true;
+                                            }
                                           });
                                         }
                                     ),
                                     DataCell(Text(e.VehicleDescript,style: TextStyle(fontFamily: 'RR',fontSize: 16,color:selectedIndex==i? AppTheme.bgColor: AppTheme.gridTextColor),),
                                         onTap: (){
                                           setState(() {
-                                            selectedIndex=i;
-                                            showEdit=!showEdit;
+                                            if(selectedIndex==i){
+                                              selectedIndex=-1;
+                                              showEdit=false;
+                                            } else{
+                                              selectedIndex=i;
+                                              showEdit=true;
+                                            }
                                           });
                                         }
                                     ),

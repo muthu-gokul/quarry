@@ -106,6 +106,7 @@ class MaterialDetailAddNewState extends State<MaterialDetailAddNew> with TickerP
                   height: SizeConfig.screenHeight,
                   // color: Colors.transparent,
                   child: SingleChildScrollView(
+                    physics: NeverScrollableScrollPhysics(),
                     controller: scrollController,
                     child: Column(
                       children: [
@@ -113,103 +114,150 @@ class MaterialDetailAddNewState extends State<MaterialDetailAddNew> with TickerP
                         Container(
                           height: SizeConfig.screenHeight-60,
                           width: SizeConfig.screenWidth,
-
+                          alignment: Alignment.topCenter,
                           decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10))
                           ),
-                          child: ListView(
-                            controller: listViewController,
-                            scrollDirection: Axis.vertical,
+                          child: GestureDetector(
+                            onVerticalDragDown: (v){
+                              if(scrollController.offset==100 && listViewController.offset==0){
+                                scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+                              }
+                              else if(scrollController.offset==0 && listViewController.offset==0){
+                                scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+                              }
 
-                            children: [
-                              AddNewLabelTextField(
-                                labelText: 'Material Name',
-                                textEditingController: qn.materialName,
-                              ),
-                              GestureDetector(
+                            },
+                            child: Container(
+                              height:_keyboardVisible?SizeConfig.screenHeight*0.5 :SizeConfig.screenHeight-100,
+                              width: SizeConfig.screenWidth,
 
-                                onTap: (){
-                                  node.unfocus();
-                                  setState(() {
-                                    materialCategoryOpen=true;
-                                  });
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10))
+                              ),
+                              child: ListView(
+                                controller: listViewController,
+                                scrollDirection: Axis.vertical,
 
-                                  SystemChannels.textInput.invokeMethod('TextInput.hide');
-                                },
-                                child: SidePopUpParent(
-                                  text: qn.selectedMatCategoryName==null? "Select Material Category":qn.selectedMatCategoryName,
-                                  textColor: qn.selectedMatCategoryName==null? AppTheme.addNewTextFieldText.withOpacity(0.5):AppTheme.addNewTextFieldText,
-                                  iconColor: qn.selectedMatCategoryName==null? AppTheme.addNewTextFieldText:AppTheme.yellowColor,
-                                ),
-                              ),
-
-                              AddNewLabelTextField(
-                                labelText: 'Description',
-                                textEditingController: qn.materialDescription,
-                              ),
-                              AddNewLabelTextField(
-                                labelText: 'Material Code',
-                                textEditingController: qn.materialCode,
-                              ),
-                              AddNewLabelTextField(
-                                labelText: 'HSN Code',
-                                textEditingController: qn.materialHSNcode,
-                                scrollPadding: 100,
-                              ),
-                              GestureDetector(
-                                onTap: (){
-                                  node.unfocus();
-                                  setState(() {
-                                    materialUnitOpen=true;
-                                  });
-                                  SystemChannels.textInput.invokeMethod('TextInput.hide');
-                                },
-                                child: SidePopUpParent(
-                                  text: qn.selectedUnitName==null? "Select Unit":qn.selectedUnitName,
-                                  textColor: qn.selectedUnitName==null? AppTheme.addNewTextFieldText.withOpacity(0.5):AppTheme.addNewTextFieldText,
-                                  iconColor: qn.selectedUnitName==null? AppTheme.addNewTextFieldText:AppTheme.yellowColor,
-                                ),
-                              ),
-                              AddNewLabelTextField(
-                                labelText: 'Price',
-                                textEditingController: qn.materialPrice,
-                                textInputType: TextInputType.number,
-                                scrollPadding: 100,
-                                suffixIcon: Container(
-                                  margin: EdgeInsets.all(10),
-                                  height: 15,
-                                  width: 50,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(15),
-                                      color: AppTheme.yellowColor
+                                children: [
+                                  AddNewLabelTextField(
+                                    labelText: 'Material Name',
+                                    textEditingController: qn.materialName,
+                                    onEditComplete: (){
+                                      node.unfocus();
+                                    },
                                   ),
-                                  child: Center(
-                                    child: Text("Rs",style: AppTheme.TSWhite16,),
-                                  ),
-                                ),
-                              ),
-                              AddNewLabelTextField(
-                                labelText: 'GST',
-                                textEditingController: qn.materialGst,
-                                textInputType: TextInputType.number,
-                                scrollPadding: 100,
-                                suffixIcon: Container(
-                                  margin: EdgeInsets.all(10),
-                                  height: 15,
-                                  width: 50,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15),
-                                    color: AppTheme.yellowColor
-                                  ),
-                                  child: Center(
-                                    child: Text("%",style: AppTheme.TSWhite20,),
-                                  ),
-                                ),
-                              ),
+                                  GestureDetector(
 
-                              SizedBox(height: SizeConfig.height200,)
-                            ],
+                                    onTap: (){
+                                      node.unfocus();
+                                      setState(() {
+                                        materialCategoryOpen=true;
+                                      });
+
+                                      SystemChannels.textInput.invokeMethod('TextInput.hide');
+                                    },
+                                    child: SidePopUpParent(
+                                      text: qn.selectedMatCategoryName==null? "Select Material Category":qn.selectedMatCategoryName,
+                                      textColor: qn.selectedMatCategoryName==null? AppTheme.addNewTextFieldText.withOpacity(0.5):AppTheme.addNewTextFieldText,
+                                      iconColor: qn.selectedMatCategoryName==null? AppTheme.addNewTextFieldText:AppTheme.yellowColor,
+                                    ),
+                                  ),
+
+                                  AddNewLabelTextField(
+                                    labelText: 'Description',
+                                    textEditingController: qn.materialDescription,
+                                    ontap: (){
+                                      scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                    },
+                                    onEditComplete: (){
+                                      node.unfocus();
+                                    },
+                                  ),
+                                  AddNewLabelTextField(
+                                    labelText: 'Material Code',
+                                    textEditingController: qn.materialCode,
+                                    ontap: (){
+                                      scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                    },
+                                    onEditComplete: (){
+                                      node.unfocus();
+                                    },
+                                  ),
+                                  AddNewLabelTextField(
+                                    labelText: 'HSN Code',
+                                    textEditingController: qn.materialHSNcode,
+                                    scrollPadding: 100,
+                                    ontap: (){
+                                      scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                    },
+                                    onEditComplete: (){
+                                      node.unfocus();
+                                    },
+                                  ),
+                                  GestureDetector(
+                                    onTap: (){
+                                      node.unfocus();
+                                      setState(() {
+                                        materialUnitOpen=true;
+                                      });
+                                      SystemChannels.textInput.invokeMethod('TextInput.hide');
+                                    },
+                                    child: SidePopUpParent(
+                                      text: qn.selectedUnitName==null? "Select Unit":qn.selectedUnitName,
+                                      textColor: qn.selectedUnitName==null? AppTheme.addNewTextFieldText.withOpacity(0.5):AppTheme.addNewTextFieldText,
+                                      iconColor: qn.selectedUnitName==null? AppTheme.addNewTextFieldText:AppTheme.yellowColor,
+                                    ),
+                                  ),
+                                  AddNewLabelTextField(
+                                    labelText: 'Price',
+                                    textEditingController: qn.materialPrice,
+                                    textInputType: TextInputType.number,
+                                    scrollPadding: 100,
+                                    onEditComplete: (){
+                                      node.unfocus();
+                                    },
+                                    suffixIcon: Container(
+                                      margin: EdgeInsets.all(10),
+                                      height: 15,
+                                      width: 50,
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(15),
+                                          color: AppTheme.yellowColor
+                                      ),
+                                      child: Center(
+                                        child: Text("Rs",style: AppTheme.TSWhite16,),
+                                      ),
+                                    ),
+                                  ),
+                                  AddNewLabelTextField(
+                                    labelText: 'GST',
+                                    textEditingController: qn.materialGst,
+                                    textInputType: TextInputType.number,
+                                    scrollPadding: 100,
+                                    onEditComplete: (){
+                                      node.unfocus();
+                                    },
+                                    suffixIcon: Container(
+                                      margin: EdgeInsets.all(10),
+                                      height: 15,
+                                      width: 50,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(15),
+                                        color: AppTheme.yellowColor
+                                      ),
+                                      child: Center(
+                                        child: Text("%",style: AppTheme.TSWhite20,),
+                                      ),
+                                    ),
+                                  ),
+
+                                  SizedBox(height: SizeConfig.height50,)
+                                ],
+                              ),
+                            ),
                           ),
                         )
                       ],
@@ -340,10 +388,6 @@ class MaterialDetailAddNewState extends State<MaterialDetailAddNew> with TickerP
                                  ),
                                ),
                               SizedBox(height: SizeConfig.height10,),
-
-
-
-
                               Container(
                                 height: SizeConfig.screenHeight*(300/720),
                                 /*color: Colors.red,*/
@@ -382,27 +426,6 @@ class MaterialDetailAddNewState extends State<MaterialDetailAddNew> with TickerP
 
 
 
-
-
-
-
-                              /*Container(
-                                width:150,
-                                height:50,
-                                margin: EdgeInsets.only(top: SizeConfig.height10),
-
-                                child: Card(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(25.0),
-                                    ),
-                                    color: AppTheme.yellowColor,
-                                    elevation: 5,
-                                    shadowColor: AppTheme.yellowColor,
-                                    child: Center(child: Text("+ Add New",style: TextStyle(color:Colors.black,fontSize:18,),))
-
-                                ),
-
-                              )*/
 
                             ]
 

@@ -44,7 +44,7 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
 
   GlobalKey <ScaffoldState> scaffoldkey=new GlobalKey<ScaffoldState>();
   var inn;
@@ -207,7 +207,7 @@ class _HomePageState extends State<HomePage> {
                                     menuSelected=8;
                                     scaffoldkey.currentState.openEndDrawer();
                                   });
-                                  Provider.of<SupplierNotifier>(context, listen: false).GetSupplierDbHit(context,null);
+                                  Provider.of<SupplierNotifier>(context, listen: false).GetSupplierDbHit(context,null,this);
                                 },
                               ),
                               DrawerContent(

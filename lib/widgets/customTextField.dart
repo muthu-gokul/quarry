@@ -15,10 +15,10 @@ class AddNewLabelTextField extends StatelessWidget {
   Function(String) onChange;
   VoidCallback ontap;
   TextInputFormatter textInputFormatter;
-
+  VoidCallback onEditComplete;
 
   AddNewLabelTextField({this.textEditingController,this.labelText,this.scrollPadding,this.textInputType:TextInputType.text,
-    this.prefixIcon,this.ontap,this.onChange,this.textInputFormatter,this.isEnabled=true,this.suffixIcon});
+    this.prefixIcon,this.ontap,this.onChange,this.textInputFormatter,this.isEnabled=true,this.suffixIcon,this.onEditComplete});
 
   @override
   Widget build(BuildContext context) {
@@ -70,6 +70,9 @@ class AddNewLabelTextField extends StatelessWidget {
         // ],
         onChanged: (v){
            onChange(v);
+        },
+        onEditingComplete: (){
+           onEditComplete();
         },
       ),
 

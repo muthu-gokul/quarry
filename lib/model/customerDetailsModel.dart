@@ -12,7 +12,8 @@ class CustomerDetails{
   String CustomerGSTNumber;
   String CustomerLogoFileName;
   String CustomerLogoFolderName;
-  String CustomerCreditLimit;
+  double CustomerCreditLimit;
+
   String Location;
 
   CustomerDetails({this.CustomerId,this.CustomerName,this.CustomerCode,this.CustomerContactNumber,this.CustomerEmail,
@@ -34,6 +35,7 @@ class CustomerDetails{
       CustomerGSTNumber: json['CustomerGSTNumber'],
       CustomerLogoFileName : json['CustomerLogoFileName'],
       CustomerLogoFolderName : json['CustomerLogoFolderName'],
+      CustomerCreditLimit : json['CustomerCreditLimit'],
       Location : json['Location'],
 
     );

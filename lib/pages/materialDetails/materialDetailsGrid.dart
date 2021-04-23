@@ -81,7 +81,7 @@ class MaterialDetailsGridState extends State<MaterialDetailsGrid> {
 
                                   cells: [
                                     DataCell(
-                                        Text(e.materialName,style: TextStyle(fontFamily: 'RR',fontSize: 16,color:selectedIndex==i? AppTheme.bgColor:AppTheme.gridTextColor),),
+                                        Text(e.materialName??"",style: TextStyle(fontFamily: 'RR',fontSize: 16,color:selectedIndex==i? AppTheme.bgColor:AppTheme.gridTextColor),),
                                         onTap: (){
                                           setState(() {
 
@@ -97,35 +97,56 @@ class MaterialDetailsGridState extends State<MaterialDetailsGrid> {
                                           });
                                         }
                                     ),
-                                    DataCell(Text(e.unitName,style: TextStyle(fontFamily: 'RR',fontSize: 16,color: selectedIndex==i? AppTheme.bgColor: AppTheme.gridTextColor),),
+                                    DataCell(Text(e.unitName??"",style: TextStyle(fontFamily: 'RR',fontSize: 16,color: selectedIndex==i? AppTheme.bgColor: AppTheme.gridTextColor),),
                                         onTap: (){
                                           setState(() {
-                                            selectedIndex=i;
-                                            showEdit=!showEdit;
+                                            if(selectedIndex==i){
+                                              selectedIndex=-1;
+                                              showEdit=false;
+                                            } else{
+                                              selectedIndex=i;
+                                              showEdit=true;
+                                            }
                                           });
                                         }
                                     ),
                                     DataCell(Text(e.materialUnitPrice.toString(),style: TextStyle(fontFamily: 'RR',fontSize: 16,color:selectedIndex==i? AppTheme.bgColor:  AppTheme.gridTextColor),),
                                         onTap: (){
                                           setState(() {
-                                            selectedIndex=i;
-                                            showEdit=!showEdit;
+                                            if(selectedIndex==i){
+                                              selectedIndex=-1;
+                                              showEdit=false;
+                                            } else{
+                                              selectedIndex=i;
+                                              showEdit=true;
+                                            }
                                           });
                                         }
                                     ),
                                     DataCell(Text("${e.taxValue.toString()}%",style: TextStyle(fontFamily: 'RR',fontSize: 16,color:selectedIndex==i? AppTheme.bgColor:  AppTheme.gridTextColor),),
                                         onTap: (){
                                           setState(() {
-                                            selectedIndex=i;
-                                            showEdit=!showEdit;
+                                            if(selectedIndex==i){
+                                              selectedIndex=-1;
+                                              showEdit=false;
+                                            } else{
+                                              selectedIndex=i;
+                                              showEdit=true;
+                                            }
                                           });
                                         }
                                     ),
-                                    DataCell(Text(e.materialHsnCode,style: TextStyle(fontFamily: 'RR',fontSize: 16,color:selectedIndex==i? AppTheme.bgColor: AppTheme.gridTextColor),),
+                                    DataCell(Text(e.materialHsnCode,
+                                      style: TextStyle(fontFamily: 'RR',fontSize: 16,color:selectedIndex==i? AppTheme.bgColor: AppTheme.gridTextColor),),
                                         onTap: (){
                                           setState(() {
-                                            selectedIndex=i;
-                                            showEdit=!showEdit;
+                                            if(selectedIndex==i){
+                                              selectedIndex=-1;
+                                              showEdit=false;
+                                            } else{
+                                              selectedIndex=i;
+                                              showEdit=true;
+                                            }
                                           });
                                         }
                                     ),

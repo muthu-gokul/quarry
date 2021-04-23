@@ -136,14 +136,18 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
                               labelText: 'Plant Name',
                               isEnabled: isEdit,
                               textEditingController: qn.PD_quarryname,
-                              // maxLines: 2,
+                              onEditComplete: (){
+                                node.unfocus();
+                              },
 
 
                             ),
                             AddNewLabelTextField(
                               labelText: 'Address',
                               isEnabled: isEdit,
-                              // maxLines: 3,
+                              onEditComplete: (){
+                                node.unfocus();
+                              },
                               textInputType: TextInputType.text,
                               scrollPadding: 200,
                               textEditingController: qn.PD_address,
@@ -153,18 +157,27 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
                               isEnabled: isEdit,
                               scrollPadding: 200,
                               textEditingController: qn.PD_city,
+                              onEditComplete: (){
+                                node.unfocus();
+                              },
                             ),
                             AddNewLabelTextField(
                               labelText: 'State',
                               isEnabled: isEdit,
                               scrollPadding: 200,
                               textEditingController: qn.PD_state,
+                              onEditComplete: (){
+                                node.unfocus();
+                              },
                             ),
                             AddNewLabelTextField(
                               labelText: 'Country',
                               isEnabled: isEdit,
                               scrollPadding: 200,
                               textEditingController: qn.PD_country,
+                              onEditComplete: (){
+                                node.unfocus();
+                              },
                             ),
                             AddNewLabelTextField(
                               labelText: 'ZipCode',
@@ -172,12 +185,18 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
                               textInputType: TextInputType.number,
                               scrollPadding: 200,
                               textEditingController: qn.PD_zipcode,
+                              onEditComplete: (){
+                                node.unfocus();
+                              },
                             ),
                             AddNewLabelTextField(
                               labelText: 'Contact Number',
                               isEnabled: isEdit,
                               textInputType: TextInputType.number,
                               textEditingController: qn.PD_contactNo,
+                              onEditComplete: (){
+                                node.unfocus();
+                              },
                             ),
                             AddNewLabelTextField(
                               labelText: 'Email',
@@ -185,6 +204,9 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
                               textInputType: TextInputType.emailAddress,
                               textEditingController: qn.PD_email,
                               scrollPadding: 100,
+                              onEditComplete: (){
+                                node.unfocus();
+                              },
                             ),
                             GestureDetector(
                               onTap: (){
@@ -205,12 +227,18 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
                               isEnabled: isEdit,
                               scrollPadding: 200,
                               textEditingController: qn.PD_ContactPersonName,
+                              onEditComplete: (){
+                                node.unfocus();
+                              },
                             ),
                             AddNewLabelTextField(
                               labelText: 'Designation',
                               isEnabled: isEdit,
                               scrollPadding: 200,
                               textEditingController: qn.PD_Designation,
+                              onEditComplete: (){
+                                node.unfocus();
+                              },
                             ),
 
 ////////////////////////////////////  LICENSE LIST ///////////////////////

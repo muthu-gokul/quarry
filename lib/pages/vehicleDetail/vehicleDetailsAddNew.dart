@@ -105,6 +105,7 @@ class VehicleDetailAddNewState extends State<VehicleDetailAddNew> with TickerPro
                   height: SizeConfig.screenHeight,
                   // color: Colors.transparent,
                   child: SingleChildScrollView(
+                    physics: NeverScrollableScrollPhysics(),
                     controller: scrollController,
                     child: Column(
                       children: [
@@ -117,57 +118,85 @@ class VehicleDetailAddNewState extends State<VehicleDetailAddNew> with TickerPro
                               color: Colors.white,
                               borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10))
                           ),
-                          child: ListView(
-                            controller: listViewController,
-                            scrollDirection: Axis.vertical,
+                          child:  GestureDetector(
+                            onVerticalDragDown: (v){
+                              if(scrollController.offset==100 && listViewController.offset==0){
+                                scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+                              }
+                              else if(scrollController.offset==0 && listViewController.offset==0){
+                                scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
 
-                            children: [
-                              AddNewLabelTextField(
-                                labelText: 'Enter Vehicle Number',
-                                textEditingController: qn.VehicleNo,
-                              ),
-                              AddNewLabelTextField(
-                                labelText: 'VehicleDescription',
-                                textEditingController: qn.VehicleDescript,
-                              ),
+                              }
 
+                            },
+                            child: ListView(
+                              controller: listViewController,
+                              scrollDirection: Axis.vertical,
 
-                              GestureDetector(
-                                onTap: (){
-                                  node.unfocus();
-                                  setState(() {
-                                    isVehicleTypeOpen=true;
-                                  });
-                                  SystemChannels.textInput.invokeMethod('TextInput.hide');
-                                },
-                                child: SidePopUpParent(
-                                  text: qn.selectedVehicleTypeName==null? "Select Vehicle Type":qn.selectedVehicleTypeName,
-                                  textColor: qn.selectedVehicleTypeName==null? AppTheme.addNewTextFieldText.withOpacity(0.5):AppTheme.addNewTextFieldText,
-                                  iconColor: qn.selectedVehicleTypeName==null? AppTheme.addNewTextFieldText:AppTheme.yellowColor,
+                              children: [
+                                AddNewLabelTextField(
+                                  labelText: 'Enter Vehicle Number',
+                                  textEditingController: qn.VehicleNo,
+                                  onEditComplete: (){
+                                    node.unfocus();
+                                  },
                                 ),
-                              ),
+                                AddNewLabelTextField(
+                                  labelText: 'VehicleDescription',
+                                  textEditingController: qn.VehicleDescript,
+                                  onEditComplete: (){
+                                    node.unfocus();
+                                  },
+                                ),
+
+
+                                GestureDetector(
+                                  onTap: (){
+                                    node.unfocus();
+                                    setState(() {
+                                      isVehicleTypeOpen=true;
+                                    });
+                                    SystemChannels.textInput.invokeMethod('TextInput.hide');
+                                  },
+                                  child: SidePopUpParent(
+                                    text: qn.selectedVehicleTypeName==null? "Select Vehicle Type":qn.selectedVehicleTypeName,
+                                    textColor: qn.selectedVehicleTypeName==null? AppTheme.addNewTextFieldText.withOpacity(0.5):AppTheme.addNewTextFieldText,
+                                    iconColor: qn.selectedVehicleTypeName==null? AppTheme.addNewTextFieldText:AppTheme.yellowColor,
+                                  ),
+                                ),
 
 
 
 
 
-                              AddNewLabelTextField(
-                                labelText: 'Model',
-                                scrollPadding: 100,
-                                textEditingController: qn.VehicleModel,
+                                AddNewLabelTextField(
+                                  labelText: 'Model',
+                                  scrollPadding: 100,
+                                  textEditingController: qn.VehicleModel,
+                                  ontap: (){
+                                    scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                  },
+                                  onEditComplete: (){
+                                    node.unfocus();
+                                  },
+                                ),
 
-                              ),
+                                AddNewLabelTextField(
+                                  labelText: 'EmptyWeight',
+                                  textInputType: TextInputType.number,
+                                  scrollPadding: 100,
+                                  textEditingController: qn.VehicleWeight,
+                                  ontap: (){
+                                    scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                  },
+                                  onEditComplete: (){
+                                    node.unfocus();
+                                  },
+                                ),
 
-                              AddNewLabelTextField(
-                                labelText: 'EmptyWeight',
-                                textInputType: TextInputType.number,
-                                scrollPadding: 100,
-                                textEditingController: qn.VehicleWeight,
-
-                              ),
-
-                              SizedBox(height: SizeConfig.height200,)
-                            ],
+                                SizedBox(height: SizeConfig.height200,)
+                              ],
+                            ),
                           ),
                         )
                       ],

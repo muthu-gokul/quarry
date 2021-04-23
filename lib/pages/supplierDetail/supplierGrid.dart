@@ -15,7 +15,7 @@ class SupplierDetailsGrid extends StatefulWidget {
   SupplierDetailsGridState createState() => SupplierDetailsGridState();
 }
 
-class SupplierDetailsGridState extends State<SupplierDetailsGrid> {
+class SupplierDetailsGridState extends State<SupplierDetailsGrid> with TickerProviderStateMixin{
 
   bool showEdit=false;
   int selectedIndex;
@@ -85,24 +85,39 @@ class SupplierDetailsGridState extends State<SupplierDetailsGrid> {
                                     DataCell(Text(e.supplierCategoryName??"",style: TextStyle(fontFamily: 'RR',fontSize: 16,color: selectedIndex==i? AppTheme.bgColor: AppTheme.gridTextColor),),
                                         onTap: (){
                                           setState(() {
-                                            selectedIndex=i;
-                                            showEdit=!showEdit;
+                                            if(selectedIndex==i){
+                                              selectedIndex=-1;
+                                              showEdit=false;
+                                            } else{
+                                              selectedIndex=i;
+                                              showEdit=true;
+                                            }
                                           });
                                         }
                                     ),
                                     DataCell(Text(e.location.toString(),style: TextStyle(fontFamily: 'RR',fontSize: 16,color:selectedIndex==i? AppTheme.bgColor:  AppTheme.gridTextColor),),
                                         onTap: (){
                                           setState(() {
-                                            selectedIndex=i;
-                                            showEdit=!showEdit;
+                                            if(selectedIndex==i){
+                                              selectedIndex=-1;
+                                              showEdit=false;
+                                            } else{
+                                              selectedIndex=i;
+                                              showEdit=true;
+                                            }
                                           });
                                         }
                                     ),
-                                    DataCell(Text("${e.supplierContactNumber.toString()}%",style: TextStyle(fontFamily: 'RR',fontSize: 16,color:selectedIndex==i? AppTheme.bgColor:  AppTheme.gridTextColor),),
+                                    DataCell(Text("${e.supplierContactNumber.toString()}",style: TextStyle(fontFamily: 'RR',fontSize: 16,color:selectedIndex==i? AppTheme.bgColor:  AppTheme.gridTextColor),),
                                         onTap: (){
                                           setState(() {
-                                            selectedIndex=i;
-                                            showEdit=!showEdit;
+                                            if(selectedIndex==i){
+                                              selectedIndex=-1;
+                                              showEdit=false;
+                                            } else{
+                                              selectedIndex=i;
+                                              showEdit=true;
+                                            }
                                           });
                                         }
                                     ),
@@ -123,7 +138,7 @@ class SupplierDetailsGridState extends State<SupplierDetailsGrid> {
                     onTap: (){
 
                       mn.updateSupplierEdit(false);
-                    //  mn.SupplierDropDownValues(context);
+                      mn.SupplierDropDownValues(context);
                       Navigator.of(context).push(_createRoute());
 
 
@@ -166,7 +181,8 @@ class SupplierDetailsGridState extends State<SupplierDetailsGrid> {
                           GestureDetector(
                             onTap: (){
                               mn.updateSupplierEdit(true);
-                              mn.GetSupplierDbHit(context, mn.supplierGridList[selectedIndex].supplierId);
+                              mn.SupplierDropDownValues(context);
+                              mn.GetSupplierDbHit(context, mn.supplierGridList[selectedIndex].supplierId,this);
                               setState(() {
                                 showEdit=false;
                                 selectedIndex=-1;

@@ -20,7 +20,7 @@ class _MachineDetailAddNewState extends State<MachineDetailAddNew> with TickerPr
 
   ScrollController scrollController;
   ScrollController listViewController;
-
+  bool _keyboardVisible = false;
 
 
   @override
@@ -65,6 +65,7 @@ class _MachineDetailAddNewState extends State<MachineDetailAddNew> with TickerPr
 
     final node=FocusScope.of(context);
     SizeConfig().init(context);
+    _keyboardVisible = MediaQuery.of(context).viewInsets.bottom != 0;
     return Scaffold(
       key: scaffoldkey,
      body: Consumer<MachineNotifier>(
@@ -104,6 +105,7 @@ class _MachineDetailAddNewState extends State<MachineDetailAddNew> with TickerPr
                height: SizeConfig.screenHeight,
                // color: Colors.transparent,
                child: SingleChildScrollView(
+                 physics: NeverScrollableScrollPhysics(),
                  controller: scrollController,
                  child: Column(
                    children: [
@@ -111,52 +113,106 @@ class _MachineDetailAddNewState extends State<MachineDetailAddNew> with TickerPr
                      Container(
                        height: SizeConfig.screenHeight-60,
                        width: SizeConfig.screenWidth,
-
+                       alignment: Alignment.topCenter,
                        decoration: BoxDecoration(
                            color: Colors.white,
                            borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10))
                        ),
-                       child: ListView(
-                         controller: listViewController,
-                         scrollDirection: Axis.vertical,
+                       child: GestureDetector(
+                         onVerticalDragDown: (v){
+                           if(scrollController.offset==100 && listViewController.offset==0){
+                             scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+                           }
+                           else if(scrollController.offset==0 && listViewController.offset==0){
+                             scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
 
-                         children: [
-                           AddNewLabelTextField(
-                             labelText: 'Machine Name',
-                             textEditingController: qn.MachineName,
-                           ),
-                           AddNewLabelTextField(
-                             labelText: 'Machine Type',
-                             textEditingController: qn.MachineType,
-                           ),
-                           AddNewLabelTextField(
-                             labelText: 'Machine Model',
-                             textEditingController: qn.MachineModel,
-                           ),
+                           }
 
-                           AddNewLabelTextField(
-                             labelText: 'Capacity',
-                             textEditingController: qn.Capacity,
-                             scrollPadding: 100,
-                           ),
-                           AddNewLabelTextField(
-                              labelText: 'MoterPower',
-                              textEditingController: qn.MoterPower,
-                             scrollPadding: 100,
-                            ),
-                           AddNewLabelTextField(
-                             labelText: 'MachineWeight',
-                             textEditingController: qn.MachineWeight,
-                             scrollPadding: 100,
-                           ),
-                           // // AddNewLabelTextField(
-                           // //   labelText: 'Weight',
-                           // //   textEditingController: qn.MD_machineWeight,
-                           // //   scrollPadding: 100,
-                           // // ),
+                         },
+                         child: Container(
+                           height:_keyboardVisible?SizeConfig.screenHeight*0.5 :SizeConfig.screenHeight-100,
+                           width: SizeConfig.screenWidth,
 
-                           SizedBox(height: SizeConfig.height100,)
-                         ],
+                           decoration: BoxDecoration(
+                               color: Colors.white,
+                               borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10))
+                           ),
+                           child: ListView(
+                             controller: listViewController,
+                             scrollDirection: Axis.vertical,
+
+                             children: [
+                               AddNewLabelTextField(
+                                 labelText: 'Machine Name',
+                                 textEditingController: qn.MachineName,
+                                 onEditComplete: (){
+                                   node.unfocus();
+                                 },
+                               ),
+                               AddNewLabelTextField(
+                                 labelText: 'Machine Type',
+                                 textEditingController: qn.MachineType,
+                                 ontap: (){
+                                   scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                 },
+                                 onEditComplete: (){
+                                   node.unfocus();
+                                 },
+                               ),
+                               AddNewLabelTextField(
+                                 labelText: 'Machine Model',
+                                 textEditingController: qn.MachineModel,
+                                 ontap: (){
+                                   scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                 },
+                                 onEditComplete: (){
+                                   node.unfocus();
+                                 },
+                               ),
+
+                               AddNewLabelTextField(
+                                 labelText: 'Capacity',
+                                 textEditingController: qn.Capacity,
+                                 scrollPadding: 100,
+                                 ontap: (){
+                                   scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                 },
+                                 onEditComplete: (){
+                                   node.unfocus();
+                                 },
+                               ),
+                               AddNewLabelTextField(
+                                  labelText: 'MoterPower',
+                                  textEditingController: qn.MoterPower,
+                                 scrollPadding: 100,
+                                 ontap: (){
+                                   scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                 },
+                                 onEditComplete: (){
+                                   node.unfocus();
+                                 },
+                                ),
+                               AddNewLabelTextField(
+                                 labelText: 'MachineWeight',
+                                 textEditingController: qn.MachineWeight,
+                                 scrollPadding: 200,
+                                 ontap: (){
+                                   scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                 },
+                                 onEditComplete: (){
+                                   node.unfocus();
+                                 },
+                               ),
+                               // // AddNewLabelTextField(
+                               // //   labelText: 'Weight',
+                               // //   textEditingController: qn.MD_machineWeight,
+                               // //   scrollPadding: 100,
+                               // // ),
+
+                               SizedBox(height: SizeConfig.height100,)
+                             ],
+                           ),
+                         ),
                        ),
                      )
                    ],
@@ -187,7 +243,7 @@ class _MachineDetailAddNewState extends State<MachineDetailAddNew> with TickerPr
              Positioned(
                bottom: 0,
                child: Container(
-                 height: SizeConfig.height70,
+                 height:_keyboardVisible?0: SizeConfig.height70,
                  width: SizeConfig.screenWidth,
                  color: AppTheme.grey,
                  child: Center(

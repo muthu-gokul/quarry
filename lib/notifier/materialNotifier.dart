@@ -71,6 +71,8 @@ class MaterialNotifier extends ChangeNotifier{
 
         var t=parsed['Table'] as List;
         var t1=parsed['Table1'] as List;
+        print(t);
+        print(t1);
 
           materialUnits=t.map((e) => UnitDetailModel.fromJson(e)).toList();
           materialCategoryList=t1.map((e) => MaterialCategoryModel.fromJson(e)).toList();

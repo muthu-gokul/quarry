@@ -32,7 +32,7 @@ class CustomerNotifier extends ChangeNotifier {
   TextEditingController customerType = new TextEditingController();
   TextEditingController customerCreditLimit = new TextEditingController();
 
-
+  bool isCreditCustomer = false;
 
   String customerLogoFileName;
   String customerLogoFolderName;
@@ -119,7 +119,7 @@ class CustomerNotifier extends ChangeNotifier {
         {
           "Key": "CustomerCreditLimit",
           "Type": "String",
-          "Value": null
+          "Value": customerCreditLimit.text.isNotEmpty?double.parse(customerCreditLimit.text):0.0
         },
         {
           "Key": "CustomerLogoFileName",
@@ -213,6 +213,12 @@ class CustomerNotifier extends ChangeNotifier {
           customerContactNumber.text=t[0]['CustomerContactNumber'];
           customerEmail.text=t[0]['CustomerEmail'];
           customerCreditLimit.text=t[0]['CustomerCreditLimit'].toString();
+          if(customerCreditLimit.text.isNotEmpty){
+            isCreditCustomer=true;
+          }
+          else{
+            isCreditCustomer=false;
+          }
         }
         else{
           customerGridList = t.map((e) => CustomerDetails.fromJson(e)).toList();
@@ -241,6 +247,9 @@ class CustomerNotifier extends ChangeNotifier {
 
   updateCustomerEdit(bool value) {
     isCustomerEdit = value;
+    if(!isCustomerEdit){
+      isCreditCustomer=false;
+    }
     notifyListeners();
   }
 
@@ -262,6 +271,7 @@ class CustomerNotifier extends ChangeNotifier {
     customerContactNumber.clear();
     customerEmail.clear();
     customerGstNumber.clear();
+    customerCreditLimit.clear();
 
   }
 }
