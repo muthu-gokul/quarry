@@ -7,6 +7,7 @@ import 'package:quarry/pages/quarryMaster/quarryLocationAddNew.dart';
 import 'package:quarry/pages/sale/salesDetail.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
+import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/customTextField.dart';
 
 
@@ -301,12 +302,24 @@ class MaterialDetailAddNewState extends State<MaterialDetailAddNew> with TickerP
                       child: GestureDetector(
                         onTap: (){
                           node.unfocus();
-                          qn.InsertMaterialDbHit(context);
-                         /* if(qn.isMaterialEdit){
-
-                          }else{
-
-                          }*/
+                          if(qn.selectedMatCategoryName==null){
+                            CustomAlert().commonErrorAlert(context, "Select Material Type", "");
+                          }
+                          else if(qn.materialName.text.isEmpty)
+                          {
+                            CustomAlert().commonErrorAlert(context, "Enter Material Name", "");
+                          }
+                          else if(qn.materialCode.text.isEmpty)
+                          {
+                            CustomAlert().commonErrorAlert(context, "Enter Material Code", "");
+                          }
+                          else if(qn.selectedUnitName==null)
+                          {
+                            CustomAlert().commonErrorAlert(context, "Select Unit", "");
+                          }
+                          else {
+                            qn.InsertMaterialDbHit(context);
+                          }
 
 
                         },

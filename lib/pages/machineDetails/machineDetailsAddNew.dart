@@ -5,6 +5,7 @@ import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/pages/quarryMaster/quarryLocationAddNew.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
+import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/customTextField.dart';
 
 
@@ -250,7 +251,16 @@ class _MachineDetailAddNewState extends State<MachineDetailAddNew> with TickerPr
                    child: GestureDetector(
                      onTap: (){
                        node.unfocus();
-                       qn.InsertVehicleDbHit(context);
+                       if(qn.MachineName.text.isEmpty)
+                       {
+                         CustomAlert().commonErrorAlert(context, "Enter Machine Name", "");
+
+                       }
+
+                       else{
+                         qn.InsertVehicleDbHit(context);
+
+                       }
 
                      },
                      child: Container(

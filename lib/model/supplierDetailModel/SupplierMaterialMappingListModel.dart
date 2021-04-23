@@ -14,6 +14,7 @@ class SupplierMaterialMappingListModel{
 
   AnimationController scaleController;
   Animation<double> scaleAnimation;
+  bool isEdit;
 
 /*  guestNoController=AnimationController(duration: const Duration(milliseconds: 300), vsync: this);
   scaleAnimation = new Tween(begin: 0.0, end: 1.0)
@@ -29,7 +30,8 @@ class SupplierMaterialMappingListModel{
     this.MaterialName,
     this.scaleAnimation,
     this.scaleController,
-    this.UnitName
+    this.UnitName,
+    this.isEdit
   });
 
   factory SupplierMaterialMappingListModel.fromJson(Map<String, dynamic> json,TickerProviderStateMixin tickerProviderStateMixin) => SupplierMaterialMappingListModel(
@@ -40,7 +42,8 @@ class SupplierMaterialMappingListModel{
     IsActive: json["IsActive"],
     MaterialName: json["MaterialName"],
     UnitName: json["UnitName"],
-  scaleController: AnimationController(duration: Duration(milliseconds: 300,),vsync: tickerProviderStateMixin)
+    scaleController: AnimationController(duration: Duration(milliseconds: 300,),vsync: tickerProviderStateMixin),
+    isEdit: true
   );
 
   Map<String, dynamic> toJson() => {

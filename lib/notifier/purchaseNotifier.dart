@@ -6,6 +6,10 @@ import 'package:quarry/api/ApiManager.dart';
 import 'package:quarry/api/sp.dart';
 import 'package:quarry/model/materialCategoryModel.dart';
 import 'package:quarry/model/materialDetailsModel/materialGridModel.dart';
+import 'package:quarry/model/purchaseDetailsModel/purchaseDetailGridModel.dart';
+import 'package:quarry/model/purchaseDetailsModel/purchaseMaterialListModel.dart';
+import 'package:quarry/model/purchaseDetailsModel/purchaseSupplierListModel.dart';
+import 'package:quarry/model/purchaseDetailsModel/purchaseSupplierTypeModel.dart';
 import 'package:quarry/model/supplierDetailModel/SupplierMaterialMappingListModel.dart';
 import 'package:quarry/model/supplierDetailModel/supplierCategoryModel.dart';
 import 'package:quarry/model/supplierDetailModel/supplierGridModel.dart';
@@ -14,47 +18,35 @@ import 'package:quarry/model/unitDetailModel.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 
-class SupplierNotifier extends ChangeNotifier{
+class PurchaseNotifier extends ChangeNotifier{
 
 
 
 
+  String supplierType=null;
+
+  int supplierId=null;
+  var SelectedSupplierName=null;
+
+  DateTime PurchaseDate;
+  DateTime ExpectedPurchaseDate;
+
+  int PurchaseEditId=null;
 
 
-  TextEditingController supplierName=new TextEditingController();
-  TextEditingController supplierAddress=new TextEditingController();
-  TextEditingController supplierCity=new TextEditingController();
-  TextEditingController supplierState=new TextEditingController();
-  TextEditingController supplierCountry=new TextEditingController();
-  TextEditingController supplierZipcode=new TextEditingController();
-  TextEditingController supplierContactNumber=new TextEditingController();
-  TextEditingController supplierEmail=new TextEditingController();
-  TextEditingController supplierGstNo=new TextEditingController();
+  List<PurchaseSupplierType> supplierTypeList=[];
+  List<PurchaseSupplierList> suppliersList=[];
+  List<PurchaseSupplierList> filterSuppliersList=[];
 
-  int supplierCategoryId=null;
-  var supplierCategoryName=null;
-
-  int supplierMaterialId=null;
-  var supplierMaterialName=null;
-  var supplierMaterialUnitName=null;
-
-  TextEditingController materialPrice=new TextEditingController();
-
-  List<SupplierCategoryModel> supplierCategoryList=[];
-  List<SupplierMaterialModel> supplierMaterialList=[];
-  List<SupplierMaterialMappingListModel> supplierMaterialMappingList=[];
-
-
-
-  int supplierEditId=null;
-
+  List<PurchaseMaterialsListModel> materialsList=[];
+  List<PurchaseMaterialsListModel> filterMaterialsList=[];
 
 
   final call=ApiManager();
 
-  SupplierDropDownValues(BuildContext context) async {
+  PurchaseDropDownValues(BuildContext context) async {
 
-    updateSupplierLoader(true);
+    updatePurchaseLoader(true);
     var body={
       "Fields": [
         {
@@ -70,7 +62,7 @@ class SupplierNotifier extends ChangeNotifier{
         {
           "Key": "TypeName",
           "Type": "String",
-          "Value": "SupplierCategory"
+          "Value": "Purchase"
         },
         {
           "Key": "database",
@@ -86,14 +78,26 @@ class SupplierNotifier extends ChangeNotifier{
           var parsed=json.decode(value);
           var t=parsed['Table'] as List;
           var t1=parsed['Table1'] as List;
-          supplierCategoryList=t.map((e) => SupplierCategoryModel.fromJson(e)).toList();
-          supplierMaterialList=t1.map((e) => SupplierMaterialModel.fromJson(e)).toList();
+          var t2=parsed['Table2'] as List;
+          var t3=parsed['Table3'] as List;
+          var t4=parsed['Table4'] as List;
+
+
+          materialsList=t1.map((e) => PurchaseMaterialsListModel.fromJson(e)).toList();
+          filterMaterialsList=materialsList;
+
+          supplierTypeList=t2.map((e) => PurchaseSupplierType.fromJson(e)).toList();
+
+          suppliersList =t3.map((e) => PurchaseSupplierList.fromJson(e)).toList();
+          filterSuppliersList=suppliersList;
+
+          clearForm();
         }
-        updateSupplierLoader(false);
+        updatePurchaseLoader(false);
       });
     }
     catch(e){
-      updateSupplierLoader(false);
+      updatePurchaseLoader(false);
       CustomAlert().commonErrorAlert(context, "${Sp.MasterdropDown}" , e.toString());
     }
   }
@@ -115,9 +119,10 @@ class SupplierNotifier extends ChangeNotifier{
 
 
 
-  InsertSupplierDbHit(BuildContext context,TickerProviderStateMixin tickerProviderStateMixin)  async{
+/*
+  InsertPurchaseDbHit(BuildContext context,TickerProviderStateMixin tickerProviderStateMixin)  async{
     updateSupplierLoader(true);
-    print(tickerProviderStateMixin);
+
     List js=[];
     js=supplierMaterialMappingList.map((e) => e.toJson()).toList();
     print(js);
@@ -222,25 +227,23 @@ class SupplierNotifier extends ChangeNotifier{
 
 
   }
+*/
 
 
 
-  List<String> supplierGridCol=["Supplier Name","Category","Location","Contact Number"];
-  List<SupplierGridModel> supplierGridList=[];
+  List<String> purchaseGridCol=["Order Number","Expected Date","Material Name","Purchase Quantity","Tax Amount","Net Amount"];
+  List<PurchaseOrderGridModel> purchaseGridList=[];
 
 
-  GetSupplierDbHit(BuildContext context,int supplierId,TickerProviderStateMixin tickerProviderStateMixin)  async{
-
-    print(tickerProviderStateMixin);
-    print(supplierId);
-    updateSupplierLoader(true);
+  GetPurchaseDbHit(BuildContext context,int PurchaseOrderId)  async{
+    updatePurchaseLoader(true);
 
     var body={
       "Fields": [
         {
           "Key": "SpName",
           "Type": "String",
-          "Value": "${Sp.getSupplierDetail}"
+          "Value": "${Sp.getPurchaseDetail}"
         },
         {
           "Key": "LoginUserId",
@@ -248,9 +251,9 @@ class SupplierNotifier extends ChangeNotifier{
           "Value": Provider.of<QuarryNotifier>(context,listen: false).UserId
         },
         {
-          "Key": "SupplierId",
+          "Key": "PurchaseOrderId",
           "Type": "int",
-          "Value": supplierId
+          "Value": PurchaseOrderId
         },
         {
           "Key": "database",
@@ -271,41 +274,22 @@ class SupplierNotifier extends ChangeNotifier{
             var t1=parsed['Table1'] as List;
             print(t1);
 
-            supplierCategoryName=t[0]['SupplierCategoryName'];
-            supplierCategoryId=t[0]['SupplierCategoryId'];
-            supplierEditId=t[0]['SupplierId'];
-            supplierMaterialId=null;
-            supplierMaterialName=null;
-            supplierName.text=t[0]['SupplierName'];
-            supplierAddress.text=t[0]['SupplierAddress'];
-            supplierCity.text=t[0]['SupplierCity'];
-            supplierState.text=t[0]['SupplierState'];
-            supplierCountry.text=t[0]['SupplierCountry'];
-            supplierZipcode.text=t[0]['SupplierZipCode'];
-            supplierContactNumber.text=t[0]['SupplierContactNumber'];
-            supplierEmail.text=t[0]['SupplierEmail'];
-            supplierGstNo.text=t[0]['SupplierGSTNumber'];
-
-            print(supplierName.text);
 
 
-            supplierMaterialMappingList=t1.map((e) => SupplierMaterialMappingListModel.fromJson(e,tickerProviderStateMixin)).toList();
-
-
-         /*   notifyListeners();*/
+            notifyListeners();
           }
           else{
-            supplierGridList=t.map((e) => SupplierGridModel.fromJson(e)).toList();
+            purchaseGridList=t.map((e) => PurchaseOrderGridModel.fromJson(e)).toList();
           }
         }
 
 
 
-        updateSupplierLoader(false);
+        updatePurchaseLoader(false);
       });
     }catch(e){
-      updateSupplierLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.getSupplierDetail}" , e.toString());
+      updatePurchaseLoader(false);
+      CustomAlert().commonErrorAlert(context, "${Sp.getPurchaseDetail}" , e.toString());
     }
 
 
@@ -317,39 +301,27 @@ class SupplierNotifier extends ChangeNotifier{
 
   }
 
-  clearMappingList(){
-    supplierMaterialId=null;
-    supplierMaterialName=null;
-    materialPrice.clear();
-    notifyListeners();
+  insertForm(){
+    PurchaseDate=DateTime.now();
+    ExpectedPurchaseDate=DateTime.now();
   }
+
+
 
   clearForm(){
-    supplierCategoryName=null;
-    supplierCategoryId=null;
-    supplierMaterialId=null;
-    supplierMaterialName=null;
-     supplierName.clear();
-     supplierAddress.clear();
-     supplierCity.clear();
-     supplierState.clear();
-     supplierCountry.clear();
-     supplierZipcode.clear();
-     supplierContactNumber.clear();
-     supplierEmail.clear();
-     supplierGstNo.clear();
-     supplierMaterialMappingList.clear();
+    supplierType=null;
+
   }
 
-  bool isSupplierEdit=false;
-  updateSupplierEdit(bool value){
-    isSupplierEdit=value;
+  bool isPurchaseEdit=false;
+  updatePurchaseEdit(bool value){
+    isPurchaseEdit=value;
     notifyListeners();
   }
 
-  bool SupplierLoader=false;
-  updateSupplierLoader(bool value){
-    SupplierLoader=value;
+  bool PurchaseLoader=false;
+  updatePurchaseLoader(bool value){
+    PurchaseLoader=value;
     notifyListeners();
   }
 

@@ -1,21 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:quarry/notifier/purchaseNotifier.dart';
 import 'package:quarry/notifier/supplierNotifier.dart';
+import 'package:quarry/pages/supplierDetail/supplierAddNew.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
-import 'supplierAddNew.dart';
 
 
-class SupplierDetailsGrid extends StatefulWidget {
+
+class PurchaseDetailsGrid extends StatefulWidget {
   VoidCallback drawerCallback;
-  SupplierDetailsGrid({this.drawerCallback});
+  PurchaseDetailsGrid({this.drawerCallback});
   @override
-  SupplierDetailsGridState createState() => SupplierDetailsGridState();
+  PurchaseDetailsGridState createState() => PurchaseDetailsGridState();
 }
 
-class SupplierDetailsGridState extends State<SupplierDetailsGrid> with TickerProviderStateMixin{
+class PurchaseDetailsGridState extends State<PurchaseDetailsGrid> with TickerProviderStateMixin{
 
   bool showEdit=false;
   int selectedIndex;
@@ -28,8 +31,8 @@ class SupplierDetailsGridState extends State<SupplierDetailsGrid> with TickerPro
             statusBarColor: Colors.black
         ),
         child: SafeArea(
-          child: Consumer<SupplierNotifier>(
-            builder: (context,sn,child)=>  Stack(
+          child: Consumer<PurchaseNotifier>(
+            builder: (context,pn,child)=>  Stack(
               children: [
                 Container(
                   height: SizeConfig.height50,
@@ -38,10 +41,10 @@ class SupplierDetailsGridState extends State<SupplierDetailsGrid> with TickerPro
                     children: [
                       IconButton(icon: Icon(Icons.menu), onPressed: widget.drawerCallback),
                       SizedBox(width: SizeConfig.width20,),
-                      Text("Supplier Details",
-                        style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: SizeConfig.width16),
+                      Text("Purchase Details",
+                        style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize:16),
                       ),
-                      Spacer(),
+
 
                     ],
                   ),
@@ -56,17 +59,17 @@ class SupplierDetailsGridState extends State<SupplierDetailsGrid> with TickerPro
                       child:DataTable(
                           headingRowColor:  MaterialStateColor.resolveWith((states) => AppTheme.bgColor),
                           showBottomBorder: true,
-                          columns: sn.supplierGridCol.map((e) => DataColumn(
+                          columns: pn.purchaseGridCol.map((e) => DataColumn(
                               label: Text(e,style: TextStyle(fontFamily: 'RB',fontSize: 16,color: Colors.white),textAlign: TextAlign.center,)
                           )).toList(),
-                          rows: sn.supplierGridList.asMap().map((i,e) => MapEntry(i,
+                          rows: pn.purchaseGridList.asMap().map((i,e) => MapEntry(i,
 
                               DataRow(
                                   color:  MaterialStateColor.resolveWith((states) =>selectedIndex==i? AppTheme.yellowColor:Colors.white),
 
                                   cells: [
                                     DataCell(
-                                        Text(e.supplierName,style: TextStyle(fontFamily: 'RR',fontSize: 16,color:selectedIndex==i? AppTheme.bgColor:AppTheme.gridTextColor),),
+                                        Text(e.purchaseOrderNumber.toString(),style: TextStyle(fontFamily: 'RR',fontSize: 16,color:selectedIndex==i? AppTheme.bgColor:AppTheme.gridTextColor),),
                                         onTap: (){
                                           setState(() {
 
@@ -82,7 +85,24 @@ class SupplierDetailsGridState extends State<SupplierDetailsGrid> with TickerPro
                                           });
                                         }
                                     ),
-                                    DataCell(Text(e.supplierCategoryName??"",style: TextStyle(fontFamily: 'RR',fontSize: 16,color: selectedIndex==i? AppTheme.bgColor: AppTheme.gridTextColor),),
+                                    DataCell(
+                                        Text("${DateFormat.yMMMd().format(e.expectedDate)}",style: TextStyle(fontFamily: 'RR',fontSize: 16,color:selectedIndex==i? AppTheme.bgColor:AppTheme.gridTextColor),),
+                                        onTap: (){
+                                          setState(() {
+
+                                            if(selectedIndex==i){
+                                              selectedIndex=-1;
+                                              showEdit=false;
+                                            } else{
+                                              selectedIndex=i;
+                                              showEdit=true;
+                                            }
+
+
+                                          });
+                                        }
+                                    ),
+                                    DataCell(Text(e.materialName??"",style: TextStyle(fontFamily: 'RR',fontSize: 16,color: selectedIndex==i? AppTheme.bgColor: AppTheme.gridTextColor),),
                                         onTap: (){
                                           setState(() {
                                             if(selectedIndex==i){
@@ -95,7 +115,7 @@ class SupplierDetailsGridState extends State<SupplierDetailsGrid> with TickerPro
                                           });
                                         }
                                     ),
-                                    DataCell(Text(e.location.toString(),style: TextStyle(fontFamily: 'RR',fontSize: 16,color:selectedIndex==i? AppTheme.bgColor:  AppTheme.gridTextColor),),
+                                    DataCell(Text(e.purchaseQuantity.toString(),style: TextStyle(fontFamily: 'RR',fontSize: 16,color:selectedIndex==i? AppTheme.bgColor:  AppTheme.gridTextColor),),
                                         onTap: (){
                                           setState(() {
                                             if(selectedIndex==i){
@@ -108,7 +128,20 @@ class SupplierDetailsGridState extends State<SupplierDetailsGrid> with TickerPro
                                           });
                                         }
                                     ),
-                                    DataCell(Text("${e.supplierContactNumber.toString()}",style: TextStyle(fontFamily: 'RR',fontSize: 16,color:selectedIndex==i? AppTheme.bgColor:  AppTheme.gridTextColor),),
+                                    DataCell(Text("${e.taxAmount.toString()}",style: TextStyle(fontFamily: 'RR',fontSize: 16,color:selectedIndex==i? AppTheme.bgColor:  AppTheme.gridTextColor),),
+                                        onTap: (){
+                                          setState(() {
+                                            if(selectedIndex==i){
+                                              selectedIndex=-1;
+                                              showEdit=false;
+                                            } else{
+                                              selectedIndex=i;
+                                              showEdit=true;
+                                            }
+                                          });
+                                        }
+                                    ),
+                                    DataCell(Text("${e.netAmount.toString()}",style: TextStyle(fontFamily: 'RR',fontSize: 16,color:selectedIndex==i? AppTheme.bgColor:  AppTheme.gridTextColor),),
                                         onTap: (){
                                           setState(() {
                                             if(selectedIndex==i){
@@ -137,8 +170,8 @@ class SupplierDetailsGridState extends State<SupplierDetailsGrid> with TickerPro
                     behavior: HitTestBehavior.translucent,
                     onTap: (){
 
-                      sn.updateSupplierEdit(false);
-                      sn.SupplierDropDownValues(context);
+                      pn.updatePurchaseEdit(false);
+                      pn.PurchaseDropDownValues(context);
                       Navigator.of(context).push(_createRoute());
 
 
@@ -180,10 +213,9 @@ class SupplierDetailsGridState extends State<SupplierDetailsGrid> with TickerPro
                         children: [
                           GestureDetector(
                             onTap: (){
-                              sn.updateSupplierEdit(true);
-                              sn.clearForm();
-                              sn.SupplierDropDownValues(context);
-                              sn.GetSupplierDbHit(context, sn.supplierGridList[selectedIndex].supplierId,SupplierDetailAddNewState());
+                              pn.updatePurchaseEdit(true);
+                              pn.PurchaseDropDownValues(context);
+                              pn.GetPurchaseDbHit(context, pn.purchaseGridList[selectedIndex].purchaseOrderId);
                               setState(() {
                                 showEdit=false;
                                 selectedIndex=-1;
@@ -252,8 +284,8 @@ class SupplierDetailsGridState extends State<SupplierDetailsGrid> with TickerPro
 
                 Container(
 
-                  height: sn.SupplierLoader? SizeConfig.screenHeight:0,
-                  width: sn.SupplierLoader? SizeConfig.screenWidth:0,
+                  height: pn.PurchaseLoader? SizeConfig.screenHeight:0,
+                  width: pn.PurchaseLoader? SizeConfig.screenWidth:0,
                   color: Colors.black.withOpacity(0.5),
                   child: Center(
                     child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(AppTheme.yellowColor),),
@@ -272,7 +304,7 @@ class SupplierDetailsGridState extends State<SupplierDetailsGrid> with TickerPro
   Route _createRoute() {
     return PageRouteBuilder(
       pageBuilder: (context, animation, secondaryAnimation) => SupplierDetailAddNew(),
-      //pageBuilder: (context, animation, secondaryAnimation) => QuaryAddNew(),
+
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
 
         return FadeTransition(

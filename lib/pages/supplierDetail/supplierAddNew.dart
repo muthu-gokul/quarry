@@ -12,6 +12,7 @@ import 'package:quarry/pages/quarryMaster/quarryLocationAddNew.dart';
 import 'package:quarry/pages/sale/salesDetail.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
+import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/customTextField.dart';
 
 
@@ -164,7 +165,7 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                       SystemChannels.textInput.invokeMethod('TextInput.hide');
                                     },
                                     child: SidePopUpParent(
-                                      text: qn.supplierCategoryName==null? "Select Unit":qn.supplierCategoryName,
+                                      text: qn.supplierCategoryName==null? "Select Category":qn.supplierCategoryName,
                                       textColor: qn.supplierCategoryName==null? AppTheme.addNewTextFieldText.withOpacity(0.5):AppTheme.addNewTextFieldText,
                                       iconColor: qn.supplierCategoryName==null? AppTheme.addNewTextFieldText:AppTheme.yellowColor,
                                     ),
@@ -279,12 +280,13 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                       itemCount: qn.supplierMaterialMappingList.length,
                                       itemBuilder: (context,index){
                                         return SlideTransition(
-                                          position: Tween<Offset>(begin: Offset(qn.isSupplierEdit?0.0: 0.0, qn.isSupplierEdit?0.0: 1.0), end: Offset.zero)
+                                          position: Tween<Offset>(begin: Offset(qn.supplierMaterialMappingList[index].isEdit?0.0: 0.0, qn.supplierMaterialMappingList[index].isEdit?0.0: 1.0), end: Offset.zero)
                                               .animate(qn.supplierMaterialMappingList[index].scaleController),
                                           // scale: Tween(begin:qn.isSupplierEdit?1.0: 0.0, end:qn.isSupplierEdit?0.0: 1.0)
                                           //     .animate(qn.supplierMaterialMappingList[index].scaleController),
                                           child: FadeTransition(
-                                            opacity: Tween(begin: qn.isSupplierEdit?1.0: 0.0, end: qn.isSupplierEdit?0.0: 1.0)
+                                            opacity: Tween(begin: qn.supplierMaterialMappingList[index].isEdit?1.0: 0.0,
+                                                end: qn.supplierMaterialMappingList[index].isEdit?0.0: 1.0)
                                                 .animate(qn.supplierMaterialMappingList[index].scaleController),
                                             child: Container(
                                               padding: EdgeInsets.only(top: 5,bottom: 5),
@@ -319,18 +321,32 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                                   GestureDetector(
                                                     onTap: (){
 
-                                                        if(qn.isSupplierEdit){
+                                                      print("Dffds");
+                                                      print(qn.isSupplierEdit);
+
+                                                        if(qn.supplierMaterialMappingList[index].isEdit){
                                                           qn.supplierMaterialMappingList[index].scaleController.forward().whenComplete(() {
-                                                            setState(() {
+                                                            if (this.mounted) {
+                                                              setState(() {
+                                                                qn.supplierMaterialMappingList.removeAt(index);
+                                                              });
+                                                            }
+
+                                                           /* setState(() {
                                                               qn.supplierMaterialMappingList.removeAt(index);
-                                                            });
+                                                            });*/
                                                           });
                                                         }
                                                         else{
                                                           qn.supplierMaterialMappingList[index].scaleController.reverse().whenComplete(() {
-                                                            setState(() {
+                                                            if (this.mounted) {
+                                                              setState(() {
+                                                                qn.supplierMaterialMappingList.removeAt(index);
+                                                              });
+                                                            }
+                                                            /*setState(() {
                                                               qn.supplierMaterialMappingList.removeAt(index);
-                                                            });
+                                                            });*/
                                                           });
                                                         }
 
@@ -407,7 +423,7 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                           margin: EdgeInsets.only(top:SizeConfig.height20,right: SizeConfig.width20),
                                           child: TextFormField(
 
-                                            scrollPadding: EdgeInsets.only(bottom: 100),
+                                            scrollPadding: EdgeInsets.only(bottom: 50),
                                             style:  TextStyle(fontFamily: 'RR',fontSize: 15,color:AppTheme.addNewTextFieldText,letterSpacing: 0.2),
                                             controller: qn.materialPrice,
                                             decoration: InputDecoration(
@@ -456,27 +472,18 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                                         SupplierId: null,
                                                         SupplierMaterialMappingId: null,
                                                         IsActive: 1,
-                                                        scaleController: AnimationController(duration: Duration(milliseconds: 300), vsync: this)
+                                                        scaleController: AnimationController(duration: Duration(milliseconds: 300), vsync: this),
+                                                        isEdit: false
                                                     )
                                                 );
                                               });
 
-                                              if(qn.isSupplierEdit){
-                                                qn.supplierMaterialMappingList[qn.supplierMaterialMappingList.length-1].scaleController.reverse().then((value){
-                                                  listViewController.animateTo(listViewController.position.maxScrollExtent, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
-                                                  qn.clearMappingList();
-                                                });
-                                              }
-                                              else{
+                                              listViewController.animateTo(listViewController.position.maxScrollExtent, duration: Duration(milliseconds: 200), curve: Curves.easeIn).then((value) {
                                                 qn.supplierMaterialMappingList[qn.supplierMaterialMappingList.length-1].scaleController.forward().then((value){
-                                                  listViewController.animateTo(listViewController.position.maxScrollExtent, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                                  // listViewController.animateTo(listViewController.position.maxScrollExtent, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                                   qn.clearMappingList();
                                                 });
-                                              }
-
-
-
-
+                                              });
                                             });
 
                                           },
@@ -501,7 +508,7 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                   ),
 
 
-                                  SizedBox(height: SizeConfig.height50,)
+                                  SizedBox(height: SizeConfig.height100,)
                                 ],
                               ),
                             ),
@@ -540,7 +547,21 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                       child: GestureDetector(
                         onTap: (){
                           node.unfocus();
-                          qn.InsertSupplierDbHit(context,this);
+                          if(qn.supplierName.text.isEmpty)
+                          {
+                            CustomAlert().commonErrorAlert(context, "Enter Supplier Name", "");
+
+                          }
+                          else if(qn.supplierCategoryId==null)
+                          {
+                            CustomAlert().commonErrorAlert(context, "Select Supplier Category", "");
+
+                          }
+                          else
+                          {
+                            qn.InsertSupplierDbHit(context,this);
+
+                          }
 
                         },
                         child: Container(
@@ -726,7 +747,7 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                 /*color: Colors.red,*/
                                 margin: EdgeInsets.only(left: SizeConfig.width30,right: SizeConfig.width30),
                                 child: ListView.builder(
-                                  itemCount: qn.supplierCategoryList.length,
+                                  itemCount: qn.supplierMaterialList.length,
                                   itemBuilder: (context,index){
                                     return GestureDetector(
                                       onTap: (){

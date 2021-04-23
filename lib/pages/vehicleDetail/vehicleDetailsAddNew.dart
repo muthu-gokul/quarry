@@ -8,6 +8,7 @@ import 'package:quarry/pages/quarryMaster/quarryLocationAddNew.dart';
 import 'package:quarry/pages/sale/salesDetail.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
+import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/customTextField.dart';
 
 
@@ -241,7 +242,18 @@ class VehicleDetailAddNewState extends State<VehicleDetailAddNew> with TickerPro
                       child: GestureDetector(
                         onTap: (){
                           node.unfocus();
-                          qn.InsertVehicleDbHit(context);
+                          if(qn.VehicleNo.text.isEmpty){
+                            CustomAlert().commonErrorAlert(context, "Enter Vehicle Number", "");
+
+                          }
+                          else if(qn.selectedVehicleTypeId==null){
+                            CustomAlert().commonErrorAlert(context, "Select VehicleType", "");
+
+                          }
+                          else{
+                            qn.InsertVehicleDbHit(context);
+
+                          }
 
 
                         },

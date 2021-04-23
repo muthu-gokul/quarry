@@ -8,6 +8,7 @@ import 'package:quarry/pages/quarryMaster/quarryLocationAddNew.dart';
 import 'package:quarry/pages/sale/salesDetail.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
+import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/customTextField.dart';
 
 
@@ -360,12 +361,15 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                           child: GestureDetector(
                             onTap: () {
                               node.unfocus();
-                              qn.InsertCustomerDbHit(context);
-                              /* if(qn.isMaterialEdit){
-
-                          }else{
-
-                          }*/
+                              if(qn.customerName.text.isEmpty){
+                                CustomAlert().commonErrorAlert(context, "Enter Name", "");
+                              }
+                              else if(qn.customerContactNumber.text.isEmpty){
+                                CustomAlert().commonErrorAlert(context, "Enter Contact Number", "");
+                              }
+                              else{
+                                qn.InsertCustomerDbHit(context);
+                              }
 
 
                             },

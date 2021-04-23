@@ -10,9 +10,11 @@ import 'package:provider/provider.dart';
 import 'package:quarry/notifier/customerNotifier.dart';
 import 'package:quarry/notifier/machineNotifier.dart';
 import 'package:quarry/notifier/materialNotifier.dart';
+import 'package:quarry/notifier/purchaseNotifier.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/notifier/supplierNotifier.dart';
 import 'package:quarry/notifier/vehicleNotifier.dart';
+import 'package:quarry/pages/purchaseDetails/purchaseGrid.dart';
 import 'package:quarry/pages/quarryMaster/quarryMaster.dart';
 import 'package:quarry/pages/sale/salesDetail.dart';
 import 'package:quarry/pages/supplierDetail/supplierGrid.dart';
@@ -213,14 +215,15 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                               DrawerContent(
                                 height: 50,
                                 image: "assets/drawerImages/dashboard.png",
-                                title: 'Purchase Form',
-                                titleColor: AppTheme.grey,
-                                // callback: (){
-                                //   setState(() {
-                                //     menuSelected=3;
-                                //     scaffoldkey.currentState.openEndDrawer();
-                                //   });
-                                // },
+                                title: 'Purchase Detail',
+                                titleColor: AppTheme.yellowColor,
+                                callback: (){
+                                  setState(() {
+                                    menuSelected=9;
+                                    scaffoldkey.currentState.openEndDrawer();
+                                  });
+                                  Provider.of<PurchaseNotifier>(context, listen: false).GetPurchaseDbHit(context,null);
+                                },
                               ),
                               DrawerContent(
                                 height: 50,
@@ -335,6 +338,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
           scaffoldkey.currentState.openDrawer();
         },):
         menuSelected==8?SupplierDetailsGrid(drawerCallback: (){
+          scaffoldkey.currentState.openDrawer();
+        },):
+        menuSelected==9?PurchaseDetailsGrid(drawerCallback: (){
           scaffoldkey.currentState.openDrawer();
         },):
             Container()
