@@ -417,8 +417,10 @@ class QuarryNotifier extends ChangeNotifier{
   initUserDetail(int userid,String name, String dbname,BuildContext context){
     UserId=userid;
     Name=name;
-    //DataBaseName=dbname;
-    DataBaseName="TetroPOS_QMS";
+    DataBaseName=dbname;
+    //DataBaseName="TetroPOS_QMS";
+    print(UserId);
+    print(Name);
     print(DataBaseName);
 /*    initDropDownValues(context);*/
   }

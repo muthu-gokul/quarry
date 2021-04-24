@@ -16,9 +16,12 @@ class AddNewLabelTextField extends StatelessWidget {
   VoidCallback ontap;
   TextInputFormatter textInputFormatter;
   VoidCallback onEditComplete;
+  bool isObscure;
+  int maxlines;
 
   AddNewLabelTextField({this.textEditingController,this.labelText,this.scrollPadding,this.textInputType:TextInputType.text,
-    this.prefixIcon,this.ontap,this.onChange,this.textInputFormatter,this.isEnabled=true,this.suffixIcon,this.onEditComplete});
+    this.prefixIcon,this.ontap,this.onChange,this.textInputFormatter,this.isEnabled=true,this.suffixIcon,this.onEditComplete,
+    this.isObscure=false,this.maxlines=null});
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +36,8 @@ class AddNewLabelTextField extends StatelessWidget {
       child:  TextFormField(
          enabled: isEnabled,
          onTap: ontap,
+         obscureText: isObscure,
+         obscuringCharacter: '*',
          scrollPadding: EdgeInsets.only(bottom: scrollPadding),
         style:  TextStyle(fontFamily: 'RR',fontSize: 15,color:AppTheme.addNewTextFieldText,letterSpacing: 0.2),
         controller: textEditingController,
@@ -57,7 +62,7 @@ class AddNewLabelTextField extends StatelessWidget {
 
 
         ),
-        maxLines: null,
+        maxLines: maxlines,
         keyboardType: textInputType,
         textInputAction: TextInputAction.done,
         // inputFormatters:  <TextInputFormatter>[

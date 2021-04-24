@@ -60,7 +60,7 @@ class LoginModel{
   LoginModel({this.loginTable,this.loginTblOutput,this.allUsers});
 
   factory LoginModel.fromJson(Map<dynamic, dynamic> json) {
-   var loginTableJson=json['Table'] as List;
+   var loginTableJson=json['Table1'] as List;
 
    var loginTblOutputJson=json['TblOutPut'] as List;
    List<LoginTable> _loginTable=loginTableJson.map((e) => LoginTable.fromJson(e)).toList();

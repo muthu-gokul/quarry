@@ -8,7 +8,7 @@ class SizeConfig {
   static double blockSizeHorizontal;
   static double blockSizeVertical;
  static  double height4,height10,height12,height16,height20,height25,height26,height30,height35,height40,height50,height55,height60,height70,height80,height90,height100,height114,height130,height140,height150,height180,height200,height250,height270,height400,height430,height600,height690;
-  static  double width5,width10,width12,width14,width16,width18,width20,width25,width30,width35,width40,width45,width50,width70,width80,width90,width100,width116,width120,width125,width130,width140,width150,width179,width186,width200,width250,width320,width265,width400,width410,width500;
+  static  double width5,width10,width12,width14,width16,width18,width20,width25,width30,width35,width40,width45,width50,width60,width70,width80,width90,width100,width116,width120,width125,width130,width140,width150,width179,width186,width200,width250,width320,width265,width400,width410,width500;
   void init(BuildContext context) {
     mediaQueryData = MediaQuery.of(context);
     screenWidth = mediaQueryData.size.width;
@@ -30,6 +30,7 @@ class SizeConfig {
     width40=screenWidth>420?screenWidth*(40/600):screenWidth*(40/320);
     width45=screenWidth>420?screenWidth*(45/600):screenWidth*(45/320);
     width50=screenWidth>420?screenWidth*(50/600):screenWidth*(50/320);
+    width60=screenWidth>420?screenWidth*(60/600):screenWidth*(60/320);
     width70=screenWidth>420?screenWidth*(70/600):screenWidth*(70/320);
     width80=screenWidth>420?screenWidth*(80/600):screenWidth*(80/320);
     width90=screenWidth>420?screenWidth*(90/600):screenWidth*(90/320);

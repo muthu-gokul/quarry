@@ -54,5 +54,14 @@ class Sp{
   static String getPurchaseDetail="USP_GetPurchaseOrderDetail";
   static String deletePurchaseDetail="USP_DeletePurchaseOrderDetail";
 
+
+
+  static String insertUserDetail="USP_InsertUserDetail";
+  static String updateUserDetail="USP_UpdateUserDetail";
+  static String getUserDetail="USP_GetUserDetail";
+  static String deleteUserDetail="USP_DeleteUserDetail";
+
+  static String updateUserProfileDetail="USP_UpdateUserProfileDetail";
+
 }
 

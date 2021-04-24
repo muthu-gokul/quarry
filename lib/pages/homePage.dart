@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 import 'package:quarry/notifier/customerNotifier.dart';
 import 'package:quarry/notifier/machineNotifier.dart';
 import 'package:quarry/notifier/materialNotifier.dart';
+import 'package:quarry/notifier/profileNotifier.dart';
 import 'package:quarry/notifier/purchaseNotifier.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/notifier/supplierNotifier.dart';
@@ -18,6 +19,7 @@ import 'package:quarry/pages/purchaseDetails/purchaseGrid.dart';
 import 'package:quarry/pages/quarryMaster/quarryMaster.dart';
 import 'package:quarry/pages/sale/salesDetail.dart';
 import 'package:quarry/pages/supplierDetail/supplierGrid.dart';
+import 'package:quarry/pages/users/profile.dart';
 import 'package:quarry/pages/vehicleDetail/vehicleDetailsGrid.dart';
 import 'package:quarry/pages/vendor/vendorMaster.dart';
 import 'package:quarry/styles/app_theme.dart';
@@ -228,14 +230,15 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                               DrawerContent(
                                 height: 50,
                                 image: "assets/drawerImages/dashboard.png",
-                                title: 'Inventory Group',
-                                titleColor: AppTheme.grey,
-                                // callback: (){
-                                //   setState(() {
-                                //     menuSelected=3;
-                                //     scaffoldkey.currentState.openEndDrawer();
-                                //   });
-                                // },
+                                title: 'My Profile',
+                                titleColor: AppTheme.yellowColor,
+                                callback: (){
+                                  setState(() {
+                                    menuSelected=10;
+                                    scaffoldkey.currentState.openEndDrawer();
+                                  });
+                                  Provider.of<ProfileNotifier>(context, listen: false).GetUserDetailDbHit(context,Provider.of<QuarryNotifier>(context,listen: false).UserId);
+                                },
                               ),
                               DrawerContent(
                                 height: 50,
@@ -341,6 +344,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
           scaffoldkey.currentState.openDrawer();
         },):
         menuSelected==9?PurchaseDetailsGrid(drawerCallback: (){
+          scaffoldkey.currentState.openDrawer();
+        },):
+        menuSelected==10?ProfileScreen(drawerCallback: (){
           scaffoldkey.currentState.openDrawer();
         },):
             Container()
