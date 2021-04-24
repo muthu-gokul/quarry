@@ -3,23 +3,26 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:quarry/notifier/manageUsersNotifier.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/pages/quarryMaster/plantDetailsAddNew.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
 
+import 'manageUsersAddNew.dart';
 
 
 
 
-class PlantDetailsGrid extends StatefulWidget {
+
+class ManageUsersGrid extends StatefulWidget {
   VoidCallback drawerCallback;
-  PlantDetailsGrid({this.drawerCallback});
+  ManageUsersGrid({this.drawerCallback});
   @override
-  PlantDetailsGridState createState() => PlantDetailsGridState();
+  ManageUsersGridState createState() => ManageUsersGridState();
 }
 
-class PlantDetailsGridState extends State<PlantDetailsGrid> with TickerProviderStateMixin{
+class ManageUsersGridState extends State<ManageUsersGrid> with TickerProviderStateMixin{
 
   bool isEdit=false;
 
@@ -43,7 +46,7 @@ class PlantDetailsGridState extends State<PlantDetailsGrid> with TickerProviderS
 
 
       listViewController.addListener(() {
-        print("List SCROLL--${listViewController.offset}");
+
         if(listViewController.offset>20){
 
           scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
@@ -63,8 +66,8 @@ class PlantDetailsGridState extends State<PlantDetailsGrid> with TickerProviderS
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return Scaffold(
-      body: Consumer<QuarryNotifier>(
-          builder: (context,qn,child)=> Stack(
+      body: Consumer<ManageUsersNotifier>(
+          builder: (context,mun,child)=> Stack(
             children: [
 
 
@@ -85,34 +88,6 @@ class PlantDetailsGridState extends State<PlantDetailsGrid> with TickerProviderS
                           )
 
                       ),
-                      /*  child:
-                             Column(
-                               mainAxisAlignment: MainAxisAlignment.start,
-                               children: [
-                                 Row(
-                                   children: [
-                                     IconButton(icon: Icon(Icons.menu), onPressed: widget.drawerCallback),
-                                     SizedBox(width: SizeConfig.width5,),
-                                     Text("Company Detail",
-                                       style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: SizeConfig.width16),
-                                     ),
-                                     Spacer(),
-
-                                   ],
-                                 ),
-                                 Spacer(),
-                                 // Image.asset("assets/images/saleFormheader.jpg",height: 100,),
-                                 // Container(
-                                 //   height: SizeConfig.height50,
-                                 //   color: Color(0xFF753F03),
-                                 //
-                                 // ) // Container(
-                                 //   height: SizeConfig.height50,
-                                 //   color: Color(0xFF753F03),
-                                 //
-                                 // )
-                               ],
-                             ),*/
                     ),
 
 
@@ -163,26 +138,28 @@ class PlantDetailsGridState extends State<PlantDetailsGrid> with TickerProviderS
                                     child: Center(
                                       child: GestureDetector(
                                         onTap: (){
-                                          qn.PlantDropDownValues(context);
-                                          qn.clearPlantLicenseForm();
-                                          qn.updatePlantDetailEdit(false);
+
+                                          mun.updateisManageUsersEdit(false);
+                                          mun.updateisEdit(true);
                                           Navigator.push(context, _createRoute());
+                                          mun.UserDropDownValues(context);
+
 
                                         },
                                         child: Container(
                                           height: 80,
                                           width: 80,
                                           decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
+                                              shape: BoxShape.circle,
                                               color: AppTheme.yellowColor,
-                                            boxShadow: [
-                                              BoxShadow(
-                                                color: AppTheme.yellowColor.withOpacity(0.4),
-                                                spreadRadius: 1,
-                                                blurRadius: 5,
-                                                offset: Offset(1, 8), // changes position of shadow
-                                              ),
-                                            ]
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: AppTheme.yellowColor.withOpacity(0.4),
+                                                  spreadRadius: 1,
+                                                  blurRadius: 5,
+                                                  offset: Offset(1, 8), // changes position of shadow
+                                                ),
+                                              ]
                                           ),
                                           child: Center(
                                             child: Icon(Icons.add,color: Colors.white,size: 40,),
@@ -191,10 +168,14 @@ class PlantDetailsGridState extends State<PlantDetailsGrid> with TickerProviderS
                                       ),
                                     ),
                                   ),
-                                  qn.plantGridList.isNotEmpty? GestureDetector(
+                                  mun.usersList.isNotEmpty? GestureDetector(
                                     onTap: (){
+                                      mun.updateisManageUsersEdit(true);
+                                      mun.updateisEdit(false);
                                       Navigator.push(context, _createRoute());
-                                      qn.GetplantDetailDbhit(context, qn.plantGridList[0].plantId);
+                                      mun.UserDropDownValues(context);
+                                      mun.GetUserDetailDbHit(context,mun.usersList[0].userId);
+
 
                                     },
                                     child: Container(
@@ -218,11 +199,11 @@ class PlantDetailsGridState extends State<PlantDetailsGrid> with TickerProviderS
                                           ),
 
                                           SizedBox(height: 20,),
-                                          Text("${qn.plantGridList[0].plantName}  ",
-                                          style: TextStyle(color: AppTheme.bgColor,fontFamily: 'RM',fontSize: 14),
+                                          Text("${mun.usersList[0].userName}  ",
+                                            style: TextStyle(color: AppTheme.bgColor,fontFamily: 'RM',fontSize: 14),
                                           ),
                                           SizedBox(height: 3,),
-                                          Text("${qn.plantGridList[0].location}  ",
+                                          Text("${mun.usersList[0].userGroupName}  ",
                                             style: TextStyle(color: AppTheme.bgColor,fontFamily: 'RR',fontSize: 12),
                                           ),
                                         ],
@@ -241,12 +222,12 @@ class PlantDetailsGridState extends State<PlantDetailsGrid> with TickerProviderS
 
                             SingleChildScrollView(
                               child: Wrap(
-                                  children: qn.plantGridList.asMap()
+                                  children: mun.usersList.asMap()
                                       .map((i, value) => MapEntry(i,    i==0?Container():
                                   GestureDetector(
                                     onTap: (){
-                                      Navigator.push(context, _createRoute());
-                                      qn.GetplantDetailDbhit(context, qn.plantGridList[i].plantId);
+                                   //   Navigator.push(context, _createRoute());
+                                    //  qn.GetplantDetailDbhit(context, qn.plantGridList[i].plantId);
 
                                     },
                                     child: Container(
@@ -259,8 +240,11 @@ class PlantDetailsGridState extends State<PlantDetailsGrid> with TickerProviderS
                                           SizedBox(height: 50,),
                                           GestureDetector(
                                             onTap: (){
-                                              qn.GetplantDetailDbhit(context, qn.plantGridList[i].plantId);
+                                              mun.updateisManageUsersEdit(true);
+                                              mun.updateisEdit(false);
                                               Navigator.push(context, _createRoute());
+                                              mun.UserDropDownValues(context);
+                                              mun.GetUserDetailDbHit(context,mun.usersList[i].userId);
                                             },
                                             child: Container(
                                               height: 80,
@@ -273,11 +257,11 @@ class PlantDetailsGridState extends State<PlantDetailsGrid> with TickerProviderS
                                           ),
 
                                           SizedBox(height: 20,),
-                                          Text("${qn.plantGridList[i].plantName}  ",
+                                          Text("${mun.usersList[i].userName}  ",
                                             style: TextStyle(color: AppTheme.bgColor,fontFamily: 'RM',fontSize: 14),
                                           ),
                                           SizedBox(height: 3,),
-                                          Text("${qn.plantGridList[i].location}  ",
+                                          Text("${mun.usersList[i].userGroupName}  ",
                                             style: TextStyle(color: AppTheme.bgColor,fontFamily: 'RR',fontSize: 12),
                                           ),
                                         ],
@@ -307,7 +291,7 @@ class PlantDetailsGridState extends State<PlantDetailsGrid> with TickerProviderS
                       Navigator.pop(context);
                     }),
                     SizedBox(width: SizeConfig.width5,),
-                    Text("Our Plants",
+                    Text("Manage Users",
                       style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: SizeConfig.width16),
                     ),
 
@@ -318,8 +302,8 @@ class PlantDetailsGridState extends State<PlantDetailsGrid> with TickerProviderS
 
               Container(
 
-                height: qn.insertCompanyLoader? SizeConfig.screenHeight:0,
-                width: qn.insertCompanyLoader? SizeConfig.screenWidth:0,
+                height: mun.ManageUsersLoader? SizeConfig.screenHeight:0,
+                width: mun.ManageUsersLoader? SizeConfig.screenWidth:0,
                 color: Colors.black.withOpacity(0.5),
                 child: Center(
                   child:CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(AppTheme.yellowColor),),
@@ -334,7 +318,7 @@ class PlantDetailsGridState extends State<PlantDetailsGrid> with TickerProviderS
   }
   Route _createRoute() {
     return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => PlantDetailsAddNew(),
+      pageBuilder: (context, animation, secondaryAnimation) => ManageUsersAddNew(),
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
 
         return FadeTransition(

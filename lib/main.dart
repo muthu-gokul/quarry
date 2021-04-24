@@ -12,6 +12,7 @@ import 'package:quarry/notifier/supplierNotifier.dart';
 import 'package:quarry/notifier/vehicleNotifier.dart';
 import 'package:quarry/pages/homePage.dart';
 
+import 'notifier/manageUsersNotifier.dart';
 import 'testing.dart';
 
 void main() {
@@ -33,6 +34,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<SupplierNotifier>(create:(_)=>SupplierNotifier()),
         ChangeNotifierProvider<PurchaseNotifier>(create:(_)=>PurchaseNotifier()),
         ChangeNotifierProvider<ProfileNotifier>(create:(_)=>ProfileNotifier()),
+        ChangeNotifierProvider<ManageUsersNotifier>(create:(_)=>ManageUsersNotifier()),
       ],
       child: MaterialApp(
         title: 'Quarry Management',

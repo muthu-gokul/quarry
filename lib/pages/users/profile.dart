@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/notifier/machineNotifier.dart';
+import 'package:quarry/notifier/manageUsersNotifier.dart';
 import 'package:quarry/notifier/profileNotifier.dart';
+import 'package:quarry/pages/manageUsers/manageUsersGrid.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/alertDialog.dart';
@@ -194,11 +196,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           child: Column(
                                             children: [
                                               Text("${pn.selectedSalutation}.${pn.firstName.text}${pn.lastName.text}",
-                                              style: TextStyle(fontFamily: 'RM',color: AppTheme.bgColor,fontSize: 16),
+                                              style: AppTheme.userNameTS,
                                               ),
                                               SizedBox(height: 3,),
                                               Text("${pn.UserGroupName}",
-                                                style: TextStyle(fontFamily: 'RL',color: AppTheme.gridTextColor,fontSize: 14),
+                                                style: AppTheme.userGroupTS,
                                               ),
                                               SizedBox(height: 20,),
                                             ],
@@ -419,9 +421,61 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       });
                                     }),
                                       ),
+                                      SizedBox(height: SizeConfig.height20,),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                        children: [
+                                          GestureDetector(
+                                            onTap: (){
+                                              Navigator.push(context, _createRoute());
+                                              Provider.of<ManageUsersNotifier>(context,listen: false).GetUserDetailDbHit(context, null);
+                                            },
+                                            child: Container(
+                                              width:SizeConfig.screenWidth*0.4,
+                                              height:SizeConfig.height50,
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(25.0),
+                                                color: AppTheme.yellowColor,
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: AppTheme.yellowColor.withOpacity(0.4),
+                                                    spreadRadius: 1,
+                                                    blurRadius: 5,
+                                                    offset: Offset(1, 8), // changes position of shadow
+                                                  ),
+                                                ],
+                                              ),
+                                              child: Center(
+                                                  child: Text("Manage Users",style: AppTheme.bgColorTS,
+                                                  )
+                                              ),
+                                            ),
+                                          ),
+                                          Container(
+                                            width:SizeConfig.screenWidth*0.4,
+                                            height:SizeConfig.height50,
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(25.0),
+                                              color: AppTheme.yellowColor,
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: AppTheme.yellowColor.withOpacity(0.4),
+                                                  spreadRadius: 1,
+                                                  blurRadius: 5,
+                                                  offset: Offset(1, 8), // changes position of shadow
+                                                ),
+                                              ],
+                                            ),
+                                            child: Center(
+                                                child: Text("User Access",style: AppTheme.bgColorTS,
+                                                )
+                                            ),
+                                          ),
+                                        ],
+                                      ),
 
 
-                                      SizedBox(height: SizeConfig.height100,)
+                                      SizedBox(height: SizeConfig.height100,),
                                     ],
                                   ),
                                 ),
@@ -473,8 +527,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ],
                   ),
                 ),
-                Positioned(
-                  bottom: 0,
+                AnimatedPositioned(
+                  duration: Duration(milliseconds: 300),
+                  curve: Curves.easeIn,
+                  bottom:isEdit? 0:-80,
                   child: Container(
                     height:_keyboardVisible?0: SizeConfig.height70,
                     width: SizeConfig.screenWidth,
@@ -533,6 +589,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
             )
         )
 
+    );
+  }
+  Route _createRoute() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => ManageUsersGrid(),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+
+        return FadeTransition(
+          opacity: Tween(begin: 0.0, end: 1.0).animate(animation),
+          child: child,
+        );
+      },
     );
   }
 }
