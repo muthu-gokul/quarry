@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/notifier/purchaseNotifier.dart';
 import 'package:quarry/notifier/supplierNotifier.dart';
+import 'package:quarry/pages/purchaseDetails/purchaseAddNew.dart';
 import 'package:quarry/pages/supplierDetail/supplierAddNew.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
@@ -22,6 +23,28 @@ class PurchaseDetailsGridState extends State<PurchaseDetailsGrid> with TickerPro
 
   bool showEdit=false;
   int selectedIndex;
+
+
+  ScrollController header=new ScrollController();
+  ScrollController body=new ScrollController();
+
+
+  @override
+  void initState() {
+    header.addListener(() {
+      if(body.offset!=header.offset){
+        body.jumpTo(header.offset);
+      }
+    });
+
+    body.addListener(() {
+      if(header.offset!=body.offset){
+        header.jumpTo(body.offset);
+      }
+    });
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +73,234 @@ class PurchaseDetailsGridState extends State<PurchaseDetailsGrid> with TickerPro
                   ),
                 ),
                 Container(
+                    height: SizeConfig.screenHeight-SizeConfig.height50,
+                    width: SizeConfig.screenWidth,
+                    margin: EdgeInsets.only(top: SizeConfig.height50),
+                    color: Colors.white,
+                    child: Row(
+                      children: [
+                        //not Scrollable
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Container(
+                              height: 50,
+                              width: 150,
+                              color: AppTheme.bgColor,
+                              child: Text("${pn.purchaseGridCol[0]}",style: AppTheme.TSWhite16,),
+
+                            ),
+                            Container(
+                              height: SizeConfig.screenHeight-200,
+                              alignment: Alignment.topCenter,
+                              child: Container(
+                                height: SizeConfig.screenHeight-200,
+                                alignment: Alignment.topCenter,
+                              /*  decoration: BoxDecoration(
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: AppTheme.addNewTextFieldText.withOpacity(0.9),
+                                      spreadRadius: 2,
+                                      blurRadius: 15,
+                                      offset: Offset(0, 0), // changes position of shadow
+                                    )
+                                  ]
+                                ),*/
+                                child: SingleChildScrollView(
+                                  scrollDirection: Axis.vertical,
+                                  child: Column(
+                                      children: pn.purchaseGridList.asMap().
+                                      map((i, value) => MapEntry(
+                                          i,InkWell(
+                                        onTap: (){
+                                          setState(() {
+
+                                            if(selectedIndex==i){
+                                              selectedIndex=-1;
+                                              showEdit=false;
+                                            } else{
+                                              selectedIndex=i;
+                                              showEdit=true;
+                                            }
+
+
+                                          });
+                                        },
+                                        child:  Container(
+                                          decoration: BoxDecoration(
+                                            color: selectedIndex==i?AppTheme.yellowColor:Colors.white,
+                                            boxShadow:[
+                                              selectedIndex==i? BoxShadow(
+                                                color: AppTheme.yellowColor.withOpacity(0.4),
+                                                spreadRadius: 2,
+                                                blurRadius: 5,
+                                                offset: Offset(1, 8), // changes position of shadow
+                                              ):BoxShadow(
+                                                  color: Colors.white
+                                              ),
+                                            ],
+                                          ),
+                                          padding: EdgeInsets.only(left: 20,right: 20,bottom: 20,top: 20),
+                                          width: 150,
+                                          child: Text("${value.purchaseOrderNumber}",style: TextStyle(color:Colors.blue,fontSize:16),),
+                                        ),
+                                      )
+                                      )
+                                      ).values.toList()
+
+                                    //[
+                                    /*    InkWell(
+                        onTap: (){
+                          setState(() {
+                            showEdit=!showEdit;
+                          });
+                        },
+                        child:  Container(
+                          padding: EdgeInsets.only(left: 20,right: 20),
+                          width: 150,
+                          child: Text("Aishu",style: TextStyle(color:Colors.blue,fontSize:16),),
+                        ),
+                      ),*/
+
+
+                                    //],
+                                  ),
+                                ),
+
+
+                              ),
+                            ),
+                          ],
+                        ),
+
+
+                        //Scrollable
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Container(
+                              height: 50,
+                              width: SizeConfig.screenWidth-150,
+                              color: AppTheme.bgColor,
+                              child: SingleChildScrollView(
+                                controller: header,
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                    children: pn.purchaseGridCol.asMap().
+                                    map((i, value) => MapEntry(i, i==0?Container():
+                                    Container(
+                                        padding: EdgeInsets.only(left: 20,right: 20),
+                                        width: 150,
+                                        child: Text(value,style: AppTheme.TSWhite16,)
+                                    )
+                                    )).values.toList()
+                                ),
+                              ),
+
+                            ),
+                            Container(
+                              height: SizeConfig.screenHeight-200,
+                              width: SizeConfig.screenWidth-150,
+                              alignment: Alignment.topCenter,
+                              child: SingleChildScrollView(
+                                controller: body,
+                                scrollDirection: Axis.horizontal,
+                                child: Container(
+                                  height: SizeConfig.screenHeight-200,
+                                  alignment: Alignment.topCenter,
+                                  child: SingleChildScrollView(
+                                    scrollDirection: Axis.vertical,
+                                    child: Column(
+                                        children:pn.purchaseGridList.asMap().
+                                        map((i, value) => MapEntry(
+                                            i,InkWell(
+                                          onTap: (){
+                                            setState(() {
+
+                                              if(selectedIndex==i){
+                                                selectedIndex=-1;
+                                                showEdit=false;
+                                              } else{
+                                                selectedIndex=i;
+                                                showEdit=true;
+                                              }
+
+
+                                            });
+                                          },
+                                          child: Container(
+
+                                            decoration: BoxDecoration(
+                                              color: selectedIndex==i?AppTheme.yellowColor:Colors.white,
+                                              boxShadow:[
+                                                selectedIndex==i? BoxShadow(
+                                                  color: AppTheme.yellowColor.withOpacity(0.4),
+                                                  spreadRadius: 1,
+                                                  blurRadius: 5,
+                                                  offset: Offset(1, 8), // changes position of shadow
+                                                ):BoxShadow(
+                                                    color: Colors.white
+                                                ),
+                                              ],
+                                            ),
+                                            padding: EdgeInsets.only(top: 20,bottom: 20),
+                                            child: Row(
+                                              children: [
+                                                Container(
+                                                  padding: EdgeInsets.only(left: 20,right: 20),
+                                                  width: 150,
+                                                  child: Text("${DateFormat.yMMMd().format(value.expectedDate)}",style: TextStyle(color:Colors.blue,fontSize:16),),
+                                                ),
+
+                                                Container(
+                                                  padding: EdgeInsets.only(left: 20,right: 20),
+                                                  width: 150,
+                                                  child: Text("${value.NoOfMaterial.toString()}",style: TextStyle(color:Colors.blue,fontSize:16, ),),
+
+                                                ),
+                                                Container(
+                                                  width: 150,
+                                                  child: Text("${value.TotalQuantity.toString()}",style: TextStyle(color:Colors.blue,fontSize:16),),
+                                                ),
+
+                                                Container(
+                                                  width: 150,
+                                                  child: Text("${value.taxAmount.toString()}",style: TextStyle(color:Colors.blue,fontSize:16),),
+                                                ),
+                                                Container(
+                                                  width: 150,
+                                                  child: Text("${value.Subtotal.toString()}",style: TextStyle(color:Colors.blue,fontSize:16),),
+                                                ),
+
+                                                Container(
+                                                  width: 150,
+                                                  child: Text("${value.netAmount.toString()}",style: TextStyle(color:Colors.blue,fontSize:16),),
+                                                ),
+
+                                              ],
+                                            ),
+                                          ),
+                                        )
+                                        )
+                                        ).values.toList()
+                                    ),
+                                  ),
+
+
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+
+                      ],
+                    )
+
+
+
+
+                ),
+               /* Container(
                     height: SizeConfig.screenHeight-SizeConfig.height50,
                     width: SizeConfig.screenWidth,
                     color: Colors.white,
@@ -161,7 +412,7 @@ class PurchaseDetailsGridState extends State<PurchaseDetailsGrid> with TickerPro
 
                       ),
                     )
-                ),
+                ),*/
 
                 Positioned(
                   bottom: 20,
@@ -172,6 +423,7 @@ class PurchaseDetailsGridState extends State<PurchaseDetailsGrid> with TickerPro
 
                       pn.updatePurchaseEdit(false);
                       pn.PurchaseDropDownValues(context);
+                      pn.insertForm();
                       Navigator.of(context).push(_createRoute());
 
 
@@ -213,14 +465,17 @@ class PurchaseDetailsGridState extends State<PurchaseDetailsGrid> with TickerPro
                         children: [
                           GestureDetector(
                             onTap: (){
-                              pn.updatePurchaseEdit(true);
-                              pn.PurchaseDropDownValues(context);
-                              pn.GetPurchaseDbHit(context, pn.purchaseGridList[selectedIndex].purchaseOrderId);
-                              setState(() {
-                                showEdit=false;
-                                selectedIndex=-1;
-                              });
                               Navigator.of(context).push(_createRoute());
+                              pn.updatePurchaseEdit(true);
+                              pn.PurchaseDropDownValues(context).then((value) {
+                                pn.GetPurchaseDbHit(context, pn.purchaseGridList[selectedIndex].purchaseOrderId);
+                                setState(() {
+                                  showEdit=false;
+                                  selectedIndex=-1;
+                                });
+                              });
+
+
                             },
                             child: Container(
                               height: 50,
@@ -303,7 +558,7 @@ class PurchaseDetailsGridState extends State<PurchaseDetailsGrid> with TickerPro
 
   Route _createRoute() {
     return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => SupplierDetailAddNew(),
+      pageBuilder: (context, animation, secondaryAnimation) => PurchaseOrdersAddNew(),
 
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
 

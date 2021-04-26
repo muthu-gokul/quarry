@@ -1,22 +1,19 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/api/ApiManager.dart';
 import 'package:quarry/api/sp.dart';
-import 'package:quarry/model/materialCategoryModel.dart';
-import 'package:quarry/model/materialDetailsModel/materialGridModel.dart';
+import 'package:quarry/model/purchaseDetailsModel/PurchaseOrderOtherChargesMappingListModel.dart';
 import 'package:quarry/model/purchaseDetailsModel/purchaseDetailGridModel.dart';
 import 'package:quarry/model/purchaseDetailsModel/purchaseMaterialListModel.dart';
+import 'package:quarry/model/purchaseDetailsModel/purchaseOrderMaterialMappingListModel.dart';
 import 'package:quarry/model/purchaseDetailsModel/purchaseSupplierListModel.dart';
 import 'package:quarry/model/purchaseDetailsModel/purchaseSupplierTypeModel.dart';
-import 'package:quarry/model/supplierDetailModel/SupplierMaterialMappingListModel.dart';
-import 'package:quarry/model/supplierDetailModel/supplierCategoryModel.dart';
-import 'package:quarry/model/supplierDetailModel/supplierGridModel.dart';
-import 'package:quarry/model/supplierDetailModel/supplierMaterialModel.dart';
-import 'package:quarry/model/unitDetailModel.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/widgets/alertDialog.dart';
+import '../widgets/decimal.dart';
 
 class PurchaseNotifier extends ChangeNotifier{
 
@@ -26,7 +23,7 @@ class PurchaseNotifier extends ChangeNotifier{
   String supplierType=null;
 
   int supplierId=null;
-  var SelectedSupplierName=null;
+  var supplierName=null;
 
   DateTime PurchaseDate;
   DateTime ExpectedPurchaseDate;
@@ -44,7 +41,7 @@ class PurchaseNotifier extends ChangeNotifier{
 
   final call=ApiManager();
 
-  PurchaseDropDownValues(BuildContext context) async {
+  Future<dynamic> PurchaseDropDownValues(BuildContext context) async {
 
     updatePurchaseLoader(true);
     var body={
@@ -91,7 +88,6 @@ class PurchaseNotifier extends ChangeNotifier{
           suppliersList =t3.map((e) => PurchaseSupplierList.fromJson(e)).toList();
           filterSuppliersList=suppliersList;
 
-          clearForm();
         }
         updatePurchaseLoader(false);
       });
@@ -103,6 +99,157 @@ class PurchaseNotifier extends ChangeNotifier{
   }
 
 
+ TextEditingController searchController=new TextEditingController();
+
+ searchMaterial(String value){
+   if(value.isEmpty){
+     filterMaterialsList=materialsList;
+   }
+   else{
+     filterMaterialsList=materialsList.where((element) => element.materialName.toLowerCase().contains(value.toLowerCase())).toList();
+   }
+   notifyListeners();
+ }
+
+
+
+  List<PurchaseOrderMaterialMappingListModel> purchaseOrdersMappingList=[];
+  List<PurchaseOrderOtherChargesMappingList> purchaseOrdersOtherChargesMappingList=[];
+
+  bool isDiscountPercentage=true;
+  updateisDiscountPercentage(bool value){
+    isDiscountPercentage=value;
+    notifyListeners();
+  }
+
+
+  removepurchaseOrdersMappingList(int index){
+    purchaseOrdersMappingList.removeAt(index);
+    notifyListeners();
+  }
+
+
+  updateIsDiscountFromQtyShowDialog(int index,String discountvalue,String purchaseqty){
+
+    if(discountvalue.isEmpty){
+      purchaseOrdersMappingList[index].IsDiscount=0;
+      purchaseOrdersMappingList[index].IsAmount=0;
+      purchaseOrdersMappingList[index].IsPercentage=0;
+      purchaseOrdersMappingList[index].DiscountValue=0.0;
+      purchaseOrdersMappingList[index].DiscountAmount=0.0;
+
+      if(purchaseqty.isEmpty){
+        purchaseOrdersMappingList[index].purchaseQty..text="";
+        purchaseOrdersCalc(index,"0");
+      }else{
+        purchaseOrdersMappingList[index].purchaseQty..text=purchaseqty;
+        purchaseOrdersCalc(index,purchaseqty);
+      }
+
+    }
+    else{
+      purchaseOrdersMappingList[index].IsDiscount=1;
+      if(isDiscountPercentage){
+        purchaseOrdersMappingList[index].IsPercentage=1;
+        purchaseOrdersMappingList[index].IsAmount=0;
+      }else{
+        purchaseOrdersMappingList[index].IsPercentage=0;
+        purchaseOrdersMappingList[index].IsAmount=1;
+      }
+      purchaseOrdersMappingList[index].DiscountValue=double.parse(discountvalue);
+      purchaseOrdersMappingList[index].DiscountAmount=0.0;
+
+      if(purchaseqty.isEmpty){
+        purchaseOrdersMappingList[index].purchaseQty..text="";
+        purchaseOrdersCalc(index,"0");
+      }else{
+        purchaseOrdersMappingList[index].purchaseQty..text=purchaseqty;
+        purchaseOrdersCalc(index,purchaseqty);
+      }
+
+
+    }
+
+
+    notifyListeners();
+  }
+
+
+  purchaseOrdersCalc(int index,String purchaseQty){
+    print("purchaseQty1  $purchaseQty");
+
+    if(purchaseQty.isEmpty){
+
+      purchaseOrdersMappingList[index].TotalAmount=0.0;
+      purchaseOrdersMappingList[index].Amount=0.0;
+      purchaseOrdersMappingList[index].TaxAmount=0.0;
+      purchaseOrdersMappingList[index].DiscountAmount=0.0;
+      overAllTotalCalc();
+    }
+    else{
+
+
+      if( purchaseOrdersMappingList[index].IsDiscount==0){
+        purchaseOrdersMappingList[index].Amount=double.parse((Decimal.parse(purchaseQty)*Decimal.parse(purchaseOrdersMappingList[index].MaterialPrice.toString())).toString());
+        purchaseOrdersMappingList[index].TaxAmount=double.parse(((Decimal.parse(purchaseOrdersMappingList[index].TaxValue.toString())*(Decimal.parse(purchaseOrdersMappingList[index].Amount.toString())-Decimal.parse(purchaseOrdersMappingList[index].DiscountAmount.toString())))/Decimal.parse("100")).toString());
+        purchaseOrdersMappingList[index].TotalAmount=double.parse((Decimal.parse(purchaseOrdersMappingList[index].Amount.toString())+Decimal.parse(purchaseOrdersMappingList[index].TaxAmount.toString())).toString());
+
+      }
+      else if(purchaseOrdersMappingList[index].IsDiscount==1){
+        if(purchaseOrdersMappingList[index].IsPercentage==1){
+          purchaseOrdersMappingList[index].Amount=double.parse((Decimal.parse(purchaseQty)*Decimal.parse(purchaseOrdersMappingList[index].MaterialPrice.toString())).toString());
+          purchaseOrdersMappingList[index].DiscountAmount=double.parse(((Decimal.parse(purchaseOrdersMappingList[index].DiscountValue.toString())*Decimal.parse(purchaseOrdersMappingList[index].Amount.toString()))/Decimal.parse("100")).toString());
+
+          purchaseOrdersMappingList[index].TaxAmount=double.parse(((((Decimal.parse(purchaseOrdersMappingList[index].Amount.toString()))-Decimal.parse(purchaseOrdersMappingList[index].DiscountAmount.toString())) * Decimal.parse(purchaseOrdersMappingList[index].TaxValue.toString()) )/Decimal.parse("100")).toString());
+          purchaseOrdersMappingList[index].TotalAmount=double.parse((Decimal.parse(purchaseOrdersMappingList[index].Amount.toString())+Decimal.parse(purchaseOrdersMappingList[index].TaxAmount.toString())-Decimal.parse(purchaseOrdersMappingList[index].DiscountAmount.toString())).toString());
+
+        }
+        else if(purchaseOrdersMappingList[index].IsAmount==1){
+
+          purchaseOrdersMappingList[index].Amount=double.parse((Decimal.parse(purchaseQty)*Decimal.parse(purchaseOrdersMappingList[index].MaterialPrice.toString())).toString());
+
+          purchaseOrdersMappingList[index].DiscountAmount=double.parse((Decimal.parse(purchaseOrdersMappingList[index].DiscountValue.toString())).toString());
+
+          purchaseOrdersMappingList[index].TaxAmount=double.parse(((((Decimal.parse(purchaseOrdersMappingList[index].Amount.toString()))-Decimal.parse(purchaseOrdersMappingList[index].DiscountAmount.toString())) * Decimal.parse(purchaseOrdersMappingList[index].TaxValue.toString()) )/Decimal.parse("100")).toString());
+          purchaseOrdersMappingList[index].TotalAmount=double.parse((Decimal.parse(purchaseOrdersMappingList[index].Amount.toString())+Decimal.parse(purchaseOrdersMappingList[index].TaxAmount.toString())-Decimal.parse(purchaseOrdersMappingList[index].DiscountAmount.toString())).toString());
+        }
+
+      }
+      overAllTotalCalc();
+    }
+    notifyListeners();
+  }
+  
+
+
+  double subtotal=0.0;
+  double taxAmount=0.0;
+  double discountAmount=0.0;
+  double discountedSubtotal=0.0;
+  double grandTotal=0.0;
+  double otherCharges=0.0;
+
+
+  overAllTotalCalc(){
+    subtotal=0.0;
+    taxAmount=0.0;
+    discountAmount=0.0;
+    discountedSubtotal=0.0;
+    grandTotal=0.0;
+    otherCharges=0.0;
+    purchaseOrdersOtherChargesMappingList.forEach((element) {
+      otherCharges=double.parse((Decimal.parse(otherCharges.toString()) + Decimal.parse(element.OtherChargesAmount.toString())).toString());
+    });
+    purchaseOrdersMappingList.forEach((element) {
+      subtotal=double.parse((Decimal.parse(subtotal.toString()) + Decimal.parse(element.Amount.toString())).toString());
+      taxAmount=double.parse((Decimal.parse(taxAmount.toString()) + Decimal.parse(element.TaxAmount.toString())).toString());
+      discountAmount=double.parse((Decimal.parse(discountAmount.toString()) + Decimal.parse(element.DiscountAmount.toString())).toString());
+      discountedSubtotal=double.parse((Decimal.parse(subtotal.toString()) - Decimal.parse(discountedSubtotal.toString())).toString());
+      grandTotal=double.parse((Decimal.parse(grandTotal.toString()) + Decimal.parse(element.TotalAmount.toString()) + Decimal.parse(otherCharges.toString())).toString());
+    });
+
+    notifyListeners();
+  }
 
 
 
@@ -110,29 +257,22 @@ class PurchaseNotifier extends ChangeNotifier{
 
 
 
-
-
-
-
-
-
-
-
-
-/*
-  InsertPurchaseDbHit(BuildContext context,TickerProviderStateMixin tickerProviderStateMixin)  async{
-    updateSupplierLoader(true);
+  InsertPurchaseDbHit(BuildContext context)  async{
+    updatePurchaseLoader(true);
 
     List js=[];
-    js=supplierMaterialMappingList.map((e) => e.toJson()).toList();
+    js=purchaseOrdersMappingList.map((e) => e.toJson()).toList();
     print(js);
+    List oa=[];
+    oa=purchaseOrdersOtherChargesMappingList.map((e) => e.toJson()).toList();
+    print(oa);
 
     var body={
       "Fields": [
         {
           "Key": "SpName",
           "Type": "String",
-          "Value": isSupplierEdit?"${Sp.updateSupplierDetail}":"${Sp.insertSupplierDetail}"
+          "Value": isPurchaseEdit?"${Sp.updatePurchaseDetail}":"${Sp.insertPurchaseDetail}"
         },
         {
           "Key": "LoginUserId",
@@ -141,64 +281,65 @@ class PurchaseNotifier extends ChangeNotifier{
         },
 
         {
-          "Key": "SupplierId",
+          "Key": "PurchaseOrderId",
           "Type": "int",
-          "Value": supplierEditId
+          "Value": PurchaseEditId
         },
         {
-          "Key": "SupplierName",
-          "Type": "String",
-          "Value": supplierName.text
-        },
-        {
-          "Key": "SupplierCategoryId",
+          "Key": "PlantId",
           "Type": "int",
-          "Value": supplierCategoryId
+          "Value": null
         },
         {
-          "Key": "SupplierAddress",
+          "Key": "ExpectedDate",
           "Type": "String",
-          "Value": supplierAddress.text
+          "Value": DateFormat("yyyy-MM-dd").format(ExpectedPurchaseDate).toString()
         },
         {
-          "Key": "SupplierState",
+          "Key": "SupplierType",
           "Type": "String",
-          "Value": supplierState.text
+          "Value": supplierType
         },
         {
-          "Key": "SupplierCity",
+          "Key": "Supplier",
+          "Type": "int",
+          "Value": supplierId
+        },
+        {
+          "Key": "Subtotal",
           "Type": "String",
-          "Value": supplierCity.text
+          "Value": subtotal
         },
         {
-          "Key": "SupplierCountry",
+          "Key": "DiscountAmount",
           "Type": "String",
-          "Value": supplierCountry.text
+          "Value": discountAmount
         },
         {
-          "Key": "SupplierZipCode",
+          "Key": "DiscountedSubtotal",
           "Type": "String",
-          "Value": supplierZipcode.text
+          "Value": discountedSubtotal
         },
         {
-          "Key": "SupplierContactNumber",
+          "Key": "TaxAmount",
           "Type": "String",
-          "Value": supplierContactNumber.text
+          "Value": taxAmount
         },
         {
-          "Key": "SupplierEmail",
+          "Key": "GrandTotalAmount",
           "Type": "String",
-          "Value": supplierEmail.text
+          "Value": grandTotal
         },
+
         {
-          "Key": "SupplierGSTNumber",
-          "Type": "String",
-          "Value": supplierGstNo.text
-        },
-        {
-          "Key": "SupplierMaterialMappingList",
+          "Key": "PurchaseOrderMaterialMappingList",
           "Type": "datatable",
           "Value": js
+        },
+        {
+          "Key": "PurchaseOrderOtherChargesMappingList",
+          "Type": "datatable",
+          "Value": oa
         },
         {
           "Key": "database",
@@ -215,23 +356,31 @@ class PurchaseNotifier extends ChangeNotifier{
           var parsed=json.decode(value);
           Navigator.pop(context);
           clearForm();
-          GetSupplierDbHit(context, null,tickerProviderStateMixin);
+          GetPurchaseDbHit(context, null,);
         }
 
-        updateSupplierLoader(false);
+        updatePurchaseLoader(false);
       });
     }catch(e){
-      updateSupplierLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.insertSupplierDetail}" , e.toString());
+      updatePurchaseLoader(false);
+      CustomAlert().commonErrorAlert(context, "${Sp.insertPurchaseDetail}" , e.toString());
     }
 
 
   }
-*/
 
 
 
-  List<String> purchaseGridCol=["Order Number","Expected Date","Material Name","Purchase Quantity","Tax Amount","Net Amount"];
+
+
+
+
+
+
+
+
+
+  List<String> purchaseGridCol=["Order Number","Expected Date","No of Material","Purchase Quantity","Tax Amount","Sub Total","Net Amount"];
   List<PurchaseOrderGridModel> purchaseGridList=[];
 
 
@@ -268,12 +417,40 @@ class PurchaseNotifier extends ChangeNotifier{
         if(value!=null){
           var parsed=json.decode(value);
           var t=parsed['Table'] as List;
-
+           print(value);
           print(t);
-          if(supplierId!=null){
+          if(PurchaseOrderId!=null){
             var t1=parsed['Table1'] as List;
             print(t1);
+            var t2=parsed['Table2'] as List;
+            print(t2);
 
+            PurchaseEditId=t[0]['PurchaseOrderId'];
+            supplierType=t[0]['SupplierType'];
+            supplierId=t[0]['Supplier'];
+            supplierName=t[0]['SupplierName'];
+
+            filterSuppliersList=suppliersList.where((element) => element.supplierType.toLowerCase()==supplierType.toLowerCase()).toList();
+            print(suppliersList.length);
+            print(filterSuppliersList.length);
+            if(supplierType=='External'){
+              filterMaterialsList=materialsList.where((element) => element.supplierId==supplierId).toList();
+            }
+            else{
+              filterMaterialsList=materialsList.where((element) => element.supplierName=='Supplier').toList();
+
+            }
+
+            PurchaseDate=DateTime.now();
+            ExpectedPurchaseDate=t[0]['ExpectedDate']!=null?DateTime.parse(t[0]['ExpectedDate']):DateTime.now();
+            print(ExpectedPurchaseDate);
+            subtotal=t[0]['Subtotal'];
+            taxAmount=t[0]['GST'];
+            grandTotal=t[0]['Total'];
+            discountAmount=t[0]['Discount']??0.0;
+
+            purchaseOrdersMappingList=t1.map((e) => PurchaseOrderMaterialMappingListModel.fromJson(e)).toList();
+            purchaseOrdersOtherChargesMappingList=t2.map((e) => PurchaseOrderOtherChargesMappingList.fromJson(e)).toList();
 
 
             notifyListeners();
@@ -304,13 +481,25 @@ class PurchaseNotifier extends ChangeNotifier{
   insertForm(){
     PurchaseDate=DateTime.now();
     ExpectedPurchaseDate=DateTime.now();
+    notifyListeners();
   }
 
 
 
   clearForm(){
-    supplierType=null;
+     supplierType=null;
 
+     supplierId=null;
+     supplierName=null;
+     searchController.clear();
+     purchaseOrdersMappingList.clear();
+      subtotal=0.0;
+      taxAmount=0.0;
+      discountAmount=0.0;
+      discountedSubtotal=0.0;
+      grandTotal=0.0;
+      otherCharges=0.0;
+     purchaseOrdersOtherChargesMappingList.clear();
   }
 
   bool isPurchaseEdit=false;

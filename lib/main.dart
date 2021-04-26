@@ -13,6 +13,7 @@ import 'package:quarry/notifier/vehicleNotifier.dart';
 import 'package:quarry/pages/homePage.dart';
 
 import 'notifier/manageUsersNotifier.dart';
+import 'references/bottomNavi.dart';
 import 'testing.dart';
 
 void main() {
