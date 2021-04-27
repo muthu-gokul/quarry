@@ -604,6 +604,9 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                     ),
                   ),
                 ),*/
+
+
+                //bottomNav
                 Positioned(
                   bottom: 0,
                   child: Container(
@@ -625,7 +628,20 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                         Center(
                           heightFactor: 0.5,
                           child: FloatingActionButton(backgroundColor: AppTheme.yellowColor, child: Icon(Icons.save), elevation: 0.1, onPressed: () {
-                          pn.InsertPurchaseDbHit(context);
+                            if(pn.supplierType==null){
+                              CustomAlert().commonErrorAlert(context, "Select Supplier Type", "");
+                            }
+                            else if(pn.supplierId==null){
+                              CustomAlert().commonErrorAlert(context, "Select Supplier", "");
+                            }
+                            else if(pn.purchaseOrdersMappingList.isEmpty){
+                              CustomAlert().commonErrorAlert(context, "Add Material", "Add materials to make purchase.");
+                            }
+                            else{
+                              pn.InsertPurchaseDbHit(context);
+                            }
+
+
                           }),
                         ),
                         Container(
@@ -921,14 +937,17 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                                   itemBuilder: (context,index){
                                     return GestureDetector(
                                       onTap: (){
+
                                         setState(() {
                                           pn.supplierId=pn.filterSuppliersList[index].supplierId;
                                           pn.supplierName=pn.filterSuppliersList[index].supplierName;
-                                          if(pn.filterSuppliersList[index].supplierId!=null){
-                                            pn.filterMaterialsList=pn.materialsList.where((element) => element.supplierId==pn.filterSuppliersList[index].supplierId).toList();
+                                          if(pn.filterSuppliersList[index].supplierType=='External'){
+                                            pn.filterMaterialsList=pn.materialsList.where((element) => element.supplierId==pn.filterSuppliersList[index].supplierId
+                                            && element.SupplierType=='External'
+                                            ).toList();
                                           }
                                           else{
-                                            pn.filterMaterialsList=pn.materialsList.where((element) => element.supplierName==pn.filterSuppliersList[index].supplierName).toList();
+                                            pn.filterMaterialsList=pn.materialsList.where((element) => element.SupplierType=='Internal').toList();
                                           }
                                           suppliersListOpen=false;
                                         });
@@ -1263,8 +1282,8 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                                                                                });
                                                                              },
                                                                              child: AnimatedContainer(
-                                                                                 height: 70,
-                                                                                 width: 70,
+                                                                                 height: SizeConfig.height70,
+                                                                                 width: SizeConfig.height70,
                                                                                  duration: Duration(milliseconds: 200),
                                                                                  curve: Curves.easeIn,
                                                                                  decoration: BoxDecoration(

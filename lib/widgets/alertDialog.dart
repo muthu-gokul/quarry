@@ -78,6 +78,7 @@ class CustomAlert{
     showDialog(
         context: context,
         builder: (ctx) => Dialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
           child: Container(
               height:des.length>50?400:280,
               width:400,

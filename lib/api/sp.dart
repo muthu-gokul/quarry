@@ -63,5 +63,12 @@ class Sp{
 
   static String updateUserProfileDetail="USP_UpdateUserProfileDetail";
 
+
+
+  static String insertGoodsReceivedDetail="USP_InsertGoodsReceivedDetail";
+  static String updateGoodsReceivedDetail="USP_UpdateGoodsReceivedDetail";
+  static String getGoodsReceivedDetail="USP_GetGoodsReceivedDetail";
+  static String deleteGoodsReceivedDetail="USP_DeleteGoodsReceivedDetail";
+
 }
 

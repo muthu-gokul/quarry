@@ -7,6 +7,7 @@ import 'package:quarry/notifier/purchaseNotifier.dart';
 import 'package:quarry/notifier/supplierNotifier.dart';
 import 'package:quarry/pages/purchaseDetails/purchaseAddNew.dart';
 import 'package:quarry/pages/supplierDetail/supplierAddNew.dart';
+import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
 
@@ -71,7 +72,7 @@ class PurchaseDetailsGridState extends State<PurchaseDetailsGrid> with TickerPro
             builder: (context,pn,child)=>  Stack(
               children: [
                 Container(
-                  height: SizeConfig.height50,
+                  height: 50,
                   width: SizeConfig.screenWidth,
                   child: Row(
                     children: [
@@ -86,9 +87,9 @@ class PurchaseDetailsGridState extends State<PurchaseDetailsGrid> with TickerPro
                   ),
                 ),
                 Container(
-                    height: SizeConfig.screenHeight-SizeConfig.height50,
+                    height: SizeConfig.screenHeight-50,
                     width: SizeConfig.screenWidth,
-                    margin: EdgeInsets.only(top: SizeConfig.height50),
+                    margin: EdgeInsets.only(top: 50),
 
                     decoration: BoxDecoration(
                         color: Colors.white,
@@ -132,7 +133,7 @@ class PurchaseDetailsGridState extends State<PurchaseDetailsGrid> with TickerPro
 
                               ),
                               Container(
-                                height: SizeConfig.screenHeight-150,
+                                height: SizeConfig.screenHeight-160,
                                 width: SizeConfig.screenWidth-150,
                                 alignment: Alignment.topCenter,
                                 color: Colors.white,
@@ -140,7 +141,7 @@ class PurchaseDetailsGridState extends State<PurchaseDetailsGrid> with TickerPro
                                   controller: body,
                                   scrollDirection: Axis.horizontal,
                                   child: Container(
-                                    height: SizeConfig.screenHeight-150,
+                                    height: SizeConfig.screenHeight-160,
                                     alignment: Alignment.topCenter,
                                     color: Colors.white,
                                     child: SingleChildScrollView(
@@ -264,7 +265,7 @@ class PurchaseDetailsGridState extends State<PurchaseDetailsGrid> with TickerPro
 
                               ),
                               Container(
-                                height: SizeConfig.screenHeight-150,
+                                height: SizeConfig.screenHeight-160,
                                 alignment: Alignment.topCenter,
                                 decoration: BoxDecoration(
                                   color: Colors.white,
@@ -278,7 +279,7 @@ class PurchaseDetailsGridState extends State<PurchaseDetailsGrid> with TickerPro
                                     ]
                                 ),
                                 child: Container(
-                                  height: SizeConfig.screenHeight-150,
+                                  height: SizeConfig.screenHeight-160,
                                   alignment: Alignment.topCenter,
 
                                   child: SingleChildScrollView(
@@ -367,121 +368,9 @@ class PurchaseDetailsGridState extends State<PurchaseDetailsGrid> with TickerPro
 
 
 
-               /* Container(
-                    height: SizeConfig.screenHeight-SizeConfig.height50,
-                    width: SizeConfig.screenWidth,
-                    color: Colors.white,
-                    margin: EdgeInsets.only(top: SizeConfig.height50),
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child:DataTable(
-                          headingRowColor:  MaterialStateColor.resolveWith((states) => AppTheme.bgColor),
-                          showBottomBorder: true,
-                          columns: pn.purchaseGridCol.map((e) => DataColumn(
-                              label: Text(e,style: TextStyle(fontFamily: 'RB',fontSize: 16,color: Colors.white),textAlign: TextAlign.center,)
-                          )).toList(),
-                          rows: pn.purchaseGridList.asMap().map((i,e) => MapEntry(i,
-
-                              DataRow(
-                                  color:  MaterialStateColor.resolveWith((states) =>selectedIndex==i? AppTheme.yellowColor:Colors.white),
-
-                                  cells: [
-                                    DataCell(
-                                        Text(e.purchaseOrderNumber.toString(),style: TextStyle(fontFamily: 'RR',fontSize: 16,color:selectedIndex==i? AppTheme.bgColor:AppTheme.gridTextColor),),
-                                        onTap: (){
-                                          setState(() {
-
-                                            if(selectedIndex==i){
-                                              selectedIndex=-1;
-                                              showEdit=false;
-                                            } else{
-                                              selectedIndex=i;
-                                              showEdit=true;
-                                            }
 
 
-                                          });
-                                        }
-                                    ),
-                                    DataCell(
-                                        Text("${DateFormat.yMMMd().format(e.expectedDate)}",style: TextStyle(fontFamily: 'RR',fontSize: 16,color:selectedIndex==i? AppTheme.bgColor:AppTheme.gridTextColor),),
-                                        onTap: (){
-                                          setState(() {
-
-                                            if(selectedIndex==i){
-                                              selectedIndex=-1;
-                                              showEdit=false;
-                                            } else{
-                                              selectedIndex=i;
-                                              showEdit=true;
-                                            }
-
-
-                                          });
-                                        }
-                                    ),
-                                    DataCell(Text(e.materialName??"",style: TextStyle(fontFamily: 'RR',fontSize: 16,color: selectedIndex==i? AppTheme.bgColor: AppTheme.gridTextColor),),
-                                        onTap: (){
-                                          setState(() {
-                                            if(selectedIndex==i){
-                                              selectedIndex=-1;
-                                              showEdit=false;
-                                            } else{
-                                              selectedIndex=i;
-                                              showEdit=true;
-                                            }
-                                          });
-                                        }
-                                    ),
-                                    DataCell(Text(e.purchaseQuantity.toString(),style: TextStyle(fontFamily: 'RR',fontSize: 16,color:selectedIndex==i? AppTheme.bgColor:  AppTheme.gridTextColor),),
-                                        onTap: (){
-                                          setState(() {
-                                            if(selectedIndex==i){
-                                              selectedIndex=-1;
-                                              showEdit=false;
-                                            } else{
-                                              selectedIndex=i;
-                                              showEdit=true;
-                                            }
-                                          });
-                                        }
-                                    ),
-                                    DataCell(Text("${e.taxAmount.toString()}",style: TextStyle(fontFamily: 'RR',fontSize: 16,color:selectedIndex==i? AppTheme.bgColor:  AppTheme.gridTextColor),),
-                                        onTap: (){
-                                          setState(() {
-                                            if(selectedIndex==i){
-                                              selectedIndex=-1;
-                                              showEdit=false;
-                                            } else{
-                                              selectedIndex=i;
-                                              showEdit=true;
-                                            }
-                                          });
-                                        }
-                                    ),
-                                    DataCell(Text("${e.netAmount.toString()}",style: TextStyle(fontFamily: 'RR',fontSize: 16,color:selectedIndex==i? AppTheme.bgColor:  AppTheme.gridTextColor),),
-                                        onTap: (){
-                                          setState(() {
-                                            if(selectedIndex==i){
-                                              selectedIndex=-1;
-                                              showEdit=false;
-                                            } else{
-                                              selectedIndex=i;
-                                              showEdit=true;
-                                            }
-                                          });
-                                        }
-                                    ),
-
-                                  ])
-                          )
-                          ).values.toList()
-
-                      ),
-                    )
-                ),*/
-
-                Positioned(
+              /*  Positioned(
                   bottom: 20,
                   right: 20,
                   child: GestureDetector(
@@ -517,8 +406,90 @@ class PurchaseDetailsGridState extends State<PurchaseDetailsGrid> with TickerPro
                       ),
                     ),
                   ),
-                ),
+                ),*/
 
+
+
+                //bottomNav
+                Positioned(
+                  bottom: 0,
+                  child: Container(
+                    width: SizeConfig.screenWidth,
+                    height: 60,
+
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.white.withOpacity(0.7),
+                            spreadRadius: 2,
+                            blurRadius: 15,
+                            offset: Offset(0, -20), // changes position of shadow
+                          )
+                        ]
+                    ),
+                    child: Stack(
+
+                      children: [
+                        Container(
+                          margin:EdgeInsets.only(top: 0),
+                          child: CustomPaint(
+                            size: Size( SizeConfig.screenWidth, 55),
+                            painter: RPSCustomPainter(),
+                          ),
+                        ),
+                        Center(
+                          heightFactor: 0.5,
+                          child: GestureDetector(
+                            behavior: HitTestBehavior.translucent,
+                            onTap: (){
+
+                              pn.updatePurchaseEdit(false);
+                              pn.PurchaseDropDownValues(context);
+                              pn.insertForm();
+                              Navigator.of(context).push(_createRoute());
+
+
+
+                            },
+                            child: Container(
+
+                              height: SizeConfig.width50,
+                              width: SizeConfig.width50,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: AppTheme.yellowColor,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: AppTheme.yellowColor.withOpacity(0.4),
+                                    spreadRadius: 1,
+                                    blurRadius: 5,
+                                    offset: Offset(1, 8), // changes position of shadow
+                                  ),
+                                ],
+                              ),
+                              child: Center(
+                                child: Icon(Icons.add,size: SizeConfig.height30,color: AppTheme.bgColor,),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Container(
+                          width:  SizeConfig.screenWidth,
+                          height: 80,
+
+                          child: Stack(
+
+                            children: [
+
+
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
 
                 //Edit Or Delete
                 AnimatedPositioned(

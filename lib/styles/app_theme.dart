@@ -34,6 +34,10 @@ class AppTheme {
   static TextStyle TSWhite16=TextStyle(fontFamily: 'RR',fontSize: 18,color: Colors.white,letterSpacing: 0.1);
   static TextStyle TSWhite166=TextStyle(fontFamily: 'RR',fontSize: 16,color: Colors.white,letterSpacing: 0.1);
 
+  static TextStyle TSWhiteML=TextStyle(fontFamily: 'RR',fontSize: 14,color: Colors.white,letterSpacing: 0.1);
+  //CT colourTextStyle
+  static TextStyle ML_bgCT=TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 14);
+
 
   static TextStyle userNameTS=TextStyle(fontFamily: 'RM',color: AppTheme.bgColor,fontSize: 16);
   static TextStyle userGroupTS=TextStyle(fontFamily: 'RL',color: AppTheme.gridTextColor,fontSize: 14);

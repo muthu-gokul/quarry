@@ -39,10 +39,70 @@ class PurchaseNotifier extends ChangeNotifier{
   List<PurchaseMaterialsListModel> filterMaterialsList=[];
 
 
+  int PlantId=null;
+  int EditPlantId=null;
+  String PlantName=null;
+
   final call=ApiManager();
 
-  Future<dynamic> PurchaseDropDownValues(BuildContext context) async {
+  Future<dynamic> UserDropDownValues(BuildContext context) async {
+    updatePurchaseLoader(true);
+    var body={
+      "Fields": [
+        {
+          "Key": "SpName",
+          "Type": "String",
+          "Value": "${Sp.MasterdropDown}"
+        },
+        {
+          "Key": "LoginUserId",
+          "Type": "int",
+          "Value": Provider.of<QuarryNotifier>(context,listen: false).UserId
+        },
+        {
+          "Key": "TypeName",
+          "Type": "String",
+          "Value": "User"
+        },
+        {
+          "Key": "database",
+          "Type": "String",
+          "Value": Provider.of<QuarryNotifier>(context,listen: false).DataBaseName
+        }
+      ]
+    };
 
+    try{
+      await call.ApiCallGetInvoke(body,context).then((value) {
+        if(value!=null){
+          var parsed=json.decode(value);
+          var t=parsed['Table'] as List;
+          var t1=parsed['Table1'] as List;
+
+          t1.forEach((element) {
+            if(element['UserId']==Provider.of<QuarryNotifier>(context,listen: false).UserId){
+              PlantId=element['PlantId'];
+              PlantName=element['PlantName'];
+            }
+          });
+
+          print(PlantId);
+          print(PlantName);
+
+
+
+        }
+        updatePurchaseLoader(false);
+      });
+    }
+    catch(e){
+      updatePurchaseLoader(false);
+      CustomAlert().commonErrorAlert(context, "${Sp.MasterdropDown}" , e.toString());
+    }
+  }
+
+
+  Future<dynamic> PurchaseDropDownValues(BuildContext context) async {
     updatePurchaseLoader(true);
     var body={
       "Fields": [
@@ -288,7 +348,7 @@ class PurchaseNotifier extends ChangeNotifier{
         {
           "Key": "PlantId",
           "Type": "int",
-          "Value": null
+          "Value": isPurchaseEdit?EditPlantId: PlantId
         },
         {
           "Key": "ExpectedDate",
@@ -417,29 +477,38 @@ class PurchaseNotifier extends ChangeNotifier{
         if(value!=null){
           var parsed=json.decode(value);
           var t=parsed['Table'] as List;
-           print(value);
-          print(t);
           if(PurchaseOrderId!=null){
+            print(t);
             var t1=parsed['Table1'] as List;
             print(t1);
             var t2=parsed['Table2'] as List;
             print(t2);
 
             PurchaseEditId=t[0]['PurchaseOrderId'];
+            EditPlantId=t[0]['PlantId'];
+          
             supplierType=t[0]['SupplierType'];
             supplierId=t[0]['Supplier'];
             supplierName=t[0]['SupplierName'];
 
             filterSuppliersList=suppliersList.where((element) => element.supplierType.toLowerCase()==supplierType.toLowerCase()).toList();
-            print(suppliersList.length);
-            print(filterSuppliersList.length);
+
             if(supplierType=='External'){
-              filterMaterialsList=materialsList.where((element) => element.supplierId==supplierId).toList();
+              filterMaterialsList=materialsList.where((element) => element.supplierId==supplierId && element.SupplierType=='External' ).toList();
+
+            }
+            else{
+              filterMaterialsList=materialsList.where((element) => element.SupplierType=='Internal').toList();
+            }
+
+        /*
+            if(supplierType=='External'){
+              filterMaterialsList=materialsList.where((element) => element.supplierId==supplierId && element.SupplierType=='External' ).toList();
             }
             else{
               filterMaterialsList=materialsList.where((element) => element.supplierName=='Supplier').toList();
 
-            }
+            }*/
 
          /*   PurchaseDate=DateTime.now();*/
             ExpectedPurchaseDate=t[0]['ExpectedDate']!=null?DateTime.parse(t[0]['ExpectedDate']):DateTime.now();
@@ -491,6 +560,7 @@ class PurchaseNotifier extends ChangeNotifier{
 
      supplierId=null;
      supplierName=null;
+     EditPlantId=null;
      searchController.clear();
      purchaseOrdersMappingList.clear();
       subtotal=0.0;

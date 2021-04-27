@@ -8,6 +8,7 @@ class PurchaseMaterialsListModel {
     this.unitName,
     this.materialPrice,
     this.taxValue,
+    this.SupplierType,
   });
 
   int supplierId;
@@ -16,6 +17,7 @@ class PurchaseMaterialsListModel {
   String materialName;
   int materialUnitId;
   String unitName;
+  String SupplierType;
   double materialPrice;
   double taxValue;
 
@@ -28,6 +30,7 @@ class PurchaseMaterialsListModel {
     unitName: json["UnitName"],
     materialPrice: json["MaterialPrice"],
     taxValue: json["TaxValue"],
+    SupplierType: json["SupplierType"],
   );
 
 

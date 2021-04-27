@@ -7,7 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:quarry/model/goodsReceivedModel/goodsReceivedGridModel.dart';
 import 'package:quarry/notifier/customerNotifier.dart';
+import 'package:quarry/notifier/goodsReceivedNotifier.dart';
 import 'package:quarry/notifier/machineNotifier.dart';
 import 'package:quarry/notifier/materialNotifier.dart';
 import 'package:quarry/notifier/profileNotifier.dart';
@@ -15,6 +17,7 @@ import 'package:quarry/notifier/purchaseNotifier.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/notifier/supplierNotifier.dart';
 import 'package:quarry/notifier/vehicleNotifier.dart';
+import 'package:quarry/pages/goodsReceived/goodsReceivedGrid.dart';
 import 'package:quarry/pages/purchaseDetails/purchaseGrid.dart';
 import 'package:quarry/pages/quarryMaster/quarryMaster.dart';
 import 'package:quarry/pages/sale/salesDetail.dart';
@@ -224,7 +227,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                     menuSelected=9;
                                     scaffoldkey.currentState.openEndDrawer();
                                   });
+                                  Provider.of<PurchaseNotifier>(context, listen: false).UserDropDownValues(context);
                                   Provider.of<PurchaseNotifier>(context, listen: false).GetPurchaseDbHit(context,null);
+
                                 },
                               ),
                               DrawerContent(
@@ -243,14 +248,16 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                               DrawerContent(
                                 height: 50,
                                 image: "assets/drawerImages/dashboard.png",
-                                title: 'Diesel',
-                                titleColor: AppTheme.grey,
-                                // callback: (){
-                                //   setState(() {
-                                //     menuSelected=3;
-                                //     scaffoldkey.currentState.openEndDrawer();
-                                //   });
-                                // },
+                                title: 'Goods Received',
+                                titleColor: AppTheme.yellowColor,
+                                callback: (){
+                                  setState(() {
+                                    menuSelected=11;
+                                    scaffoldkey.currentState.openEndDrawer();
+                                  });
+                                  Provider.of<GoodsReceivedNotifier>(context, listen: false).GetGoodsDbHit(context,null,null);
+
+                                },
                               ),
                               DrawerContent(
                                 height: 50,
@@ -347,6 +354,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
           scaffoldkey.currentState.openDrawer();
         },):
         menuSelected==10?ProfileScreen(drawerCallback: (){
+          scaffoldkey.currentState.openDrawer();
+        },):
+        menuSelected==11?GoodsReceivedGrid(drawerCallback: (){
           scaffoldkey.currentState.openDrawer();
         },):
             Container()
