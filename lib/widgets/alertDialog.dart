@@ -11,7 +11,8 @@ import 'package:quarry/styles/size.dart';
 
 class CustomAlert{
   VoidCallback callback;
-  CustomAlert({this.callback});
+  VoidCallback Cancelcallback;
+  CustomAlert({this.callback,this.Cancelcallback});
 
   // void show(BuildContext context,String text,int duration){
   //  showDialog(
@@ -325,9 +326,7 @@ class CustomAlert{
                     SizedBox(height:10),
 
                     GestureDetector(
-                      onTap: (){
-                        Navigator.pop(context);
-                      },
+                      onTap: Cancelcallback,
                       child: Container(
                         height: 30.0,
                         width: SizeConfig.width100,

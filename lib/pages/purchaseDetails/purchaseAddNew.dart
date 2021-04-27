@@ -374,8 +374,10 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                                                   setState(() {
                                                     if(selectedMaterialIndex!=index){
                                                       selectedMaterialIndex=index;
+                                                      deleteOpen=true;
                                                     }else{
                                                       selectedMaterialIndex=-1;
+                                                      deleteOpen=false;
                                                     }
                                                   });
                                                 },
@@ -394,7 +396,8 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                                                         width: SizeConfig.screenWidth*0.23,
                                                         alignment: Alignment.centerLeft,
                                                         padding: EdgeInsets.only(left: SizeConfig.width10),
-                                                        child: Text("${pn.purchaseOrdersMappingList[index].materialName}",style: AppTheme.gridTextColorTS,),
+                                                        child: Text("${pn.purchaseOrdersMappingList[index].materialName}",
+                                                          style: selectedMaterialIndex==index?AppTheme.TSWhite166: AppTheme.gridTextColorTS,),
                                                       ),
                                                       Container(
                                                         width: SizeConfig.screenWidth*0.15,
@@ -409,6 +412,7 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                                                             borderRadius: BorderRadius.circular(15)
                                                           ),
                                                           child: TextField(
+                                                            style: selectedMaterialIndex==index?AppTheme.TSWhite166:AppTheme.gridTextColorTS,
                                                             controller: pn.purchaseOrdersMappingList[index].purchaseQty,
                                                             decoration: InputDecoration(
                                                               hintText: "0",
@@ -431,21 +435,24 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                                                         alignment: Alignment.centerLeft,
                                                         padding: EdgeInsets.only(left: SizeConfig.width10),
 
-                                                        child: Text("${pn.purchaseOrdersMappingList[index].Amount}",style: AppTheme.gridTextColorTS,),
+                                                        child: Text("${pn.purchaseOrdersMappingList[index].Amount}",
+                                                          style:selectedMaterialIndex==index?AppTheme.TSWhite166: AppTheme.gridTextColorTS,),
                                                       ),
                                                       Container(
                                                         width: SizeConfig.screenWidth*0.16,
                                                         alignment: Alignment.centerLeft,
                                                         padding: EdgeInsets.only(left: SizeConfig.width10),
 
-                                                        child: Text("${pn.purchaseOrdersMappingList[index].TaxAmount}",style: AppTheme.gridTextColorTS,),
+                                                        child: Text("${pn.purchaseOrdersMappingList[index].TaxAmount}",
+                                                          style:selectedMaterialIndex==index?AppTheme.TSWhite166: AppTheme.gridTextColorTS,),
                                                       ),
                                                       Container(
                                                         width: SizeConfig.screenWidth*0.17,
                                                         alignment: Alignment.centerLeft,
                                                         padding: EdgeInsets.only(left: SizeConfig.width10),
 
-                                                        child: Text("${pn.purchaseOrdersMappingList[index].TotalAmount}",style: AppTheme.gridTextColorTS,),
+                                                        child: Text("${pn.purchaseOrdersMappingList[index].TotalAmount}",
+                                                          style: selectedMaterialIndex==index?AppTheme.TSWhite166:AppTheme.gridTextColorTS,),
                                                       ),
                                                     ],
                                                   ),
@@ -640,14 +647,31 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                                   )
                               ):Container(),
 
-                              Positioned(
-                                bottom: 10,
+                              AnimatedPositioned(
+                                duration: Duration(milliseconds: 300),
+                                curve: Curves.bounceInOut,
+                                bottom: deleteOpen? 10:-60,
 
                                   child: InkWell(
                                       onTap: (){
                                         setState(() {
                                           deleteOpen=false;
                                         });
+                                        CustomAlert(
+                                            callback: (){
+                                              Navigator.pop(context);
+                                              setState(() {
+                                                pn.purchaseOrdersMappingList.clear();
+                                                selectedMaterialIndex=-1;
+                                              });
+                                            },
+                                            Cancelcallback: (){
+                                              Navigator.pop(context);
+                                              setState(() {
+                                                selectedMaterialIndex=-1;
+                                              });
+                                            }
+                                        ).yesOrNoDialog(context, "", "Do you want to delete All Material?");
                                       },
                                       child: Container(
                                         height: 30,
@@ -672,15 +696,33 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                                       child: Text("+ Add Material  ",style: AppTheme.bgColorTS)
                                   )
                               ):Container(),
-                              Positioned(
-                                  bottom: 10,
+
+                              AnimatedPositioned(
+                                  bottom: deleteOpen? 10:-60,
                                   right: 0,
+                                  duration: Duration(milliseconds: 300),
+                                  curve: Curves.bounceInOut,
 
                                   child: InkWell(
                                       onTap: (){
                                         setState(() {
                                           deleteOpen=false;
                                         });
+                                        CustomAlert(
+                                         callback: (){
+                                           Navigator.pop(context);
+                                          setState(() {
+                                            pn.purchaseOrdersMappingList.removeAt(selectedMaterialIndex);
+                                            selectedMaterialIndex=-1;
+                                          });
+                                        },
+                                        Cancelcallback: (){
+                                          Navigator.pop(context);
+                                          setState(() {
+                                            selectedMaterialIndex=-1;
+                                          });
+                                        }
+                                        ).yesOrNoDialog(context, "", "Do you want to delete Material?");
                                       },
                                       child: Container(
                                           height: 30,

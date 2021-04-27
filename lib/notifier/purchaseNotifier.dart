@@ -441,7 +441,7 @@ class PurchaseNotifier extends ChangeNotifier{
 
             }
 
-            PurchaseDate=DateTime.now();
+         /*   PurchaseDate=DateTime.now();*/
             ExpectedPurchaseDate=t[0]['ExpectedDate']!=null?DateTime.parse(t[0]['ExpectedDate']):DateTime.now();
             print(ExpectedPurchaseDate);
             subtotal=t[0]['Subtotal'];
