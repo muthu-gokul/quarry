@@ -12,6 +12,7 @@ import 'package:quarry/notifier/customerNotifier.dart';
 import 'package:quarry/notifier/goodsReceivedNotifier.dart';
 import 'package:quarry/notifier/machineNotifier.dart';
 import 'package:quarry/notifier/materialNotifier.dart';
+import 'package:quarry/notifier/productionNotifier.dart';
 import 'package:quarry/notifier/profileNotifier.dart';
 import 'package:quarry/notifier/purchaseNotifier.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
@@ -37,6 +38,7 @@ import 'material/processAddNew.dart';
 import 'material/processMaterialsList.dart';
 import 'material/processStoneList.dart';
 import 'materialDetails/materialDetailsGrid.dart';
+import 'productionDetails/productionDetailsAddNew.dart';
 import 'qLocMaterials.dart';
 import 'qLocPAyment.dart';
 import 'quarryMaster/quarryLocationAddNew.dart';
@@ -262,6 +264,20 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                               DrawerContent(
                                 height: 50,
                                 image: "assets/drawerImages/dashboard.png",
+                                title: 'Production Detail',
+                                titleColor: AppTheme.yellowColor,
+                                callback: (){
+                                  setState(() {
+                                    menuSelected=12;
+                                    scaffoldkey.currentState.openEndDrawer();
+                                  });
+
+                                  Provider.of<ProductionNotifier>(context, listen: false).ProductionDropDownValues(context);
+                                },
+                              ),
+                              DrawerContent(
+                                height: 50,
+                                image: "assets/drawerImages/dashboard.png",
                                 title: 'Account Group',
                                 titleColor: AppTheme.grey,
                                 // callback: (){
@@ -359,7 +375,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
         menuSelected==11?GoodsReceivedGrid(drawerCallback: (){
           scaffoldkey.currentState.openDrawer();
         },):
-            Container()
+        menuSelected==12?ProductionDetailAddNew():
+        Container()
     );
   }
 }

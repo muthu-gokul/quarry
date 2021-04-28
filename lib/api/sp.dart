@@ -70,5 +70,10 @@ class Sp{
   static String getGoodsReceivedDetail="USP_GetGoodsReceivedDetail";
   static String deleteGoodsReceivedDetail="USP_DeleteGoodsReceivedDetail";
 
+  static String insertProductionDetail="USP_InsertProductionDetail";
+  static String updateProductionDetail="USP_UpdateProductionDetail";
+  static String getProductionDetail="USP_GetProductionDetail";
+  static String deleteProductionDetail="USP_DeleteProductionDetail";
+
 }
 

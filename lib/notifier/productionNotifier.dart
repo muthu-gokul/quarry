@@ -1,0 +1,352 @@
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:quarry/api/ApiManager.dart';
+import 'package:quarry/api/sp.dart';
+import 'package:quarry/model/productionDetailsModel/productionInputTypeListModel.dart';
+import 'package:quarry/model/productionDetailsModel/productionMachineListModel.dart';
+import 'package:quarry/model/productionDetailsModel/productionMaterialListModel.dart';
+import 'package:quarry/model/productionDetailsModel/productionMaterialMappingListModel.dart';
+import 'package:quarry/notifier/quarryNotifier.dart';
+import 'package:quarry/widgets/alertDialog.dart';
+
+class ProductionNotifier extends ChangeNotifier{
+
+  TextEditingController materialQuantity=new TextEditingController();
+  TextEditingController materialWeight=new TextEditingController();
+  int selectMachineId=null;
+  var selectMachineName=null;
+
+  int selectInputTypeId=null;
+  var selectInputTypeName=null;
+  int selectInputUnitId=null;
+  var selectInputUnitName=null;
+
+  int productionMaterialId=null;
+  var productionMaterialName=null;
+
+  int productionIdEdit=null;
+
+  bool isWastage=false;
+
+  double dustQty=0.0;
+  double wastageQty=0.0;
+
+  List<ProductionMachineListModel> machineCategoryList=[];
+  List<ProductionInputTypeListModel> inputMaterialList=[];
+  List<ProductionMaterialListModel> MaterialList=[];
+  List<ProductionMaterialMappingListModel> productionMaterialMappingList=[];
+  List<String> ProductionDetailsGridCol=['ProductionId','MachineId','MachineName','InputMaterialID','InputMaterialName','InputMaterialQuantity','OutputMaterialCount','IsDustWastage','DustQuantity','WastageQuantity'];
+
+  final call=ApiManager();
+
+  ProductionDropDownValues(BuildContext context) async {
+
+     updateProductionLoader(true);
+    var body={
+      "Fields": [
+        {
+          "Key": "SpName",
+          "Type": "String",
+          "Value": "${Sp.MasterdropDown}"
+        },
+        {
+          "Key": "LoginUserId",
+          "Type": "int",
+          "Value": Provider.of<QuarryNotifier>(context,listen: false).UserId
+        },
+        {
+          "Key": "TypeName",
+          "Type": "String",
+          "Value": "Production"
+        },
+        {
+          "Key": "database",
+          "Type": "String",
+          "Value": Provider.of<QuarryNotifier>(context,listen: false).DataBaseName
+        }
+      ]
+    };
+
+    try{
+      await call.ApiCallGetInvoke(body,context).then((value) {
+        if(value!=null){
+          var parsed=json.decode(value);
+          print(parsed);
+          var t=parsed['Table'] as List;
+          var t1=parsed['Table1'] as List;
+          var t2=parsed['Table2'] as List;
+          machineCategoryList=t.map((e) => ProductionMachineListModel.fromJson(e)).toList();
+          inputMaterialList=t1.map((e) => ProductionInputTypeListModel.fromJson(e)).toList();
+          MaterialList=t2.map((e) => ProductionMaterialListModel.fromJson(e)).toList();
+          print(MaterialList.length);
+        }
+        updateProductionLoader(false);
+      });
+    }
+    catch(e){
+      updateProductionLoader(false);
+      CustomAlert().commonErrorAlert(context, "${Sp.MasterdropDown}" , e.toString());
+    }
+  }
+
+
+  wastageCalc(){
+    double inputQty=0.0;
+    double totalOutputQty=0.0;
+    if(materialQuantity.text.isNotEmpty){
+      inputQty=double.parse(materialQuantity.text);
+
+      productionMaterialMappingList.forEach((element) {
+        totalOutputQty=totalOutputQty+element.OutputMaterialQuantity;
+      });
+
+    /*  if(isWastage){
+        totalOutputQty=totalOutputQty-dustQty;
+        print("true -$totalOutputQty");
+      }
+      else{
+        totalOutputQty=totalOutputQty;
+        print("Fale-$totalOutputQty");
+      }
+*/
+      if(totalOutputQty>=inputQty){
+        if(isWastage){
+          wastageQty=dustQty;
+        }else{
+          wastageQty=0.0;
+        }
+      }
+      else if(totalOutputQty<inputQty){
+        if(isWastage){
+          wastageQty=inputQty-totalOutputQty;
+          wastageQty=wastageQty+dustQty;
+        }
+        else{
+          wastageQty=inputQty-totalOutputQty;
+        }
+
+      }
+
+    }
+    notifyListeners();
+  }
+
+
+
+  InsertProductionDbHit(BuildContext context,TickerProviderStateMixin tickerProviderStateMixin)  async{
+    updateProductionLoader(true);
+    print(tickerProviderStateMixin);
+    List js=[];
+    js=productionMaterialMappingList.map((e) => e.toJson()).toList();
+    print(js);
+
+    var body={
+      "Fields": [
+        {
+          "Key": "SpName",
+          "Type": "String",
+          "Value": isProductionEdit?"${Sp.updateProductionDetail}":"${Sp.insertProductionDetail}"
+        },
+        {
+          "Key": "LoginUserId",
+          "Type": "int",
+          "Value": Provider.of<QuarryNotifier>(context,listen: false).UserId
+        },
+
+        {
+          "Key": "ProductionId",
+          "Type": "int",
+          "Value": productionIdEdit
+        },
+        {
+          "Key": "MachineId",
+          "Type": "int",
+          "Value": selectMachineId
+        },
+        {
+          "Key": "UnitId",
+          "Type": "int",
+          "Value": selectInputUnitId
+        },
+        {
+          "Key": "InputMaterialId",
+          "Type": "int",
+          "Value": selectInputTypeId
+        },
+        {
+          "Key": "InputMaterialQuantity",
+          "Type": "String",
+          "Value": double.parse(materialQuantity.text)
+        },
+        {
+          "Key": "IsDustWastage",
+          "Type": "int",
+          "Value": isWastage?1:0
+        },
+        {
+          "Key": "DustQuantity",
+          "Type": "String",
+          "Value": dustQty
+        },
+        {
+          "Key": "WastageQuantity",
+          "Type": "String",
+          "Value": wastageQty
+        },
+
+
+        {
+          "Key": "ProductionOutputMaterialMappingList",
+          "Type": "datatable",
+          "Value": js
+        },
+        {
+          "Key": "database",
+          "Type": "String",
+          "Value": Provider.of<QuarryNotifier>(context,listen: false).DataBaseName
+        }
+      ]
+    };
+
+    try{
+      await call.ApiCallGetInvoke(body,context).then((value) {
+
+        if(value!=null){
+          var parsed=json.decode(value);
+          print(parsed);
+         // Navigator.pop(context);
+          clearForm();
+        //  GetProductionDbHit(context, null,tickerProviderStateMixin);
+        }
+
+        updateProductionLoader(false);
+      });
+    }catch(e){
+      updateProductionLoader(false);
+      CustomAlert().commonErrorAlert(context, "${Sp.insertProductionDetail}" , e.toString());
+    }
+
+
+  }
+
+  GetProductionDbHit(BuildContext context,int productionId,TickerProviderStateMixin tickerProviderStateMixin)  async{
+
+    print(tickerProviderStateMixin);
+    print(productionId);
+    updateProductionLoader(true);
+
+    var body={
+      "Fields": [
+        {
+          "Key": "SpName",
+          "Type": "String",
+          "Value": "${Sp.getSupplierDetail}"
+        },
+        {
+          "Key": "LoginUserId",
+          "Type": "int",
+          "Value": Provider.of<QuarryNotifier>(context,listen: false).UserId
+        },
+        {
+          "Key": "ProductionId",
+          "Type": "int",
+          "Value": productionId
+        },
+        {
+          "Key": "database",
+          "Type": "String",
+          "Value": Provider.of<QuarryNotifier>(context,listen: false).DataBaseName
+        }
+      ]
+    };
+
+    try{
+      await call.ApiCallGetInvoke(body,context).then((value) {
+        if(value!=null){
+          var parsed=json.decode(value);
+          var t=parsed['Table'] as List;
+
+          print(t);
+          if(productionId!=null){
+            var t1=parsed['Table1'] as List;
+            print(t1);
+
+            selectMachineId=t[0][' SelectMachineId'];
+            selectMachineName=t[0]['SelectMachineName'];
+            selectInputTypeId=t[0]['SelectInputTypeId'];
+            selectInputTypeName=t[0]['SelectInputTypeName'];
+            productionMaterialId=null;
+            productionMaterialName=null;
+            productionIdEdit=t[0]['ProductionId'];
+            materialQuantity.text=t[0]['MaterialQuantity'];
+
+
+            print(selectMachineName.text);
+
+
+            productionMaterialMappingList=t1.map((e) => ProductionMaterialMappingListModel.fromJson(e,tickerProviderStateMixin)).toList();
+
+
+            /*   notifyListeners();*/
+          }
+          else{
+            machineCategoryList=t.map((e) => ProductionMachineListModel.fromJson(e)).toList();
+          }
+        }
+
+
+
+        updateProductionLoader(false);
+      });
+    }catch(e){
+      updateProductionLoader(false);
+      CustomAlert().commonErrorAlert(context, "${Sp.getSupplierDetail}" , e.toString());
+    }
+
+
+  }
+
+  updateEdit(int index){
+
+  }
+
+  clearMappingList(){
+    productionMaterialId=null;
+    productionMaterialName=null;
+    materialWeight.clear();
+    notifyListeners();
+  }
+
+  clearForm(){
+     selectMachineId=null;
+     selectMachineName=null;
+     selectInputTypeId=null;
+     selectInputTypeName=null;
+     selectInputUnitId=null;
+     selectInputUnitName=null;
+     materialQuantity.clear();
+
+     wastageQty=0.0;
+     dustQty=0.0;
+     isWastage=false;
+
+    productionMaterialMappingList.clear();
+  }
+
+
+  bool isProductionEdit=false;
+  updateProductionEdit(bool value){
+    isProductionEdit=value;
+    notifyListeners();
+  }
+
+  bool ProductionLoader=false;
+  updateProductionLoader(bool value){
+    ProductionLoader=value;
+    notifyListeners();
+  }
+
+
+}
