@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/api/ApiManager.dart';
 import 'package:quarry/api/sp.dart';
+import 'package:quarry/model/productionDetailsModel/productionDetailGridModel.dart';
+import 'package:quarry/model/productionDetailsModel/productionGridHeaderModel.dart';
 import 'package:quarry/model/productionDetailsModel/productionInputTypeListModel.dart';
 import 'package:quarry/model/productionDetailsModel/productionMachineListModel.dart';
 import 'package:quarry/model/productionDetailsModel/productionMaterialListModel.dart';
@@ -216,9 +218,9 @@ class ProductionNotifier extends ChangeNotifier{
         if(value!=null){
           var parsed=json.decode(value);
           print(parsed);
-         // Navigator.pop(context);
+          Navigator.pop(context);
           clearForm();
-        //  GetProductionDbHit(context, null,tickerProviderStateMixin);
+          GetProductionDbHit(context, null,tickerProviderStateMixin);
         }
 
         updateProductionLoader(false);
@@ -231,6 +233,12 @@ class ProductionNotifier extends ChangeNotifier{
 
   }
 
+
+
+  List<ProductionGridHeaderModel> gridOverAllHeader=[];
+  List<String> productionGridCol=["Machine Name","Input Material","Input Material Qty","Input Material Count"];
+  List<ProductionDetailGridModel> productionGridValues=[];
+
   GetProductionDbHit(BuildContext context,int productionId,TickerProviderStateMixin tickerProviderStateMixin)  async{
 
     print(tickerProviderStateMixin);
@@ -242,7 +250,7 @@ class ProductionNotifier extends ChangeNotifier{
         {
           "Key": "SpName",
           "Type": "String",
-          "Value": "${Sp.getSupplierDetail}"
+          "Value": "${Sp.getProductionDetail}"
         },
         {
           "Key": "LoginUserId",
@@ -273,18 +281,21 @@ class ProductionNotifier extends ChangeNotifier{
             var t1=parsed['Table1'] as List;
             print(t1);
 
-            selectMachineId=t[0][' SelectMachineId'];
-            selectMachineName=t[0]['SelectMachineName'];
-            selectInputTypeId=t[0]['SelectInputTypeId'];
-            selectInputTypeName=t[0]['SelectInputTypeName'];
-            productionMaterialId=null;
-            productionMaterialName=null;
+
             productionIdEdit=t[0]['ProductionId'];
-            materialQuantity.text=t[0]['MaterialQuantity'];
+            selectMachineId=t[0]['MachineId'];
+            selectMachineName=t[0]['MachineName'];
+            selectInputTypeId=t[0]['InputMaterialId'];
+            selectInputTypeName=t[0]['InputMaterialName'];
+            materialQuantity.text=t[0]['InputMaterialQuantity'].toString()??"";
+            selectInputUnitId=t[0]['UnitId'];
+            selectInputUnitName=t[0]['UnitName'];
+            isWastage=t[0]['IsDustWastage']==0?false:t[0]['IsDustWastage']==1?true:false;
+            dustQty=t[0]['DustQuantity'];
+            wastageQty=t[0]['WastageQuantity'];
 
-
-            print(selectMachineName.text);
-
+            print(t[0]['IsDustWastage']);
+            print(isWastage);
 
             productionMaterialMappingList=t1.map((e) => ProductionMaterialMappingListModel.fromJson(e,tickerProviderStateMixin)).toList();
 
@@ -292,7 +303,9 @@ class ProductionNotifier extends ChangeNotifier{
             /*   notifyListeners();*/
           }
           else{
-            machineCategoryList=t.map((e) => ProductionMachineListModel.fromJson(e)).toList();
+            var t1=parsed['Table1'] as List;
+              gridOverAllHeader=t.map((e) => ProductionGridHeaderModel.fromJson(e)).toList();
+              productionGridValues=t1.map((e) => ProductionDetailGridModel.fromJson(e)).toList();
           }
         }
 
@@ -302,7 +315,7 @@ class ProductionNotifier extends ChangeNotifier{
       });
     }catch(e){
       updateProductionLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.getSupplierDetail}" , e.toString());
+      CustomAlert().commonErrorAlert(context, "${Sp.getProductionDetail}" , e.toString());
     }
 
 

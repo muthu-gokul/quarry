@@ -1,34 +1,63 @@
-class ProductionDetailGridModel{
-  int ProductionId;
-  int MachineId;
-  String MachineName;
-  int InputMaterialID;
-  String InputMaterialName;
-  String InputMaterialQuantity;
-  String OutputMaterialCount;
-  String OutputMaterialQuantity;
-  String IsDustWastage;
-  String DustQuantity;
-  String WastageQuantity;
+class ProductionDetailGridModel {
+  ProductionDetailGridModel({
+    this.productionId,
+    this.machineId,
+    this.machineName,
+    this.unitId,
+    this.unitName,
+    this.inputMaterialId,
+    this.inputMaterialName,
+    this.inputMaterialQuantity,
+    this.outputMaterialCount,
+    this.outPutMaterialQuantity,
+    this.isDustWastage,
+    this.dustQuantity,
+    this.wastageQuantity,
+  });
 
-  ProductionDetailGridModel({this.ProductionId,this.MachineId,this.MachineName,this.InputMaterialID,this.InputMaterialQuantity,this.InputMaterialName,this.DustQuantity,this.IsDustWastage,this.OutputMaterialCount,this.OutputMaterialQuantity,this.WastageQuantity});
+  int productionId;
+  int machineId;
+  String machineName;
+  int unitId;
+  String unitName;
+  int inputMaterialId;
+  String inputMaterialName;
+  double inputMaterialQuantity;
+  int outputMaterialCount;
+  double outPutMaterialQuantity;
+  int isDustWastage;
+  double dustQuantity;
+  double wastageQuantity;
 
+  factory ProductionDetailGridModel.fromJson(Map<String, dynamic> json) => ProductionDetailGridModel(
+    productionId: json["ProductionId"],
+    machineId: json["MachineId"],
+    machineName: json["MachineName"],
+    unitId: json["UnitId"],
+    unitName: json["UnitName"],
+    inputMaterialId: json["InputMaterialId"],
+    inputMaterialName: json["InputMaterialName"],
+    inputMaterialQuantity: json["InputMaterialQuantity"],
+    outputMaterialCount: json["OutputMaterialCount"],
+    outPutMaterialQuantity: json["OutPutMaterialQuantity"],
+    isDustWastage: json["IsDustWastage"],
+    dustQuantity: json["DustQuantity"],
+    wastageQuantity: json["WastageQuantity"],
+  );
 
-  factory ProductionDetailGridModel.fromJson(Map<dynamic, dynamic> json) {
-    return new ProductionDetailGridModel(
-      ProductionId: json['ProductionId'],
-      MachineId: json['MachineId'],
-      MachineName: json['MachineName'],
-      InputMaterialID: json['InputMaterialID'],
-      InputMaterialName: json['InputMaterialName'],
-      InputMaterialQuantity: json['InputMaterialQuantity'],
-      OutputMaterialCount: json['OutputMaterialCount'],
-      IsDustWastage: json['IsDustWastage'],
-      DustQuantity: json['DustQuantity'],
-      WastageQuantity: json['WastageQuantity'],
-
-    );
-  }
-
-
+  Map<String, dynamic> toJson() => {
+    "ProductionId": productionId,
+    "MachineId": machineId,
+    "MachineName": machineName,
+    "UnitId": unitId,
+    "UnitName": unitName,
+    "InputMaterialId": inputMaterialId,
+    "InputMaterialName": inputMaterialName,
+    "InputMaterialQuantity": inputMaterialQuantity,
+    "OutputMaterialCount": outputMaterialCount,
+    "OutPutMaterialQuantity": outPutMaterialQuantity,
+    "IsDustWastage": isDustWastage,
+    "DustQuantity": dustQuantity,
+    "WastageQuantity": wastageQuantity,
+  };
 }

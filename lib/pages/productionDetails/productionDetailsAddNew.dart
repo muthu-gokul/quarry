@@ -268,9 +268,11 @@ class ProductionDetailAddNewState extends State<ProductionDetailAddNew> with Tic
                                       itemCount: qn.productionMaterialMappingList.length,
                                       itemBuilder: (context, index) {
                                         return SlideTransition(
-                                          position: Tween<Offset>(begin: Offset(qn.productionMaterialMappingList[index].isEdit ? 0.0 : 0.0, qn
-                                              .productionMaterialMappingList[index].isEdit ? 0.0 : 1.0),
-                                              end: Offset.zero)
+                                          position: Tween<Offset>(begin: Offset(qn.productionMaterialMappingList[index].isEdit ? 0.0 :
+                                          qn.productionMaterialMappingList[index].isDelete ?1.0:0.0,
+                                              qn.productionMaterialMappingList[index].isEdit ? 0.0 :qn.productionMaterialMappingList[index].isDelete ?0.0: 1.0),
+                                              end:qn.productionMaterialMappingList[index].isEdit ?Offset(1, 0):
+                                              qn.productionMaterialMappingList[index].isDelete ?Offset(1, 0):Offset.zero)
                                               .animate(qn.productionMaterialMappingList[index].scaleController),
                                           // scale: Tween(begin:qn.isSupplierEdit?1.0: 0.0, end:qn.isSupplierEdit?0.0: 1.0)
                                           //     .animate(qn.supplierMaterialMappingList[index].scaleController),
@@ -355,7 +357,14 @@ class ProductionDetailAddNewState extends State<ProductionDetailAddNew> with Tic
 
                                                           if (qn.productionMaterialMappingList[index].isEdit) {
                                                             qn.productionMaterialMappingList[index].scaleController.forward().whenComplete(() {
+                                                              print("EIT");
                                                               if (this.mounted) {
+                                                                if(qn.productionMaterialMappingList[index].MaterialName=='Dust'){
+                                                                  setState(() {
+                                                                    qn.dustQty=0.0;
+                                                                    qn.isWastage=false;
+                                                                  });
+                                                                }
                                                                 setState(() {
                                                                   qn.productionMaterialMappingList.removeAt(index);
                                                                 });
@@ -365,6 +374,9 @@ class ProductionDetailAddNewState extends State<ProductionDetailAddNew> with Tic
 
                                                           }
                                                           else {
+                                                            setState(() {
+                                                              qn.productionMaterialMappingList[index].isDelete=true;
+                                                            });
                                                             qn.productionMaterialMappingList[index].scaleController.reverse().whenComplete(() {
                                                               if (this.mounted) {
                                                                 if(qn.productionMaterialMappingList[index].MaterialName=='Dust'){
@@ -541,7 +553,8 @@ class ProductionDetailAddNewState extends State<ProductionDetailAddNew> with Tic
 
                                                             IsActive: 1,
                                                             scaleController: AnimationController(duration: Duration(milliseconds: 300), vsync: this),
-                                                            isEdit: false
+                                                            isEdit: false,
+                                                          isDelete: false
                                                         )
                                                     );
 
@@ -635,8 +648,8 @@ class ProductionDetailAddNewState extends State<ProductionDetailAddNew> with Tic
                   child: Row(
                     children: [
                       IconButton(icon: Icon(Icons.arrow_back), onPressed: () {
-                        // qn.clearForm();
-                       /* Navigator.pop(context);*/
+                        qn.clearForm();
+                        Navigator.pop(context);
                       }),
                       SizedBox(width: SizeConfig.width5,),
                       Text("Production Detail",

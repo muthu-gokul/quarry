@@ -554,6 +554,7 @@ class SaleReportHeader extends StatelessWidget {
     return Container(
       height: SizeConfig.height80,
       width: SizeConfig.width100,
+      margin: EdgeInsets.only(right: SizeConfig.width10),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
           color: AppTheme.bgColor

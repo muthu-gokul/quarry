@@ -19,6 +19,7 @@ import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/notifier/supplierNotifier.dart';
 import 'package:quarry/notifier/vehicleNotifier.dart';
 import 'package:quarry/pages/goodsReceived/goodsReceivedGrid.dart';
+import 'package:quarry/pages/productionDetails/productionDetailsGrid.dart';
 import 'package:quarry/pages/purchaseDetails/purchaseGrid.dart';
 import 'package:quarry/pages/quarryMaster/quarryMaster.dart';
 import 'package:quarry/pages/sale/salesDetail.dart';
@@ -272,7 +273,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                     scaffoldkey.currentState.openEndDrawer();
                                   });
 
-                                  Provider.of<ProductionNotifier>(context, listen: false).ProductionDropDownValues(context);
+                                  Provider.of<ProductionNotifier>(context, listen: false).GetProductionDbHit(context,null,this);
                                 },
                               ),
                               DrawerContent(
@@ -375,7 +376,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
         menuSelected==11?GoodsReceivedGrid(drawerCallback: (){
           scaffoldkey.currentState.openDrawer();
         },):
-        menuSelected==12?ProductionDetailAddNew():
+        menuSelected==12?ProductionGrid(drawerCallback: (){
+          scaffoldkey.currentState.openDrawer();
+        },):
         Container()
     );
   }

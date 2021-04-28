@@ -125,7 +125,7 @@ class PurchaseDetailsGridState extends State<PurchaseDetailsGrid> with TickerPro
                                           alignment: Alignment.center,
                                         //  padding: EdgeInsets.only(left: 20,right: 20),
                                           width: 150,
-                                          child: Text(value,style: AppTheme.TSWhite16,)
+                                          child: Text(value,style: AppTheme.TSWhite166,)
                                       )
                                       )).values.toList()
                                   ),
@@ -261,7 +261,7 @@ class PurchaseDetailsGridState extends State<PurchaseDetailsGrid> with TickerPro
                                 width: 150,
                                 color: AppTheme.bgColor,
                                 alignment: Alignment.center,
-                                child: Text("${pn.purchaseGridCol[0]}",style: AppTheme.TSWhite16,),
+                                child: Text("${pn.purchaseGridCol[0]}",style: AppTheme.TSWhite166,),
 
                               ),
                               Container(
