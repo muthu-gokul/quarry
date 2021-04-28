@@ -408,9 +408,8 @@ class QuarryNotifier extends ChangeNotifier{
   String DataBaseName;
 
 
-  List<VehicleType> vehicleList=[];
-  List<MaterialTypelist> sale_materialList=[];
-  List<PaymentType> sale_paymentList=[];
+
+
   List<TaxDetails> material_TaxList=[];
   List<UnitDetails> material_UnitsList=[];
 
@@ -480,13 +479,78 @@ class QuarryNotifier extends ChangeNotifier{
 
   ///****************************************************      Sale DETAIL   ****************************************************************/
 
+
+  List<VehicleType> vehicleList=[];
+  List<MaterialTypelist> sale_materialList=[];
+  List<PaymentType> sale_paymentList=[];
+  List<CustomerModel> sale_customerList=[];
+
+  Future<dynamic> SalesDropDownValues(BuildContext context) async {
+    updateInsertSaleLoader(true);
+    var body={
+      "Fields": [
+        {
+          "Key": "SpName",
+          "Type": "String",
+          "Value": "${Sp.MasterdropDown}"
+        },
+        {
+          "Key": "LoginUserId",
+          "Type": "int",
+          "Value": UserId
+        },
+        {
+          "Key": "TypeName",
+          "Type": "String",
+          "Value": "Sale"
+        },
+        {
+          "Key": "database",
+          "Type": "String",
+          "Value":DataBaseName
+        }
+      ]
+    };
+
+    try{
+      await call.ApiCallGetInvoke(body,context).then((value) {
+        if(value!=null){
+          var parsed=json.decode(value);
+          var t=parsed['Table'] as List;
+          var t1=parsed['Table1'] as List;
+          var t2=parsed['Table2'] as List;
+          var t3=parsed['Table3'] as List;
+
+
+          vehicleList=t.map((e) => VehicleType.fromJson(e)).toList();
+          sale_materialList=t1.map((e) => MaterialTypelist.fromJson(e)).toList();
+          sale_paymentList=t2.map((e) => PaymentType.fromJson(e)).toList();
+          sale_customerList=t3.map((e) => CustomerModel.fromJson(e)).toList();
+
+
+        }
+        updateInsertSaleLoader(false);
+      });
+    }
+    catch(e){
+      updateInsertSaleLoader(false);
+      CustomAlert().commonErrorAlert(context, "${Sp.MasterdropDown}" , e.toString());
+    }
+  }
+
+
   TextEditingController SS_vehicleNo= new TextEditingController();
   int SS_selectedVehicleTypeId;
+  String SS_selectedVehicleTypeName;
   TextEditingController SS_emptyVehicleWeight= new TextEditingController();
   int SS_selectedMaterialTypeId=null;
+  String SS_selectedMaterialTypeName=null;
   TextEditingController SS_customerNeedWeight= new TextEditingController(text: "0");
   TextEditingController SS_amount= new TextEditingController(text: '0.00');
   int SS_selectedPaymentTypeId=null;
+  String SS_selectedPaymentTypeString=null;
+  int SS_selectedCustomerId=null;
+  String SS_selectedCustomerName=null;
 
   weightToAmount(){
     String materialPrice;
@@ -527,6 +591,11 @@ class QuarryNotifier extends ChangeNotifier{
     SS_selectedVehicleTypeId=null;
     SS_selectedMaterialTypeId=null;
     SS_selectedPaymentTypeId=null;
+    SS_selectedVehicleTypeName=null;
+    SS_selectedMaterialTypeName=null;
+    SS_selectedPaymentTypeString=null;
+     SS_selectedCustomerId=null;
+    SS_selectedCustomerName=null;
     SS_emptyVehicleWeight.clear();
     SS_customerNeedWeight.clear();
     SS_Empty_ReqQtyUnit="";

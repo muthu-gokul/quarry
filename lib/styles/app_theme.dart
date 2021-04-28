@@ -18,6 +18,7 @@ class AppTheme {
 
   static  Color grey=Color(0xFF787878);
   static  Color gridTextColor=Color(0xFF787878);
+  static  Color gridbodyBgColor=Color(0xFFF6F7F9);
 
   static  Color uploadColor=Color(0xFFC7D0D8);
   static  Color hintColor=Color(0xFFC5C5C5);

@@ -379,6 +379,8 @@ class _SaleGridState extends State<SaleGrid> {
                     behavior: HitTestBehavior.translucent,
                     onTap: (){
                       qn.clearIsOpen();
+                      qn.clearEmptyForm();
+                      qn.SalesDropDownValues(context);
                       Navigator.of(context).push(_createRouteFalse());
 
 
@@ -554,7 +556,7 @@ class SaleReportHeader extends StatelessWidget {
     return Container(
       height: SizeConfig.height80,
       width: SizeConfig.width100,
-      margin: EdgeInsets.only(right: SizeConfig.width10),
+      /*argin: EdgeInsets.only(right: SizeConfig.width10),*/
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
           color: AppTheme.bgColor

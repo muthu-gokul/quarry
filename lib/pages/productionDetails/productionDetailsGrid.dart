@@ -214,7 +214,7 @@ class ProductionGridState extends State<ProductionGrid> with TickerProviderState
 
                               ),
                               Container(
-                                height: SizeConfig.screenHeight-250,
+                                height: SizeConfig.screenHeight-260,
                                 width: SizeConfig.screenWidth-150,
                                 alignment: Alignment.topCenter,
                                 color: Colors.white,
@@ -222,7 +222,7 @@ class ProductionGridState extends State<ProductionGrid> with TickerProviderState
                                   controller: body,
                                   scrollDirection: Axis.horizontal,
                                   child: Container(
-                                    height: SizeConfig.screenHeight-250,
+                                    height: SizeConfig.screenHeight-260,
                                     alignment: Alignment.topCenter,
                                     color: Colors.white,
                                     child: SingleChildScrollView(
@@ -249,7 +249,7 @@ class ProductionGridState extends State<ProductionGrid> with TickerProviderState
                                             child: Container(
 
                                               decoration: BoxDecoration(
-                                                color: selectedIndex==i?AppTheme.yellowColor:Colors.white,
+                                                color: selectedIndex==i?AppTheme.yellowColor:AppTheme.gridbodyBgColor,
                                             /*    boxShadow:[
                                                   selectedIndex==i? BoxShadow(
                                                     color: AppTheme.yellowColor.withOpacity(0.4),
@@ -326,7 +326,7 @@ class ProductionGridState extends State<ProductionGrid> with TickerProviderState
 
                               ),
                               Container(
-                                height: SizeConfig.screenHeight-250,
+                                height: SizeConfig.screenHeight-260,
                                 alignment: Alignment.topCenter,
                                 decoration: BoxDecoration(
                                     color: Colors.white,
@@ -340,7 +340,7 @@ class ProductionGridState extends State<ProductionGrid> with TickerProviderState
                                     ]
                                 ),
                                 child: Container(
-                                  height: SizeConfig.screenHeight-250,
+                                  height: SizeConfig.screenHeight-260,
                                   alignment: Alignment.topCenter,
 
                                   child: SingleChildScrollView(
@@ -367,7 +367,7 @@ class ProductionGridState extends State<ProductionGrid> with TickerProviderState
                                           child:  Container(
                                             alignment: Alignment.center,
                                             decoration: BoxDecoration(
-                                              color: selectedIndex==i?AppTheme.yellowColor:Colors.white,
+                                              color: selectedIndex==i?AppTheme.yellowColor:AppTheme.gridbodyBgColor,
 
                                               boxShadow:[
                                             /*    selectedIndex==i? BoxShadow(
@@ -422,13 +422,13 @@ class ProductionGridState extends State<ProductionGrid> with TickerProviderState
                   bottom: 0,
                   child: Container(
                     width: SizeConfig.screenWidth,
-                    height: 60,
+                    height: 70,
 
                     decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: AppTheme.gridbodyBgColor,
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.white.withOpacity(0.7),
+                            color: AppTheme.gridbodyBgColor,
                             spreadRadius: 2,
                             blurRadius: 15,
                             offset: Offset(0, -20), // changes position of shadow
@@ -439,10 +439,21 @@ class ProductionGridState extends State<ProductionGrid> with TickerProviderState
 
                       children: [
                         Container(
+                          decoration: BoxDecoration(
+                         /*     boxShadow: [
+                                BoxShadow(
+                                  color: Colors.white.withOpacity(0.7),
+                                  spreadRadius: 2,
+                                  blurRadius: 15,
+                                  offset: Offset(0, -20), // changes position of shadow
+                                )
+                              ]*/
+                          ),
                           margin:EdgeInsets.only(top: 0),
                           child: CustomPaint(
-                            size: Size( SizeConfig.screenWidth, 55),
-                            painter: RPSCustomPainter(),
+                            size: Size( SizeConfig.screenWidth, 65),
+                          //  painter: RPSCustomPainter(),
+                            painter: RPSCustomPainter3(),
                           ),
                         ),
                         Center(

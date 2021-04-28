@@ -39,7 +39,7 @@ class MaterialTypelist{
       MaterialDescription: json['MaterialDescription'],
       MaterialCode: json['MaterialCode'],
       MaterialUnitId: json['MaterialUnitId'],
-      MaterialUnitName: json['MaterialUnitName'],
+      MaterialUnitName: json['UnitName'],
       MaterialUnitPrice: json['MaterialUnitPrice'],
       MaterialHSNCode: json['MaterialHSNCode'],
     );
@@ -65,6 +65,27 @@ class PaymentType{
   }
 
 }
+
+class CustomerModel {
+  CustomerModel({
+    this.customerId,
+    this.customerName,
+  });
+
+  int customerId;
+  String customerName;
+
+  factory CustomerModel.fromJson(Map<String, dynamic> json) => CustomerModel(
+    customerId: json["CustomerId"],
+    customerName: json["CustomerName"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "CustomerId": customerId,
+    "CustomerName": customerName,
+  };
+}
+
 
 
 

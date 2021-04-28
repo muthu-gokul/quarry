@@ -518,6 +518,7 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                     ),
                   ),
                 ),
+
                 Container(
                   height: SizeConfig.height60,
                   width: SizeConfig.screenWidth,

@@ -642,6 +642,7 @@ class ProductionDetailAddNewState extends State<ProductionDetailAddNew> with Tic
                     ),
                   ),
                 ),
+
                 Container(
                   height: SizeConfig.height60,
                   width: SizeConfig.screenWidth,
