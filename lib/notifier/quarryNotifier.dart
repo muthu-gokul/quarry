@@ -694,6 +694,66 @@ class QuarryNotifier extends ChangeNotifier{
     }
   }
 
+
+  int PlantId=null;
+  int EditPlantId=null;
+  String PlantName=null;
+  Future<dynamic> UserDropDownValues(BuildContext context) async {
+    updateInsertSaleLoader(true);
+    var body={
+      "Fields": [
+        {
+          "Key": "SpName",
+          "Type": "String",
+          "Value": "${Sp.MasterdropDown}"
+        },
+        {
+          "Key": "LoginUserId",
+          "Type": "int",
+          "Value":UserId
+        },
+        {
+          "Key": "TypeName",
+          "Type": "String",
+          "Value": "User"
+        },
+        {
+          "Key": "database",
+          "Type": "String",
+          "Value": DataBaseName
+        }
+      ]
+    };
+
+    try{
+      await call.ApiCallGetInvoke(body,context).then((value) {
+        if(value!=null){
+          var parsed=json.decode(value);
+          var t=parsed['Table'] as List;
+          var t1=parsed['Table1'] as List;
+
+          t1.forEach((element) {
+            if(element['UserId']==UserId){
+              PlantId=element['PlantId'];
+              PlantName=element['PlantName'];
+            }
+          });
+
+          print(PlantId);
+          print(PlantName);
+
+
+
+        }
+        updateInsertSaleLoader(false);
+      });
+    }
+    catch(e){
+      updateInsertSaleLoader(false);
+      CustomAlert().commonErrorAlert(context, "${Sp.MasterdropDown}" , e.toString());
+    }
+  }
+
   InsertSaleDetailDbhit(BuildContext context) async {
 
     updateInsertSaleLoader(true);
@@ -708,6 +768,11 @@ class QuarryNotifier extends ChangeNotifier{
           "Key": "LoginUserId",
           "Type": "int",
           "Value": UserId
+        },
+        {
+          "Key": "PlantId",
+          "Type": "int",
+          "Value": PlantId
         },
         {
           "Key": "VehicleNumber",
@@ -735,9 +800,9 @@ class QuarryNotifier extends ChangeNotifier{
           "Value": SS_customerNeedWeight.text
         },
         {
-          "Key": "Amount",
+          "Key": "LoadWeightOfVehicle",
           "Type": "String",
-          "Value": SS_amount.text
+          "Value": 0.0
         },
 
         {
@@ -771,6 +836,26 @@ class QuarryNotifier extends ChangeNotifier{
           "Value": "Open"
         },
         {
+          "Key": "OutputQtyAmount",
+          "Type": "String",
+          "Value": 0.0
+        },
+        {
+          "Key": "OutputMaterialQty",
+          "Type": "String",
+          "Value": 0.0
+        },
+        {
+          "Key": "IsMaterialReceived",
+          "Type": "int",
+          "Value": 0
+        },
+        {
+          "Key": "Reason",
+          "Type": "String",
+          "Value": ""
+        },
+        {
           "Key": "database",
           "Type": "String",
           "Value": DataBaseName
@@ -794,7 +879,7 @@ class QuarryNotifier extends ChangeNotifier{
         //notifyListeners();
         clearEmptyForm();
         clearCustomerDetails();
-        printItemwise(context,t3,t,t2,t1,true);
+       // printItemwise(context,t3,t,t2,t1,true);
         updateInsertSaleLoader(false);
         GetSaleDetailDbhit(context);
         CustomAlert().billSuccessAlert(context,"","Inward Receipt Successfully Saved","","");
@@ -821,6 +906,16 @@ class QuarryNotifier extends ChangeNotifier{
           "Value": UserId
         },
         {
+          "Key": "IsOutUpdate",
+          "Type": "int",
+          "Value": 1
+        },
+        {
+          "Key": "SaleId",
+          "Type": "int",
+          "Value": SS_UpdateSaleId
+        },
+        {
           "Key": "VehicleNumber",
           "Type": "String",
           "Value": SS_LoadedVehicleNo
@@ -830,25 +925,11 @@ class QuarryNotifier extends ChangeNotifier{
           "Type": "int",
           "Value": SS_VehicleTypeId
         },
-        {
-          "Key": "SaleNumber",
-          "Type": "int",
-          "Value": SS_UpdateSaleNo
-        },
-        {
-          "Key": "SaleId",
-          "Type": "int",
-          "Value": SS_UpdateSaleId
-        },
+
         {
           "Key": "EmptyWeightOfVehicle",
           "Type": "String",
           "Value": SS_EmptyWeightOfVehicle
-        },
-        {
-          "Key": "LoadWeightOfVehicle",
-          "Type": "String",
-          "Value": SS_DifferWeightController.text
         },
         {
           "Key": "MaterialId",
@@ -861,26 +942,15 @@ class QuarryNotifier extends ChangeNotifier{
           "Value": SS_RequiredMaterialQty
         },
         {
-          "Key": "Amount",
+          "Key": "LoadWeightOfVehicle",
           "Type": "String",
-          "Value": SS_Amount
+          "Value": SS_DifferWeightController.text
         },
         {
           "Key": "RequiredQtyAmount",
           "Type": "String",
           "Value":SS_Amount
         },
-        {
-          "Key": "OutputMaterialQty",
-          "Type": "String",
-          "Value": SS_UpdatecustomerNeedWeight
-        },
-        {
-          "Key": "OutputQtyAmount",
-          "Type": "String",
-          "Value": SS_UpdateAmount
-        },
-
         {
           "Key": "PaymentCategoryId",
           "Type": "int",
@@ -901,16 +971,35 @@ class QuarryNotifier extends ChangeNotifier{
           "Type": "int",
           "Value": SS_selectCustomerId
         },
+
         {
-          "Key": "IsOutUpdate",
-          "Type": "int",
-          "Value": 1
+          "Key": "OutputMaterialQty",
+          "Type": "String",
+          "Value": SS_UpdatecustomerNeedWeight
         },
+
         {
           "Key": "SaleStatus",
           "Type": "String",
           "Value": "Closed"
         },
+        {
+          "Key": "OutputQtyAmount",
+          "Type": "String",
+          "Value": SS_UpdateAmount
+        },
+
+        {
+          "Key": "IsMaterialReceived",
+          "Type": "int",
+          "Value": 1
+        },
+        {
+          "Key": "Reason",
+          "Type": "String",
+          "Value": ""
+        },
+
         {
           "Key": "database",
           "Type": "String",
@@ -934,7 +1023,7 @@ class QuarryNotifier extends ChangeNotifier{
         print(t3);
         //notifyListeners();
         updateInsertSaleLoader(false);
-        printItemwise(context,t3,t,t2,t1,false);
+       // printItemwise(context,t3,t,t2,t1,false);
         clearLoaderForm();
         clearIsOpen();
         GetSaleDetailDbhit(context);

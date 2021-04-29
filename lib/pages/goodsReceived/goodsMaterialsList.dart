@@ -7,6 +7,7 @@ import 'package:quarry/model/goodsReceivedModel/goodsMaterialListModel.dart';
 import 'package:quarry/notifier/goodsReceivedNotifier.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/pages/goodsReceived/goodsInGateForm.dart';
+import 'package:quarry/pages/goodsReceived/goodsMaterialTripDetail.dart';
 import 'package:quarry/pages/quarryMaster/plantDetailsAddNew.dart';
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
@@ -29,7 +30,8 @@ class GoodsMaterialsListState extends State<GoodsMaterialsList> with TickerProvi
 
   ScrollController scrollController;
   ScrollController listViewController;
-
+  ScrollController header=new ScrollController();
+  ScrollController body=new ScrollController();
 
 
   @override
@@ -56,6 +58,19 @@ class GoodsMaterialsListState extends State<GoodsMaterialsList> with TickerProvi
       });
 
     });
+
+    header.addListener(() {
+      if(body.offset!=header.offset){
+        body.jumpTo(header.offset);
+      }
+    });
+
+    body.addListener(() {
+      if(header.offset!=body.offset){
+        header.jumpTo(body.offset);
+      }
+    });
+
     super.initState();
   }
 
@@ -121,7 +136,7 @@ class GoodsMaterialsListState extends State<GoodsMaterialsList> with TickerProvi
                               height: 450,
                               width: SizeConfig.screenWidth,
 
-                              margin: EdgeInsets.only(left:SizeConfig.screenWidth*0.06,right:SizeConfig.screenWidth*0.06),
+                              margin: EdgeInsets.only(left:SizeConfig.screenWidth*0.02,right:SizeConfig.screenWidth*0.02),
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
                                   color: Colors.white,
@@ -144,42 +159,54 @@ class GoodsMaterialsListState extends State<GoodsMaterialsList> with TickerProvi
                                       color: AppTheme.f737373,
 
                                     ),
-                                    child: Row(
-                                      children: [
-                                        Container(
-                                          width: SizeConfig.screenWidth*0.23,
-                                          alignment: Alignment.centerLeft,
-                                          padding: EdgeInsets.only(left: SizeConfig.width10),
-                                          child: Text("Material",style: AppTheme.TSWhiteML,),
-                                        ),
-                                        Container(
-                                          width: SizeConfig.screenWidth*0.14,
-                                          alignment: Alignment.center,
-                                          padding: EdgeInsets.only(left: SizeConfig.width10),
+                                    child: SingleChildScrollView(
+                                      controller: header,
+                                      scrollDirection: Axis.horizontal,
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            width: SizeConfig.screenWidth*0.23,
+                                            alignment: Alignment.centerLeft,
+                                            padding: EdgeInsets.only(left: SizeConfig.width10),
+                                            child: Text("Material",style: AppTheme.TSWhiteML,),
+                                          ),
+                                          Container(
+                                            width: SizeConfig.screenWidth*0.14,
+                                            alignment: Alignment.center,
+                                            padding: EdgeInsets.only(left: SizeConfig.width10),
 
-                                          child: Text("Qty",style: AppTheme.TSWhiteML,),
-                                        ),
-                                        Container(
-                                          width: SizeConfig.screenWidth*0.17,
-                                          alignment: Alignment.center,
-                                          padding: EdgeInsets.only(left: SizeConfig.width10),
+                                            child: Text("Qty",style: AppTheme.TSWhiteML,),
+                                          ),
+                                          Container(
+                                            width: SizeConfig.screenWidth*0.25,
 
-                                          child: Text("Per Ton",style: AppTheme.TSWhiteML,),
-                                        ),
-                                        Container(
-                                          width: SizeConfig.screenWidth*0.17,
-                                          alignment: Alignment.centerRight,
+                                            alignment: Alignment.center,
+                                            padding: EdgeInsets.only(left: SizeConfig.width10),
 
-                                          child: Text("Amount",style: AppTheme.TSWhiteML,),
-                                        ),
-                                        Container(
-                                          width: SizeConfig.screenWidth*0.17,
-                                          alignment: Alignment.centerRight,
-                                          padding: EdgeInsets.only(right: SizeConfig.width10),
+                                            child: Text("Received Qty",style: TextStyle(fontFamily: 'RR',fontSize: 14,color: Colors.white,letterSpacing: 0.1,),textAlign: TextAlign.center,),
+                                          ),
+                                          Container(
+                                            width: SizeConfig.screenWidth*0.17,
+                                            alignment: Alignment.center,
+                                            padding: EdgeInsets.only(left: SizeConfig.width10),
 
-                                          child: Text("Status",style: AppTheme.TSWhiteML,),
-                                        ),
-                                      ],
+                                            child: Text("Per Ton",style: AppTheme.TSWhiteML,),
+                                          ),
+                                          Container(
+                                            width: SizeConfig.screenWidth*0.17,
+                                            alignment: Alignment.centerRight,
+
+                                            child: Text("Amount",style: AppTheme.TSWhiteML,),
+                                          ),
+                                          Container(
+                                            width: SizeConfig.screenWidth*0.25,
+                                            alignment: Alignment.centerRight,
+                                            padding: EdgeInsets.only(right: SizeConfig.width10),
+
+                                            child: Text("Status",style: AppTheme.TSWhiteML,),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
 
@@ -190,95 +217,116 @@ class GoodsMaterialsListState extends State<GoodsMaterialsList> with TickerProvi
                                     decoration: BoxDecoration(
                                      /*   border: Border(bottom: BorderSide(color: AppTheme.gridTextColor.withOpacity(0.3)))*/
                                     ),
-                                    child: ListView.builder(
-                                      itemCount: gr.ML_Materials.length,
-                                      itemBuilder: (context,index){
-                                        return GestureDetector(
-                                          onTap: (){
-                                            setState(() {
-                                              gr.IGF_Materials.add(
-                                                GoodsReceivedMaterialListModel(
-                                                  GoodsReceivedMaterialMappingId: gr.ML_Materials[index].GoodsReceivedMaterialMappingId,
-                                                  goodsReceivedId: gr.ML_Materials[index].goodsReceivedId,
-                                                  materialId: gr.ML_Materials[index].materialId,
-                                                  materialName: gr.ML_Materials[index].materialName,
-                                                  materialPrice: gr.ML_Materials[index].materialPrice,
-                                                  materialUnitId: gr.ML_Materials[index].materialUnitId,
-                                                  unitName: gr.ML_Materials[index].unitName,
-                                                  quantity: gr.ML_Materials[index].quantity,
-                                                  receivedQuantity: 0.0,
-                                                  amount: 0.0,
-                                                  vehicleNumber: null,
-                                                  vehicleTypeId: null,
-                                                  inwardLoadedVehicleWeight: 0.0,
-                                                  outwardEmptyVehicleWeight: 0.0,
+                                    child: Container(
+                                      height: 400,
+                                      width: SizeConfig.screenWidth,
+                                      child: ListView.builder(
+                                        scrollDirection: Axis.vertical,
+                                        itemCount: gr.ML_Materials.length,
+                                        itemBuilder: (context,index){
+                                          return GestureDetector(
+                                            onTap: (){
+                                              if(gr.ML_Materials[index].status!='Completed'){
+                                                setState(() {
+                                                  gr.IGF_Materials.add(
+                                                      GoodsReceivedMaterialListModel(
+                                                        GoodsReceivedMaterialMappingId: gr.ML_Materials[index].GoodsReceivedMaterialMappingId,
+                                                        goodsReceivedId: gr.ML_Materials[index].goodsReceivedId,
+                                                        materialId: gr.ML_Materials[index].materialId,
+                                                        materialName: gr.ML_Materials[index].materialName,
+                                                        materialPrice: gr.ML_Materials[index].materialPrice,
+                                                        materialUnitId: gr.ML_Materials[index].materialUnitId,
+                                                        unitName: gr.ML_Materials[index].unitName,
+                                                        quantity: gr.ML_Materials[index].quantity,
+                                                        receivedQuantity: 0.0,
+                                                        amount: 0.0,
+                                                        vehicleNumber: null,
+                                                        vehicleTypeId: null,
+                                                        inwardLoadedVehicleWeight: 0.0,
+                                                        outwardEmptyVehicleWeight: 0.0,
 
-                                                )
-                                              );
-                                              // if(selectedMaterialIndex!=index){
-                                              //   selectedMaterialIndex=index;
-                                              //   deleteOpen=true;
-                                              // }else{
-                                              //   selectedMaterialIndex=-1;
-                                              //   deleteOpen=false;
-                                              // }
-                                            });
-                                            Navigator.push(context, _createRoute());
-                                          },
-                                          child: Container(
-                                            //  height: 50,
-                                            padding: EdgeInsets.only(top: 10,bottom: 10),
-                                            width: SizeConfig.screenWidth,
-                                            decoration: BoxDecoration(
-                                               // color:selectedMaterialIndex==index?Colors.red: Colors.white,
-                                                border: Border(bottom: BorderSide(color: AppTheme.gridTextColor.withOpacity(0.3))
-                                                )
+                                                      )
+                                                  );
+                                                });
+                                                Navigator.push(context, _createRoute());
+                                              }
+                                              else{
+                                                Navigator.push(context, _createRouteTripList());
+                                              }
 
+                                            },
+                                            child: Container(
+                                              // height: 50,
+                                              padding: EdgeInsets.only(top: 15,bottom: 15),
+                                             width: SizeConfig.screenWidth,
+                                              decoration: BoxDecoration(
+                                                 // color:selectedMaterialIndex==index?Colors.red: Colors.white,
+                                                  border: Border(bottom: BorderSide(color: AppTheme.gridTextColor.withOpacity(0.3))
+                                                  )
+
+                                              ),
+                                              child: SingleChildScrollView(
+                                                controller: body,
+                                                scrollDirection: Axis.horizontal,
+                                                child: Row(
+                                                  children: [
+                                                    Container(
+                                                      //width: 150,
+                                                   width: SizeConfig.screenWidth*0.23,
+                                                      alignment: Alignment.centerLeft,
+                                                      padding: EdgeInsets.only(left: SizeConfig.width10),
+                                                      child: Text("${gr.ML_Materials[index].materialName}",style: AppTheme.ML_bgCT,),
+                                                    ),
+                                                    Container(
+                                                      //width: 150,
+                                                     width: SizeConfig.screenWidth*0.14,
+                                                      alignment: Alignment.center,
+                                                      padding: EdgeInsets.only(left: SizeConfig.width10),
+
+                                                      child: Text("${gr.ML_Materials[index].quantity}",style: AppTheme.ML_bgCT,),
+                                                    ),
+                                                    Container(
+                                                    //  width: 150,
+                                                    width: SizeConfig.screenWidth*0.25,
+                                                      alignment: Alignment.center,
+                                                      padding: EdgeInsets.only(left: SizeConfig.width10),
+
+                                                      child: Text("${gr.ML_Materials[index].receivedQuantity}",style: AppTheme.ML_bgCT,),
+                                                    ),
+                                                    Container(
+                                                    //  width: 150,
+                                                     width: SizeConfig.screenWidth*0.17,
+                                                      alignment: Alignment.center,
+                                                      padding: EdgeInsets.only(left: SizeConfig.width10),
+
+                                                      child: Text("${gr.ML_Materials[index].materialPrice}",style: AppTheme.ML_bgCT,),
+                                                    ),
+                                                    Container(
+                                                    //  width: 150,
+                                                      width: SizeConfig.screenWidth*0.17,
+                                                      alignment: Alignment.centerRight,
+
+                                                      child: Text("${gr.ML_Materials[index].amount}",style: AppTheme.ML_bgCT,),
+                                                    ),
+                                                    Container(
+                                                     // width: 150,
+                                                     width: SizeConfig.screenWidth*0.25,
+                                                      alignment: Alignment.centerRight,
+                                                      padding: EdgeInsets.only(right: SizeConfig.width10),
+
+                                                      child: Text("${gr.ML_Materials[index].status}",
+                                                        style:TextStyle(fontFamily: 'RL',color:gr.ML_Materials[index].status=='Not Yet'? AppTheme.bgColor:
+                                                        gr.ML_Materials[index].status=='Completed'?Colors.green:AppTheme.red
+                                                            ,fontSize: 12),textAlign: TextAlign.right,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
                                             ),
-                                            child: Row(
-                                              children: [
-                                                Container(
-                                                  width: SizeConfig.screenWidth*0.23,
-                                                  alignment: Alignment.centerLeft,
-                                                  padding: EdgeInsets.only(left: SizeConfig.width10),
-                                                  child: Text("${gr.ML_Materials[index].materialName}",style: AppTheme.ML_bgCT,),
-                                                ),
-                                                Container(
-                                                  width: SizeConfig.screenWidth*0.14,
-                                                  alignment: Alignment.center,
-                                                  padding: EdgeInsets.only(left: SizeConfig.width10),
-
-                                                  child: Text("${gr.ML_Materials[index].quantity}",style: AppTheme.ML_bgCT,),
-                                                ),
-                                                Container(
-                                                  width: SizeConfig.screenWidth*0.17,
-                                                  alignment: Alignment.center,
-                                                  padding: EdgeInsets.only(left: SizeConfig.width10),
-
-                                                  child: Text("${gr.ML_Materials[index].materialPrice}",style: AppTheme.ML_bgCT,),
-                                                ),
-                                                Container(
-                                                  width: SizeConfig.screenWidth*0.17,
-                                                  alignment: Alignment.centerRight,
-
-                                                  child: Text("${gr.ML_Materials[index].amount}",style: AppTheme.ML_bgCT,),
-                                                ),
-                                                Container(
-                                                  width: SizeConfig.screenWidth*0.17,
-                                                  alignment: Alignment.centerRight,
-                                                  padding: EdgeInsets.only(right: SizeConfig.width10),
-
-                                                  child: Text("${gr.ML_Materials[index].status}",
-                                                    style:TextStyle(fontFamily: 'RL',color:gr.ML_Materials[index].status=='Not Yet'? AppTheme.bgColor:
-                                                    gr.ML_Materials[index].status=='Completed'?Colors.green:AppTheme.red
-                                                        ,fontSize: 12)
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        );
-                                      },
+                                          );
+                                        },
+                                      ),
                                     ),
                                   ),
 
@@ -389,6 +437,18 @@ class GoodsMaterialsListState extends State<GoodsMaterialsList> with TickerProvi
   Route _createRoute() {
     return PageRouteBuilder(
       pageBuilder: (context, animation, secondaryAnimation) => GoodsInGateForm(),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+
+        return SlideTransition(
+          position: Tween<Offset>(begin: Offset(1.0,0.0), end: Offset.zero).animate(animation),
+          child: child,
+        );
+      },
+    );
+  }
+  Route _createRouteTripList() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => GoodsMaterialTripList(),
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
 
         return SlideTransition(

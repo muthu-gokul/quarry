@@ -319,7 +319,7 @@ class PurchaseNotifier extends ChangeNotifier{
 
   InsertPurchaseDbHit(BuildContext context)  async{
     updatePurchaseLoader(true);
-
+    print(PlantId);
     List js=[];
     js=purchaseOrdersMappingList.map((e) => e.toJson()).toList();
     print(js);

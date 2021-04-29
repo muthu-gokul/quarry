@@ -236,7 +236,7 @@ class ProductionNotifier extends ChangeNotifier{
 
 
   List<ProductionGridHeaderModel> gridOverAllHeader=[];
-  List<String> productionGridCol=["Machine Name","Input Material","Input Material Qty","Input Material Count"];
+  List<String> productionGridCol=["Machine Name","Input Material","Input Material Qty","Output Material Count"];
   List<ProductionDetailGridModel> productionGridValues=[];
 
   GetProductionDbHit(BuildContext context,int productionId,TickerProviderStateMixin tickerProviderStateMixin)  async{

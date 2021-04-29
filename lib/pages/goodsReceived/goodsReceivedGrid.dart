@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:quarry/notifier/goodsReceivedNotifier.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/pages/goodsReceived/goodsMaterialsList.dart';
+import 'package:quarry/pages/goodsReceived/goodsOutGateForm.dart';
 import 'package:quarry/pages/quarryMaster/plantDetailsAddNew.dart';
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
@@ -109,7 +110,7 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
                         width: SizeConfig.screenWidth,
                         padding: EdgeInsets.only(top: 20,bottom: 60),
                         decoration: BoxDecoration(
-                            color: Colors.white,
+                            color: AppTheme.gridbodyBgColor,
                             borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10))
                         ),
                         child: SingleChildScrollView(
@@ -129,7 +130,7 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
                                   height: 200,
                                  // height: SizeConfig.screenWidth*0.5,
                                   width: SizeConfig.screenWidth*0.5,
-                                  color: Colors.white,
+                                  color: AppTheme.gridbodyBgColor,
                                   child: Center(
                                     child: Container(
                                       height: 160,
@@ -210,38 +211,89 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
                 ),
               ),
 
+
+              //bottomNav
               Positioned(
                 bottom: 0,
                 child: Container(
                   width: SizeConfig.screenWidth,
-                  height: 60,
-                  color: Colors.white,
+                  height: 70,
 
-                  // decoration: BoxDecoration(
-                  //   border: Border.all(color: AppTheme.addNewTextFieldBorder),
-                  //   color: Colors.white,
-                  // ),
+                  decoration: BoxDecoration(
+                      color: AppTheme.gridbodyBgColor,
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppTheme.gridbodyBgColor,
+                          spreadRadius: 2,
+                          blurRadius: 15,
+                          offset: Offset(0, -20), // changes position of shadow
+                        )
+                      ]
+                  ),
                   child: Stack(
 
                     children: [
-                      CustomPaint(
-                        size: Size( SizeConfig.screenWidth, 55),
-                        painter: RPSCustomPainter(),
+                      Container(
+                        decoration: BoxDecoration(
+                        ),
+                        margin:EdgeInsets.only(top: 0),
+                        child: CustomPaint(
+                          size: Size( SizeConfig.screenWidth, 65),
+                          //  painter: RPSCustomPainter(),
+                          painter: RPSCustomPainter3(),
+                        ),
                       ),
                       Center(
                         heightFactor: 0.5,
-                        child: FloatingActionButton(backgroundColor: AppTheme.yellowColor, child: Icon(Icons.save), elevation: 0.1, onPressed: () {
+                        child: GestureDetector(
+                          behavior: HitTestBehavior.translucent,
+                          onTap: (){
 
-                        }),
+                          },
+                          child: Container(
+
+                            height: SizeConfig.width50,
+                            width: SizeConfig.width50,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: AppTheme.yellowColor,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: AppTheme.yellowColor.withOpacity(0.4),
+                                  spreadRadius: 1,
+                                  blurRadius: 5,
+                                  offset: Offset(1, 8), // changes position of shadow
+                                ),
+                              ],
+                            ),
+                            child: Center(
+                              child: Icon(Icons.add,size: SizeConfig.height30,color: AppTheme.bgColor,),
+                            ),
+                          ),
+                        ),
                       ),
                       Container(
                         width:  SizeConfig.screenWidth,
                         height: 80,
-                        child: Stack(
-
+                        padding: EdgeInsets.only(bottom: 10),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
+                            Image.asset("assets/goodsIcons/plant.jpg"),
+                            Image.asset("assets/goodsIcons/cart.jpg"),
 
+                            SizedBox(width: SizeConfig.width50,),
+                            GestureDetector(
+                                onTap: (){
+                                  gr.clearOGFform();
+                                  gr.GoodsDropDownValues(context);
+                                  Navigator.push(context, _createRouteOutGateForm());
 
+                                },
+                                child: Image.asset("assets/goodsIcons/outGate.jpg")
+                            ),
+                            Image.asset("assets/goodsIcons/invoice.jpg"),
                           ],
                         ),
                       )
@@ -249,6 +301,8 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
                   ),
                 ),
               ),
+
+
 
 
               Container(
@@ -284,6 +338,18 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
   Route _createRoute() {
     return PageRouteBuilder(
       pageBuilder: (context, animation, secondaryAnimation) => GoodsMaterialsList(),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+
+        return SlideTransition(
+          position: Tween<Offset>(begin: Offset(1.0,0.0), end: Offset.zero).animate(animation),
+          child: child,
+        );
+      },
+    );
+  }
+  Route _createRouteOutGateForm() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => GoodsOutGateForm(),
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
 
         return SlideTransition(

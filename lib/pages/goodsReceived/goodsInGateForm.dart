@@ -122,12 +122,30 @@ class GoodsInGateFormState extends State<GoodsInGateForm> with TickerProviderSta
                           width: SizeConfig.screenWidth,
                           padding: EdgeInsets.only(top: 20,bottom: 60),
                           decoration: BoxDecoration(
-                              color: Colors.white,
+                              color: AppTheme.gridbodyBgColor,
                               borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10))
                           ),
                           child: ListView(
                             controller: listViewController,
                             children: [
+                                 Image.asset("assets/images/inGate.jpg",height: 50,width: 100,),
+                                  Row(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text("${gr.IGF_Materials[gr.IGF_Materials.length-1].materialName} - ${gr.IGF_Materials[gr.IGF_Materials.length-1].quantity}",
+                                        style: TextStyle(fontFamily: 'RM',color: AppTheme.bgColor,fontSize: 20),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      Padding(
+                                        padding:  EdgeInsets.only(bottom: 2),
+                                        child: Text(" ${gr.IGF_Materials[gr.IGF_Materials.length-1].unitName}",
+                                          style: TextStyle(fontFamily: 'RR',color: AppTheme.hintColor,fontSize: 14),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                   AddNewLabelTextField(
                                     textEditingController: gr.vehicleNo,
                                     labelText: "Vehicle Number",
@@ -162,19 +180,22 @@ class GoodsInGateFormState extends State<GoodsInGateForm> with TickerProviderSta
                                   text: gr.selectedVehicleTypeName==null? "Select Vehicle Type":gr.selectedVehicleTypeName,
                                   textColor: gr.selectedVehicleTypeName==null? AppTheme.addNewTextFieldText.withOpacity(0.5):AppTheme.addNewTextFieldText,
                                   iconColor: gr.selectedVehicleTypeName==null? AppTheme.addNewTextFieldText:AppTheme.yellowColor,
+                                  bgColor: gr.selectedVehicleTypeName==null? AppTheme.disableColor:Colors.white,
+
                                 ),
                               ),
                               AddNewLabelTextField(
                                 textEditingController: gr.loadedWeight,
                                 labelText: "Loaded Weight",
                                 ontap: (){
+                                  scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                   setState(() {
                                     _keyboardVisible=true;
                                   });
                                 },
                                 onEditComplete: (){
                                   node.unfocus();
-                                  Timer(Duration(milliseconds: 50), (){
+                                   Timer(Duration(milliseconds: 300), (){
                                     setState(() {
                                       _keyboardVisible=false;
                                     });
@@ -190,17 +211,20 @@ class GoodsInGateFormState extends State<GoodsInGateForm> with TickerProviderSta
                 ),
               ),
 
-              Positioned(
-                bottom: 0,
+              //bottomNav
+              AnimatedPositioned(
+                duration: Duration(milliseconds: 100),
+                curve: Curves.easeIn,
+                bottom: _keyboardVisible?-80:0,
                 child: Container(
                   width: SizeConfig.screenWidth,
-                  height:_keyboardVisible?0: 60,
+                  height:70,
 
                   decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: AppTheme.gridbodyBgColor,
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.white.withOpacity(0.7),
+                          color: AppTheme.gridbodyBgColor,
                           spreadRadius: 2,
                           blurRadius: 15,
                           offset: Offset(0, -20), // changes position of shadow
@@ -211,8 +235,8 @@ class GoodsInGateFormState extends State<GoodsInGateForm> with TickerProviderSta
 
                     children: [
                       CustomPaint(
-                        size: Size( SizeConfig.screenWidth, 55),
-                        painter: RPSCustomPainter(),
+                        size: Size( SizeConfig.screenWidth, 65),
+                        painter: RPSCustomPainter3(),
                       ),
                       Center(
                         heightFactor: 0.5,
@@ -256,6 +280,10 @@ class GoodsInGateFormState extends State<GoodsInGateForm> with TickerProviderSta
                     IconButton(icon: Icon(Icons.clear,color:AppTheme.bgColor,), onPressed:(){
                       Navigator.pop(context);
                       gr.IGF_clear();
+                      setState(() {
+                        gr.IGF_Materials.removeLast();
+                      });
+                      print(gr.IGF_Materials.length);
                     }),
                     SizedBox(width: SizeConfig.width5,),
                     Text("${gr.ML_PorderNo}",

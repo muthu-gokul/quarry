@@ -88,6 +88,10 @@ flutter:
     - assets/svg/pdf.svg
     - assets/svg/print.svg
     - assets/images/inGate.jpg
+    - assets/goodsIcons/cart.jpg
+    - assets/goodsIcons/invoice.jpg
+    - assets/goodsIcons/outGate.jpg
+    - assets/goodsIcons/plant.jpg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 

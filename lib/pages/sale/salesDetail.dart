@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/pages/vendor/vendorLocAddNew.dart';
+import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/alertDialog.dart';
@@ -169,7 +170,7 @@ bool _keyboardVisible=false;
                                             width: SizeConfig.screenWidth,
 
                                             decoration: BoxDecoration(
-                                                color: Colors.white,
+                                                color: AppTheme.gridbodyBgColor,
                                                 borderRadius: BorderRadius.only(
                                                     topLeft: Radius.circular(10),
                                                     topRight: Radius.circular(10))
@@ -217,6 +218,8 @@ bool _keyboardVisible=false;
                                                         : AppTheme.addNewTextFieldText,
                                                     iconColor: qn.SS_selectedVehicleTypeName == null ? AppTheme.addNewTextFieldText
                                                         : AppTheme.yellowColor,
+                                                    bgColor: qn.SS_selectedVehicleTypeName == null ? AppTheme.disableColor
+                                                        : Colors.white,
                                                   ),
                                                 ),
 
@@ -257,6 +260,8 @@ bool _keyboardVisible=false;
                                                         : AppTheme.addNewTextFieldText,
                                                     iconColor: qn.SS_selectedMaterialTypeName == null ? AppTheme.addNewTextFieldText
                                                         : AppTheme.yellowColor,
+                                                    bgColor: qn.SS_selectedMaterialTypeName == null ? AppTheme.disableColor
+                                                        : Colors.white,
                                                   ),
                                                 ),
 
@@ -288,10 +293,24 @@ bool _keyboardVisible=false;
                                                         });
                                                       });
                                                     },
-                                                    suffixIcon: Container(
-                                                        height: SizeConfig.height60,
+                                                    suffixIcon:qn.SS_Empty_ReqQtyUnit.isEmpty?Container(
+                                                      height: SizeConfig.height50,
+                                                      width: 100,
+                                                    ): Container(
+                                                        height: SizeConfig.height50,
                                                         width: 100,
-                                                        child: Center(child: Text("${qn.SS_Empty_ReqQtyUnit}",style: TextStyle(fontFamily: 'RR',fontSize: 18,color: AppTheme.addNewTextFieldText.withOpacity(0.7)),))
+
+                                                        child: Center(
+                                                            child: Container(
+                                                              padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+                                                                decoration: BoxDecoration(
+                                                                    borderRadius: BorderRadius.circular(SizeConfig.height25),
+                                                                    color: AppTheme.yellowColor
+                                                                ),
+                                                            child: Text("${qn.SS_Empty_ReqQtyUnit}",
+                                                              style: TextStyle(fontFamily: 'RR',fontSize: 18,color: Colors.white),)
+                                                        )
+                                                        )
 
                                                     ),
                                                   ),
@@ -346,6 +365,8 @@ bool _keyboardVisible=false;
                                                         : AppTheme.addNewTextFieldText,
                                                     iconColor: qn.SS_selectedPaymentTypeString == null ? AppTheme.addNewTextFieldText
                                                         : AppTheme.yellowColor,
+                                                    bgColor: qn.SS_selectedPaymentTypeString == null ? AppTheme.disableColor
+                                                        : Colors.white,
                                                   ),
                                                 ),
                                                 GestureDetector(
@@ -363,44 +384,11 @@ bool _keyboardVisible=false;
                                                         : AppTheme.addNewTextFieldText,
                                                     iconColor: qn.SS_selectedCustomerName == null ? AppTheme.addNewTextFieldText
                                                         : AppTheme.yellowColor,
+                                                    bgColor: qn.SS_selectedCustomerName == null ? AppTheme.disableColor
+                                                        : Colors.white,
                                                   ),
                                                 ),
                                                 
-                                                SizedBox(height: SizeConfig.height20,),
-                                                GestureDetector(
-                                                  onTap: (){
-                                                    node.unfocus();
-                                                    if(qn.SS_vehicleNo.text.isEmpty){
-                                                      CustomAlert().commonErrorAlert(context, "Enter Vehicle Number", "");
-                                                    }
-                                                    else if(qn.SS_emptyVehicleWeight.text.isEmpty){
-                                                      CustomAlert().commonErrorAlert(context, "Enter Vehicle Weight", "");
-                                                    }
-                                                    else if(qn.SS_customerNeedWeight.text.isEmpty && qn.SS_customerNeedWeight.text!="0"){
-                                                      CustomAlert().commonErrorAlert(context, "Enter Customer Need Weight", "");
-                                                    }
-                                                    else{
-                                                      qn.InsertSaleDetailDbhit(context);
-                                                    }
-
-                                                  },
-                                                  child: Container(
-                                                    margin: EdgeInsets.only(bottom: SizeConfig.height50),
-                                                    height: SizeConfig.height50,
-                                                    width: SizeConfig.width100,
-                                                    decoration: BoxDecoration(
-                                                        borderRadius: BorderRadius.circular(5),
-                                                        color: AppTheme.yellowColor
-                                                    ),
-                                                    child: Center(
-                                                      child: Text("Save",style: TextStyle(fontFamily: 'RR',fontSize: 20,color: AppTheme.bgColor,letterSpacing: 0.1),),
-                                                    ),
-                                                  ),
-                                                ),
-
-
-
-
 
                                                 SizedBox(height: SizeConfig.height100,)
                                               ],
@@ -441,7 +429,464 @@ bool _keyboardVisible=false;
 
 
 /////////////////////////////////////////////////////LOADED /////
+
                             Container(
+                              height: SizeConfig.screenHeight-(SizeConfig.height70),
+                              child: Stack(
+                                children: [
+                                  //IMAGE
+                                  Container(
+                                    height: SizeConfig.screenHeight,
+                                    width: SizeConfig.screenWidth,
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          width: double.maxFinite,
+                                          height: SizeConfig.height200,
+
+                                          decoration: BoxDecoration(
+                                              image: DecorationImage(
+                                                  image: AssetImage(
+                                                    "assets/images/saleFormheader.jpg",),
+                                                  fit: BoxFit.cover
+                                              )
+
+                                          ),
+                                        ),
+
+
+                                      ],
+                                    ),
+                                  ),
+
+
+                                  //FORM
+                                  Container(
+                                    height: SizeConfig.screenHeight-(SizeConfig.height70),
+                                    // color: Colors.transparent,
+                                    child: SingleChildScrollView(
+                                      physics: NeverScrollableScrollPhysics(),
+                                      controller: scrollController,
+                                      child: Column(
+                                        children: [
+                                          SizedBox(height: 160,),
+                                          Container(
+                                            height: SizeConfig.screenHeight,
+                                            width: SizeConfig.screenWidth,
+                                            alignment: Alignment.topCenter,
+                                            decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10))
+                                            ),
+                                            child: GestureDetector(
+                                              onVerticalDragUpdate: (details){
+                                                int sensitivity = 5;
+
+                                                if (details.delta.dy > sensitivity) {
+                                                  scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+
+                                                } else if(details.delta.dy < -sensitivity){
+                                                  scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+                                                }
+                                              },
+                                              child: Container(
+                                                height: _keyboardVisible ? SizeConfig.screenHeight * 0.5 : SizeConfig.screenHeight-SizeConfig.height100,
+                                                //  height:  SizeConfig.screenHeight ,
+                                                width: SizeConfig.screenWidth,
+
+                                                decoration: BoxDecoration(
+                                                    color: AppTheme.gridbodyBgColor,
+                                                    borderRadius: BorderRadius.only(
+                                                        topLeft: Radius.circular(10),
+                                                        topRight: Radius.circular(10))
+                                                ),
+                                                child: ListView(
+                                                  controller: listViewController,
+                                                  scrollDirection: Axis.vertical,
+
+                                                  children: [
+
+
+                                                    DropDownField(
+
+
+
+                                                      add: (){
+                                                      },
+                                                      nodeFocus: (){
+                                                        node.unfocus();
+                                                      },
+                                                      value: qn.SS_LoadedVehicleNo,
+                                                      controller: qn.searchVehicleNo,
+                                                      reduceWidth: SizeConfig.width40,
+                                                      // qtycontroller:qn.brandQtyController,
+                                                      // unit: qn.MM_selectPrimaryUnit.toString(),
+
+                                                      required: false,
+                                                      // icon: Container(
+                                                      //   height: 50,
+                                                      //   width: 50,
+                                                      //   margin: EdgeInsets.only(left: 20,right: 20),
+                                                      //   decoration: BoxDecoration(
+                                                      //       shape: BoxShape.circle,
+                                                      //       color: Color(0xFFDEE2FE)
+                                                      //   ),
+                                                      // ),
+
+                                                      hintText: 'Search Vehicle',
+                                                      textStyle: TextStyle(fontFamily: 'RR',fontSize: 20,color: AppTheme.addNewTextFieldText),
+                                                      items: qn.saleVehicleNumberList,
+                                                      strict: false,
+                                                      setter: (dynamic newValue) {
+                                                        // print(newValue);
+                                                        // qn.SS_LoadedVehicleNo=newValue;
+                                                        // print(qn.SS_LoadedVehicleNo);
+                                                        // qn.MM_selectBrand = newValue;
+                                                      },
+                                                      onValueChanged: (v){
+                                                        node.unfocus();
+                                                        setState(() {
+                                                          qn.SS_LoadedVehicleNo=v;
+                                                          int index;
+                                                          index=qn.saleDetails.indexWhere((element) => element.VehicleNumber.toLowerCase()==v.toString().toLowerCase()).toInt();
+                                                          qn.SS_EmptyWeightOfVehicle=qn.saleDetails[index].EmptyWeightOfVehicle;
+                                                          qn.SS_VehicleTypeName=qn.saleDetails[index].VehicleTypeName;
+                                                          qn.SS_VehicleTypeId=qn.saleDetails[index].VehicleTypeId;
+                                                          qn.SS_MaterialName=qn.saleDetails[index].MaterialName;
+                                                          qn.SS_MaterialTypeId=qn.saleDetails[index].MaterialId;
+                                                          qn.SS_RequiredMaterialQty=qn.saleDetails[index].RequiredMaterialQty;
+                                                          qn.SS_RequiredMaterialQtyUnit=qn.saleDetails[index].UnitName;
+                                                          qn.SS_Amount=qn.saleDetails[index].Amount;
+                                                          qn.SS_PaymentCategoryName=qn.saleDetails[index].PaymentCategoryName;
+                                                          qn.SS_PaymentTypeId=qn.saleDetails[index].PaymentCategoryId;
+                                                          qn.SS_UpdateSaleId=qn.saleDetails[index].SaleId;
+                                                          qn.SS_UpdateSaleNo=qn.saleDetails[index].SaleNumber;
+                                                          qn.SS_selectCustomerId=qn.saleDetails[index].CustomerId;
+                                                          qn.SS_TotalWeight=(Decimal.parse(qn.SS_EmptyWeightOfVehicle)+Decimal.parse((qn.SS_RequiredMaterialQty))).toString();
+                                                          qn.SS_MaterialUnitPrice=qn.sale_materialList.where((element) => element.MaterialId==qn.saleDetails[index].MaterialId).toList()[0].MaterialUnitPrice;
+                                                        });
+                                                      },
+                                                    ),
+                                                    Container(
+                                                      margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,top:SizeConfig.height20,),
+                                                      height:SizeConfig.height60,
+                                                      width: SizeConfig.width320,
+                                                      decoration: BoxDecoration(
+                                                          borderRadius: BorderRadius.circular(3),
+                                                          border: Border.all(color: AppTheme.addNewTextFieldBorder)
+
+                                                      ),
+                                                      child:Row(
+                                                        children: [
+                                                          Container(
+                                                              padding: EdgeInsets.only(left: SizeConfig.width10),
+                                                              width: SizeConfig.width140-2,
+                                                              child: Text("Empty Vehicle Weight")
+                                                          ),
+
+                                                          Container(
+                                                              height: SizeConfig.height60,
+                                                              width: 1,
+                                                              color: AppTheme.addNewTextFieldBorder
+                                                          ),
+
+                                                          Container(
+                                                              padding: EdgeInsets.only(left: SizeConfig.width10),
+                                                              width: SizeConfig.width140-1,
+                                                              child: Text(qn.SS_EmptyWeightOfVehicle==null?"":"${qn.SS_EmptyWeightOfVehicle+" Ton"}")),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20),
+                                                      height:SizeConfig.height60,
+                                                      width: SizeConfig.width320,
+                                                      decoration: BoxDecoration(
+
+                                                        // borderRadius: BorderRadius.circular(3),
+                                                          border: Border(left: BorderSide(color: AppTheme.addNewTextFieldBorder),
+                                                              right: BorderSide(color: AppTheme.addNewTextFieldBorder),bottom: BorderSide(color: AppTheme.addNewTextFieldBorder))
+
+                                                      ),
+                                                      child: Row(
+                                                        children: [
+                                                          Container(
+                                                              padding: EdgeInsets.only(left: SizeConfig.width10),
+                                                              width: SizeConfig.width140-2,
+                                                              child: Text("Vehicle Type")
+                                                          ),
+
+                                                          Container(
+                                                              height: SizeConfig.height60,
+                                                              width: 1,
+                                                              color: AppTheme.addNewTextFieldBorder
+                                                          ),
+
+                                                          Container(
+                                                              padding: EdgeInsets.only(left: SizeConfig.width10),
+                                                              width: SizeConfig.width140-1,
+                                                              child: Text("${qn.SS_VehicleTypeName??""}")),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20),
+                                                      height:SizeConfig.height60,
+                                                      width: SizeConfig.width320,
+                                                      decoration: BoxDecoration(
+
+                                                        // borderRadius: BorderRadius.circular(3),
+                                                          border: Border(left: BorderSide(color: AppTheme.addNewTextFieldBorder),
+                                                              right: BorderSide(color: AppTheme.addNewTextFieldBorder),bottom:BorderSide(color: AppTheme.addNewTextFieldBorder))
+
+                                                      ),
+                                                      child: Row(
+                                                        children: [
+                                                          Container(
+                                                              padding: EdgeInsets.only(left: SizeConfig.width10),
+                                                              width: SizeConfig.width140-2,
+                                                              child: Text("Material Name")
+                                                          ),
+
+                                                          Container(
+                                                              height: SizeConfig.height60,
+                                                              width: 1,
+                                                              color: AppTheme.addNewTextFieldBorder
+                                                          ),
+
+                                                          Container(
+                                                              padding: EdgeInsets.only(left: SizeConfig.width10),
+                                                              width: SizeConfig.width140-1,
+                                                              child: Text("${qn.SS_MaterialName??""}")),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20),
+                                                      height:SizeConfig.height60,
+                                                      width: SizeConfig.width320,
+                                                      decoration: BoxDecoration(
+
+                                                        // borderRadius: BorderRadius.circular(3),
+                                                          border: Border(left: BorderSide(color: AppTheme.addNewTextFieldBorder),
+                                                              right: BorderSide(color: AppTheme.addNewTextFieldBorder),bottom:BorderSide(color: AppTheme.addNewTextFieldBorder))
+
+                                                      ),
+                                                      child: Row(
+                                                        children: [
+
+                                                          Container(
+                                                              padding: EdgeInsets.only(left: SizeConfig.width10),
+                                                              width: SizeConfig.width140-2,
+                                                              child: Text("Required Qty")
+                                                          ),
+
+                                                          Container(
+                                                              height: SizeConfig.height60,
+                                                              width: 1,
+                                                              color: AppTheme.addNewTextFieldBorder
+                                                          ),
+
+                                                          Container(
+                                                              padding: EdgeInsets.only(left: SizeConfig.width10),
+                                                              width: SizeConfig.width140-1,
+                                                              child: Text("${qn.SS_RequiredMaterialQty??""} ${qn.SS_RequiredMaterialQtyUnit??""}")),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20),
+                                                      height:SizeConfig.height60,
+                                                      width: SizeConfig.width320,
+                                                      decoration: BoxDecoration(
+
+                                                        // borderRadius: BorderRadius.circular(3),
+                                                          border: Border(left: BorderSide(color: AppTheme.addNewTextFieldBorder),
+                                                              right: BorderSide(color: AppTheme.addNewTextFieldBorder),bottom:BorderSide(color: AppTheme.addNewTextFieldBorder))
+
+                                                      ),
+                                                      child: Row(
+                                                        children: [
+
+                                                          Container(
+                                                              padding: EdgeInsets.only(left: SizeConfig.width10),
+                                                              width: SizeConfig.width140-2,
+                                                              child: Text("Amount")
+                                                          ),
+
+                                                          Container(
+                                                              height: SizeConfig.height60,
+                                                              width: 1,
+                                                              color: AppTheme.addNewTextFieldBorder
+                                                          ),
+
+                                                          Container(
+                                                              padding: EdgeInsets.only(left: SizeConfig.width10),
+                                                              width: SizeConfig.width140-1,
+                                                              child: Text("${qn.SS_Amount??""}")),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20),
+                                                      height:SizeConfig.height60,
+                                                      width: SizeConfig.width320,
+                                                      decoration: BoxDecoration(
+
+                                                        // borderRadius: BorderRadius.circular(3),
+                                                          border: Border(left: BorderSide(color: AppTheme.addNewTextFieldBorder),
+                                                              right: BorderSide(color: AppTheme.addNewTextFieldBorder),bottom:BorderSide(color: AppTheme.addNewTextFieldBorder))
+
+                                                      ),
+                                                      child: Row(
+                                                        children: [
+
+                                                          Container(
+                                                              padding: EdgeInsets.only(left: SizeConfig.width10),
+                                                              width: SizeConfig.width140-2,
+                                                              child: Text("Payment Type")
+                                                          ),
+
+                                                          Container(
+                                                              height: SizeConfig.height60,
+                                                              width: 1,
+                                                              color: AppTheme.addNewTextFieldBorder
+                                                          ),
+
+                                                          Container(
+                                                              padding: EdgeInsets.only(left: SizeConfig.width10),
+                                                              width: SizeConfig.width140-1,
+                                                              child: Text("${qn.SS_PaymentCategoryName??""}")),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20),
+                                                      height:SizeConfig.height60,
+                                                      width: SizeConfig.width320,
+                                                      decoration: BoxDecoration(
+
+                                                        // borderRadius: BorderRadius.circular(3),
+                                                          border: Border(left: BorderSide(color: AppTheme.addNewTextFieldBorder),
+                                                              right: BorderSide(color: AppTheme.addNewTextFieldBorder),bottom:BorderSide(color: AppTheme.addNewTextFieldBorder))
+
+                                                      ),
+                                                      child: Row(
+                                                        children: [
+
+                                                          Container(
+                                                              padding: EdgeInsets.only(left: SizeConfig.width10),
+                                                              width: SizeConfig.width140-2,
+                                                              child: Text("Total Weight")
+                                                          ),
+
+                                                          Container(
+                                                              height: SizeConfig.height60,
+                                                              width: 1,
+                                                              color: AppTheme.addNewTextFieldBorder
+                                                          ),
+
+                                                          Container(
+                                                              height:SizeConfig.height60,
+                                                              padding: EdgeInsets.only(left: SizeConfig.width10),
+                                                              width: SizeConfig.width140-1,
+                                                              alignment: Alignment.centerLeft,
+                                                              child: Text(qn.SS_TotalWeight==null?"":"${qn.SS_TotalWeight + " Ton"??""}")),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    AddNewLabelTextField(
+                                                      labelText: 'Outward Weight',
+                                                      scrollPadding: 200,
+                                                      textInputType: TextInputType.number,
+                                                      textEditingController: qn.SS_DifferWeightController,
+                                                      suffixIcon: Container(
+                                                          height:SizeConfig.height60,
+                                                          width: 50,
+                                                          child: Center(child: Text("Ton",style: TextStyle(fontFamily: 'RR',fontSize: 18,color: AppTheme.addNewTextFieldText.withOpacity(0.7)),))
+                                                      ),
+                                                      onChange: (v){
+                                                        qn.differWeight();
+                                                      },
+                                                        onEditComplete: (){
+                                                          node.unfocus();
+                                                          setState(() {
+                                                            _keyboardVisible=false;
+                                                          });
+                                                        },
+                                                        ontap: (){
+                                                          setState(() {
+                                                            _keyboardVisible=true;
+                                                          });
+                                                        },
+
+
+                                                    ),
+                                                    SizedBox(height: SizeConfig.height20,),
+                                                    Text(qn.msg,style: TextStyle(fontFamily: 'RR',fontSize: 16),),
+                                                    SizedBox(height: SizeConfig.height20,),
+                                                    qn.returnMoney.isNotEmpty?Container(
+                                                      height: SizeConfig.height60,
+                                                      width: double.maxFinite,
+                                                      decoration: BoxDecoration(
+                                                          color: qn.returnColor,
+                                                          // color: double.parse(qn.returnMoney.toString()) > qn.SS_Amount? Colors.red :Colors.green ,
+                                                          borderRadius: BorderRadius.circular(3)
+                                                      ),
+
+                                                      margin: EdgeInsets.only(left: SizeConfig.width20,right: SizeConfig.width20),
+                                                      child: Center(
+                                                        child: Text(qn.returnMoney,style: TextStyle(fontFamily: 'RR',fontSize: 24,color: Colors.white
+                                                          //color:double.parse(qn.returnMoney.toString()) > qn.SS_Amount? AppTheme.bgColor :Colors.white
+                                                        )),
+                                                      ),
+                                                    ):Container(),
+
+
+                                                    SizedBox(height: SizeConfig.height20,),
+
+
+
+                                                    /*SizedBox(height: SizeConfig.height100,)*/
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+
+
+                                  //Appbar
+                                  Container(
+                                    height: SizeConfig.height60,
+                                    width: SizeConfig.screenWidth,
+                                    child: Row(
+                                      children: [
+                                        IconButton(icon: Icon(Icons.arrow_back), onPressed: (){
+                                          qn.clearEmptyForm();
+                                          qn.clearLoaderForm();
+                                          Navigator.pop(context);
+                                        }),
+                                        SizedBox(width: SizeConfig.width5,),
+                                        Text("Sales",
+                                          style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: SizeConfig.width16),
+                                        ),
+                                        Text(qn.tabController.index==0?" / In Gate":" / Out Gate",
+                                          style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: SizeConfig.width16),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+
+                            ),
+
+
+                            /*Container(
                               height: SizeConfig.screenHeight-(SizeConfig.height70),
                               child: SingleChildScrollView(
                                 child: Column(
@@ -505,17 +950,6 @@ bool _keyboardVisible=false;
 
 
                                                 add: (){
-
-                                                  // if(qn.brandNameController.text.isEmpty){
-                                                  //   CustomAlert().commonErrorAlert(context, "Select Branch", "");
-                                                  // }
-                                                  // else if(qn.brandQtyController.text.isEmpty){
-                                                  //   CustomAlert().commonErrorAlert(context, "Enter Quantity", "");
-                                                  // }
-                                                  // else{
-                                                  //   qn.InsertMaterialBrandMasterDetailsDbHit(context,qn.brandNameController.text);
-                                                  // }
-
                                                 },
                                               nodeFocus: (){
                                                   node.unfocus();
@@ -836,12 +1270,6 @@ bool _keyboardVisible=false;
                                             ):Container(),
 
 
-
-
-
-
-
-
                                             SizedBox(height: SizeConfig.height20,),
 
 
@@ -872,7 +1300,7 @@ bool _keyboardVisible=false;
                                                   child: Text("Save",style: TextStyle(fontFamily: 'RR',fontSize: 20,color: AppTheme.bgColor,letterSpacing: 0.1),),
                                                 ),
                                               ),
-                                            )
+                                            ),
 
                                           ],
                                         ),
@@ -882,44 +1310,171 @@ bool _keyboardVisible=false;
                                 ),
                               ),
 
-                            ),
+                            ),*/
                       ]
                       ),
                     ),
 
 
+                    //bottomNav
                     Container(
-                      height: SizeConfig.height70,
-                      color: AppTheme.bgColor,
-                      child: TabBar(
-                          controller: qn.tabController,
-                          indicatorPadding: EdgeInsets.only(top: SizeConfig.height10,bottom: SizeConfig.height10),
+                      width: SizeConfig.screenWidth,
+                      height: 70,
 
-                          indicator: BoxDecoration(
-                            color: Color(0xFF1C1C1C),
-                          borderRadius: BorderRadius.circular(SizeConfig.height25)
-                          // border: Border.all(color: Color(0xFF1C1C1C),)
+                      decoration: BoxDecoration(
+                          color: AppTheme.gridbodyBgColor,
+                          boxShadow: [
+                            BoxShadow(
+                              color: AppTheme.gridbodyBgColor,
+                              spreadRadius: 2,
+                              blurRadius: 15,
+                              offset: Offset(0, -20), // changes position of shadow
+                            )
+                          ]
+                      ),
+                      child: Stack(
+
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              /*     boxShadow: [
+                              BoxShadow(
+                                color: Colors.white.withOpacity(0.7),
+                                spreadRadius: 2,
+                                blurRadius: 15,
+                                offset: Offset(0, -20), // changes position of shadow
+                              )
+                            ]*/
+                            ),
+                            margin:EdgeInsets.only(top: 0),
+                            child: CustomPaint(
+                              size: Size( SizeConfig.screenWidth, 65),
+                              //  painter: RPSCustomPainter(),
+                              painter: RPSCustomPainter3(),
+                            ),
                           ),
-                          tabs: [
-                        Tab(
-                          child: Row(
-                            children: [
-                              Image.asset("assets/images/Empty-vehicle-active.png",height: 40,width: 40,),
-                              Text('  Empty Vehicle'),
-                            ],
-                          ),
-                        ),
-                            Tab(
-                              child: Row(
-                                children: [
-                                  Text('Loaded Vehicle  '),
-                                  Image.asset("assets/images/Loaded-vehicle-active.png",height: 40,width: 40,),
-                                ],
+                          Center(
+                            heightFactor: 0.5,
+                            child: GestureDetector(
+                              behavior: HitTestBehavior.translucent,
+                              onTap: (){
+                                node.unfocus();
+                                if(qn.tabController.index==0){
+                                  if(qn.SS_vehicleNo.text.isEmpty){
+                                    CustomAlert().commonErrorAlert(context, "Enter Vehicle Number", "");
+                                  }
+                                  else if(qn.SS_emptyVehicleWeight.text.isEmpty){
+                                    CustomAlert().commonErrorAlert(context, "Enter Vehicle Weight", "");
+                                  }
+                                  else if(qn.SS_customerNeedWeight.text.isEmpty && qn.SS_customerNeedWeight.text!="0"){
+                                    CustomAlert().commonErrorAlert(context, "Enter Customer Need Weight", "");
+                                  }
+                                  else{
+                                    qn.InsertSaleDetailDbhit(context);
+                                  }
+                                }
+                                else if(qn.tabController.index==1){
+                                  if(qn.searchVehicleNo.text.isEmpty){
+                                    CustomAlert().commonErrorAlert(context, "Enter Vehicle Number", "");
+                                  }
+                                  else if(qn.SS_DifferWeightController.text.isEmpty){
+                                    CustomAlert().commonErrorAlert(context, "Enter Vehicle Weight", "");
+                                  }else{
+                                    qn.UpdateSaleDetailDbhit(context);
+                                  }
+                                }
+
+
+
+
+
+
+
+                              },
+                              child: Container(
+
+                                height: SizeConfig.width50,
+                                width: SizeConfig.width50,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: AppTheme.yellowColor,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: AppTheme.yellowColor.withOpacity(0.4),
+                                      spreadRadius: 1,
+                                      blurRadius: 5,
+                                      offset: Offset(1, 8), // changes position of shadow
+                                    ),
+                                  ],
+                                ),
+                                child: Center(
+                                  child: Icon(Icons.add,size: SizeConfig.height30,color: AppTheme.bgColor,),
+                                ),
                               ),
                             ),
-                      ]
+                          ),
+                          Container(
+                            width:  SizeConfig.screenWidth,
+                            height: 80,
+
+                            child: Stack(
+
+                              children: [
+
+                                Container(
+                                    width: SizeConfig.screenWidth,
+                                    child: Row(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        SizedBox(width: SizeConfig.width20,),
+                                        GestureDetector(
+                                          onTap: (){
+                                            qn.tabController.animateTo(0,duration: Duration(milliseconds: 300),curve: Curves.easeIn);
+
+                                          },
+                                          child: Container(
+                                            width: 70,
+
+                                            child:Column(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: [
+                                                Image.asset("assets/images/Empty-vehicle-active.png",height: 40,width: 40,),
+                                                Text('In Gate',style: TextStyle(fontFamily: 'RR',fontSize: 14),),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        Spacer(),
+                                        GestureDetector(
+                                          onTap: (){
+                                            qn.tabController.animateTo(1,duration: Duration(milliseconds: 300),curve: Curves.easeIn);
+
+                                          },
+                                          child: Container(
+                                            width: 90,
+
+                                            child:Column(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: [
+                                                Image.asset("assets/images/Loaded-vehicle-active.png",height: 40,width: 40,),
+                                                Text('Out Gate',style: TextStyle(fontFamily: 'RR',fontSize: 14),),
+
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(width: SizeConfig.width10,),
+                                      ],
+                                    )
+                                )
+
+                              ],
+                            ),
+                          )
+                        ],
                       ),
-                    )
+                    ),
+
                   ],
                 ),
               ),
@@ -1417,7 +1972,8 @@ class SidePopUpParent extends StatelessWidget {
   String text;
   Color textColor;
   Color iconColor;
-  SidePopUpParent({this.text,this.textColor,this.iconColor});
+  Color bgColor;
+  SidePopUpParent({this.text,this.textColor,this.iconColor,this.bgColor});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -1428,7 +1984,9 @@ class SidePopUpParent extends StatelessWidget {
       alignment: Alignment.centerLeft,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(3),
-          border: Border.all(color: AppTheme.addNewTextFieldBorder)
+          border: Border.all(color: AppTheme.addNewTextFieldBorder),
+          color: bgColor
+
       ),
       child: Row(
         children: [

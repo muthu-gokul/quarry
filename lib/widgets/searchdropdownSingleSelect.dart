@@ -58,6 +58,8 @@ class DropDownField extends FormField<String> {
   final int itemsVisibleInDropdown;
   VoidCallback nodeFocus;
   VoidCallback add;
+  VoidCallback ontap;
+  VoidCallback onEditingcomplete;
   String unit;
   double reduceWidth;
   /// Controls the text being edited.
@@ -88,6 +90,8 @@ class DropDownField extends FormField<String> {
         this.itemsVisibleInDropdown: 3,
         this.enabled: true,
         this.add,
+        this.ontap,
+        this.onEditingcomplete,
         this.unit,
         this.nodeFocus,
         this.qtycontroller,
@@ -146,6 +150,7 @@ class DropDownField extends FormField<String> {
                   child: TextFormField(
                     onTap: (){
                       state._showdropdown=true;
+                      ontap();
                     },
                     // autovalidate: true,
                     controller: state._effectiveController,
@@ -193,6 +198,7 @@ class DropDownField extends FormField<String> {
                       print(state._showdropdown);
                       nodeFocus();
                       SystemChannels.textInput.invokeMethod('TextInput.hide');
+                      onEditingcomplete();
                     },
 
                     onSaved: setter,
