@@ -37,3 +37,47 @@ class GoodsMaterialTripDetailsModel {
     "Status": status,
   };
 }
+
+
+
+
+class GoodsMaterialExtraTripModel {
+  GoodsMaterialExtraTripModel({
+    this.purchaseOrderId,
+    this.materialId,
+    this.unitName,
+    this.expectedQuantity,
+    this.receivedQuantity,
+    this.balanceQuantity,
+    this.isExtra,
+  });
+
+  int purchaseOrderId;
+  int materialId;
+  String unitName;
+  int expectedQuantity;
+  int receivedQuantity;
+  int balanceQuantity;
+  int isExtra;
+
+  factory GoodsMaterialExtraTripModel.fromJson(Map<String, dynamic> json) => GoodsMaterialExtraTripModel(
+    purchaseOrderId: json["PurchaseOrderId"],
+    materialId: json["MaterialId"],
+    unitName: json["UnitName"],
+    expectedQuantity: json["ExpectedQuantity"],
+    receivedQuantity: json["ReceivedQuantity"],
+    balanceQuantity: json["BalanceQuantity"],
+    isExtra: json["IsExtra"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "PurchaseOrderId": purchaseOrderId,
+    "MaterialId": materialId,
+    "UnitName": unitName,
+    "ExpectedQuantity": expectedQuantity,
+    "ReceivedQuantity": receivedQuantity,
+    "BalanceQuantity": balanceQuantity,
+    "IsExtra": isExtra,
+  };
+}
+

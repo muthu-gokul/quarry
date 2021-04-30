@@ -123,7 +123,7 @@ class MaterialDetailsGridState extends State<MaterialDetailsGrid> {
                                           });
                                         }
                                     ),
-                                    DataCell(Text("${e.taxValue.toString()}%",style: TextStyle(fontFamily: 'RR',fontSize: 16,color:selectedIndex==i? AppTheme.bgColor:  AppTheme.gridTextColor),),
+                                    DataCell(Text("${e.taxValue.toString()??""}%",style: TextStyle(fontFamily: 'RR',fontSize: 16,color:selectedIndex==i? AppTheme.bgColor:  AppTheme.gridTextColor),),
                                         onTap: (){
                                           setState(() {
                                             if(selectedIndex==i){
@@ -136,7 +136,7 @@ class MaterialDetailsGridState extends State<MaterialDetailsGrid> {
                                           });
                                         }
                                     ),
-                                    DataCell(Text(e.materialHsnCode,
+                                    DataCell(Text(e.materialHsnCode??"",
                                       style: TextStyle(fontFamily: 'RR',fontSize: 16,color:selectedIndex==i? AppTheme.bgColor: AppTheme.gridTextColor),),
                                         onTap: (){
                                           setState(() {

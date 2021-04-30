@@ -68,9 +68,10 @@ class ManageUsersNotifier extends ChangeNotifier{
           var parsed=json.decode(value);
           var t=parsed['Table'] as List;
           var t1=parsed['Table1'] as List;
+          var t2=parsed['Table2'] as List;
 
           userGroupList=t.map((e) => ManageUserGroupModel.fromJson(e)).toList();
-          plantList=t1.map((e) => ManageUserPlantModel.fromJson(e)).toList();
+          plantList=t2.map((e) => ManageUserPlantModel.fromJson(e)).toList();
         }
         updateManageUsersLoader(false);
       });

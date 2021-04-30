@@ -9,6 +9,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/model/goodsReceivedModel/goodsReceivedGridModel.dart';
 import 'package:quarry/notifier/customerNotifier.dart';
+import 'package:quarry/notifier/dieselNotifier.dart';
 import 'package:quarry/notifier/goodsReceivedNotifier.dart';
 import 'package:quarry/notifier/machineNotifier.dart';
 import 'package:quarry/notifier/materialNotifier.dart';
@@ -32,6 +33,7 @@ import 'package:quarry/styles/size.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:quarry/widgets/reportpdf.dart';
 import 'customerDetails/customerGrid.dart';
+import 'dieselManagement/dieselGrid.dart';
 import 'machineDetails/machineDetailsAddNew.dart';
 import 'machineDetails/machineDetailsGrid.dart';
 import 'material/MaterialMasterGrid.dart';
@@ -279,14 +281,16 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                               DrawerContent(
                                 height: 50,
                                 image: "assets/drawerImages/dashboard.png",
-                                title: 'Account Group',
-                                titleColor: AppTheme.grey,
-                                // callback: (){
-                                //   setState(() {
-                                //     menuSelected=3;
-                                //     scaffoldkey.currentState.openEndDrawer();
-                                //   });
-                                // },
+                                title: 'Diesel Management',
+                                titleColor: AppTheme.yellowColor,
+                                callback: (){
+                                  setState(() {
+                                    menuSelected=13;
+                                    scaffoldkey.currentState.openEndDrawer();
+                                  });
+                                  Provider.of<DieselNotifier>(context, listen: false).GetDieselPurchaseDbHit(context,null);
+
+                                },
                               ),
                               DrawerContent(
                                 height: 50,
@@ -377,6 +381,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
           scaffoldkey.currentState.openDrawer();
         },):
         menuSelected==12?ProductionGrid(drawerCallback: (){
+          scaffoldkey.currentState.openDrawer();
+        },):
+        menuSelected==13?DieselGrid(drawerCallback: (){
           scaffoldkey.currentState.openDrawer();
         },):
         Container()

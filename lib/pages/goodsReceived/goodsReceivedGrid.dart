@@ -108,13 +108,13 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
                       Container(
                         height: SizeConfig.screenHeight-60,
                         width: SizeConfig.screenWidth,
-                        padding: EdgeInsets.only(top: 20,bottom: 60),
+                        padding: EdgeInsets.only(top: 0,bottom: 80),
                         decoration: BoxDecoration(
                             color: AppTheme.gridbodyBgColor,
                             borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10))
                         ),
                         child: SingleChildScrollView(
-                         // physics: NeverScrollableScrollPhysics(),
+                         physics: BouncingScrollPhysics(),
                           controller: listViewController,
                           child: Wrap(
                               children: gr.goodsGridList.asMap()

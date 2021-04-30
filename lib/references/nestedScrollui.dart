@@ -267,3 +267,14 @@ class PlantDetailsGridState extends State<PlantDetailsGrid> with TickerProviderS
   }
 }
 
+/*
+onVerticalDragUpdate: (details){
+int sensitivity = 5;
+
+if (details.delta.dy > sensitivity) {
+scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+
+} else if(details.delta.dy < -sensitivity){
+scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+}
+},*/

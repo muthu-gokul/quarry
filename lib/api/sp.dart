@@ -75,5 +75,15 @@ class Sp{
   static String getProductionDetail="USP_GetProductionDetail";
   static String deleteProductionDetail="USP_DeleteProductionDetail";
 
+  static String insertDieselDetail="USP_InsertDieselPurchaseDetail";
+  static String updateDieselDetail="USP_UpdateDieselPurchaseDetail";
+  static String getDieselDetail="USP_GetDieselPurchaseDetail";
+  static String deleteDieselDetail="USP_DeleteDieselPurchaseDetail";
+
+  static String insertDieselIssueDetail="USP_InsertDieselIssueDetail";
+  static String updateDieselIssueDetail="USP_UpdateDieselIssueDetail";
+  static String getDieselIssueDetail="USP_GetDieselIssueDetail";
+  static String deleteDieselIssueDetail="USP_DeleteDieselIssueDetail";
+
 }
 

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/model/goodsReceivedModel/goodsMaterialListModel.dart';
+import 'package:quarry/model/goodsReceivedModel/goodsMaterialTripModel.dart';
 import 'package:quarry/notifier/goodsReceivedNotifier.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/pages/goodsReceived/goodsInGateForm.dart';
@@ -18,6 +19,12 @@ import 'package:quarry/styles/size.dart';
 
 class GoodsMaterialTripList extends StatefulWidget {
 
+  int MaterialId;
+  String MaterialName;
+  String UnitName;
+  double ExpectedQty;
+  GoodsMaterialTripList(this.MaterialId,this.MaterialName,this.UnitName,this.ExpectedQty);
+
   @override
   GoodsMaterialTripListState createState() => GoodsMaterialTripListState();
 }
@@ -31,12 +38,18 @@ class GoodsMaterialTripListState extends State<GoodsMaterialTripList> with Ticke
   ScrollController listViewController;
   ScrollController header=new ScrollController();
   ScrollController body=new ScrollController();
-
+  List<GoodsMaterialTripDetailsModel> materialTripList=[];
 
   @override
   void initState() {
     isEdit=false;
+
+    materialTripList=Provider.of<GoodsReceivedNotifier>(context,listen: false).materialTripList.where((element) => element.materialId==widget.MaterialId).toList();
     WidgetsBinding.instance.addPostFrameCallback((_){
+
+
+
+
       scrollController=new ScrollController();
       listViewController=new ScrollController();
       setState(() {
@@ -123,7 +136,7 @@ class GoodsMaterialTripListState extends State<GoodsMaterialTripList> with Ticke
                       Container(
                           height: SizeConfig.screenHeight-60,
                           width: SizeConfig.screenWidth,
-                          padding: EdgeInsets.only(top: 20,bottom: 60),
+                          padding: EdgeInsets.only(top: 5,bottom: 60),
                           decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10))
@@ -131,11 +144,30 @@ class GoodsMaterialTripListState extends State<GoodsMaterialTripList> with Ticke
                           child: ListView(
                             controller: listViewController,
                             children: [
+
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Image.asset("assets/images/inGate.jpg",height: 40,width: 60,),
+                                  Text("${widget.MaterialName} - ${widget.ExpectedQty}",
+                                    style: TextStyle(fontFamily: 'RM',color: AppTheme.bgColor,fontSize: 20),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  Padding(
+                                    padding:  EdgeInsets.only(top: 4),
+                                    child: Text(" ${widget.UnitName}",
+                                      style: TextStyle(fontFamily: 'RR',color: AppTheme.hintColor,fontSize: 14),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                ],
+                              ),
                               Container(
                                 height: 300,
                                 width: SizeConfig.screenWidth,
 
-                                margin: EdgeInsets.only(left:SizeConfig.screenWidth*0.02,right:SizeConfig.screenWidth*0.02),
+                                margin: EdgeInsets.only(left:SizeConfig.screenWidth*0.02,right:SizeConfig.screenWidth*0.02,top: 5),
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
                                     color: Colors.white,
@@ -215,7 +247,7 @@ class GoodsMaterialTripListState extends State<GoodsMaterialTripList> with Ticke
                                         width: SizeConfig.screenWidth,
                                         child: ListView.builder(
                                           scrollDirection: Axis.vertical,
-                                          itemCount: gr.materialTripList.length,
+                                          itemCount: materialTripList.length,
                                           itemBuilder: (context,index){
                                             return Container(
                                               // height: 50,
@@ -237,7 +269,7 @@ class GoodsMaterialTripListState extends State<GoodsMaterialTripList> with Ticke
                                                       width: SizeConfig.screenWidth*0.15,
                                                       alignment: Alignment.centerLeft,
                                                       padding: EdgeInsets.only(left: SizeConfig.width10),
-                                                      child: Text("${gr.materialTripList[index].trip}",style: AppTheme.ML_bgCT,),
+                                                      child: Text("${materialTripList[index].trip}",style: AppTheme.ML_bgCT,),
                                                     ),
                                                     Container(
                                                       //width: 150,
@@ -245,7 +277,7 @@ class GoodsMaterialTripListState extends State<GoodsMaterialTripList> with Ticke
                                                       alignment: Alignment.center,
                                                       padding: EdgeInsets.only(left: SizeConfig.width10),
 
-                                                      child: Text("${gr.materialTripList[index].vehicleNumber}",style: AppTheme.ML_bgCT,),
+                                                      child: Text("${materialTripList[index].vehicleNumber}",style: AppTheme.ML_bgCT,),
                                                     ),
                                                     Container(
                                                       //  width: 150,
@@ -253,7 +285,7 @@ class GoodsMaterialTripListState extends State<GoodsMaterialTripList> with Ticke
                                                       alignment: Alignment.center,
                                                       padding: EdgeInsets.only(left: SizeConfig.width10),
 
-                                                      child: Text("${gr.materialTripList[index].receivedQuantity}",style: AppTheme.ML_bgCT,),
+                                                      child: Text("${materialTripList[index].receivedQuantity}",style: AppTheme.ML_bgCT,),
                                                     ),
                                                     Container(
                                                       //  width: 150,
@@ -261,7 +293,7 @@ class GoodsMaterialTripListState extends State<GoodsMaterialTripList> with Ticke
                                                       alignment: Alignment.center,
                                                       padding: EdgeInsets.only(left: SizeConfig.width10),
 
-                                                      child: Text("${gr.materialTripList[index].balanceQuantity}",style: AppTheme.ML_bgCT,),
+                                                      child: Text("${materialTripList[index].balanceQuantity}",style: AppTheme.ML_bgCT,),
                                                     ),
 
                                                     Container(
@@ -270,9 +302,9 @@ class GoodsMaterialTripListState extends State<GoodsMaterialTripList> with Ticke
                                                       alignment: Alignment.centerRight,
                                                       padding: EdgeInsets.only(right: SizeConfig.width10),
 
-                                                      child: Text("${gr.materialTripList[index].status}",
-                                                        style:TextStyle(fontFamily: 'RL',color:gr.materialTripList[index].status=='Not Yet'? AppTheme.bgColor:
-                                                        gr.materialTripList[index].status=='Completed'?Colors.green:AppTheme.red
+                                                      child: Text("${materialTripList[index].status}",
+                                                        style:TextStyle(fontFamily: 'RL',color:materialTripList[index].status=='Not Yet'? AppTheme.bgColor:
+                                                        materialTripList[index].status=='Completed'?Colors.green:AppTheme.red
                                                             ,fontSize: 12),textAlign: TextAlign.right,
                                                       ),
                                                     ),
@@ -285,9 +317,63 @@ class GoodsMaterialTripListState extends State<GoodsMaterialTripList> with Ticke
                                       ),
                                     ),
 
+
+
                                   ],
                                 ),
                               ) ,
+
+                                Column(
+                                 children: [
+                                   SizedBox(height: 20,),
+                                   Align(
+                                     alignment: Alignment.center,
+                                     child: Container(
+                                       height: 50,
+                                       width: SizeConfig.screenWidth*0.8,
+                                       decoration: BoxDecoration(
+                                           color: AppTheme.red,
+                                           borderRadius: BorderRadius.circular(25)
+                                       ),
+                                       child: Center(
+                                         child: Text("You Received Extra ${gr.GoodsMaterialExtraTripModelDetails.balanceQuantity} ${gr.GoodsMaterialExtraTripModelDetails.unitName??""}",
+                                           style: TextStyle(fontFamily: 'RR',fontSize: 16,color: Colors.white),
+                                         ),
+                                       ),
+                                     ),
+                                   ),
+                                   SizedBox(height: 20,),
+                                   Align(
+                                     alignment: Alignment.center,
+                                     child: Text("So Generate Extra ${gr.GoodsMaterialExtraTripModelDetails.balanceQuantity} ${gr.GoodsMaterialExtraTripModelDetails.unitName??""} amount for",
+                                       style: TextStyle(fontFamily: 'RR',fontSize: 14,color: AppTheme.hintColor),
+                                     ),
+                                   ),
+                                   SizedBox(height: 3,),
+                                   Row(
+                                     mainAxisAlignment: MainAxisAlignment.center,
+                                     children: [
+                                       Container(
+                                         height: 30,
+                                         padding: EdgeInsets.only(left: 5,right: 5),
+                                         decoration: BoxDecoration(
+                                             borderRadius: BorderRadius.circular(10),
+                                             color: AppTheme.yellowColor
+                                         ),
+                                         child: Center(
+                                           //child: Text("${gr.GoodsMaterialExtraTripModelDetails.}"),
+                                         ),
+                                       ),
+                                       Text("  Your Invoice",
+                                         style: TextStyle(fontFamily: 'RR',fontSize: 14,color: AppTheme.hintColor),
+                                       )
+                                     ],
+                                   )
+                                 ],
+                               ),
+
+
+
                             ],
                           )
                       )

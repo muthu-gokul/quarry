@@ -251,7 +251,9 @@ class GoodsMaterialsListState extends State<GoodsMaterialsList> with TickerProvi
                                                 Navigator.push(context, _createRoute());
                                               }
                                               else{
-                                                Navigator.push(context, _createRouteTripList());
+                                                Navigator.push(context, _createRouteTripList(gr.ML_Materials[index].materialId,
+                                                    gr.ML_Materials[index].materialName,gr.ML_Materials[index].unitName,gr.ML_Materials[index].quantity
+                                                ));
                                               }
 
                                             },
@@ -395,6 +397,7 @@ class GoodsMaterialsListState extends State<GoodsMaterialsList> with TickerProvi
                   children: [
                     IconButton(icon: Icon(Icons.clear,color:AppTheme.bgColor,), onPressed:(){
                       gr.ML_clear();
+
                       Navigator.pop(context);
                     }),
                     SizedBox(width: SizeConfig.width5,),
@@ -446,9 +449,9 @@ class GoodsMaterialsListState extends State<GoodsMaterialsList> with TickerProvi
       },
     );
   }
-  Route _createRouteTripList() {
+  Route _createRouteTripList(int materialId,String materialName,String unitName,double expectedQty) {
     return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => GoodsMaterialTripList(),
+      pageBuilder: (context, animation, secondaryAnimation) => GoodsMaterialTripList(materialId,materialName,unitName,expectedQty),
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
 
         return SlideTransition(

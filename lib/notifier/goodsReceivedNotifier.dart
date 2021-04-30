@@ -118,6 +118,7 @@ class GoodsReceivedNotifier extends ChangeNotifier{
     IGF_vehicleTypeId=null;
     selectedVehicleTypeId=null;
     selectedVehicleTypeName=null;
+    IGF_Materials.clear();
   }
 
 
@@ -168,6 +169,7 @@ class GoodsReceivedNotifier extends ChangeNotifier{
         if(value!=null){
           var parsed=json.decode(value);
           GetGoodsDbHit(context, ML_GoodsorderId,ML_PorderId);
+          GetGoodsDbHit(context, null,null);
           Navigator.pop(context);
           IGF_clear();
           print(GoodsMaterialsListState().mounted);
@@ -308,7 +310,10 @@ class GoodsReceivedNotifier extends ChangeNotifier{
 
 
   List<GoodsReceivedGridModel> goodsGridList=[];
+  GoodsMaterialExtraTripModel GoodsMaterialExtraTripModelDetails;
+
   GetGoodsDbHit(BuildContext context,int goodsReceivedId,int purchaseOrderId)  async{
+    print("GREC__${goodsReceivedId} ${purchaseOrderId}");
     updateGoodsLoader(true);
 
     var body={
@@ -351,6 +356,7 @@ class GoodsReceivedNotifier extends ChangeNotifier{
             ML_PorderId=t[0]['PurchaseOrderId'];
             ML_GoodsorderId=t[0]['GoodsReceivedId'];
             ML_Date=t[0]['Date'];
+            print(ML_PorderNo);
             print(ML_PorderId);
             var t1=parsed['Table1'] as List;
             print(t1);
@@ -358,6 +364,9 @@ class GoodsReceivedNotifier extends ChangeNotifier{
 
             var t2=parsed['Table2'] as List;
             materialTripList=t2.map((e) => GoodsMaterialTripDetailsModel.fromJson(e)).toList();
+
+            var t3=parsed['Table3'] as List;
+            GoodsMaterialExtraTripModelDetails =GoodsMaterialExtraTripModel.fromJson(t3[0]);
 
             notifyListeners();
           }
