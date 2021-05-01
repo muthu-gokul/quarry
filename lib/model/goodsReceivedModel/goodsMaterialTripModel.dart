@@ -50,23 +50,26 @@ class GoodsMaterialExtraTripModel {
     this.receivedQuantity,
     this.balanceQuantity,
     this.isExtra,
+    this.Amount,
   });
 
   int purchaseOrderId;
   int materialId;
   String unitName;
-  int expectedQuantity;
-  int receivedQuantity;
-  int balanceQuantity;
+  double expectedQuantity;
+  double receivedQuantity;
+  double balanceQuantity;
+  double Amount;
   int isExtra;
 
   factory GoodsMaterialExtraTripModel.fromJson(Map<String, dynamic> json) => GoodsMaterialExtraTripModel(
     purchaseOrderId: json["PurchaseOrderId"],
     materialId: json["MaterialId"],
     unitName: json["UnitName"],
-    expectedQuantity: json["ExpectedQuantity"],
-    receivedQuantity: json["ReceivedQuantity"],
-    balanceQuantity: json["BalanceQuantity"],
+    expectedQuantity: json["ExpectedQuantity"].toDouble(),
+    receivedQuantity: json["ReceivedQuantity"].toDouble(),
+    balanceQuantity: json["BalanceQuantity"].toDouble(),
+    Amount: json["Amount"].toDouble(),
     isExtra: json["IsExtra"],
   );
 

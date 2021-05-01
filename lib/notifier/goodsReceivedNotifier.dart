@@ -323,7 +323,8 @@ class GoodsReceivedNotifier extends ChangeNotifier{
 
 
   List<GoodsReceivedGridModel> goodsGridList=[];
-  GoodsMaterialExtraTripModel GoodsMaterialExtraTripModelDetails;
+  List<GoodsReceivedGridModel> filtergoodsGridList=[];
+  List<GoodsMaterialExtraTripModel> GoodsMaterialExtraTripModelDetails=[];
 
   GetGoodsDbHit(BuildContext context,int goodsReceivedId,int purchaseOrderId)  async{
     print("GREC__${goodsReceivedId} ${purchaseOrderId} ${goodsReceivedId==0?null:goodsReceivedId}");
@@ -381,13 +382,17 @@ class GoodsReceivedNotifier extends ChangeNotifier{
             var t2=parsed['Table2'] as List;
             materialTripList=t2.map((e) => GoodsMaterialTripDetailsModel.fromJson(e)).toList();
 
+
             var t3=parsed['Table3'] as List;
-            GoodsMaterialExtraTripModelDetails =GoodsMaterialExtraTripModel.fromJson(t3[0]);
+            print("t3${t3}");
+            GoodsMaterialExtraTripModelDetails =t3.map((e) => GoodsMaterialExtraTripModel.fromJson(e)).toList();
 
             notifyListeners();
           }
           else{
+            print("NULL-$parsed");
             goodsGridList=t.map((e) => GoodsReceivedGridModel.fromJson(e)).toList();
+           // filtergoodsGridList=List.from(goodsGridList);
           }
         }
 

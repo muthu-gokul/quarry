@@ -8,6 +8,7 @@ class GoodsReceivedGridModel {
     this.plantId,
     this.plantName,
     this.status,
+    this.isAnimate
   });
 
   int goodsReceivedId;
@@ -19,6 +20,8 @@ class GoodsReceivedGridModel {
   String plantName;
   String status;
 
+  bool isAnimate;
+
   factory GoodsReceivedGridModel.fromJson(Map<String, dynamic> json) => GoodsReceivedGridModel(
     goodsReceivedId: json["GoodsReceivedId"],
     grnNumber: json["GRNNumber"],
@@ -28,6 +31,7 @@ class GoodsReceivedGridModel {
     plantId: json["PlantId"],
     plantName: json["PlantName"],
     status: json["Status"],
+    isAnimate: false
   );
 
   Map<String, dynamic> toJson() => {

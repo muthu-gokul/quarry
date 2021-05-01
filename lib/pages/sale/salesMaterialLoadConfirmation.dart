@@ -16,7 +16,9 @@ import 'package:quarry/widgets/customTextField.dart';
 import 'package:quarry/widgets/decimal.dart';
 import 'package:quarry/widgets/searchdropdownSingleSelect.dart';
 
+import '../../styles/app_theme.dart';
 import '../../styles/size.dart';
+import '../../widgets/alertDialog.dart';
 import 'saleAddNew.dart';
 
 
@@ -243,7 +245,7 @@ class SalesMaterialLoadConfirmationState extends State<SalesMaterialLoadConfirma
                                             ),
                                             Container(
                                               margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,top:SizeConfig.height20,),
-                                              height:SizeConfig.height60,
+                                              height:SizeConfig.height50,
                                               width: SizeConfig.width320,
                                               decoration: BoxDecoration(
                                                   borderRadius: BorderRadius.circular(3),
@@ -259,7 +261,7 @@ class SalesMaterialLoadConfirmationState extends State<SalesMaterialLoadConfirma
                                                   ),
 
                                                   Container(
-                                                      height: SizeConfig.height60,
+                                                      height: SizeConfig.height50,
                                                       width: 1,
                                                       color: AppTheme.addNewTextFieldBorder
                                                   ),
@@ -273,7 +275,7 @@ class SalesMaterialLoadConfirmationState extends State<SalesMaterialLoadConfirma
                                             ),
                                             Container(
                                               margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20),
-                                              height:SizeConfig.height60,
+                                              height:SizeConfig.height50,
                                               width: SizeConfig.width320,
                                               decoration: BoxDecoration(
 
@@ -291,7 +293,7 @@ class SalesMaterialLoadConfirmationState extends State<SalesMaterialLoadConfirma
                                                   ),
 
                                                   Container(
-                                                      height: SizeConfig.height60,
+                                                      height: SizeConfig.height50,
                                                       width: 1,
                                                       color: AppTheme.addNewTextFieldBorder
                                                   ),
@@ -305,7 +307,7 @@ class SalesMaterialLoadConfirmationState extends State<SalesMaterialLoadConfirma
                                             ),
                                             Container(
                                               margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20),
-                                              height:SizeConfig.height60,
+                                              height:SizeConfig.height50,
                                               width: SizeConfig.width320,
                                               decoration: BoxDecoration(
 
@@ -323,7 +325,7 @@ class SalesMaterialLoadConfirmationState extends State<SalesMaterialLoadConfirma
                                                   ),
 
                                                   Container(
-                                                      height: SizeConfig.height60,
+                                                      height: SizeConfig.height50,
                                                       width: 1,
                                                       color: AppTheme.addNewTextFieldBorder
                                                   ),
@@ -337,7 +339,7 @@ class SalesMaterialLoadConfirmationState extends State<SalesMaterialLoadConfirma
                                             ),
                                             Container(
                                               margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20),
-                                              height:SizeConfig.height60,
+                                              height:SizeConfig.height50,
                                               width: SizeConfig.width320,
                                               decoration: BoxDecoration(
 
@@ -356,7 +358,7 @@ class SalesMaterialLoadConfirmationState extends State<SalesMaterialLoadConfirma
                                                   ),
 
                                                   Container(
-                                                      height: SizeConfig.height60,
+                                                      height: SizeConfig.height50,
                                                       width: 1,
                                                       color: AppTheme.addNewTextFieldBorder
                                                   ),
@@ -370,7 +372,7 @@ class SalesMaterialLoadConfirmationState extends State<SalesMaterialLoadConfirma
                                             ),
                                             Container(
                                               margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20),
-                                              height:SizeConfig.height60,
+                                              height:SizeConfig.height50,
                                               width: SizeConfig.width320,
                                               decoration: BoxDecoration(
 
@@ -389,7 +391,7 @@ class SalesMaterialLoadConfirmationState extends State<SalesMaterialLoadConfirma
                                                   ),
 
                                                   Container(
-                                                      height: SizeConfig.height60,
+                                                      height: SizeConfig.height50,
                                                       width: 1,
                                                       color: AppTheme.addNewTextFieldBorder
                                                   ),
@@ -403,7 +405,7 @@ class SalesMaterialLoadConfirmationState extends State<SalesMaterialLoadConfirma
                                             ),
                                             Container(
                                               margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20),
-                                              height:SizeConfig.height60,
+                                              height:SizeConfig.height50,
                                               width: SizeConfig.width320,
                                               decoration: BoxDecoration(
 
@@ -422,7 +424,7 @@ class SalesMaterialLoadConfirmationState extends State<SalesMaterialLoadConfirma
                                                   ),
 
                                                   Container(
-                                                      height: SizeConfig.height60,
+                                                      height: SizeConfig.height50,
                                                       width: 1,
                                                       color: AppTheme.addNewTextFieldBorder
                                                   ),
@@ -436,7 +438,7 @@ class SalesMaterialLoadConfirmationState extends State<SalesMaterialLoadConfirma
                                             ),
                                             Container(
                                               margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20),
-                                              height:SizeConfig.height60,
+                                              height:SizeConfig.height50,
                                               width: SizeConfig.width320,
                                               decoration: BoxDecoration(
 
@@ -455,13 +457,13 @@ class SalesMaterialLoadConfirmationState extends State<SalesMaterialLoadConfirma
                                                   ),
 
                                                   Container(
-                                                      height: SizeConfig.height60,
+                                                      height: SizeConfig.height50,
                                                       width: 1,
                                                       color: AppTheme.addNewTextFieldBorder
                                                   ),
 
                                                   Container(
-                                                      height:SizeConfig.height60,
+                                                      height:SizeConfig.height50,
                                                       padding: EdgeInsets.only(left: SizeConfig.width10),
                                                       width: SizeConfig.width140-1,
                                                       alignment: Alignment.centerLeft,
@@ -469,55 +471,78 @@ class SalesMaterialLoadConfirmationState extends State<SalesMaterialLoadConfirma
                                                 ],
                                               ),
                                             ),
-                                            AddNewLabelTextField(
-                                              labelText: 'Outward Weight',
-                                              scrollPadding: 200,
-                                              textInputType: TextInputType.number,
-                                              textEditingController: qn.SS_DifferWeightController,
-                                              suffixIcon: Container(
-                                                  height:SizeConfig.height60,
-                                                  width: 50,
-                                                  child: Center(child: Text("Ton",style: TextStyle(fontFamily: 'RR',fontSize: 18,color: AppTheme.addNewTextFieldText.withOpacity(0.7)),))
+                                            SizedBox(height: SizeConfig.height20,),
+                                            Text("Material Received ?",textAlign: TextAlign.center,
+                                            style: TextStyle(fontFamily: 'RR',fontSize: 16,color: AppTheme.addNewTextFieldText),
+                                            ),
+
+                                            SizedBox(height: SizeConfig.height20,),
+
+                                            GestureDetector(
+                                              onTap: (){
+                                                if(qn.searchVehicleNo.text.isNotEmpty){
+                                                  qn.UpdateSaleDetailDbhit(context, 1, "");
+                                                }
+                                                else{
+                                                  CustomAlert().commonErrorAlert(context,"Select Vehicle Number","");
+                                                }
+    
+    
+
+                                              },
+                                              child: Align(
+                                                alignment: Alignment.center,
+                                                child: Container(
+
+                                                  width:SizeConfig.screenWidth*0.3,
+                                                  height:SizeConfig.height50,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius: BorderRadius.circular(25.0),
+                                                    color: AppTheme.yellowColor,
+                                                    boxShadow: [
+                                                      BoxShadow(
+                                                        color: AppTheme.yellowColor.withOpacity(0.4),
+                                                        spreadRadius: 1,
+                                                        blurRadius: 5,
+                                                        offset: Offset(1, 8), // changes position of shadow
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  child: Center(
+                                                      child: Text("Yes",style: AppTheme.bgColorTS,
+                                                      )
+                                                  ),
+                                                ),
                                               ),
-                                              onChange: (v){
-                                                qn.differWeight();
-                                              },
-                                              onEditComplete: (){
-                                                node.unfocus();
-                                                setState(() {
-                                                  _keyboardVisible=false;
-                                                });
-                                              },
-                                              ontap: (){
-                                                setState(() {
-                                                  _keyboardVisible=true;
-                                                });
-                                              },
-
-
                                             ),
                                             SizedBox(height: SizeConfig.height20,),
-                                            Text(qn.msg,style: TextStyle(fontFamily: 'RR',fontSize: 16),),
-                                            SizedBox(height: SizeConfig.height20,),
-                                            qn.returnMoney.isNotEmpty?Container(
-                                              height: SizeConfig.height60,
-                                              width: double.maxFinite,
-                                              decoration: BoxDecoration(
-                                                  color: qn.returnColor,
-                                                  // color: double.parse(qn.returnMoney.toString()) > qn.SS_Amount? Colors.red :Colors.green ,
-                                                  borderRadius: BorderRadius.circular(3)
+                                            GestureDetector(
+                                              onTap: (){
+                                                if(qn.searchVehicleNo.text.isNotEmpty){
+                                                  qn.UpdateSaleDetailDbhit(context, 0, "");
+                                                }
+                                                else{
+                                                  CustomAlert().commonErrorAlert(context,"Select Vehicle Number","");
+                                                }
+                                              },
+                                              child: Align(
+                                                alignment: Alignment.center,
+                                                child: Container(
+
+                                                  width:SizeConfig.screenWidth*0.3,
+                                                  height:SizeConfig.height50,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius: BorderRadius.circular(25.0),
+
+
+                                                  ),
+                                                  child: Center(
+                                                      child: Text("No",style: AppTheme.bgColorTS,
+                                                      )
+                                                  ),
+                                                ),
                                               ),
-
-                                              margin: EdgeInsets.only(left: SizeConfig.width20,right: SizeConfig.width20),
-                                              child: Center(
-                                                child: Text(qn.returnMoney,style: TextStyle(fontFamily: 'RR',fontSize: 24,color: Colors.white
-                                                  //color:double.parse(qn.returnMoney.toString()) > qn.SS_Amount? AppTheme.bgColor :Colors.white
-                                                )),
-                                              ),
-                                            ):Container(),
-
-
-                                            SizedBox(height: SizeConfig.height20,),
+                                            ),
 
 
 

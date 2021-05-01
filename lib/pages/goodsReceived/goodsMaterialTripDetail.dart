@@ -39,12 +39,13 @@ class GoodsMaterialTripListState extends State<GoodsMaterialTripList> with Ticke
   ScrollController header=new ScrollController();
   ScrollController body=new ScrollController();
   List<GoodsMaterialTripDetailsModel> materialTripList=[];
-
+  List<GoodsMaterialExtraTripModel> GoodsMaterialExtraTripModelDetails=[];
   @override
   void initState() {
     isEdit=false;
 
     materialTripList=Provider.of<GoodsReceivedNotifier>(context,listen: false).materialTripList.where((element) => element.materialId==widget.MaterialId).toList();
+    GoodsMaterialExtraTripModelDetails=Provider.of<GoodsReceivedNotifier>(context,listen: false).GoodsMaterialExtraTripModelDetails.where((element) => element.materialId==widget.MaterialId).toList();
     WidgetsBinding.instance.addPostFrameCallback((_){
 
 
@@ -323,7 +324,7 @@ class GoodsMaterialTripListState extends State<GoodsMaterialTripList> with Ticke
                                 ),
                               ) ,
 
-                                Column(
+                              GoodsMaterialExtraTripModelDetails[0].isExtra==0?Container():  Column(
                                  children: [
                                    SizedBox(height: 20,),
                                    Align(
@@ -336,7 +337,7 @@ class GoodsMaterialTripListState extends State<GoodsMaterialTripList> with Ticke
                                            borderRadius: BorderRadius.circular(25)
                                        ),
                                        child: Center(
-                                         child: Text("You Received Extra ${gr.GoodsMaterialExtraTripModelDetails.balanceQuantity} ${gr.GoodsMaterialExtraTripModelDetails.unitName??""}",
+                                         child: Text("You Received Extra ${GoodsMaterialExtraTripModelDetails[0].balanceQuantity} ${GoodsMaterialExtraTripModelDetails[0].unitName??""}",
                                            style: TextStyle(fontFamily: 'RR',fontSize: 16,color: Colors.white),
                                          ),
                                        ),
@@ -345,7 +346,7 @@ class GoodsMaterialTripListState extends State<GoodsMaterialTripList> with Ticke
                                    SizedBox(height: 20,),
                                    Align(
                                      alignment: Alignment.center,
-                                     child: Text("So Generate Extra ${gr.GoodsMaterialExtraTripModelDetails.balanceQuantity} ${gr.GoodsMaterialExtraTripModelDetails.unitName??""} amount for",
+                                     child: Text("So Generate Extra ${GoodsMaterialExtraTripModelDetails[0].balanceQuantity} ${GoodsMaterialExtraTripModelDetails[0].unitName??""} amount for",
                                        style: TextStyle(fontFamily: 'RR',fontSize: 14,color: AppTheme.hintColor),
                                      ),
                                    ),
@@ -361,7 +362,7 @@ class GoodsMaterialTripListState extends State<GoodsMaterialTripList> with Ticke
                                              color: AppTheme.yellowColor
                                          ),
                                          child: Center(
-                                           //child: Text("${gr.GoodsMaterialExtraTripModelDetails.}"),
+                                          child: Text("${GoodsMaterialExtraTripModelDetails[0].Amount}"),
                                          ),
                                        ),
                                        Text("  Your Invoice",

@@ -15,6 +15,8 @@ import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
 
+import '../../styles/size.dart';
+
 
 
 
@@ -36,6 +38,8 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
 
   bool isListScroll=false;
 
+  bool isInvoiceOpen=false;
+
   @override
   void initState() {
     isEdit=false;
@@ -50,17 +54,17 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
       scrollController.addListener(() {
 
         if(scrollController.offset==100){
-          setState(() {
+    /*      setState(() {
             isListScroll=true;
-          });
+          });*/
         }
         else{
-          if(isListScroll){
+          /*if(isListScroll){
             print("ISCROLL");
             setState(() {
               isListScroll=false;
             });
-          }
+          }*/
 
         }
 /*        print("isListScroll$isListScroll");*/
@@ -68,9 +72,19 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
 
       listViewController.addListener(() {
         print(listViewController.position.userScrollDirection);
-        if(listViewController.offset==0){
-          scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
-        }
+        /*f(listViewController.offset==0){
+
+          scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value) {
+            if(isListScroll){
+              print("ISCROLL");
+              setState(() {
+                isListScroll=false;
+              });
+            }
+          });
+        }*/
+
+
         /*if(listViewController.offset>20){
           scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
         }
@@ -136,16 +150,36 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
                           int sensitivity = 5;
 
                           if (details.delta.dy > sensitivity) {
-                            scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+                            scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
+                              if(isListScroll){
+                                print("ISCROLLG");
+                                setState(() {
+                                  isListScroll=false;
+                                });
+                              }
+                            });
 
                           } else if(details.delta.dy < -sensitivity){
-                            scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+                            scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
+                              print("THEN$isListScroll");
+                              if(!isListScroll){
+                                print("THENN");
+                                setState(() {
+                                  isListScroll=true;
+                                });
+                              }
+                               /*Timer(Duration(milliseconds: 100), (){
+
+                               });*/
+
+                            });
                           }
                         },
                         child: Container(
                           height: SizeConfig.screenHeight-60,
                           width: SizeConfig.screenWidth,
                           padding: EdgeInsets.only(top: 0,bottom: 80),
+                          clipBehavior: Clip.antiAlias,
                           decoration: BoxDecoration(
                               color: AppTheme.gridbodyBgColor,
                               borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10))
@@ -160,7 +194,18 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
                                     print("0");
                                     Timer(Duration(milliseconds: 100), (){
                                       if(listViewController.position.userScrollDirection!=ScrollDirection.reverse){
-                                        scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+                                        if(scrollController.position.pixels == scrollController.position.maxScrollExtent){
+                                                //scroll end
+                                          scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value) {
+                                            if(isListScroll){
+                                              print("ISCROLL");
+                                              setState(() {
+                                                isListScroll=false;
+                                              });
+                                            }
+                                          });
+                                        }
+
                                       }
                                     });
 
@@ -180,79 +225,103 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
                                    /*   gr.GetplantDetailDbhit(context, gr.plantGridList[i].plantId);*/
 
                                     },
-                                    child: Container(
-                                      margin: EdgeInsets.only(top: 10),
-                                      height: 200,
-                                     // height: SizeConfig.screenWidth*0.5,
-                                      width: SizeConfig.screenWidth*0.5,
-                                      color: AppTheme.gridbodyBgColor,
-                                      child: Center(
-                                        child: Container(
-                                          height: 160,
-                                         // height: SizeConfig.screenWidth*0.4,
-                                          width: SizeConfig.screenWidth*0.4,
-                                          decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius: BorderRadius.circular(20),
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  color: AppTheme.addNewTextFieldText.withOpacity(0.2),
-                                                  spreadRadius: 2,
-                                                  blurRadius: 15,
-                                                  offset: Offset(0, 0), // changes position of shadow
-                                                )
-                                              ]
-                                          ),
-                                          child: Column(
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            crossAxisAlignment: CrossAxisAlignment.center,
-                                            children: [
-                                              Text("${value.purchaseOrderNumber}",
-                                              style: TextStyle(fontFamily: 'RM',color: AppTheme.bgColor,fontSize: 16),
-                                              ),
-                                              SizedBox(height: 5,),
-                                              Text("${value.date}",
-                                                style: TextStyle(fontFamily: 'RR',color: AppTheme.gridTextColor.withOpacity(0.6),fontSize: 14),
-                                              ),
-                                              SizedBox(height: 5,),
-                                              Text("${value.status}",
-                                                style: TextStyle(fontFamily: 'RR',color: value.status=="Not Yet"? AppTheme.gridTextColor.withOpacity(0.6):AppTheme.red.withOpacity(0.6),fontSize: 14),
-                                              ),
-                                              SizedBox(height: 20,),
-                                              GestureDetector(
-                                                onTap: (){
-                                                  gr.GoodsDropDownValues(context);
-                                                  gr.GetGoodsDbHit(context, value.goodsReceivedId, value.purchaseOrderId);
-                                                  Navigator.push(context, _createRoute());
-                                                },
-                                                child: Container(
-                                                  height: 40,
-                                                  width: SizeConfig.screenWidth*0.3,
-                                                  decoration: BoxDecoration(
-                                                      borderRadius: BorderRadius.circular(25),
-                                                      color: AppTheme.yellowColor,
-                                                    boxShadow: [
-                                                  BoxShadow(
-                                                  color: AppTheme.yellowColor.withOpacity(0.4),
-                                                    spreadRadius: 1,
-                                                    blurRadius: 5,
-                                                    offset: Offset(1, 8),
-                                                  )// changes position of shadow
+                                    child: AnimatedOpacity(
+                                      opacity: value.isAnimate?0:1,
 
-                                                    ]
-                                                  ),
-                                                  child: Center(
-                                                    child: Text("View",style:TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 16),),
-                                                  ),
+                                      duration: Duration(milliseconds: 200),
+                                      curve: Curves.easeIn,
+                                      child: AnimatedContainer(
+                                        duration: Duration(milliseconds: 150),
+                                        curve: Curves.easeIn,
+                                      /* height: 200,
+                                       width: SizeConfig.screenWidth*0.5,*/
+                                        height: value.isAnimate?0:200,
+                                        width:  value.isAnimate?0: SizeConfig.screenWidth*0.5,
+                                        transform: Matrix4.translationValues(value.isAnimate?SizeConfig.screenWidth*0.25:0, value.isAnimate?100:0, 0),
+                                        child: FittedBox(
+                                          fit: BoxFit.contain,
+                                          child: Container(
+                                          //  margin: EdgeInsets.only(top: 10),
+                                            height: 200,
+                                           // height: SizeConfig.screenWidth*0.5,
+                                            width: SizeConfig.screenWidth*0.5,
+
+                                            decoration: BoxDecoration(
+                                              //  borderRadius: BorderRadius.circular(10),
+                                              color: AppTheme.gridbodyBgColor,
+                                            ),
+                                            child: Center(
+                                              child: Container(
+                                                height: 160,
+                                               // height: SizeConfig.screenWidth*0.4,
+                                                width: SizeConfig.screenWidth*0.4,
+                                                decoration: BoxDecoration(
+                                                  color: Colors.white,
+                                                  borderRadius: BorderRadius.circular(20),
+                                                   /* boxShadow: [
+                                                      BoxShadow(
+                                                        color: AppTheme.addNewTextFieldText.withOpacity(0.2),
+                                                        spreadRadius: 2,
+                                                        blurRadius: 15,
+                                                        offset: Offset(0, 0), // changes position of shadow
+                                                      )
+                                                    ]*/
+                                                ),
+                                                child: Column(
+                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                                  children: [
+                                                    Text("${value.purchaseOrderNumber}",
+                                                    style: TextStyle(fontFamily: 'RM',color: AppTheme.bgColor,fontSize: 16),
+                                                    ),
+                                                    SizedBox(height: 5,),
+                                                    Text("${value.date}",
+                                                      style: TextStyle(fontFamily: 'RR',color: AppTheme.gridTextColor.withOpacity(0.6),fontSize: 14),
+                                                    ),
+                                                    SizedBox(height: 5,),
+                                                    Text("${value.status}",
+                                                      style: TextStyle(fontFamily: 'RR',color: value.status=="Not Yet"? AppTheme.gridTextColor.withOpacity(0.6):
+                                                      value.status=='Completed'?Colors.green:AppTheme.red.withOpacity(0.6)
+                                                          ,fontSize: 14),
+                                                    ),
+                                                    SizedBox(height: 20,),
+                                                    GestureDetector(
+                                                      onTap: (){
+                                                        gr.GoodsDropDownValues(context);
+                                                        gr.GetGoodsDbHit(context, value.goodsReceivedId, value.purchaseOrderId);
+                                                        Navigator.push(context, _createRoute());
+                                                      },
+                                                      child: Container(
+                                                        height: 40,
+                                                        width: SizeConfig.screenWidth*0.3,
+                                                        decoration: BoxDecoration(
+                                                            borderRadius: BorderRadius.circular(25),
+                                                            color: AppTheme.yellowColor,
+                                                          boxShadow: [
+                                                        BoxShadow(
+                                                        color: AppTheme.yellowColor.withOpacity(0.4),
+                                                          spreadRadius: 1,
+                                                          blurRadius: 5,
+                                                          offset: Offset(1, 8),
+                                                        )// changes position of shadow
+
+                                                          ]
+                                                        ),
+                                                        child: Center(
+                                                          child: Text("View",style:TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 16),),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
                                               ),
-                                            ],
+                                            ),
+
+
+
                                           ),
                                         ),
                                       ),
-
-
-
                                     ),
                                   ),
 
@@ -350,7 +419,49 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
                                 },
                                 child: Image.asset("assets/goodsIcons/outGate.jpg")
                             ),
-                            Image.asset("assets/goodsIcons/invoice.jpg"),
+                            GestureDetector(
+                                onTap:isInvoiceOpen?null: (){
+
+                                  setState(() {
+                                    isInvoiceOpen=true;
+                                  });
+
+                                  int i=0;
+                                  Timer.periodic(Duration(milliseconds: 150),(v){
+                                    print(i);
+                                    if(gr.goodsGridList[i].status=="Not Yet"){
+                                      setState(() {
+                                        gr.goodsGridList[i].isAnimate=!gr.goodsGridList[i].isAnimate;
+                                      });
+                                    }
+                                    i=i+1;
+                                    if(i==gr.goodsGridList.length){
+                                      v.cancel();
+                                      setState(() {
+                                        isInvoiceOpen=false;
+                                      });
+                                    }
+
+                                  });
+
+                                  setState(() {
+
+                                    /*gr.goodsGridList.forEach((element) async {
+                                      if(element.status=='Not Yet'){
+                                          element.isAnimate=!element.isAnimate;
+                                      }
+                                    });
+                                    */
+
+
+                                    // gr.goodsGridList[2].isAnimate=!gr.goodsGridList[2].isAnimate;
+                                    //isInvoiceOpen=!isInvoiceOpen;
+                                   /* gr.filtergoodsGridList.removeLast();
+                                    print(gr.filtergoodsGridList.length);
+                                    print(gr.goodsGridList.length);*/
+                                  });
+                                },
+                                child: Image.asset("assets/goodsIcons/invoice.jpg")),
                           ],
                         ),
                       )
@@ -363,8 +474,9 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
 
 
               Container(
-                height: SizeConfig.height60,
+                height: SizeConfig.height55,
                 width: SizeConfig.screenWidth,
+
                 child: Row(
                   children: [
                     IconButton(icon: Icon(Icons.menu,color:AppTheme.bgColor,), onPressed: widget.drawerCallback),

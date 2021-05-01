@@ -17,6 +17,7 @@ import 'package:quarry/widgets/customTextField.dart';
 import 'package:quarry/widgets/decimal.dart';
 import 'package:quarry/widgets/searchdropdownSingleSelect.dart';
 
+import '../../notifier/quarryNotifier.dart';
 import 'saleAddNew.dart';
 
 
@@ -46,6 +47,9 @@ bool isMaterialTypeOpen=false;
 bool isCustomerDetaislOpen=false;
 bool _keyboardVisible=false;
 
+  int reorderLevelIndex=-1;
+  List<String> numbers = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "X", "0", "."];
+  String disValue="";
 
   @override
   void initState() {
@@ -188,7 +192,7 @@ bool _keyboardVisible=false;
                                                   textEditingController: qn.SS_vehicleNo,
                                                   ontap: () {
                                                     setState(() {
-                                                      //_keyboardVisible=true;
+                                                      _keyboardVisible=true;
                                                     });
                                                     scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                                   },
@@ -208,7 +212,7 @@ bool _keyboardVisible=false;
                                                   onTap: () {
                                                     node.unfocus();
                                                     setState(() {
-                                                     // _keyboardVisible=false;
+                                                      _keyboardVisible=false;
                                                       isTransportModeOpen = true;
                                                     });
 
@@ -230,7 +234,7 @@ bool _keyboardVisible=false;
                                                   textInputType: TextInputType.number,
                                                   ontap: () {
                                                     setState(() {
-                                                      //_keyboardVisible=true;
+                                                      _keyboardVisible=false;
                                                     });
                                                     scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                                   },
@@ -250,7 +254,7 @@ bool _keyboardVisible=false;
                                                   onTap: () {
                                                     node.unfocus();
                                                     setState(() {
-                                                    //  _keyboardVisible=false;
+                                                     _keyboardVisible=false;
                                                       isMaterialTypeOpen = true;
                                                     });
                                                   },
@@ -279,7 +283,7 @@ bool _keyboardVisible=false;
                                                     scrollPadding: 50,
                                                     ontap: () {
                                                       setState(() {
-                                                        //_keyboardVisible=true;
+                                                        _keyboardVisible=true;
                                                       });
                                                       scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                                     },
@@ -290,7 +294,7 @@ bool _keyboardVisible=false;
                                                       node.unfocus();
                                                       Timer(Duration(milliseconds: 100), (){
                                                         setState(() {
-                                                         // _keyboardVisible=false;
+                                                          _keyboardVisible=false;
                                                         });
                                                       });
                                                     },
@@ -355,7 +359,7 @@ bool _keyboardVisible=false;
                                                   onTap: () {
                                                     node.unfocus();
                                                     setState(() {
-                                                      //  _keyboardVisible=false;
+                                                        _keyboardVisible=false;
                                                       isPaymentTypeOpen = true;
                                                     });
                                                   },
@@ -374,7 +378,7 @@ bool _keyboardVisible=false;
                                                   onTap: () {
                                                     node.unfocus();
                                                     setState(() {
-                                                      //  _keyboardVisible=false;
+                                                       _keyboardVisible=false;
                                                       isCustomerDetaislOpen = true;
                                                     });
                                                   },
@@ -389,9 +393,293 @@ bool _keyboardVisible=false;
                                                         : Colors.white,
                                                   ),
                                                 ),
+                                                SizedBox(height: SizeConfig.height20,),
+                                                Container(
+                                                  height: SizeConfig.height30,
+                                                  width: SizeConfig.screenWidth,
+                                                  padding: EdgeInsets.only(left: SizeConfig.width10),
+                                                  child: Row(
+                                                    children: [
+                                                      Checkbox(
+                                                          fillColor: MaterialStateColor.resolveWith((states) => AppTheme.yellowColor),
+                                                          value: qn.isDiscount,
+                                                          onChanged: (v){
+
+                                                            setState(() {
+                                                              qn.isDiscount=v;
+                                                            });
+
+                                                            if(qn.isDiscount){
+
+                                                              if(qn.DiscountValue.toInt()!=0){
+                                                                setState(() {
+                                                                  disValue=qn.DiscountValue.toString();
+                                                                });
+                                                              }
+                                                              else{
+                                                                setState(() {
+                                                                  disValue="";
+                                                                });
+                                                              }
+
+                                                              showDialog(context: context,
+                                                                  // barrierDismissible: false,
+
+                                                                  builder: (context){
+                                                                    return StatefulBuilder(
+                                                                      builder:(context,setState){
+                                                                        return Consumer<QuarryNotifier>(
+                                                                          builder: (context,pn,child)=>Dialog(
+                                                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10), ),
+
+                                                                            child: Container(
+                                                                              height: SizeConfig.screenHeight*0.85,
+                                                                              width: SizeConfig.screenWidth*0.9,
+                                                                              decoration: BoxDecoration(
+                                                                                  borderRadius: BorderRadius.circular(10),
+                                                                                  color: Colors.white
+                                                                              ),
+                                                                              child: Column(
+                                                                                children: [
+                                                                                  SizedBox(height: 15,),
+                                                                                  Text("{pn.purchaseOrdersMappingList[pn.purchaseOrdersMappingList.length-1].materialName??""}",
+                                                                                    style: TextStyle(fontFamily: 'RR',fontSize: 18,color: AppTheme.gridTextColor),textAlign: TextAlign.center,),
+                                                                                  SizedBox(height: 10,),
+                                                                                  Row(
+                                                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                                                    children: [
+
+                                                                                      Text("${disValue.isEmpty?"0":disValue}",
+                                                                                        style: TextStyle(fontFamily: 'RM',fontSize: 20,color: AppTheme.gridTextColor),textAlign: TextAlign.center,),
+                                                                                      SizedBox(width: 20,),
+                                                                                      GestureDetector(
+                                                                                        onTap: (){
+                                                                                          setState((){
+                                                                                            qn.isAmountDiscount=true;
+                                                                                            qn.isPercentageDiscount=false;
+                                                                                          });
+
+
+
+                                                                                        },
+                                                                                        child: AnimatedContainer(
+                                                                                          duration: Duration(milliseconds: 200),
+                                                                                          curve: Curves.easeIn,
+                                                                                          height: 35,
+                                                                                          width: 35,
+                                                                                          decoration: BoxDecoration(
+                                                                                              shape: BoxShape.circle,
+                                                                                              border: Border.all(color: pn.isAmountDiscount?Colors.transparent:AppTheme.addNewTextFieldBorder),
+                                                                                              color: pn.isAmountDiscount?AppTheme.addNewTextFieldFocusBorder:AppTheme.EFEFEF
+                                                                                          ),
+                                                                                          child: Center(
+                                                                                            child: Text("₹",style: pn.isAmountDiscount?AppTheme.discountactive:AppTheme.discountDeactive,),
+                                                                                          ),
+
+                                                                                        ),
+                                                                                      ),
+                                                                                      SizedBox(width: 10,),
+                                                                                      GestureDetector(
+                                                                                        onTap: (){
+                                                                                          setState((){
+                                                                                            qn.isAmountDiscount=false;
+                                                                                            qn.isPercentageDiscount=true;
+                                                                                          });
+
+                                                                                        },
+                                                                                        child: AnimatedContainer(
+                                                                                          duration: Duration(milliseconds: 200),
+                                                                                          curve: Curves.easeIn,
+                                                                                          height: 35,
+                                                                                          width: 35,
+                                                                                          decoration: BoxDecoration(
+                                                                                              shape: BoxShape.circle,
+                                                                                              border: Border.all(color: pn.isPercentageDiscount?Colors.transparent:AppTheme.addNewTextFieldBorder),
+                                                                                              color: pn.isPercentageDiscount?AppTheme.addNewTextFieldFocusBorder:AppTheme.EFEFEF
+                                                                                          ),
+                                                                                          child: Center(
+
+                                                                                            child: Text("%",style: pn.isPercentageDiscount?AppTheme.discountactive:AppTheme.discountDeactive,),
+                                                                                          ),
+
+                                                                                        ),
+                                                                                      ),
+                                                                                    ],
+                                                                                  ),
+
+                                                                                  Container(
+                                                                                      margin: EdgeInsets.only(top: 20),
+                                                                                      width: SizeConfig.screenWidth*0.8,
+                                                                                      child: Wrap(
+                                                                                          spacing: 10,
+                                                                                          runSpacing: 10,
+                                                                                          direction: Axis.horizontal,
+                                                                                          alignment: WrapAlignment.center,
+                                                                                          children: numbers
+                                                                                              .asMap().map((i, element) => MapEntry(i,
+                                                                                              GestureDetector(
+                                                                                                onTap: () {
+                                                                                                  setState(() {
+                                                                                                    if (numbers[i] == 'X') {
+
+
+                                                                                                        disValue = disValue.substring(0, disValue.length - 1);
+
+
+                                                                                                      reorderLevelIndex=i;
+                                                                                                    }
+                                                                                                    else if (numbers[i] == '.') {
+
+
+                                                                                                        if(disValue.length<4 && disValue.length>=1){
+                                                                                                          if(disValue.contains('.')){}
+                                                                                                          else{
+                                                                                                            setState(() {
+                                                                                                              disValue=disValue+'.';
+                                                                                                            });
+                                                                                                          }
+                                                                                                        }
+
+
+                                                                                                      reorderLevelIndex=i;
+                                                                                                    }
+                                                                                                    else {
+
+
+
+                                                                                                        if(disValue.isEmpty && numbers[i]=='0'){}
+                                                                                                        else{
+                                                                                                          setState(() {
+                                                                                                            reorderLevelIndex = i;
+                                                                                                          });
+                                                                                                          if(disValue.length<4){
+                                                                                                            setState(() {
+                                                                                                              disValue=disValue+numbers[i];
+                                                                                                            });
+                                                                                                          }
+                                                                                                        }
+
+
+
+                                                                                                    }
+                                                                                                  });
+                                                                                                  Timer(Duration(milliseconds: 300), (){
+                                                                                                    setState((){
+                                                                                                      reorderLevelIndex=-1;
+                                                                                                    });
+                                                                                                  });
+                                                                                                },
+                                                                                                child: AnimatedContainer(
+                                                                                                    height: SizeConfig.screenWidth*0.19,
+                                                                                                    width: SizeConfig.screenWidth*0.19,
+                                                                                                    duration: Duration(milliseconds: 200),
+                                                                                                    curve: Curves.easeIn,
+                                                                                                    decoration: BoxDecoration(
+                                                                                                      color: reorderLevelIndex == i?AppTheme.yellowColor:AppTheme.unitSelectColor,
+                                                                                                      border: Border.all(color: AppTheme.addNewTextFieldBorder),
+                                                                                                      borderRadius: BorderRadius.circular(10),
+                                                                                                    ),
+                                                                                                    child: Center(
+                                                                                                        child: Text(numbers[i],
+                                                                                                          style: TextStyle(fontFamily: 'RR', color:reorderLevelIndex == i?Colors.white:AppTheme.gridTextColor, fontSize: 28,),
+                                                                                                          textAlign: TextAlign.center,
+                                                                                                        )
+                                                                                                    )
+                                                                                                ),
+                                                                                              )))
+                                                                                              .values
+                                                                                              .toList()
+                                                                                      )
+                                                                                  ),
+                                                                                  SizedBox(height: 10,),
+
+                                                                                  GestureDetector(
+                                                                                    onTap: (){
+
+                                                                                      setState((){
+                                                                                        if(qn.isPercentageDiscount){
+                                                                                          qn.DiscountValue=double.parse(disValue);
+                                                                                          qn.weightToAmount();
+                                                                                        }
+                                                                                        else if(qn.isAmountDiscount){
+                                                                                          qn.DiscountValue=double.parse(disValue);
+                                                                                          qn.DiscountAmount=double.parse(disValue);
+                                                                                          qn.weightToAmount();
+                                                                                        }
+                                                                                      });
+
+                                                                                      Navigator.pop(context);
+
+                                                                                    },
+                                                                                    child: Container(
+                                                                                      height: 50,
+                                                                                      width: 150,
+                                                                                      decoration: BoxDecoration(
+                                                                                          borderRadius: BorderRadius.circular(10),
+                                                                                          color: AppTheme.yellowColor
+                                                                                      ),
+                                                                                      child: Center(
+                                                                                        child: Text("Done",style: AppTheme.TSWhite20,),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                  GestureDetector(
+                                                                                    onTap: (){
+                                                                                      setState((){
+                                                                                        qn.isDiscount=false;
+                                                                                        qn.isPercentageDiscount=true;
+                                                                                        qn.isAmountDiscount=false;
+                                                                                        qn.DiscountAmount=0.0;
+                                                                                        qn.DiscountValue=0.0;
+                                                                                        qn.DiscountedSubTotal=0.0;
+                                                                                      });
+                                                                                      Navigator.pop(context);
+
+                                                                                    },
+                                                                                    child: Container(
+                                                                                      height: 50,
+                                                                                      width: 150,
+                                                                                      child: Center(
+                                                                                        child: Text("Cancel",style: TextStyle(fontFamily: 'RL',fontSize: 20,color: Color(0xFFA1A1A1))),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ],
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                        );
+                                                                      },
+                                                                    );
+                                                                  }
+                                                              );
+                                                            }
+                                                            else{
+
+                                                              setState((){
+                                                                qn.isDiscount=false;
+                                                                qn.isPercentageDiscount=true;
+                                                                qn.isAmountDiscount=false;
+                                                                qn.DiscountAmount=0.0;
+                                                                qn.DiscountValue=0.0;
+                                                                qn.DiscountedSubTotal=0.0;
+                                                              });
+                                                              qn.weightToAmount();
+                                                            }
+                                                          }),
+                                                      InkWell(
+                                                          onTap: (){
+                                                            setState(() {
+                                                              qn.isDiscount=!qn.isDiscount;
+                                                            });
+                                                          },
+                                                          child: Text("Do you have Discount?", style:  TextStyle(fontFamily: 'RR',fontSize: 16,color:AppTheme.addNewTextFieldText,letterSpacing: 0.2),))
+                                                    ],
+                                                  ),
+                                                ),
                                                 
 
-                                                SizedBox(height: SizeConfig.height100,)
+                                                SizedBox(height: SizeConfig.height200,)
                                               ],
                                             ),
                                           ),
@@ -558,13 +846,27 @@ bool _keyboardVisible=false;
                                                           qn.SS_RequiredMaterialQty=qn.saleDetails[index].RequiredMaterialQty;
                                                           qn.SS_RequiredMaterialQtyUnit=qn.saleDetails[index].UnitName;
                                                           qn.SS_Amount=qn.saleDetails[index].Amount;
+
+                                                          qn.SS_DiscountAmount=qn.saleDetails[index].discountAmount;
+                                                          qn.SS_DiscountedOutputQtyAmount=qn.saleDetails[index].DiscountedRequiredQtyAmount;
+                                                          qn.SS_TaxAmount=qn.saleDetails[index].TaxAmount;
+                                                          qn.SS_RoundOffAmount=qn.saleDetails[index].RoundOffAmount;
+                                                          qn.SS_GrandTotalAmount=qn.saleDetails[index].TotalAmount;
+
                                                           qn.SS_PaymentCategoryName=qn.saleDetails[index].PaymentCategoryName;
                                                           qn.SS_PaymentTypeId=qn.saleDetails[index].PaymentCategoryId;
                                                           qn.SS_UpdateSaleId=qn.saleDetails[index].SaleId;
                                                           qn.SS_UpdateSaleNo=qn.saleDetails[index].SaleNumber;
                                                           qn.SS_selectCustomerId=qn.saleDetails[index].CustomerId;
+                                                          qn.OG_discountValue=qn.saleDetails[index].discountValue;
+                                                          qn.OG_TaxValue=qn.saleDetails[index].TaxPercentage;
+                                                          qn.OG_isPercentage=qn.saleDetails[index].isPercentage;
+                                                          qn.OG_isDiscount=qn.saleDetails[index].isDiscount;
                                                           qn.SS_TotalWeight=(Decimal.parse(qn.SS_EmptyWeightOfVehicle)+Decimal.parse((qn.SS_RequiredMaterialQty))).toString();
                                                           qn.SS_MaterialUnitPrice=qn.sale_materialList.where((element) => element.MaterialId==qn.saleDetails[index].MaterialId).toList()[0].MaterialUnitPrice;
+
+                                                          print("qn.SS_DiscountedOutputQtyAmount${qn.SS_DiscountedOutputQtyAmount}");
+
                                                         });
                                                       },
                                                     ),
@@ -745,6 +1047,40 @@ bool _keyboardVisible=false;
                                                           Container(
                                                               padding: EdgeInsets.only(left: SizeConfig.width10),
                                                               width: SizeConfig.width140-2,
+                                                              child: Text("Discount")
+                                                          ),
+
+                                                          Container(
+                                                              height: SizeConfig.height60,
+                                                              width: 1,
+                                                              color: AppTheme.addNewTextFieldBorder
+                                                          ),
+
+                                                          Container(
+                                                              padding: EdgeInsets.only(left: SizeConfig.width10),
+                                                              width: SizeConfig.width140-1,
+                                                              child: Text(qn.OG_discountValue!=null?"${qn.OG_discountValue??""} ${qn.OG_isPercentage==0?"Rs":"%"}":"")
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20),
+                                                      height:SizeConfig.height60,
+                                                      width: SizeConfig.width320,
+                                                      decoration: BoxDecoration(
+
+                                                        // borderRadius: BorderRadius.circular(3),
+                                                          border: Border(left: BorderSide(color: AppTheme.addNewTextFieldBorder),
+                                                              right: BorderSide(color: AppTheme.addNewTextFieldBorder),bottom:BorderSide(color: AppTheme.addNewTextFieldBorder))
+
+                                                      ),
+                                                      child: Row(
+                                                        children: [
+
+                                                          Container(
+                                                              padding: EdgeInsets.only(left: SizeConfig.width10),
+                                                              width: SizeConfig.width140-2,
                                                               child: Text("Payment Type")
                                                           ),
 
@@ -844,7 +1180,7 @@ bool _keyboardVisible=false;
                                                     ):Container(),
 
 
-                                                    SizedBox(height: SizeConfig.height20,),
+                                                    SizedBox(height: SizeConfig.height70,),
 
 
 
@@ -955,7 +1291,7 @@ bool _keyboardVisible=false;
                                   else if(qn.SS_DifferWeightController.text.isEmpty){
                                     CustomAlert().commonErrorAlert(context, "Enter Vehicle Weight", "");
                                   }else{
-                                    qn.UpdateSaleDetailDbhit(context);
+                                    qn.UpdateSaleDetailDbhit(context,null,"");
                                   }
                                 }
 

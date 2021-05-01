@@ -26,10 +26,11 @@ class MaterialTypelist{
   int MaterialUnitId;
   String MaterialUnitName;
   double MaterialUnitPrice;
+  double TaxValue;
   String MaterialHSNCode;
 
   MaterialTypelist({this.MaterialId,this.MaterialName,this.MaterialDescription,this.MaterialCode,this.MaterialUnitId,
- this.MaterialUnitPrice,this.MaterialHSNCode,this.MaterialUnitName});
+ this.MaterialUnitPrice,this.MaterialHSNCode,this.MaterialUnitName,this.TaxValue});
 
 
   factory MaterialTypelist.fromJson(Map<dynamic, dynamic> json) {
@@ -41,6 +42,7 @@ class MaterialTypelist{
       MaterialUnitId: json['MaterialUnitId'],
       MaterialUnitName: json['UnitName'],
       MaterialUnitPrice: json['MaterialUnitPrice'],
+      TaxValue: json['TaxValue'],
       MaterialHSNCode: json['MaterialHSNCode'],
     );
   }
@@ -116,12 +118,20 @@ class SaleDetails{
   String SaleDate;
   String UnitName;
   String AmountInWords;
+  int isDiscount;
+  int isPercentage;
+  int isAmount;
+  double discountValue;
+  double discountAmount;
+  double DiscountedOutputQtyAmount;
+  double DiscountedRequiredQtyAmount;
 
   SaleDetails({this.SaleId,this.SaleNumber,this.VehicleNumber,this.VehicleTypeId,
   this.VehicleTypeName,this.EmptyWeightOfVehicle,this.MaterialId,this.MaterialName,
  this.RequiredMaterialQty, this.LoadWeightOfVehicle,this.Amount,this.PaymentCategoryId,this.MaterialUnitPrice,
   this.PaymentCategoryName,this.CustomerId,this.CustomerName,this.SaleStatus,this.AmountInWords,this.RoundOffAmount,
-  this.SaleDate,this.UnitName,this.OutputMaterialQty,this.OutputQtyAmount,this.TaxPercentage,this.TaxAmount,this.TotalAmount});
+  this.SaleDate,this.UnitName,this.OutputMaterialQty,this.OutputQtyAmount,this.TaxPercentage,this.TaxAmount,this.TotalAmount,this.isDiscount,this.isAmount,this.isPercentage,
+  this.discountAmount,this.discountValue,this.DiscountedOutputQtyAmount,this.DiscountedRequiredQtyAmount});
 
 
   factory SaleDetails.fromJson(Map<dynamic, dynamic> json) {
@@ -134,22 +144,37 @@ class SaleDetails{
       EmptyWeightOfVehicle: json['EmptyWeightOfVehicle'],
       MaterialId: json['MaterialId'],
       MaterialName: json['MaterialName'],
+      UnitName: json['UnitName'],
       MaterialUnitPrice: json['MaterialUnitPrice'],
       RequiredMaterialQty: json['RequiredMaterialQty'],
-      LoadWeightOfVehicle: json['LoadWeightOfVehicle'],
       Amount: json['RequiredQtyAmount'],
+
+
+      isDiscount: json['IsDiscount'],
+      isPercentage: json['IsPercentage'],
+      isAmount: json['IsAmount'],
+      discountValue: json['DiscountValue'],
+      discountAmount: json['DiscountAmount'],
+      DiscountedOutputQtyAmount: json['DiscountedOutputQtyAmount'],
+      DiscountedRequiredQtyAmount: json['DiscountedRequiredQtyAmount'],
+
+
+
+      LoadWeightOfVehicle: json['LoadWeightOfVehicle'],
+
       PaymentCategoryId: json['PaymentCategoryId'],
       PaymentCategoryName: json['PaymentCategoryName'],
       CustomerId: json['CustomerId'],
       CustomerName: json['CustomerName'],
       SaleStatus: json['SaleStatus'],
       SaleDate: json['SaleDate'],
-      UnitName: json['UnitName'],
+
       OutputMaterialQty: json['OutputMaterialQty'],
       OutputQtyAmount: json['OutputQtyAmount'],
-      TaxPercentage: json['TaxPercentage'],
+
+      TaxPercentage: json['TaxValue'],
       TaxAmount: json['TaxAmount'],
-      TotalAmount: json['TotalAmount'],
+      TotalAmount: json['GrandTotalAmount'],
       AmountInWords: json['AmountInWords'],
       RoundOffAmount: json['RoundOffAmount'],
 
