@@ -45,6 +45,7 @@ class GoodsReceivedMaterialListModel {
 
   
   factory GoodsReceivedMaterialListModel.fromJson(Map<String, dynamic> json) => GoodsReceivedMaterialListModel(
+    GoodsReceivedMaterialMappingId: json["GoodsReceivedMaterialMappingId"],
     goodsReceivedId: json["GoodsReceivedId"],
     purchaseOrderId: json["PurchaseOrderId"],
     materialId: json["MaterialId"],
@@ -52,14 +53,14 @@ class GoodsReceivedMaterialListModel {
     materialUnitId: json["MaterialUnitId"],
     unitName: json["UnitName"],
     materialPrice: json["MaterialPrice"],
-    quantity: json["Quantity"],
+    quantity: json["Quantity"].toDouble(),
     receivedQuantity:json["ReceivedQuantity"]==null?0.0: json["ReceivedQuantity"].toDouble(),
     balanceQuantity: json["BalanceQuantity"]==null?0.0:json["BalanceQuantity"].toDouble(),
-    amount: json["Amount"],
+    amount: json["TotalAmount"],
     vehicleTypeId: json["VehicleTypeId"],
     vehicleNumber: json["VehicleNumber"],
-    inwardLoadedVehicleWeight: json["InwardLoadedVehicleWeight"],
-    outwardEmptyVehicleWeight: json["OutwardEmptyVehicleWeight"],
+   // inwardLoadedVehicleWeight: json["InwardLoadedVehicleWeight"].toDouble(),
+   // outwardEmptyVehicleWeight: json["OutwardEmptyVehicleWeight"].toDouble(),
     status: json["Status"],
   );
 

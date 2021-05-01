@@ -190,6 +190,8 @@ class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
                               ),
                             )*/
                         ),
+
+
                         Container(
                             height: SizeConfig.screenHeight-140,
                             width: SizeConfig.screenWidth,
@@ -212,7 +214,7 @@ class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
 
                                 //Scrollable
                                 Positioned(
-                                  left:150,
+                                  left:149,
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [

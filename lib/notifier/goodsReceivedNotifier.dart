@@ -131,7 +131,7 @@ class GoodsReceivedNotifier extends ChangeNotifier{
         vehicleNo.text,
         double.parse(loadedWeight.text))
     ).toList();
-    print(js);
+    print("Insert-$js");
     var body={
       "Fields": [
         {
@@ -168,8 +168,11 @@ class GoodsReceivedNotifier extends ChangeNotifier{
 
         if(value!=null){
           var parsed=json.decode(value);
-          GetGoodsDbHit(context, ML_GoodsorderId,ML_PorderId);
-          GetGoodsDbHit(context, null,null);
+          print("INSERT SP_$parsed");
+          var t=parsed['Table'] as List;
+          ML_GoodsorderId=t[0]['GoodsReceivedId'];
+         // GetGoodsDbHit(context, ML_GoodsorderId,ML_PorderId);
+         GetGoodsDbHit(context, null,null);
           Navigator.pop(context);
           IGF_clear();
           print(GoodsMaterialsListState().mounted);
@@ -216,24 +219,28 @@ class GoodsReceivedNotifier extends ChangeNotifier{
      OGF_OutwardEmptyVehicleWeight=0.0;
   }
 
-  UpdateGoodsDbHit(BuildContext context)  async{
+  UpdateGoodsDbHit(BuildContext context,List insertMappingList)  async{
     updateGoodsLoader(true);
-    var ma={
-      "GoodsReceivedMaterialMappingId":null,
-      "GoodsReceivedId":  outGateFormList[OGF_index].goodsReceivedId,
-      "MaterialId":  outGateFormList[OGF_index].materialId,
-      "ExpectedQuantity":  outGateFormList[OGF_index].expectedQuantity,
-      "ReceivedQuantity": OGF_showReceivedQty,
-      "Amount":  outGateFormList[OGF_index].amount,
-      "VehicleTypeId":  outGateFormList[OGF_index].vehicleTypeId,
-      "VehicleNumber": OGF_vehicleNumber,
-      "InwardLoadedVehicleWeight":  outGateFormList[OGF_index].inwardLoadedVehicleWeight,
-      "OutwardEmptyVehicleWeight": double.parse(OGF_emptyWeightofVehicle.text),
-      "IsActive":1
-    };
     List js=[];
-    js.add(ma);
-    print(js);
+    if(insertMappingList==null){
+      var ma={
+        "GoodsReceivedMaterialMappingId":outGateFormList[OGF_index].GoodsReceivedMaterialMappingId,
+        "GoodsReceivedId":  outGateFormList[OGF_index].goodsReceivedId,
+        "MaterialId":  outGateFormList[OGF_index].materialId,
+        "ExpectedQuantity":  outGateFormList[OGF_index].expectedQuantity,
+        "ReceivedQuantity": OGF_showReceivedQty,
+        "Amount":  outGateFormList[OGF_index].amount,
+        "VehicleTypeId":  outGateFormList[OGF_index].vehicleTypeId,
+        "VehicleNumber": OGF_vehicleNumber,
+        "InwardLoadedVehicleWeight":  outGateFormList[OGF_index].inwardLoadedVehicleWeight,
+        "OutwardEmptyVehicleWeight": double.parse(OGF_emptyWeightofVehicle.text),
+        "IsActive":1
+      };
+
+      js.add(ma);
+      print(js);
+    }
+
     var body={
       "Fields": [
         {
@@ -248,19 +255,24 @@ class GoodsReceivedNotifier extends ChangeNotifier{
         },
 
         {
-          "Key": "PurchaseOrderId",
+          "Key": "IsVehicleIn",
           "Type": "int",
-          "Value": outGateFormList[OGF_index].purchaseOrderId
+          "Value": insertMappingList==null?0:1
         },
         {
           "Key": "GoodsReceivedId",
           "Type": "int",
-          "Value": outGateFormList[OGF_index].goodsReceivedId
+          "Value": insertMappingList==null?outGateFormList[OGF_index].goodsReceivedId:ML_GoodsorderId
+        },
+        {
+          "Key": "GoodsReceivedMaterialMappingId",
+          "Type": "int",
+          "Value": insertMappingList==null?outGateFormList[OGF_index].GoodsReceivedMaterialMappingId:null
         },
         {
           "Key": "GoodsReceivedMaterialMappingList",
           "Type": "datatable",
-          "Value": js
+          "Value": insertMappingList==null?js:insertMappingList
         },
         {
           "Key": "database",
@@ -278,8 +290,9 @@ class GoodsReceivedNotifier extends ChangeNotifier{
           GetGoodsDbHit(context, null,null);
           Navigator.pop(context);
           clearOGFform();
-          print(GoodsMaterialsListState().mounted);
-          //
+          IGF_clear();
+
+
         }
 
         updateGoodsLoader(false);
@@ -313,7 +326,7 @@ class GoodsReceivedNotifier extends ChangeNotifier{
   GoodsMaterialExtraTripModel GoodsMaterialExtraTripModelDetails;
 
   GetGoodsDbHit(BuildContext context,int goodsReceivedId,int purchaseOrderId)  async{
-    print("GREC__${goodsReceivedId} ${purchaseOrderId}");
+    print("GREC__${goodsReceivedId} ${purchaseOrderId} ${goodsReceivedId==0?null:goodsReceivedId}");
     updateGoodsLoader(true);
 
     var body={
@@ -331,7 +344,7 @@ class GoodsReceivedNotifier extends ChangeNotifier{
         {
           "Key": "GoodsReceivedId",
           "Type": "int",
-          "Value": goodsReceivedId
+          "Value": goodsReceivedId==0?null:goodsReceivedId
         },
         {
           "Key": "PurchaseOrderId",
@@ -347,17 +360,20 @@ class GoodsReceivedNotifier extends ChangeNotifier{
     };
 
     try{
+
       await call.ApiCallGetInvoke(body,context).then((value) {
         if(value!=null){
           var parsed=json.decode(value);
           var t=parsed['Table'] as List;
           if(goodsReceivedId!=null || purchaseOrderId!=null){
+            print(parsed);
             ML_PorderNo=t[0]['PurchaseOrderNumber'];
             ML_PorderId=t[0]['PurchaseOrderId'];
             ML_GoodsorderId=t[0]['GoodsReceivedId'];
             ML_Date=t[0]['Date'];
             print(ML_PorderNo);
             print(ML_PorderId);
+            print(ML_GoodsorderId);
             var t1=parsed['Table1'] as List;
             print(t1);
             ML_Materials=t1.map((e) => GoodsReceivedMaterialListModel.fromJson(e)).toList();

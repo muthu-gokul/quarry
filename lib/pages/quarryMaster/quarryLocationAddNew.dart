@@ -180,17 +180,25 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                            children: [
                              SizedBox(height: 160,),
                              GestureDetector(
-                               onVerticalDragDown: (v){
-                                 print(listViewController.offset);
-                               /* if(scrollController.offset==100 && listViewController.offset==0){
-                                   scrollController.animateTo(0, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
-                                 }*/
-                                 /*else*/
+                                  onVerticalDragUpdate: (details){
+                                        int sensitivity = 5;
+
+                                      if (details.delta.dy > sensitivity) {
+                                          scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+
+                                          } else if(details.delta.dy < -sensitivity){
+                                    scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+                                          }
+                                      },
+
+
+                              /* onVerticalDragDown: (v){
+
                                    if(scrollController.offset==0 && listViewController.offset==0){
                                       scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                      }
 
-                               },
+                               },*/
                                child: Container(
                                  height: SizeConfig.screenHeight-60,
                                  width: SizeConfig.screenWidth,

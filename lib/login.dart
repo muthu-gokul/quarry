@@ -19,6 +19,7 @@ import 'notifier/loginNotifier.dart';
 import 'pages/homePage.dart';
 import 'styles/app_theme.dart';
 import 'styles/size.dart';
+import 'styles/size.dart';
 import 'widgets/springButton.dart';
 
 
@@ -140,6 +141,8 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
 
 
    SizeConfig().init(context);
+   print(SizeConfig.screenHeight);
+   print(SizeConfig.screenWidth);
 
 
     return Scaffold(

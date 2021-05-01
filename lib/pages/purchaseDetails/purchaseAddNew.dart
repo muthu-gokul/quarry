@@ -1282,8 +1282,8 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                                                                                });
                                                                              },
                                                                              child: AnimatedContainer(
-                                                                                 height: SizeConfig.height70,
-                                                                                 width: SizeConfig.height70,
+                                                                                 height: SizeConfig.screenWidth*0.19,
+                                                                                 width: SizeConfig.screenWidth*0.19,
                                                                                  duration: Duration(milliseconds: 200),
                                                                                  curve: Curves.easeIn,
                                                                                  decoration: BoxDecoration(

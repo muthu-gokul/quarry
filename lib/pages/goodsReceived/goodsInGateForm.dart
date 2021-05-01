@@ -215,7 +215,7 @@ class GoodsInGateFormState extends State<GoodsInGateForm> with TickerProviderSta
               AnimatedPositioned(
                 duration: Duration(milliseconds: 100),
                 curve: Curves.easeIn,
-                bottom: _keyboardVisible?-80:0,
+                bottom: _keyboardVisible?-90:0,
                 child: Container(
                   width: SizeConfig.screenWidth,
                   height:70,
@@ -249,7 +249,20 @@ class GoodsInGateFormState extends State<GoodsInGateForm> with TickerProviderSta
                             CustomAlert().commonErrorAlert(context, "Enter Loaded Weight", "");
                           }
                           else{
-                            gr.InsertGoodsDbHit(context);
+                            if(gr.ML_GoodsorderId==0){
+                              gr.InsertGoodsDbHit(context);
+                            }
+                            else{
+                              List js=[];
+                              js=gr.IGF_Materials.map((e) => e.toJsonInWard(gr.selectedVehicleTypeId,
+                                  gr.vehicleNo.text,
+                                  double.parse(gr.loadedWeight.text))
+                              ).toList();
+                              print("Update-$js");
+                              gr.UpdateGoodsDbHit(context,js);
+                            }
+
+
                           }
 
 

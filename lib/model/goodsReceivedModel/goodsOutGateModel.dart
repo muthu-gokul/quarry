@@ -13,8 +13,10 @@ class GoodsOutGateModel {
     this.vehicleNumber,
     this.inwardLoadedVehicleWeight,
     this.outwardEmptyVehicleWeight,
+    this.GoodsReceivedMaterialMappingId,
   });
 
+  int GoodsReceivedMaterialMappingId;
   int goodsReceivedId;
   int purchaseOrderId;
   int purchaseOrderNumber;
@@ -30,6 +32,7 @@ class GoodsOutGateModel {
   double outwardEmptyVehicleWeight;
 
   factory GoodsOutGateModel.fromJson(Map<String, dynamic> json) => GoodsOutGateModel(
+    GoodsReceivedMaterialMappingId: json["GoodsReceivedMaterialMappingId"],
     goodsReceivedId: json["GoodsReceivedId"],
     purchaseOrderId: json["PurchaseOrderId"],
     purchaseOrderNumber: json["PurchaseOrderNumber"],

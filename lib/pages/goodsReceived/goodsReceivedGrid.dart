@@ -1,6 +1,9 @@
 
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/notifier/goodsReceivedNotifier.dart';
@@ -31,7 +34,7 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
   ScrollController scrollController;
   ScrollController listViewController;
 
-
+  bool isListScroll=false;
 
   @override
   void initState() {
@@ -44,15 +47,36 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
       setState(() {
 
       });
+      scrollController.addListener(() {
 
+        if(scrollController.offset==100){
+          setState(() {
+            isListScroll=true;
+          });
+        }
+        else{
+          if(isListScroll){
+            print("ISCROLL");
+            setState(() {
+              isListScroll=false;
+            });
+          }
+
+        }
+/*        print("isListScroll$isListScroll");*/
+      });
 
       listViewController.addListener(() {
-        if(listViewController.offset>20){
+        print(listViewController.position.userScrollDirection);
+        if(listViewController.offset==0){
+          scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+        }
+        /*if(listViewController.offset>20){
           scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
         }
         else if(listViewController.offset==0){
           scrollController.animateTo(0, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
-        }
+        }*/
       });
 
     });
@@ -101,108 +125,141 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
 
                 // color: Colors.transparent,
                 child: SingleChildScrollView(
+                  physics: NeverScrollableScrollPhysics(),
                   controller: scrollController,
                   child: Column(
                     children: [
                       SizedBox(height: 160,),
-                      Container(
-                        height: SizeConfig.screenHeight-60,
-                        width: SizeConfig.screenWidth,
-                        padding: EdgeInsets.only(top: 0,bottom: 80),
-                        decoration: BoxDecoration(
-                            color: AppTheme.gridbodyBgColor,
-                            borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10))
-                        ),
-                        child: SingleChildScrollView(
-                         physics: BouncingScrollPhysics(),
-                          controller: listViewController,
-                          child: Wrap(
-                              children: gr.goodsGridList.asMap()
-                                  .map((i, value) => MapEntry(i,
-                              GestureDetector(
-                                onTap: (){
-                                //  Navigator.push(context, _createRoute());
-                               /*   gr.GetplantDetailDbhit(context, gr.plantGridList[i].plantId);*/
+                      GestureDetector(
+                        onVerticalDragUpdate: (details){
+                          print("DFSfddsf");
+                          int sensitivity = 5;
 
-                                },
-                                child: Container(
-                                  margin: EdgeInsets.only(top: 10),
-                                  height: 200,
-                                 // height: SizeConfig.screenWidth*0.5,
-                                  width: SizeConfig.screenWidth*0.5,
-                                  color: AppTheme.gridbodyBgColor,
-                                  child: Center(
+                          if (details.delta.dy > sensitivity) {
+                            scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+
+                          } else if(details.delta.dy < -sensitivity){
+                            scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+                          }
+                        },
+                        child: Container(
+                          height: SizeConfig.screenHeight-60,
+                          width: SizeConfig.screenWidth,
+                          padding: EdgeInsets.only(top: 0,bottom: 80),
+                          decoration: BoxDecoration(
+                              color: AppTheme.gridbodyBgColor,
+                              borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10))
+                          ),
+                          child: NotificationListener<ScrollNotification>(
+                              onNotification: (s){
+                                if(s is ScrollStartNotification){
+                                  print(listViewController.hasListeners);
+                                  print(listViewController.position.userScrollDirection);
+                              //    print(listViewController.position);
+                                  if(listViewController.offset==0 && isListScroll && scrollController.offset==100 && listViewController.position.userScrollDirection==ScrollDirection.idle){
+                                    print("0");
+                                    Timer(Duration(milliseconds: 100), (){
+                                      if(listViewController.position.userScrollDirection!=ScrollDirection.reverse){
+                                        scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+                                      }
+                                    });
+
+
+                                  }
+                                }
+                              },
+                            child: SingleChildScrollView(
+                              physics: isListScroll?AlwaysScrollableScrollPhysics():NeverScrollableScrollPhysics(),
+                              controller: listViewController,
+                              child: Wrap(
+                                  children: gr.goodsGridList.asMap()
+                                      .map((i, value) => MapEntry(i,
+                                  GestureDetector(
+                                    onTap: (){
+                                    //  Navigator.push(context, _createRoute());
+                                   /*   gr.GetplantDetailDbhit(context, gr.plantGridList[i].plantId);*/
+
+                                    },
                                     child: Container(
-                                      height: 160,
-                                     // height: SizeConfig.screenWidth*0.4,
-                                      width: SizeConfig.screenWidth*0.4,
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(20),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: AppTheme.addNewTextFieldText.withOpacity(0.2),
-                                              spreadRadius: 2,
-                                              blurRadius: 15,
-                                              offset: Offset(0, 0), // changes position of shadow
-                                            )
-                                          ]
-                                      ),
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        children: [
-                                          Text("${value.purchaseOrderNumber}",
-                                          style: TextStyle(fontFamily: 'RM',color: AppTheme.bgColor,fontSize: 16),
+                                      margin: EdgeInsets.only(top: 10),
+                                      height: 200,
+                                     // height: SizeConfig.screenWidth*0.5,
+                                      width: SizeConfig.screenWidth*0.5,
+                                      color: AppTheme.gridbodyBgColor,
+                                      child: Center(
+                                        child: Container(
+                                          height: 160,
+                                         // height: SizeConfig.screenWidth*0.4,
+                                          width: SizeConfig.screenWidth*0.4,
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.circular(20),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: AppTheme.addNewTextFieldText.withOpacity(0.2),
+                                                  spreadRadius: 2,
+                                                  blurRadius: 15,
+                                                  offset: Offset(0, 0), // changes position of shadow
+                                                )
+                                              ]
                                           ),
-                                          SizedBox(height: 5,),
-                                          Text("${value.date}",
-                                            style: TextStyle(fontFamily: 'RR',color: AppTheme.gridTextColor.withOpacity(0.6),fontSize: 14),
-                                          ),
-                                          SizedBox(height: 5,),
-                                          Text("${value.status}",
-                                            style: TextStyle(fontFamily: 'RR',color: value.status=="Not Yet"? AppTheme.gridTextColor.withOpacity(0.6):AppTheme.red.withOpacity(0.6),fontSize: 14),
-                                          ),
-                                          SizedBox(height: 20,),
-                                          GestureDetector(
-                                            onTap: (){
-                                              gr.GoodsDropDownValues(context);
-                                              gr.GetGoodsDbHit(context, value.goodsReceivedId, value.purchaseOrderId);
-                                              Navigator.push(context, _createRoute());
-                                            },
-                                            child: Container(
-                                              height: 40,
-                                              width: SizeConfig.screenWidth*0.3,
-                                              decoration: BoxDecoration(
-                                                  borderRadius: BorderRadius.circular(25),
-                                                  color: AppTheme.yellowColor,
-                                                boxShadow: [
-                                              BoxShadow(
-                                              color: AppTheme.yellowColor.withOpacity(0.4),
-                                                spreadRadius: 1,
-                                                blurRadius: 5,
-                                                offset: Offset(1, 8),
-                                              )// changes position of shadow
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            children: [
+                                              Text("${value.purchaseOrderNumber}",
+                                              style: TextStyle(fontFamily: 'RM',color: AppTheme.bgColor,fontSize: 16),
+                                              ),
+                                              SizedBox(height: 5,),
+                                              Text("${value.date}",
+                                                style: TextStyle(fontFamily: 'RR',color: AppTheme.gridTextColor.withOpacity(0.6),fontSize: 14),
+                                              ),
+                                              SizedBox(height: 5,),
+                                              Text("${value.status}",
+                                                style: TextStyle(fontFamily: 'RR',color: value.status=="Not Yet"? AppTheme.gridTextColor.withOpacity(0.6):AppTheme.red.withOpacity(0.6),fontSize: 14),
+                                              ),
+                                              SizedBox(height: 20,),
+                                              GestureDetector(
+                                                onTap: (){
+                                                  gr.GoodsDropDownValues(context);
+                                                  gr.GetGoodsDbHit(context, value.goodsReceivedId, value.purchaseOrderId);
+                                                  Navigator.push(context, _createRoute());
+                                                },
+                                                child: Container(
+                                                  height: 40,
+                                                  width: SizeConfig.screenWidth*0.3,
+                                                  decoration: BoxDecoration(
+                                                      borderRadius: BorderRadius.circular(25),
+                                                      color: AppTheme.yellowColor,
+                                                    boxShadow: [
+                                                  BoxShadow(
+                                                  color: AppTheme.yellowColor.withOpacity(0.4),
+                                                    spreadRadius: 1,
+                                                    blurRadius: 5,
+                                                    offset: Offset(1, 8),
+                                                  )// changes position of shadow
 
-                                                ]
+                                                    ]
+                                                  ),
+                                                  child: Center(
+                                                    child: Text("View",style:TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 16),),
+                                                  ),
+                                                ),
                                               ),
-                                              child: Center(
-                                                child: Text("View",style:TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 16),),
-                                              ),
-                                            ),
+                                            ],
                                           ),
-                                        ],
+                                        ),
                                       ),
+
+
+
                                     ),
                                   ),
 
-
-
-                                ),
+                                  )
+                                  ).values.toList()
                               ),
-
-                              )
-                              ).values.toList()
+                            ),
                           ),
                         ),
                       )

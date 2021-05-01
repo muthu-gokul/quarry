@@ -841,6 +841,11 @@ class QuarryNotifier extends ChangeNotifier{
           "Value": 0.0
         },
         {
+          "Key": "DiscountedOutputQtyAmount",
+          "Type": "String",
+          "Value": 0.0
+        },
+        {
           "Key": "OutputMaterialQty",
           "Type": "String",
           "Value": 0.0
@@ -1648,7 +1653,7 @@ class QuarryNotifier extends ChangeNotifier{
   String SS_UpdateAmount;
   String msg="";
   String returnMoney="";
-
+  int SS_isMaterialReceived;
   Color returnColor;
 
   differWeight(){

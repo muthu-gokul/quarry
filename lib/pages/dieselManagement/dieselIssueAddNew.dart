@@ -328,7 +328,7 @@ class DieselIssueFormState extends State<DieselIssueForm> with TickerProviderSta
               AnimatedPositioned(
                 duration: Duration(milliseconds: 100),
                 curve: Curves.easeIn,
-                bottom: _keyboardVisible?-80:0,
+                bottom: _keyboardVisible?-90:0,
                 child: Container(
                   width: SizeConfig.screenWidth,
                   height:70,

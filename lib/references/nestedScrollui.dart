@@ -278,3 +278,10 @@ scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curv
 scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
 }
 },*/
+
+/*
+NotificationListener<ScrollNotification>(
+onNotification: (s){
+if(s is ScrollStartNotification){
+}
+},*/

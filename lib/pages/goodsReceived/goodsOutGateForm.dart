@@ -325,7 +325,7 @@ class GoodsOutGateFormState extends State<GoodsOutGateForm> with TickerProviderS
                             CustomAlert().commonErrorAlert(context, "Enter Empty Weight of Vehicle", "");
                           }
                           else{
-                            gr.UpdateGoodsDbHit(context);
+                            gr.UpdateGoodsDbHit(context,null);
                           }
 
 
