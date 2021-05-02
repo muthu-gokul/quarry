@@ -364,7 +364,7 @@ class GoodsReceivedNotifier extends ChangeNotifier{
     GINV_Materials.forEach((element) {
       if(element.status=='Not Yet'){
         GPO_Materials.add(element);
-        GPO_purchaseAmount=GPO_purchaseAmount+element.amount;
+        GPO_purchaseAmount=GPO_purchaseAmount+(element.amount);
       }
     });
     notifyListeners();

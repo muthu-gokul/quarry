@@ -285,3 +285,29 @@ onNotification: (s){
 if(s is ScrollStartNotification){
 }
 },*/
+
+
+
+/* Navigator.of(context).push(
+                                      PageRouteBuilder(
+                                        transitionDuration: Duration(milliseconds: 1000),
+                                        pageBuilder: (
+                                            BuildContext context,
+                                            Animation<double> animation,
+                                            Animation<double> secondaryAnimation) {
+                                          return SettingsPage();
+                                        },
+                                        transitionsBuilder: (
+                                            BuildContext context,
+                                            Animation<double> animation,
+                                            Animation<double> secondaryAnimation,
+                                            Widget child) {
+                                          return Align(
+                                            child: FadeTransition(
+                                              opacity: animation,
+                                              child: child,
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    );*/

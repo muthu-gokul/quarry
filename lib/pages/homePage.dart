@@ -11,6 +11,7 @@ import 'package:quarry/model/goodsReceivedModel/goodsReceivedGridModel.dart';
 import 'package:quarry/notifier/customerNotifier.dart';
 import 'package:quarry/notifier/dieselNotifier.dart';
 import 'package:quarry/notifier/goodsReceivedNotifier.dart';
+import 'package:quarry/notifier/invoiceNotifier.dart';
 import 'package:quarry/notifier/machineNotifier.dart';
 import 'package:quarry/notifier/materialNotifier.dart';
 import 'package:quarry/notifier/productionNotifier.dart';
@@ -20,6 +21,7 @@ import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/notifier/supplierNotifier.dart';
 import 'package:quarry/notifier/vehicleNotifier.dart';
 import 'package:quarry/pages/goodsReceived/goodsReceivedGrid.dart';
+import 'package:quarry/pages/invoice/invoiceGrid.dart';
 import 'package:quarry/pages/productionDetails/productionDetailsGrid.dart';
 import 'package:quarry/pages/purchaseDetails/purchaseGrid.dart';
 import 'package:quarry/pages/quarryMaster/quarryMaster.dart';
@@ -31,6 +33,7 @@ import 'package:quarry/pages/vendor/vendorMaster.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:quarry/widgets/animation/fadeanimation.dart';
 import 'package:quarry/widgets/reportpdf.dart';
 import '../styles/size.dart';
 import 'customerDetails/customerGrid.dart';
@@ -62,17 +65,16 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
   GlobalKey <ScaffoldState> scaffoldkey=new GlobalKey<ScaffoldState>();
   var inn;
 
-  int menuSelected;
 
 
+
+  bool isSettingsOpen=false;
 
 
   @override
   void initState() {
     SystemChrome.setEnabledSystemUIOverlays([]);
-    setState(() {
-      menuSelected=1;
-    });
+
 
     super.initState();
   }
@@ -82,329 +84,248 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
     SystemChrome.setEnabledSystemUIOverlays([]);
     inn=Provider.of<QuarryNotifier>(context,listen: false);
     SizeConfig().init(context);
-    return Scaffold(
+    return Consumer<DrawerNotifier>(
+      builder:(context,drawer,i)=> Scaffold(
+          key: scaffoldkey,
+          drawer: Container(
+            width: SizeConfig.screenWidth,
+            height: double.maxFinite,
+            child: Drawer(
 
-        endDrawerEnableOpenDragGesture: false,
-        key: scaffoldkey,
-        drawer: Container(
-          width: SizeConfig.screenWidth,
-          height: double.maxFinite,
-          child: Drawer(
+              child:Container(
+                color:Color(0xff3B3B3D),
 
-            child:Container(
-              color:Color(0xff3B3B3D),
-              child: Column(
-                children: [
-                  Container(
-                    width: double.infinity,
-                    // padding: EdgeInsets.all(10),
-                    // color:Color(0xff213141),
-                    child: Column(
-                      children: [
-                        Container(
-                          child: Row(
-                            children: [
-                              // Padding(
-                              //   padding: const EdgeInsets.all(8.0),
-                              //   child: Image.asset("assets/drawerImages/close-btn.png",width: 50,height: 50,),
-                              // ),
-                              SizedBox(width: SizeConfig.width20,),
-                              SvgPicture.asset("assets/images/slide-logo.svg",height: 50,width: 250,)
+                child: Column(
+                  children: [
+                    Container(
+                      width: double.infinity,
+                     height: 200,
+                      child: Column(
+                        children: [
+                          Container(
+                            child: Row(
+                              children: [
+                                // Padding(
+                                //   padding: const EdgeInsets.all(8.0),
+                                //   child: Image.asset("assets/drawerImages/close-btn.png",width: 50,height: 50,),
+                                // ),
+                                SizedBox(width: SizeConfig.width20,),
+                                SvgPicture.asset("assets/images/slide-logo.svg",height: 50,width: 250,)
 
-                            ],
+                              ],
+                            ),
+                            //  decoration: BoxDecoration
+                            //    shape: BoxShape.
+                            // ),
                           ),
-                          //  decoration: BoxDecoration
-                          //    shape: BoxShape.
-                          // ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
 
-                  Container(
-                    height: SizeConfig.screenHeight*0.93,
-                    child: Column(
-                      children: [
-                        Container(
-                          height: (SizeConfig.screenHeight*0.93)-80,
-                          child: ListView(
-                            children: [
-                              // RaisedButton(onPressed: (){
-                              //   reportView(context,'df');
-                              // }),
-                              DrawerContent(
-                                height: 50,
-                                image: "assets/drawerImages/dashboard.png",
-                                title: 'Company Detail',
-                                titleColor: AppTheme.yellowColor,
-                                callback: (){
-                                  Provider.of<QuarryNotifier>(context,listen: false).GetQuarryDetailDbhit(context);
-                                  Provider.of<QuarryNotifier>(context,listen: false).GetplantDetailDbhit(context,null);
-                                  setState(() {
-                                    menuSelected=1;
-                                    scaffoldkey.currentState.openEndDrawer();
-                                  });
-                                },
-                              ),
-                              DrawerContent(
-                                height: 50,
-                                image: "assets/drawerImages/dashboard.png",
-                                title: 'Sales Detail',
-                                titleColor: AppTheme.yellowColor,
-                                callback: (){
-                                /*  Provider.of<QuarryNotifier>(context,listen: false).initDropDownValues(context);
-                                  Provider.of<QuarryNotifier>(context,listen: false).GetCustomerDetailDbhit(context);
-                                  Provider.of<QuarryNotifier>(context,listen: false).GetSaleDetailDbhit(context);*/
-                                  setState(() {
-                                    menuSelected=4;
-                                    scaffoldkey.currentState.openEndDrawer();
-                                  });
-                                },
-                              ),
-                              DrawerContent(
-                                height: 50,
-                                image: "assets/drawerImages/dashboard.png",
-                                title: 'Customer Detail',
-                                titleColor: AppTheme.yellowColor,
-                                callback: (){
-                                  Provider.of<CustomerNotifier>(context,listen: false).GetCustomerDetailDbhit(context,null);
-                                  setState(() {
-                                    menuSelected=5;
-                                    scaffoldkey.currentState.openEndDrawer();
-                                  });
-                                },
-                              ),
-                              DrawerContent(
-                                height: 50,
-                                image: "assets/drawerImages/dashboard.png",
-                                title: 'Material Detail',
-                                titleColor: AppTheme.yellowColor,
-                                callback: (){
-                                  setState(() {
-                                    menuSelected=2;
-                                    scaffoldkey.currentState.openEndDrawer();
-                                  });
-                                  Provider.of<MaterialNotifier>(context,listen: false).GetMaterialDbHit(context,null);
-                                },
-                              ),
-                              DrawerContent(
-                                height: 50,
-                                image: "assets/drawerImages/dashboard.png",
-                                title: 'Machine Detail',
-                                titleColor: AppTheme.yellowColor,
-                                callback: (){
-                                  setState(() {
-                                    menuSelected=6;
-                                    Provider.of<MachineNotifier>(context,listen: false).GetMachineDbHit(context,null);
-                                    scaffoldkey.currentState.openEndDrawer();
-                                  });
-                                },
-                              ),
-                              DrawerContent(
-                                height: 50,
-                                image: "assets/drawerImages/dashboard.png",
-                                title: 'Vehicle Detail',
-                                titleColor: AppTheme.yellowColor,
-                                callback: (){
-                                  setState(() {
-                                    menuSelected=7;
-                                    Provider.of<VehicleNotifier>(context, listen: false).GetVehicleDbHit(context,null);
-                                    scaffoldkey.currentState.openEndDrawer();
-                                  });
-                                },
-                              ),
-                              DrawerContent(
-                                height: 50,
-                                image: "assets/drawerImages/dashboard.png",
-                                title: 'Supplier Detail',
-                                titleColor: AppTheme.yellowColor,
-                                callback: (){
-                                  setState(() {
-                                    menuSelected=8;
-                                    scaffoldkey.currentState.openEndDrawer();
-                                  });
-                                  Provider.of<SupplierNotifier>(context, listen: false).GetSupplierDbHit(context,null,this);
-                                },
-                              ),
-                              DrawerContent(
-                                height: 50,
-                                image: "assets/drawerImages/dashboard.png",
-                                title: 'Purchase Detail',
-                                titleColor: AppTheme.yellowColor,
-                                callback: (){
-                                  setState(() {
-                                    menuSelected=9;
-                                    scaffoldkey.currentState.openEndDrawer();
-                                  });
-                                  Provider.of<PurchaseNotifier>(context, listen: false).UserDropDownValues(context);
-                                  Provider.of<PurchaseNotifier>(context, listen: false).GetPurchaseDbHit(context,null);
+                    Container(
+                      height: SizeConfig.screenHeight-200,
+                      child: Column(
+                        children: [
+                          Container(
+                            height: (SizeConfig.screenHeight-200),
+                            child: ListView(
+                              children: [
 
-                                },
-                              ),
-                              DrawerContent(
-                                height: 50,
-                                image: "assets/drawerImages/dashboard.png",
-                                title: 'My Profile',
-                                titleColor: AppTheme.yellowColor,
-                                callback: (){
-                                  setState(() {
-                                    menuSelected=10;
-                                    scaffoldkey.currentState.openEndDrawer();
-                                  });
-                                  Provider.of<ProfileNotifier>(context, listen: false).GetUserDetailDbHit(context,Provider.of<QuarryNotifier>(context,listen: false).UserId);
-                                },
-                              ),
-                              DrawerContent(
-                                height: 50,
-                                image: "assets/drawerImages/dashboard.png",
-                                title: 'Goods Received',
-                                titleColor: AppTheme.yellowColor,
-                                callback: (){
-                                  setState(() {
-                                    menuSelected=11;
-                                    scaffoldkey.currentState.openEndDrawer();
-                                  });
-                                  Provider.of<GoodsReceivedNotifier>(context, listen: false).GetGoodsDbHit(context,null,null,false);
+                                DrawerContent(
+                                  delay: 0.1,
+                                  height: 50,
+                                  image: "assets/drawerImages/dashboard.png",
+                                  title: 'Purchase Detail',
+                                  tag: 'PurchaseDetail',
+                                  titleColor: AppTheme.yellowColor,
+                                  callback: (){
+                                    setState(() {
+                                      drawer.menuSelected=9;
+                                      scaffoldkey.currentState.openEndDrawer();
+                                    });
+                                    Provider.of<PurchaseNotifier>(context, listen: false).UserDropDownValues(context);
+                                    Provider.of<PurchaseNotifier>(context, listen: false).GetPurchaseDbHit(context,null);
 
-                                },
-                              ),
-                              DrawerContent(
-                                height: 50,
-                                image: "assets/drawerImages/dashboard.png",
-                                title: 'Production Detail',
-                                titleColor: AppTheme.yellowColor,
-                                callback: (){
-                                  setState(() {
-                                    menuSelected=12;
-                                    scaffoldkey.currentState.openEndDrawer();
-                                  });
-
-                                  Provider.of<ProductionNotifier>(context, listen: false).GetProductionDbHit(context,null,this);
-                                },
-                              ),
-                              DrawerContent(
-                                height: 50,
-                                image: "assets/drawerImages/dashboard.png",
-                                title: 'Diesel Management',
-                                titleColor: AppTheme.yellowColor,
-                                callback: (){
-                                  setState(() {
-                                    menuSelected=13;
-                                    scaffoldkey.currentState.openEndDrawer();
-                                  });
-                                  Provider.of<DieselNotifier>(context, listen: false).GetDieselPurchaseDbHit(context,null);
-
-                                },
-                              ),
-                              DrawerContent(
-                                height: 50,
-                                image: "assets/drawerImages/dashboard.png",
-                                title: 'Employee Group',
-                                titleColor: AppTheme.grey,
-                                // callback: (){
-                                //   setState(() {
-                                //     menuSelected=3;
-                                //     scaffoldkey.currentState.openEndDrawer();
-                                //   });
-                                // },
-                              ),
-                              DrawerContent(
-                                height: 50,
-                                image: "assets/drawerImages/dashboard.png",
-                                title: 'Reports',
-                                titleColor: AppTheme.grey,
-                                callback: (){
-                                   Navigator.push(context, MaterialPageRoute(builder: (context)=>InnerDrawer()));
                                   },
-                              ),
-                              DrawerContent(
-                                height: 50,
-                                image: "assets/drawerImages/dashboard.png",
-                                title: 'Settings',
-                                titleColor: AppTheme.grey,
-                                // callback: (){
-                                //   setState(() {
-                                //     menuSelected=3;
-                                //     scaffoldkey.currentState.openEndDrawer();
-                                //   });
-                                // },
-                              ),
-                              
-                              Container(
-                                height: 60,
-                                width: SizeConfig.screenWidth,
-                                child: Row(
-                                  children: [
-                                    Hero(
-                                      tag: "DemoTag",
-                                      child: Icon(
-                                        Icons.add,
-                                        size: 70.0,
-                                      ),
-                                    ),Spacer(),
-
-                                  ],
                                 ),
-                              )
+                                DrawerContent(
+                                  delay: 1,
+                                  height: 50,
+                                  image: "assets/drawerImages/dashboard.png",
+                                  title: 'My Profile',
+                                  tag: 'MyProfile',
+                                  titleColor: AppTheme.yellowColor,
+                                  callback: (){
+                                    setState(() {
+                                      drawer.menuSelected=10;
+                                      scaffoldkey.currentState.openEndDrawer();
+                                    });
+                                    Provider.of<ProfileNotifier>(context, listen: false).GetUserDetailDbHit(context,Provider.of<QuarryNotifier>(context,listen: false).UserId);
+                                  },
+                                ),
+                                DrawerContent(
+                                  delay: 1.5,
+                                  height: 50,
+                                  image: "assets/drawerImages/dashboard.png",
+                                  title: 'Goods Received',
+                                  tag: 'GoodsReceived',
+                                  titleColor: AppTheme.yellowColor,
+                                  callback: (){
+                                    setState(() {
+                                      drawer.menuSelected=11;
+                                      scaffoldkey.currentState.openEndDrawer();
+                                    });
+                                    Provider.of<GoodsReceivedNotifier>(context, listen: false).GetGoodsDbHit(context,null,null,false);
 
-                            ],
+                                  },
+                                ),
+                                DrawerContent(
+                                  delay: 2,
+                                  height: 50,
+                                  image: "assets/drawerImages/dashboard.png",
+                                  title: 'Production Detail',
+                                  tag: 'ProductionDetail',
+                                  titleColor: AppTheme.yellowColor,
+                                  callback: (){
+                                    setState(() {
+                                      drawer.menuSelected=12;
+                                      scaffoldkey.currentState.openEndDrawer();
+                                    });
+
+                                    Provider.of<ProductionNotifier>(context, listen: false).GetProductionDbHit(context,null,this);
+                                  },
+                                ),
+                                DrawerContent(
+                                  delay: 2.5,
+                                  height: 50,
+                                  image: "assets/drawerImages/dashboard.png",
+                                  title: 'Diesel Management',
+                                  tag: 'DieselManagement',
+                                  titleColor: AppTheme.yellowColor,
+                                  callback: (){
+                                    setState(() {
+                                      drawer.menuSelected=13;
+                                      scaffoldkey.currentState.openEndDrawer();
+                                    });
+                                    Provider.of<DieselNotifier>(context, listen: false).GetDieselPurchaseDbHit(context,null);
+
+                                  },
+                                ),
+                                DrawerContent(
+                                  delay: 3,
+                                  height: 50,
+                                  image: "assets/drawerImages/dashboard.png",
+                                  title: 'Invoice',
+                                  tag: 'Invoice',
+                                  titleColor: AppTheme.yellowColor,
+                                  callback: (){
+                                    setState(() {
+                                      drawer.menuSelected=14;
+                                      scaffoldkey.currentState.openEndDrawer();
+                                    });
+                                    Provider.of<InvoiceNotifier>(context, listen: false).GetInvoiceDbHit(context,null);
+                                  },
+                                ),
+                                DrawerContent(
+                                  delay: 3.5,
+                                  height: 50,
+                                  image: "assets/drawerImages/dashboard.png",
+                                  title: 'Reports',
+                                  tag: "Reports",
+                                  titleColor: AppTheme.grey,
+                                  callback: (){
+
+                                    },
+                                ),
+                                DrawerContent(
+                                  delay: 4,
+                                  height: 50,
+                                  image: "assets/drawerImages/dashboard.png",
+                                  title: 'Settings',
+                                  tag: "Settings",
+                                  titleColor: AppTheme.grey,
+                                  callback: (){
+                                     Navigator.push(context, MaterialPageRoute(builder: (context)=>SettingsPage(voidCallback: (){
+                                       scaffoldkey.currentState.openEndDrawer();
+                                     },)));
+                                  },
+
+                                ),
+
+                              ],
+                            ),
                           ),
-                        ),
 
 
 
 
 
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
-        ),
 
 
-        body: menuSelected==1?QuaryAddNew(drawerCallback: (){
-          scaffoldkey.currentState.openDrawer();
-        },):
-        menuSelected==2?MaterialDetailsGrid(drawerCallback: (){
-          scaffoldkey.currentState.openDrawer();
-        },):
-        menuSelected==3?VendorMaster(drawerCallback: (){
-          scaffoldkey.currentState.openDrawer();
-        },):
-        menuSelected==4?SaleGrid(drawerCallback: (){
-          scaffoldkey.currentState.openDrawer();
-        },):
-        menuSelected==5?CustomerMaster(drawerCallback: (){
-          scaffoldkey.currentState.openDrawer();
-        },):
-        menuSelected==6?MachineDetailsGrid(drawerCallback: (){
-          scaffoldkey.currentState.openDrawer();
-        },):
-        menuSelected==7?VehicleDetailsGrid(drawerCallback: (){
-          scaffoldkey.currentState.openDrawer();
-        },):
-        menuSelected==8?SupplierDetailsGrid(drawerCallback: (){
-          scaffoldkey.currentState.openDrawer();
-        },):
-        menuSelected==9?PurchaseDetailsGrid(drawerCallback: (){
-          scaffoldkey.currentState.openDrawer();
-        },):
-        menuSelected==10?ProfileScreen(drawerCallback: (){
-          scaffoldkey.currentState.openDrawer();
-        },):
-        menuSelected==11?GoodsReceivedGrid(drawerCallback: (){
-          scaffoldkey.currentState.openDrawer();
-        },):
-        menuSelected==12?ProductionGrid(drawerCallback: (){
-          scaffoldkey.currentState.openDrawer();
-        },):
-        menuSelected==13?DieselGrid(drawerCallback: (){
-          scaffoldkey.currentState.openDrawer();
-        },):
-        Container()
+          body: drawer.menuSelected==1?QuaryAddNew(drawerCallback: (){
+            scaffoldkey.currentState.openDrawer();
+          },):
+          drawer.menuSelected==2?MaterialDetailsGrid(drawerCallback: (){
+            scaffoldkey.currentState.openDrawer();
+          },):
+          drawer.menuSelected==3?VendorMaster(drawerCallback: (){
+            scaffoldkey.currentState.openDrawer();
+          },):
+          drawer.menuSelected==4?SaleGrid(drawerCallback: (){
+            scaffoldkey.currentState.openDrawer();
+          },):
+          drawer.menuSelected==5?CustomerMaster(drawerCallback: (){
+            scaffoldkey.currentState.openDrawer();
+          },):
+          drawer.menuSelected==6?MachineDetailsGrid(drawerCallback: (){
+            scaffoldkey.currentState.openDrawer();
+          },):
+          drawer.menuSelected==7?VehicleDetailsGrid(drawerCallback: (){
+            scaffoldkey.currentState.openDrawer();
+          },):
+          drawer.menuSelected==8?SupplierDetailsGrid(drawerCallback: (){
+            scaffoldkey.currentState.openDrawer();
+          },):
+          drawer.menuSelected==9?PurchaseDetailsGrid(drawerCallback: (){
+            scaffoldkey.currentState.openDrawer();
+          },):
+          drawer.menuSelected==10?ProfileScreen(drawerCallback: (){
+            scaffoldkey.currentState.openDrawer();
+          },):
+          drawer.menuSelected==11?GoodsReceivedGrid(drawerCallback: (){
+            scaffoldkey.currentState.openDrawer();
+          },):
+          drawer.menuSelected==12?ProductionGrid(drawerCallback: (){
+            scaffoldkey.currentState.openDrawer();
+          },):
+          drawer.menuSelected==13?DieselGrid(drawerCallback: (){
+            scaffoldkey.currentState.openDrawer();
+          },):
+          drawer.menuSelected==14?InvoiceGrid(drawerCallback: (){
+            scaffoldkey.currentState.openDrawer();
+          },):
+          Container()
+      ),
+    );
+  }
+  Route _createRoute() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => SettingsPage(),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+
+        return SlideTransition(
+          position: Tween<Offset>(begin: Offset(1.0,0.0), end: Offset.zero).animate(animation),
+          child: child,
+        );
+      },
     );
   }
 }
@@ -414,49 +335,202 @@ class DrawerContent extends StatelessWidget {
   VoidCallback callback;
   String image;
   String title;
+  String tag;
   double height;
   Color titleColor;
+  double delay;
 
-  DrawerContent({this.callback,this.title,this.image,this.height,this.titleColor});
+  DrawerContent({this.callback,this.title,this.image,this.height,this.titleColor,this.delay,this.tag});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: height,
-      width: double.maxFinite,
-      // decoration:BoxDecoration(
-      //   borderRadius: BorderRadius.circular(10),
-      //   color: Color(0xff213141),
-      // ) ,
-      padding: const EdgeInsets.only(left:10.0),
-      child: ListTile(
-          // leading: Image.asset(image,width: 25),
-          title: Text(title, style: TextStyle(fontSize: 16,color:titleColor, fontFamily:'RR'), ),
-          onTap: callback
+    return FadeAnimation(
+      delay, GestureDetector(
+      onTap: callback,
+        child: Container(
+          height: height,
+          width: SizeConfig.screenWidth,
+          alignment: Alignment.center,
+          child: Container(
+            width: 190,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Hero(
+
+                  tag: tag,
+                    child: SvgPicture.asset("assets/svg/settings-icon.svg",width: 30)),
+                SizedBox(width: 10,),
+                Text(title, style: TextStyle(fontSize: 16,color:titleColor, fontFamily:'RR'),),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
 }
 
 
-
-class InnerDrawer extends StatefulWidget {
-  @override
-  _InnerDrawerState createState() => _InnerDrawerState();
+class DrawerNotifier extends ChangeNotifier{
+  int menuSelected=1;
+  changeMenu(int index){
+    menuSelected=index;
+    notifyListeners();
+  }
 }
 
-class _InnerDrawerState extends State<InnerDrawer> {
+
+class SettingsPage extends StatefulWidget {
+
+  VoidCallback voidCallback;
+  SettingsPage({this.voidCallback});
+
+  @override
+  SettingsPageState createState() => SettingsPageState();
+}
+
+class SettingsPageState extends State<SettingsPage> with TickerProviderStateMixin{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       body: Container(
-        height: 100,
-        child:  Hero(
-          tag: "DemoTag",
-          child: Icon(
-            Icons.clean_hands,
-            size: 70.0,
-          ),
+        height: SizeConfig.screenHeight,
+        width: SizeConfig.screenWidth,
+        color: AppTheme.bgColor,
+        child:  Column(
+          children: [
+
+            Align(
+              alignment: Alignment.centerRight,
+              child: IconButton(icon: Icon(Icons.clear_outlined,size: 25,color: AppTheme.yellowColor,),
+                  onPressed: (){
+                     Navigator.pop(context);
+                  }),
+            ),
+
+            Hero(
+              transitionOnUserGestures: true,
+              tag: "Settings",
+              child:SvgPicture.asset("assets/svg/settings-icon.svg",width: 100,height: 100,),
+            ),
+
+            DrawerContent(
+              delay: 0.1,
+              height: 50,
+              image: "assets/drawerImages/dashboard.png",
+              title: 'Company Detail',
+              tag: 'Company',
+              titleColor: AppTheme.yellowColor,
+              callback: (){
+                Navigator.pop(context);
+                widget.voidCallback();
+
+                  Provider.of<DrawerNotifier>(context,listen: false).changeMenu(1);
+                  Provider.of<QuarryNotifier>(context,listen: false).GetQuarryDetailDbhit(context);
+                  Provider.of<QuarryNotifier>(context,listen: false).GetplantDetailDbhit(context,null);
+              },
+            ),
+
+            DrawerContent(
+              delay:1,
+              height: 50,
+              image: "assets/drawerImages/dashboard.png",
+              title: 'Sales Detail',
+              tag: 'SaleDetail',
+              titleColor: AppTheme.yellowColor,
+              callback: (){
+                Navigator.pop(context);
+                widget.voidCallback();
+                Provider.of<DrawerNotifier>(context,listen: false).changeMenu(4);
+
+                  Provider.of<QuarryNotifier>(context,listen: false).initDropDownValues(context);
+                  Provider.of<QuarryNotifier>(context,listen: false).GetCustomerDetailDbhit(context);
+                  Provider.of<QuarryNotifier>(context,listen: false).GetSaleDetailDbhit(context);
+              },
+            ),
+
+            DrawerContent(
+              delay: 1.5,
+              height: 50,
+              image: "assets/drawerImages/dashboard.png",
+              title: 'Customer Detail',
+              tag: 'CustomeDetail',
+              titleColor: AppTheme.yellowColor,
+              callback: (){
+                Navigator.pop(context);
+                widget.voidCallback();
+                Provider.of<DrawerNotifier>(context,listen: false).changeMenu(5);
+
+                Provider.of<CustomerNotifier>(context,listen: false).GetCustomerDetailDbhit(context,null);
+
+              },
+            ),
+
+            DrawerContent(
+              delay: 2,
+              height: 50,
+              image: "assets/drawerImages/dashboard.png",
+              title: 'Material Detail',
+              tag: 'Material',
+              titleColor: AppTheme.yellowColor,
+              callback: (){
+                Navigator.pop(context);
+                widget.voidCallback();
+                Provider.of<DrawerNotifier>(context,listen: false).changeMenu(2);
+
+                Provider.of<MaterialNotifier>(context,listen: false).GetMaterialDbHit(context,null);
+              },
+            ),
+            DrawerContent(
+              delay: 2.5,
+              height: 50,
+              image: "assets/drawerImages/dashboard.png",
+              title: 'Machine Detail',
+              tag: 'Machine',
+              titleColor: AppTheme.yellowColor,
+              callback: (){
+                Navigator.pop(context);
+                widget.voidCallback();
+                Provider.of<DrawerNotifier>(context,listen: false).changeMenu(6);
+
+                Provider.of<MachineNotifier>(context,listen: false).GetMachineDbHit(context,null);
+
+              },
+            ),
+            DrawerContent(
+              delay: 3,
+              height: 50,
+              image: "assets/drawerImages/dashboard.png",
+              title: 'Vehicle Detail',
+              tag: 'Vehicle',
+              titleColor: AppTheme.yellowColor,
+              callback: (){
+                Navigator.pop(context);
+                widget.voidCallback();
+                Provider.of<DrawerNotifier>(context,listen: false).changeMenu(7);
+
+                Provider.of<VehicleNotifier>(context, listen: false).GetVehicleDbHit(context,null);
+
+              },
+            ),
+            DrawerContent(
+              delay: 3.5,
+              height: 50,
+              image: "assets/drawerImages/dashboard.png",
+              title: 'Supplier Detail',
+              tag: 'Supplier',
+              titleColor: AppTheme.yellowColor,
+              callback: (){
+                Navigator.pop(context);
+                widget.voidCallback();
+                Provider.of<DrawerNotifier>(context,listen: false).changeMenu(8);
+
+               Provider.of<SupplierNotifier>(context, listen: false).GetSupplierDbHit(context,null,this);
+              },
+            ),
+          ],
         ),
       ),
 

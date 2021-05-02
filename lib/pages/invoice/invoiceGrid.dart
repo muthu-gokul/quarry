@@ -4,9 +4,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:quarry/notifier/invoiceNotifier.dart';
 import 'package:quarry/notifier/productionNotifier.dart';
 import 'package:quarry/notifier/purchaseNotifier.dart';
 import 'package:quarry/notifier/supplierNotifier.dart';
+import 'package:quarry/pages/invoice/invoiceAddnew.dart';
 import 'package:quarry/pages/productionDetails/productionDetailsAddNew.dart';
 import 'package:quarry/pages/purchaseDetails/purchaseAddNew.dart';
 import 'package:quarry/pages/sale/saleGrid.dart';
@@ -17,14 +19,14 @@ import 'package:quarry/styles/size.dart';
 
 
 
-class ProductionGrid extends StatefulWidget {
+class InvoiceGrid extends StatefulWidget {
   VoidCallback drawerCallback;
-  ProductionGrid({this.drawerCallback});
+  InvoiceGrid({this.drawerCallback});
   @override
-  ProductionGridState createState() => ProductionGridState();
+  InvoiceGridState createState() => InvoiceGridState();
 }
 
-class ProductionGridState extends State<ProductionGrid> with TickerProviderStateMixin{
+class InvoiceGridState extends State<InvoiceGrid> with TickerProviderStateMixin{
 
   bool showEdit=false;
   int selectedIndex;
@@ -85,8 +87,8 @@ class ProductionGridState extends State<ProductionGrid> with TickerProviderState
             statusBarColor: Colors.black
         ),
         child: SafeArea(
-          child: Consumer<ProductionNotifier>(
-            builder: (context,pn,child)=>  Stack(
+          child: Consumer<InvoiceNotifier>(
+            builder: (context,inv,child)=>  Stack(
               children: [
                 Container(
                   height: 50,
@@ -96,7 +98,7 @@ class ProductionGridState extends State<ProductionGrid> with TickerProviderState
                     children: [
                       IconButton(icon: Icon(Icons.menu), onPressed: widget.drawerCallback),
                       SizedBox(width: SizeConfig.width20,),
-                      Text("Production",
+                      Text("Invoice",
                         style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize:16),
                       ),
 
@@ -107,40 +109,40 @@ class ProductionGridState extends State<ProductionGrid> with TickerProviderState
 
 
                 Container(
-                  margin: EdgeInsets.only(top: 50),
+                    margin: EdgeInsets.only(top: 50),
                     padding: EdgeInsets.only(left:5,bottom:25),
                     color: AppTheme.yellowColor,
                     height: 110,
                     alignment: Alignment.topCenter,
 
-                    child:SingleChildScrollView(
+                    /*child:SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Row(
-                      
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: pn.gridOverAllHeader.asMap().
-                          map((i, value) => MapEntry(i,
-                            Container(
-                              height: SizeConfig.height80,
-                             width: SizeConfig.screenWidth*0.3,
-                              margin: EdgeInsets.only(right: SizeConfig.width10),
 
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                  color: AppTheme.bgColor
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      Text(value.materialName,style: TextStyle(fontFamily: 'RR',fontSize: 16,color: Colors.white,letterSpacing: 0.1),),
-                                      SizedBox(height: 5,),
-                                      Text( '${value.totalQuantity}',style: TextStyle(fontFamily: 'RR',fontSize: 20,color: AppTheme.yellowColor),),
-                                      /*RichText(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: inv.gridOverAllHeader.asMap().
+                          map((i, value) => MapEntry(i,
+                              Container(
+                                height: SizeConfig.height80,
+                                width: SizeConfig.screenWidth*0.3,
+                                margin: EdgeInsets.only(right: SizeConfig.width10),
+
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: AppTheme.bgColor
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        Text(value.materialName,style: TextStyle(fontFamily: 'RR',fontSize: 16,color: Colors.white,letterSpacing: 0.1),),
+                                        SizedBox(height: 5,),
+                                        Text( '${value.totalQuantity}',style: TextStyle(fontFamily: 'RR',fontSize: 20,color: AppTheme.yellowColor),),
+                                        *//*RichText(
                                         text: TextSpan(
                                           text: '${value.totalQuantity}',
                                           style: TextStyle(fontFamily: 'RM',fontSize: 20,color: AppTheme.yellowColor),
@@ -148,41 +150,35 @@ class ProductionGridState extends State<ProductionGrid> with TickerProviderState
                                            // TextSpan(text: '${value.unitName}', style: TextStyle(fontFamily: 'RR',fontSize: 11,color: AppTheme.addNewTextFieldBorder)),
                                           ],
                                         ),
-                                      ),*/
-                                    ],
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(bottom: SizeConfig.height18),
-                                    child: Text(' ${value.unitName}',
-                                        style: TextStyle(fontFamily: 'RR',fontSize: 10,color: AppTheme.addNewTextFieldBorder)
+                                      ),*//*
+                                      ],
                                     ),
-                                  )
-                                ],
+                                    Padding(
+                                      padding: EdgeInsets.only(bottom: SizeConfig.height18),
+                                      child: Text(' ${value.unitName}',
+                                          style: TextStyle(fontFamily: 'RR',fontSize: 10,color: AppTheme.addNewTextFieldBorder)
+                                      ),
+                                    )
+                                  ],
 
-                              ),
-                            )
-                        )
-                        ).values.toList()
+                                ),
+                              )
+                          )
+                          ).values.toList()
                       ),
-                    )
+                    )*/
                 ),
 
                 Container(
                     height: SizeConfig.screenHeight-140,
                     width: SizeConfig.screenWidth,
                     margin: EdgeInsets.only(top: 140),
-                     clipBehavior: Clip.antiAlias,
+
+
+                    clipBehavior: Clip.antiAlias,
                     decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10))
-                      /*  boxShadow: [
-                          BoxShadow(
-                            color: AppTheme.addNewTextFieldText.withOpacity(0.9),
-                            spreadRadius: 2,
-                            blurRadius: 15,
-                            offset: Offset(30, 0), // changes position of shadow
-                          )
-                        ]*/
+                        color: AppTheme.gridbodyBgColor,
+                        borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10))
                     ),
                     child: Stack(
                       children: [
@@ -201,7 +197,7 @@ class ProductionGridState extends State<ProductionGrid> with TickerProviderState
                                   controller: header,
                                   scrollDirection: Axis.horizontal,
                                   child: Row(
-                                      children: pn.productionGridCol.asMap().
+                                      children: inv.invoiceGridCol.asMap().
                                       map((i, value) => MapEntry(i, i==0?Container():
                                       Container(
                                           alignment: Alignment.center,
@@ -218,19 +214,20 @@ class ProductionGridState extends State<ProductionGrid> with TickerProviderState
                                 height: SizeConfig.screenHeight-260,
                                 width: SizeConfig.screenWidth-150,
                                 alignment: Alignment.topCenter,
-                                color: Colors.white,
+
+                                color: AppTheme.gridbodyBgColor,
                                 child: SingleChildScrollView(
                                   controller: body,
                                   scrollDirection: Axis.horizontal,
                                   child: Container(
                                     height: SizeConfig.screenHeight-260,
                                     alignment: Alignment.topCenter,
-                                    color: Colors.white,
+                                    color: AppTheme.gridbodyBgColor,
                                     child: SingleChildScrollView(
                                       controller: verticalRight,
                                       scrollDirection: Axis.vertical,
                                       child: Column(
-                                          children:pn.productionGridValues.asMap().
+                                          children:inv.invoiceGridList.asMap().
                                           map((i, value) => MapEntry(
                                               i,InkWell(
                                             onTap: (){
@@ -251,36 +248,16 @@ class ProductionGridState extends State<ProductionGrid> with TickerProviderState
 
                                               decoration: BoxDecoration(
                                                 color: selectedIndex==i?AppTheme.yellowColor:AppTheme.gridbodyBgColor,
-                                            /*    boxShadow:[
-                                                  selectedIndex==i? BoxShadow(
-                                                    color: AppTheme.yellowColor.withOpacity(0.4),
-                                                    spreadRadius: 1,
-                                                    blurRadius: 5,
-                                                    offset: Offset(1, 8), // changes position of shadow
-                                                  ):BoxShadow(
-                                                      color: Colors.white
-                                                  ),
-                                                ],*/
                                               ),
-                                             height: 60,
-                                             // padding: EdgeInsets.only(top: 20,bottom: 20),
+                                              height: 60,
                                               child: Row(
                                                 children: [
 
 
                                                   Container(
                                                     alignment: Alignment.center,
-                                                    // padding: EdgeInsets.only(left: 20,right: 20),
                                                     width: 150,
-                                                    child: Text("${value.inputMaterialName}",
-                                                      style:selectedIndex==i?AppTheme.bgColorTS:AppTheme.gridTextColorTS,
-                                                    ),
-
-                                                  ),
-                                                  Container(
-                                                    alignment: Alignment.center,
-                                                    width: 150,
-                                                    child: Text("${value.inputMaterialQuantity}",
+                                                    child: Text("${value.invoiceType}",
                                                       style:selectedIndex==i?AppTheme.bgColorTS:AppTheme.gridTextColorTS,
                                                     ),
                                                   ),
@@ -288,12 +265,24 @@ class ProductionGridState extends State<ProductionGrid> with TickerProviderState
                                                   Container(
                                                     width: 150,
                                                     alignment: Alignment.center,
-                                                    child: Text("${value.outputMaterialCount}",
+                                                    child: Text("${DateFormat.yMMMd().format(value.invoiceDate)}",
                                                       style:selectedIndex==i?AppTheme.bgColorTS:AppTheme.gridTextColorTS,
                                                     ),
                                                   ),
-
-
+                                                  Container(
+                                                    alignment: Alignment.center,
+                                                    width: 150,
+                                                    child: Text("${value.partyName}",
+                                                      style:selectedIndex==i?AppTheme.bgColorTS:AppTheme.gridTextColorTS,
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    alignment: Alignment.center,
+                                                    width: 150,
+                                                    child: Text("${value.grandTotalAmount}",
+                                                      style:selectedIndex==i?AppTheme.bgColorTS:AppTheme.gridTextColorTS,
+                                                    ),
+                                                  ),
                                                 ],
                                               ),
                                             ),
@@ -307,6 +296,7 @@ class ProductionGridState extends State<ProductionGrid> with TickerProviderState
                                   ),
                                 ),
                               ),
+                              SizedBox(height: 30,),
                             ],
                           ),
                         ),
@@ -323,16 +313,16 @@ class ProductionGridState extends State<ProductionGrid> with TickerProviderState
                                 width: 150,
                                 color: AppTheme.bgColor,
                                 alignment: Alignment.center,
-                                child: Text("${pn.productionGridCol[0]}",style: AppTheme.TSWhite166,),
+                                child: Text("${inv.invoiceGridCol[0]}",style: AppTheme.TSWhite166,),
 
                               ),
                               Container(
                                 height: SizeConfig.screenHeight-260,
                                 alignment: Alignment.topCenter,
                                 decoration: BoxDecoration(
-                                    color: Colors.white,
+                                    color: AppTheme.gridbodyBgColor,
                                     boxShadow: [
-                                    showShadow?  BoxShadow(
+                                      showShadow?  BoxShadow(
                                         color: AppTheme.addNewTextFieldText.withOpacity(0.3),
                                         spreadRadius: 0,
                                         blurRadius: 15,
@@ -348,7 +338,7 @@ class ProductionGridState extends State<ProductionGrid> with TickerProviderState
                                     controller: verticalLeft,
                                     scrollDirection: Axis.vertical,
                                     child: Column(
-                                        children: pn.productionGridValues.asMap().
+                                        children: inv.invoiceGridList.asMap().
                                         map((i, value) => MapEntry(
                                             i,InkWell(
                                           onTap: (){
@@ -371,7 +361,7 @@ class ProductionGridState extends State<ProductionGrid> with TickerProviderState
                                               color: selectedIndex==i?AppTheme.yellowColor:AppTheme.gridbodyBgColor,
 
                                               boxShadow:[
-                                            /*    selectedIndex==i? BoxShadow(
+                                                /*    selectedIndex==i? BoxShadow(
                                                   color: AppTheme.yellowColor.withOpacity(0.4),
                                                   spreadRadius: 2,
                                                   blurRadius: 5,
@@ -381,10 +371,10 @@ class ProductionGridState extends State<ProductionGrid> with TickerProviderState
                                                 ),*/
                                               ],
                                             ),
-                                          height: 60,
-                                          //  padding: EdgeInsets.only(left: 20,right: 20,bottom: 20,top: 20),
+                                            height: 60,
+                                            //  padding: EdgeInsets.only(left: 20,right: 20,bottom: 20,top: 20),
                                             width: 150,
-                                            child: Text("${value.machineName}",
+                                            child: Text("${value.invoiceNumber}",
                                               style:selectedIndex==i?AppTheme.bgColorTS:AppTheme.gridTextColorTS,
                                             ),
                                           ),
@@ -399,6 +389,7 @@ class ProductionGridState extends State<ProductionGrid> with TickerProviderState
 
                                 ),
                               ),
+                              SizedBox(height: 30,),
                             ],
                           ),
                         ),
@@ -441,19 +432,12 @@ class ProductionGridState extends State<ProductionGrid> with TickerProviderState
                       children: [
                         Container(
                           decoration: BoxDecoration(
-                         /*     boxShadow: [
-                                BoxShadow(
-                                  color: Colors.white.withOpacity(0.7),
-                                  spreadRadius: 2,
-                                  blurRadius: 15,
-                                  offset: Offset(0, -20), // changes position of shadow
-                                )
-                              ]*/
+
                           ),
                           margin:EdgeInsets.only(top: 0),
                           child: CustomPaint(
                             size: Size( SizeConfig.screenWidth, 65),
-                          //  painter: RPSCustomPainter(),
+                            //  painter: RPSCustomPainter(),
                             painter: RPSCustomPainter3(),
                           ),
                         ),
@@ -462,13 +446,15 @@ class ProductionGridState extends State<ProductionGrid> with TickerProviderState
                           child: GestureDetector(
                             behavior: HitTestBehavior.translucent,
                             onTap: (){
-
-                            /*  pn.updatePurchaseEdit(false);
-                              pn.PurchaseDropDownValues(context);
-                              pn.insertForm();*/
-                              pn.updateProductionEdit(false);
-                              pn.ProductionDropDownValues(context);
+                              inv.insertForm();
                               Navigator.of(context).push(_createRoute());
+                              inv.updateInvoiceEdit(false);
+                              inv.PlantUserDropDownValues(context).then((value){
+                                inv.InvoiceDropDownValues(context);
+                              });
+
+
+
 
 
 
@@ -503,86 +489,91 @@ class ProductionGridState extends State<ProductionGrid> with TickerProviderState
 
                             children: [
 
-                               AnimatedPositioned(
-                                 bottom:showEdit?15:-60,
-                                 duration: Duration(milliseconds: 300,),
-                                 curve: Curves.bounceInOut,
-                                 child: Container(
+                              AnimatedPositioned(
+                                bottom:showEdit?15:-60,
+                                duration: Duration(milliseconds: 300,),
+                                curve: Curves.bounceInOut,
+                                child: Container(
 
-                                   width: SizeConfig.screenWidth,
-                                   child: Row(
-                                     crossAxisAlignment: CrossAxisAlignment.center,
-                                     children: [
-                                       SizedBox(width: SizeConfig.width20,),
-                                       GestureDetector(
-                                         onTap: (){
-                                           pn.ProductionDropDownValues(context);
-                                           pn.GetProductionDbHit(context, pn.productionGridValues[selectedIndex].productionId, ProductionDetailAddNewState());
-                                           pn.updateProductionEdit(true);
-                                           Navigator.push(context, _createRoute());
-                                           setState(() {
-                                             selectedIndex=-1;
-                                             showEdit=false;
-                                           });
+                                    width: SizeConfig.screenWidth,
+                                    child: Row(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        SizedBox(width: SizeConfig.width20,),
+                                        GestureDetector(
+                                          onTap: (){
+                                            inv.insertForm();
+                                            inv.updateInvoiceEdit(true);
+                                            inv.PlantUserDropDownValues(context).then((value) {
+                                              inv.GetInvoiceDbHit(context, inv.invoiceGridList[selectedIndex].invoiceId);
+                                              Navigator.push(context, _createRoute());
+                                              setState(() {
+                                                selectedIndex=-1;
+                                                showEdit=false;
+                                              });
 
-                                         },
-                                         child: Container(
-                                           width: 70,
-                                           decoration: BoxDecoration(
-                                               boxShadow: [
-                                                 BoxShadow(
-                                                   color: AppTheme.yellowColor.withOpacity(0.7),
-                                                   spreadRadius: -3,
-                                                   blurRadius: 15,
-                                                   offset: Offset(0, 7), // changes position of shadow
-                                                 )
-                                               ]
-                                           ),
-                                           child:FittedBox(
-                                             child: Row(
-                                               children: [
-                                                 SvgPicture.asset("assets/svg/edit.svg",height: 20,width: 20,color: AppTheme.yellowColor,),
-                                                 SizedBox(width: SizeConfig.width10,),
-                                                 Text("Edit",style: TextStyle(fontSize: 20,fontFamily: 'RR',color:Color(0xFFFF9D10)),),
-
-
-                                               ],
-                                             ),
-                                           ),
-                                         ),
-                                       ),
-                                       Spacer(),
-                                       Container(
-                                         width: 90,
-                                         decoration: BoxDecoration(
-                                             boxShadow: [
-                                               BoxShadow(
-                                                 color: AppTheme.red.withOpacity(0.5),
-                                                 spreadRadius: -3,
-                                                 blurRadius: 25,
-                                                 offset: Offset(0, 7), // changes position of shadow
-                                               )
-                                             ]
-                                         ),
-                                         child:FittedBox(
-                                           child: Row(
-                                             children: [
-                                               Text("Delete",style: TextStyle(fontSize: 18,fontFamily: 'RR',color:Colors.red),),
-                                               SizedBox(width: SizeConfig.width10,),
-                                               SvgPicture.asset("assets/svg/delete.svg",height: 20,width: 20,color: AppTheme.red,),
+                                            });
 
 
 
+                                          },
+                                          child: Container(
+                                            width: 70,
+                                            decoration: BoxDecoration(
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: AppTheme.yellowColor.withOpacity(0.7),
+                                                    spreadRadius: -3,
+                                                    blurRadius: 15,
+                                                    offset: Offset(0, 7), // changes position of shadow
+                                                  )
+                                                ]
+                                            ),
+                                            child:FittedBox(
+                                              child: Row(
+                                                children: [
+                                                  SvgPicture.asset("assets/svg/edit.svg",height: 20,width: 20,color: AppTheme.yellowColor,),
+                                                  SizedBox(width: SizeConfig.width10,),
+                                                  Text("Edit",style: TextStyle(fontSize: 20,fontFamily: 'RR',color:Color(0xFFFF9D10)),),
 
-                                             ],
-                                           ),
-                                         ),
-                                       ),
-                                       SizedBox(width: SizeConfig.width10,),
-                                     ],
-                                   )
-                                 ),
-                               )
+
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        Spacer(),
+                                        Container(
+                                          width: 90,
+                                          decoration: BoxDecoration(
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: AppTheme.red.withOpacity(0.5),
+                                                  spreadRadius: -3,
+                                                  blurRadius: 25,
+                                                  offset: Offset(0, 7), // changes position of shadow
+                                                )
+                                              ]
+                                          ),
+                                          child:FittedBox(
+                                            child: Row(
+                                              children: [
+                                                Text("Delete",style: TextStyle(fontSize: 18,fontFamily: 'RR',color:Colors.red),),
+                                                SizedBox(width: SizeConfig.width10,),
+                                                SvgPicture.asset("assets/svg/delete.svg",height: 20,width: 20,color: AppTheme.red,),
+
+
+
+
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(width: SizeConfig.width10,),
+                                      ],
+                                    )
+                                ),
+                              )
 
                             ],
                           ),
@@ -592,95 +583,12 @@ class ProductionGridState extends State<ProductionGrid> with TickerProviderState
                   ),
                 ),
 
-                //Edit Or Delete
-               /* AnimatedPositioned(
-                    bottom:showEdit? 0:-80,
-                    child: Container(
-                      height: 80,
-                      width: SizeConfig.screenWidth,
-                      color: AppTheme.bgColor,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          GestureDetector(
-                            onTap: (){
-                              pn.insertForm();
-                              Navigator.of(context).push(_createRoute());
-                              pn.updatePurchaseEdit(true);
-                              pn.PurchaseDropDownValues(context).then((value) {
-                                pn.GetPurchaseDbHit(context, pn.purchaseGridList[selectedIndex].purchaseOrderId);
-                                setState(() {
-                                  showEdit=false;
-                                  selectedIndex=-1;
-                                });
-                              });
-
-
-                            },
-                            child: Container(
-                              height: 50,
-                              width: SizeConfig.width150,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(25),
-                                  color: AppTheme.indicatorColor
-                              ),
-                              child: Center(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    SvgPicture.asset("assets/svg/edit.svg",height: 20,width: 20,color: AppTheme.yellowColor,),
-                                    SizedBox(width: SizeConfig.width10,),
-                                    Text("Edit",style: TextStyle(fontSize: 20,fontFamily: 'RR',color: Colors.white),),
-
-
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: (){
-
-                              setState(() {
-                                showEdit=false;
-                                selectedIndex=-1;
-                              });
-
-                            },
-                            child: Container(
-                              height: 50,
-                              width: SizeConfig.width150,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(25),
-                                  color: AppTheme.indicatorColor.withOpacity(0.5)
-                              ),
-                              child: Center(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text("Delete",style: TextStyle(fontSize: 20,fontFamily: 'RR',color: Colors.white.withOpacity(0.5)),),
-                                    SizedBox(width: SizeConfig.width10,),
-                                    SvgPicture.asset("assets/svg/delete.svg",height: 20,width: 20,color: AppTheme.yellowColor.withOpacity(0.5),),
-
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    curve: Curves.bounceOut,
-
-
-                    duration: Duration(milliseconds:300)
-                ),*/
 
 
                 Container(
 
-                  height: pn.ProductionLoader? SizeConfig.screenHeight:0,
-                  width: pn.ProductionLoader? SizeConfig.screenWidth:0,
+                  height: inv.InvoiceLoader? SizeConfig.screenHeight:0,
+                  width: inv.InvoiceLoader? SizeConfig.screenWidth:0,
                   color: Colors.black.withOpacity(0.5),
                   child: Center(
                     child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(AppTheme.yellowColor),),
@@ -698,7 +606,7 @@ class ProductionGridState extends State<ProductionGrid> with TickerProviderState
 
   Route _createRoute() {
     return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => ProductionDetailAddNew(),
+      pageBuilder: (context, animation, secondaryAnimation) => InvoiceOrdersAddNew(),
 
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
 

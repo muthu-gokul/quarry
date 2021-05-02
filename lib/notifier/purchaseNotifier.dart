@@ -501,16 +501,7 @@ class PurchaseNotifier extends ChangeNotifier{
               filterMaterialsList=materialsList.where((element) => element.SupplierType=='Internal').toList();
             }
 
-        /*
-            if(supplierType=='External'){
-              filterMaterialsList=materialsList.where((element) => element.supplierId==supplierId && element.SupplierType=='External' ).toList();
-            }
-            else{
-              filterMaterialsList=materialsList.where((element) => element.supplierName=='Supplier').toList();
 
-            }*/
-
-         /*   PurchaseDate=DateTime.now();*/
             ExpectedPurchaseDate=t[0]['ExpectedDate']!=null?DateTime.parse(t[0]['ExpectedDate']):DateTime.now();
             print(ExpectedPurchaseDate);
             subtotal=t[0]['Subtotal'];

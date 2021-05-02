@@ -80,10 +80,16 @@ class Sp{
   static String getDieselDetail="USP_GetDieselPurchaseDetail";
   static String deleteDieselDetail="USP_DeleteDieselPurchaseDetail";
 
+
   static String insertDieselIssueDetail="USP_InsertDieselIssueDetail";
   static String updateDieselIssueDetail="USP_UpdateDieselIssueDetail";
   static String getDieselIssueDetail="USP_GetDieselIssueDetail";
   static String deleteDieselIssueDetail="USP_DeleteDieselIssueDetail";
+
+  static String insertInvoiceDetail="USP_InsertInvoiceDetail";
+  static String updateInvoiceDetail="USP_UpdateInvoiceDetail";
+  static String getInvoiceDetail="USP_GetInvoiceDetail";
+  static String deleteInvoiceDetail="USP_DeleteInvoiceDetail";
 
 }
 
