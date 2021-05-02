@@ -32,6 +32,7 @@ import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:quarry/widgets/reportpdf.dart';
+import '../styles/size.dart';
 import 'customerDetails/customerGrid.dart';
 import 'dieselManagement/dieselGrid.dart';
 import 'machineDetails/machineDetailsAddNew.dart';
@@ -82,11 +83,14 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
     inn=Provider.of<QuarryNotifier>(context,listen: false);
     SizeConfig().init(context);
     return Scaffold(
+
+        endDrawerEnableOpenDragGesture: false,
         key: scaffoldkey,
         drawer: Container(
-          width: SizeConfig.screenWidth*0.7,
+          width: SizeConfig.screenWidth,
           height: double.maxFinite,
           child: Drawer(
+
             child:Container(
               color:Color(0xff3B3B3D),
               child: Column(
@@ -260,7 +264,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                     menuSelected=11;
                                     scaffoldkey.currentState.openEndDrawer();
                                   });
-                                  Provider.of<GoodsReceivedNotifier>(context, listen: false).GetGoodsDbHit(context,null,null);
+                                  Provider.of<GoodsReceivedNotifier>(context, listen: false).GetGoodsDbHit(context,null,null,false);
 
                                 },
                               ),
@@ -309,12 +313,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                 image: "assets/drawerImages/dashboard.png",
                                 title: 'Reports',
                                 titleColor: AppTheme.grey,
-                                // callback: (){
-                                //   setState(() {
-                                //     menuSelected=3;
-                                //     scaffoldkey.currentState.openEndDrawer();
-                                //   });
-                                // },
+                                callback: (){
+                                   Navigator.push(context, MaterialPageRoute(builder: (context)=>InnerDrawer()));
+                                  },
                               ),
                               DrawerContent(
                                 height: 50,
@@ -328,6 +329,23 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                 //   });
                                 // },
                               ),
+                              
+                              Container(
+                                height: 60,
+                                width: SizeConfig.screenWidth,
+                                child: Row(
+                                  children: [
+                                    Hero(
+                                      tag: "DemoTag",
+                                      child: Icon(
+                                        Icons.add,
+                                        size: 70.0,
+                                      ),
+                                    ),Spacer(),
+
+                                  ],
+                                ),
+                              )
 
                             ],
                           ),
@@ -420,6 +438,32 @@ class DrawerContent extends StatelessWidget {
   }
 }
 
+
+
+class InnerDrawer extends StatefulWidget {
+  @override
+  _InnerDrawerState createState() => _InnerDrawerState();
+}
+
+class _InnerDrawerState extends State<InnerDrawer> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        height: 100,
+        child:  Hero(
+          tag: "DemoTag",
+          child: Icon(
+            Icons.clean_hands,
+            size: 70.0,
+          ),
+        ),
+      ),
+
+
+    );
+  }
+}
 
 
 

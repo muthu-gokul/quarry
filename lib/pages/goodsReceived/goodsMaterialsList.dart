@@ -30,8 +30,17 @@ class GoodsMaterialsListState extends State<GoodsMaterialsList> with TickerProvi
 
   ScrollController scrollController;
   ScrollController listViewController;
+
   ScrollController header=new ScrollController();
   ScrollController body=new ScrollController();
+  ScrollController verticalLeft=new ScrollController();
+  ScrollController verticalRight=new ScrollController();
+
+  bool showShadow=false;
+
+  double valueContainerWidth=100;
+  double dataTableheight=450;
+  double dataTableBodyheight=400;
 
 
   @override
@@ -63,6 +72,18 @@ class GoodsMaterialsListState extends State<GoodsMaterialsList> with TickerProvi
       if(body.offset!=header.offset){
         body.jumpTo(header.offset);
       }
+      if(header.offset==0){
+        setState(() {
+          showShadow=false;
+        });
+      }
+      else{
+        if(!showShadow){
+          setState(() {
+            showShadow=true;
+          });
+        }
+      }
     });
 
     body.addListener(() {
@@ -71,8 +92,22 @@ class GoodsMaterialsListState extends State<GoodsMaterialsList> with TickerProvi
       }
     });
 
+    verticalLeft.addListener(() {
+      if(verticalRight.offset!=verticalLeft.offset){
+        verticalRight.jumpTo(verticalLeft.offset);
+      }
+    });
+
+    verticalRight.addListener(() {
+      if(verticalLeft.offset!=verticalRight.offset){
+        verticalLeft.jumpTo(verticalRight.offset);
+      }
+    });
+
     super.initState();
   }
+
+  List<String> gridcol=["Material","Qty","Received Qty","Per Ton","Amount","Status"];
 
   @override
   Widget build(BuildContext context) {
@@ -132,10 +167,12 @@ class GoodsMaterialsListState extends State<GoodsMaterialsList> with TickerProvi
                         child: ListView(
                           controller: listViewController,
                           children: [
-                            Container(
-                              height: 450,
-                              width: SizeConfig.screenWidth,
 
+                            /**********  DataTable  ********/
+                            Container(
+                              height: dataTableheight,
+                              width: SizeConfig.screenWidth,
+                              clipBehavior: Clip.antiAlias,
                               margin: EdgeInsets.only(left:SizeConfig.screenWidth*0.02,right:SizeConfig.screenWidth*0.02),
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
@@ -149,7 +186,267 @@ class GoodsMaterialsListState extends State<GoodsMaterialsList> with TickerProvi
                                     )
                                   ]
                               ),
-                              child: Column(
+                              child:Stack(
+                                children: [
+
+                                  //Scrollable
+                                  Positioned(
+                                    left:99,
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          height: 50,
+                                          width: SizeConfig.screenWidth-valueContainerWidth-SizeConfig.screenWidth*0.04,
+                                          color: showShadow? AppTheme.f737373.withOpacity(0.8):AppTheme.f737373,
+                                          child: SingleChildScrollView(
+                                            controller: header,
+                                            scrollDirection: Axis.horizontal,
+                                            child: Row(
+                                                children: gridcol.asMap().
+                                                map((i, value) => MapEntry(i, i==0?Container():
+                                                Container(
+                                                    alignment: Alignment.center,
+                                                    //  padding: EdgeInsets.only(left: 20,right: 20),
+                                                    width: valueContainerWidth,
+                                                    child: Text(value,style: AppTheme.TSWhiteML,)
+                                                )
+                                                )).values.toList()
+                                            ),
+                                          ),
+
+                                        ),
+                                        Container(
+                                          height: dataTableBodyheight,
+                                          width: SizeConfig.screenWidth-valueContainerWidth-SizeConfig.screenWidth*0.04,
+                                          alignment: Alignment.topCenter,
+                                          color: Colors.white,
+                                          child: SingleChildScrollView(
+                                            controller: body,
+                                            scrollDirection: Axis.horizontal,
+                                            child: Container(
+                                              height: dataTableBodyheight,
+                                              alignment: Alignment.topCenter,
+                                              color:Colors.white,
+                                              child: SingleChildScrollView(
+                                                  controller: verticalRight,
+                                                  scrollDirection: Axis.vertical,
+                                                  child:  Column(
+                                                      children:gr.ML_Materials.asMap().
+                                                      map((index, value) => MapEntry(
+                                                          index,InkWell(
+                                                        onTap: (){
+                                                          if(gr.ML_Materials[index].status!='Completed'){
+                                                            setState(() {
+                                                              gr.IGF_Materials.add(
+                                                                  GoodsReceivedMaterialListModel(
+                                                                    GoodsReceivedMaterialMappingId: gr.ML_Materials[index].GoodsReceivedMaterialMappingId,
+                                                                    goodsReceivedId: gr.ML_Materials[index].goodsReceivedId,
+                                                                    materialId: gr.ML_Materials[index].materialId,
+                                                                    materialName: gr.ML_Materials[index].materialName,
+                                                                    materialPrice: gr.ML_Materials[index].materialPrice,
+                                                                    materialUnitId: gr.ML_Materials[index].materialUnitId,
+                                                                    unitName: gr.ML_Materials[index].unitName,
+                                                                    quantity: gr.ML_Materials[index].quantity,
+                                                                    receivedQuantity: 0.0,
+                                                                    amount: 0.0,
+                                                                    vehicleNumber: null,
+                                                                    vehicleTypeId: null,
+                                                                    inwardLoadedVehicleWeight: 0.0,
+                                                                    outwardEmptyVehicleWeight: 0.0,
+
+                                                                  )
+                                                              );
+                                                            });
+                                                            Navigator.push(context, _createRoute());
+                                                          }
+                                                          else{
+                                                            Navigator.push(context, _createRouteTripList(gr.ML_Materials[index].materialId,
+                                                                gr.ML_Materials[index].materialName,gr.ML_Materials[index].unitName,gr.ML_Materials[index].quantity
+                                                            ));
+                                                          }
+                                                        },
+                                                        child: Container(
+
+                                                          height: 60,
+                                                          decoration: BoxDecoration(
+                                                            border: Border(bottom: BorderSide(color: AppTheme.addNewTextFieldBorder.withOpacity(0.5)))
+                                                          ),
+
+                                                          child: Row(
+                                                            children: [
+
+                                                              Container(
+                                                                alignment: Alignment.center,
+                                                                // padding: EdgeInsets.only(left: 20,right: 20),
+                                                                width: valueContainerWidth,
+                                                                child: Text("${value.quantity}",
+                                                                  style:AppTheme.ML_bgCT,
+                                                                ),
+
+                                                              ),
+                                                              Container(
+                                                                alignment: Alignment.center,
+                                                                width: valueContainerWidth,
+                                                                child: Text("${value.receivedQuantity}",
+                                                                  style:AppTheme.ML_bgCT,
+                                                                ),
+                                                              ),
+
+                                                              Container(
+                                                                width: valueContainerWidth,
+                                                                alignment: Alignment.center,
+                                                                child: Text("${value.materialPrice}",
+                                                                  style:AppTheme.ML_bgCT,
+                                                                ),
+                                                              ),
+                                                              Container(
+                                                                width: valueContainerWidth,
+                                                                alignment: Alignment.center,
+                                                                child: Text("${value.amount}",
+                                                                  style:AppTheme.ML_bgCT,
+                                                                ),
+                                                              ),
+                                                              Container(
+                                                                width: valueContainerWidth,
+                                                                alignment: Alignment.center,
+                                                                child: Text("${value.status}",
+                                                                    style:TextStyle(fontFamily: 'RL',color:gr.ML_Materials[index].status=='Not Yet'? AppTheme.bgColor:
+                                                                    gr.ML_Materials[index].status=='Completed'?Colors.green:AppTheme.red
+                                                                        ,fontSize: 12),textAlign: TextAlign.center,
+                                                                ),
+                                                              ),
+
+
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      )
+                                                      )
+                                                      ).values.toList()
+                                                  ),
+                                              ),
+
+
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+
+
+                                  //not Scrollable
+                                  Positioned(
+                                    left: 0,
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          height: 50,
+                                          width: valueContainerWidth,
+                                          color: AppTheme.f737373,
+                                          alignment: Alignment.center,
+                                          child: Text("${gridcol[0]}",style: AppTheme.TSWhiteML,),
+
+                                        ),
+                                        Container(
+                                          height: dataTableBodyheight,
+                                          alignment: Alignment.topCenter,
+                                          decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              boxShadow: [
+                                                showShadow?  BoxShadow(
+                                                  color: AppTheme.addNewTextFieldText.withOpacity(0.3),
+                                                  spreadRadius: 0,
+                                                  blurRadius: 15,
+                                                  offset: Offset(10, -8), // changes position of shadow
+                                                ):BoxShadow(color: Colors.transparent)
+                                              ]
+                                          ),
+                                          child: Container(
+                                            height: dataTableBodyheight,
+                                            alignment: Alignment.topCenter,
+
+                                            child: SingleChildScrollView(
+                                                controller: verticalLeft,
+                                                scrollDirection: Axis.vertical,
+                                                child:  Column(
+                                                    children: gr.ML_Materials.asMap().
+                                                    map((index, value) => MapEntry(
+                                                        index,InkWell(
+                                                      onTap: (){
+                                                        if(gr.ML_Materials[index].status!='Completed'){
+                                                          setState(() {
+                                                            gr.IGF_Materials.add(
+                                                                GoodsReceivedMaterialListModel(
+                                                                  GoodsReceivedMaterialMappingId: gr.ML_Materials[index].GoodsReceivedMaterialMappingId,
+                                                                  goodsReceivedId: gr.ML_Materials[index].goodsReceivedId,
+                                                                  materialId: gr.ML_Materials[index].materialId,
+                                                                  materialName: gr.ML_Materials[index].materialName,
+                                                                  materialPrice: gr.ML_Materials[index].materialPrice,
+                                                                  materialUnitId: gr.ML_Materials[index].materialUnitId,
+                                                                  unitName: gr.ML_Materials[index].unitName,
+                                                                  quantity: gr.ML_Materials[index].quantity,
+                                                                  receivedQuantity: 0.0,
+                                                                  amount: 0.0,
+                                                                  vehicleNumber: null,
+                                                                  vehicleTypeId: null,
+                                                                  inwardLoadedVehicleWeight: 0.0,
+                                                                  outwardEmptyVehicleWeight: 0.0,
+
+                                                                )
+                                                            );
+                                                          });
+                                                          Navigator.push(context, _createRoute());
+                                                        }
+                                                        else{
+                                                          Navigator.push(context, _createRouteTripList(gr.ML_Materials[index].materialId,
+                                                              gr.ML_Materials[index].materialName,gr.ML_Materials[index].unitName,gr.ML_Materials[index].quantity
+                                                          ));
+                                                        }
+                                                      },
+                                                      child:  Container(
+                                                        alignment: Alignment.center,
+                                                        height: 60,
+                                                        width: valueContainerWidth,
+                                                        decoration: BoxDecoration(
+                                                            border: Border(bottom: BorderSide(color: AppTheme.addNewTextFieldBorder.withOpacity(0.5)))
+                                                        ),
+                                                        child: Text("${value.materialName}",
+                                                          style: AppTheme.ML_bgCT,
+                                                        ),
+                                                      ),
+                                                    )
+                                                    )
+                                                    ).values.toList()
+
+
+                                                ),
+                                            ),
+
+
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+
+
+
+
+                                ],
+                              )
+
+
+
+
+
+
+
+
+
+                              /*Column(
                                 children: [
                                   Container(
                                     height: 50,
@@ -215,7 +512,7 @@ class GoodsMaterialsListState extends State<GoodsMaterialsList> with TickerProvi
                                     padding: EdgeInsets.only(bottom: 10),
                                     width: SizeConfig.screenWidth,
                                     decoration: BoxDecoration(
-                                     /*   border: Border(bottom: BorderSide(color: AppTheme.gridTextColor.withOpacity(0.3)))*/
+                                     *//*   border: Border(bottom: BorderSide(color: AppTheme.gridTextColor.withOpacity(0.3)))*//*
                                     ),
                                     child: Container(
                                       height: 400,
@@ -333,7 +630,11 @@ class GoodsMaterialsListState extends State<GoodsMaterialsList> with TickerProvi
                                   ),
 
                                 ],
-                              ),
+                              ),*/
+
+
+
+
                             ) ,
                           ],
                         )

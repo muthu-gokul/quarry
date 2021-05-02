@@ -108,7 +108,7 @@ class ProductionGridState extends State<ProductionGrid> with TickerProviderState
 
                 Container(
                   margin: EdgeInsets.only(top: 50),
-                    padding: EdgeInsets.only(left:5,),
+                    padding: EdgeInsets.only(left:5,bottom:25),
                     color: AppTheme.yellowColor,
                     height: 110,
                     alignment: Alignment.topCenter,
@@ -122,9 +122,9 @@ class ProductionGridState extends State<ProductionGrid> with TickerProviderState
                           map((i, value) => MapEntry(i,
                             Container(
                               height: SizeConfig.height80,
-                             width: SizeConfig.width120,
+                             width: SizeConfig.screenWidth*0.3,
                               margin: EdgeInsets.only(right: SizeConfig.width10),
-                              //padding: EdgeInsets.only(right: SizeConfig.width10),
+
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(5),
                                   color: AppTheme.bgColor
@@ -139,7 +139,8 @@ class ProductionGridState extends State<ProductionGrid> with TickerProviderState
                                     children: [
                                       Text(value.materialName,style: TextStyle(fontFamily: 'RR',fontSize: 16,color: Colors.white,letterSpacing: 0.1),),
                                       SizedBox(height: 5,),
-                                      RichText(
+                                      Text( '${value.totalQuantity}',style: TextStyle(fontFamily: 'RR',fontSize: 20,color: AppTheme.yellowColor),),
+                                      /*RichText(
                                         text: TextSpan(
                                           text: '${value.totalQuantity}',
                                           style: TextStyle(fontFamily: 'RM',fontSize: 20,color: AppTheme.yellowColor),
@@ -147,7 +148,7 @@ class ProductionGridState extends State<ProductionGrid> with TickerProviderState
                                            // TextSpan(text: '${value.unitName}', style: TextStyle(fontFamily: 'RR',fontSize: 11,color: AppTheme.addNewTextFieldBorder)),
                                           ],
                                         ),
-                                      ),
+                                      ),*/
                                     ],
                                   ),
                                   Padding(

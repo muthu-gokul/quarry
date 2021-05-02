@@ -172,7 +172,7 @@ class GoodsReceivedNotifier extends ChangeNotifier{
           var t=parsed['Table'] as List;
           ML_GoodsorderId=t[0]['GoodsReceivedId'];
          // GetGoodsDbHit(context, ML_GoodsorderId,ML_PorderId);
-         GetGoodsDbHit(context, null,null);
+         GetGoodsDbHit(context, null,null,false);
           Navigator.pop(context);
           IGF_clear();
           print(GoodsMaterialsListState().mounted);
@@ -287,7 +287,7 @@ class GoodsReceivedNotifier extends ChangeNotifier{
 
         if(value!=null){
           var parsed=json.decode(value);
-          GetGoodsDbHit(context, null,null);
+          GetGoodsDbHit(context, null,null,false);
           Navigator.pop(context);
           clearOGFform();
           IGF_clear();
@@ -321,12 +321,63 @@ class GoodsReceivedNotifier extends ChangeNotifier{
   }
 
 
+  // ToInvoice List (GINV)-Goods Invoice
+  String GINV_PorderNo=null;
+  int GINV_PorderId=null;
+  int GINV_GoodsorderId=null;
+  String GINV_Date=null;
+  double GINV_invoiceAmount=0.0;
+  List<GoodsReceivedMaterialListModel> GINV_Materials=[];
+
+  GINV_clear(){
+    GINV_Date=null;
+    GINV_Materials.clear();
+    GINV_PorderNo=null;
+    GINV_PorderId=null;
+    GINV_GoodsorderId=null;
+    GINV_invoiceAmount=0.0;
+  }
+
+  // ToPurchase List (GPO)-Goods Purchase
+  String GPO_PorderNo=null;
+  int GPO_PorderId=null;
+  int GPO_GoodsorderId=null;
+  String GPO_Date=null;
+  double GPO_purchaseAmount=0.0;
+  List<GoodsReceivedMaterialListModel> GPO_Materials=[];
+
+  GPO_clear(){
+    GPO_Date=null;
+    GPO_Materials.clear();
+    GPO_PorderNo=null;
+    GPO_PorderId=null;
+    GPO_GoodsorderId=null;
+    GPO_purchaseAmount=0.0;
+  }
+
+  GPO_assignValues(){
+    GPO_Date=GINV_Date;
+    GPO_PorderNo=GINV_PorderNo;
+    GPO_PorderId=GINV_PorderId;
+    GPO_GoodsorderId=GINV_GoodsorderId;
+
+    GINV_Materials.forEach((element) {
+      if(element.status=='Not Yet'){
+        GPO_Materials.add(element);
+        GPO_purchaseAmount=GPO_purchaseAmount+element.amount;
+      }
+    });
+    notifyListeners();
+  }
+
+
 
   List<GoodsReceivedGridModel> goodsGridList=[];
   List<GoodsReceivedGridModel> filtergoodsGridList=[];
   List<GoodsMaterialExtraTripModel> GoodsMaterialExtraTripModelDetails=[];
 
-  GetGoodsDbHit(BuildContext context,int goodsReceivedId,int purchaseOrderId)  async{
+  GetGoodsDbHit(BuildContext context,int goodsReceivedId,int purchaseOrderId,bool ToInvoice)  async{
+
     print("GREC__${goodsReceivedId} ${purchaseOrderId} ${goodsReceivedId==0?null:goodsReceivedId}");
     updateGoodsLoader(true);
 
@@ -367,25 +418,41 @@ class GoodsReceivedNotifier extends ChangeNotifier{
           var parsed=json.decode(value);
           var t=parsed['Table'] as List;
           if(goodsReceivedId!=null || purchaseOrderId!=null){
-            print(parsed);
-            ML_PorderNo=t[0]['PurchaseOrderNumber'];
-            ML_PorderId=t[0]['PurchaseOrderId'];
-            ML_GoodsorderId=t[0]['GoodsReceivedId'];
-            ML_Date=t[0]['Date'];
-            print(ML_PorderNo);
-            print(ML_PorderId);
-            print(ML_GoodsorderId);
-            var t1=parsed['Table1'] as List;
-            print(t1);
-            ML_Materials=t1.map((e) => GoodsReceivedMaterialListModel.fromJson(e)).toList();
 
-            var t2=parsed['Table2'] as List;
-            materialTripList=t2.map((e) => GoodsMaterialTripDetailsModel.fromJson(e)).toList();
+            if(ToInvoice){
+              GINV_PorderNo=t[0]['PurchaseOrderNumber'];
+              GINV_PorderId=t[0]['PurchaseOrderId'];
+              GINV_GoodsorderId=t[0]['GoodsReceivedId'];
+              GINV_Date=t[0]['Date'];
+              var t1=parsed['Table1'] as List;
+
+              GINV_Materials=t1.map((e) => GoodsReceivedMaterialListModel.fromJson(e)).toList();
+              GINV_Materials.forEach((element) {
+                if(element.status!='Completed'){
+                  GINV_invoiceAmount=GINV_invoiceAmount+element.amount;
+                }
+
+              });
 
 
-            var t3=parsed['Table3'] as List;
-            print("t3${t3}");
-            GoodsMaterialExtraTripModelDetails =t3.map((e) => GoodsMaterialExtraTripModel.fromJson(e)).toList();
+            }
+            else{
+              ML_PorderNo=t[0]['PurchaseOrderNumber'];
+              ML_PorderId=t[0]['PurchaseOrderId'];
+              ML_GoodsorderId=t[0]['GoodsReceivedId'];
+              ML_Date=t[0]['Date'];
+              var t1=parsed['Table1'] as List;
+
+              ML_Materials=t1.map((e) => GoodsReceivedMaterialListModel.fromJson(e)).toList();
+
+              var t2=parsed['Table2'] as List;
+              materialTripList=t2.map((e) => GoodsMaterialTripDetailsModel.fromJson(e)).toList();
+
+              var t3=parsed['Table3'] as List;
+              GoodsMaterialExtraTripModelDetails =t3.map((e) => GoodsMaterialExtraTripModel.fromJson(e)).toList();
+            }
+
+
 
             notifyListeners();
           }

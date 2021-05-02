@@ -474,6 +474,7 @@ class ProductionDetailAddNewState extends State<ProductionDetailAddNew> with Tic
                                         alignment: Alignment.centerRight,
                                         child: Container(
                                           width: SizeConfig.width130,
+                                          height: SizeConfig.height60,
                                           alignment: Alignment.center,
                                           margin: EdgeInsets.only(
                                               top: SizeConfig.height20,

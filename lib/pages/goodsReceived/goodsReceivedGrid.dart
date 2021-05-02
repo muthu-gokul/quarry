@@ -10,6 +10,7 @@ import 'package:quarry/notifier/goodsReceivedNotifier.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/pages/goodsReceived/goodsMaterialsList.dart';
 import 'package:quarry/pages/goodsReceived/goodsOutGateForm.dart';
+import 'package:quarry/pages/goodsReceived/goodsToInvoice.dart';
 import 'package:quarry/pages/quarryMaster/plantDetailsAddNew.dart';
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
@@ -39,6 +40,7 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
   bool isListScroll=false;
 
   bool isInvoiceOpen=false;
+  bool isInvoice=false;
 
   @override
   void initState() {
@@ -231,7 +233,7 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
                                       duration: Duration(milliseconds: 200),
                                       curve: Curves.easeIn,
                                       child: AnimatedContainer(
-                                        duration: Duration(milliseconds: 150),
+                                        duration: Duration(milliseconds: 200),
                                         curve: Curves.easeIn,
                                       /* height: 200,
                                        width: SizeConfig.screenWidth*0.5,*/
@@ -287,9 +289,46 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
                                                     SizedBox(height: 20,),
                                                     GestureDetector(
                                                       onTap: (){
-                                                        gr.GoodsDropDownValues(context);
-                                                        gr.GetGoodsDbHit(context, value.goodsReceivedId, value.purchaseOrderId);
-                                                        Navigator.push(context, _createRoute());
+                                                        if(isInvoice){
+                                                          if(value.status!='Not Yet'){
+                                                          gr.GoodsDropDownValues(context);
+                                                          gr.GetGoodsDbHit(context, value.goodsReceivedId, value.purchaseOrderId,true);
+                                                          Navigator.push(context, _createRouteGoodsToInvoice());
+                                                          int i=0;
+                                                          if(mounted){
+                                                            Timer.periodic(Duration(milliseconds: 150),(v){
+                                                              print(i);
+                                                              if(gr.goodsGridList[i].status=="Not Yet"){
+                                                                if(mounted){
+                                                                  setState(() {
+                                                                    gr.goodsGridList[i].isAnimate=!gr.goodsGridList[i].isAnimate;
+                                                                  });
+                                                                }
+
+                                                              }
+                                                              i=i+1;
+                                                              if(i==gr.goodsGridList.length){
+                                                                v.cancel();
+                                                                if(mounted){
+                                                                  setState(() {
+                                                                    isInvoiceOpen=false;
+                                                                    isInvoice=false;
+                                                                  });
+                                                                }
+
+                                                              }
+
+                                                            });
+                                                          }
+
+                                                          }
+                                                        }
+                                                        else{
+                                                          gr.GoodsDropDownValues(context);
+                                                          gr.GetGoodsDbHit(context, value.goodsReceivedId, value.purchaseOrderId,false);
+                                                          Navigator.push(context, _createRoute());
+                                                        }
+
                                                       },
                                                       child: Container(
                                                         height: 40,
@@ -424,42 +463,36 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
 
                                   setState(() {
                                     isInvoiceOpen=true;
+                                    isInvoice=true;
                                   });
 
                                   int i=0;
-                                  Timer.periodic(Duration(milliseconds: 150),(v){
-                                    print(i);
-                                    if(gr.goodsGridList[i].status=="Not Yet"){
-                                      setState(() {
-                                        gr.goodsGridList[i].isAnimate=!gr.goodsGridList[i].isAnimate;
-                                      });
-                                    }
-                                    i=i+1;
-                                    if(i==gr.goodsGridList.length){
-                                      v.cancel();
-                                      setState(() {
-                                        isInvoiceOpen=false;
-                                      });
-                                    }
+                                  if(mounted){
+                                    Timer.periodic(Duration(milliseconds: 200),(v){
+                                      print(i);
+                                      if(gr.goodsGridList[i].status=="Not Yet"){
+                                        if(mounted){
+                                          setState(() {
+                                            gr.goodsGridList[i].isAnimate=!gr.goodsGridList[i].isAnimate;
+                                          });
+                                        }
 
-                                  });
-
-                                  setState(() {
-
-                                    /*gr.goodsGridList.forEach((element) async {
-                                      if(element.status=='Not Yet'){
-                                          element.isAnimate=!element.isAnimate;
                                       }
+                                      i=i+1;
+                                      if(i==gr.goodsGridList.length){
+                                        v.cancel();
+                                        if(mounted){
+                                          setState(() {
+                                            isInvoiceOpen=false;
+                                          });
+                                        }
+
+                                      }
+
                                     });
-                                    */
+                                  }
 
 
-                                    // gr.goodsGridList[2].isAnimate=!gr.goodsGridList[2].isAnimate;
-                                    //isInvoiceOpen=!isInvoiceOpen;
-                                   /* gr.filtergoodsGridList.removeLast();
-                                    print(gr.filtergoodsGridList.length);
-                                    print(gr.goodsGridList.length);*/
-                                  });
                                 },
                                 child: Image.asset("assets/goodsIcons/invoice.jpg")),
                           ],
@@ -507,6 +540,18 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
   Route _createRoute() {
     return PageRouteBuilder(
       pageBuilder: (context, animation, secondaryAnimation) => GoodsMaterialsList(),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+
+        return SlideTransition(
+          position: Tween<Offset>(begin: Offset(1.0,0.0), end: Offset.zero).animate(animation),
+          child: child,
+        );
+      },
+    );
+  }
+  Route _createRouteGoodsToInvoice() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => GoodsToInvoice(),
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
 
         return SlideTransition(
