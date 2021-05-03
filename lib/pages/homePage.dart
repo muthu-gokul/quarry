@@ -14,6 +14,7 @@ import 'package:quarry/notifier/goodsReceivedNotifier.dart';
 import 'package:quarry/notifier/invoiceNotifier.dart';
 import 'package:quarry/notifier/machineNotifier.dart';
 import 'package:quarry/notifier/materialNotifier.dart';
+import 'package:quarry/notifier/paymentNotifier.dart';
 import 'package:quarry/notifier/productionNotifier.dart';
 import 'package:quarry/notifier/profileNotifier.dart';
 import 'package:quarry/notifier/purchaseNotifier.dart';
@@ -22,6 +23,7 @@ import 'package:quarry/notifier/supplierNotifier.dart';
 import 'package:quarry/notifier/vehicleNotifier.dart';
 import 'package:quarry/pages/goodsReceived/goodsReceivedGrid.dart';
 import 'package:quarry/pages/invoice/invoiceGrid.dart';
+import 'package:quarry/pages/invoicePayment/paymentGrid.dart';
 import 'package:quarry/pages/productionDetails/productionDetailsGrid.dart';
 import 'package:quarry/pages/purchaseDetails/purchaseGrid.dart';
 import 'package:quarry/pages/quarryMaster/quarryMaster.dart';
@@ -230,6 +232,22 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                   delay: 3.5,
                                   height: 50,
                                   image: "assets/drawerImages/dashboard.png",
+                                  title: 'Payment',
+                                  tag: 'Payment',
+                                  titleColor: AppTheme.yellowColor,
+                                  callback: (){
+                                    setState(() {
+                                      drawer.menuSelected=15;
+                                      scaffoldkey.currentState.openEndDrawer();
+                                    });
+                                    Provider.of<PaymentNotifier>(context, listen: false).updatePaymentReceivable(true);
+                                    Provider.of<PaymentNotifier>(context, listen: false).GetPaymentDbHit(context,null,this);
+                                  },
+                                ),
+                                DrawerContent(
+                                  delay: 4,
+                                  height: 50,
+                                  image: "assets/drawerImages/dashboard.png",
                                   title: 'Reports',
                                   tag: "Reports",
                                   titleColor: AppTheme.grey,
@@ -238,12 +256,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                     },
                                 ),
                                 DrawerContent(
-                                  delay: 4,
+                                  delay: 4.5,
                                   height: 50,
                                   image: "assets/drawerImages/dashboard.png",
                                   title: 'Settings',
                                   tag: "Settings",
-                                  titleColor: AppTheme.grey,
+                                  titleColor: AppTheme.yellowColor,
                                   callback: (){
                                      Navigator.push(context, MaterialPageRoute(builder: (context)=>SettingsPage(voidCallback: (){
                                        scaffoldkey.currentState.openEndDrawer();
@@ -310,6 +328,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
             scaffoldkey.currentState.openDrawer();
           },):
           drawer.menuSelected==14?InvoiceGrid(drawerCallback: (){
+            scaffoldkey.currentState.openDrawer();
+          },):
+          drawer.menuSelected==15?PaymentGrid(drawerCallback: (){
             scaffoldkey.currentState.openDrawer();
           },):
           Container()
@@ -445,7 +466,7 @@ class SettingsPageState extends State<SettingsPage> with TickerProviderStateMixi
                 widget.voidCallback();
                 Provider.of<DrawerNotifier>(context,listen: false).changeMenu(4);
 
-                  Provider.of<QuarryNotifier>(context,listen: false).initDropDownValues(context);
+                 // Provider.of<QuarryNotifier>(context,listen: false).initDropDownValues(context);
                   Provider.of<QuarryNotifier>(context,listen: false).GetCustomerDetailDbhit(context);
                   Provider.of<QuarryNotifier>(context,listen: false).GetSaleDetailDbhit(context);
               },

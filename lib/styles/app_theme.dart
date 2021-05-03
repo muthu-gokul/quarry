@@ -46,10 +46,15 @@ class AppTheme {
 
   static TextStyle bgColorTS=TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 16);
   static TextStyle gridTextColorTS=TextStyle(fontFamily: 'RR',color: AppTheme.gridTextColor,fontSize: 16);
+  static TextStyle gridTextColor14=TextStyle(fontFamily: 'RR',color: AppTheme.gridTextColor,fontSize: 14);
 
 
   static const Color popUpSelectedColor=Color(0xFF3B3B3D);
   static const Color editDisableColor=Color(0xFFF2F2F2);
+
+  static  Border gridBottomborder= Border(
+      bottom: BorderSide(color: AppTheme.addNewTextFieldBorder.withOpacity(0.5))
+  );
 
 
   //yellow BoxShadow

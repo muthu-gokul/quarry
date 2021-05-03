@@ -4,6 +4,7 @@ class SizeConfig {
 
   static MediaQueryData mediaQueryData;
   static double screenWidth;
+  static double screenWidthM40;
   static double screenHeight;
   static double blockSizeHorizontal;
   static double blockSizeVertical;
@@ -50,7 +51,7 @@ class SizeConfig {
     width400=screenWidth>420?screenWidth*(400/600):screenWidth*(400/320);
     width410=screenWidth>420?screenWidth*(410/600):screenWidth*(410/320);
     width500=screenWidth>420?screenWidth*(500/600):screenWidth*(500/320);
-
+    screenWidthM40 = mediaQueryData.size.width-width40;
 
 
     height4=screenWidth>420? screenHeight*(4/960):screenHeight*(4/720);

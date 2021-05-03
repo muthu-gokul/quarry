@@ -91,5 +91,10 @@ class Sp{
   static String getInvoiceDetail="USP_GetInvoiceDetail";
   static String deleteInvoiceDetail="USP_DeleteInvoiceDetail";
 
+  static String insertPaymentDetail="USP_InsertInvoicePaymentMappingDetail";
+  static String updatePaymentDetail="USP_UpdateInvoicePaymentMappingDetail";
+  static String getPaymentDetail="USP_GetInvoicePaymentDetail";
+  static String deletePaymentDetail="USP_DeleteInvoicePaymentMappingDetail";
+
 }
 

@@ -108,6 +108,7 @@ bool _keyboardVisible=false;
                     Container(
                       height: SizeConfig.screenHeight-(SizeConfig.height70),
                       child: TabBarView(
+                      //  physics: NeverScrollableScrollPhysics(),
                           controller: qn.tabController,
                           children: [
                           Container(
@@ -442,8 +443,8 @@ bool _keyboardVisible=false;
                                                                               child: Column(
                                                                                 children: [
                                                                                   SizedBox(height: 15,),
-                                                                                  Text("{pn.purchaseOrdersMappingList[pn.purchaseOrdersMappingList.length-1].materialName??""}",
-                                                                                    style: TextStyle(fontFamily: 'RR',fontSize: 18,color: AppTheme.gridTextColor),textAlign: TextAlign.center,),
+                                                                                /*  Text("{pn.purchaseOrdersMappingList[pn.purchaseOrdersMappingList.length-1].materialName??""}",
+                                                                                    style: TextStyle(fontFamily: 'RR',fontSize: 18,color: AppTheme.gridTextColor),textAlign: TextAlign.center,),*/
                                                                                   SizedBox(height: 10,),
                                                                                   Row(
                                                                                     mainAxisAlignment: MainAxisAlignment.center,

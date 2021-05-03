@@ -271,8 +271,7 @@ class ProductionDetailAddNewState extends State<ProductionDetailAddNew> with Tic
                                           position: Tween<Offset>(begin: Offset(qn.productionMaterialMappingList[index].isEdit ? 0.0 :
                                           qn.productionMaterialMappingList[index].isDelete ?1.0:0.0,
                                               qn.productionMaterialMappingList[index].isEdit ? 0.0 :qn.productionMaterialMappingList[index].isDelete ?0.0: 1.0),
-                                              end:qn.productionMaterialMappingList[index].isEdit ?Offset(1, 0):
-                                              qn.productionMaterialMappingList[index].isDelete ?Offset(1, 0):Offset.zero)
+                                              end:qn.productionMaterialMappingList[index].isEdit ?Offset(1, 0): Offset.zero)
                                               .animate(qn.productionMaterialMappingList[index].scaleController),
                                           // scale: Tween(begin:qn.isSupplierEdit?1.0: 0.0, end:qn.isSupplierEdit?0.0: 1.0)
                                           //     .animate(qn.supplierMaterialMappingList[index].scaleController),
@@ -422,6 +421,227 @@ class ProductionDetailAddNewState extends State<ProductionDetailAddNew> with Tic
                                   ),
 
 
+
+                                  ///////////// Material Name Ver-2/////////////////
+
+                                 /* Container(
+                                    //  duration: Duration(milliseconds: 300),
+                                    // curve: Curves.easeIn,
+                                    height: qn.productionMaterialMappingList.length == 0 ? 0 :
+                                    ( qn.productionMaterialMappingList.length * 50.0)+40,
+                                    //  padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+
+                                    width: SizeConfig.screenWidth,
+
+                                    margin: EdgeInsets.only(
+                                      left: SizeConfig.width20,
+                                      right: SizeConfig.width20,
+                                      top: SizeConfig.height20,),
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(5),
+                                        border: Border.all(color: AppTheme.addNewTextFieldBorder)
+                                      *//*  boxShadow: [
+                                          qn.productionMaterialMappingList.length == 0 ? BoxShadow() :
+                                          BoxShadow(
+                                            color: AppTheme.addNewTextFieldText
+                                                .withOpacity(0.2),
+                                            spreadRadius: 2,
+                                            blurRadius: 15,
+                                            offset: Offset(0, 0), // changes position of shadow
+                                          )
+                                        ]*//*
+                                    ),
+                                    child: Column(
+                                      children: [
+
+                                        Container(
+                                          height: 40,
+                                          width: SizeConfig.screenWidth,
+
+                                          decoration: BoxDecoration(
+                                            color: Colors.grey[200],
+                                            borderRadius: BorderRadius.only(topLeft: Radius.circular(5),topRight: Radius.circular(5),),
+
+                                            *//* border: Border(
+                                                  bottom: BorderSide(color: AppTheme.addNewTextFieldBorder.withOpacity(0.5))
+                                              )*//*
+                                          ),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text("Material name"),
+                                              Text("Material Price"),
+                                              Text("Material Unit"),
+
+                                            ],
+
+                                          ),
+                                        ),
+
+                                        Expanded(
+                                          child: ListView.builder(
+                                            itemCount: qn.productionMaterialMappingList.length,
+                                            itemBuilder: (context, index) {
+                                              return SlideTransition(
+                                                position: Tween<Offset>(begin: Offset(qn.productionMaterialMappingList[index].isEdit ? 0.0 :
+                                                qn.productionMaterialMappingList[index].isDelete ?1.0:0.0,
+                                                    qn.productionMaterialMappingList[index].isEdit ? 0.0 :qn.productionMaterialMappingList[index].isDelete ?0.0: 1.0),
+                                                    end:qn.productionMaterialMappingList[index].isEdit ?Offset(1, 0): Offset.zero)
+                                                    .animate(qn.productionMaterialMappingList[index].scaleController),
+
+                                                child: FadeTransition(
+                                                  opacity: Tween(begin: qn.productionMaterialMappingList[index].isEdit ? 1.0 : 0.0,
+                                                      end: qn.productionMaterialMappingList[index].isEdit ? 0.0 : 1.0)
+                                                      .animate(qn.productionMaterialMappingList[index].scaleController),
+                                                  child: Container(
+                                                    padding: EdgeInsets.only(top: 5, bottom: 5),
+                                                    decoration: BoxDecoration(
+                                                        border: Border(
+                                                            bottom: BorderSide(color: AppTheme.addNewTextFieldBorder.withOpacity(0.5))
+                                                        )
+                                                    ),
+                                                    child: Column(
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      children: [
+                                                        Row(
+                                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                                          children: [
+                                                            qn.productionMaterialMappingList[index].MaterialName!='Dust'?
+                                                            Container(
+                                                              width: SizeConfig.width100,
+                                                              child: Text("${qn.productionMaterialMappingList[index].MaterialName}",
+                                                                style: TextStyle(fontSize: 14, fontFamily: 'RR', color: AppTheme.gridTextColor, letterSpacing: 0.2),
+                                                              ),
+                                                            ):
+                                                            Container(
+                                                              width: SizeConfig.width100,
+                                                              child: Row(
+                                                                children: [
+                                                                  Text("${qn.productionMaterialMappingList[index].MaterialName}",
+                                                                    style: TextStyle(fontSize: 14, fontFamily: 'RR', color: AppTheme.gridTextColor, letterSpacing: 0.2),
+                                                                  ),
+                                                                  SizedBox(width: 10,),
+                                                                  GestureDetector(
+                                                                    onTap: (){
+                                                                      setState(() {
+                                                                        qn.isWastage=!qn.isWastage;
+                                                                      });
+                                                                      qn.wastageCalc();
+                                                                    },
+                                                                    child: AnimatedContainer(
+                                                                      duration: Duration(milliseconds: 300),
+                                                                      curve: Curves.easeIn,
+                                                                      height: 20,
+                                                                      width: 20,
+                                                                      decoration: BoxDecoration(
+                                                                          color:qn.isWastage?AppTheme.yellowColor: AppTheme.uploadColor.withOpacity(0.2),
+                                                                          borderRadius: BorderRadius.circular(3),
+                                                                          border: Border.all(color:qn.isWastage?AppTheme.yellowColor: AppTheme.addNewTextFieldBorder)
+                                                                      ),
+                                                                      child: Center(
+                                                                        child: Icon(Icons.done,color:qn.isWastage?AppTheme.bgColor: AppTheme.addNewTextFieldBorder.withOpacity(0.5),size: 15,),
+                                                                      ),
+                                                                    ),
+                                                                  )
+                                                                ],
+                                                              ),
+                                                            ),
+                                                            Container(
+                                                              padding: EdgeInsets.only(left: 5),
+                                                              alignment: Alignment.centerLeft,
+                                                              width: SizeConfig.width60,
+                                                              child: Text("${qn.productionMaterialMappingList[index].OutputMaterialQuantity}",
+                                                                style: TextStyle(fontSize: 14, fontFamily: 'RR', color: AppTheme.gridTextColor, letterSpacing: 0.2),
+                                                              ),
+                                                            ),
+                                                            Container(
+                                                              alignment: Alignment.centerRight,
+                                                              width: SizeConfig.width70 +
+                                                                  SizeConfig.width5,
+                                                              child: Text("${qn.productionMaterialMappingList[index].MaterialUnit}",
+                                                                style: TextStyle(fontSize: 14, fontFamily: 'RR', color: AppTheme.gridTextColor,letterSpacing: 0.2),
+                                                              ),
+                                                            ),
+                                                            Spacer(),
+                                                            GestureDetector(
+                                                              onTap: () {
+
+                                                                print(qn.isProductionEdit);
+
+                                                                if (qn.productionMaterialMappingList[index].isEdit) {
+                                                                  qn.productionMaterialMappingList[index].scaleController.forward().whenComplete(() {
+                                                                    print("EIT");
+                                                                    if (this.mounted) {
+                                                                      if(qn.productionMaterialMappingList[index].MaterialName=='Dust'){
+                                                                        setState(() {
+                                                                          qn.dustQty=0.0;
+                                                                          qn.isWastage=false;
+                                                                        });
+                                                                      }
+                                                                      setState(() {
+                                                                        qn.productionMaterialMappingList.removeAt(index);
+                                                                      });
+                                                                      qn.wastageCalc();
+                                                                    }
+                                                                  });
+
+                                                                }
+                                                                else {
+                                                                  setState(() {
+                                                                    qn.productionMaterialMappingList[index].isDelete=true;
+                                                                  });
+
+
+
+                                                                  qn.productionMaterialMappingList[index].scaleController.reverse().whenComplete(() {
+                                                                    if (this.mounted) {
+                                                                      if(qn.productionMaterialMappingList[index].MaterialName=='Dust'){
+                                                                        setState(() {
+                                                                          qn.dustQty=0.0;
+                                                                          qn.isWastage=false;
+                                                                        });
+                                                                      }
+                                                                      setState(() {
+                                                                        qn.productionMaterialMappingList.removeAt(index);
+                                                                      });
+                                                                      qn.wastageCalc();
+                                                                    }
+                                                                  });
+
+
+
+                                                                }
+                                                              },
+                                                              child: Container(
+                                                                  height: 25,
+                                                                  width: 25,
+                                                                  child: Icon(
+                                                                      Icons.delete,
+                                                                      color: Colors.red)
+                                                              ),
+                                                            ),
+
+                                                          ],
+                                                        ),
+                                                        qn.productionMaterialMappingList[index].MaterialName!='Dust'?Container():
+                                                        Text("Do you want to add this product to Wastage?",
+                                                          style: TextStyle(fontSize: 12,fontFamily: 'RR',color: AppTheme.hintColor),
+                                                        )
+                                                      ],
+                                                    ),
+
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),*/
+
+
                                   Stack(
                                     children: [
                                       GestureDetector(
@@ -441,7 +661,7 @@ class ProductionDetailAddNewState extends State<ProductionDetailAddNew> with Tic
                                           padding: EdgeInsets.only(
                                               left: SizeConfig.width5,
                                               right: SizeConfig.width5),
-                                          height: SizeConfig.height50,
+                                          height: 50,
                                           width: SizeConfig.width140,
                                           alignment: Alignment.centerLeft,
                                           decoration: BoxDecoration(
@@ -474,7 +694,7 @@ class ProductionDetailAddNewState extends State<ProductionDetailAddNew> with Tic
                                         alignment: Alignment.centerRight,
                                         child: Container(
                                           width: SizeConfig.width130,
-                                          height: SizeConfig.height60,
+                                          height:50,
                                           alignment: Alignment.center,
                                           margin: EdgeInsets.only(
                                               top: SizeConfig.height20,
@@ -501,7 +721,7 @@ class ProductionDetailAddNewState extends State<ProductionDetailAddNew> with Tic
                                               focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: AppTheme.addNewTextFieldFocusBorder)
                                               ),
                                               hintText: "Weight",
-                                              contentPadding: new EdgeInsets.symmetric(vertical: 10.0, horizontal: 8.0),
+                                              contentPadding: new EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),
 
                                             ),
                                             maxLines: null,
