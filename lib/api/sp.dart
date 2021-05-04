@@ -96,5 +96,8 @@ class Sp{
   static String getPaymentDetail="USP_GetInvoicePaymentDetail";
   static String deletePaymentDetail="USP_DeleteInvoicePaymentMappingDetail";
 
+
+  static String getReport="USP_RPT_GetTabReportDetail";
+
 }
 

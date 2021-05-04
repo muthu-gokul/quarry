@@ -556,7 +556,7 @@ class SaleReportHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: SizeConfig.height80,
-      width: SizeConfig.width100,
+      width: SizeConfig.screenWidth*0.31,
       /*argin: EdgeInsets.only(right: SizeConfig.width10),*/
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
@@ -567,7 +567,9 @@ class SaleReportHeader extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(" $title",style: TextStyle(fontFamily: 'RR',fontSize: 16,color: Colors.white,letterSpacing: 0.1),),
-          Text(" ₹ $value",style:TextStyle(fontFamily: 'RR',fontSize: 16,color: AppTheme.yellowColor),),
+          FittedBox(
+              fit: BoxFit.contain,
+              child: Text(" ₹ $value",style:TextStyle(fontFamily: 'RR',fontSize: 16,color: AppTheme.yellowColor),)),
           Align(
             alignment: Alignment.bottomRight,
             child:Text(" $qty ${unit??""} ",style:TextStyle(fontFamily: 'RR',fontSize: 14,color: AppTheme.addNewTextFieldBorder),),

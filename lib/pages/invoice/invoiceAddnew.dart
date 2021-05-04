@@ -306,6 +306,8 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
 
                                   SizedBox(height: SizeConfig.height20,),
 
+
+                                  //Material data table
                                   pn.invoiceMaterialMappingList.isEmpty? Column(
                                     children: [
                                       Container(

@@ -16,6 +16,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'api/sp.dart';
 import 'notifier/loginNotifier.dart';
+import 'notifier/profileNotifier.dart';
 import 'pages/homePage.dart';
 import 'styles/app_theme.dart';
 import 'styles/size.dart';
@@ -45,6 +46,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
   bool isVisible=false;
   bool isEmailInvalid=false;
   bool ispasswordInvalid=false;
+  bool _keyboardVisible = false;
 
   String prefEmail;
   String prefPassword;
@@ -131,7 +133,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
     double _width = MediaQuery.of(context).size.width;
     double _height = MediaQuery.of(context).size.height;
 
-
+    _keyboardVisible = MediaQuery.of(context).viewInsets.bottom != 0;
 
     var quarryNotifier=Provider.of<QuarryNotifier>(context, listen: false);
     var loginNotifier=Provider.of<LoginNotifier>(context, listen: false);
@@ -380,6 +382,8 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                                                           loginNotifier.userDetail.loginTable[0].DataBaseName,context);
                                                       Provider.of<QuarryNotifier>(context,listen: false).GetQuarryDetailDbhit(context);
                                                       Provider.of<QuarryNotifier>(context,listen: false).GetplantDetailDbhit(context,null);
+                                                      Provider.of<ProfileNotifier>(context, listen: false).GetUserDetailDbHit(context,loginNotifier.userDetail.loginTable[0].UserId);
+
                                                       Navigator.of(context).pushReplacement(PageRouteBuilder(
                                                         pageBuilder: (context, animation, secondaryAnimation) =>HomePage(),
 
@@ -525,6 +529,8 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                                                           loginNotifier.userDetail.loginTable[0].DataBaseName,context);
                                                       Provider.of<QuarryNotifier>(context,listen: false).GetQuarryDetailDbhit(context);
                                                       Provider.of<QuarryNotifier>(context,listen: false).GetplantDetailDbhit(context,null);
+                                                      Provider.of<ProfileNotifier>(context, listen: false).GetUserDetailDbHit(context,loginNotifier.userDetail.loginTable[0].UserId);
+
                                                       Navigator.of(context).pushReplacement(PageRouteBuilder(
                                                         pageBuilder: (context, animation, secondaryAnimation) =>HomePage(),
 
@@ -672,7 +678,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                             ),
                         ),*/
 
-              Align(
+              _keyboardVisible?Container():Align(
                 alignment: Alignment.bottomCenter,
                 child: Container(
                   height: 50,

@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:io';
-
+import 'dart:math';
 import 'package:circular_reveal_animation/circular_reveal_animation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -51,6 +51,7 @@ import 'productionDetails/productionDetailsAddNew.dart';
 import 'qLocMaterials.dart';
 import 'qLocPAyment.dart';
 import 'quarryMaster/quarryLocationAddNew.dart';
+import 'reports/salesReport/salesReportGrid.dart';
 import 'sale/saleAddNew.dart';
 import 'sale/saleGrid.dart';
 import 'vendor/vendorLocAddNew.dart';
@@ -91,7 +92,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
           key: scaffoldkey,
           drawer: Container(
             width: SizeConfig.screenWidth,
-            height: double.maxFinite,
+            height: SizeConfig.screenHeight,
             child: Drawer(
 
               child:Container(
@@ -99,37 +100,71 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
 
                 child: Column(
                   children: [
-                    Container(
-                      width: double.infinity,
-                     height: 200,
-                      child: Column(
-                        children: [
-                          Container(
-                            child: Row(
-                              children: [
-                                // Padding(
-                                //   padding: const EdgeInsets.all(8.0),
-                                //   child: Image.asset("assets/drawerImages/close-btn.png",width: 50,height: 50,),
-                                // ),
-                                SizedBox(width: SizeConfig.width20,),
-                                SvgPicture.asset("assets/images/slide-logo.svg",height: 50,width: 250,)
-
-                              ],
+                    Consumer<ProfileNotifier>(
+                      builder: (context,pn,child)=> Container(
+                        width: double.infinity,
+                       height: 210,
+                        child: Column(
+                          children: [
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: IconButton(icon: Icon(Icons.clear_outlined,size: 25,color: AppTheme.yellowColor,),
+                                  onPressed: (){
+                                   scaffoldkey.currentState.openEndDrawer();
+                                  }),
                             ),
-                            //  decoration: BoxDecoration
-                            //    shape: BoxShape.
-                            // ),
-                          ),
-                        ],
+                            Container(
+                              height: 100,
+                              width: 100,
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: AppTheme.yellowColor,
+
+                              ),
+
+                            ),
+                            SizedBox(height: 10,),
+                            Text("${pn.selectedSalutation}.${pn.firstName.text}${pn.lastName.text}",
+                              style: AppTheme.TSWhite16,
+                            ),
+                            SizedBox(height: 6,),
+                            Container(
+                              padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(50),
+                                color: AppTheme.yellowColor
+                              ),
+                              child: Text("${pn.UserGroupName}",
+                                style: TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 12),
+                              ),
+                            ),
+                          /*  Container(
+                              child: Row(
+                                children: [
+                                  // Padding(
+                                  //   padding: const EdgeInsets.all(8.0),
+                                  //   child: Image.asset("assets/drawerImages/close-btn.png",width: 50,height: 50,),
+                                  // ),
+                                  SizedBox(width: SizeConfig.width20,),
+                                  SvgPicture.asset("assets/images/slide-logo.svg",height: 50,width: 250,)
+
+                                ],
+                              ),
+                              //  decoration: BoxDecoration
+                              //    shape: BoxShape.
+                              // ),
+                            ),*/
+                          ],
+                        ),
                       ),
                     ),
 
                     Container(
-                      height: SizeConfig.screenHeight-200,
+                      height: SizeConfig.screenHeight-210,
                       child: Column(
                         children: [
                           Container(
-                            height: (SizeConfig.screenHeight-200),
+                            height: (SizeConfig.screenHeight-255),
                             child: ListView(
                               children: [
 
@@ -250,9 +285,11 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                   image: "assets/drawerImages/dashboard.png",
                                   title: 'Reports',
                                   tag: "Reports",
-                                  titleColor: AppTheme.grey,
+                                  titleColor: AppTheme.yellowColor,
                                   callback: (){
-
+                                    Navigator.push(context, MaterialPageRoute(builder: (context)=>ReportsPage(voidCallback: (){
+                                      scaffoldkey.currentState.openEndDrawer();
+                                    },)));
                                     },
                                 ),
                                 DrawerContent(
@@ -270,9 +307,22 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
 
                                 ),
 
+
+
                               ],
                             ),
                           ),
+
+                          Container(
+                            height: 80,
+                            width: 80,
+                            padding: EdgeInsets.only(bottom: 40),
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: AppTheme.yellowColor
+                            ),
+                            child: Icon(Icons.power_settings_new_outlined,color: AppTheme.bgColor,),
+                          )
 
 
 
@@ -333,6 +383,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
           drawer.menuSelected==15?PaymentGrid(drawerCallback: (){
             scaffoldkey.currentState.openDrawer();
           },):
+
+          drawer.menuSelected==16?SalesReportGrid(drawerCallback: (){
+            scaffoldkey.currentState.openDrawer();
+          },):
           Container()
       ),
     );
@@ -371,9 +425,9 @@ class DrawerContent extends StatelessWidget {
         child: Container(
           height: height,
           width: SizeConfig.screenWidth,
-          alignment: Alignment.center,
+         alignment: Alignment.center,
           child: Container(
-            width: 190,
+            width: 210,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
@@ -420,137 +474,287 @@ class SettingsPageState extends State<SettingsPage> with TickerProviderStateMixi
         height: SizeConfig.screenHeight,
         width: SizeConfig.screenWidth,
         color: AppTheme.bgColor,
+        alignment: Alignment.center,
         child:  Column(
           children: [
 
-            Align(
-              alignment: Alignment.centerRight,
-              child: IconButton(icon: Icon(Icons.clear_outlined,size: 25,color: AppTheme.yellowColor,),
-                  onPressed: (){
-                     Navigator.pop(context);
-                  }),
+            Container(
+              height: SizeConfig.screenHeight-45,
+              width: SizeConfig.screenWidth,
+
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: IconButton(icon: Icon(Icons.clear_outlined,size: 25,color: AppTheme.yellowColor,),
+                        onPressed: (){
+                          Navigator.pop(context);
+                        }),
+                  ),
+
+                  Hero(
+                    transitionOnUserGestures: true,
+                    tag: "Settings",
+                    child:SvgPicture.asset("assets/svg/settings-icon.svg",width: 100,height: 100,),
+                  ),
+
+                  DrawerContent(
+                    delay: 0.1,
+                    height: 50,
+                    image: "assets/drawerImages/dashboard.png",
+                    title: 'Company Detail',
+                    tag: 'Company',
+                    titleColor: AppTheme.yellowColor,
+                    callback: (){
+                      Navigator.pop(context);
+                      widget.voidCallback();
+
+                      Provider.of<DrawerNotifier>(context,listen: false).changeMenu(1);
+                      Provider.of<QuarryNotifier>(context,listen: false).GetQuarryDetailDbhit(context);
+                      Provider.of<QuarryNotifier>(context,listen: false).GetplantDetailDbhit(context,null);
+                    },
+                  ),
+
+                  DrawerContent(
+                    delay:1,
+                    height: 50,
+                    image: "assets/drawerImages/dashboard.png",
+                    title: 'Sales Detail',
+                    tag: 'SaleDetail',
+                    titleColor: AppTheme.yellowColor,
+                    callback: (){
+                      Navigator.pop(context);
+                      widget.voidCallback();
+                      Provider.of<DrawerNotifier>(context,listen: false).changeMenu(4);
+
+                      // Provider.of<QuarryNotifier>(context,listen: false).initDropDownValues(context);
+                      Provider.of<QuarryNotifier>(context,listen: false).GetCustomerDetailDbhit(context);
+                      Provider.of<QuarryNotifier>(context,listen: false).GetSaleDetailDbhit(context);
+                    },
+                  ),
+
+                  DrawerContent(
+                    delay: 1.5,
+                    height: 50,
+                    image: "assets/drawerImages/dashboard.png",
+                    title: 'Customer Detail',
+                    tag: 'CustomeDetail',
+                    titleColor: AppTheme.yellowColor,
+                    callback: (){
+                      Navigator.pop(context);
+                      widget.voidCallback();
+                      Provider.of<DrawerNotifier>(context,listen: false).changeMenu(5);
+
+                      Provider.of<CustomerNotifier>(context,listen: false).GetCustomerDetailDbhit(context,null);
+
+                    },
+                  ),
+
+                  DrawerContent(
+                    delay: 2,
+                    height: 50,
+                    image: "assets/drawerImages/dashboard.png",
+                    title: 'Material Detail',
+                    tag: 'Material',
+                    titleColor: AppTheme.yellowColor,
+                    callback: (){
+                      Navigator.pop(context);
+                      widget.voidCallback();
+                      Provider.of<DrawerNotifier>(context,listen: false).changeMenu(2);
+
+                      Provider.of<MaterialNotifier>(context,listen: false).GetMaterialDbHit(context,null);
+                    },
+                  ),
+                  DrawerContent(
+                    delay: 2.5,
+                    height: 50,
+                    image: "assets/drawerImages/dashboard.png",
+                    title: 'Machine Detail',
+                    tag: 'Machine',
+                    titleColor: AppTheme.yellowColor,
+                    callback: (){
+                      Navigator.pop(context);
+                      widget.voidCallback();
+                      Provider.of<DrawerNotifier>(context,listen: false).changeMenu(6);
+
+                      Provider.of<MachineNotifier>(context,listen: false).GetMachineDbHit(context,null);
+
+                    },
+                  ),
+                  DrawerContent(
+                    delay: 3,
+                    height: 50,
+                    image: "assets/drawerImages/dashboard.png",
+                    title: 'Vehicle Detail',
+                    tag: 'Vehicle',
+                    titleColor: AppTheme.yellowColor,
+                    callback: (){
+                      Navigator.pop(context);
+                      widget.voidCallback();
+                      Provider.of<DrawerNotifier>(context,listen: false).changeMenu(7);
+
+                      Provider.of<VehicleNotifier>(context, listen: false).GetVehicleDbHit(context,null);
+
+                    },
+                  ),
+                  DrawerContent(
+                    delay: 3.5,
+                    height: 50,
+                    image: "assets/drawerImages/dashboard.png",
+                    title: 'Supplier Detail',
+                    tag: 'Supplier',
+                    titleColor: AppTheme.yellowColor,
+                    callback: (){
+                      Navigator.pop(context);
+                      widget.voidCallback();
+                      Provider.of<DrawerNotifier>(context,listen: false).changeMenu(8);
+
+                      Provider.of<SupplierNotifier>(context, listen: false).GetSupplierDbHit(context,null,this);
+                    },
+                  ),
+                ],
+              ),
             ),
 
-            Hero(
-              transitionOnUserGestures: true,
-              tag: "Settings",
-              child:SvgPicture.asset("assets/svg/settings-icon.svg",width: 100,height: 100,),
-            ),
 
-            DrawerContent(
-              delay: 0.1,
-              height: 50,
-              image: "assets/drawerImages/dashboard.png",
-              title: 'Company Detail',
-              tag: 'Company',
-              titleColor: AppTheme.yellowColor,
-              callback: (){
+
+
+            GestureDetector(
+              onTap: (){
                 Navigator.pop(context);
-                widget.voidCallback();
-
-                  Provider.of<DrawerNotifier>(context,listen: false).changeMenu(1);
-                  Provider.of<QuarryNotifier>(context,listen: false).GetQuarryDetailDbhit(context);
-                  Provider.of<QuarryNotifier>(context,listen: false).GetplantDetailDbhit(context,null);
               },
+              child: Container(
+                height: 80,
+                width: 80,
+                padding: EdgeInsets.only(bottom: 35),
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: AppTheme.yellowColor
+                ),
+                child: Icon(Icons.arrow_back,color: AppTheme.bgColor,),
+              ),
+            )
+          ],
+        ),
+      ),
+
+
+    );
+  }
+}
+
+class ReportsPage extends StatefulWidget {
+
+  VoidCallback voidCallback;
+  ReportsPage({this.voidCallback});
+
+  @override
+  ReportsPageState createState() => ReportsPageState();
+}
+
+class ReportsPageState extends State<ReportsPage> with TickerProviderStateMixin{
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+
+      body: Container(
+        height: SizeConfig.screenHeight,
+        width: SizeConfig.screenWidth,
+        color: AppTheme.bgColor,
+        child:  Column(
+          children: [
+
+            Container(
+              height: SizeConfig.screenHeight-45,
+              width: SizeConfig.screenWidth,
+
+              child: Column(
+                children: [
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: IconButton(icon: Icon(Icons.clear_outlined,size: 25,color: AppTheme.yellowColor,),
+                        onPressed: (){
+                          Navigator.pop(context);
+                        }),
+                  ),
+
+                  Hero(
+                    transitionOnUserGestures: true,
+                    tag: "Reports",
+                    child:SvgPicture.asset("assets/svg/settings-icon.svg",width: 100,height: 100,),
+                  ),
+
+                  DrawerContent(
+                    delay: 0.1,
+                    height: 50,
+                    image: "assets/drawerImages/dashboard.png",
+                    title: 'Sales Report',
+                    tag: 'SalesReport',
+                    titleColor: AppTheme.yellowColor,
+                    callback: (){
+                      Navigator.pop(context);
+                      widget.voidCallback();
+
+                      Provider.of<DrawerNotifier>(context,listen: false).changeMenu(16);
+
+                     // Provider.of<QuarryNotifier>(context,listen: false).GetQuarryDetailDbhit(context);
+                      //Provider.of<QuarryNotifier>(context,listen: false).GetplantDetailDbhit(context,null);
+                    },
+                  ),
+
+                  DrawerContent(
+                    delay:1,
+                    height: 50,
+                    image: "assets/drawerImages/dashboard.png",
+                    title: 'Purchase Report',
+                    tag: 'PurchaseReport',
+                    titleColor: AppTheme.yellowColor,
+                    callback: (){
+                      Navigator.pop(context);
+                      widget.voidCallback();
+
+                    },
+                  ),
+
+                  DrawerContent(
+                    delay: 1.5,
+                    height: 50,
+                    image: "assets/drawerImages/dashboard.png",
+                    title: 'Customer Sales Report',
+                    tag: 'CustomerSalesReport',
+                    titleColor: AppTheme.yellowColor,
+                    callback: (){
+                      Navigator.pop(context);
+                      widget.voidCallback();
+
+
+                    },
+                  ),
+
+
+                ],
+              ),
             ),
 
-            DrawerContent(
-              delay:1,
-              height: 50,
-              image: "assets/drawerImages/dashboard.png",
-              title: 'Sales Detail',
-              tag: 'SaleDetail',
-              titleColor: AppTheme.yellowColor,
-              callback: (){
+
+
+
+            GestureDetector(
+              onTap: (){
                 Navigator.pop(context);
-                widget.voidCallback();
-                Provider.of<DrawerNotifier>(context,listen: false).changeMenu(4);
-
-                 // Provider.of<QuarryNotifier>(context,listen: false).initDropDownValues(context);
-                  Provider.of<QuarryNotifier>(context,listen: false).GetCustomerDetailDbhit(context);
-                  Provider.of<QuarryNotifier>(context,listen: false).GetSaleDetailDbhit(context);
               },
-            ),
-
-            DrawerContent(
-              delay: 1.5,
-              height: 50,
-              image: "assets/drawerImages/dashboard.png",
-              title: 'Customer Detail',
-              tag: 'CustomeDetail',
-              titleColor: AppTheme.yellowColor,
-              callback: (){
-                Navigator.pop(context);
-                widget.voidCallback();
-                Provider.of<DrawerNotifier>(context,listen: false).changeMenu(5);
-
-                Provider.of<CustomerNotifier>(context,listen: false).GetCustomerDetailDbhit(context,null);
-
-              },
-            ),
-
-            DrawerContent(
-              delay: 2,
-              height: 50,
-              image: "assets/drawerImages/dashboard.png",
-              title: 'Material Detail',
-              tag: 'Material',
-              titleColor: AppTheme.yellowColor,
-              callback: (){
-                Navigator.pop(context);
-                widget.voidCallback();
-                Provider.of<DrawerNotifier>(context,listen: false).changeMenu(2);
-
-                Provider.of<MaterialNotifier>(context,listen: false).GetMaterialDbHit(context,null);
-              },
-            ),
-            DrawerContent(
-              delay: 2.5,
-              height: 50,
-              image: "assets/drawerImages/dashboard.png",
-              title: 'Machine Detail',
-              tag: 'Machine',
-              titleColor: AppTheme.yellowColor,
-              callback: (){
-                Navigator.pop(context);
-                widget.voidCallback();
-                Provider.of<DrawerNotifier>(context,listen: false).changeMenu(6);
-
-                Provider.of<MachineNotifier>(context,listen: false).GetMachineDbHit(context,null);
-
-              },
-            ),
-            DrawerContent(
-              delay: 3,
-              height: 50,
-              image: "assets/drawerImages/dashboard.png",
-              title: 'Vehicle Detail',
-              tag: 'Vehicle',
-              titleColor: AppTheme.yellowColor,
-              callback: (){
-                Navigator.pop(context);
-                widget.voidCallback();
-                Provider.of<DrawerNotifier>(context,listen: false).changeMenu(7);
-
-                Provider.of<VehicleNotifier>(context, listen: false).GetVehicleDbHit(context,null);
-
-              },
-            ),
-            DrawerContent(
-              delay: 3.5,
-              height: 50,
-              image: "assets/drawerImages/dashboard.png",
-              title: 'Supplier Detail',
-              tag: 'Supplier',
-              titleColor: AppTheme.yellowColor,
-              callback: (){
-                Navigator.pop(context);
-                widget.voidCallback();
-                Provider.of<DrawerNotifier>(context,listen: false).changeMenu(8);
-
-               Provider.of<SupplierNotifier>(context, listen: false).GetSupplierDbHit(context,null,this);
-              },
-            ),
+              child: Container(
+                height: 80,
+                width: 80,
+                padding: EdgeInsets.only(bottom: 35),
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: AppTheme.yellowColor
+                ),
+                child: Icon(Icons.arrow_back,color: AppTheme.bgColor,),
+              ),
+            )
           ],
         ),
       ),
@@ -562,7 +766,19 @@ class SettingsPageState extends State<SettingsPage> with TickerProviderStateMixi
 
 
 
+class CustomHalfCircleClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    final Path path = new Path();
+    path.lineTo(0.0, size.height / 2);
+    path.lineTo(size.width, size.height / 2);
+    path.lineTo(size.width, 0);
+    return path;
+  }
 
-
-
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) {
+    return true;
+  }
+}
 

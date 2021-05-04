@@ -53,6 +53,18 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
   bool deleteOpen=false;
   int selectedMaterialIndex=-1;
 
+
+  /*  For DataTable   */
+  ScrollController header=new ScrollController();
+  ScrollController body=new ScrollController();
+  ScrollController verticalLeft=new ScrollController();
+  ScrollController verticalRight=new ScrollController();
+  bool showShadow=false;
+  double valueContainerWidth=100;
+  double dataTableheight=300;
+  double dataTableBodyheight=250;
+  List<String> gridcol=["Material","Qty","Price","Tax","Total",];
+
   @override
   void initState() {
 
@@ -87,6 +99,42 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
         }
         else if(listViewController.offset==0){
           scrollController.animateTo(0, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+        }
+      });
+
+      header.addListener(() {
+        if(body.offset!=header.offset){
+          body.jumpTo(header.offset);
+        }
+        if(header.offset==0){
+          setState(() {
+            showShadow=false;
+          });
+        }
+        else{
+          if(!showShadow){
+            setState(() {
+              showShadow=true;
+            });
+          }
+        }
+      });
+
+      body.addListener(() {
+        if(header.offset!=body.offset){
+          header.jumpTo(body.offset);
+        }
+      });
+
+      verticalLeft.addListener(() {
+        if(verticalRight.offset!=verticalLeft.offset){
+          verticalRight.jumpTo(verticalLeft.offset);
+        }
+      });
+
+      verticalRight.addListener(() {
+        if(verticalLeft.offset!=verticalRight.offset){
+          verticalLeft.jumpTo(verticalRight.offset);
         }
       });
 
@@ -236,7 +284,401 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                                   ),
                                   SizedBox(height: SizeConfig.height20,),
 
+
+                                  //Material Data Table
                                   pn.purchaseOrdersMappingList.isEmpty? Column(
+                                    children: [
+                                      Container(
+                                        height: SizeConfig.height70,
+                                        width: SizeConfig.height70,
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            border: Border.all(color: AppTheme.uploadColor,width: 2)
+                                        ),
+                                        child: Center(
+                                          child: Icon(Icons.upload_rounded,color: AppTheme.yellowColor,),
+                                        ),
+                                      ),
+                                      SizedBox(height: SizeConfig.height20,),
+                                      Align(
+                                        alignment: Alignment.center,
+                                        child: Text("Do you want to Add Material?",
+                                          style: TextStyle(fontFamily: 'RR',fontSize: 14,color: AppTheme.gridTextColor),
+                                        ),
+                                      ),
+                                      SizedBox(height: SizeConfig.height10,),
+                                      GestureDetector(
+                                        onTap: (){
+                                          if(pn.supplierId!=null){
+                                            setState(() {
+                                              materialsListOpen=true;
+                                            });
+                                          }
+                                          else{
+                                            CustomAlert().commonErrorAlert(context, "Select Supplier", "");
+                                          }
+
+                                        },
+                                        child: Container(
+                                          margin: EdgeInsets.only(left: SizeConfig.width90,right:  SizeConfig.width90,),
+                                          height:45,
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(25.0),
+                                            color: AppTheme.yellowColor,
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: AppTheme.yellowColor.withOpacity(0.4),
+                                                spreadRadius: 1,
+                                                blurRadius: 5,
+                                                offset: Offset(1, 8), // changes position of shadow
+                                              ),
+                                            ],
+                                          ),
+                                          child: Center(
+                                              child: Text("+ Add Material",style: TextStyle(color:AppTheme.bgColor,fontSize:16,fontFamily: 'RM'),
+                                              )
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ):
+                                  Container(
+                                      height: dataTableheight+150,
+                                      width: SizeConfig.screenWidth,
+                                      clipBehavior: Clip.antiAlias,
+                                      margin: EdgeInsets.only(left:SizeConfig.screenWidth*0.02,right:SizeConfig.screenWidth*0.02),
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(10),
+                                          color: Colors.white,
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: AppTheme.addNewTextFieldText.withOpacity(0.2),
+                                              spreadRadius: 2,
+                                              blurRadius: 15,
+                                              offset: Offset(0, 0), // changes position of shadow
+                                            )
+                                          ]
+                                      ),
+                                      child:Stack(
+                                        children: [
+
+                                          //Scrollable
+                                          Positioned(
+                                            left:99,
+                                            child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.start,
+                                              children: [
+                                                Container(
+                                                  height: 50,
+                                                  width: SizeConfig.screenWidth-valueContainerWidth-SizeConfig.screenWidth*0.04,
+                                                  color: showShadow? AppTheme.f737373.withOpacity(0.8):AppTheme.f737373,
+                                                  child: SingleChildScrollView(
+                                                    controller: header,
+                                                    scrollDirection: Axis.horizontal,
+                                                    child: Row(
+                                                        children: gridcol.asMap().
+                                                        map((i, value) => MapEntry(i, i==0?Container():
+                                                        Container(
+                                                            alignment: Alignment.center,
+                                                            //  padding: EdgeInsets.only(left: 20,right: 20),
+                                                            width: valueContainerWidth,
+                                                            child: Text(value,style: AppTheme.TSWhiteML,)
+                                                        )
+                                                        )).values.toList()
+                                                    ),
+                                                  ),
+
+                                                ),
+                                                Container(
+                                                  height: dataTableBodyheight,
+                                                  width: SizeConfig.screenWidth-valueContainerWidth-SizeConfig.screenWidth*0.04,
+                                                  alignment: Alignment.topCenter,
+                                                  color: Colors.white,
+                                                  child: SingleChildScrollView(
+                                                    controller: body,
+                                                    scrollDirection: Axis.horizontal,
+                                                    child: Container(
+                                                      height: dataTableBodyheight,
+                                                      alignment: Alignment.topCenter,
+                                                      color:Colors.white,
+                                                      child: SingleChildScrollView(
+                                                        controller: verticalRight,
+                                                        scrollDirection: Axis.vertical,
+                                                        child:  Column(
+                                                            children:pn.purchaseOrdersMappingList.asMap().
+                                                            map((index, value) => MapEntry(
+                                                                index,InkWell(
+                                                              onTap: (){
+                                                                setState(() {
+                                                                  if(selectedMaterialIndex!=index){
+                                                                    selectedMaterialIndex=index;
+                                                                    deleteOpen=true;
+                                                                  }else{
+                                                                    selectedMaterialIndex=-1;
+                                                                    deleteOpen=false;
+                                                                  }
+                                                                });
+                                                              },
+                                                              child: Container(
+
+                                                                height: 60,
+                                                                decoration: BoxDecoration(
+                                                                  border: Border(bottom: BorderSide(color: AppTheme.addNewTextFieldBorder.withOpacity(0.5))),
+                                                                  color:selectedMaterialIndex==index?AppTheme.red: Colors.white,
+                                                                ),
+
+                                                                child: Row(
+                                                                  children: [
+
+                                                                    Container(
+                                                                      alignment: Alignment.center,
+
+                                                                      width: valueContainerWidth,
+                                                                      child:  Container(
+                                                                        height: 30,
+                                                                        width: 65,
+
+                                                                        decoration: BoxDecoration(
+                                                                            border: Border.all(color: AppTheme.addNewTextFieldBorder),
+                                                                            borderRadius: BorderRadius.circular(15)
+                                                                        ),
+                                                                        child: TextField(
+                                                                          style: selectedMaterialIndex==index?AppTheme.TSWhite166:AppTheme.gridTextColorTS,
+                                                                          controller: value.purchaseQty,
+                                                                          decoration: InputDecoration(
+                                                                              hintText: "0",
+                                                                              hintStyle: AppTheme.hintText,
+                                                                              border: InputBorder.none,
+                                                                              focusedBorder: InputBorder.none,
+                                                                              enabledBorder: InputBorder.none,
+                                                                              errorBorder: InputBorder.none,
+                                                                              contentPadding: EdgeInsets.only(left: 10,bottom: 12)
+                                                                          ),
+                                                                          keyboardType: TextInputType.number,
+                                                                          onChanged: (v){
+                                                                            pn.purchaseOrdersCalc(index, v);
+                                                                          },
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                    Container(
+                                                                      alignment: Alignment.center,
+                                                                      width: valueContainerWidth,
+                                                                      child: Text("${value.Amount}",
+                                                                        style:AppTheme.ML_bgCT,
+                                                                      ),
+                                                                    ),
+
+                                                                    Container(
+                                                                      width: valueContainerWidth,
+                                                                      alignment: Alignment.center,
+                                                                      child: Text("${value.TaxAmount}",
+                                                                        style:AppTheme.ML_bgCT,
+                                                                      ),
+                                                                    ),
+                                                                    Container(
+                                                                      width: valueContainerWidth,
+                                                                      alignment: Alignment.center,
+                                                                      child: Text("${value.TotalAmount}",
+                                                                        style:AppTheme.ML_bgCT,
+                                                                      ),
+                                                                    ),
+
+
+
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            )
+                                                            )
+                                                            ).values.toList()
+                                                        ),
+                                                      ),
+
+
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+
+
+                                          //not Scrollable
+                                          Positioned(
+                                            left: 0,
+                                            child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.start,
+                                              children: [
+                                                Container(
+                                                  height: 50,
+                                                  width: valueContainerWidth,
+                                                  color: AppTheme.f737373,
+                                                  alignment: Alignment.center,
+                                                  child: Text("${gridcol[0]}",style: AppTheme.TSWhiteML,),
+
+                                                ),
+                                                Container(
+                                                  height: dataTableBodyheight,
+                                                  alignment: Alignment.topCenter,
+                                                  decoration: BoxDecoration(
+                                                      color: Colors.white,
+                                                      boxShadow: [
+                                                        showShadow?  BoxShadow(
+                                                          color: AppTheme.addNewTextFieldText.withOpacity(0.3),
+                                                          spreadRadius: 0,
+                                                          blurRadius: 15,
+                                                          offset: Offset(10, -8), // changes position of shadow
+                                                        ):BoxShadow(color: Colors.transparent)
+                                                      ]
+                                                  ),
+                                                  child: Container(
+                                                    height: dataTableBodyheight,
+                                                    alignment: Alignment.topCenter,
+
+                                                    child: SingleChildScrollView(
+                                                      controller: verticalLeft,
+                                                      scrollDirection: Axis.vertical,
+                                                      child:  Column(
+                                                          children: pn.purchaseOrdersMappingList.asMap().
+                                                          map((index, value) => MapEntry(
+                                                              index,InkWell(
+                                                            onTap: (){
+                                                              setState(() {
+                                                                if(selectedMaterialIndex!=index){
+                                                                  selectedMaterialIndex=index;
+                                                                  deleteOpen=true;
+                                                                }else{
+                                                                  selectedMaterialIndex=-1;
+                                                                  deleteOpen=false;
+                                                                }
+                                                              });
+                                                            },
+                                                            child:  Container(
+                                                              alignment: Alignment.center,
+                                                              height: 60,
+                                                              width: valueContainerWidth,
+                                                              decoration: BoxDecoration(
+                                                                border: Border(bottom: BorderSide(color: AppTheme.addNewTextFieldBorder.withOpacity(0.5))),
+
+                                                                color:selectedMaterialIndex==index?AppTheme.red: Colors.white,
+                                                              ),
+                                                              child: Text("${value.materialName}",
+                                                                style: AppTheme.ML_bgCT,
+                                                              ),
+                                                            ),
+                                                          )
+                                                          )
+                                                          ).values.toList()
+
+
+                                                      ),
+                                                    ),
+
+
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+
+
+                                          Positioned(
+                                            bottom: 0,
+                                            child: Container(
+                                              height: 150,
+                                              width: SizeConfig.screenWidth,
+                                              padding: EdgeInsets.only(right: SizeConfig.screenWidth*0.04),
+                                              decoration: BoxDecoration(
+                                                  color: Colors.white,
+                                                  border: Border(top: BorderSide(color: AppTheme.gridTextColor.withOpacity(0.3)))
+                                              ),
+                                              child: Column(
+                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                children: [
+                                                  Row(
+                                                    children: [
+                                                      Container(
+                                                          height:25,
+                                                          width: SizeConfig.screenWidth*0.6,
+                                                          alignment: Alignment.centerRight,
+                                                          child: Text("Subtotal: ",style: AppTheme.gridTextColorTS,)
+                                                      ),
+                                                      Spacer(),
+                                                      Text("${pn.subtotal}  ",style: AppTheme.gridTextColorTS,)
+                                                    ],
+                                                  ),
+                                                  Row(
+                                                    children: [
+                                                      Container(
+                                                          height:25,
+                                                          width: SizeConfig.screenWidth*0.6,
+                                                          alignment: Alignment.centerRight,
+                                                          child: Text("Discount: ",style: AppTheme.gridTextColorTS,)
+                                                      ),
+                                                      Spacer(),
+                                                      Text("-${pn.discountAmount}  ",style: AppTheme.gridTextColorTS,)
+                                                    ],
+                                                  ),
+                                                  Row(
+                                                    children: [
+                                                      Container(
+                                                          height:25,
+                                                          width: SizeConfig.screenWidth*0.6,
+                                                          alignment: Alignment.centerRight,
+                                                          child: Text("GST: ",style: AppTheme.gridTextColorTS,)
+                                                      ),
+                                                      Spacer(),
+                                                      Text("${pn.taxAmount}  ",style: AppTheme.gridTextColorTS,)
+                                                    ],
+                                                  ),
+
+                                                  Row(
+                                                    children: [
+                                                      Container(
+                                                          height:25,
+                                                          width: SizeConfig.screenWidth*0.6,
+                                                          alignment: Alignment.centerRight,
+                                                          child: Text("Other Charges: ",style: AppTheme.gridTextColorTS,)
+                                                      ),
+                                                      Spacer(),
+                                                      Text("${pn.otherCharges}  ",style: AppTheme.gridTextColorTS,)
+                                                    ],
+                                                  ),
+                                                  Row(
+                                                    children: [
+                                                      Container(
+                                                          height:25,
+                                                          width: SizeConfig.screenWidth*0.6,
+                                                          alignment: Alignment.centerRight,
+                                                          child: Text("Total: ",style: AppTheme.bgColorTS,)
+                                                      ),
+                                                      Spacer(),
+                                                      Text("${pn.grandTotal}  ",style: AppTheme.bgColorTS,)
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+
+                                            ),
+                                          )
+
+
+
+
+                                        ],
+                                      )
+
+
+
+
+
+
+
+                                  ),
+
+
+                                 /* pn.purchaseOrdersMappingList.isEmpty? Column(
                                     children: [
                                       Container(
                                         height: SizeConfig.height70,
@@ -527,7 +969,7 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                                         Spacer(),
                                       ],
                                     ),
-                                  ) ,
+                                  ) ,*/
 
 
 
