@@ -19,6 +19,7 @@ import 'package:quarry/notifier/productionNotifier.dart';
 import 'package:quarry/notifier/profileNotifier.dart';
 import 'package:quarry/notifier/purchaseNotifier.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
+import 'package:quarry/notifier/reportsNotifier.dart';
 import 'package:quarry/notifier/supplierNotifier.dart';
 import 'package:quarry/notifier/vehicleNotifier.dart';
 import 'package:quarry/pages/goodsReceived/goodsReceivedGrid.dart';
@@ -698,7 +699,7 @@ class ReportsPageState extends State<ReportsPage> with TickerProviderStateMixin{
 
                       Provider.of<DrawerNotifier>(context,listen: false).changeMenu(16);
 
-                     // Provider.of<QuarryNotifier>(context,listen: false).GetQuarryDetailDbhit(context);
+                      Provider.of<ReportsNotifier>(context,listen: false).ReportsDropDownValues(context,"SaleReport");
                       //Provider.of<QuarryNotifier>(context,listen: false).GetplantDetailDbhit(context,null);
                     },
                   ),

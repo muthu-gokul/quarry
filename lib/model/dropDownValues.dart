@@ -72,20 +72,31 @@ class CustomerModel {
   CustomerModel({
     this.customerId,
     this.customerName,
+    this.isActive
   });
 
   int customerId;
   String customerName;
+  bool isActive;
 
   factory CustomerModel.fromJson(Map<String, dynamic> json) => CustomerModel(
     customerId: json["CustomerId"],
     customerName: json["CustomerName"],
+    isActive: true
   );
 
   Map<String, dynamic> toJson() => {
     "CustomerId": customerId,
     "CustomerName": customerName,
   };
+
+  dynamic get(String propertyName) {
+    var _mapRep = toJson();
+    if (_mapRep.containsKey(propertyName)) {
+      return _mapRep[propertyName];
+    }
+    throw ArgumentError('propery not found');
+  }
 }
 
 

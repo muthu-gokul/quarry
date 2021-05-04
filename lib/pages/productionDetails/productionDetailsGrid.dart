@@ -30,6 +30,8 @@ class ProductionGridState extends State<ProductionGrid> with TickerProviderState
   int selectedIndex;
 
 
+
+
   ScrollController header=new ScrollController();
   ScrollController body=new ScrollController();
   ScrollController verticalLeft=new ScrollController();
@@ -39,6 +41,10 @@ class ProductionGridState extends State<ProductionGrid> with TickerProviderState
 
   @override
   void initState() {
+
+  //  print("globalKey.currentContext.size.width  ${globalKey.currentContext.size.width}");
+
+
     header.addListener(() {
       if(body.offset!=header.offset){
         body.jumpTo(header.offset);
@@ -167,6 +173,7 @@ class ProductionGridState extends State<ProductionGrid> with TickerProviderState
                     )
                 ),
 
+                //Data TAble
                 Container(
                     height: SizeConfig.screenHeight-140,
                     width: SizeConfig.screenWidth,
@@ -175,14 +182,6 @@ class ProductionGridState extends State<ProductionGrid> with TickerProviderState
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10))
-                      /*  boxShadow: [
-                          BoxShadow(
-                            color: AppTheme.addNewTextFieldText.withOpacity(0.9),
-                            spreadRadius: 2,
-                            blurRadius: 15,
-                            offset: Offset(30, 0), // changes position of shadow
-                          )
-                        ]*/
                     ),
                     child: Stack(
                       children: [
@@ -204,9 +203,11 @@ class ProductionGridState extends State<ProductionGrid> with TickerProviderState
                                       children: pn.productionGridCol.asMap().
                                       map((i, value) => MapEntry(i, i==0?Container():
                                       Container(
+
                                           alignment: Alignment.center,
-                                          //  padding: EdgeInsets.only(left: 20,right: 20),
                                           width: 150,
+
+                                        //  width: double.maxFinite,
                                           child: Text(value,style: AppTheme.TSWhite166,)
                                       )
                                       )).values.toList()
@@ -251,16 +252,7 @@ class ProductionGridState extends State<ProductionGrid> with TickerProviderState
 
                                               decoration: BoxDecoration(
                                                 color: selectedIndex==i?AppTheme.yellowColor:AppTheme.gridbodyBgColor,
-                                            /*    boxShadow:[
-                                                  selectedIndex==i? BoxShadow(
-                                                    color: AppTheme.yellowColor.withOpacity(0.4),
-                                                    spreadRadius: 1,
-                                                    blurRadius: 5,
-                                                    offset: Offset(1, 8), // changes position of shadow
-                                                  ):BoxShadow(
-                                                      color: Colors.white
-                                                  ),
-                                                ],*/
+
                                               ),
                                              height: 60,
                                              // padding: EdgeInsets.only(top: 20,bottom: 20),
@@ -270,8 +262,12 @@ class ProductionGridState extends State<ProductionGrid> with TickerProviderState
 
                                                   Container(
                                                     alignment: Alignment.center,
-                                                    // padding: EdgeInsets.only(left: 20,right: 20),
+
                                                     width: 150,
+
+
+                                                  //  width: double.maxFinite,
+                                                  //  width: globalKey.currentContext.size.width,
                                                     child: Text("${value.inputMaterialName}",
                                                       style:selectedIndex==i?AppTheme.bgColorTS:AppTheme.gridTextColorTS,
                                                     ),
@@ -280,6 +276,9 @@ class ProductionGridState extends State<ProductionGrid> with TickerProviderState
                                                   Container(
                                                     alignment: Alignment.center,
                                                     width: 150,
+
+                                                  //  width: double.maxFinite,
+                                                   // width: globalKey.currentContext.size.width,
                                                     child: Text("${value.inputMaterialQuantity}",
                                                       style:selectedIndex==i?AppTheme.bgColorTS:AppTheme.gridTextColorTS,
                                                     ),
@@ -287,6 +286,8 @@ class ProductionGridState extends State<ProductionGrid> with TickerProviderState
 
                                                   Container(
                                                     width: 150,
+                                                    ///width: double.maxFinite,
+                                                  //  width: globalKey.currentContext.size.width,
                                                     alignment: Alignment.center,
                                                     child: Text("${value.outputMaterialCount}",
                                                       style:selectedIndex==i?AppTheme.bgColorTS:AppTheme.gridTextColorTS,
@@ -369,20 +370,8 @@ class ProductionGridState extends State<ProductionGrid> with TickerProviderState
                                             alignment: Alignment.center,
                                             decoration: BoxDecoration(
                                               color: selectedIndex==i?AppTheme.yellowColor:AppTheme.gridbodyBgColor,
-
-                                              boxShadow:[
-                                            /*    selectedIndex==i? BoxShadow(
-                                                  color: AppTheme.yellowColor.withOpacity(0.4),
-                                                  spreadRadius: 2,
-                                                  blurRadius: 5,
-                                                  offset: Offset(1, 8), // changes position of shadow
-                                                ):BoxShadow(
-                                                    color: Colors.white
-                                                ),*/
-                                              ],
                                             ),
                                           height: 60,
-                                          //  padding: EdgeInsets.only(left: 20,right: 20,bottom: 20,top: 20),
                                             width: 150,
                                             child: Text("${value.machineName}",
                                               style:selectedIndex==i?AppTheme.bgColorTS:AppTheme.gridTextColorTS,

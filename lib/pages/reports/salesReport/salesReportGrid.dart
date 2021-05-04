@@ -6,15 +6,17 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/notifier/productionNotifier.dart';
 import 'package:quarry/notifier/purchaseNotifier.dart';
+import 'package:quarry/notifier/reportsNotifier.dart';
 import 'package:quarry/notifier/supplierNotifier.dart';
 import 'package:quarry/pages/productionDetails/productionDetailsAddNew.dart';
 import 'package:quarry/pages/purchaseDetails/purchaseAddNew.dart';
+import 'package:quarry/pages/reports/salesReport/salesSettings.dart';
 import 'package:quarry/pages/sale/saleGrid.dart';
 import 'package:quarry/pages/supplierDetail/supplierAddNew.dart';
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
-
+import 'package:quarry/widgets/dateRangePicker.dart' as DateRagePicker;
 
 
 class SalesReportGrid extends StatefulWidget {
@@ -85,8 +87,8 @@ class SalesReportGridState extends State<SalesReportGrid> with TickerProviderSta
             statusBarColor: Colors.black
         ),
         child: SafeArea(
-          child: Consumer<ProductionNotifier>(
-            builder: (context,pn,child)=>  Stack(
+          child: Consumer<ReportsNotifier>(
+            builder: (context,rn,child)=>  Stack(
               children: [
                 Container(
                   height: 50,
@@ -119,26 +121,20 @@ class SalesReportGridState extends State<SalesReportGrid> with TickerProviderSta
                       children: [
 
 
-                        SaleReportHeader(
-                          title: 'Sales',
-                        value: 1000,
-                        qty: 50,
-                        /*  value: qn.saleGridReportList.isNotEmpty?qn.saleGridReportList[0].Sale??0.00:0.00,
-                          qty: qn.saleGridReportList.isNotEmpty?qn.saleGridReportList[0].TotalSaleQuantity??0:0,*/
-                          unit: "Ton",
+                        ReportHeader(
+                          title: 'Total Sale',
+                          value:rn.totalSale,
 
                         ),
-                        SaleReportHeader(
-                          title: 'M Sand',
-                          value:5767,
-                          qty: 76,
-                          unit: "",
+                        ReportHeader(
+                          title: 'Sale Quantity',
+                          value:rn.totalSaleQty,
+
                         ),
-                        SaleReportHeader(
-                          title: 'P Sand',
-                          value: 657,
-                          qty:76,
-                          unit: "",
+                        ReportHeader(
+                          title: 'Sale Amount',
+                          value: rn.totalSaleAmount,
+
                         ),
 
 
@@ -153,7 +149,7 @@ class SalesReportGridState extends State<SalesReportGrid> with TickerProviderSta
                     margin: EdgeInsets.only(top: 140),
                     clipBehavior: Clip.antiAlias,
                     decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: AppTheme.gridbodyBgColor,
                         borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10))
                     ),
                     child: Stack(
@@ -173,14 +169,13 @@ class SalesReportGridState extends State<SalesReportGrid> with TickerProviderSta
                                   controller: header,
                                   scrollDirection: Axis.horizontal,
                                   child: Row(
-                                      children: pn.productionGridCol.asMap().
+                                      children: rn.salesReportGridCol.asMap().
                                       map((i, value) => MapEntry(i, i==0?Container():
-                                      Container(
+                                      value.isActive?Container(
                                           alignment: Alignment.center,
-                                          //  padding: EdgeInsets.only(left: 20,right: 20),
                                           width: 150,
-                                          child: Text(value,style: AppTheme.TSWhite166,)
-                                      )
+                                          child: Text(value.columnName,style: AppTheme.TSWhite166,)
+                                      ):Container()
                                       )).values.toList()
                                   ),
                                 ),
@@ -190,19 +185,19 @@ class SalesReportGridState extends State<SalesReportGrid> with TickerProviderSta
                                 height: SizeConfig.screenHeight-260,
                                 width: SizeConfig.screenWidth-150,
                                 alignment: Alignment.topCenter,
-                                color: Colors.white,
+                                color: AppTheme.gridbodyBgColor,
                                 child: SingleChildScrollView(
                                   controller: body,
                                   scrollDirection: Axis.horizontal,
                                   child: Container(
                                     height: SizeConfig.screenHeight-260,
                                     alignment: Alignment.topCenter,
-                                    color: Colors.white,
+                                    color: AppTheme.gridbodyBgColor,
                                     child: SingleChildScrollView(
                                       controller: verticalRight,
                                       scrollDirection: Axis.vertical,
                                       child: Column(
-                                          children:pn.productionGridValues.asMap().
+                                          children:rn.filterSalesReportGridList.asMap().
                                           map((i, value) => MapEntry(
                                               i,InkWell(
                                             onTap: (){
@@ -230,30 +225,53 @@ class SalesReportGridState extends State<SalesReportGrid> with TickerProviderSta
                                                 children: [
 
 
-                                                  Container(
+                                                  rn.salesReportGridCol[1].isActive?Container(
                                                     alignment: Alignment.center,
                                                     // padding: EdgeInsets.only(left: 20,right: 20),
                                                     width: 150,
-                                                    child: Text("${value.inputMaterialName}",
+                                                    child: Text("${DateFormat("dd-MM-yyyy").format(value.createdDate)}",
                                                       style:selectedIndex==i?AppTheme.bgColorTS:AppTheme.gridTextColorTS,
                                                     ),
 
-                                                  ),
-                                                  Container(
+                                                  ):Container(),
+                                                  rn.salesReportGridCol[2].isActive?Container(
                                                     alignment: Alignment.center,
                                                     width: 150,
-                                                    child: Text("${value.inputMaterialQuantity}",
+                                                    child: Text("${value.materialName}",
                                                       style:selectedIndex==i?AppTheme.bgColorTS:AppTheme.gridTextColorTS,
                                                     ),
-                                                  ),
+                                                  ):Container(),
 
-                                                  Container(
+                                                  rn.salesReportGridCol[3].isActive?Container(
                                                     width: 150,
                                                     alignment: Alignment.center,
-                                                    child: Text("${value.outputMaterialCount}",
+                                                    child: Text("${value.outputMaterialQty}",
                                                       style:selectedIndex==i?AppTheme.bgColorTS:AppTheme.gridTextColorTS,
                                                     ),
-                                                  ),
+                                                  ):Container(),
+                                                  rn.salesReportGridCol[4].isActive?Container(
+                                                    width: 150,
+                                                    alignment: Alignment.center,
+                                                    child: Text("${value.outputQtyAmount??0.0}",
+                                                      style:selectedIndex==i?AppTheme.bgColorTS:AppTheme.gridTextColorTS,
+                                                    ),
+                                                  ):Container(),
+                                                  rn.salesReportGridCol[5].isActive?Container(
+                                                    width: 150,
+                                                    alignment: Alignment.center,
+                                                    child: Text("${value.customerName}",
+                                                      style:selectedIndex==i?AppTheme.bgColorTS:AppTheme.gridTextColorTS,
+                                                    ),
+                                                  ):Container(),
+                                                  rn.salesReportGridCol[6].isActive?Container(
+                                                    width: 150,
+                                                    alignment: Alignment.center,
+                                                    child: FittedBox(
+                                                      child: Text("${value.plantName}",
+                                                        style:selectedIndex==i?AppTheme.bgColorTS:AppTheme.gridTextColorTS,
+                                                      ),
+                                                    ),
+                                                  ):Container(),
 
 
                                                 ],
@@ -285,20 +303,20 @@ class SalesReportGridState extends State<SalesReportGrid> with TickerProviderSta
                                 width: 150,
                                 color: AppTheme.bgColor,
                                 alignment: Alignment.center,
-                                child: Text("${pn.productionGridCol[0]}",style: AppTheme.TSWhite166,),
+                                child: Text("${rn.salesReportGridCol[0].columnName}",style: AppTheme.TSWhite166,),
 
                               ),
                               Container(
                                 height: SizeConfig.screenHeight-260,
                                 alignment: Alignment.topCenter,
                                 decoration: BoxDecoration(
-                                    color: Colors.white,
+                                    color:AppTheme.gridbodyBgColor,
                                     boxShadow: [
                                       showShadow?  BoxShadow(
                                         color: AppTheme.addNewTextFieldText.withOpacity(0.3),
                                         spreadRadius: 0,
                                         blurRadius: 15,
-                                        offset: Offset(10, -8), // changes position of shadow
+                                        offset: Offset(-3, -8), // changes position of shadow
                                       ):BoxShadow(color: Colors.transparent)
                                     ]
                                 ),
@@ -310,7 +328,7 @@ class SalesReportGridState extends State<SalesReportGrid> with TickerProviderSta
                                     controller: verticalLeft,
                                     scrollDirection: Axis.vertical,
                                     child: Column(
-                                        children: pn.productionGridValues.asMap().
+                                        children: rn.filterSalesReportGridList.asMap().
                                         map((i, value) => MapEntry(
                                             i,InkWell(
                                           onTap: (){
@@ -332,21 +350,11 @@ class SalesReportGridState extends State<SalesReportGrid> with TickerProviderSta
                                             decoration: BoxDecoration(
                                               color: selectedIndex==i?AppTheme.yellowColor:AppTheme.gridbodyBgColor,
 
-                                              boxShadow:[
-                                                /*    selectedIndex==i? BoxShadow(
-                                                  color: AppTheme.yellowColor.withOpacity(0.4),
-                                                  spreadRadius: 2,
-                                                  blurRadius: 5,
-                                                  offset: Offset(1, 8), // changes position of shadow
-                                                ):BoxShadow(
-                                                    color: Colors.white
-                                                ),*/
-                                              ],
                                             ),
                                             height: 60,
                                             //  padding: EdgeInsets.only(left: 20,right: 20,bottom: 20,top: 20),
                                             width: 150,
-                                            child: Text("${value.machineName}",
+                                            child: Text("${value.saleNumber}",
                                               style:selectedIndex==i?AppTheme.bgColorTS:AppTheme.gridTextColorTS,
                                             ),
                                           ),
@@ -441,20 +449,75 @@ class SalesReportGridState extends State<SalesReportGrid> with TickerProviderSta
                             ),
                           ),
                         ),
-                        Container(
-                          width:  SizeConfig.screenWidth,
-                          height: 80,
+                  Container(
+                    height: 80,
+                    width: SizeConfig.screenWidth,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        IconButton(icon: Icon(Icons.picture_as_pdf,color: Colors.grey,), onPressed: (){
 
-                          child: Stack(
+                        }),
+                        GestureDetector(
+                          onTap: () async {
 
-                            children: [
+                          final List<DateTime>  picked1 = await DateRagePicker.showDatePicker(
+                          context: context,
+                          initialFirstDate: new DateTime.now(),
+                          initialLastDate: (new DateTime.now()),
+                          firstDate: rn.dateTime,
+                          lastDate: (new DateTime.now())
+                           );
+                          if (picked1 != null && picked1.length == 2) {
+                                 setState(() {
+                                 rn.picked=picked1;
+                                  rn.ReportsDbHit(context, "SaleReport");
+                        });
+                      }
+                      else if(picked1!=null && picked1.length ==1){
+                        setState(() {
+                          rn.picked=picked1;
+                          rn.ReportsDbHit(context, "SaleReport");
+                          // rn.reportDbHit(widget.UserId.toString(), widget.OutletId, DateFormat("dd-MM-yyyy").format( picked[0]).toString(), DateFormat("dd-MM-yyyy").format( picked[0]).toString(),"Itemwise Report", context);
+                        });
+                      }
+                    },
+                    child: Container(
+                      height: SizeConfig.height50,
+                      width: SizeConfig.height50,
 
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        // color:Color(0xFF5E5E60),
+                      ),
+                      child: Center(
+                        child: Icon(Icons.date_range_rounded),
+                        // child:  SvgPicture.asset(
+                        //   'assets/reportIcons/${rn.reportIcons[index]}.svg',
+                        //   height:25,
+                        //   width:25,
+                        //   color: Colors.white,
+                        // )
+                      ),
+                    ),
+                  ),
+                        SizedBox(width: SizeConfig.width80,),
+                        IconButton(icon: Icon(Icons.settings,color: Colors.grey,), onPressed: (){
+                          Navigator.push(context, _createRouteReportSettings());
+                        }),
+                        GestureDetector(
+                          onTap: (){
 
+                          },
+                          child: IconButton(icon: Icon(Icons.share,color: Colors.grey,), onPressed: (){
 
-                            ],
-                          ),
-                        )
+                          }),
+                        ),
                       ],
+                    ),
+                  )
+                      ]
                     ),
                   ),
                 ),
@@ -464,8 +527,8 @@ class SalesReportGridState extends State<SalesReportGrid> with TickerProviderSta
 
                 Container(
 
-                  height: pn.ProductionLoader? SizeConfig.screenHeight:0,
-                  width: pn.ProductionLoader? SizeConfig.screenWidth:0,
+                  height: rn.ReportLoader? SizeConfig.screenHeight:0,
+                  width: rn.ReportLoader? SizeConfig.screenWidth:0,
                   color: Colors.black.withOpacity(0.5),
                   child: Center(
                     child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(AppTheme.yellowColor),),
@@ -480,7 +543,18 @@ class SalesReportGridState extends State<SalesReportGrid> with TickerProviderSta
       ),
     );
   }
+  Route _createRouteReportSettings() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => SaleReportSettings(),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
 
+        return SlideTransition(
+          position: Tween<Offset>(begin: Offset(1.0,0.0), end: Offset.zero).animate(animation),
+          child: child,
+        );
+      },
+    );
+  }
   Route _createRoute() {
     return PageRouteBuilder(
       pageBuilder: (context, animation, secondaryAnimation) => ProductionDetailAddNew(),
@@ -496,3 +570,35 @@ class SalesReportGridState extends State<SalesReportGrid> with TickerProviderSta
   }
 }
 
+class ReportHeader extends StatelessWidget {
+  String title;
+  dynamic value;
+/*  double qty;
+  String unit;*/
+
+  ReportHeader({this.title,this.value});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: SizeConfig.height80,
+      width: SizeConfig.screenWidth*0.31,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5),
+          color: AppTheme.bgColor
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text("$title",style: TextStyle(fontFamily: 'RR',fontSize: 12,color: Colors.white,letterSpacing: 0.1),),
+          SizedBox(height: 5,),
+          FittedBox(
+              fit: BoxFit.contain,
+              child: Text("$value",style:TextStyle(fontFamily: 'RM',fontSize: 20,color: Colors.yellow),)),
+
+        ],
+      ),
+    );
+  }
+}

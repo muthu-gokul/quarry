@@ -57,98 +57,101 @@ class _CustomerMasterState extends State<CustomerMaster> {
                     margin: EdgeInsets.only(top: SizeConfig.height50),
                     child: SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
-                      child:DataTable(
-                          headingRowColor:  MaterialStateColor.resolveWith((states) => AppTheme.bgColor),
-                          showBottomBorder: true,
-                          columns: qn.customerGridCol.map((e) => DataColumn(
-                              label: Text(e,style: TextStyle(fontFamily: 'RB',fontSize: 16,color: Colors.white),textAlign: TextAlign.center,)
-                            // label:Container(
-                            //     width: 100,
-                            //     child: Center(
-                            //         child: Text(e,style: TextStyle(fontFamily: 'RB',fontSize: 16,color: Colors.white),textAlign: TextAlign.center,)
-                            //     )
-                            // ),
-                          )).toList(),
-                          rows: qn.customerGridList.asMap().map((i,e) => MapEntry(i,
+                      child:SingleChildScrollView(
+                        scrollDirection: Axis.vertical,
+                        child: DataTable(
+                            headingRowColor:  MaterialStateColor.resolveWith((states) => AppTheme.bgColor),
+                            showBottomBorder: true,
+                            columns: qn.customerGridCol.map((e) => DataColumn(
+                                label: Text(e,style: TextStyle(fontFamily: 'RB',fontSize: 16,color: Colors.white),textAlign: TextAlign.center,)
+                              // label:Container(
+                              //     width: 100,
+                              //     child: Center(
+                              //         child: Text(e,style: TextStyle(fontFamily: 'RB',fontSize: 16,color: Colors.white),textAlign: TextAlign.center,)
+                              //     )
+                              // ),
+                            )).toList(),
+                            rows: qn.customerGridList.asMap().map((i,e) => MapEntry(i,
 
-                              DataRow(
-                                  color:  MaterialStateColor.resolveWith((states) =>selectedIndex==i? AppTheme.yellowColor:Colors.white),
+                                DataRow(
+                                    color:  MaterialStateColor.resolveWith((states) =>selectedIndex==i? AppTheme.yellowColor:Colors.white),
 
-                                  cells: [
-                                    DataCell(Text(e.CustomerName??"",style: TextStyle(fontFamily: 'RR',fontSize: 16,color:selectedIndex==i? AppTheme.bgColor: AppTheme.gridTextColor),),
-                                        onTap: (){
-                                          setState(() {
-                                            if(selectedIndex==i){
-                                              selectedIndex=-1;
-                                              showEdit=false;
-                                            } else{
-                                              selectedIndex=i;
-                                              showEdit=true;
+                                    cells: [
+                                      DataCell(Text(e.CustomerName??"",style: TextStyle(fontFamily: 'RR',fontSize: 16,color:selectedIndex==i? AppTheme.bgColor: AppTheme.gridTextColor),),
+                                          onTap: (){
+                                            setState(() {
+                                              if(selectedIndex==i){
+                                                selectedIndex=-1;
+                                                showEdit=false;
+                                              } else{
+                                                selectedIndex=i;
+                                                showEdit=true;
 
-                                            }
-                                          });
-                                        }
-                                    ),
-                                    DataCell(Text(e.Location??"",style: TextStyle(fontFamily: 'RR',fontSize: 16,color:selectedIndex==i? AppTheme.bgColor: AppTheme.gridTextColor),),
-                                        onTap: (){
-                                          setState(() {
-                                            if(selectedIndex==i){
-                                              selectedIndex=-1;
-                                              showEdit=false;
-                                            } else{
-                                              selectedIndex=i;
-                                              showEdit=true;
+                                              }
+                                            });
+                                          }
+                                      ),
+                                      DataCell(Text(e.Location??"",style: TextStyle(fontFamily: 'RR',fontSize: 16,color:selectedIndex==i? AppTheme.bgColor: AppTheme.gridTextColor),),
+                                          onTap: (){
+                                            setState(() {
+                                              if(selectedIndex==i){
+                                                selectedIndex=-1;
+                                                showEdit=false;
+                                              } else{
+                                                selectedIndex=i;
+                                                showEdit=true;
 
-                                            }
-                                          });
-                                        }
-                                    ),
-                                    DataCell(Text(e.CustomerContactNumber??"",style:TextStyle(fontFamily: 'RR',fontSize: 16,color:selectedIndex==i? AppTheme.bgColor: AppTheme.gridTextColor),),
-                                        onTap: (){
-                                          setState(() {
-                                            if(selectedIndex==i){
-                                              selectedIndex=-1;
-                                              showEdit=false;
-                                            } else{
-                                              selectedIndex=i;
-                                              showEdit=true;
+                                              }
+                                            });
+                                          }
+                                      ),
+                                      DataCell(Text(e.CustomerContactNumber??"",style:TextStyle(fontFamily: 'RR',fontSize: 16,color:selectedIndex==i? AppTheme.bgColor: AppTheme.gridTextColor),),
+                                          onTap: (){
+                                            setState(() {
+                                              if(selectedIndex==i){
+                                                selectedIndex=-1;
+                                                showEdit=false;
+                                              } else{
+                                                selectedIndex=i;
+                                                showEdit=true;
 
-                                            }
-                                          });
-                                        }
-                                    ),
-                                    DataCell(Text(e.CustomerEmail??"",style: TextStyle(fontFamily: 'RR',fontSize: 16,color:selectedIndex==i? AppTheme.bgColor: AppTheme.gridTextColor),),
-                                        onTap: (){
-                                          setState(() {
-                                            if(selectedIndex==i){
-                                              selectedIndex=-1;
-                                              showEdit=false;
-                                            } else{
-                                              selectedIndex=i;
-                                              showEdit=true;
+                                              }
+                                            });
+                                          }
+                                      ),
+                                      DataCell(Text(e.CustomerEmail??"",style: TextStyle(fontFamily: 'RR',fontSize: 16,color:selectedIndex==i? AppTheme.bgColor: AppTheme.gridTextColor),),
+                                          onTap: (){
+                                            setState(() {
+                                              if(selectedIndex==i){
+                                                selectedIndex=-1;
+                                                showEdit=false;
+                                              } else{
+                                                selectedIndex=i;
+                                                showEdit=true;
 
-                                            }
-                                          });
-                                        }
-                                    ),
-                                    DataCell(Text(e.CustomerCreditLimit.toString()??"",style: TextStyle(fontFamily: 'RR',fontSize: 16,color:selectedIndex==i? AppTheme.bgColor: AppTheme.gridTextColor),),
-                                        onTap: (){
-                                          setState(() {
-                                            if(selectedIndex==i){
-                                              selectedIndex=-1;
-                                              showEdit=false;
-                                            } else{
-                                              selectedIndex=i;
-                                              showEdit=true;
+                                              }
+                                            });
+                                          }
+                                      ),
+                                      DataCell(Text(e.CustomerCreditLimit.toString()??"",style: TextStyle(fontFamily: 'RR',fontSize: 16,color:selectedIndex==i? AppTheme.bgColor: AppTheme.gridTextColor),),
+                                          onTap: (){
+                                            setState(() {
+                                              if(selectedIndex==i){
+                                                selectedIndex=-1;
+                                                showEdit=false;
+                                              } else{
+                                                selectedIndex=i;
+                                                showEdit=true;
 
-                                            }
-                                          });
-                                        }
-                                    ),
-                                  ])
-                          )
-                          ).values.toList()
+                                              }
+                                            });
+                                          }
+                                      ),
+                                    ])
+                            )
+                            ).values.toList()
 
+                        ),
                       ),
                     )
                 ),
