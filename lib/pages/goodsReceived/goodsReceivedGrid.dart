@@ -73,7 +73,7 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
       });
 
       listViewController.addListener(() {
-        print(listViewController.position.userScrollDirection);
+       // print(listViewController.position.userScrollDirection);
         /*f(listViewController.offset==0){
 
           scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value) {
@@ -148,13 +148,11 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
                       SizedBox(height: 160,),
                       GestureDetector(
                         onVerticalDragUpdate: (details){
-                          print("DFSfddsf");
-                          int sensitivity = 5;
 
+                          int sensitivity = 5;
                           if (details.delta.dy > sensitivity) {
                             scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
                               if(isListScroll){
-                                print("ISCROLLG");
                                 setState(() {
                                   isListScroll=false;
                                 });
@@ -163,17 +161,12 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
 
                           } else if(details.delta.dy < -sensitivity){
                             scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
-                              print("THEN$isListScroll");
+
                               if(!isListScroll){
-                                print("THENN");
                                 setState(() {
                                   isListScroll=true;
                                 });
                               }
-                               /*Timer(Duration(milliseconds: 100), (){
-
-                               });*/
-
                             });
                           }
                         },
@@ -189,18 +182,12 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
                           child: NotificationListener<ScrollNotification>(
                               onNotification: (s){
                                 if(s is ScrollStartNotification){
-                                  print(listViewController.hasListeners);
-                                  print(listViewController.position.userScrollDirection);
-                              //    print(listViewController.position);
                                   if(listViewController.offset==0 && isListScroll && scrollController.offset==100 && listViewController.position.userScrollDirection==ScrollDirection.idle){
-                                    print("0");
                                     Timer(Duration(milliseconds: 100), (){
                                       if(listViewController.position.userScrollDirection!=ScrollDirection.reverse){
                                         if(scrollController.position.pixels == scrollController.position.maxScrollExtent){
-                                                //scroll end
                                           scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value) {
                                             if(isListScroll){
-                                              print("ISCROLL");
                                               setState(() {
                                                 isListScroll=false;
                                               });
@@ -227,137 +214,161 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
                                    /*   gr.GetplantDetailDbhit(context, gr.plantGridList[i].plantId);*/
 
                                     },
-                                    child: AnimatedOpacity(
-                                      opacity: value.isAnimate?0:1,
+                                    child: ScaleTransition(
+                                      scale: Tween(begin: 1.0, end: 0.0)
+                                          .animate(new CurvedAnimation(parent: value.controller, curve: Curves.easeInOutBack)),
+                                      child: AnimatedOpacity(
+                                       // opacity: value.isAnimate?0:1,
+                                        opacity: 1,
 
-                                      duration: Duration(milliseconds: 200),
-                                      curve: Curves.easeIn,
-                                      child: AnimatedContainer(
                                         duration: Duration(milliseconds: 200),
                                         curve: Curves.easeIn,
-                                      /* height: 200,
-                                       width: SizeConfig.screenWidth*0.5,*/
-                                        height: value.isAnimate?0:200,
-                                        width:  value.isAnimate?0: SizeConfig.screenWidth*0.5,
-                                        transform: Matrix4.translationValues(value.isAnimate?SizeConfig.screenWidth*0.25:0, value.isAnimate?100:0, 0),
-                                        child: FittedBox(
-                                          fit: BoxFit.contain,
-                                          child: Container(
-                                          //  margin: EdgeInsets.only(top: 10),
-                                            height: 200,
-                                           // height: SizeConfig.screenWidth*0.5,
-                                            width: SizeConfig.screenWidth*0.5,
+                                        child:Container(
+                                        //  duration: Duration(milliseconds: 200),
+                                        //  curve: Curves.easeIn,
+                                         height: value.isAnimate?0: 200,
+                                         width:value.isAnimate?0: SizeConfig.screenWidth*0.5,
+                                          /*height: value.isAnimate?0:200,
+                                          width:  value.isAnimate?0: SizeConfig.screenWidth*0.5,
+                                          transform: Matrix4.translationValues(value.isAnimate?SizeConfig.screenWidth*0.25:0, value.isAnimate?100:0, 0),*/
+                                          child: FittedBox(
+                                            fit: BoxFit.contain,
+                                            child: Container(
+                                            //  margin: EdgeInsets.only(top: 10),
+                                              height: 200,
+                                             // height: SizeConfig.screenWidth*0.5,
+                                              width: SizeConfig.screenWidth*0.5,
 
-                                            decoration: BoxDecoration(
-                                              //  borderRadius: BorderRadius.circular(10),
-                                              color: AppTheme.gridbodyBgColor,
-                                            ),
-                                            child: Center(
-                                              child: Container(
-                                                height: 160,
-                                               // height: SizeConfig.screenWidth*0.4,
-                                                width: SizeConfig.screenWidth*0.4,
-                                                decoration: BoxDecoration(
-                                                  color: Colors.white,
-                                                  borderRadius: BorderRadius.circular(20),
-                                                   /* boxShadow: [
-                                                      BoxShadow(
-                                                        color: AppTheme.addNewTextFieldText.withOpacity(0.2),
-                                                        spreadRadius: 2,
-                                                        blurRadius: 15,
-                                                        offset: Offset(0, 0), // changes position of shadow
-                                                      )
-                                                    ]*/
-                                                ),
-                                                child: Column(
-                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                                  children: [
-                                                    Text("${value.purchaseOrderNumber}",
-                                                    style: TextStyle(fontFamily: 'RM',color: AppTheme.bgColor,fontSize: 16),
-                                                    ),
-                                                    SizedBox(height: 5,),
-                                                    Text("${value.date}",
-                                                      style: TextStyle(fontFamily: 'RR',color: AppTheme.gridTextColor.withOpacity(0.6),fontSize: 14),
-                                                    ),
-                                                    SizedBox(height: 5,),
-                                                    Text("${value.status}",
-                                                      style: TextStyle(fontFamily: 'RR',color: value.status=="Not Yet"? AppTheme.gridTextColor.withOpacity(0.6):
-                                                      value.status=='Completed'?Colors.green:AppTheme.red.withOpacity(0.6)
-                                                          ,fontSize: 14),
-                                                    ),
-                                                    SizedBox(height: 20,),
-                                                    GestureDetector(
-                                                      onTap: (){
-                                                        if(isInvoice){
-                                                          if(value.status!='Not Yet'){
-                                                          gr.GoodsDropDownValues(context);
-                                                          gr.GetGoodsDbHit(context, value.goodsReceivedId, value.purchaseOrderId,true);
-                                                          Navigator.push(context, _createRouteGoodsToInvoice());
-                                                          int i=0;
-                                                          if(mounted){
-                                                            Timer.periodic(Duration(milliseconds: 150),(v){
-                                                              print(i);
-                                                              if(gr.goodsGridList[i].status=="Not Yet"){
-                                                                if(mounted){
+                                              decoration: BoxDecoration(
+                                                //  borderRadius: BorderRadius.circular(10),
+                                                color: AppTheme.gridbodyBgColor,
+                                              ),
+                                              child: Center(
+                                                child: Container(
+                                                  height: 160,
+                                                 // height: SizeConfig.screenWidth*0.4,
+                                                  width: SizeConfig.screenWidth*0.4,
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.white,
+                                                    borderRadius: BorderRadius.circular(20),
+                                                     /* boxShadow: [
+                                                        BoxShadow(
+                                                          color: AppTheme.addNewTextFieldText.withOpacity(0.2),
+                                                          spreadRadius: 2,
+                                                          blurRadius: 15,
+                                                          offset: Offset(0, 0), // changes position of shadow
+                                                        )
+                                                      ]*/
+                                                  ),
+                                                  child: Column(
+                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                                    children: [
+                                                      Text("${value.purchaseOrderNumber}",
+                                                      style: TextStyle(fontFamily: 'RM',color: AppTheme.bgColor,fontSize: 16),
+                                                      ),
+                                                      SizedBox(height: 5,),
+                                                      Text("${value.date}",
+                                                        style: TextStyle(fontFamily: 'RR',color: AppTheme.gridTextColor.withOpacity(0.6),fontSize: 14),
+                                                      ),
+                                                      SizedBox(height: 5,),
+                                                      Text("${value.status}",
+                                                        style: TextStyle(fontFamily: 'RR',color: value.status=="Not Yet"? AppTheme.gridTextColor.withOpacity(0.6):
+                                                        value.status=='Completed'?Colors.green:AppTheme.red.withOpacity(0.6)
+                                                            ,fontSize: 14),
+                                                      ),
+                                                      SizedBox(height: 20,),
+                                                      GestureDetector(
+                                                        onTap: (){
+                                                          if(isInvoice){
+                                                            if(value.status!='Not Yet'){
+                                                            gr.GoodsDropDownValues(context);
+                                                            gr.GetGoodsDbHit(context, value.goodsReceivedId, value.purchaseOrderId,true,GoodsReceivedGridState());
+                                                            Navigator.push(context, _createRouteGoodsToInvoice());
+
+                                                            gr.goodsGridList.forEach((element) {
+                                                              Timer(Duration(milliseconds: 300), (){
+                                                                if(element.status=="Not Yet"){
                                                                   setState(() {
-                                                                    gr.goodsGridList[i].isAnimate=!gr.goodsGridList[i].isAnimate;
+                                                                    element.isAnimate=false;
+                                                                  });
+                                                                  element.controller.reverse().then((value){
+
                                                                   });
                                                                 }
-
-                                                              }
-                                                              i=i+1;
-                                                              if(i==gr.goodsGridList.length){
-                                                                v.cancel();
-                                                                if(mounted){
-                                                                  setState(() {
-                                                                    isInvoiceOpen=false;
-                                                                    isInvoice=false;
-                                                                  });
-                                                                }
-
-                                                              }
+                                                              });
 
                                                             });
+                                                            setState(() {
+                                                              isInvoiceOpen=false;
+                                                              isInvoice=false;
+                                                            });
+
+                                                           /* int i=0;
+                                                            if(mounted){
+                                                              Timer.periodic(Duration(milliseconds: 150),(v){
+                                                                print(i);
+                                                                if(gr.goodsGridList[i].status=="Not Yet"){
+                                                                  if(mounted){
+                                                                    setState(() {
+                                                                      gr.goodsGridList[i].isAnimate=!gr.goodsGridList[i].isAnimate;
+                                                                    });
+                                                                  }
+
+                                                                }
+                                                                i=i+1;
+                                                                if(i==gr.goodsGridList.length){
+                                                                  v.cancel();
+                                                                  if(mounted){
+                                                                    setState(() {
+                                                                      isInvoiceOpen=false;
+                                                                      isInvoice=false;
+                                                                    });
+                                                                  }
+
+                                                                }
+
+                                                              });
+                                                            }*/
+
+                                                            }
+                                                          }
+                                                          else{
+                                                            gr.GoodsDropDownValues(context);
+                                                            gr.GetGoodsDbHit(context, value.goodsReceivedId, value.purchaseOrderId,false,GoodsReceivedGridState());
+                                                            Navigator.push(context, _createRoute());
                                                           }
 
-                                                          }
-                                                        }
-                                                        else{
-                                                          gr.GoodsDropDownValues(context);
-                                                          gr.GetGoodsDbHit(context, value.goodsReceivedId, value.purchaseOrderId,false);
-                                                          Navigator.push(context, _createRoute());
-                                                        }
+                                                        },
+                                                        child: Container(
+                                                          height: 40,
+                                                          width: SizeConfig.screenWidth*0.3,
+                                                          decoration: BoxDecoration(
+                                                              borderRadius: BorderRadius.circular(25),
+                                                              color: AppTheme.yellowColor,
+                                                            boxShadow: [
+                                                          BoxShadow(
+                                                          color: AppTheme.yellowColor.withOpacity(0.4),
+                                                            spreadRadius: 1,
+                                                            blurRadius: 5,
+                                                            offset: Offset(1, 8),
+                                                          )// changes position of shadow
 
-                                                      },
-                                                      child: Container(
-                                                        height: 40,
-                                                        width: SizeConfig.screenWidth*0.3,
-                                                        decoration: BoxDecoration(
-                                                            borderRadius: BorderRadius.circular(25),
-                                                            color: AppTheme.yellowColor,
-                                                          boxShadow: [
-                                                        BoxShadow(
-                                                        color: AppTheme.yellowColor.withOpacity(0.4),
-                                                          spreadRadius: 1,
-                                                          blurRadius: 5,
-                                                          offset: Offset(1, 8),
-                                                        )// changes position of shadow
-
-                                                          ]
-                                                        ),
-                                                        child: Center(
-                                                          child: Text("View",style:TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 16),),
+                                                            ]
+                                                          ),
+                                                          child: Center(
+                                                            child: Text("View",style:TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 16),),
+                                                          ),
                                                         ),
                                                       ),
-                                                    ),
-                                                  ],
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
+
+
+
                                             ),
-
-
-
                                           ),
                                         ),
                                       ),
@@ -460,25 +471,84 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
                             ),
                             GestureDetector(
                                 onTap:isInvoiceOpen?null: (){
+                                  print(isInvoiceOpen);
+                                  print(isInvoice);
 
                                   setState(() {
                                     isInvoiceOpen=true;
-                                    isInvoice=true;
+                                    isInvoice=!isInvoice;
                                   });
 
-                                  int i=0;
+
+
+
+
+                                  if(isInvoice){
+
+
+
+                                    gr.goodsGridList.forEach((element) {
+
+                                     Timer(Duration(milliseconds: 300), (){
+                                       if(element.status=="Not Yet"){
+                                         element.controller.forward().then((value){
+                                           setState(() {
+                                             element.isAnimate=true;
+                                           });
+                                         });
+                                       }
+                                        });
+
+
+                                    });
+                                    setState(() {
+                                      isInvoiceOpen=false;
+                                      //isInvoice=true;
+                                    });
+                                  }
+                                  else{
+                                    gr.goodsGridList.forEach((element) {
+                                      Timer(Duration(milliseconds: 300), (){
+                                        if(element.status=="Not Yet"){
+                                          setState(() {
+                                            element.isAnimate=false;
+                                          });
+                                          element.controller.reverse().then((value){
+
+                                          });
+                                        }
+                                      });
+
+                                    });
+                                    setState(() {
+                                      isInvoiceOpen=false;
+                                      //isInvoice=true;
+                                    });
+                                  }
+
+
+
+
+                                  /*int i=0;
                                   if(mounted){
                                     Timer.periodic(Duration(milliseconds: 200),(v){
                                       print(i);
                                       if(gr.goodsGridList[i].status=="Not Yet"){
                                         if(mounted){
-                                          setState(() {
-                                            gr.goodsGridList[i].isAnimate=!gr.goodsGridList[i].isAnimate;
+                                          gr.goodsGridList[i].controller.forward().then((value) {
+                                            setState(() {
+                                              gr.goodsGridList[i].isAnimate=true;
+                                              i=i+1;
+                                            });
                                           });
+
                                         }
 
                                       }
-                                      i=i+1;
+                                      else{
+                                        i=i+1;
+                                      }
+
                                       if(i==gr.goodsGridList.length){
                                         v.cancel();
                                         if(mounted){
@@ -489,8 +559,8 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
 
                                       }
 
-                                    });
-                                  }
+                                    });*/
+
 
 
                                 },

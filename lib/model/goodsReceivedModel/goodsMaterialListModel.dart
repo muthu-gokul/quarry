@@ -13,6 +13,14 @@ class GoodsReceivedMaterialListModel {
     this.receivedQuantity,
     this.balanceQuantity,
     this.amount,
+    this.isDiscount,
+    this.isPercentage,
+    this.isAmount,
+    this.discountValue,
+    this.discountAmount,
+    this.taxValue,
+    this.taxAmount,
+    this.totalAmount,
     this.vehicleTypeId,
     this.vehicleNumber,
     this.inwardLoadedVehicleWeight,
@@ -34,6 +42,16 @@ class GoodsReceivedMaterialListModel {
   double receivedQuantity;
   double balanceQuantity;
   double amount;
+
+  int isDiscount;
+  int isPercentage;
+  int isAmount;
+  double discountValue;
+  double discountAmount;
+  double taxValue;
+  double taxAmount;
+  double totalAmount;
+
   int vehicleTypeId;
   String vehicleNumber;
   double inwardLoadedVehicleWeight;
@@ -56,7 +74,15 @@ class GoodsReceivedMaterialListModel {
     quantity: json["Quantity"].toDouble(),
     receivedQuantity:json["ReceivedQuantity"]==null?0.0: json["ReceivedQuantity"].toDouble(),
     balanceQuantity: json["BalanceQuantity"]==null?0.0:json["BalanceQuantity"].toDouble(),
-    amount: json["TotalAmount"],
+    amount: json["Amount"],
+    isDiscount: json["IsDiscount"],
+    isPercentage: json["IsPercentage"],
+    isAmount: json["IsAmount"],
+    discountValue: json["DiscountValue"],
+    discountAmount: json["DiscountAmount"],
+    taxValue: json["TaxValue"],
+    taxAmount: json["TaxAmount"],
+    totalAmount: json["TotalAmount"],
     vehicleTypeId: json["VehicleTypeId"],
     vehicleNumber: json["VehicleNumber"],
    // inwardLoadedVehicleWeight: json["InwardLoadedVehicleWeight"].toDouble(),
@@ -68,13 +94,54 @@ class GoodsReceivedMaterialListModel {
     "GoodsReceivedMaterialMappingId": GoodsReceivedMaterialMappingId,
     "GoodsReceivedId": goodsReceivedId,
     "MaterialId": materialId,
+    "MaterialPrice": materialPrice,
     "ExpectedQuantity": quantity,
-    "ReceivedQuantity": 0.0,
-    "Amount": 0.0,
+    "ReceivedQuantity": receivedQuantity,
+    "Amount": amount,
     "VehicleTypeId": vehicleTypeId,
     "VehicleNumber": vehicleNumber,
     "InwardLoadedVehicleWeight": inwardWeight,
     "OutwardEmptyVehicleWeight": 0.0,
+    "IsDiscount": isDiscount,
+    "IsPercentage": isPercentage,
+    "IsAmount": isAmount,
+    "DiscountValue": discountValue,
+    "DiscountAmount": discountAmount,
+    "TaxValue": taxValue,
+    "TaxAmount": taxAmount,
+    "TotalAmount": totalAmount,
+    "IsActive": 1,
+  };
+}
+
+
+
+class GoodsOtherChargesModel {
+  GoodsOtherChargesModel({
+    this.purchaseOrderId,
+    this.GoodsReceivedOtherChargesMappingId,
+    this.GoodsReceivedId,
+    this.otherChargesName,
+    this.otherChargesAmount,
+  });
+
+  int purchaseOrderId;
+  int GoodsReceivedOtherChargesMappingId;
+  int GoodsReceivedId;
+  String otherChargesName;
+  double otherChargesAmount;
+
+  factory GoodsOtherChargesModel.fromJson(Map<String, dynamic> json) => GoodsOtherChargesModel(
+    purchaseOrderId: json["PurchaseOrderId"],
+    otherChargesName: json["OtherChargesName"],
+    otherChargesAmount: json["OtherChargesAmount"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "GoodsReceivedOtherChargesMappingId": GoodsReceivedOtherChargesMappingId,
+    "GoodsReceivedId": GoodsReceivedId,
+    "OtherChargesName": otherChargesName,
+    "OtherChargesAmount": otherChargesAmount,
     "IsActive": 1,
   };
 }

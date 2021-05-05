@@ -220,7 +220,6 @@ class SalesReportGridState extends State<SalesReportGrid> with TickerProviderSta
                                                 color: selectedIndex==i?AppTheme.yellowColor:AppTheme.gridbodyBgColor,
                                               ),
                                               height: 60,
-                                              // padding: EdgeInsets.only(top: 20,bottom: 20),
                                               child: Row(
                                                 children: [
 

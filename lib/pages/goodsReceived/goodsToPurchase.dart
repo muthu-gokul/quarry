@@ -577,7 +577,7 @@ class GoodsToPurchaseState extends State<GoodsToPurchase> with TickerProviderSta
                       Navigator.pop(context);
                     }),
                     SizedBox(width: SizeConfig.width5,),
-                    Text("${gr.GPO_PorderNo}",
+                    Text("${gr.GPO_PorderNo} toPurchase",
                       style: TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 16),
                     ),
 

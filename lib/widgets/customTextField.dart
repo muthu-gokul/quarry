@@ -19,7 +19,7 @@ class AddNewLabelTextField extends StatelessWidget {
   bool isObscure;
   int maxlines;
 
-  AddNewLabelTextField({this.textEditingController,this.labelText,this.scrollPadding,this.textInputType:TextInputType.text,
+  AddNewLabelTextField({this.textEditingController,this.labelText,this.scrollPadding=0.0,this.textInputType:TextInputType.text,
     this.prefixIcon,this.ontap,this.onChange,this.textInputFormatter,this.isEnabled=true,this.suffixIcon,this.onEditComplete,
     this.isObscure=false,this.maxlines=null});
 

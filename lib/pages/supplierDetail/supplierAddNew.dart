@@ -10,6 +10,7 @@ import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/notifier/supplierNotifier.dart';
 import 'package:quarry/pages/quarryMaster/quarryLocationAddNew.dart';
 import 'package:quarry/pages/sale/salesDetail.dart';
+import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/alertDialog.dart';
@@ -31,7 +32,7 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
   bool supplierCategoryOpen=false;
   bool supplierMaterialOpen=false;
 
-
+  bool isListScroll=false;
   @override
   void initState() {
 
@@ -49,7 +50,7 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
 /*         print("scrollController-${scrollController.offset}");*/
       });
 
-      listViewController.addListener(() {
+/*      listViewController.addListener(() {
         if(listViewController.position.userScrollDirection == ScrollDirection.forward){
           print("Down");
         } else
@@ -67,7 +68,7 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
         else if(listViewController.offset==0){
           scrollController.animateTo(0, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
         }
-      });
+      });*/
 
     });
     super.initState();
@@ -117,43 +118,79 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                     child: Column(
                       children: [
                         SizedBox(height: 160,),
-                        Container(
-                          height: SizeConfig.screenHeight,
-                          width: SizeConfig.screenWidth,
+                        GestureDetector(
+                          onVerticalDragUpdate: (details){
 
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10))
-                          ),
-                          alignment: Alignment.topCenter,
+                            int sensitivity = 5;
+                            if (details.delta.dy > sensitivity) {
+                              scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
+                                print("GD $isListScroll");
+                                if(isListScroll){
+                                  setState(() {
+                                    isListScroll=false;
+                                  });
+                                }
+                              });
+
+                            } else if(details.delta.dy < -sensitivity){
+                              scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
+
+                                if(!isListScroll){
+                                  setState(() {
+                                    isListScroll=true;
+                                  });
+                                }
+                              });
+                            }
+                          },
                           child: Container(
-                            height:_keyboardVisible?SizeConfig.screenHeight*0.5 :SizeConfig.screenHeight-100,
+                            height: SizeConfig.screenHeight-60,
                             width: SizeConfig.screenWidth,
 
                             decoration: BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10))
                             ),
+                            alignment: Alignment.topCenter,
                             child: NotificationListener<ScrollNotification>(
                               onNotification: (s){
                                 if(s is ScrollStartNotification){
+                                  if(listViewController.offset==0 && isListScroll && scrollController.offset==100 && listViewController.position.userScrollDirection==ScrollDirection.idle){
+                                    print("NS ${listViewController.position.userScrollDirection}");
+                                    Timer(Duration(milliseconds: 100), (){
+                                      if(listViewController.position.userScrollDirection!=ScrollDirection.reverse){
+                                        if(scrollController.position.pixels == scrollController.position.maxScrollExtent){
+                                          scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value) {
+                                            if(isListScroll){
+                                              setState(() {
+                                                isListScroll=false;
+                                              });
+                                            }
+                                          });
+                                        }
 
-                                  print("Scroll Start");
-                                  // if(scrollController.offset==100){
-                                  //   scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
-                                  // }
+                                      }
+                                    });
+
+
+                                  }
                                 }
                               },
                               child: ListView(
                                 controller: listViewController,
                                 scrollDirection: Axis.vertical,
-
+                                physics: isListScroll?AlwaysScrollableScrollPhysics():NeverScrollableScrollPhysics(),
                                 children: [
                                   AddNewLabelTextField(
                                     labelText: 'Supplier Name',
                                     textEditingController: qn.supplierName,
                                     onEditComplete: (){
                                       node.unfocus();
+                                    },
+                                    ontap: (){
+                                      setState(() {
+                                        isListScroll=true;
+                                      });
                                     },
                                   ),
                                   GestureDetector(
@@ -173,6 +210,9 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                   AddNewLabelTextField(
                                     ontap: (){
                                       scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                        setState(() {
+                                          isListScroll=true;
+                                        });
                                     },
                                     labelText: 'Address',
                                     textEditingController: qn.supplierAddress,
@@ -183,6 +223,9 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                   AddNewLabelTextField(
                                     ontap: (){
                                       scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                      setState(() {
+                                        isListScroll=true;
+                                      });
                                     },
                                     labelText: 'City',
                                     textEditingController: qn.supplierCity,
@@ -194,10 +237,13 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                   AddNewLabelTextField(
                                     ontap: (){
                                       scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                      setState(() {
+                                        isListScroll=true;
+                                      });
                                     },
                                     labelText: 'State',
                                     textEditingController: qn.supplierState,
-                                    scrollPadding: 50,
+                                    scrollPadding: 400,
                                     onEditComplete: (){
                                       node.unfocus();
                                     },
@@ -205,10 +251,13 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                   AddNewLabelTextField(
                                     ontap: (){
                                       scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                      setState(() {
+                                        isListScroll=true;
+                                      });
                                     },
                                     labelText: 'Country',
                                     textEditingController: qn.supplierCountry,
-                                    scrollPadding: 50,
+                                    scrollPadding: 400,
                                     onEditComplete: (){
                                       node.unfocus();
                                     },
@@ -216,10 +265,13 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                   AddNewLabelTextField(
                                     ontap: (){
                                       scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                      setState(() {
+                                        isListScroll=true;
+                                      });
                                     },
                                     labelText: 'Zipcode',
                                     textEditingController: qn.supplierZipcode,
-                                    scrollPadding: 50,
+                                    scrollPadding: 400,
                                     textInputType: TextInputType.number,
                                     onEditComplete: (){
                                       node.unfocus();
@@ -228,26 +280,41 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                   AddNewLabelTextField(
                                     labelText: 'Contact Number',
                                     textEditingController: qn.supplierContactNumber,
-                                    scrollPadding: 50,
+                                    scrollPadding: 400,
                                     textInputType: TextInputType.number,
                                     onEditComplete: (){
                                       node.unfocus();
+                                    },
+                                    ontap: (){
+                                      setState(() {
+                                        isListScroll=true;
+                                      });
                                     },
                                   ),
                                   AddNewLabelTextField(
                                     labelText: 'Email',
                                     textEditingController: qn.supplierEmail,
-                                    scrollPadding: 50,
+                                    scrollPadding: 400,
                                     onEditComplete: (){
                                       node.unfocus();
+                                    },
+                                    ontap: (){
+                                      setState(() {
+                                        isListScroll=true;
+                                      });
                                     },
                                   ),
                                   AddNewLabelTextField(
                                     labelText: 'GST Number',
                                     textEditingController: qn.supplierGstNo,
-                                    scrollPadding: 50,
+                                    scrollPadding: 400,
                                     onEditComplete: (){
                                       node.unfocus();
+                                    },
+                                    ontap: (){
+                                      setState(() {
+                                        isListScroll=true;
+                                      });
                                     },
                                   ),
 
@@ -387,8 +454,8 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                         child:Container(
                                           margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width10,top:SizeConfig.height20,),
                                           padding: EdgeInsets.only(left:SizeConfig.width5,right:SizeConfig.width5),
-                                          height: SizeConfig.height50,
-                                          width: SizeConfig.width140,
+                                          height: 50,
+                                          width: SizeConfig.screenWidthM40*0.48,
                                           alignment: Alignment.centerLeft,
                                           decoration: BoxDecoration(
                                               borderRadius: BorderRadius.circular(3),
@@ -402,8 +469,8 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                               ),
                                               Spacer(),
                                               Container(
-                                                  height: SizeConfig.height25,
-                                                  width: SizeConfig.height25,
+                                                  height: 25,
+                                                  width:25,
                                                   decoration: BoxDecoration(
                                                       shape: BoxShape.circle,
                                                       color: qn.supplierMaterialName==null? AppTheme.addNewTextFieldText:AppTheme.yellowColor,
@@ -418,7 +485,7 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                       Align(
                                         alignment: Alignment.centerRight,
                                         child: Container(
-                                          width: SizeConfig.width130,
+                                          width: SizeConfig.screenWidthM40*0.48,
                                           alignment: Alignment.center,
                                           margin: EdgeInsets.only(top:SizeConfig.height20,right: SizeConfig.width20),
                                           child: TextFormField(
@@ -488,8 +555,8 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
 
                                           },
                                           child: Container(
-                                            height: SizeConfig.height40,
-                                            width: SizeConfig.height40,
+                                            height:40,
+                                            width: 40,
                                             margin: EdgeInsets.only(top:SizeConfig.height25,right: SizeConfig.width25),
 
                                             decoration: BoxDecoration(
@@ -508,7 +575,7 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                   ),
 
 
-                                  SizedBox(height: SizeConfig.height100,)
+                                  SizedBox(height: 300,)
                                 ],
                               ),
                             ),
@@ -538,48 +605,78 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                     ],
                   ),
                 ),
+
+
+                //bottomNav
                 Positioned(
                   bottom: 0,
                   child: Container(
-                    height:_keyboardVisible?0: SizeConfig.height70,
                     width: SizeConfig.screenWidth,
-                    color: AppTheme.grey,
-                    child: Center(
-                      child: GestureDetector(
-                        onTap: (){
-                          node.unfocus();
-                          if(qn.supplierName.text.isEmpty)
-                          {
-                            CustomAlert().commonErrorAlert(context, "Enter Supplier Name", "");
+                    height:_keyboardVisible?0:  70,
 
-                          }
-                          else if(qn.supplierCategoryId==null)
-                          {
-                            CustomAlert().commonErrorAlert(context, "Select Supplier Category", "");
+                    decoration: BoxDecoration(
+                        color: AppTheme.gridbodyBgColor,
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppTheme.gridbodyBgColor,
+                            spreadRadius: 2,
+                            blurRadius: 15,
+                            offset: Offset(0, -20), // changes position of shadow
+                          )
+                        ]
+                    ),
+                    child: Stack(
 
-                          }
-                          else
-                          {
-                            qn.InsertSupplierDbHit(context,this);
-
-                          }
-
-                        },
-                        child: Container(
-                          height: SizeConfig.height50,
-                          width: SizeConfig.width120,
+                      children: [
+                        Container(
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(SizeConfig.height25),
-                              color: AppTheme.bgColor
+
                           ),
-                          child: Center(
-                            child: Text(qn.isSupplierEdit?"Update":"Save",style: AppTheme.TSWhite20,),
+                          margin:EdgeInsets.only(top: 0),
+                          child: CustomPaint(
+                            size: Size( SizeConfig.screenWidth, 65),
+                            painter: RPSCustomPainter3(),
                           ),
                         ),
-                      ),
+                        Center(
+                          heightFactor: 0.5,
+                          child: FloatingActionButton(backgroundColor: AppTheme.yellowColor, child: Icon(Icons.save), elevation: 0.1, onPressed: () {
+                            node.unfocus();
+                            if(qn.supplierName.text.isEmpty)
+                            {
+                              CustomAlert().commonErrorAlert(context, "Enter Supplier Name", "");
+
+                            }
+                            else if(qn.supplierCategoryId==null)
+                            {
+                              CustomAlert().commonErrorAlert(context, "Select Supplier Category", "");
+
+                            }
+                            else
+                            {
+                              qn.InsertSupplierDbHit(context,this);
+
+                            }
+
+
+                          }),
+                        ),
+                        Container(
+                          width:  SizeConfig.screenWidth,
+                          height: 80,
+                          child: Stack(
+
+                            children: [
+
+
+                            ],
+                          ),
+                        )
+                      ],
                     ),
                   ),
                 ),
+
 
 
 

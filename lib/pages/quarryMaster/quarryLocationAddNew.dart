@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
@@ -66,6 +67,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
           });
         }
       });*/
+/*
       scrollController.addListener(() {
 
         if(scrollController.offset==100){
@@ -81,22 +83,27 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
           }
 
         }
-/*        print("isListScroll$isListScroll");*/
+*/
+/*        print("isListScroll$isListScroll");*//*
+
       });
 
       listViewController.addListener(() {
          // print("List SCROLL--${listViewController.offset}");
- /*       if(listViewController.offset>20){
+ */
+/*       if(listViewController.offset>20){
 
             scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
 
 
-        }*/
+        }*//*
+
         //else
           if(listViewController.offset==0){
           scrollController.animateTo(0, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
         }
       });
+*/
 
     });
     super.initState();
@@ -180,16 +187,36 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                            children: [
                              SizedBox(height: 160,),
                              GestureDetector(
-                                  onVerticalDragUpdate: (details){
-                                        int sensitivity = 5;
+                               onVerticalDragUpdate: (details){
+                                 //  print("DFSfddsf");
+                                 int sensitivity = 5;
 
-                                      if (details.delta.dy > sensitivity) {
-                                          scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+                                 if (details.delta.dy > sensitivity) {
+                                   scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
+                                     if(isListScroll){
+                                       // print("ISCROLLG");
+                                       setState(() {
+                                         isListScroll=false;
+                                       });
+                                     }
+                                   });
 
-                                          } else if(details.delta.dy < -sensitivity){
-                                    scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
-                                          }
-                                      },
+                                 } else if(details.delta.dy < -sensitivity){
+                                   scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
+
+                                     if(!isListScroll){
+                                       //  print("THENN");
+                                       setState(() {
+                                         isListScroll=true;
+                                       });
+                                     }
+                                     /*Timer(Duration(milliseconds: 100), (){
+
+                               });*/
+
+                                   });
+                                 }
+                               },
 
 
                               /* onVerticalDragDown: (v){
@@ -207,323 +234,294 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                      color: Colors.white,
                                    borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10))
                                  ),
-                                 child: ListView(
-                                   controller: listViewController,
-                                   scrollDirection: Axis.vertical,
-                                   physics: isListScroll?AlwaysScrollableScrollPhysics():NeverScrollableScrollPhysics(),
+                                 child: NotificationListener<ScrollNotification>(
+                                   onNotification: (s){
+                                     if(s is ScrollStartNotification){
+                                       if(listViewController.offset==0 && isListScroll && scrollController.offset==100 && listViewController.position.userScrollDirection==ScrollDirection.idle){
 
-                                   children: [
-                                     AddNewLabelTextField(
-                                       ontap: (){
-                                         scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
-                                         setState(() {
-                                           _keyboardVisible=true;
-                                         });
-                                       },
-                                       labelText: 'Company Name',
-                                       isEnabled: isEdit,
-                                       textEditingController: qn.CD_quarryname,
-                                       onEditComplete: (){
-                                         node.unfocus();
-                                         Timer(Duration(milliseconds: 50), (){
-                                           setState(() {
-                                             _keyboardVisible=false;
-                                           });
-                                         });
-                                       },
+                                         Timer(Duration(milliseconds: 100), (){
+                                           if(listViewController.position.userScrollDirection!=ScrollDirection.reverse){
+                                             if(scrollController.position.pixels == scrollController.position.maxScrollExtent){
+                                               scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value) {
+                                                 if(isListScroll){
 
-                                       // maxLines: 2,
+                                                   setState(() {
+                                                     isListScroll=false;
+                                                   });
+                                                 }
+                                               });
+                                             }
+
+                                           }
+                                         });
 
 
-                                     ),
-                                     AddNewLabelTextField(
-                                       labelText: 'Address',
-                                       isEnabled: isEdit,
-                                       // maxLines: 3,
-                                       textInputType: TextInputType.text,
-                                       scrollPadding: 200,
-                                       textEditingController: qn.CD_address,
-                                       ontap: (){
-                                         scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
-                                         setState(() {
-                                           _keyboardVisible=true;
-                                         });
-                                       },
-                                       onEditComplete: (){
-                                         node.unfocus();
-                                         Timer(Duration(milliseconds: 50), (){
-                                           setState(() {
-                                             _keyboardVisible=false;
-                                           });
-                                         });
-                                       },
-                                     ),
-                                     AddNewLabelTextField(
-                                       labelText: 'City',
-                                       isEnabled: isEdit,
-                                       scrollPadding: 200,
-                                       textEditingController: qn.CD_city,
-                                       ontap: (){
-                                         scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
-                                         setState(() {
-                                           _keyboardVisible=true;
-                                         });
-                                       },
-                                       onEditComplete: (){
-                                         node.unfocus();
-                                         Timer(Duration(milliseconds: 50), (){
-                                           setState(() {
-                                             _keyboardVisible=false;
-                                           });
-                                         });
-                                       },
-                                     ),
-                                     AddNewLabelTextField(
-                                       labelText: 'State',
-                                       isEnabled: isEdit,
-                                       scrollPadding: 200,
-                                       textEditingController: qn.CD_state,
-                                       ontap: (){
-                                         scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
-                                         setState(() {
-                                           _keyboardVisible=true;
-                                         });
-                                       },
-                                       onEditComplete: (){
-                                         node.unfocus();
-                                         Timer(Duration(milliseconds: 50), (){
-                                           setState(() {
-                                             _keyboardVisible=false;
-                                           });
-                                         });
-                                       },
-                                     ),
-                                     AddNewLabelTextField(
-                                       labelText: 'ZipCode',
-                                       isEnabled: isEdit,
-                                       textInputType: TextInputType.number,
-                                       scrollPadding: 400,
-                                       textEditingController: qn.CD_zipcode,
-                                       ontap: (){
-                                         scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
-                                         setState(() {
-                                           _keyboardVisible=true;
-                                         });
-                                       },
-                                       onEditComplete: (){
-                                         node.unfocus();
-                                         Timer(Duration(milliseconds: 50), (){
-                                           setState(() {
-                                             _keyboardVisible=false;
-                                           });
-                                         });
-                                       },
-                                     ),
-                                     AddNewLabelTextField(
-                                       scrollPadding: 500,
-                                       labelText: 'Contact Number',
-                                       isEnabled: isEdit,
-                                       textInputType: TextInputType.number,
-                                       textEditingController: qn.CD_contactNo,
-                                       ontap: (){
-                                         scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
-                                         setState(() {
-                                           _keyboardVisible=true;
-                                         });
-                                       },
-                                       onEditComplete: (){
-                                         node.unfocus();
-                                         Timer(Duration(milliseconds: 50), (){
-                                           setState(() {
-                                             _keyboardVisible=false;
-                                           });
-                                         });
-                                       },
-                                     ),
-                                     AddNewLabelTextField(
-                                       labelText: 'Email',
-                                       isEnabled: isEdit,
-                                       textInputType: TextInputType.emailAddress,
-                                       textEditingController: qn.CD_email,
-                                       scrollPadding: 500,
-                                       ontap: (){
-                                         scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
-                                         setState(() {
-                                           _keyboardVisible=true;
-                                         });
-                                       },
-                                       onEditComplete: (){
-                                         node.unfocus();
-                                         Timer(Duration(milliseconds: 50), (){
-                                           setState(() {
-                                             _keyboardVisible=false;
-                                           });
-                                         });
-                                       },
-                                     ),
-                                     AddNewLabelTextField(
-                                       labelText: 'Website',
-                                       isEnabled: isEdit,
-                                       textEditingController: qn.CD_website,
-                                       scrollPadding: 500,
-                                       ontap: (){
-                                         scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
-                                         setState(() {
-                                           _keyboardVisible=true;
-                                         });
-                                       },
-                                       onEditComplete: (){
-                                         node.unfocus();
-                                         Timer(Duration(milliseconds: 50), (){
-                                           setState(() {
-                                             _keyboardVisible=false;
-                                           });
-                                         });
-                                       },
-                                     ),
+                                       }
+                                     }
+                                   },
+                                   child: ListView(
+                                     controller: listViewController,
+                                     scrollDirection: Axis.vertical,
+                                     physics: isListScroll?AlwaysScrollableScrollPhysics():NeverScrollableScrollPhysics(),
 
-                                     AddNewLabelTextField(
-                                       labelText: 'GST No',
-                                       isEnabled: isEdit,
-                                       scrollPadding: 500,
-                                       textEditingController: qn.CD_gstno,
-                                       ontap: (){
-                                         scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
-                                         setState(() {
-                                           _keyboardVisible=true;
-                                         });
-                                       },
-                                       onEditComplete: (){
-                                         node.unfocus();
-                                         Timer(Duration(milliseconds: 50), (){
+                                     children: [
+                                       AddNewLabelTextField(
+                                         ontap: (){
+                                           scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
                                            setState(() {
-                                             _keyboardVisible=false;
+                                             _keyboardVisible=true;
                                            });
-                                         });
-                                       },
-                                     ),
-                                     AddNewLabelTextField(
-                                       labelText: 'PAN No',
-                                       isEnabled: isEdit,
-                                       scrollPadding: 500,
-                                       textEditingController: qn.CD_Panno,
-                                       ontap: (){
-                                         scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
-                                         setState(() {
-                                           _keyboardVisible=true;
-                                         });
-                                       },
-                                       onEditComplete: (){
-                                         node.unfocus();
-                                         Timer(Duration(milliseconds: 50), (){
-                                           setState(() {
-                                             _keyboardVisible=false;
+                                         },
+                                         labelText: 'Company Name',
+                                         isEnabled: isEdit,
+                                         textEditingController: qn.CD_quarryname,
+                                         onEditComplete: (){
+                                           node.unfocus();
+                                           Timer(Duration(milliseconds: 50), (){
+                                             setState(() {
+                                               _keyboardVisible=false;
+                                             });
                                            });
-                                         });
-                                       },
-                                     ),
-                                     AddNewLabelTextField(
-                                       labelText: 'CIN No',
-                                       isEnabled: isEdit,
-                                       scrollPadding: 500,
-                                       textEditingController: qn.CD_Cinno,
-                                       ontap: (){
-                                         scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
-                                         setState(() {
-                                           _keyboardVisible=true;
-                                         });
-                                       },
-                                       onEditComplete: (){
-                                         node.unfocus();
-                                         Timer(Duration(milliseconds: 50), (){
-                                           setState(() {
-                                             _keyboardVisible=false;
-                                           });
-                                         });
-                                       },
-                                     ),
+                                         },
 
-                                     SizedBox(height: SizeConfig.height20,),
+                                         // maxLines: 2,
 
-                                     Container(
-                                       height: SizeConfig.height70,
-                                       width: SizeConfig.height70,
-                                       decoration: BoxDecoration(
-                                         shape: BoxShape.circle,
-                                         border: Border.all(color: AppTheme.uploadColor,width: 2)
+
                                        ),
-                                       child: Center(
-                                         child: Icon(Icons.upload_rounded,color: AppTheme.yellowColor,),
+                                       AddNewLabelTextField(
+                                         labelText: 'Address',
+                                         isEnabled: isEdit,
+                                         // maxLines: 3,
+                                         textInputType: TextInputType.text,
+                                         scrollPadding: 200,
+                                         textEditingController: qn.CD_address,
+                                         ontap: (){
+                                           scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+                                           setState(() {
+                                             _keyboardVisible=true;
+                                           });
+                                         },
+                                         onEditComplete: (){
+                                           node.unfocus();
+                                           Timer(Duration(milliseconds: 50), (){
+                                             setState(() {
+                                               _keyboardVisible=false;
+                                             });
+                                           });
+                                         },
                                        ),
-                                     ),
-                                     SizedBox(height: SizeConfig.height20,),
-
-                                     Align(
-                                       alignment: Alignment.center,
-                                       child: Text("Upload Your Company Logo",
-                                       style: TextStyle(fontFamily: 'RR',fontSize: 14,color: AppTheme.gridTextColor),
+                                       AddNewLabelTextField(
+                                         labelText: 'City',
+                                         isEnabled: isEdit,
+                                         scrollPadding: 200,
+                                         textEditingController: qn.CD_city,
+                                         ontap: (){
+                                           scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+                                           setState(() {
+                                             _keyboardVisible=true;
+                                           });
+                                         },
+                                         onEditComplete: (){
+                                           node.unfocus();
+                                           Timer(Duration(milliseconds: 50), (){
+                                             setState(() {
+                                               _keyboardVisible=false;
+                                             });
+                                           });
+                                         },
                                        ),
-                                     ),
-                                     SizedBox(height: SizeConfig.height10,),
-
-                                     Container(
-
-                                      margin: EdgeInsets.only(left: SizeConfig.width90,right:  SizeConfig.width90,),
-                                       height:45,
-                                       decoration: BoxDecoration(
-                                         borderRadius: BorderRadius.circular(25.0),
-                                         color: AppTheme.yellowColor,
-                                         boxShadow: [
-                                           BoxShadow(
-                                             color: AppTheme.yellowColor.withOpacity(0.4),
-                                             spreadRadius: 1,
-                                             blurRadius: 5,
-                                             offset: Offset(1, 8), // changes position of shadow
-                                           ),
-                                         ],
+                                       AddNewLabelTextField(
+                                         labelText: 'State',
+                                         isEnabled: isEdit,
+                                         scrollPadding: 200,
+                                         textEditingController: qn.CD_state,
+                                         ontap: (){
+                                           scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+                                           setState(() {
+                                             _keyboardVisible=true;
+                                           });
+                                         },
+                                         onEditComplete: (){
+                                           node.unfocus();
+                                           Timer(Duration(milliseconds: 50), (){
+                                             setState(() {
+                                               _keyboardVisible=false;
+                                             });
+                                           });
+                                         },
                                        ),
-                                       child: Center(
-                                           child: Text("Choose File",style: TextStyle(color:AppTheme.bgColor,fontSize:16,fontFamily: 'RM'),
-                                           )
+                                       AddNewLabelTextField(
+                                         labelText: 'ZipCode',
+                                         isEnabled: isEdit,
+                                         textInputType: TextInputType.number,
+                                         scrollPadding: 400,
+                                         textEditingController: qn.CD_zipcode,
+                                         ontap: (){
+                                           scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+                                           setState(() {
+                                             _keyboardVisible=true;
+                                           });
+                                         },
+                                         onEditComplete: (){
+                                           node.unfocus();
+                                           Timer(Duration(milliseconds: 50), (){
+                                             setState(() {
+                                               _keyboardVisible=false;
+                                             });
+                                           });
+                                         },
+                                       ),
+                                       AddNewLabelTextField(
+                                         scrollPadding: 500,
+                                         labelText: 'Contact Number',
+                                         isEnabled: isEdit,
+                                         textInputType: TextInputType.number,
+                                         textEditingController: qn.CD_contactNo,
+                                         ontap: (){
+                                           scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+                                           setState(() {
+                                             _keyboardVisible=true;
+                                           });
+                                         },
+                                         onEditComplete: (){
+                                           node.unfocus();
+                                           Timer(Duration(milliseconds: 50), (){
+                                             setState(() {
+                                               _keyboardVisible=false;
+                                             });
+                                           });
+                                         },
+                                       ),
+                                       AddNewLabelTextField(
+                                         labelText: 'Email',
+                                         isEnabled: isEdit,
+                                         textInputType: TextInputType.emailAddress,
+                                         textEditingController: qn.CD_email,
+                                         scrollPadding: 500,
+                                         ontap: (){
+                                           scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+                                           setState(() {
+                                             _keyboardVisible=true;
+                                             isListScroll=true;
+                                           });
+                                         },
+                                         onEditComplete: (){
+                                           node.unfocus();
+                                           Timer(Duration(milliseconds: 50), (){
+                                             setState(() {
+                                               _keyboardVisible=false;
+                                             });
+                                           });
+                                         },
+                                       ),
+                                       AddNewLabelTextField(
+                                         labelText: 'Website',
+                                         isEnabled: isEdit,
+                                         textEditingController: qn.CD_website,
+                                         scrollPadding: 500,
+                                         ontap: (){
+                                           scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+                                           setState(() {
+                                             _keyboardVisible=true;
+                                           });
+                                         },
+                                         onEditComplete: (){
+                                           node.unfocus();
+                                           Timer(Duration(milliseconds: 50), (){
+                                             setState(() {
+                                               _keyboardVisible=false;
+                                             });
+                                           });
+                                         },
                                        ),
 
+                                       AddNewLabelTextField(
+                                         labelText: 'GST No',
+                                         isEnabled: isEdit,
+                                         scrollPadding: 500,
+                                         textEditingController: qn.CD_gstno,
+                                         ontap: (){
+                                           scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+                                           setState(() {
+                                             _keyboardVisible=true;
+                                           });
+                                         },
+                                         onEditComplete: (){
+                                           node.unfocus();
+                                           Timer(Duration(milliseconds: 50), (){
+                                             setState(() {
+                                               _keyboardVisible=false;
+                                             });
+                                           });
+                                         },
+                                       ),
+                                       AddNewLabelTextField(
+                                         labelText: 'PAN No',
+                                         isEnabled: isEdit,
+                                         scrollPadding: 500,
+                                         textEditingController: qn.CD_Panno,
+                                         ontap: (){
+                                           scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+                                           setState(() {
+                                             _keyboardVisible=true;
+                                           });
+                                         },
+                                         onEditComplete: (){
+                                           node.unfocus();
+                                           Timer(Duration(milliseconds: 50), (){
+                                             setState(() {
+                                               _keyboardVisible=false;
+                                             });
+                                           });
+                                         },
+                                       ),
+                                       AddNewLabelTextField(
+                                         labelText: 'CIN No',
+                                         isEnabled: isEdit,
+                                         scrollPadding: 500,
+                                         textEditingController: qn.CD_Cinno,
+                                         ontap: (){
+                                           scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+                                           setState(() {
+                                             _keyboardVisible=true;
+                                           });
+                                         },
+                                         onEditComplete: (){
+                                           node.unfocus();
+                                           Timer(Duration(milliseconds: 50), (){
+                                             setState(() {
+                                               _keyboardVisible=false;
+                                             });
+                                           });
+                                         },
+                                       ),
 
-                                     ),
+                                       SizedBox(height: SizeConfig.height20,),
 
-                                     SizedBox(height: 70),
-
-
-                                     Container(
-                                       height: SizeConfig.height70,
-                                       width: SizeConfig.height70,
-                                       decoration: BoxDecoration(
+                                       Container(
+                                         height: SizeConfig.height70,
+                                         width: SizeConfig.height70,
+                                         decoration: BoxDecoration(
                                            shape: BoxShape.circle,
                                            border: Border.all(color: AppTheme.uploadColor,width: 2)
+                                         ),
+                                         child: Center(
+                                           child: Icon(Icons.upload_rounded,color: AppTheme.yellowColor,),
+                                         ),
                                        ),
-                                       child: Center(
-                                         child: Icon(Icons.upload_rounded,color: AppTheme.yellowColor,),
-                                       ),
-                                     ),
-                                     SizedBox(height: SizeConfig.height20,),
-                                     Align(
-                                       alignment: Alignment.center,
-                                       child: Text("Do you want to add Plant?",
-                                         style: TextStyle(fontFamily: 'RR',fontSize: 14,color: AppTheme.gridTextColor),
-                                       ),
-                                     ),
-                                     SizedBox(height: SizeConfig.height10,),
+                                       SizedBox(height: SizeConfig.height20,),
 
-                                     GestureDetector(
-                                       onTap: (){
-                                         if(qn.plantGridList.isEmpty){
-                                           Navigator.push(context, _createRoutePlantDetailsAddNew());
-                                         }
-                                         else{
-                                           Navigator.push(context, _createRoute());
-                                         }
-                                       },
-                                       child: Container(
-                                         margin: EdgeInsets.only(left: SizeConfig.width90,right:  SizeConfig.width90,),
+                                       Align(
+                                         alignment: Alignment.center,
+                                         child: Text("Upload Your Company Logo",
+                                         style: TextStyle(fontFamily: 'RR',fontSize: 14,color: AppTheme.gridTextColor),
+                                         ),
+                                       ),
+                                       SizedBox(height: SizeConfig.height10,),
+
+                                       Container(
+
+                                        margin: EdgeInsets.only(left: SizeConfig.width90,right:  SizeConfig.width90,),
                                          height:45,
                                          decoration: BoxDecoration(
                                            borderRadius: BorderRadius.circular(25.0),
@@ -538,18 +536,74 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                            ],
                                          ),
                                          child: Center(
-                                             child: Text(qn.plantGridList.isEmpty?"+ Add Plant":"Plants",
-                                               style: TextStyle(color:AppTheme.bgColor,fontSize:16,fontFamily: 'RM'),
+                                             child: Text("Choose File",style: TextStyle(color:AppTheme.bgColor,fontSize:16,fontFamily: 'RM'),
                                              )
                                          ),
 
 
                                        ),
-                                     ),
+
+                                       SizedBox(height: 70),
 
 
-                                     SizedBox(height: SizeConfig.height100,)
-                                   ],
+                                       Container(
+                                         height: SizeConfig.height70,
+                                         width: SizeConfig.height70,
+                                         decoration: BoxDecoration(
+                                             shape: BoxShape.circle,
+                                             border: Border.all(color: AppTheme.uploadColor,width: 2)
+                                         ),
+                                         child: Center(
+                                           child: Icon(Icons.upload_rounded,color: AppTheme.yellowColor,),
+                                         ),
+                                       ),
+                                       SizedBox(height: SizeConfig.height20,),
+                                       Align(
+                                         alignment: Alignment.center,
+                                         child: Text("Do you want to add Plant?",
+                                           style: TextStyle(fontFamily: 'RR',fontSize: 14,color: AppTheme.gridTextColor),
+                                         ),
+                                       ),
+                                       SizedBox(height: SizeConfig.height10,),
+
+                                       GestureDetector(
+                                         onTap: (){
+                                           if(qn.plantGridList.isEmpty){
+                                             Navigator.push(context, _createRoutePlantDetailsAddNew());
+                                           }
+                                           else{
+                                             Navigator.push(context, _createRoute());
+                                           }
+                                         },
+                                         child: Container(
+                                           margin: EdgeInsets.only(left: SizeConfig.width90,right:  SizeConfig.width90,),
+                                           height:45,
+                                           decoration: BoxDecoration(
+                                             borderRadius: BorderRadius.circular(25.0),
+                                             color: AppTheme.yellowColor,
+                                             boxShadow: [
+                                               BoxShadow(
+                                                 color: AppTheme.yellowColor.withOpacity(0.4),
+                                                 spreadRadius: 1,
+                                                 blurRadius: 5,
+                                                 offset: Offset(1, 8), // changes position of shadow
+                                               ),
+                                             ],
+                                           ),
+                                           child: Center(
+                                               child: Text(qn.plantGridList.isEmpty?"+ Add Plant":"Plants",
+                                                 style: TextStyle(color:AppTheme.bgColor,fontSize:16,fontFamily: 'RM'),
+                                               )
+                                           ),
+
+
+                                         ),
+                                       ),
+
+
+                                       SizedBox(height: SizeConfig.height100,)
+                                     ],
+                                   ),
                                  ),
                                ),
                              )

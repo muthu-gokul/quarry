@@ -5,6 +5,7 @@ import 'package:quarry/notifier/materialNotifier.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/pages/quarryMaster/quarryLocationAddNew.dart';
 import 'package:quarry/pages/sale/salesDetail.dart';
+import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/alertDialog.dart';
@@ -43,7 +44,7 @@ class MaterialDetailAddNewState extends State<MaterialDetailAddNew> with TickerP
 
       });
 
-
+/*
       listViewController.addListener(() {
 
         if(listViewController.offset>20){
@@ -55,7 +56,7 @@ class MaterialDetailAddNewState extends State<MaterialDetailAddNew> with TickerP
         else if(listViewController.offset==0){
           scrollController.animateTo(0, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
         }
-      });
+      });*/
 
     });
     super.initState();
@@ -121,14 +122,27 @@ class MaterialDetailAddNewState extends State<MaterialDetailAddNew> with TickerP
                               borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10))
                           ),
                           child: GestureDetector(
-                            onVerticalDragDown: (v){
-                              if(scrollController.offset==100 && listViewController.offset==0){
-                                scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
-                              }
-                              else if(scrollController.offset==0 && listViewController.offset==0){
-                                scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
-                              }
+                            onVerticalDragUpdate: (details){
+                              int sensitivity = 5;
+                              if (details.delta.dy > sensitivity) {
+                                scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
+                                 /* if(isListScroll){
+                                    setState(() {
+                                      isListScroll=false;
+                                    });
+                                  }*/
+                                });
 
+                              } else if(details.delta.dy < -sensitivity){
+                                scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
+
+                                  /*if(!isListScroll){
+                                    setState(() {
+                                      isListScroll=true;
+                                    });
+                                  }*/
+                                });
+                              }
                             },
                             child: Container(
                               height:_keyboardVisible?SizeConfig.screenHeight*0.5 :SizeConfig.screenHeight-100,
@@ -148,6 +162,9 @@ class MaterialDetailAddNewState extends State<MaterialDetailAddNew> with TickerP
                                     textEditingController: qn.materialName,
                                     onEditComplete: (){
                                       node.unfocus();
+                                    },
+                                    ontap: (){
+                                      scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                     },
                                   ),
                                   GestureDetector(
@@ -220,6 +237,9 @@ class MaterialDetailAddNewState extends State<MaterialDetailAddNew> with TickerP
                                     onEditComplete: (){
                                       node.unfocus();
                                     },
+                                    ontap: (){
+                                      scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                    },
                                     suffixIcon: Container(
                                       margin: EdgeInsets.all(10),
                                       height: 15,
@@ -240,6 +260,9 @@ class MaterialDetailAddNewState extends State<MaterialDetailAddNew> with TickerP
                                     scrollPadding: 100,
                                     onEditComplete: (){
                                       node.unfocus();
+                                    },
+                                    ontap: (){
+                                      scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                     },
                                     suffixIcon: Container(
                                       margin: EdgeInsets.all(10),
@@ -291,7 +314,80 @@ class MaterialDetailAddNewState extends State<MaterialDetailAddNew> with TickerP
                 ),
 
 
-                //Save Button
+                //bottomNav
+                Positioned(
+                  bottom: 0,
+                  child: Container(
+                    width: SizeConfig.screenWidth,
+                    height:_keyboardVisible?0:  70,
+
+                    decoration: BoxDecoration(
+                        color: AppTheme.gridbodyBgColor,
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppTheme.gridbodyBgColor,
+                            spreadRadius: 2,
+                            blurRadius: 15,
+                            offset: Offset(0, -20), // changes position of shadow
+                          )
+                        ]
+                    ),
+                    child: Stack(
+
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+
+                          ),
+                          margin:EdgeInsets.only(top: 0),
+                          child: CustomPaint(
+                            size: Size( SizeConfig.screenWidth, 65),
+                            painter: RPSCustomPainter3(),
+                          ),
+                        ),
+                        Center(
+                          heightFactor: 0.5,
+                          child: FloatingActionButton(backgroundColor: AppTheme.yellowColor, child: Icon(Icons.save), elevation: 0.1, onPressed: () {
+                            node.unfocus();
+                            if(qn.selectedMatCategoryName==null){
+                              CustomAlert().commonErrorAlert(context, "Select Material Type", "");
+                            }
+                            else if(qn.materialName.text.isEmpty)
+                            {
+                              CustomAlert().commonErrorAlert(context, "Enter Material Name", "");
+                            }
+                            else if(qn.materialCode.text.isEmpty)
+                            {
+                              CustomAlert().commonErrorAlert(context, "Enter Material Code", "");
+                            }
+                            else if(qn.selectedUnitName==null)
+                            {
+                              CustomAlert().commonErrorAlert(context, "Select Unit", "");
+                            }
+                            else {
+                              qn.InsertMaterialDbHit(context);
+                            }
+
+
+                          }),
+                        ),
+                        Container(
+                          width:  SizeConfig.screenWidth,
+                          height: 80,
+                          child: Stack(
+
+                            children: [
+
+
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+
+              /*  //Save Button
                 Positioned(
                   bottom: 0,
                   child: Container(
@@ -337,7 +433,7 @@ class MaterialDetailAddNewState extends State<MaterialDetailAddNew> with TickerP
                       ),
                     ),
                   ),
-                ),
+                ),*/
 
                 Container(
                   height: qn.materialLoader? SizeConfig.screenHeight:0,

@@ -213,7 +213,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                       drawer.menuSelected=11;
                                       scaffoldkey.currentState.openEndDrawer();
                                     });
-                                    Provider.of<GoodsReceivedNotifier>(context, listen: false).GetGoodsDbHit(context,null,null,false);
+                                    Provider.of<GoodsReceivedNotifier>(context, listen: false).GetGoodsDbHit(context,null,null,false,this);
 
                                   },
                                 ),

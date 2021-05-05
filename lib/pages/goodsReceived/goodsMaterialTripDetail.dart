@@ -36,10 +36,23 @@ class GoodsMaterialTripListState extends State<GoodsMaterialTripList> with Ticke
 
   ScrollController scrollController;
   ScrollController listViewController;
-  ScrollController header=new ScrollController();
-  ScrollController body=new ScrollController();
+
   List<GoodsMaterialTripDetailsModel> materialTripList=[];
   List<GoodsMaterialExtraTripModel> GoodsMaterialExtraTripModelDetails=[];
+
+
+  ScrollController header=new ScrollController();
+  ScrollController body=new ScrollController();
+  ScrollController verticalLeft=new ScrollController();
+  ScrollController verticalRight=new ScrollController();
+
+  bool showShadow=false;
+
+  double valueContainerWidth=100;
+  double dataTableheight=300;
+  double dataTableBodyheight=250;
+  List<String> gridcol=["Trip","Vehicle No","Received Qty","Balance","Status"];
+
   @override
   void initState() {
     isEdit=false;
@@ -72,9 +85,22 @@ class GoodsMaterialTripListState extends State<GoodsMaterialTripList> with Ticke
 
     });
 
+
     header.addListener(() {
       if(body.offset!=header.offset){
         body.jumpTo(header.offset);
+      }
+      if(header.offset==0){
+        setState(() {
+          showShadow=false;
+        });
+      }
+      else{
+        if(!showShadow){
+          setState(() {
+            showShadow=true;
+          });
+        }
       }
     });
 
@@ -84,6 +110,17 @@ class GoodsMaterialTripListState extends State<GoodsMaterialTripList> with Ticke
       }
     });
 
+    verticalLeft.addListener(() {
+      if(verticalRight.offset!=verticalLeft.offset){
+        verticalRight.jumpTo(verticalLeft.offset);
+      }
+    });
+
+    verticalRight.addListener(() {
+      if(verticalLeft.offset!=verticalRight.offset){
+        verticalLeft.jumpTo(verticalRight.offset);
+      }
+    });
     super.initState();
   }
 
@@ -164,165 +201,217 @@ class GoodsMaterialTripListState extends State<GoodsMaterialTripList> with Ticke
                                   ),
                                 ],
                               ),
+
+                              /**********  DataTable  ********/
                               Container(
-                                height: 300,
-                                width: SizeConfig.screenWidth,
+                                  height: dataTableheight,
+                                  width: SizeConfig.screenWidth,
+                                  clipBehavior: Clip.antiAlias,
+                                  margin: EdgeInsets.only(left:SizeConfig.screenWidth*0.02,right:SizeConfig.screenWidth*0.02),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: Colors.white,
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: AppTheme.addNewTextFieldText.withOpacity(0.2),
+                                          spreadRadius: 2,
+                                          blurRadius: 15,
+                                          offset: Offset(0, 0), // changes position of shadow
+                                        )
+                                      ]
+                                  ),
+                                  child:Stack(
+                                    children: [
 
-                                margin: EdgeInsets.only(left:SizeConfig.screenWidth*0.02,right:SizeConfig.screenWidth*0.02,top: 5),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: Colors.white,
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: AppTheme.addNewTextFieldText.withOpacity(0.2),
-                                        spreadRadius: 2,
-                                        blurRadius: 15,
-                                        offset: Offset(0, 0), // changes position of shadow
-                                      )
-                                    ]
-                                ),
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      height: 50,
-                                      width: SizeConfig.screenWidth,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10),),
-                                        color: AppTheme.f737373,
-
-                                      ),
-                                      child: SingleChildScrollView(
-                                        controller: header,
-                                        scrollDirection: Axis.horizontal,
-                                        child: Row(
+                                      //Scrollable
+                                      Positioned(
+                                        left:99,
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.start,
                                           children: [
                                             Container(
-                                              width: SizeConfig.screenWidth*0.15,
-                                              alignment: Alignment.centerLeft,
-                                              padding: EdgeInsets.only(left: SizeConfig.width10),
-                                              child: Text("Trip",style: AppTheme.TSWhiteML,),
+                                              height: 50,
+                                              width: SizeConfig.screenWidth-valueContainerWidth-SizeConfig.screenWidth*0.04,
+                                              color: showShadow? AppTheme.f737373.withOpacity(0.8):AppTheme.f737373,
+                                              child: SingleChildScrollView(
+                                                controller: header,
+                                                scrollDirection: Axis.horizontal,
+                                                child: Row(
+                                                    children: gridcol.asMap().
+                                                    map((i, value) => MapEntry(i, i==0?Container():
+                                                    Container(
+                                                        alignment: Alignment.center,
+                                                        //  padding: EdgeInsets.only(left: 20,right: 20),
+                                                        width: valueContainerWidth,
+                                                        child: Text(value,style: AppTheme.TSWhiteML,)
+                                                    )
+                                                    )).values.toList()
+                                                ),
+                                              ),
+
                                             ),
                                             Container(
-                                              width: SizeConfig.screenWidth*0.25,
-                                              alignment: Alignment.center,
-                                              padding: EdgeInsets.only(left: SizeConfig.width10),
+                                              height: dataTableBodyheight,
+                                              width: SizeConfig.screenWidth-valueContainerWidth-SizeConfig.screenWidth*0.04,
+                                              alignment: Alignment.topCenter,
+                                              color: Colors.white,
+                                              child: SingleChildScrollView(
+                                                controller: body,
+                                                scrollDirection: Axis.horizontal,
+                                                child: Container(
+                                                  height: dataTableBodyheight,
+                                                  alignment: Alignment.topCenter,
+                                                  color:Colors.white,
+                                                  child: SingleChildScrollView(
+                                                    controller: verticalRight,
+                                                    scrollDirection: Axis.vertical,
+                                                    child:  Column(
+                                                        children:materialTripList.asMap().
+                                                        map((index, value) => MapEntry(
+                                                            index,InkWell(
+                                                          onTap: (){
+                                                          },
+                                                          child: Container(
 
-                                              child: Text("Vehicle No",style: AppTheme.TSWhiteML,),
-                                            ),
-                                            Container(
-                                              width: SizeConfig.screenWidth*0.25,
+                                                            height: 60,
+                                                            decoration: BoxDecoration(
+                                                                border: Border(bottom: BorderSide(color: AppTheme.addNewTextFieldBorder.withOpacity(0.5)))
+                                                            ),
 
-                                              alignment: Alignment.center,
-                                              padding: EdgeInsets.only(left: SizeConfig.width10),
+                                                            child: Row(
+                                                              children: [
 
-                                              child: Text("Received",style: TextStyle(fontFamily: 'RR',fontSize: 14,color: Colors.white,letterSpacing: 0.1,),textAlign: TextAlign.center,),
-                                            ),
-                                            Container(
-                                              width: SizeConfig.screenWidth*0.25,
-                                              alignment: Alignment.center,
-                                              padding: EdgeInsets.only(left: SizeConfig.width10),
+                                                                Container(
+                                                                  alignment: Alignment.center,
+                                                                  // padding: EdgeInsets.only(left: 20,right: 20),
+                                                                  width: valueContainerWidth,
+                                                                  child: Text("${value.vehicleNumber}",
+                                                                    style:AppTheme.ML_bgCT,
+                                                                  ),
 
-                                              child: Text("Balance",style: AppTheme.TSWhiteML,),
-                                            ),
-                                            Container(
-                                              width: SizeConfig.screenWidth*0.25,
-                                              alignment: Alignment.centerRight,
-                                              padding: EdgeInsets.only(right: SizeConfig.width10),
+                                                                ),
+                                                                Container(
+                                                                  alignment: Alignment.center,
+                                                                  width: valueContainerWidth,
+                                                                  child: Text("${value.receivedQuantity}",
+                                                                    style:AppTheme.ML_bgCT,
+                                                                  ),
+                                                                ),
 
-                                              child: Text("Status",style: AppTheme.TSWhiteML,),
+                                                                Container(
+                                                                  width: valueContainerWidth,
+                                                                  alignment: Alignment.center,
+                                                                  child: Text("${value.balanceQuantity}",
+                                                                    style:AppTheme.ML_bgCT,
+                                                                  ),
+                                                                ),
+
+                                                                Container(
+                                                                  width: valueContainerWidth,
+                                                                  alignment: Alignment.center,
+                                                                  child: Text("${value.status}",
+                                                                    style:TextStyle(fontFamily: 'RL',color:value.status=='Not Yet'? AppTheme.bgColor:
+                                                                    value.status=='Completed'?Colors.green:AppTheme.red
+                                                                        ,fontSize: 12),textAlign: TextAlign.center,
+                                                                  ),
+                                                                ),
+
+
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        )
+                                                        )
+                                                        ).values.toList()
+                                                    ),
+                                                  ),
+
+
+                                                ),
+                                              ),
                                             ),
                                           ],
                                         ),
                                       ),
-                                    ),
 
-                                    Container(
-                                      height: 250,
-                                      padding: EdgeInsets.only(bottom: 10),
-                                      width: SizeConfig.screenWidth,
-                                      decoration: BoxDecoration(
-                                        /*   border: Border(bottom: BorderSide(color: AppTheme.gridTextColor.withOpacity(0.3)))*/
-                                      ),
-                                      child: Container(
-                                        height: 250,
-                                        width: SizeConfig.screenWidth,
-                                        child: ListView.builder(
-                                          scrollDirection: Axis.vertical,
-                                          itemCount: materialTripList.length,
-                                          itemBuilder: (context,index){
-                                            return Container(
-                                              // height: 50,
-                                              padding: EdgeInsets.only(top: 10,bottom: 10),
-                                              width: SizeConfig.screenWidth,
+
+                                      //not Scrollable
+                                      Positioned(
+                                        left: 0,
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                              height: 50,
+                                              width: valueContainerWidth,
+                                              color: AppTheme.f737373,
+                                              alignment: Alignment.center,
+                                              child: Text("${gridcol[0]}",style: AppTheme.TSWhiteML,),
+
+                                            ),
+                                            Container(
+                                              height: dataTableBodyheight,
+                                              alignment: Alignment.topCenter,
                                               decoration: BoxDecoration(
-                                                // color:selectedMaterialIndex==index?Colors.red: Colors.white,
-                                                  border: Border(bottom: BorderSide(color: AppTheme.gridTextColor.withOpacity(0.3))
-                                                  )
-
+                                                  color: Colors.white,
+                                                  boxShadow: [
+                                                    showShadow?  BoxShadow(
+                                                      color: AppTheme.addNewTextFieldText.withOpacity(0.3),
+                                                      spreadRadius: 0,
+                                                      blurRadius: 15,
+                                                      offset: Offset(10, -8), // changes position of shadow
+                                                    ):BoxShadow(color: Colors.transparent)
+                                                  ]
                                               ),
-                                              child: SingleChildScrollView(
-                                                controller: body,
-                                                scrollDirection: Axis.horizontal,
-                                                child: Row(
-                                                  children: [
-                                                    Container(
-                                                      //width: 150,
-                                                      width: SizeConfig.screenWidth*0.15,
-                                                      alignment: Alignment.centerLeft,
-                                                      padding: EdgeInsets.only(left: SizeConfig.width10),
-                                                      child: Text("${materialTripList[index].trip}",style: AppTheme.ML_bgCT,),
-                                                    ),
-                                                    Container(
-                                                      //width: 150,
-                                                      width: SizeConfig.screenWidth*0.25,
-                                                      alignment: Alignment.center,
-                                                      padding: EdgeInsets.only(left: SizeConfig.width10),
+                                              child: Container(
+                                                height: dataTableBodyheight,
+                                                alignment: Alignment.topCenter,
 
-                                                      child: Text("${materialTripList[index].vehicleNumber}",style: AppTheme.ML_bgCT,),
-                                                    ),
-                                                    Container(
-                                                      //  width: 150,
-                                                      width: SizeConfig.screenWidth*0.25,
-                                                      alignment: Alignment.center,
-                                                      padding: EdgeInsets.only(left: SizeConfig.width10),
+                                                child: SingleChildScrollView(
+                                                  controller: verticalLeft,
+                                                  scrollDirection: Axis.vertical,
+                                                  child:  Column(
+                                                      children: materialTripList.asMap().
+                                                      map((index, value) => MapEntry(
+                                                          index,InkWell(
+                                                        onTap: (){
+                                                        },
+                                                        child:  Container(
+                                                          alignment: Alignment.center,
+                                                          height: 60,
+                                                          width: valueContainerWidth,
+                                                          decoration: BoxDecoration(
+                                                              border: Border(bottom: BorderSide(color: AppTheme.addNewTextFieldBorder.withOpacity(0.5)))
+                                                          ),
+                                                          child: Text("${value.trip}",
+                                                            style: AppTheme.ML_bgCT,
+                                                          ),
+                                                        ),
+                                                      )
+                                                      )
+                                                      ).values.toList()
 
-                                                      child: Text("${materialTripList[index].receivedQuantity}",style: AppTheme.ML_bgCT,),
-                                                    ),
-                                                    Container(
-                                                      //  width: 150,
-                                                      width: SizeConfig.screenWidth*0.25,
-                                                      alignment: Alignment.center,
-                                                      padding: EdgeInsets.only(left: SizeConfig.width10),
 
-                                                      child: Text("${materialTripList[index].balanceQuantity}",style: AppTheme.ML_bgCT,),
-                                                    ),
-
-                                                    Container(
-                                                      // width: 150,
-                                                      width: SizeConfig.screenWidth*0.25,
-                                                      alignment: Alignment.centerRight,
-                                                      padding: EdgeInsets.only(right: SizeConfig.width10),
-
-                                                      child: Text("${materialTripList[index].status}",
-                                                        style:TextStyle(fontFamily: 'RL',color:materialTripList[index].status=='Not Yet'? AppTheme.bgColor:
-                                                        materialTripList[index].status=='Completed'?Colors.green:AppTheme.red
-                                                            ,fontSize: 12),textAlign: TextAlign.right,
-                                                      ),
-                                                    ),
-                                                  ],
+                                                  ),
                                                 ),
+
+
                                               ),
-                                            );
-                                          },
+                                            ),
+                                          ],
                                         ),
                                       ),
-                                    ),
 
 
 
-                                  ],
-                                ),
+
+                                    ],
+                                  )
+
                               ) ,
+
+
+
 
                               GoodsMaterialExtraTripModelDetails[0].isExtra==0?Container():  Column(
                                  children: [

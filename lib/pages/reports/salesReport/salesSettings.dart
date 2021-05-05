@@ -34,37 +34,12 @@ class SaleReportSettingsState extends State<SaleReportSettings> with TickerProvi
 
   bool isListScroll=false;
 
-  bool columnFilterOpen=false;
-  Animation _arrowAnimation;
-  AnimationController _arrowAnimationController;
-
-  bool materialFilterOpen=false;
-  Animation _materialarrowAnimation;
-  AnimationController _materialarrowAnimationController;
-
-  bool plantFilterOpen=false;
-  Animation _plantarrowAnimation;
-  AnimationController _plantarrowAnimationController;
-
-  bool customerFilterOpen=false;
-  Animation _customerarrowAnimation;
-  AnimationController _customerarrowAnimationController;
 
  
 
   @override
   void initState() {
-    _arrowAnimationController = AnimationController(vsync: this, duration: Duration(milliseconds: 300));
-    _arrowAnimation = Tween(begin: 0.0, end:-3.14).animate(_arrowAnimationController);
 
-    _materialarrowAnimationController = AnimationController(vsync: this, duration: Duration(milliseconds: 300));
-    _materialarrowAnimation = Tween(begin: 0.0, end:-3.14).animate(_materialarrowAnimationController);
-
-    _plantarrowAnimationController = AnimationController(vsync: this, duration: Duration(milliseconds: 300));
-    _plantarrowAnimation = Tween(begin: 0.0, end:-3.14).animate(_plantarrowAnimationController);
-
-    _customerarrowAnimationController = AnimationController(vsync: this, duration: Duration(milliseconds: 300));
-    _customerarrowAnimation = Tween(begin: 0.0, end:-3.14).animate(_customerarrowAnimationController);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       scrollController = new ScrollController();
       listViewController = new ScrollController();
@@ -202,394 +177,12 @@ class SaleReportSettingsState extends State<SaleReportSettings> with TickerProvi
                                   scrollDirection: Axis.vertical,
 
                                   children: [
-                                     //column filter
-                                     SizedBox(height: 20,),
-                                     GestureDetector(
-                                       onTap: (){
-                                         _arrowAnimationController.isCompleted
-                                             ? _arrowAnimationController.reverse()
-                                             : _arrowAnimationController.forward();
 
-                                         setState(() {
-                                           columnFilterOpen=!columnFilterOpen;
-                                         });
-                                       },
-                                       child: Container(
-                                         height: 50,
-                                         width: SizeConfig.screenWidth,
-                                         margin: EdgeInsets.only(left: SizeConfig.width20,right: SizeConfig.width20),
-                                         padding: EdgeInsets.only(left: SizeConfig.width10,right: SizeConfig.width10),
-                                         decoration: BoxDecoration(
-                                           borderRadius: BorderRadius.circular(25),
-                                           color: AppTheme.yellowColor,
-                                         ),
-                                         child: Row(
-                                           children: [
-                                             Text("Column Filter",style:TextStyle(fontFamily: 'RM',color: AppTheme.bgColor,fontSize: 16)),
-                                             Spacer(),
-                                             Container(
-                                               height: 30,
-                                               width: 30,
-                                               decoration: BoxDecoration(
-                                                 shape: BoxShape.circle,
-                                                 color: AppTheme.bgColor
-                                               ),
-                                               child:  AnimatedBuilder(
-                                                 animation: _arrowAnimationController,
-                                                 builder: (context, child) =>
-                                                     Transform.rotate(
-                                                       angle: _arrowAnimation.value,
-                                                       child: Icon(
-                                                         Icons.keyboard_arrow_up_rounded,
-                                                         size: 25.0,
-                                                         color: Colors.white,
-                                                       ),
-                                                     ),
-                                               ),
-                                             )
-                                           ],
-                                         ),
-                                       ),
-                                     ),
-                                     AnimatedContainer(
-                                       duration: Duration(milliseconds: 300),
-                                       curve: Curves.easeIn,
-                                       width: SizeConfig.screenWidth,
-                                       height:!columnFilterOpen ?0: rn.salesReportGridCol.length*50.0,
-                                       margin: EdgeInsets.only(left: SizeConfig.width40,right: SizeConfig.width40),
-                                       child: ListView.builder(
-                                         physics: NeverScrollableScrollPhysics(),
-                                         itemCount: rn.salesReportGridCol.length,
-                                         itemBuilder: (context,index){
-                                           return index==0?Container(): Container(
-                                             height: 50,
-                                             child: Row(
-                                               children: [
-                                                 Text("${rn.salesReportGridCol[index].columnName}",style:TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 14),),
-                                                 Spacer(),
-                                                 GestureDetector(
-                                                   onTap: (){
-
-                                                     setState(() {
-                                                       rn.salesReportGridCol[index].isActive=!rn.salesReportGridCol[index].isActive;
-                                                     });
-                                             
-                                                     
-                                                   },
-                                                   child: AnimatedContainer(
-                                                     duration: Duration(milliseconds: 300),
-                                                     curve: Curves.easeIn,
-                                                     height: 20,
-                                                     width: 20,
-                                                     decoration: BoxDecoration(
-                                                       borderRadius: BorderRadius.circular(3),
-                                                       border: Border.all(color:rn.salesReportGridCol[index].isActive?Colors.transparent: AppTheme.addNewTextFieldBorder.withOpacity(0.5)),
-                                                       color:rn.salesReportGridCol[index].isActive?AppTheme.yellowColor: AppTheme.disableColor
-                                                     ),
-                                                     child: Center(
-                                                       child: Icon(Icons.done,color:rn.salesReportGridCol[index].isActive?AppTheme.bgColor: AppTheme.addNewTextFieldBorder.withOpacity(0.8),size: 15,),
-                                                     ),
-
-                                                   ),
-                                                 )
-                                               ],
-                                             ),
-                                           );
-                                         },
-                                       ),
-                                     ),
-
-                                    /*//material Filter
-                                    SizedBox(height: 20,),
-                                    GestureDetector(
-                                      onTap: (){
-                                        _materialarrowAnimationController.isCompleted
-                                            ? _materialarrowAnimationController.reverse()
-                                            : _materialarrowAnimationController.forward();
-
-                                        setState(() {
-                                          materialFilterOpen=!materialFilterOpen;
-                                        });
-                                      },
-                                      child: Container(
-                                        height: 50,
-                                        width: SizeConfig.screenWidth,
-                                        margin: EdgeInsets.only(left: SizeConfig.width20,right: SizeConfig.width20),
-                                        padding: EdgeInsets.only(left: SizeConfig.width10,right: SizeConfig.width10),
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(25),
-                                          color: AppTheme.yellowColor,
-                                        ),
-                                        child: Row(
-                                          children: [
-                                            Text("Material Filter",style:TextStyle(fontFamily: 'RM',color: AppTheme.bgColor,fontSize: 16)),
-                                            Spacer(),
-                                            Container(
-                                              height: 30,
-                                              width: 30,
-                                              decoration: BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  color: AppTheme.bgColor
-                                              ),
-                                              child:  AnimatedBuilder(
-                                                animation: _materialarrowAnimationController,
-                                                builder: (context, child) =>
-                                                    Transform.rotate(
-                                                      angle: _materialarrowAnimation.value,
-                                                      child: Icon(
-                                                        Icons.keyboard_arrow_up_rounded,
-                                                        size: 25.0,
-                                                        color: Colors.white,
-                                                      ),
-                                                    ),
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
+                                    ReportSettingsColumnFilter(
+                                      title: "Column Filter",
+                                      list: rn.salesReportGridCol,
+                                      instanceName: 'ColumnName',
                                     ),
-                                    AnimatedContainer(
-                                      duration: Duration(milliseconds: 300),
-                                      curve: Curves.easeIn,
-                                      width: SizeConfig.screenWidth,
-                                      height:!materialFilterOpen ?0: rn.materialList.length*50.0,
-                                      margin: EdgeInsets.only(left: SizeConfig.width40,right: SizeConfig.width40),
-                                      child: ListView.builder(
-                                        physics: NeverScrollableScrollPhysics(),
-                                        itemCount: rn.materialList.length,
-                                        itemBuilder: (context,index){
-                                          return  Container(
-                                            height: 50,
-                                            child: Row(
-                                              children: [
-                                                Text("${rn.materialList[index].materialName}",style:TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 14),),
-                                                Spacer(),
-                                                GestureDetector(
-                                                  onTap: (){
-
-                                                    setState(() {
-                                                      rn.materialList[index].isActive=!rn.materialList[index].isActive;
-                                                    });
-
-
-                                                  },
-                                                  child: AnimatedContainer(
-                                                    duration: Duration(milliseconds: 300),
-                                                    curve: Curves.easeIn,
-                                                    height: 20,
-                                                    width: 20,
-                                                    decoration: BoxDecoration(
-                                                        borderRadius: BorderRadius.circular(3),
-                                                        border: Border.all(color:rn.materialList[index].isActive?Colors.transparent: AppTheme.addNewTextFieldBorder.withOpacity(0.5)),
-                                                        color:rn.materialList[index].isActive?AppTheme.yellowColor: AppTheme.disableColor
-                                                    ),
-                                                    child: Center(
-                                                      child: Icon(Icons.done,color:rn.materialList[index].isActive?AppTheme.bgColor: AppTheme.addNewTextFieldBorder.withOpacity(0.8),size: 15,),
-                                                    ),
-
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                          );
-                                        },
-                                      ),
-                                    ),*/
-
-                                  /*  //plant Filter
-                                    SizedBox(height: 20,),
-                                    GestureDetector(
-                                      onTap: (){
-                                        _plantarrowAnimationController.isCompleted
-                                            ? _plantarrowAnimationController.reverse()
-                                            : _plantarrowAnimationController.forward();
-
-                                        setState(() {
-                                          plantFilterOpen=!plantFilterOpen;
-                                        });
-                                      },
-                                      child: Container(
-                                        height: 50,
-                                        width: SizeConfig.screenWidth,
-                                        margin: EdgeInsets.only(left: SizeConfig.width20,right: SizeConfig.width20),
-                                        padding: EdgeInsets.only(left: SizeConfig.width10,right: SizeConfig.width10),
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(25),
-                                          color: AppTheme.yellowColor,
-                                        ),
-                                        child: Row(
-                                          children: [
-                                            Text("Plant Filter",style:TextStyle(fontFamily: 'RM',color: AppTheme.bgColor,fontSize: 16)),
-                                            Spacer(),
-                                            Container(
-                                              height: 30,
-                                              width: 30,
-                                              decoration: BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  color: AppTheme.bgColor
-                                              ),
-                                              child:  AnimatedBuilder(
-                                                animation: _plantarrowAnimationController,
-                                                builder: (context, child) =>
-                                                    Transform.rotate(
-                                                      angle: _plantarrowAnimation.value,
-                                                      child: Icon(
-                                                        Icons.keyboard_arrow_up_rounded,
-                                                        size: 25.0,
-                                                        color: Colors.white,
-                                                      ),
-                                                    ),
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    AnimatedContainer(
-                                      duration: Duration(milliseconds: 300),
-                                      curve: Curves.easeIn,
-                                      width: SizeConfig.screenWidth,
-                                      height:!plantFilterOpen ?0: rn.plantList.length*50.0,
-                                      margin: EdgeInsets.only(left: SizeConfig.width40,right: SizeConfig.width40),
-                                      child: ListView.builder(
-                                        physics: NeverScrollableScrollPhysics(),
-                                        itemCount: rn.plantList.length,
-                                        itemBuilder: (context,index){
-                                          return  Container(
-                                            height: 50,
-                                            child: Row(
-                                              children: [
-                                                Text("${rn.plantList[index].plantName}",style:TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 14),),
-                                                Spacer(),
-                                                GestureDetector(
-                                                  onTap: (){
-
-                                                    setState(() {
-                                                      rn.plantList[index].isActive=!rn.plantList[index].isActive;
-                                                    });
-
-
-                                                  },
-                                                  child: AnimatedContainer(
-                                                    duration: Duration(milliseconds: 300),
-                                                    curve: Curves.easeIn,
-                                                    height: 20,
-                                                    width: 20,
-                                                    decoration: BoxDecoration(
-                                                        borderRadius: BorderRadius.circular(3),
-                                                        border: Border.all(color:rn.plantList[index].isActive?Colors.transparent: AppTheme.addNewTextFieldBorder.withOpacity(0.5)),
-                                                        color:rn.plantList[index].isActive?AppTheme.yellowColor: AppTheme.disableColor
-                                                    ),
-                                                    child: Center(
-                                                      child: Icon(Icons.done,color:rn.plantList[index].isActive?AppTheme.bgColor: AppTheme.addNewTextFieldBorder.withOpacity(0.8),size: 15,),
-                                                    ),
-
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                          );
-                                        },
-                                      ),
-                                    ),
-
-                                    //customer Filter
-                                    SizedBox(height: 20,),
-                                    GestureDetector(
-                                      onTap: (){
-                                        _customerarrowAnimationController.isCompleted
-                                            ? _customerarrowAnimationController.reverse()
-                                            : _customerarrowAnimationController.forward();
-
-                                        setState(() {
-                                          customerFilterOpen=!customerFilterOpen;
-                                        });
-                                      },
-                                      child: Container(
-                                        height: 50,
-                                        width: SizeConfig.screenWidth,
-                                        margin: EdgeInsets.only(left: SizeConfig.width20,right: SizeConfig.width20),
-                                        padding: EdgeInsets.only(left: SizeConfig.width10,right: SizeConfig.width10),
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(25),
-                                          color: AppTheme.yellowColor,
-                                        ),
-                                        child: Row(
-                                          children: [
-                                            Text("Customer Filter",style:TextStyle(fontFamily: 'RM',color: AppTheme.bgColor,fontSize: 16)),
-                                            Spacer(),
-                                            Container(
-                                              height: 30,
-                                              width: 30,
-                                              decoration: BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  color: AppTheme.bgColor
-                                              ),
-                                              child:  AnimatedBuilder(
-                                                animation: _customerarrowAnimationController,
-                                                builder: (context, child) =>
-                                                    Transform.rotate(
-                                                      angle: _customerarrowAnimation.value,
-                                                      child: Icon(
-                                                        Icons.keyboard_arrow_up_rounded,
-                                                        size: 25.0,
-                                                        color: Colors.white,
-                                                      ),
-                                                    ),
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    AnimatedContainer(
-                                      duration: Duration(milliseconds: 300),
-                                      curve: Curves.easeIn,
-                                      width: SizeConfig.screenWidth,
-                                      height:!customerFilterOpen ?0: rn.customerList.length*50.0,
-                                      margin: EdgeInsets.only(left: SizeConfig.width40,right: SizeConfig.width40),
-                                      child: ListView.builder(
-                                        physics: NeverScrollableScrollPhysics(),
-                                        itemCount: rn.customerList.length,
-                                        itemBuilder: (context,index){
-                                          return  Container(
-                                            height: 50,
-                                            child: Row(
-                                              children: [
-                                                Text("${rn.customerList[index].customerName}",style:TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 14),),
-                                                Spacer(),
-                                                GestureDetector(
-                                                  onTap: (){
-
-                                                    setState(() {
-                                                      rn.customerList[index].isActive=!rn.customerList[index].isActive;
-                                                    });
-
-
-                                                  },
-                                                  child: AnimatedContainer(
-                                                    duration: Duration(milliseconds: 300),
-                                                    curve: Curves.easeIn,
-                                                    height: 20,
-                                                    width: 20,
-                                                    decoration: BoxDecoration(
-                                                        borderRadius: BorderRadius.circular(3),
-                                                        border: Border.all(color:rn.customerList[index].isActive?Colors.transparent: AppTheme.addNewTextFieldBorder.withOpacity(0.5)),
-                                                        color:rn.customerList[index].isActive?AppTheme.yellowColor: AppTheme.disableColor
-                                                    ),
-                                                    child: Center(
-                                                      child: Icon(Icons.done,color:rn.customerList[index].isActive?AppTheme.bgColor: AppTheme.addNewTextFieldBorder.withOpacity(0.8),size: 15,),
-                                                    ),
-
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                          );
-                                        },
-                                      ),
-                                    ),*/
-
                                     SalesSettingsHeader(
                                       title: "Plant Filter",
                                       list: rn.plantList,
@@ -605,11 +198,7 @@ class SaleReportSettingsState extends State<SaleReportSettings> with TickerProvi
                                       list: rn.customerList,
                                       instanceName: 'CustomerName',
                                     ),
-                                    /*SalesSettingsHeader(
 
-                                      title: "Plant Filter",
-                                      list: rn.plantList,
-                                    ),*/
 
                                     SizedBox(height: 80,),
                                   ],
@@ -884,3 +473,132 @@ class _SalesSettingsHeaderState extends State<SalesSettingsHeader> with TickerPr
 
 
 
+class ReportSettingsColumnFilter extends StatefulWidget {
+
+  String title;
+  List<dynamic> list=[];
+  String instanceName;
+
+  ReportSettingsColumnFilter({  this.title,this.list,this.instanceName});
+  @override
+  _ReportSettingsColumnFilterState createState() => _ReportSettingsColumnFilterState();
+}
+
+class _ReportSettingsColumnFilterState extends State<ReportSettingsColumnFilter> with TickerProviderStateMixin{
+
+
+  Animation arrowAnimation;
+  AnimationController arrowAnimationController;
+  bool open=false;
+
+  @override
+  void initState() {
+    arrowAnimationController = AnimationController(vsync: this, duration: Duration(milliseconds: 300));
+    arrowAnimation = Tween(begin: 0.0, end:-3.14).animate(arrowAnimationController);
+
+    super.initState();
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        GestureDetector(
+          onTap: (){
+            arrowAnimationController.isCompleted
+                ? arrowAnimationController.reverse()
+                : arrowAnimationController.forward();
+
+            setState(() {
+              open=!open;
+            });
+          },
+          child: Container(
+            height: 50,
+            width: SizeConfig.screenWidth,
+            margin: EdgeInsets.only(left: SizeConfig.width20,right: SizeConfig.width20,top: 20),
+            padding: EdgeInsets.only(left: SizeConfig.width10,right: SizeConfig.width10),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(25),
+              color: AppTheme.yellowColor,
+            ),
+            child: Row(
+              children: [
+                Text(widget.title,style:TextStyle(fontFamily: 'RM',color: AppTheme.bgColor,fontSize: 16)),
+                Spacer(),
+                Container(
+                  height: 30,
+                  width: 30,
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: AppTheme.bgColor
+                  ),
+                  child:  AnimatedBuilder(
+                    animation: arrowAnimationController,
+                    builder: (context, child) =>
+                        Transform.rotate(
+                          angle: arrowAnimation.value,
+                          child: Icon(
+                            Icons.keyboard_arrow_up_rounded,
+                            size: 25.0,
+                            color: Colors.white,
+                          ),
+                        ),
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+        AnimatedContainer(
+          duration: Duration(milliseconds: 300),
+          curve: Curves.easeIn,
+          width: SizeConfig.screenWidth,
+          height:!open ?0: widget.list.length*50.0,
+          margin: EdgeInsets.only(left: SizeConfig.width40,right: SizeConfig.width40),
+          child: ListView.builder(
+            physics: NeverScrollableScrollPhysics(),
+            itemCount: widget.list.length,
+            itemBuilder: (context,index){
+              return index==0?Container():  Container(
+                height: 50,
+                child: Row(
+                  children: [
+                    Text("${widget.list[index].get(widget.instanceName)}",style:TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 14),),
+                    Spacer(),
+                    GestureDetector(
+                      onTap: (){
+
+                        setState(() {
+                          widget.list[index].isActive=!widget.list[index].isActive;
+                        });
+
+
+                      },
+                      child: AnimatedContainer(
+                        duration: Duration(milliseconds: 300),
+                        curve: Curves.easeIn,
+                        height: 20,
+                        width: 20,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(3),
+                            border: Border.all(color:widget.list[index].isActive?Colors.transparent: AppTheme.addNewTextFieldBorder.withOpacity(0.5)),
+                            color:widget.list[index].isActive?AppTheme.yellowColor: AppTheme.disableColor
+                        ),
+                        child: Center(
+                          child: Icon(Icons.done,color:widget.list[index].isActive?AppTheme.bgColor: AppTheme.addNewTextFieldBorder.withOpacity(0.8),size: 15,),
+                        ),
+
+                      ),
+                    )
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+}

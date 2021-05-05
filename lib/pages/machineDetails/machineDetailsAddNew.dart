@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:quarry/notifier/machineNotifier.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/pages/quarryMaster/quarryLocationAddNew.dart';
+import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/alertDialog.dart';
@@ -44,7 +45,7 @@ class _MachineDetailAddNewState extends State<MachineDetailAddNew> with TickerPr
         }
       });*/
 
-      listViewController.addListener(() {
+/*      listViewController.addListener(() {
        //  print("LISt-${listViewController.offset}");
         if(listViewController.offset>20){
 
@@ -55,7 +56,7 @@ class _MachineDetailAddNewState extends State<MachineDetailAddNew> with TickerPr
         else if(listViewController.offset==0){
           scrollController.animateTo(0, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
         }
-      });
+      });*/
 
     });
     super.initState();
@@ -120,7 +121,7 @@ class _MachineDetailAddNewState extends State<MachineDetailAddNew> with TickerPr
                            borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10))
                        ),
                        child: GestureDetector(
-                         onVerticalDragDown: (v){
+                     /*    onVerticalDragDown: (v){
                            if(scrollController.offset==100 && listViewController.offset==0){
                              scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
                            }
@@ -129,6 +130,28 @@ class _MachineDetailAddNewState extends State<MachineDetailAddNew> with TickerPr
 
                            }
 
+                         },*/
+                         onVerticalDragUpdate: (details){
+                           int sensitivity = 5;
+                           if (details.delta.dy > sensitivity) {
+                             scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
+                               /* if(isListScroll){
+                                    setState(() {
+                                      isListScroll=false;
+                                    });
+                                  }*/
+                             });
+
+                           } else if(details.delta.dy < -sensitivity){
+                             scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
+
+                               /*if(!isListScroll){
+                                    setState(() {
+                                      isListScroll=true;
+                                    });
+                                  }*/
+                             });
+                           }
                          },
                          child: Container(
                            height:_keyboardVisible?SizeConfig.screenHeight*0.5 :SizeConfig.screenHeight-100,
@@ -148,6 +171,9 @@ class _MachineDetailAddNewState extends State<MachineDetailAddNew> with TickerPr
                                  textEditingController: qn.MachineName,
                                  onEditComplete: (){
                                    node.unfocus();
+                                 },
+                                 ontap: (){
+                                   scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                  },
                                ),
                                AddNewLabelTextField(
@@ -241,43 +267,75 @@ class _MachineDetailAddNewState extends State<MachineDetailAddNew> with TickerPr
                  ],
                ),
              ),
+
+
+             //bottomNav
              Positioned(
                bottom: 0,
                child: Container(
-                 height:_keyboardVisible?0: SizeConfig.height70,
                  width: SizeConfig.screenWidth,
-                 color: AppTheme.grey,
-                 child: Center(
-                   child: GestureDetector(
-                     onTap: (){
-                       node.unfocus();
-                       if(qn.MachineName.text.isEmpty)
-                       {
-                         CustomAlert().commonErrorAlert(context, "Enter Machine Name", "");
+                 height:_keyboardVisible?0:  70,
 
-                       }
+                 decoration: BoxDecoration(
+                     color: AppTheme.gridbodyBgColor,
+                     boxShadow: [
+                       BoxShadow(
+                         color: AppTheme.gridbodyBgColor,
+                         spreadRadius: 2,
+                         blurRadius: 15,
+                         offset: Offset(0, -20), // changes position of shadow
+                       )
+                     ]
+                 ),
+                 child: Stack(
 
-                       else{
-                         qn.InsertVehicleDbHit(context);
-
-                       }
-
-                     },
-                     child: Container(
-                       height: SizeConfig.height50,
-                       width: SizeConfig.width120,
+                   children: [
+                     Container(
                        decoration: BoxDecoration(
-                           borderRadius: BorderRadius.circular(SizeConfig.height25),
-                           color: AppTheme.bgColor
+
                        ),
-                       child: Center(
-                         child: Text(qn.isMachineEdit?"Update":"Save",style: AppTheme.TSWhite20,),
+                       margin:EdgeInsets.only(top: 0),
+                       child: CustomPaint(
+                         size: Size( SizeConfig.screenWidth, 65),
+                         painter: RPSCustomPainter3(),
                        ),
                      ),
-                   ),
+                     Center(
+                       heightFactor: 0.5,
+                       child: FloatingActionButton(backgroundColor: AppTheme.yellowColor, child: Icon(Icons.save), elevation: 0.1, onPressed: () {
+                         node.unfocus();
+                         if(qn.MachineName.text.isEmpty)
+                         {
+                           CustomAlert().commonErrorAlert(context, "Enter Machine Name", "");
+
+                         }
+
+                         else{
+                           qn.InsertVehicleDbHit(context);
+
+                         }
+
+
+                       }),
+                     ),
+                     Container(
+                       width:  SizeConfig.screenWidth,
+                       height: 80,
+                       child: Stack(
+
+                         children: [
+
+
+                         ],
+                       ),
+                     )
+                   ],
                  ),
                ),
              ),
+
+
+
 
              Container(
 

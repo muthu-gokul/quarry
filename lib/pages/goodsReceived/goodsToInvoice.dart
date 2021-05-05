@@ -447,6 +447,139 @@ class GoodsToInvoiceState extends State<GoodsToInvoice> with TickerProviderState
 
                               ) ,
 
+                              /////////////  OtherCharges Details List  /////////////////
+                              Container(
+
+                                height: gr.GINV_OtherChargesList.length== 0 ? 0 :
+                                ( gr.GINV_OtherChargesList.length * 50.0)+40,
+                            //    height: 100,
+                                constraints: BoxConstraints(
+                                    maxHeight: 300
+                                ),
+                                //  padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+
+                                width: SizeConfig.screenWidth,
+
+                                margin: EdgeInsets.only(left:SizeConfig.screenWidth*0.02,right:SizeConfig.screenWidth*0.02,top: 20),
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(5),
+                                    border: Border.all(color: AppTheme.addNewTextFieldBorder)
+                                ),
+                                child: Column(
+                                  children: [
+
+                                    Container(
+                                      height: 40,
+                                      padding: EdgeInsets.only(left: 10,right: 10),
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey[200],
+                                        borderRadius: BorderRadius.only(topLeft: Radius.circular(5),topRight: Radius.circular(5),),
+
+                                        /* border: Border(
+                                                    bottom: BorderSide(color: AppTheme.addNewTextFieldBorder.withOpacity(0.5))
+                                                )*/
+                                      ),
+                                      child: Row(
+                                   //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Container(
+                                              width: SizeConfig.screenWidthM0_04*0.44,child: Text("Other Charge")),
+                                          Container( alignment: Alignment.centerLeft,width: SizeConfig.screenWidthM0_04*0.23,child: Text("  Price")),
+                                          Container(alignment: Alignment.center, width: SizeConfig.screenWidthM0_04*0.25,child: Text("Action")),
+
+                                        ],
+
+                                      ),
+                                    ),
+
+                                    Expanded(
+                                      child: ListView.builder(
+                                        itemCount: gr.GINV_OtherChargesList.length,
+                                        itemBuilder: (context, index) {
+                                          return
+                                          /*  SlideTransition(
+                                            position: Tween<Offset>(begin: Offset(qn.paymentMappingList[index].isEdit ? 0.0 :
+                                            qn.paymentMappingList[index].isDelete ?1.0:0.0,
+                                                qn.paymentMappingList[index].isEdit ? 0.0 :qn.paymentMappingList[index].isDelete ?0.0: 1.0),
+                                                end:qn.paymentMappingList[index].isEdit ?Offset(1, 0): Offset.zero)
+                                                .animate(qn.paymentMappingList[index].scaleController),
+
+                                            child: FadeTransition(
+                                              opacity: Tween(begin: qn.paymentMappingList[index].isEdit ? 1.0 : 0.0,
+                                                  end: qn.paymentMappingList[index].isEdit ? 0.0 : 1.0)
+                                                  .animate(qn.paymentMappingList[index].scaleController),
+                                              child:*/
+                                              Container(
+                                                padding: EdgeInsets.only(top: 5, bottom: 5,left: 10,right: 10),
+                                                decoration: BoxDecoration(
+                                                    border: Border(
+                                                        bottom: BorderSide(color: AppTheme.addNewTextFieldBorder.withOpacity(0.5))
+                                                    )
+                                                ),
+                                                child: Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    Row(
+                                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                                      children: [
+
+                                                        Container(
+                                                          width: SizeConfig.screenWidthM0_04*0.44,
+                                                          height: 25,
+                                                          alignment:Alignment.centerLeft,
+
+                                                          child: FittedBox(
+                                                            fit: BoxFit.contain,
+                                                            child: Row(
+                                                              children: [
+                                                                Text("${gr.GINV_OtherChargesList[index].otherChargesName}",
+                                                                  style: TextStyle(fontSize: 14, fontFamily: 'RR', color: AppTheme.gridTextColor, letterSpacing: 0.2),textAlign: TextAlign.left,
+                                                                ),
+
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        Container(
+                                                          padding: EdgeInsets.only(left: 5),
+                                                          alignment: Alignment.centerLeft,
+
+                                                          width: SizeConfig.screenWidthM0_04*0.23,
+                                                          child: Text("${gr.GINV_OtherChargesList[index].otherChargesAmount}",
+                                                            style: TextStyle(fontSize: 14, fontFamily: 'RR', color: AppTheme.gridTextColor, letterSpacing: 0.2),
+                                                          ),
+                                                        ),
+                                                        Container(
+                                                          width:SizeConfig.screenWidthM0_04*0.25,
+                                                          height: 30,
+                                                         // padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
+                                                          child: Row(
+                                                            mainAxisAlignment: MainAxisAlignment.center,
+                                                            children: [
+                                                              Icon(Icons.edit),
+                                                              SizedBox(width:SizeConfig.screenWidthM0_04*0.01,),
+                                                              Icon(Icons.delete_outline),
+                                                            ],
+                                                          )
+                                                        ),
+                                                      ],
+                                                    ),
+
+
+                                                  ],
+                                                ),
+
+                                              );
+                                           // ),
+                                         // );
+                                        },
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+
                               SizedBox(height: 20,),
                               Align(
                                 alignment: Alignment.center,
@@ -468,6 +601,9 @@ class GoodsToInvoiceState extends State<GoodsToInvoice> with TickerProviderState
                               Text("${gr.GINV_invoiceAmount}",
                               style: TextStyle(fontFamily: 'RM',color: AppTheme.red,fontSize: 25),textAlign: TextAlign.center,
                               ),
+
+
+                              SizedBox(height: 30,),
 
 
 
@@ -579,7 +715,7 @@ class GoodsToInvoiceState extends State<GoodsToInvoice> with TickerProviderState
                       Navigator.pop(context);
                     }),
                     SizedBox(width: SizeConfig.width5,),
-                    Text("${gr.GINV_PorderNo}",
+                    Text("${gr.GINV_PorderNo} toInvoice",
                       style: TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 16),
                     ),
 

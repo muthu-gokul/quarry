@@ -114,7 +114,7 @@ class CustomerNotifier extends ChangeNotifier {
         {
           "Key": "CustomerType",
           "Type": "int",
-          "Value": null
+          "Value": isCreditCustomer?1:0
         },
         {
           "Key": "CustomerCreditLimit",

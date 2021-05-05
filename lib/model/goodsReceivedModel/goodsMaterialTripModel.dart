@@ -13,8 +13,8 @@ class GoodsMaterialTripDetailsModel {
   String vehicleNumber;
   int materialId;
   String unitName;
-  int receivedQuantity;
-  int balanceQuantity;
+  double receivedQuantity;
+  double balanceQuantity;
   String status;
 
   factory GoodsMaterialTripDetailsModel.fromJson(Map<String, dynamic> json) => GoodsMaterialTripDetailsModel(

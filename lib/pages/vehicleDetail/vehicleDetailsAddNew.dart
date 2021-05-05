@@ -6,6 +6,7 @@ import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/notifier/vehicleNotifier.dart';
 import 'package:quarry/pages/quarryMaster/quarryLocationAddNew.dart';
 import 'package:quarry/pages/sale/salesDetail.dart';
+import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/alertDialog.dart';
@@ -43,7 +44,7 @@ class VehicleDetailAddNewState extends State<VehicleDetailAddNew> with TickerPro
       });
 
 
-      listViewController.addListener(() {
+/*      listViewController.addListener(() {
 
         if(listViewController.offset>20){
 
@@ -54,7 +55,7 @@ class VehicleDetailAddNewState extends State<VehicleDetailAddNew> with TickerPro
         else if(listViewController.offset==0){
           scrollController.animateTo(0, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
         }
-      });
+      });*/
 
     });
     super.initState();
@@ -120,15 +121,27 @@ class VehicleDetailAddNewState extends State<VehicleDetailAddNew> with TickerPro
                               borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10))
                           ),
                           child:  GestureDetector(
-                            onVerticalDragDown: (v){
-                              if(scrollController.offset==100 && listViewController.offset==0){
-                                scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
-                              }
-                              else if(scrollController.offset==0 && listViewController.offset==0){
-                                scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+                            onVerticalDragUpdate: (details){
+                              int sensitivity = 5;
+                              if (details.delta.dy > sensitivity) {
+                                scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
+                                  /* if(isListScroll){
+                                    setState(() {
+                                      isListScroll=false;
+                                    });
+                                  }*/
+                                });
 
-                              }
+                              } else if(details.delta.dy < -sensitivity){
+                                scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
 
+                                  /*if(!isListScroll){
+                                    setState(() {
+                                      isListScroll=true;
+                                    });
+                                  }*/
+                                });
+                              }
                             },
                             child: ListView(
                               controller: listViewController,
@@ -141,12 +154,18 @@ class VehicleDetailAddNewState extends State<VehicleDetailAddNew> with TickerPro
                                   onEditComplete: (){
                                     node.unfocus();
                                   },
+                                  ontap: (){
+                                    scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                  },
                                 ),
                                 AddNewLabelTextField(
                                   labelText: 'VehicleDescription',
                                   textEditingController: qn.VehicleDescript,
                                   onEditComplete: (){
                                     node.unfocus();
+                                  },
+                                  ontap: (){
+                                    scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                   },
                                 ),
 
@@ -230,8 +249,75 @@ class VehicleDetailAddNewState extends State<VehicleDetailAddNew> with TickerPro
                   ),
                 ),
 
+                //bottomNav
+                Positioned(
+                  bottom: 0,
+                  child: Container(
+                    width: SizeConfig.screenWidth,
+                    height:_keyboardVisible?0:  70,
 
-                //Save Button
+                    decoration: BoxDecoration(
+                        color: AppTheme.gridbodyBgColor,
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppTheme.gridbodyBgColor,
+                            spreadRadius: 2,
+                            blurRadius: 15,
+                            offset: Offset(0, -20), // changes position of shadow
+                          )
+                        ]
+                    ),
+                    child: Stack(
+
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+
+                          ),
+                          margin:EdgeInsets.only(top: 0),
+                          child: CustomPaint(
+                            size: Size( SizeConfig.screenWidth, 65),
+                            painter: RPSCustomPainter3(),
+                          ),
+                        ),
+                        Center(
+                          heightFactor: 0.5,
+                          child: FloatingActionButton(backgroundColor: AppTheme.yellowColor, child: Icon(Icons.save), elevation: 0.1, onPressed: () {
+                            node.unfocus();
+                            if(qn.VehicleNo.text.isEmpty){
+                              CustomAlert().commonErrorAlert(context, "Enter Vehicle Number", "");
+
+                            }
+                            else if(qn.selectedVehicleTypeId==null){
+                              CustomAlert().commonErrorAlert(context, "Select VehicleType", "");
+
+                            }
+                            else{
+                              qn.InsertVehicleDbHit(context);
+
+                            }
+
+
+                          }),
+                        ),
+                        Container(
+                          width:  SizeConfig.screenWidth,
+                          height: 80,
+                          child: Stack(
+
+                            children: [
+
+
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+
+
+ /*               //Save Button
                 Positioned(
                   bottom: 0,
                   child: Container(
@@ -271,7 +357,7 @@ class VehicleDetailAddNewState extends State<VehicleDetailAddNew> with TickerPro
                       ),
                     ),
                   ),
-                ),
+                ),*/
 
                 Container(
                   height: qn.vehicleLoader? SizeConfig.screenHeight:0,

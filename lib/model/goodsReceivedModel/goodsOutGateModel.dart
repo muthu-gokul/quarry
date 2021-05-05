@@ -5,10 +5,20 @@ class GoodsOutGateModel {
     this.purchaseOrderNumber,
     this.materialId,
     this.materialName,
+    this.materialPrice,
     this.unitName,
+    this.taxValue,
+    this.taxAmount,
     this.expectedQuantity,
     this.receivedQuantity,
     this.amount,
+    this.isDiscount,
+    this.isPercentage,
+    this.isAmount,
+    this.discountValue,
+    this.discountAmount,
+    this.discountedSubtotal,
+    this.grandTotal,
     this.vehicleTypeId,
     this.vehicleNumber,
     this.inwardLoadedVehicleWeight,
@@ -22,10 +32,20 @@ class GoodsOutGateModel {
   int purchaseOrderNumber;
   int materialId;
   String materialName;
+  double materialPrice;
   String unitName;
+  double taxValue;
+  double taxAmount;
   double expectedQuantity;
   double receivedQuantity;
   double amount;
+  int isDiscount;
+  int isPercentage;
+  int isAmount;
+  double discountValue;
+  double discountAmount;
+  double discountedSubtotal;
+  double grandTotal;
   int vehicleTypeId;
   String vehicleNumber;
   double inwardLoadedVehicleWeight;
@@ -38,10 +58,17 @@ class GoodsOutGateModel {
     purchaseOrderNumber: json["PurchaseOrderNumber"],
     materialId: json["MaterialId"],
     materialName: json["MaterialName"],
+    materialPrice: json["MaterialPrice"],
     unitName: json["UnitName"],
+    taxValue: json["TaxValue"],
     expectedQuantity: json["ExpectedQuantity"].toDouble(),
     receivedQuantity: json["ReceivedQuantity"].toDouble(),
     amount: json["Amount"],
+    isDiscount: json["IsDiscount"],
+    isPercentage: json["IsPercentage"],
+    isAmount: json["IsAmount"],
+    discountValue: json["DiscountValue"],
+    discountAmount: json["DiscountAmount"],
     vehicleTypeId: json["VehicleTypeId"],
     vehicleNumber: json["VehicleNumber"],
     inwardLoadedVehicleWeight: json["InwardLoadedVehicleWeight"],

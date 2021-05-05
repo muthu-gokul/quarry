@@ -12,10 +12,15 @@ import 'package:quarry/model/reportsModel/salesReportModel/salesOverAllHeaderMod
 import 'package:quarry/model/reportsModel/salesReportModel/salesReportGridModel.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/widgets/alertDialog.dart';
+import 'package:quarry/widgets/calculation.dart';
 import 'package:quarry/widgets/decimal.dart';
 
 class ReportsNotifier extends ChangeNotifier{
   final call=ApiManager();
+
+  String TypeName="";
+  /*Report Settings*/
+  String settingsHeader="";
 
   DateTime dateTime=DateTime.parse('2021-01-01');
   List<DateTime> picked=[];
@@ -25,7 +30,7 @@ class ReportsNotifier extends ChangeNotifier{
   List<CustomerModel> customerList=[];
 
   Future<dynamic> ReportsDropDownValues(BuildContext context,String typeName) async {
-
+    TypeName=typeName;
     dateTime=DateTime.parse('1999-01-01');
     updateReportLoader(true);
     var body={
@@ -59,6 +64,16 @@ class ReportsNotifier extends ChangeNotifier{
           var parsed=json.decode(value);
 
           if(typeName=="SaleReport"){
+            settingsHeader="Sales Report";
+             var t=parsed["Table"] as List;
+             var t1=parsed["Table1"] as List;
+             var t2=parsed["Table2"] as List;
+             plantList=t.map((e) => PlantUserModel.fromJson(e)).toList();
+             materialList=t1.map((e) => MaterialModel.fromJson(e)).toList();
+             customerList=t2.map((e) => CustomerModel.fromJson(e)).toList();
+          }
+          else if(typeName=="PurchaseReport"){
+            settingsHeader="Purchase Report";
              var t=parsed["Table"] as List;
              var t1=parsed["Table1"] as List;
              var t2=parsed["Table2"] as List;
@@ -221,17 +236,13 @@ class ReportsNotifier extends ChangeNotifier{
 
      totalSale=filterSalesReportGridList.length;
      filterSalesReportGridList.forEach((element) {
-       totalSaleAmount=add(totalSaleAmount, element.outputQtyAmount);
-       totalSaleQty=add(totalSaleQty, element.outputMaterialQty);
+       totalSaleAmount=Calculation().add(totalSaleAmount, element.outputQtyAmount);
+       totalSaleQty=Calculation().add(totalSaleQty, element.outputMaterialQty);
      });
 
      notifyListeners();
 
   }
-
- add(dynamic n1,dynamic n2){
-    return double.parse((Decimal.parse(n1.toString())+Decimal.parse(n2.toString())).toString());
- }
 
  
 
@@ -248,4 +259,18 @@ class ColumnFilterModel{
   String columnName;
   bool isActive;
   ColumnFilterModel({this.columnName, this.isActive=true});
+
+  Map<String, dynamic> toJson() => {
+    "ColumnName": columnName,
+
+  };
+
+  dynamic get(String propertyName) {
+    var _mapRep = toJson();
+    if (_mapRep.containsKey(propertyName)) {
+      return _mapRep[propertyName];
+    }
+    throw ArgumentError('propery not found');
+  }
+
 }

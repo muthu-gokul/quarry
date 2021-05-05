@@ -16,6 +16,8 @@ import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/customTextField.dart';
 
+import 'goodsReceivedGrid.dart';
+
 
 
 
@@ -250,7 +252,7 @@ class GoodsInGateFormState extends State<GoodsInGateForm> with TickerProviderSta
                           }
                           else{
                             if(gr.ML_GoodsorderId==0){
-                              gr.InsertGoodsDbHit(context);
+                              gr.InsertGoodsDbHit(context,GoodsReceivedGridState());
                             }
                             else{
                               List js=[];
@@ -259,7 +261,7 @@ class GoodsInGateFormState extends State<GoodsInGateForm> with TickerProviderSta
                                   double.parse(gr.loadedWeight.text))
                               ).toList();
                               print("Update-$js");
-                              gr.UpdateGoodsDbHit(context,js);
+                              gr.UpdateGoodsDbHit(context,js,GoodsReceivedGridState());
                             }
 
 
@@ -299,7 +301,7 @@ class GoodsInGateFormState extends State<GoodsInGateForm> with TickerProviderSta
                       print(gr.IGF_Materials.length);
                     }),
                     SizedBox(width: SizeConfig.width5,),
-                    Text("${gr.ML_PorderNo}",
+                    Text("${gr.ML_PorderNo} inGate",
                       style: TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 16),
                     ),
 

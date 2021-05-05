@@ -250,6 +250,14 @@ class GoodsMaterialsListState extends State<GoodsMaterialsList> with TickerProvi
                                                                     quantity: gr.ML_Materials[index].quantity,
                                                                     receivedQuantity: 0.0,
                                                                     amount: 0.0,
+                                                                    isDiscount: gr.ML_Materials[index].isDiscount,
+                                                                    isPercentage: gr.ML_Materials[index].isPercentage,
+                                                                    isAmount: gr.ML_Materials[index].isAmount,
+                                                                    discountValue: gr.ML_Materials[index].discountValue,
+                                                                    discountAmount: 0.0,
+                                                                    taxValue: gr.ML_Materials[index].taxValue,
+                                                                    taxAmount: 0.0,
+                                                                    totalAmount: 0.0,
                                                                     vehicleNumber: null,
                                                                     vehicleTypeId: null,
                                                                     inwardLoadedVehicleWeight: 0.0,
@@ -303,7 +311,7 @@ class GoodsMaterialsListState extends State<GoodsMaterialsList> with TickerProvi
                                                               Container(
                                                                 width: valueContainerWidth,
                                                                 alignment: Alignment.center,
-                                                                child: Text("${value.amount}",
+                                                                child: Text("${value.totalAmount}",
                                                                   style:AppTheme.ML_bgCT,
                                                                 ),
                                                               ),
@@ -670,8 +678,10 @@ class GoodsMaterialsListState extends State<GoodsMaterialsList> with TickerProvi
                       ),
                       Center(
                         heightFactor: 0.5,
-                        child: FloatingActionButton(backgroundColor: AppTheme.yellowColor, child: Icon(Icons.save), elevation: 0.1, onPressed: () {
+                        child: FloatingActionButton(backgroundColor: AppTheme.yellowColor, child: Icon(Icons.arrow_back), elevation: 0.1, onPressed: () {
+                          gr.ML_clear();
 
+                          Navigator.pop(context);
                         }),
                       ),
                       Container(
@@ -702,7 +712,7 @@ class GoodsMaterialsListState extends State<GoodsMaterialsList> with TickerProvi
                       Navigator.pop(context);
                     }),
                     SizedBox(width: SizeConfig.width5,),
-                    Text("${gr.ML_PorderNo}",
+                    Text("${gr.ML_PorderNo} materialsList",
                       style: TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 16),
                     ),
 

@@ -17,6 +17,8 @@ import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/customTextField.dart';
 import 'package:quarry/widgets/searchdropdownSingleSelect.dart';
 
+import 'goodsReceivedGrid.dart';
+
 
 
 
@@ -170,6 +172,10 @@ class GoodsOutGateFormState extends State<GoodsOutGateForm> with TickerProviderS
                                       gr.OGF_InwardLoadedVehicleWeight=gr.outGateFormList[gr.OGF_index].inwardLoadedVehicleWeight;
                                       gr.OGF_OutwardEmptyVehicleWeight=gr.outGateFormList[gr.OGF_index].outwardEmptyVehicleWeight;
                                       gr.OGF_BalanceQty=0.0;
+                                      gr.OGF_amount=0.0;
+                                      gr.OGF_taxAmount=0.0;
+                                      gr.OGF_TotalAmount=0.0;
+                                      gr.OGF_discountAmount=0.0;
                                     }
                                   });
                                 },
@@ -325,7 +331,7 @@ class GoodsOutGateFormState extends State<GoodsOutGateForm> with TickerProviderS
                             CustomAlert().commonErrorAlert(context, "Enter Empty Weight of Vehicle", "");
                           }
                           else{
-                            gr.UpdateGoodsDbHit(context,null);
+                            gr.UpdateGoodsDbHit(context,null,GoodsReceivedGridState());
                           }
 
 
@@ -359,7 +365,7 @@ class GoodsOutGateFormState extends State<GoodsOutGateForm> with TickerProviderS
 
                     }),
                     SizedBox(width: SizeConfig.width5,),
-                    Text("${gr.OGF_index!=null && gr.OGF_index!=-1? gr.outGateFormList[gr.OGF_index].purchaseOrderNumber:""}",
+                    Text("${gr.OGF_index!=null && gr.OGF_index!=-1? gr.outGateFormList[gr.OGF_index].purchaseOrderNumber:""} outGate",
                       style: TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 16),
                     ),
 
