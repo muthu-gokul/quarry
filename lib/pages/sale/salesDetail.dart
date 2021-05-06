@@ -1482,7 +1482,7 @@ bool _keyboardVisible=false;
                                                             child: Center(child: Text("Ton",style: TextStyle(fontFamily: 'RR',fontSize: 18,color: AppTheme.addNewTextFieldText.withOpacity(0.7)),))
                                                         ),
                                                         onChange: (v){
-                                                          qn.differWeight();
+                                                          qn.differWeight(context);
                                                         },
                                                           onEditComplete: (){
                                                             node.unfocus();
@@ -1630,7 +1630,9 @@ bool _keyboardVisible=false;
                                     }
                                     else if(qn.SS_DifferWeightController.text.isEmpty){
                                       CustomAlert().commonErrorAlert(context, "Enter Vehicle Weight", "");
-                                    }else{
+                                    }else if(double.parse(qn.SS_DifferWeightController.text.toString())<double.parse(qn.SS_EmptyWeightOfVehicle)){
+                                      CustomAlert().commonErrorAlert(context, "Outward Weight Should not be less than empty vehicle weight", "");
+                                    } else{
                                       qn.UpdateSaleDetailDbhit(context,null,"");
                                     }
                                   }

@@ -1466,19 +1466,40 @@ class QuarryNotifier extends ChangeNotifier{
                 PosColumn(text: 'RoundOff: ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
                 PosColumn(text: '${sales[0]['RoundOffAmount']??""}', width: 6, styles: PosStyles(align: PosAlign.right)),
               ]);
+              printer.emptyLines(1);
+              printer.row([
+                PosColumn(text: '', width: 1),
+                // PosColumn(text: 'Total: ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
+                PosColumn(text: 'Total: ${Calculation().add(sales[0]['TotalAmount'], sales[0]['RoundOffAmount'])}', width: 11,
+                    styles: PosStyles(align: PosAlign.center,height: PosTextSize.size2,width: PosTextSize.size2)),
+              ]);
+              printer.emptyLines(1);
             }
+            else{
+              printer.emptyLines(1);
+              printer.row([
+                PosColumn(text: '', width: 1),
+                // PosColumn(text: 'Total: ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
+                PosColumn(text: 'Total: ${sales[0]['TotalAmount']??""}', width: 11,
+                    styles: PosStyles(align: PosAlign.center,height: PosTextSize.size2,width: PosTextSize.size2)),
+              ]);
+              printer.emptyLines(1);
+            }
+          }
+          else{
+            printer.emptyLines(1);
+            printer.row([
+              PosColumn(text: '', width: 1),
+              // PosColumn(text: 'Total: ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
+              PosColumn(text: 'Total: ${sales[0]['TotalAmount']??""}', width: 11,
+                  styles: PosStyles(align: PosAlign.center,height: PosTextSize.size2,width: PosTextSize.size2)),
+            ]);
+            printer.emptyLines(1);
           }
 
 
 
-          printer.emptyLines(1);
-          printer.row([
-            PosColumn(text: '', width: 1),
-            // PosColumn(text: 'Total: ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
-            PosColumn(text: 'Total: ${sales[0]['TotalAmount']??""}', width: 11,
-                styles: PosStyles(align: PosAlign.center,height: PosTextSize.size2,width: PosTextSize.size2)),
-          ]);
-          printer.emptyLines(1);
+
         }
 
         if(customer.isNotEmpty){
@@ -1747,18 +1768,39 @@ class QuarryNotifier extends ChangeNotifier{
                 PosColumn(text: 'RoundOff: ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
                 PosColumn(text: '${saleDetailsGrid[selectedIndex].RoundOffAmount??""}', width: 6, styles: PosStyles(align: PosAlign.right)),
               ]);
+              printer.emptyLines(1);
+              printer.row([
+                PosColumn(text: '', width: 1),
+                // PosColumn(text: 'Total: ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
+                PosColumn(text: 'Total: ${Calculation().add(saleDetailsGrid[selectedIndex].TotalAmount, saleDetailsGrid[selectedIndex].RoundOffAmount)}', width: 11,
+                    styles: PosStyles(align: PosAlign.center,height: PosTextSize.size2,width: PosTextSize.size2)),
+              ]);
+              printer.emptyLines(1);
             }
+            else{
+              printer.emptyLines(1);
+              printer.row([
+                PosColumn(text: '', width: 1),
+                // PosColumn(text: 'Total: ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
+                PosColumn(text: 'Total: ${saleDetailsGrid[selectedIndex].TotalAmount??""}', width: 11,
+                    styles: PosStyles(align: PosAlign.center,height: PosTextSize.size2,width: PosTextSize.size2)),
+              ]);
+              printer.emptyLines(1);
+            }
+          }
+          else{
+            printer.emptyLines(1);
+            printer.row([
+              PosColumn(text: '', width: 1),
+              // PosColumn(text: 'Total: ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
+              PosColumn(text: 'Total: ${saleDetailsGrid[selectedIndex].TotalAmount??""}', width: 11,
+                  styles: PosStyles(align: PosAlign.center,height: PosTextSize.size2,width: PosTextSize.size2)),
+            ]);
+            printer.emptyLines(1);
           }
 
 
-          printer.emptyLines(1);
-          printer.row([
-            PosColumn(text: '', width: 1),
-            // PosColumn(text: 'Total: ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
-            PosColumn(text: 'Total: ${saleDetailsGrid[selectedIndex].TotalAmount??""}', width: 11,
-                styles: PosStyles(align: PosAlign.center,height: PosTextSize.size2,width: PosTextSize.size2)),
-          ]);
-          printer.emptyLines(1);
+
           // }
 
           if(customerIndex!=-1){
@@ -1892,9 +1934,11 @@ class QuarryNotifier extends ChangeNotifier{
   int SS_isMaterialReceived;
   Color returnColor;
 
-  differWeight(){
+  differWeight(BuildContext context){
     print("SS_MaterialUnitPrice $SS_MaterialUnitPrice");
     print("Fdf-$SS_MaterialUnitPrice");
+
+
 
     if(SS_DifferWeightController.text.isEmpty){
       print("EMPTY");
