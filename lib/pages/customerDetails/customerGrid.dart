@@ -295,7 +295,7 @@ class _CustomerMasterState extends State<CustomerMaster> {
 
   Route _createRoute() {
     return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => CustomerDetailAddNew(),
+      pageBuilder: (context, animation, secondaryAnimation) => CustomerDetailAddNew(false),
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
 
         return FadeTransition(

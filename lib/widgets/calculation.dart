@@ -6,6 +6,9 @@ class Calculation {
   add(dynamic n1,dynamic n2){
     return double.parse((Decimal.parse(n1.toString())+Decimal.parse(n2.toString())).toString());
   }
+  sub(dynamic n1,dynamic n2){
+    return double.parse((Decimal.parse(n1.toString())-Decimal.parse(n2.toString())).toString());
+  }
 
   mul(dynamic n1,dynamic n2){
     return double.parse((Decimal.parse(n1.toString())*Decimal.parse(n2.toString())).toString());

@@ -42,14 +42,14 @@ class CustomerNotifier extends ChangeNotifier {
   final call = ApiManager();
 
 
-  Future<dynamic> InsertCustomerDbHit(BuildContext context) async {
+  Future<dynamic> InsertCustomerDbHit(BuildContext context,bool fromSale) async {
     updatecustomerLoader(true);
     var body = {
       "Fields": [
         {
           "Key": "SpName",
           "Type": "String",
-          "Value": isCustomerEdit ? "${Sp.updateCustomerDetail}" : "${Sp.insertCustomerDetail}"
+          "Value":fromSale?"${Sp.insertCustomerDetail}": isCustomerEdit ? "${Sp.updateCustomerDetail}" : "${Sp.insertCustomerDetail}"
         },
         {
           "Key": "LoginUserId",
@@ -112,7 +112,7 @@ class CustomerNotifier extends ChangeNotifier {
           "Value": customerGstNumber.text
         },
         {
-          "Key": "CustomerType",
+          "Key": "IsCreditCustomer",
           "Type": "int",
           "Value": isCreditCustomer?1:0
         },
@@ -136,8 +136,7 @@ class CustomerNotifier extends ChangeNotifier {
         {
           "Key": "database",
           "Type": "String",
-          "Value": Provider
-              .of<QuarryNotifier>(context, listen: false)
+          "Value": Provider.of<QuarryNotifier>(context, listen: false)
               .DataBaseName
         }
       ]
@@ -146,7 +145,13 @@ class CustomerNotifier extends ChangeNotifier {
       await call.ApiCallGetInvoke(body, context).then((value) {
         if (value != null) {
           var parsed = json.decode(value);
-          print(parsed);
+       ///   print(parsed);
+
+          if(fromSale){
+            var t=parsed['Table'] as List;
+            print(t);
+            Provider.of<QuarryNotifier>(context, listen: false).updateSelectCustomerFromAddNew(t[0]['CustomerId'],t[0]['CustomerName']);
+          }
           clearCustomerDetails();
           Navigator.pop(context);
           GetCustomerDetailDbhit(context, null);

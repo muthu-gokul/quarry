@@ -104,22 +104,22 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                     Consumer<ProfileNotifier>(
                       builder: (context,pn,child)=> Container(
                         width: double.infinity,
-                       height: 210,
+                        height: 210,
                         child: Column(
                           children: [
                             Align(
                               alignment: Alignment.centerRight,
                               child: IconButton(icon: Icon(Icons.clear_outlined,size: 25,color: AppTheme.yellowColor,),
                                   onPressed: (){
-                                   scaffoldkey.currentState.openEndDrawer();
+                                    scaffoldkey.currentState.openEndDrawer();
                                   }),
                             ),
                             Container(
                               height: 100,
                               width: 100,
                               decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: AppTheme.yellowColor,
+                                shape: BoxShape.circle,
+                                color: AppTheme.yellowColor,
 
                               ),
 
@@ -132,14 +132,14 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                             Container(
                               padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(50),
-                                color: AppTheme.yellowColor
+                                  borderRadius: BorderRadius.circular(50),
+                                  color: AppTheme.yellowColor
                               ),
                               child: Text("${pn.UserGroupName}",
                                 style: TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 12),
                               ),
                             ),
-                          /*  Container(
+                            /*  Container(
                               child: Row(
                                 children: [
                                   // Padding(
@@ -148,7 +148,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                   // ),
                                   SizedBox(width: SizeConfig.width20,),
                                   SvgPicture.asset("assets/images/slide-logo.svg",height: 50,width: 250,)
-
                                 ],
                               ),
                               //  decoration: BoxDecoration
@@ -201,6 +200,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                     // Provider.of<QuarryNotifier>(context,listen: false).initDropDownValues(context);
                                     Provider.of<QuarryNotifier>(context,listen: false).GetCustomerDetailDbhit(context);
                                     Provider.of<QuarryNotifier>(context,listen: false).GetSaleDetailDbhit(context);
+                                    Provider.of<QuarryNotifier>(context,listen: false).SalesDropDownValues(context);
                                   },
                                 ),
                                 DrawerContent(
@@ -295,7 +295,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                     Navigator.push(context, MaterialPageRoute(builder: (context)=>ReportsPage(voidCallback: (){
                                       scaffoldkey.currentState.openEndDrawer();
                                     },)));
-                                    },
+                                  },
                                 ),
 
                                 DrawerContent(
@@ -306,9 +306,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                   tag: "Settings",
                                   titleColor: AppTheme.yellowColor,
                                   callback: (){
-                                     Navigator.push(context, MaterialPageRoute(builder: (context)=>SettingsPage(voidCallback: (){
-                                       scaffoldkey.currentState.openEndDrawer();
-                                     },)));
+                                    Navigator.push(context, MaterialPageRoute(builder: (context)=>SettingsPage(voidCallback: (){
+                                      scaffoldkey.currentState.openEndDrawer();
+                                    },)));
                                   },
 
                                 ),
@@ -428,26 +428,26 @@ class DrawerContent extends StatelessWidget {
     return FadeAnimation(
       delay, GestureDetector(
       onTap: callback,
+      child: Container(
+        height: height,
+        width: SizeConfig.screenWidth,
+        alignment: Alignment.center,
         child: Container(
-          height: height,
-          width: SizeConfig.screenWidth,
-         alignment: Alignment.center,
-          child: Container(
-            width: 210,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Hero(
+          width: 210,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Hero(
 
                   tag: tag,
-                    child: SvgPicture.asset("assets/svg/settings-icon.svg",width: 30)),
-                SizedBox(width: 10,),
-                Text(title, style: TextStyle(fontSize: 16,color:titleColor, fontFamily:'RR'),),
-              ],
-            ),
+                  child: SvgPicture.asset("assets/svg/settings-icon.svg",width: 30)),
+              SizedBox(width: 10,),
+              Text(title, style: TextStyle(fontSize: 16,color:titleColor, fontFamily:'RR'),),
+            ],
           ),
         ),
       ),
+    ),
     );
   }
 }
@@ -880,4 +880,3 @@ class CustomHalfCircleClipper extends CustomClipper<Path> {
     return true;
   }
 }
-

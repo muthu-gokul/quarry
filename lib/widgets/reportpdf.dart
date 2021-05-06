@@ -371,7 +371,7 @@ reportView(context,String mailid,int saleIndex) async {
                                     height: 70,
 
                                     child: pw.Center(
-                                        child: pw.Text('MAterial HSN')
+                                        child: pw.Text('Material HSN')
                                     )
                                 ),
                               ]
@@ -480,6 +480,38 @@ reportView(context,String mailid,int saleIndex) async {
                                 //         ]
                                 //     )
                                 // ),
+                                qn.saleDetailsGrid[saleIndex].discountAmount!=null ?
+                                qn.saleDetailsGrid[saleIndex].discountAmount>0 ?
+                                pw.Container(
+                                    height: 30,
+                                    decoration: pw.BoxDecoration(
+                                        border: pw.Border(top: pw.BorderSide(color: PdfColors.black))
+                                    ),
+                                    child: pw.Row(
+                                        children: [
+                                          pw.Container(
+                                              height: 30,
+                                              width: 140,
+                                              padding: pw.EdgeInsets.only(right: 10),
+                                              alignment: pw.Alignment.centerRight,
+                                              decoration: pw.BoxDecoration(
+                                                  border: pw.Border(right: pw.BorderSide(color: PdfColors.black))
+                                              ),
+                                              child: pw.Text("Discount (${qn.saleDetailsGrid[saleIndex].discountValue} ${qn.saleDetailsGrid[saleIndex].isPercentage==1?"%":"Rs"})",
+                                                  style: pw.TextStyle(fontWeight: pw.FontWeight.bold))
+                                          ),
+
+                                          pw.Container(
+                                              height: 30,
+                                              width: 70,
+                                              // padding: pw.EdgeInsets.only(right: 10),
+                                              alignment: pw.Alignment.centerRight,
+                                              child: pw.Text("${qn.saleDetailsGrid[saleIndex].discountAmount}",style: pw.TextStyle(fontWeight: pw.FontWeight.bold))
+                                          )
+
+                                        ]
+                                    )
+                                ):pw.Container():pw.Container(),
                                 pw.Container(
                                     height: 30,
                                     decoration: pw.BoxDecoration(

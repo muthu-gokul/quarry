@@ -17,6 +17,8 @@ import 'package:quarry/widgets/customTextField.dart';
 
 
 class CustomerDetailAddNew extends StatefulWidget {
+  bool fromSalePage;
+  CustomerDetailAddNew(this.fromSalePage);
   @override
   CustomerDetailAddNewState createState() => CustomerDetailAddNewState();
 }
@@ -454,7 +456,7 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                   CustomAlert().commonErrorAlert(context, "Enter Contact Number", "");
                                 }
                                 else{
-                                  qn.InsertCustomerDbHit(context);
+                                  qn.InsertCustomerDbHit(context,widget.fromSalePage);
                                 }
 
                               }),

@@ -244,6 +244,7 @@ class SalesMaterialLoadConfirmationState extends State<SalesMaterialLoadConfirma
                                                 });
                                               },
                                             ),
+
                                             Container(
                                               margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,top:SizeConfig.height20,),
                                               height:SizeConfig.height50,
@@ -472,6 +473,7 @@ class SalesMaterialLoadConfirmationState extends State<SalesMaterialLoadConfirma
                                                 ],
                                               ),
                                             ),
+
                                             SizedBox(height: SizeConfig.height20,),
                                             Text("Material Received ?",textAlign: TextAlign.center,
                                             style: TextStyle(fontFamily: 'RR',fontSize: 16,color: AppTheme.addNewTextFieldText),

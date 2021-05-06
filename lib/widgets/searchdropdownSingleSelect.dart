@@ -127,7 +127,7 @@ class DropDownField extends FormField<String> {
           labelStyle: labelStyle,
           hintText: hintText,
           labelText: labelText,
-        contentPadding: new EdgeInsets.symmetric(vertical: 25.0, horizontal: 20.0),
+        contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0),
       );
 
       return Container(
@@ -143,7 +143,7 @@ class DropDownField extends FormField<String> {
               children: <Widget>[
 
                 Container(
-                  height: SizeConfig.height60,
+                  height: SizeConfig.height50,
                   //width: SizeConfig.screenWidth-(SizeConfig.width40),
                   width: SizeConfig.screenWidth-(reduceWidth),
 
