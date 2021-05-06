@@ -242,6 +242,7 @@ class GoodsReceivedNotifier extends ChangeNotifier{
   double OGF_ExpectedQty;
   double OGF_ReceivedQty;
   double OGF_showReceivedQty;
+  double OGF_dbReceivedQty;
   double OGF_BalanceQty;
   double OGF_InwardLoadedVehicleWeight;
   double OGF_OutwardEmptyVehicleWeight;
@@ -261,6 +262,7 @@ class GoodsReceivedNotifier extends ChangeNotifier{
      OGF_ExpectedQty=0.0;
      OGF_ReceivedQty=0.0;
      OGF_showReceivedQty=0.0;
+     OGF_dbReceivedQty=0.0;
      OGF_BalanceQty=0.0;
      OGF_InwardLoadedVehicleWeight=0.0;
      OGF_OutwardEmptyVehicleWeight=0.0;
@@ -282,7 +284,7 @@ class GoodsReceivedNotifier extends ChangeNotifier{
         "MaterialId":  outGateFormList[OGF_index].materialId,
         "MaterialPrice":  outGateFormList[OGF_index].materialPrice,
         "ExpectedQuantity":  outGateFormList[OGF_index].expectedQuantity,
-        "ReceivedQuantity": OGF_showReceivedQty,
+        "ReceivedQuantity": OGF_dbReceivedQty,
         "Amount":  OGF_amount,
         "VehicleTypeId":  outGateFormList[OGF_index].vehicleTypeId,
         "VehicleNumber": OGF_vehicleNumber,
@@ -395,6 +397,7 @@ class GoodsReceivedNotifier extends ChangeNotifier{
   }
   calc(){
     OGF_showReceivedQty=0.0;
+    OGF_dbReceivedQty=0.0;
     OGF_BalanceQty=0.0;
     OGF_amount=0.0;
     OGF_taxAmount=0.0;
@@ -402,11 +405,19 @@ class GoodsReceivedNotifier extends ChangeNotifier{
     OGF_discountAmount=0.0;
 
     if(OGF_emptyWeightofVehicle.text.isNotEmpty){
-      OGF_showReceivedQty=double.parse((Decimal.parse(OGF_InwardLoadedVehicleWeight.toString())-Decimal.parse(OGF_emptyWeightofVehicle.text)).toString());
+
+
+      print(OGF_ExpectedQty);
+      print(OGF_ReceivedQty);
+      print(OGF_InwardLoadedVehicleWeight);
+      print(OGF_emptyWeightofVehicle.text);
+
+      OGF_showReceivedQty=double.parse((Decimal.parse(OGF_InwardLoadedVehicleWeight.toString())-Decimal.parse(OGF_emptyWeightofVehicle.text) + Decimal.parse(OGF_ReceivedQty.toString())).toString());
+      OGF_dbReceivedQty=double.parse((Decimal.parse(OGF_InwardLoadedVehicleWeight.toString())-Decimal.parse(OGF_emptyWeightofVehicle.text)).toString());
 
 
 
-      OGF_BalanceQty=double.parse((Decimal.parse(OGF_ExpectedQty.toString())-((Decimal.parse(OGF_ReceivedQty.toString())) - Decimal.parse(OGF_showReceivedQty.toString())) ).toString());
+      OGF_BalanceQty=double.parse((Decimal.parse(OGF_ExpectedQty.toString())- Decimal.parse(OGF_showReceivedQty.toString()) ).toString());
 
 
       if( outGateFormList[OGF_index].isDiscount==0){
@@ -455,6 +466,7 @@ class GoodsReceivedNotifier extends ChangeNotifier{
     else{
       OGF_showReceivedQty=0.0;
       OGF_BalanceQty=0.0;
+      OGF_dbReceivedQty=0.0;
       OGF_amount=0.0;
       OGF_taxAmount=0.0;
       OGF_TotalAmount=0.0;
@@ -473,6 +485,16 @@ class GoodsReceivedNotifier extends ChangeNotifier{
   double GINV_invoiceAmount=0.0;
   List<GoodsReceivedMaterialListModel> GINV_Materials=[];
   List<GoodsOtherChargesModel> GINV_OtherChargesList=[];
+
+  updateDriverCharge(int index,double otherChargeAmount){
+    GINV_OtherChargesList[index].otherChargesAmount=otherChargeAmount;
+    notifyListeners();
+  }
+
+  updateDriverIsEdit(int index,bool value){
+    GINV_OtherChargesList[index].isEdit=value;
+    notifyListeners();
+  }
 
   GINV_clear(){
     GINV_Date=null;
@@ -578,7 +600,7 @@ class GoodsReceivedNotifier extends ChangeNotifier{
                   GINV_invoiceAmount=GINV_invoiceAmount+element.totalAmount;
                 }
               });
-              GINV_OtherChargesList=t4.map((e) => GoodsOtherChargesModel.fromJson(e)).toList();
+              GINV_OtherChargesList=t4.map((e) => GoodsOtherChargesModel.fromJson(e,tickerProviderStateMixin)).toList();
 
 
             }
@@ -597,7 +619,7 @@ class GoodsReceivedNotifier extends ChangeNotifier{
               var t3=parsed['Table3'] as List;
               GoodsMaterialExtraTripModelDetails =t3.map((e) => GoodsMaterialExtraTripModel.fromJson(e)).toList();
               var t4=parsed['Table4'] as List;
-              IGf_OtherChargesList =t4.map((e) => GoodsOtherChargesModel.fromJson(e)).toList();
+              IGf_OtherChargesList =t4.map((e) => GoodsOtherChargesModel.fromJson(e,tickerProviderStateMixin)).toList();
             }
 
 

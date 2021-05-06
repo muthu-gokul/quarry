@@ -8,6 +8,7 @@ import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/pages/material/processAddNew.dart';
 import 'package:quarry/pages/sale/salesDetail.dart';
 import 'package:quarry/pages/vendor/vendorLocAddNew.dart';
+import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/alertDialog.dart';
@@ -72,47 +73,52 @@ class _SaleGridState extends State<SaleGrid> {
                             style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: SizeConfig.width16),
                           ),
                           Spacer(),
-                          GestureDetector(
-                            onTap: () async {
+                          Theme(
+                            data: ThemeData(
+                              accentColor: Colors.blue,
+                            ),
+                            child: GestureDetector(
+                              onTap: () async {
 
-                              final List<DateTime>  picked1 = await DateRagePicker.showDatePicker(
-                                  context: context,
-                                  initialFirstDate: new DateTime.now(),
-                                  initialLastDate: (new DateTime.now()),
-                                  firstDate: dateTime,
-                                  lastDate: (new DateTime.now())
-                              );
-                              if (picked1 != null && picked1.length == 2) {
-                                setState(() {
-                                  qn.picked=picked1;
-                                  qn.GetSaleDetailDbhit(context);
-                                  // rn.reportDbHit(widget.UserId.toString(), widget.OutletId, DateFormat("dd-MM-yyyy").format( picked[0]).toString(), DateFormat("dd-MM-yyyy").format( picked[1]).toString(),"Itemwise Report", context);
-                                });
-                              }
-                              else if(picked1!=null && picked1.length ==1){
-                                setState(() {
-                                  qn.picked=picked1;
-                                  qn.GetSaleDetailDbhit(context);
-                                  // rn.reportDbHit(widget.UserId.toString(), widget.OutletId, DateFormat("dd-MM-yyyy").format( picked[0]).toString(), DateFormat("dd-MM-yyyy").format( picked[0]).toString(),"Itemwise Report", context);
-                                });
-                              }
-                            },
-                            child: Container(
-                              height: SizeConfig.height50,
-                              width: SizeConfig.height50,
+                                final List<DateTime>  picked1 = await DateRagePicker.showDatePicker(
+                                    context: context,
+                                    initialFirstDate: new DateTime.now(),
+                                    initialLastDate: (new DateTime.now()),
+                                    firstDate: dateTime,
+                                    lastDate: (new DateTime.now())
+                                );
+                                if (picked1 != null && picked1.length == 2) {
+                                  setState(() {
+                                    qn.picked=picked1;
+                                    qn.GetSaleDetailDbhit(context);
+                                    // rn.reportDbHit(widget.UserId.toString(), widget.OutletId, DateFormat("dd-MM-yyyy").format( picked[0]).toString(), DateFormat("dd-MM-yyyy").format( picked[1]).toString(),"Itemwise Report", context);
+                                  });
+                                }
+                                else if(picked1!=null && picked1.length ==1){
+                                  setState(() {
+                                    qn.picked=picked1;
+                                    qn.GetSaleDetailDbhit(context);
+                                    // rn.reportDbHit(widget.UserId.toString(), widget.OutletId, DateFormat("dd-MM-yyyy").format( picked[0]).toString(), DateFormat("dd-MM-yyyy").format( picked[0]).toString(),"Itemwise Report", context);
+                                  });
+                                }
+                              },
+                              child: Container(
+                                height: SizeConfig.height50,
+                                width: SizeConfig.height50,
 
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                // color:Color(0xFF5E5E60),
-                              ),
-                              child: Center(
-                                child: Icon(Icons.date_range_rounded),
-                                // child:  SvgPicture.asset(
-                                //   'assets/reportIcons/${rn.reportIcons[index]}.svg',
-                                //   height:25,
-                                //   width:25,
-                                //   color: Colors.white,
-                                // )
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  // color:Color(0xFF5E5E60),
+                                ),
+                                child: Center(
+                                  child: Icon(Icons.date_range_rounded),
+                                  // child:  SvgPicture.asset(
+                                  //   'assets/reportIcons/${rn.reportIcons[index]}.svg',
+                                  //   height:25,
+                                  //   width:25,
+                                  //   color: Colors.white,
+                                  // )
+                                ),
                               ),
                             ),
                           ),
@@ -269,8 +275,151 @@ class _SaleGridState extends State<SaleGrid> {
                   ),
                 ),
 
+
+
+
+                //bottomNav
                 Positioned(
-                    bottom: SizeConfig.height70,
+                  bottom: 0,
+                  child: Container(
+                    width: SizeConfig.screenWidth,
+                    height: 70,
+
+                    decoration: BoxDecoration(
+                        color: AppTheme.gridbodyBgColor,
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppTheme.gridbodyBgColor,
+                            spreadRadius: 2,
+                            blurRadius: 15,
+                            offset: Offset(0, -20), // changes position of shadow
+                          )
+                        ]
+                    ),
+                    child: Stack(
+
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+
+                            ),
+                            margin:EdgeInsets.only(top: 0),
+                            child: CustomPaint(
+                              size: Size( SizeConfig.screenWidth, 65),
+                              painter: RPSCustomPainter3(),
+                            ),
+                          ),
+                          Center(
+                            heightFactor: 0.5,
+                            child: GestureDetector(
+                              behavior: HitTestBehavior.translucent,
+                              onTap: (){
+                                qn.clearIsOpen();
+                                qn.clearEmptyForm();
+                                qn.UserDropDownValues(context);
+                                qn.SalesDropDownValues(context);
+                                Navigator.of(context).push(_createRouteFalse());
+                              },
+                              child: Container(
+
+                                height: SizeConfig.width50,
+                                width: SizeConfig.width50,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: AppTheme.yellowColor,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: AppTheme.yellowColor.withOpacity(0.4),
+                                      spreadRadius: 1,
+                                      blurRadius: 5,
+                                      offset: Offset(1, 8), // changes position of shadow
+                                    ),
+                                  ],
+                                ),
+                                child: Center(
+                                  child: Icon(Icons.add,size: SizeConfig.height30,color: AppTheme.bgColor,),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            height: 80,
+                            width: SizeConfig.screenWidth,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                GestureDetector(
+                                  onTap: (){
+
+                                    if(qn.selectedIndex!=-1 && isOpen){
+                                      print("EDit");
+                                      Navigator.of(context).push(_createRoute());
+                                      qn.editLoader();
+                                      Timer(Duration(milliseconds: 300), (){
+                                        qn.tabController.animateTo(1,duration: Duration(milliseconds: 300),curve: Curves.easeIn);
+                                      });
+
+
+                                    }
+
+
+                                  },
+                                  child: SvgPicture.asset("assets/svg/edit.svg",width: 30,height: 30,
+                                    color: qn.selectedIndex==-1? AppTheme.bgColor.withOpacity(0.5):isOpen?AppTheme.bgColor:AppTheme.bgColor.withOpacity(0.5),),
+                                ),
+                                GestureDetector(
+                                  onTap: (){
+                                    if(qn.selectedIndex!=-1 && !isOpen){
+                                      print("pribt");
+                                      qn.printClosedReport(context);
+                                    }
+                                  },
+                                  child: SvgPicture.asset("assets/svg/print.svg",width: 30,height: 30,
+                                    color: qn.selectedIndex==-1? AppTheme.bgColor.withOpacity(0.5):isOpen?AppTheme.bgColor.withOpacity(0.5):AppTheme.bgColor,),
+                                ),
+
+
+                                SizedBox(width: SizeConfig.width60,),
+                                GestureDetector(
+                                  onTap: (){
+                                    if(qn.selectedIndex!=-1 && !isOpen){
+
+                                      reportView(context, "muthugokul103031@gmail.com",qn.selectedIndex);
+                                      print("pdf");
+                                    }
+                                  },
+                                  child: SvgPicture.asset("assets/svg/pdf.svg",width: 30,height: 30,
+                                    color: qn.selectedIndex==-1? AppTheme.bgColor.withOpacity(0.5):isOpen?AppTheme.bgColor.withOpacity(0.5):AppTheme.bgColor,),
+
+                                ),
+                                GestureDetector(
+                                  onTap: (){
+                                   /* if(qn.selectedIndex!=-1 && isOpen){
+                                      print("delete");
+                                      int saleid=qn.saleDetailsGrid[qn.selectedIndex].SaleId;
+                                      setState(() {
+                                        qn.selectedIndex=-1;
+                                      });
+                                      qn.DeleteSaleDetailDbhit(context, saleid).then((value){
+
+                                      });
+                                    }*/
+
+                                  },
+                                  child: SvgPicture.asset("assets/svg/delete.svg",width: 30,height: 30,color: AppTheme.bgColor.withOpacity(0.5),
+                                //    color: qn.selectedIndex==-1? AppTheme.bgColor.withOpacity(0.5):isOpen?AppTheme.bgColor:AppTheme.bgColor.withOpacity(0.5),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        ]
+                    ),
+                  ),
+                ),
+                Positioned(
+                    bottom: 70,
                     child: Container(
                       width: SizeConfig.screenWidth,
                       child: Row(
@@ -283,7 +432,8 @@ class _SaleGridState extends State<SaleGrid> {
                       ),
                     )
                 ),
-                Positioned(
+
+             /*   Positioned(
                   bottom: 0,
                     child: Container(
                       height: SizeConfig.height60,
@@ -408,8 +558,7 @@ class _SaleGridState extends State<SaleGrid> {
                       ),
                     ),
                   ),
-                ),
-
+                ),*/
 
 
                 AnimatedPositioned(

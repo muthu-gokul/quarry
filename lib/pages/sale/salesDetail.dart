@@ -270,6 +270,68 @@ bool _keyboardVisible=false;
                                                         : Colors.white,
                                                   ),
                                                 ),
+                                                SizedBox(height: 10,),
+                                            Container(
+                                              width: SizeConfig.screenWidth,
+                                              child: Row(
+                                                mainAxisAlignment: MainAxisAlignment.end,
+                                                children: [
+                                                  SizedBox(
+                                                    width: 25,
+                                                    height: 25,
+                                                    child: Checkbox(
+                                                      fillColor: MaterialStateColor.resolveWith((states) => AppTheme.yellowColor),
+                                                      value: qn.isCustomPrice,
+                                                      onChanged: (v){
+                                                        setState(() {
+                                                          qn.isCustomPrice=v;
+                                                        });
+                                                        qn.weightToAmount();
+                                                      },
+                                                    ),
+                                                  ),
+
+                                                  Text("Custom Price",style: TextStyle(fontFamily: 'RR',fontSize: 16,color: AppTheme.bgColor),),
+                                                  SizedBox(width: SizeConfig.width20,)
+                                                ],
+                                              ),
+                                            ),
+                                                AnimatedContainer(
+                                                  duration: Duration(milliseconds: 300),
+                                                  curve: Curves.easeIn,
+                                                  height: qn.isCustomPrice?SizeConfig.height50:0,
+                                                  width: SizeConfig.screenWidth,
+                                                  margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,),
+                                                  padding: EdgeInsets.only(left:SizeConfig.width10,),
+                                                  decoration: BoxDecoration(
+                                                    border: Border.all(color: AppTheme.addNewTextFieldBorder),
+                                                    borderRadius: BorderRadius.circular(3),
+                                                    color:Colors.white
+                                                  ),
+                                                  child:qn.isCustomPrice? TextField(
+                                                    scrollPadding: EdgeInsets.only(bottom: 500),
+                                                    onTap: (){
+                                                      scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+
+                                                    },
+                                                    style:  TextStyle(fontFamily: 'RR',fontSize: 15,color:AppTheme.addNewTextFieldText,letterSpacing: 0.2),
+                                                    controller: qn.customPriceController,
+
+                                                    decoration: InputDecoration(
+                                                      fillColor:Colors.white,
+                                                      hintText: 'Material Price',
+                                                      hintStyle: TextStyle(fontFamily: 'RL',fontSize: 15,color: AppTheme.addNewTextFieldText.withOpacity(0.9)),
+                                                      border: InputBorder.none,
+                                                      focusedBorder: InputBorder.none,
+                                                      errorBorder: InputBorder.none,
+                                                      enabledBorder: InputBorder.none,
+
+                                                    ),
+                                                    keyboardType: TextInputType.number,
+                                                  ):Container(),
+                                                ),
+
+
 
                                                 GestureDetector(
                                                   onTap: (){
@@ -335,6 +397,7 @@ bool _keyboardVisible=false;
                                                    isEnabled:qn.SS_selectedMaterialTypeId==null?false: true,
 
                                                     onChange: (v){
+                                                     // qn.weightToAmount();
                                                       qn.amountToWeight();
                                                     },
                                                     ontap: () {
@@ -670,9 +733,9 @@ bool _keyboardVisible=false;
                                                           }),
                                                       InkWell(
                                                           onTap: (){
-                                                            setState(() {
+                                                            /*setState(() {
                                                               qn.isDiscount=!qn.isDiscount;
-                                                            });
+                                                            });*/
                                                           },
                                                           child: Text("Do you have Discount?", style:  TextStyle(fontFamily: 'RR',fontSize: 16,color:AppTheme.addNewTextFieldText,letterSpacing: 0.2),))
                                                     ],
@@ -864,9 +927,9 @@ bool _keyboardVisible=false;
                                                           qn.OG_isPercentage=qn.saleDetails[index].isPercentage;
                                                           qn.OG_isDiscount=qn.saleDetails[index].isDiscount;
                                                           qn.SS_TotalWeight=(Decimal.parse(qn.SS_EmptyWeightOfVehicle)+Decimal.parse((qn.SS_RequiredMaterialQty))).toString();
-                                                          qn.SS_MaterialUnitPrice=qn.sale_materialList.where((element) => element.MaterialId==qn.saleDetails[index].MaterialId).toList()[0].MaterialUnitPrice;
+                                                          qn.SS_MaterialUnitPrice=qn.saleDetails[index].MaterialUnitPrice;
 
-                                                          print("qn.SS_DiscountedOutputQtyAmount${qn.SS_DiscountedOutputQtyAmount}");
+                                                          print("qn.SS_DiscountedOutputQtyAmount${qn.SS_MaterialUnitPrice}");
 
                                                         });
                                                       },
@@ -1303,10 +1366,10 @@ bool _keyboardVisible=false;
 
 
                               },
-                              onLongPress: (){
-                                qn.GetSaleDetailDbhit(context);
-                                Navigator.push(context, _createRoute());
-                              },
+                              // onLongPress: (){
+                              //   qn.GetSaleDetailDbhit(context);
+                              //   Navigator.push(context, _createRoute());
+                              // },
                               child: Container(
 
                                 height: SizeConfig.width50,
@@ -1346,7 +1409,8 @@ bool _keyboardVisible=false;
                                         GestureDetector(
                                           onTap: (){
                                             qn.tabController.animateTo(0,duration: Duration(milliseconds: 300),curve: Curves.easeIn);
-
+                                            qn.clearEmptyForm();
+                                            qn.clearLoaderForm();
                                           },
                                           child: Container(
                                             width: 70,
@@ -1355,7 +1419,7 @@ bool _keyboardVisible=false;
                                               mainAxisAlignment: MainAxisAlignment.center,
                                               children: [
                                                 Image.asset("assets/images/Empty-vehicle-active.png",height: 40,width: 40,),
-                                                Text('In Gate',style: TextStyle(fontFamily: 'RR',fontSize: 14),),
+                                                Text('In Gate',style: TextStyle(fontFamily: 'RR',fontSize: 14,color: AppTheme.bgColor),),
                                               ],
                                             ),
                                           ),
@@ -1364,7 +1428,8 @@ bool _keyboardVisible=false;
                                         GestureDetector(
                                           onTap: (){
                                             qn.tabController.animateTo(1,duration: Duration(milliseconds: 300),curve: Curves.easeIn);
-
+                                            qn.clearEmptyForm();
+                                            qn.clearLoaderForm();
                                           },
                                           child: Container(
                                             width: 90,
@@ -1373,7 +1438,7 @@ bool _keyboardVisible=false;
                                               mainAxisAlignment: MainAxisAlignment.center,
                                               children: [
                                                 Image.asset("assets/images/Loaded-vehicle-active.png",height: 40,width: 40,),
-                                                Text('Out Gate',style: TextStyle(fontFamily: 'RR',fontSize: 14),),
+                                                Text('Out Gate',style: TextStyle(fontFamily: 'RR',fontSize: 14,color: AppTheme.bgColor),),
 
                                               ],
                                             ),

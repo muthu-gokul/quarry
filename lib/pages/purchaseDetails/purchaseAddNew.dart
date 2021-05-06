@@ -38,6 +38,7 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
   bool suppliersListOpen=false;
   bool materialsListOpen=false;
 
+  //for keyboard
   int reorderLevelIndex=-1;
   List<String> numbers = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "X", "0", "."];
   String indentQty="";
@@ -1544,7 +1545,7 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                                            });
 
                                            showDialog(context: context,
-                                              // barrierDismissible: false,
+                                              barrierDismissible: false,
 
                                                builder: (context){
                                                  return StatefulBuilder(

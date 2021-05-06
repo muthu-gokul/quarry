@@ -239,7 +239,8 @@ class SalesMaterialLoadConfirmationState extends State<SalesMaterialLoadConfirma
                                                   qn.SS_UpdateSaleNo=qn.saleDetails[index].SaleNumber;
                                                   qn.SS_selectCustomerId=qn.saleDetails[index].CustomerId;
                                                   qn.SS_TotalWeight=(Decimal.parse(qn.SS_EmptyWeightOfVehicle)+Decimal.parse((qn.SS_RequiredMaterialQty))).toString();
-                                                  qn.SS_MaterialUnitPrice=qn.sale_materialList.where((element) => element.MaterialId==qn.saleDetails[index].MaterialId).toList()[0].MaterialUnitPrice;
+                                                  qn.SS_MaterialUnitPrice=qn.saleDetails[index].MaterialUnitPrice;
+                                                  print(qn.saleDetails[index].MaterialUnitPrice);
                                                 });
                                               },
                                             ),

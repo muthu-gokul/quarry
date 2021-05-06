@@ -123,6 +123,8 @@ class GoodsOtherChargesModel {
     this.GoodsReceivedId,
     this.otherChargesName,
     this.otherChargesAmount,
+    this.animationController,
+    this.isEdit
   });
 
   int purchaseOrderId;
@@ -131,10 +133,15 @@ class GoodsOtherChargesModel {
   String otherChargesName;
   double otherChargesAmount;
 
-  factory GoodsOtherChargesModel.fromJson(Map<String, dynamic> json) => GoodsOtherChargesModel(
+  AnimationController animationController;
+  bool isEdit;
+
+  factory GoodsOtherChargesModel.fromJson(Map<String, dynamic> json,TickerProviderStateMixin tickerProviderStateMixin) => GoodsOtherChargesModel(
     purchaseOrderId: json["PurchaseOrderId"],
     otherChargesName: json["OtherChargesName"],
     otherChargesAmount: json["OtherChargesAmount"],
+    animationController: AnimationController(duration: Duration(milliseconds: 300),vsync: tickerProviderStateMixin),
+    isEdit: false
   );
 
   Map<String, dynamic> toJson() => {

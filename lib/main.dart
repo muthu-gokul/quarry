@@ -56,7 +56,6 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
-          accentColor: AppTheme.gridbodyBgColor
         ),
         debugShowCheckedModeBanner: false,
         home: LoginPage(),

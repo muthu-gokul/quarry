@@ -168,26 +168,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                             height: (SizeConfig.screenHeight-255),
                             child: ListView(
                               children: [
-
                                 DrawerContent(
                                   delay: 0.1,
-                                  height: 50,
-                                  image: "assets/drawerImages/dashboard.png",
-                                  title: 'Purchase Detail',
-                                  tag: 'PurchaseDetail',
-                                  titleColor: AppTheme.yellowColor,
-                                  callback: (){
-                                    setState(() {
-                                      drawer.menuSelected=9;
-                                      scaffoldkey.currentState.openEndDrawer();
-                                    });
-                                    Provider.of<PurchaseNotifier>(context, listen: false).UserDropDownValues(context);
-                                    Provider.of<PurchaseNotifier>(context, listen: false).GetPurchaseDbHit(context,null);
-
-                                  },
-                                ),
-                                DrawerContent(
-                                  delay: 1,
                                   height: 50,
                                   image: "assets/drawerImages/dashboard.png",
                                   title: 'My Profile',
@@ -202,18 +184,39 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                   },
                                 ),
                                 DrawerContent(
+                                  delay:1,
+                                  height: 50,
+                                  image: "assets/drawerImages/dashboard.png",
+                                  title: 'Sales',
+                                  tag: 'SaleDetail',
+                                  titleColor: AppTheme.yellowColor,
+                                  callback: (){
+                                    Navigator.pop(context);
+                                    setState(() {
+                                      drawer.menuSelected=4;
+                                      scaffoldkey.currentState.openEndDrawer();
+                                    });
+
+
+                                    // Provider.of<QuarryNotifier>(context,listen: false).initDropDownValues(context);
+                                    Provider.of<QuarryNotifier>(context,listen: false).GetCustomerDetailDbhit(context);
+                                    Provider.of<QuarryNotifier>(context,listen: false).GetSaleDetailDbhit(context);
+                                  },
+                                ),
+                                DrawerContent(
                                   delay: 1.5,
                                   height: 50,
                                   image: "assets/drawerImages/dashboard.png",
-                                  title: 'Goods Received',
-                                  tag: 'GoodsReceived',
+                                  title: 'Purchase',
+                                  tag: 'PurchaseDetail',
                                   titleColor: AppTheme.yellowColor,
                                   callback: (){
                                     setState(() {
-                                      drawer.menuSelected=11;
+                                      drawer.menuSelected=9;
                                       scaffoldkey.currentState.openEndDrawer();
                                     });
-                                    Provider.of<GoodsReceivedNotifier>(context, listen: false).GetGoodsDbHit(context,null,null,false,this);
+                                    Provider.of<PurchaseNotifier>(context, listen: false).UserDropDownValues(context);
+                                    Provider.of<PurchaseNotifier>(context, listen: false).GetPurchaseDbHit(context,null);
 
                                   },
                                 ),
@@ -221,7 +224,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                   delay: 2,
                                   height: 50,
                                   image: "assets/drawerImages/dashboard.png",
-                                  title: 'Production Detail',
+                                  title: 'Production',
                                   tag: 'ProductionDetail',
                                   titleColor: AppTheme.yellowColor,
                                   callback: (){
@@ -237,6 +240,23 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                   delay: 2.5,
                                   height: 50,
                                   image: "assets/drawerImages/dashboard.png",
+                                  title: 'Goods Received',
+                                  tag: 'GoodsReceived',
+                                  titleColor: AppTheme.yellowColor,
+                                  callback: (){
+                                    setState(() {
+                                      drawer.menuSelected=11;
+                                      scaffoldkey.currentState.openEndDrawer();
+                                    });
+                                    Provider.of<GoodsReceivedNotifier>(context, listen: false).GetGoodsDbHit(context,null,null,false,this);
+
+                                  },
+                                ),
+
+                                DrawerContent(
+                                  delay: 3,
+                                  height: 50,
+                                  image: "assets/drawerImages/dashboard.png",
                                   title: 'Diesel Management',
                                   tag: 'DieselManagement',
                                   titleColor: AppTheme.yellowColor,
@@ -249,39 +269,23 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
 
                                   },
                                 ),
-                                DrawerContent(
-                                  delay: 3,
-                                  height: 50,
-                                  image: "assets/drawerImages/dashboard.png",
-                                  title: 'Invoice',
-                                  tag: 'Invoice',
-                                  titleColor: AppTheme.yellowColor,
-                                  callback: (){
-                                    setState(() {
-                                      drawer.menuSelected=14;
-                                      scaffoldkey.currentState.openEndDrawer();
-                                    });
-                                    Provider.of<InvoiceNotifier>(context, listen: false).GetInvoiceDbHit(context,null);
-                                  },
-                                ),
+
+
                                 DrawerContent(
                                   delay: 3.5,
                                   height: 50,
                                   image: "assets/drawerImages/dashboard.png",
-                                  title: 'Payment',
-                                  tag: 'Payment',
+                                  title: 'Accounts',
+                                  tag: "Accounts",
                                   titleColor: AppTheme.yellowColor,
                                   callback: (){
-                                    setState(() {
-                                      drawer.menuSelected=15;
+                                    Navigator.push(context, MaterialPageRoute(builder: (context)=>AccountsPage(voidCallback: (){
                                       scaffoldkey.currentState.openEndDrawer();
-                                    });
-                                    Provider.of<PaymentNotifier>(context, listen: false).updatePaymentReceivable(true);
-                                    Provider.of<PaymentNotifier>(context, listen: false).GetPaymentDbHit(context,null,this);
+                                    },)));
                                   },
                                 ),
                                 DrawerContent(
-                                  delay: 4,
+                                  delay:4,
                                   height: 50,
                                   image: "assets/drawerImages/dashboard.png",
                                   title: 'Reports',
@@ -293,6 +297,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                     },)));
                                     },
                                 ),
+
                                 DrawerContent(
                                   delay: 4.5,
                                   height: 50,
@@ -517,23 +522,6 @@ class SettingsPageState extends State<SettingsPage> with TickerProviderStateMixi
                     },
                   ),
 
-                  DrawerContent(
-                    delay:1,
-                    height: 50,
-                    image: "assets/drawerImages/dashboard.png",
-                    title: 'Sales Detail',
-                    tag: 'SaleDetail',
-                    titleColor: AppTheme.yellowColor,
-                    callback: (){
-                      Navigator.pop(context);
-                      widget.voidCallback();
-                      Provider.of<DrawerNotifier>(context,listen: false).changeMenu(4);
-
-                      // Provider.of<QuarryNotifier>(context,listen: false).initDropDownValues(context);
-                      Provider.of<QuarryNotifier>(context,listen: false).GetCustomerDetailDbhit(context);
-                      Provider.of<QuarryNotifier>(context,listen: false).GetSaleDetailDbhit(context);
-                    },
-                  ),
 
                   DrawerContent(
                     delay: 1.5,
@@ -732,6 +720,116 @@ class ReportsPageState extends State<ReportsPage> with TickerProviderStateMixin{
 
                     },
                   ),
+
+
+                ],
+              ),
+            ),
+
+
+
+
+            GestureDetector(
+              onTap: (){
+                Navigator.pop(context);
+              },
+              child: Container(
+                height: 80,
+                width: 80,
+                padding: EdgeInsets.only(bottom: 35),
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: AppTheme.yellowColor
+                ),
+                child: Icon(Icons.arrow_back,color: AppTheme.bgColor,),
+              ),
+            )
+          ],
+        ),
+      ),
+
+
+    );
+  }
+}
+
+
+class AccountsPage extends StatefulWidget {
+
+  VoidCallback voidCallback;
+  AccountsPage({this.voidCallback});
+
+  @override
+  AccountsPageState createState() => AccountsPageState();
+}
+
+class AccountsPageState extends State<AccountsPage> with TickerProviderStateMixin{
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+
+      body: Container(
+        height: SizeConfig.screenHeight,
+        width: SizeConfig.screenWidth,
+        color: AppTheme.bgColor,
+        child:  Column(
+          children: [
+
+            Container(
+              height: SizeConfig.screenHeight-45,
+              width: SizeConfig.screenWidth,
+
+              child: Column(
+                children: [
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: IconButton(icon: Icon(Icons.clear_outlined,size: 25,color: AppTheme.yellowColor,),
+                        onPressed: (){
+                          Navigator.pop(context);
+                        }),
+                  ),
+
+                  Hero(
+                    transitionOnUserGestures: true,
+                    tag: "Accounts",
+                    child:SvgPicture.asset("assets/svg/settings-icon.svg",width: 100,height: 100,),
+                  ),
+
+
+                  DrawerContent(
+                    delay: 1,
+                    height: 50,
+                    image: "assets/drawerImages/dashboard.png",
+                    title: 'Invoice',
+                    tag: 'Invoice',
+                    titleColor: AppTheme.yellowColor,
+                    callback: (){
+
+                      Navigator.pop(context);
+                      widget.voidCallback();
+
+                      Provider.of<DrawerNotifier>(context,listen: false).changeMenu(14);
+                      Provider.of<InvoiceNotifier>(context, listen: false).GetInvoiceDbHit(context,null);
+                    },
+                  ),
+                  DrawerContent(
+                    delay: 1.5,
+                    height: 50,
+                    image: "assets/drawerImages/dashboard.png",
+                    title: 'Payment',
+                    tag: 'Payment',
+                    titleColor: AppTheme.yellowColor,
+                    callback: (){
+                      Navigator.pop(context);
+                      widget.voidCallback();
+
+                      Provider.of<DrawerNotifier>(context,listen: false).changeMenu(15);
+                      Provider.of<PaymentNotifier>(context, listen: false).updatePaymentReceivable(true);
+                      Provider.of<PaymentNotifier>(context, listen: false).GetPaymentDbHit(context,null,this);
+                    },
+                  ),
+
+
 
 
                 ],

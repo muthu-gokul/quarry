@@ -224,7 +224,7 @@ class SaleReportSettingsState extends State<SaleReportSettings> with TickerProvi
                         Navigator.pop(context);
                       }),
                       SizedBox(width: SizeConfig.width5,),
-                      Text("Sales Report Settings",
+                      Text("${rn.settingsHeader} Settings",
                         style: TextStyle(fontFamily: 'RR',
                             color: Colors.black,
                             fontSize: SizeConfig.width16),

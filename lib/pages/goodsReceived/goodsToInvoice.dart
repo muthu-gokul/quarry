@@ -1,4 +1,6 @@
 
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -42,6 +44,13 @@ class GoodsToInvoiceState extends State<GoodsToInvoice> with TickerProviderState
   double valueContainerWidth=100;
   double dataTableheight=400;
   double dataTableBodyheight=350;
+
+  //for keyboard
+  int reorderLevelIndex=-1;
+  List<String> numbers = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "X", "0", "."];
+  String indentQty="";
+  String disValue="";
+  bool discountKeyPad=false;
 
 
   @override
@@ -160,7 +169,7 @@ class GoodsToInvoiceState extends State<GoodsToInvoice> with TickerProviderState
                       Container(
                           height: SizeConfig.screenHeight-60,
                           width: SizeConfig.screenWidth,
-                          padding: EdgeInsets.only(top: 20,bottom: 60),
+                          padding: EdgeInsets.only(bottom: 60),
                           decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10))
@@ -174,7 +183,7 @@ class GoodsToInvoiceState extends State<GoodsToInvoice> with TickerProviderState
                                   height: dataTableheight,
                                   width: SizeConfig.screenWidth,
                                   clipBehavior: Clip.antiAlias,
-                                  margin: EdgeInsets.only(left:SizeConfig.screenWidth*0.02,right:SizeConfig.screenWidth*0.02),
+                                  margin: EdgeInsets.only(left:SizeConfig.screenWidth*0.02,right:SizeConfig.screenWidth*0.02,top: 20),
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(10),
                                       color: Colors.white,
@@ -498,18 +507,14 @@ class GoodsToInvoiceState extends State<GoodsToInvoice> with TickerProviderState
                                         itemCount: gr.GINV_OtherChargesList.length,
                                         itemBuilder: (context, index) {
                                           return
-                                          /*  SlideTransition(
-                                            position: Tween<Offset>(begin: Offset(qn.paymentMappingList[index].isEdit ? 0.0 :
-                                            qn.paymentMappingList[index].isDelete ?1.0:0.0,
-                                                qn.paymentMappingList[index].isEdit ? 0.0 :qn.paymentMappingList[index].isDelete ?0.0: 1.0),
-                                                end:qn.paymentMappingList[index].isEdit ?Offset(1, 0): Offset.zero)
-                                                .animate(qn.paymentMappingList[index].scaleController),
+                                            SlideTransition(
+                                            position: Tween<Offset>(begin: Offset(0.0,0.0), end:Offset(1, 0))
+                                                .animate(gr.GINV_OtherChargesList[index].animationController),
 
                                             child: FadeTransition(
-                                              opacity: Tween(begin: qn.paymentMappingList[index].isEdit ? 1.0 : 0.0,
-                                                  end: qn.paymentMappingList[index].isEdit ? 0.0 : 1.0)
-                                                  .animate(qn.paymentMappingList[index].scaleController),
-                                              child:*/
+                                              opacity: Tween(begin: 1.0, end: 0.0)
+                                                  .animate(gr.GINV_OtherChargesList[index].animationController),
+                                              child:
                                               Container(
                                                 padding: EdgeInsets.only(top: 5, bottom: 5,left: 10,right: 10),
                                                 decoration: BoxDecoration(
@@ -542,12 +547,218 @@ class GoodsToInvoiceState extends State<GoodsToInvoice> with TickerProviderState
                                                           ),
                                                         ),
                                                         Container(
+                                                          
                                                           padding: EdgeInsets.only(left: 5),
                                                           alignment: Alignment.centerLeft,
-
                                                           width: SizeConfig.screenWidthM0_04*0.23,
-                                                          child: Text("${gr.GINV_OtherChargesList[index].otherChargesAmount}",
-                                                            style: TextStyle(fontSize: 14, fontFamily: 'RR', color: AppTheme.gridTextColor, letterSpacing: 0.2),
+                                                          child: GestureDetector(
+                                                            onTap:!gr.GINV_OtherChargesList[index].isEdit?null: (){
+
+                                                              setState(() {
+                                                                indentQty=gr.GINV_OtherChargesList[index].otherChargesAmount.toString();
+                                                              });
+
+                                                              showDialog(context: context,
+                                                                  barrierDismissible: false,
+
+                                                                  builder: (context){
+                                                                    return StatefulBuilder(
+                                                                      builder:(context,setState){
+                                                                        return Consumer<GoodsReceivedNotifier>(
+                                                                          builder: (context,pn,child)=>Dialog(
+                                                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10), ),
+
+                                                                            child: Container(
+                                                                              height: SizeConfig.screenHeight*0.85,
+                                                                              width: SizeConfig.screenWidth*0.9,
+                                                                              decoration: BoxDecoration(
+                                                                                  borderRadius: BorderRadius.circular(10),
+                                                                                  color: Colors.white
+                                                                              ),
+                                                                              child: Column(
+                                                                                children: [
+                                                                                  SizedBox(height: 10,),
+                                                                                  Text("Other Charges",
+                                                                                    style: TextStyle(fontFamily: 'RM',fontSize: 18,color: AppTheme.gridTextColor),textAlign: TextAlign.center,),
+                                                                                  SizedBox(height: 15,),
+                                                                                  Text("${pn.GINV_OtherChargesList[index].otherChargesName}",
+                                                                                    style: TextStyle(fontFamily: 'RR',fontSize: 18,color: AppTheme.gridTextColor),textAlign: TextAlign.center,),
+                                                                                  SizedBox(height: 10,),
+
+
+                                                                                  Text(indentQty.isEmpty?"Rs.0":"Rs.$indentQty",
+                                                                                    style: TextStyle(fontFamily: 'RM',fontSize: 20,color: AppTheme.gridTextColor),textAlign: TextAlign.center,),
+
+                                                                                  Container(
+                                                                                      margin: EdgeInsets.only(top: 20),
+                                                                                      width: SizeConfig.screenWidth*0.8,
+                                                                                      child: Wrap(
+                                                                                          spacing: 10,
+                                                                                          runSpacing: 10,
+                                                                                          direction: Axis.horizontal,
+                                                                                          alignment: WrapAlignment.center,
+                                                                                          children: numbers
+                                                                                              .asMap().map((i, element) => MapEntry(i,
+                                                                                              GestureDetector(
+                                                                                                onTap: () {
+                                                                                                  setState(() {
+                                                                                                    if (numbers[i] == 'X') {
+
+                                                                                                      if(!discountKeyPad){
+                                                                                                        indentQty = indentQty.substring(0, indentQty.length - 1);
+                                                                                                      } else{
+                                                                                                        disValue = disValue.substring(0, disValue.length - 1);
+                                                                                                      }
+
+                                                                                                      reorderLevelIndex=i;
+                                                                                                    }
+                                                                                                    else if (numbers[i] == '.') {
+
+
+                                                                                                      if(!discountKeyPad){
+                                                                                                        if(indentQty.length<6 && indentQty.length>=1){
+                                                                                                          if(indentQty.contains('.')){}
+                                                                                                          else{
+                                                                                                            setState(() {
+                                                                                                              indentQty=indentQty+'.';
+                                                                                                            });
+                                                                                                          }
+                                                                                                        }
+                                                                                                      }
+                                                                                                      else{
+                                                                                                        if(disValue.length<4 && disValue.length>=1){
+                                                                                                          if(disValue.contains('.')){}
+                                                                                                          else{
+                                                                                                            setState(() {
+                                                                                                              disValue=disValue+'.';
+                                                                                                            });
+                                                                                                          }
+                                                                                                        }
+                                                                                                      }
+
+                                                                                                      reorderLevelIndex=i;
+                                                                                                    }
+                                                                                                    else {
+
+                                                                                                      if(!discountKeyPad){
+                                                                                                        if(indentQty.isEmpty && numbers[i]=='0'){}
+                                                                                                        else{
+                                                                                                          setState(() {
+                                                                                                            reorderLevelIndex = i;
+                                                                                                          });
+                                                                                                          if(indentQty.length<6){
+                                                                                                            setState(() {
+                                                                                                              indentQty=indentQty+numbers[i];
+                                                                                                            });
+                                                                                                          }
+                                                                                                        }
+                                                                                                      }
+                                                                                                      else{
+                                                                                                        if(disValue.isEmpty && numbers[i]=='0'){}
+                                                                                                        else{
+                                                                                                          setState(() {
+                                                                                                            reorderLevelIndex = i;
+                                                                                                          });
+                                                                                                          if(disValue.length<4){
+                                                                                                            setState(() {
+                                                                                                              disValue=disValue+numbers[i];
+                                                                                                            });
+                                                                                                          }
+                                                                                                        }
+                                                                                                      }
+
+
+                                                                                                    }
+                                                                                                  });
+                                                                                                  Timer(Duration(milliseconds: 300), (){
+                                                                                                    setState((){
+                                                                                                      reorderLevelIndex=-1;
+                                                                                                    });
+                                                                                                  });
+                                                                                                },
+                                                                                                child: AnimatedContainer(
+                                                                                                    height: SizeConfig.screenWidth*0.19,
+                                                                                                    width: SizeConfig.screenWidth*0.19,
+                                                                                                    duration: Duration(milliseconds: 200),
+                                                                                                    curve: Curves.easeIn,
+                                                                                                    decoration: BoxDecoration(
+                                                                                                      color: reorderLevelIndex == i?AppTheme.yellowColor:AppTheme.unitSelectColor,
+                                                                                                      border: Border.all(color: AppTheme.addNewTextFieldBorder),
+                                                                                                      borderRadius: BorderRadius.circular(10),
+                                                                                                    ),
+                                                                                                    child: Center(
+                                                                                                        child: Text(numbers[i],
+                                                                                                          style: TextStyle(fontFamily: 'RR', color:reorderLevelIndex == i?Colors.white:AppTheme.gridTextColor, fontSize: 28,),
+                                                                                                          textAlign: TextAlign.center,
+                                                                                                        )
+                                                                                                    )
+                                                                                                ),
+                                                                                              )))
+                                                                                              .values
+                                                                                              .toList()
+                                                                                      )
+                                                                                  ),
+                                                                                  SizedBox(height: 25,),
+
+                                                                                  GestureDetector(
+                                                                                    onTap: (){
+                                                                                      setState((){
+                                                                                        if(indentQty.isNotEmpty){
+                                                                                          pn.updateDriverCharge(index, double.parse(indentQty));
+                                                                                          //pn.GINV_OtherChargesList[index].otherChargesAmount=double.parse(indentQty);
+                                                                                        }
+
+                                                                                      });
+                                                                                      pn.updateDriverIsEdit(index,false);
+                                                                                      Navigator.pop(context);
+
+                                                                                    },
+                                                                                    child: Container(
+                                                                                      height: 50,
+                                                                                      width: 150,
+                                                                                      decoration: BoxDecoration(
+                                                                                          borderRadius: BorderRadius.circular(10),
+                                                                                          color: AppTheme.yellowColor
+                                                                                      ),
+                                                                                      child: Center(
+                                                                                        child: Text("Done",style: AppTheme.TSWhite20,),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                  GestureDetector(
+                                                                                    onTap: (){
+                                                                                      pn.updateDriverIsEdit(index,false);
+                                                                                      Navigator.pop(context);
+                                                                                    },
+                                                                                    child: Container(
+                                                                                      height: 50,
+                                                                                      width: 150,
+                                                                                      child: Center(
+                                                                                        child: Text("Cancel",style: TextStyle(fontFamily: 'RL',fontSize: 20,color: Color(0xFFA1A1A1))),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ],
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                        );
+                                                                      },
+                                                                    );
+                                                                  }
+                                                              );
+                                                            },
+                                                            child: Container(
+                                                              padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
+                                                              decoration: BoxDecoration(
+                                                                borderRadius: BorderRadius.circular(50),
+                                                                border: Border.all(color: AppTheme.addNewTextFieldBorder),
+                                                                color: gr.GINV_OtherChargesList[index].isEdit?Colors.white:AppTheme.disableColor
+                                                              ),
+                                                              child: Text("${gr.GINV_OtherChargesList[index].otherChargesAmount}",
+                                                                style: TextStyle(fontSize: 14, fontFamily: 'RR', color: AppTheme.gridTextColor, letterSpacing: 0.2),
+                                                              ),
+                                                            ),
                                                           ),
                                                         ),
                                                         Container(
@@ -557,9 +768,25 @@ class GoodsToInvoiceState extends State<GoodsToInvoice> with TickerProviderState
                                                           child: Row(
                                                             mainAxisAlignment: MainAxisAlignment.center,
                                                             children: [
-                                                              Icon(Icons.edit),
+                                                              GestureDetector(
+                                                                  onTap:(){
+                                                                    setState(() {
+                                                                      gr.GINV_OtherChargesList[index].isEdit=!gr.GINV_OtherChargesList[index].isEdit;
+                                                                    });
+                                                                  },
+                                                                  child: Icon(Icons.edit,size: 20,)),
                                                               SizedBox(width:SizeConfig.screenWidthM0_04*0.01,),
-                                                              Icon(Icons.delete_outline),
+                                                              GestureDetector(
+                                                                onTap: (){
+                                                                  gr.GINV_OtherChargesList[index].animationController.forward().whenComplete((){
+                                                                    setState(() {
+                                                                      gr.GINV_OtherChargesList.removeAt(index);
+                                                                    });
+
+                                                                  });
+                                                                },
+                                                                  child: Icon(Icons.delete_outline,size: 20,)
+                                                              ),
                                                             ],
                                                           )
                                                         ),
@@ -569,10 +796,9 @@ class GoodsToInvoiceState extends State<GoodsToInvoice> with TickerProviderState
 
                                                   ],
                                                 ),
-
-                                              );
-                                           // ),
-                                         // );
+                                              )
+                                            )
+                                            );
                                         },
                                       ),
                                     ),
