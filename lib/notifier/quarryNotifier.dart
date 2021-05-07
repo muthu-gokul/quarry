@@ -487,6 +487,7 @@ class QuarryNotifier extends ChangeNotifier{
   List<MaterialTypelist> sale_materialList=[];
   List<PaymentType> sale_paymentList=[];
   List<CustomerModel> sale_customerList=[];
+  List<CustomerModel> filterSale_customerList=[];
 
   Future<dynamic> SalesDropDownValues(BuildContext context) async {
     updateInsertSaleLoader(true);
@@ -529,6 +530,7 @@ class QuarryNotifier extends ChangeNotifier{
           sale_materialList=t1.map((e) => MaterialTypelist.fromJson(e)).toList();
           sale_paymentList=t2.map((e) => PaymentType.fromJson(e)).toList();
           sale_customerList=t3.map((e) => CustomerModel.fromJson(e)).toList();
+          filterSale_customerList=t3.map((e) => CustomerModel.fromJson(e)).toList();
 
 
         }
@@ -541,6 +543,15 @@ class QuarryNotifier extends ChangeNotifier{
     }
   }
 
+  searchCustomer(String value){
+    if(value.isEmpty){
+      filterSale_customerList=sale_customerList;
+    }
+    else{
+      filterSale_customerList=sale_customerList.where((element) => element.customerName.toLowerCase().contains(value.toLowerCase())).toList();
+    }
+    notifyListeners();
+  }
 
   TextEditingController SS_vehicleNo= new TextEditingController();
   int SS_selectedVehicleTypeId;

@@ -29,6 +29,7 @@ class AddNewLabelTextField extends StatelessWidget {
     return  Container(
 
       margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,top:SizeConfig.height20,),
+     // height: SizeConfig.height40,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(3),
         color: Colors.transparent

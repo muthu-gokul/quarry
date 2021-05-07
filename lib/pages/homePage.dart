@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:quarry/login.dart';
 import 'package:quarry/model/goodsReceivedModel/goodsReceivedGridModel.dart';
 import 'package:quarry/notifier/customerNotifier.dart';
 import 'package:quarry/notifier/dieselNotifier.dart';
@@ -322,15 +323,20 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                             ),
                           ),
 
-                          Container(
-                            height: 80,
-                            width: 80,
-                            padding: EdgeInsets.only(bottom: 40),
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: AppTheme.yellowColor
+                          GestureDetector(
+                            onTap: (){
+                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>LoginPage()));
+                            },
+                            child: Container(
+                              height: 80,
+                              width: 80,
+                              padding: EdgeInsets.only(bottom: 40),
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: AppTheme.yellowColor
+                              ),
+                              child: Icon(Icons.power_settings_new_outlined,color: AppTheme.bgColor,),
                             ),
-                            child: Icon(Icons.power_settings_new_outlined,color: AppTheme.bgColor,),
                           )
 
 

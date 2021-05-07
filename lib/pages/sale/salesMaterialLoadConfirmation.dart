@@ -161,6 +161,8 @@ class SalesMaterialLoadConfirmationState extends State<SalesMaterialLoadConfirma
                                         } else if(details.delta.dy < -sensitivity){
                                           scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
                                         }
+
+
                                       },
                                       child: Container(
                                         height: _keyboardVisible ? SizeConfig.screenHeight * 0.5 : SizeConfig.screenHeight-SizeConfig.height40,
