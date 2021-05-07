@@ -568,6 +568,12 @@ class QuarryNotifier extends ChangeNotifier{
   double GrandTotal=0.0;
   double RoundOffAmount=0.0;
 
+  bool isTax=false;
+  updateIsTax(bool value){
+    isTax=value;
+    notifyListeners();
+  }
+
 
 
   updateisDiscount(bool value){
@@ -583,6 +589,7 @@ class QuarryNotifier extends ChangeNotifier{
     notifyListeners();
   }
   String materialPrice;
+
   weightToAmount(){
 
     String taxValue;
@@ -590,7 +597,8 @@ class QuarryNotifier extends ChangeNotifier{
 
       if(SS_customerNeedWeight.text.isEmpty){
         SS_amount.text="0.00";
-      }else{
+      }
+      else{
         if(isCustomPrice){
           if(customPriceController.text.isNotEmpty){
             materialPrice=customPriceController.text;
@@ -605,32 +613,43 @@ class QuarryNotifier extends ChangeNotifier{
 
         if(isDiscount){
           if(isAmountDiscount){
-           // SS_amount.text=(Decimal.parse(SS_customerNeedWeight.text)*Decimal.parse((materialPrice))).toString();
+
 
             SubTotal=double.parse((Decimal.parse(SS_customerNeedWeight.text)*Decimal.parse((materialPrice))).toString());
             DiscountAmount=DiscountValue;
             DiscountedSubTotal=double.parse((Decimal.parse(SubTotal.toString())-Decimal.parse((DiscountAmount.toString()))).toString());
             TaxValue=double.parse(taxValue);
-            TaxAmount=double.parse(((Decimal.parse(taxValue)*Decimal.parse((DiscountedSubTotal.toString())))/Decimal.parse("100")).toString());
+            if(!isTax){
+              TaxAmount=0.0;
+            }
+            else{
+              TaxAmount=double.parse(((Decimal.parse(taxValue)*Decimal.parse((DiscountedSubTotal.toString())))/Decimal.parse("100")).toString());
+            }
+
             GrandTotal=double.parse((Decimal.parse(DiscountedSubTotal.toString())+Decimal.parse((TaxAmount.toString()))).toString());
             RoundOffAmount=double.parse((Decimal.parse(GrandTotal.round().toString())-Decimal.parse((GrandTotal.toString()))).toString());
 
-          //  SS_amount.text=GrandTotal.toString();
             SS_amount.text=DiscountedSubTotal.toString();
 
 
-            //DiscountedOutputQtyAmount=double.parse((Decimal.parse(SS)).toString());
+
           }
           else if(isPercentageDiscount){
+
             SubTotal=double.parse((Decimal.parse(SS_customerNeedWeight.text)*Decimal.parse((materialPrice))).toString());
             DiscountAmount=double.parse(((Decimal.parse(SubTotal.toString())*Decimal.parse((DiscountValue.toString())))/Decimal.parse("100")).toString());
             DiscountedSubTotal=double.parse((Decimal.parse(SubTotal.toString())-Decimal.parse((DiscountAmount.toString()))).toString());
             TaxValue=double.parse(taxValue);
-            TaxAmount=double.parse(((Decimal.parse(taxValue)*Decimal.parse((DiscountedSubTotal.toString())))/Decimal.parse("100")).toString());
+            if(!isTax){
+              TaxAmount=0.0;
+            }
+            else{
+              TaxAmount=double.parse(((Decimal.parse(taxValue)*Decimal.parse((DiscountedSubTotal.toString())))/Decimal.parse("100")).toString());
+            }
+
             GrandTotal=double.parse((Decimal.parse(DiscountedSubTotal.toString())+Decimal.parse((TaxAmount.toString()))).toString());
             RoundOffAmount=double.parse((Decimal.parse(GrandTotal.round().toString())-Decimal.parse((GrandTotal.toString()))).toString());
 
-          //  SS_amount.text=GrandTotal.toString();
             SS_amount.text=DiscountedSubTotal.toString();
           }
         }
@@ -641,7 +660,13 @@ class QuarryNotifier extends ChangeNotifier{
 
           SubTotal=double.parse((Decimal.parse(SS_customerNeedWeight.text)*Decimal.parse((materialPrice))).toString());
           TaxValue=double.parse(taxValue);
-          TaxAmount=double.parse(((Decimal.parse(taxValue)*Decimal.parse((SubTotal.toString())))/Decimal.parse("100")).toString());
+          if(!isTax){
+            TaxAmount=0.0;
+          }
+          else{
+            TaxAmount=double.parse(((Decimal.parse(taxValue)*Decimal.parse((SubTotal.toString())))/Decimal.parse("100")).toString());
+          }
+
           GrandTotal=double.parse((Decimal.parse(SubTotal.toString())+Decimal.parse((TaxAmount.toString()))).toString());
           RoundOffAmount=double.parse((Decimal.parse(GrandTotal.round().toString())-Decimal.parse((GrandTotal.toString()))).toString());
           SS_amount.text=SubTotal.toString();
@@ -710,6 +735,8 @@ class QuarryNotifier extends ChangeNotifier{
      DiscountedSubTotal=0.0;
      GrandTotal=0.0;
      RoundOffAmount=0.0;
+     isTax=false;
+     notifyListeners();
   }
 
   List<DateTime> picked=[];
@@ -893,7 +920,7 @@ class QuarryNotifier extends ChangeNotifier{
   InsertSaleDetailDbhit(BuildContext context) async {
    print("INSERT $GrandTotal");
    print("INSERT $SubTotal");
-   print("INSERT $RoundOffAmount");
+   print("INSERT TaxAmount $TaxAmount");
     updateInsertSaleLoader(true);
     var body={
       "Fields": [
@@ -1100,7 +1127,8 @@ class QuarryNotifier extends ChangeNotifier{
   /*  print("UpdateIsMaterialReceived$UpdateIsMaterialReceived");
     print("UPDATE SALE-$SS_selectCustomerId");*/
     print("UPDATE UpdateRoundOffAmount-$UpdateRoundOffAmount");
-    print("UPDATE UpdateRoundOffAmount-$UpdateGrandTotalAmount");
+    print("UPDATE UpdateGrandTotalAmount-$UpdateGrandTotalAmount");
+    print("UPDATE UpdateTaxAmount-$UpdateTaxAmount");
     updateInsertSaleLoader(true);
     var body={
       "Fields": [
@@ -1434,15 +1462,9 @@ class QuarryNotifier extends ChangeNotifier{
             printer.hr(ch: "=");
 
             printer.row([
-              PosColumn(text: ' Material Name',
-                  width: 4,
-                  styles: PosStyles(align: PosAlign.left)),
-              PosColumn(text: 'Rate',
-                  width: 2,
-                  styles: PosStyles(align: PosAlign.right)),
-              PosColumn(text: 'Qty',
-                  width: 3,
-                  styles: PosStyles(align: PosAlign.right)),
+              PosColumn(text: ' Material Name', width: 4, styles: PosStyles(align: PosAlign.left)),
+              PosColumn(text: 'Rate', width: 2, styles: PosStyles(align: PosAlign.right)),
+              PosColumn(text: 'Qty', width: 3, styles: PosStyles(align: PosAlign.right)),
               PosColumn(text: 'Amt',
                   width: 3,
                   styles: PosStyles(align: PosAlign.right)),
@@ -1450,30 +1472,17 @@ class QuarryNotifier extends ChangeNotifier{
             printer.hr(ch: "=");
 
             printer.row([
-              PosColumn(text: ' ${sales[0]['MaterialName'] ?? ""}',
-                  width: 4,
-                  styles: PosStyles(align: PosAlign.left)),
-              PosColumn(text: '${sales[0]['MaterialUnitPrice']}',
-                  width: 2,
-                  styles: PosStyles(align: PosAlign.right)),
-              PosColumn(
-                  text: '${sales[0]['OutputMaterialQty']} ${sales[0]['UnitName']}',
-                  width: 3,
-                  styles: PosStyles(align: PosAlign.right)),
-              PosColumn(text: '${sales[0]['OutputQtyAmount'] ?? ""}',
-                  width: 3,
-                  styles: PosStyles(align: PosAlign.right)),
+              PosColumn(text: ' ${sales[0]['MaterialName'] ?? ""}', width: 4, styles: PosStyles(align: PosAlign.left)),
+              PosColumn(text: '${sales[0]['MaterialUnitPrice']}', width: 2, styles: PosStyles(align: PosAlign.right)),
+              PosColumn(text: '${sales[0]['OutputMaterialQty']} ${sales[0]['UnitName']}', width: 3, styles: PosStyles(align: PosAlign.right)),
+              PosColumn(text: '${sales[0]['OutputQtyAmount'] ?? ""}', width: 3, styles: PosStyles(align: PosAlign.right)),
             ]);
             printer.hr();
             printer.emptyLines(1);
 
             printer.row([
-              PosColumn(text: 'SubTotal: ',
-                  width: 6,
-                  styles: PosStyles(align: PosAlign.right, bold: true)),
-              PosColumn(text: '${sales[0]['OutputQtyAmount'] ?? ""}',
-                  width: 6,
-                  styles: PosStyles(align: PosAlign.right)),
+              PosColumn(text: 'SubTotal: ', width: 6, styles: PosStyles(align: PosAlign.right, bold: true)),
+              PosColumn(text: '${sales[0]['OutputQtyAmount'] ?? ""}', width: 6, styles: PosStyles(align: PosAlign.right)),
             ]);
             if (sales[0]['DiscountValue'] != null && sales[0]['DiscountAmount'] != null) {
               if (sales[0]['DiscountValue'] > 0) {
@@ -1485,10 +1494,13 @@ class QuarryNotifier extends ChangeNotifier{
                 ]);
               }
             }
-            printer.row([
-              PosColumn(text: 'GST (${sales[0]['TaxValue'] ?? ""}%): ', width: 6, styles: PosStyles(align: PosAlign.right, bold: true)),
-              PosColumn(text: '${sales[0]['TaxAmount'] ?? ""}', width: 6, styles: PosStyles(align: PosAlign.right)),
-            ]);
+            if(double.parse(sales[0]['TaxAmount'].toString())>0){
+              printer.row([
+                PosColumn(text: 'GST (${sales[0]['TaxValue'] ?? ""}%): ', width: 6, styles: PosStyles(align: PosAlign.right, bold: true)),
+                PosColumn(text: '${sales[0]['TaxAmount'] ?? ""}', width: 6, styles: PosStyles(align: PosAlign.right)),
+              ]);
+            }
+
             if (sales[0]['RoundOffAmount'] != null) {
               if (sales[0]['RoundOffAmount'] > 0 || sales[0]['RoundOffAmount'] < 0) {
                 printer.row([
@@ -1813,15 +1825,18 @@ class QuarryNotifier extends ChangeNotifier{
           if(saleDetailsGrid[selectedIndex].discountAmount!=null && saleDetailsGrid[selectedIndex].discountValue!=null){
             if(saleDetailsGrid[selectedIndex].discountValue>0){
               printer.row([
-                PosColumn(text: 'Discount (${saleDetailsGrid[selectedIndex].discountValue})', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
+                PosColumn(text: 'Discount (${saleDetailsGrid[selectedIndex].isPercentage==1?saleDetailsGrid[selectedIndex].discountValue:""} ${saleDetailsGrid[selectedIndex].isPercentage==1?"%":"Rs"})', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
                 PosColumn(text: '-${saleDetailsGrid[selectedIndex].discountAmount??""}', width: 6, styles: PosStyles(align: PosAlign.right)),
               ]);
             }
           }
-          printer.row([
-            PosColumn(text: 'GST (${saleDetailsGrid[selectedIndex].TaxPercentage??""}%): ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
-            PosColumn(text: '${saleDetailsGrid[selectedIndex].TaxAmount??""}', width: 6, styles: PosStyles(align: PosAlign.right)),
-          ]);
+          if(saleDetailsGrid[selectedIndex].TaxAmount>0){
+            printer.row([
+              PosColumn(text: 'GST (${saleDetailsGrid[selectedIndex].TaxPercentage??""}%): ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
+              PosColumn(text: '${saleDetailsGrid[selectedIndex].TaxAmount??""}', width: 6, styles: PosStyles(align: PosAlign.right)),
+            ]);
+          }
+
 
 
 
@@ -1985,6 +2000,7 @@ class QuarryNotifier extends ChangeNotifier{
   double OG_RoundOffAmount;
   int OG_isPercentage;
   int OG_isDiscount;
+  bool OG_isTax;
 
   String SS_DifferWeight;
 
@@ -2025,8 +2041,7 @@ class QuarryNotifier extends ChangeNotifier{
       UpdateDiscountedOutputQtyAmount=0.0;
       UpdateRoundOffAmount=0.0;
     }
-
-   else if(double.parse(SS_TotalWeight)>double.parse(SS_DifferWeightController.text.toString())){
+    else if(double.parse(SS_TotalWeight)>double.parse(SS_DifferWeightController.text.toString())){
       SS_DifferWeight=(Decimal.parse(SS_TotalWeight)-Decimal.parse((SS_DifferWeightController.text))).toString();
       msg="Material Low ${SS_DifferWeight}. So You need to Return";
       returnMoney=(Decimal.parse(SS_MaterialUnitPrice.toString()??"0")*Decimal.parse((SS_DifferWeight))).toString();
@@ -2044,34 +2059,20 @@ class QuarryNotifier extends ChangeNotifier{
           msg="Material Low ${SS_DifferWeight}. So You need to Return";
 
           SS_UpdatecustomerNeedWeight=(Decimal.parse(SS_RequiredMaterialQty)-Decimal.parse(SS_DifferWeight)).toString();
-        //  SS_UpdateAmount=(Decimal.parse(SS_Amount.toString())-Decimal.parse(returnMoney)).toString();
           SS_UpdateAmount=Calculation().mul(SS_UpdatecustomerNeedWeight, SS_MaterialUnitPrice).toString();
           UpdateDiscountAmount=SS_DiscountAmount;
           UpdateOutputQtyAmount=Calculation().mul(SS_UpdatecustomerNeedWeight, SS_MaterialUnitPrice);
           UpdateDiscountedOutputQtyAmount=Calculation().sub(UpdateOutputQtyAmount, UpdateDiscountAmount);
-          UpdateTaxAmount=Calculation().taxAmount(taxValue: OG_TaxValue,amount:UpdateOutputQtyAmount,discountAmount:UpdateDiscountAmount  );
+          if(OG_isTax){
+            UpdateTaxAmount=Calculation().taxAmount(taxValue: OG_TaxValue,amount:UpdateOutputQtyAmount,discountAmount:UpdateDiscountAmount  );
+          }
+          else{
+            UpdateTaxAmount=0.0;
+          }
+
           UpdateGrandTotalAmount=Calculation().add(UpdateDiscountedOutputQtyAmount, UpdateTaxAmount);
           UpdateRoundOffAmount=Calculation().sub(UpdateGrandTotalAmount.round(), UpdateGrandTotalAmount);
 
-         /* OG_SubTotal=double.parse((Decimal.parse(SS_DifferWeight)*Decimal.parse((SS_MaterialUnitPrice.toString()??"0"))).toString());
-          OG_DiscountAmount=OG_discountValue;
-          OG_DiscountedSubTotal=double.parse((Decimal.parse(OG_SubTotal.toString())-Decimal.parse((OG_DiscountAmount.toString()))).toString());
-          OG_TaxAmount=double.parse(((Decimal.parse(OG_TaxValue.toString())*Decimal.parse((OG_DiscountedSubTotal.toString())))/Decimal.parse("100")).toString());
-          OG_GrandTotal=double.parse((Decimal.parse(OG_DiscountedSubTotal.toString())+Decimal.parse((OG_TaxAmount.toString()))).toString());
-          OG_RoundOffAmount=double.parse((Decimal.parse(OG_GrandTotal.round().toString())-Decimal.parse((OG_GrandTotal.toString()))).toString());
-
-          returnMoney=OG_GrandTotal.toString();
-
-
-
-
-
-          UpdateDiscountAmount=double.parse((Decimal.parse(SS_DiscountAmount.toString())-Decimal.parse((OG_DiscountAmount.toString()))).toString());
-          UpdateOutputQtyAmount=double.parse((Decimal.parse(SS_Amount.toString())-Decimal.parse((OG_SubTotal.toString()))).toString());
-          UpdateDiscountedOutputQtyAmount=double.parse((Decimal.parse(SS_DiscountedOutputQtyAmount.toString())-Decimal.parse((OG_DiscountedSubTotal.toString()))).toString());
-          UpdateTaxAmount=double.parse((Decimal.parse(SS_TaxAmount.toString())-Decimal.parse((OG_TaxAmount.toString()))).toString());
-          UpdateRoundOffAmount=double.parse((Decimal.parse(SS_RoundOffAmount.toString())-Decimal.parse((OG_RoundOffAmount.toString()))).toString());
-          UpdateGrandTotalAmount=double.parse((Decimal.parse(SS_GrandTotalAmount.toString())-Decimal.parse((OG_GrandTotal.toString()))).toString());*/
         }
         else if(OG_isPercentage==1){
 
@@ -2079,46 +2080,25 @@ class QuarryNotifier extends ChangeNotifier{
 
 
 
-/*          SubTotal=double.parse((Decimal.parse(SS_customerNeedWeight.text)*Decimal.parse((materialPrice))).toString());
-          DiscountAmount=double.parse(((Decimal.parse(SubTotal.toString())*Decimal.parse((DiscountValue.toString())))/Decimal.parse("100")).toString());
-          DiscountedSubTotal=double.parse((Decimal.parse(SubTotal.toString())-Decimal.parse((DiscountAmount.toString()))).toString());
-          TaxValue=double.parse(taxValue);
-          TaxAmount=double.parse(((Decimal.parse(taxValue)*Decimal.parse((DiscountedSubTotal.toString())))/Decimal.parse("100")).toString());
-          GrandTotal=double.parse((Decimal.parse(DiscountedSubTotal.toString())+Decimal.parse((TaxAmount.toString()))).toString());
-          RoundOffAmount=double.parse((Decimal.parse(GrandTotal.round().toString())-Decimal.parse((GrandTotal.toString()))).toString());*/
 
           SS_DifferWeight=(Decimal.parse(SS_TotalWeight)-Decimal.parse((SS_DifferWeightController.text))).toString();
           msg="Material Low ${SS_DifferWeight}. So You need to Return";
 
           SS_UpdatecustomerNeedWeight=(Decimal.parse(SS_RequiredMaterialQty)-Decimal.parse(SS_DifferWeight)).toString();
-        // SS_UpdateAmount=(Decimal.parse(SS_Amount.toString())-Decimal.parse(returnMoney)).toString();
           SS_UpdateAmount=Calculation().mul(SS_UpdatecustomerNeedWeight, SS_MaterialUnitPrice).toString();
           UpdateDiscountAmount=Calculation().discountAmount(discountValue:OG_discountValue,amount: SS_UpdateAmount );
           UpdateOutputQtyAmount=Calculation().mul(SS_UpdatecustomerNeedWeight, SS_MaterialUnitPrice);
           UpdateDiscountedOutputQtyAmount=Calculation().sub(UpdateOutputQtyAmount, UpdateDiscountAmount);
-          UpdateTaxAmount=Calculation().taxAmount(taxValue: OG_TaxValue,amount:UpdateOutputQtyAmount,discountAmount:UpdateDiscountAmount  );
+          if(OG_isTax){
+            UpdateTaxAmount=Calculation().taxAmount(taxValue: OG_TaxValue,amount:UpdateOutputQtyAmount,discountAmount:UpdateDiscountAmount  );
+          }
+          else{
+            UpdateTaxAmount=0.0;
+          }
+
           UpdateGrandTotalAmount=Calculation().add(UpdateDiscountedOutputQtyAmount, UpdateTaxAmount);
           UpdateRoundOffAmount=Calculation().sub(UpdateGrandTotalAmount.round(), UpdateGrandTotalAmount);
 
-
-       /*   OG_SubTotal=double.parse((Decimal.parse(SS_DifferWeight)*Decimal.parse((SS_MaterialUnitPrice.toString()??"0"))).toString());
-          OG_DiscountAmount=double.parse(((Decimal.parse(OG_SubTotal.toString())*Decimal.parse((OG_discountValue.toString())))/Decimal.parse("100")).toString());
-          OG_DiscountedSubTotal=double.parse((Decimal.parse(OG_SubTotal.toString())-Decimal.parse((OG_DiscountAmount.toString()))).toString());
-          //OG_TaxValue=double.parse(taxValue);
-          OG_TaxAmount=double.parse(((Decimal.parse(OG_TaxValue.toString())*Decimal.parse((OG_DiscountedSubTotal.toString())))/Decimal.parse("100")).toString());
-          OG_GrandTotal=double.parse((Decimal.parse(OG_DiscountedSubTotal.toString())+Decimal.parse((OG_TaxAmount.toString()))).toString());
-          OG_RoundOffAmount=double.parse((Decimal.parse(OG_GrandTotal.round().toString())-Decimal.parse((OG_GrandTotal.toString()))).toString());
-
-          returnMoney=OG_GrandTotal.toString();
-          SS_UpdatecustomerNeedWeight=(Decimal.parse(SS_RequiredMaterialQty)-Decimal.parse(SS_DifferWeight)).toString();
-          SS_UpdateAmount=(Decimal.parse(SS_Amount.toString())-Decimal.parse(returnMoney)).toString();
-
-          UpdateDiscountAmount=double.parse((Decimal.parse(SS_DiscountAmount.toString())-Decimal.parse((OG_DiscountAmount.toString()))).toString());
-          UpdateOutputQtyAmount=double.parse((Decimal.parse(SS_Amount.toString())-Decimal.parse((OG_SubTotal.toString()))).toString());
-          UpdateDiscountedOutputQtyAmount=double.parse((Decimal.parse(SS_DiscountedOutputQtyAmount.toString())-Decimal.parse((OG_DiscountedSubTotal.toString()))).toString());
-          UpdateTaxAmount=double.parse((Decimal.parse(SS_TaxAmount.toString())-Decimal.parse((OG_TaxAmount.toString()))).toString());
-          UpdateRoundOffAmount=double.parse((Decimal.parse(SS_RoundOffAmount.toString())-Decimal.parse((OG_RoundOffAmount.toString()))).toString());
-          UpdateGrandTotalAmount=double.parse((Decimal.parse(SS_GrandTotalAmount.toString())-Decimal.parse((OG_GrandTotal.toString()))).toString());*/
         }
       }
       else{
@@ -2127,35 +2107,20 @@ class QuarryNotifier extends ChangeNotifier{
 
 
         SS_UpdatecustomerNeedWeight=(Decimal.parse(SS_RequiredMaterialQty)-Decimal.parse(SS_DifferWeight)).toString();
-     //   SS_UpdateAmount=(Decimal.parse(SS_Amount.toString())-Decimal.parse(returnMoney)).toString();
         SS_UpdateAmount=Calculation().mul(SS_UpdatecustomerNeedWeight, SS_MaterialUnitPrice.toString()).toString();
         UpdateDiscountAmount=0.0;
         UpdateOutputQtyAmount=Calculation().mul(SS_UpdatecustomerNeedWeight, SS_MaterialUnitPrice);
         UpdateDiscountedOutputQtyAmount=0.0;
-        UpdateTaxAmount=Calculation().taxAmount(taxValue: OG_TaxValue,amount:UpdateOutputQtyAmount,discountAmount:UpdateDiscountAmount  );
+        if(OG_isTax){
+          UpdateTaxAmount=Calculation().taxAmount(taxValue: OG_TaxValue,amount:UpdateOutputQtyAmount,discountAmount:UpdateDiscountAmount  );
+        }
+        else{
+          UpdateTaxAmount=0.0;
+        }
         UpdateGrandTotalAmount=Calculation().add(UpdateOutputQtyAmount, UpdateTaxAmount);
         UpdateRoundOffAmount=Calculation().sub(UpdateGrandTotalAmount.round(), UpdateGrandTotalAmount);
 
 
-        /*OG_SubTotal=double.parse((Decimal.parse(SS_DifferWeight)*Decimal.parse((SS_MaterialUnitPrice.toString()??"0"))).toString());
-        OG_TaxAmount=double.parse(((Decimal.parse(OG_TaxValue.toString())*Decimal.parse((OG_SubTotal.toString())))/Decimal.parse("100")).toString());
-        OG_GrandTotal=double.parse((Decimal.parse(OG_SubTotal.toString())+Decimal.parse((OG_TaxAmount.toString()))).toString());
-        OG_RoundOffAmount=double.parse((Decimal.parse(OG_GrandTotal.round().toString())-Decimal.parse((OG_GrandTotal.toString()))).toString());
-        msg="Material Low ${SS_DifferWeight}. So You need to Return";
-        returnMoney=OG_GrandTotal.toString();
-
-
-
-        UpdateDiscountAmount=double.parse((Decimal.parse(SS_DiscountAmount.toString())-Decimal.parse((OG_DiscountAmount.toString()))).toString());
-        UpdateOutputQtyAmount=double.parse((Decimal.parse(SS_Amount.toString())-Decimal.parse((OG_SubTotal.toString()))).toString());
-        UpdateDiscountedOutputQtyAmount=double.parse((Decimal.parse(SS_DiscountedOutputQtyAmount.toString())-Decimal.parse((OG_DiscountedSubTotal.toString()))).toString());
-        UpdateTaxAmount=double.parse((Decimal.parse(SS_TaxAmount.toString())-Decimal.parse((OG_TaxAmount.toString()))).toString());
-        UpdateRoundOffAmount=double.parse((Decimal.parse(SS_RoundOffAmount.toString())-Decimal.parse((OG_RoundOffAmount.toString()))).toString());
-        UpdateGrandTotalAmount=double.parse((Decimal.parse(SS_GrandTotalAmount.toString())-Decimal.parse((OG_GrandTotal.toString()))).toString());
-
-        print(OG_SubTotal);
-        print(OG_GrandTotal);
-*/
       }
 
 
@@ -2179,39 +2144,22 @@ class QuarryNotifier extends ChangeNotifier{
           msg="Material High ${SS_DifferWeight}. So Customer Need To Pay";
 
           SS_UpdatecustomerNeedWeight=(Decimal.parse(SS_RequiredMaterialQty)+Decimal.parse(SS_DifferWeight)).toString();
-       //   SS_UpdateAmount=(Decimal.parse(SS_Amount.toString())+Decimal.parse(returnMoney)).toString();
           SS_UpdateAmount=Calculation().mul(SS_UpdatecustomerNeedWeight, SS_MaterialUnitPrice).toString();
           UpdateDiscountAmount=SS_DiscountAmount;
           UpdateOutputQtyAmount=Calculation().mul(SS_UpdatecustomerNeedWeight, SS_MaterialUnitPrice);
           UpdateDiscountedOutputQtyAmount=Calculation().sub(UpdateOutputQtyAmount, UpdateDiscountAmount);
-          UpdateTaxAmount=Calculation().taxAmount(taxValue: OG_TaxValue,amount:UpdateOutputQtyAmount,discountAmount:UpdateDiscountAmount  );
+          if(OG_isTax){
+            UpdateTaxAmount=Calculation().taxAmount(taxValue: OG_TaxValue,amount:UpdateOutputQtyAmount,discountAmount:UpdateDiscountAmount  );
+          }
+          else{
+            UpdateTaxAmount=0.0;
+          }
           UpdateGrandTotalAmount=Calculation().add(UpdateDiscountedOutputQtyAmount, UpdateTaxAmount);
           UpdateRoundOffAmount=Calculation().sub(UpdateGrandTotalAmount.round(), UpdateGrandTotalAmount);
 
 
 
-          /*OG_SubTotal=double.parse((Decimal.parse(SS_DifferWeight)*Decimal.parse((SS_MaterialUnitPrice.toString()??"0"))).toString());
-          OG_DiscountAmount=OG_discountValue;
-          OG_DiscountedSubTotal=double.parse((Decimal.parse(OG_SubTotal.toString())-Decimal.parse((OG_DiscountAmount.toString()))).toString());
-          //OG_TaxValue=double.parse(taxValue);
-          OG_TaxAmount=double.parse(((Decimal.parse(OG_TaxValue.toString())*Decimal.parse((OG_DiscountedSubTotal.toString())))/Decimal.parse("100")).toString());
-          OG_GrandTotal=double.parse((Decimal.parse(OG_DiscountedSubTotal.toString())+Decimal.parse((OG_TaxAmount.toString()))).toString());
-          OG_RoundOffAmount=double.parse((Decimal.parse(OG_GrandTotal.round().toString())-Decimal.parse((OG_GrandTotal.toString()))).toString());
 
-          returnMoney=OG_GrandTotal.toString();
-
-
-
-
-
-
-          UpdateDiscountAmount=double.parse((Decimal.parse(SS_DiscountAmount.toString())+Decimal.parse((OG_DiscountAmount.toString()))).toString());
-          UpdateOutputQtyAmount=double.parse((Decimal.parse(SS_Amount.toString())+Decimal.parse((OG_SubTotal.toString()))).toString());
-          UpdateDiscountedOutputQtyAmount=double.parse((Decimal.parse(SS_DiscountedOutputQtyAmount.toString())+Decimal.parse((OG_DiscountedSubTotal.toString()))).toString());
-          UpdateTaxAmount=double.parse((Decimal.parse(SS_TaxAmount.toString())+Decimal.parse((OG_TaxAmount.toString()))).toString());
-          UpdateRoundOffAmount=double.parse((Decimal.parse(SS_RoundOffAmount.toString())+Decimal.parse((OG_RoundOffAmount.toString()))).toString());
-          UpdateGrandTotalAmount=double.parse((Decimal.parse(SS_GrandTotalAmount.toString())+Decimal.parse((OG_GrandTotal.toString()))).toString());*/
-          //DiscountedOutputQtyAmount=double.parse((Decimal.parse(SS)).toString());
         }
         else if(OG_isPercentage==1){
 
@@ -2226,32 +2174,19 @@ class QuarryNotifier extends ChangeNotifier{
 
 
           SS_UpdatecustomerNeedWeight=(Decimal.parse(SS_RequiredMaterialQty)+Decimal.parse(SS_DifferWeight)).toString();
-         // SS_UpdateAmount=(Decimal.parse(SS_Amount.toString())+Decimal.parse(returnMoney)).toString();
           SS_UpdateAmount=Calculation().mul(SS_UpdatecustomerNeedWeight, SS_MaterialUnitPrice).toString();
           UpdateDiscountAmount=Calculation().discountAmount(discountValue:OG_discountValue,amount: SS_UpdateAmount );
           UpdateOutputQtyAmount=Calculation().mul(SS_UpdatecustomerNeedWeight, SS_MaterialUnitPrice);
           UpdateDiscountedOutputQtyAmount=Calculation().sub(UpdateOutputQtyAmount, UpdateDiscountAmount);
-          UpdateTaxAmount=Calculation().taxAmount(taxValue: OG_TaxValue,amount:UpdateOutputQtyAmount,discountAmount:UpdateDiscountAmount  );
+          if(OG_isTax){
+            UpdateTaxAmount=Calculation().taxAmount(taxValue: OG_TaxValue,amount:UpdateOutputQtyAmount,discountAmount:UpdateDiscountAmount  );
+          }
+          else{
+            UpdateTaxAmount=0.0;
+          }
           UpdateGrandTotalAmount=Calculation().add(UpdateDiscountedOutputQtyAmount, UpdateTaxAmount);
           UpdateRoundOffAmount=Calculation().sub(UpdateGrandTotalAmount.round(), UpdateGrandTotalAmount);
 
- /*         OG_SubTotal=double.parse((Decimal.parse(SS_DifferWeight)*Decimal.parse((SS_MaterialUnitPrice.toString()??"0"))).toString());
-          OG_DiscountAmount=double.parse(((Decimal.parse(OG_SubTotal.toString())*Decimal.parse((OG_discountValue.toString())))/Decimal.parse("100")).toString());
-          OG_DiscountedSubTotal=double.parse((Decimal.parse(OG_SubTotal.toString())-Decimal.parse((OG_DiscountAmount.toString()))).toString());
-          //OG_TaxValue=double.parse(taxValue);
-          OG_TaxAmount=double.parse(((Decimal.parse(OG_TaxValue.toString())*Decimal.parse((OG_DiscountedSubTotal.toString())))/Decimal.parse("100")).toString());
-          OG_GrandTotal=double.parse((Decimal.parse(OG_DiscountedSubTotal.toString())+Decimal.parse((OG_TaxAmount.toString()))).toString());
-          OG_RoundOffAmount=double.parse((Decimal.parse(OG_GrandTotal.round().toString())-Decimal.parse((OG_GrandTotal.toString()))).toString());
-
-          returnMoney=OG_GrandTotal.toString();
-
-
-          UpdateDiscountAmount=double.parse((Decimal.parse(SS_DiscountAmount.toString())+Decimal.parse((OG_DiscountAmount.toString()))).toString());
-          UpdateOutputQtyAmount=double.parse((Decimal.parse(SS_Amount.toString())+Decimal.parse((OG_SubTotal.toString()))).toString());
-          UpdateDiscountedOutputQtyAmount=double.parse((Decimal.parse(SS_DiscountedOutputQtyAmount.toString())+Decimal.parse((OG_DiscountedSubTotal.toString()))).toString());
-          UpdateTaxAmount=double.parse((Decimal.parse(SS_TaxAmount.toString())+Decimal.parse((OG_TaxAmount.toString()))).toString());
-          UpdateRoundOffAmount=double.parse((Decimal.parse(SS_RoundOffAmount.toString())+Decimal.parse((OG_RoundOffAmount.toString()))).toString());
-          UpdateGrandTotalAmount=double.parse((Decimal.parse(SS_GrandTotalAmount.toString())+Decimal.parse((OG_GrandTotal.toString()))).toString());*/
         }
       }
       else{
@@ -2261,34 +2196,18 @@ class QuarryNotifier extends ChangeNotifier{
         SS_DifferWeight=(Decimal.parse(SS_DifferWeightController.text)-Decimal.parse((SS_TotalWeight))).toString();
 
         SS_UpdatecustomerNeedWeight=(Decimal.parse(SS_RequiredMaterialQty)+Decimal.parse(SS_DifferWeight)).toString();
-        //SS_UpdateAmount=(Decimal.parse(SS_Amount.toString())+Decimal.parse(returnMoney)).toString();
         SS_UpdateAmount=Calculation().mul(SS_UpdatecustomerNeedWeight, SS_MaterialUnitPrice).toString();
         UpdateDiscountAmount=0.0;
         UpdateOutputQtyAmount=Calculation().mul(SS_UpdatecustomerNeedWeight, SS_MaterialUnitPrice);
         UpdateDiscountedOutputQtyAmount=0.0;
-        UpdateTaxAmount=Calculation().taxAmount(taxValue: OG_TaxValue,amount:UpdateOutputQtyAmount,discountAmount:UpdateDiscountAmount  );
+        if(OG_isTax){
+          UpdateTaxAmount=Calculation().taxAmount(taxValue: OG_TaxValue,amount:UpdateOutputQtyAmount,discountAmount:UpdateDiscountAmount  );
+        }
+        else{
+          UpdateTaxAmount=0.0;
+        }
         UpdateGrandTotalAmount=Calculation().add(UpdateOutputQtyAmount, UpdateTaxAmount);
         UpdateRoundOffAmount=Calculation().sub(UpdateGrandTotalAmount.round(), UpdateGrandTotalAmount);
-
-
-    /*    OG_SubTotal=double.parse((Decimal.parse(SS_DifferWeight)*Decimal.parse((SS_MaterialUnitPrice.toString()??"0"))).toString());
-        OG_TaxAmount=double.parse(((Decimal.parse(OG_TaxValue.toString())*Decimal.parse((OG_SubTotal.toString())))/Decimal.parse("100")).toString());
-        OG_GrandTotal=double.parse((Decimal.parse(OG_SubTotal.toString())+Decimal.parse((OG_TaxAmount.toString()))).toString());
-        OG_RoundOffAmount=double.parse((Decimal.parse(OG_GrandTotal.round().toString())-Decimal.parse((OG_GrandTotal.toString()))).toString());
-        msg="Material High ${SS_DifferWeight}. So Customer Need To Pay";
-        returnMoney=OG_GrandTotal.toString();
-
-
-        UpdateDiscountAmount=double.parse((Decimal.parse(SS_DiscountAmount.toString())+Decimal.parse((OG_DiscountAmount.toString()))).toString());
-        UpdateOutputQtyAmount=double.parse((Decimal.parse(SS_Amount.toString())+Decimal.parse((OG_SubTotal.toString()))).toString());
-        UpdateDiscountedOutputQtyAmount=double.parse((Decimal.parse(SS_DiscountedOutputQtyAmount.toString())+Decimal.parse((OG_DiscountedSubTotal.toString()))).toString());
-        UpdateTaxAmount=double.parse((Decimal.parse(SS_TaxAmount.toString())+Decimal.parse((OG_TaxAmount.toString()))).toString());
-        UpdateRoundOffAmount=double.parse((Decimal.parse(SS_RoundOffAmount.toString())+Decimal.parse((OG_RoundOffAmount.toString()))).toString());
-        UpdateGrandTotalAmount=double.parse((Decimal.parse(SS_GrandTotalAmount.toString())+Decimal.parse((OG_GrandTotal.toString()))).toString());
-
-        print(OG_SubTotal);
-        print(OG_GrandTotal);*/
-
 
       }
 

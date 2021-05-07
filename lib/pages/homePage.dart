@@ -259,7 +259,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                 DrawerContent(
                                   delay: 3,
                                   height: 50,
-                                  image: "assets/svg/drawer/diesel-management.svg",
+                                  image: "assets/svg/drawer/diesel-mangement.svg",
                                   title: 'Diesel Management',
                                   tag: 'DieselManagement',
                                   titleColor: AppTheme.yellowColor,
@@ -675,7 +675,7 @@ class ReportsPageState extends State<ReportsPage> with TickerProviderStateMixin{
                   Hero(
                     transitionOnUserGestures: true,
                     tag: "Reports",
-                    child:SvgPicture.asset("assets/svg/drawer/settings-icon.svg",width: 100,height: 100,),
+                    child:SvgPicture.asset("assets/svg/drawer/reports.svg",width: 100,height: 100,),
                   ),
 
                   DrawerContent(
@@ -796,7 +796,7 @@ class AccountsPageState extends State<AccountsPage> with TickerProviderStateMixi
                   Hero(
                     transitionOnUserGestures: true,
                     tag: "Accounts",
-                    child:SvgPicture.asset("assets/svg/settings-icon.svg",width: 100,height: 100,),
+                    child:SvgPicture.asset("assets/svg/drawer/accounts.svg",width: 100,height: 100,),
                   ),
 
 

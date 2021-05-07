@@ -510,7 +510,7 @@ bool _keyboardVisible=false;
                                                   Container(
                                                     height: SizeConfig.height30,
                                                     width: SizeConfig.screenWidth,
-                                                    padding: EdgeInsets.only(left: SizeConfig.width10),
+                                                    padding: EdgeInsets.only(left: SizeConfig.width10,right: SizeConfig.width20),
                                                     child: Row(
                                                       children: [
                                                         Checkbox(
@@ -537,7 +537,6 @@ bool _keyboardVisible=false;
 
                                                                 showDialog(context: context,
                                                                     // barrierDismissible: false,
-
                                                                     builder: (context){
                                                                       return StatefulBuilder(
                                                                         builder:(context,setState){
@@ -644,9 +643,10 @@ bool _keyboardVisible=false;
                                                                                                         reorderLevelIndex=i;
                                                                                                       }
                                                                                                       else if (numbers[i] == '.') {
+                                                                                                          if(pn.isPercentageDiscount){
 
-
-                                                                                                          if(disValue.length<4 && disValue.length>=1){
+                                                                                                          }
+                                                                                                          if(disValue.length<2 && disValue.length>=1){
                                                                                                             if(disValue.contains('.')){}
                                                                                                             else{
                                                                                                               setState(() {
@@ -667,11 +667,19 @@ bool _keyboardVisible=false;
                                                                                                             setState(() {
                                                                                                               reorderLevelIndex = i;
                                                                                                             });
-                                                                                                            if(disValue.length<4){
-                                                                                                              setState(() {
-                                                                                                                disValue=disValue+numbers[i];
-                                                                                                              });
+                                                                                                            if(pn.isPercentageDiscount){
+                                                                                                              if(disValue.length<2){
+                                                                                                                setState(() {
+                                                                                                                  disValue=disValue+numbers[i];
+                                                                                                                });
+                                                                                                              }
+
+
+
                                                                                                             }
+                                                                                                            else{
+
+
                                                                                                           }
 
 
@@ -791,7 +799,28 @@ bool _keyboardVisible=false;
                                                                 qn.isDiscount=!qn.isDiscount;
                                                               });*/
                                                             },
-                                                            child: Text("Do you have Discount?", style:  TextStyle(fontFamily: 'RR',fontSize: 16,color:AppTheme.addNewTextFieldText,letterSpacing: 0.2),))
+                                                            child: Text("Is Discount?", style:  TextStyle(fontFamily: 'RR',fontSize: 16,color:AppTheme.addNewTextFieldText,letterSpacing: 0.2),)
+                                                        ),
+
+                                                        Spacer(),
+                                                        Checkbox(
+                                                            fillColor: MaterialStateColor.resolveWith((states) => AppTheme.yellowColor),
+                                                            value: qn.isTax,
+                                                            onChanged: (v){
+                                                              setState(() {
+                                                                qn.isTax=v;
+                                                              });
+                                                              qn.weightToAmount();
+                                                            }
+                                                            ),
+                                                        InkWell(
+                                                            onTap: (){
+                                                              /*setState(() {
+                                                                qn.isDiscount=!qn.isDiscount;
+                                                              });*/
+                                                            },
+                                                            child: Text("Is Tax?", style:  TextStyle(fontFamily: 'RR',fontSize: 16,color:AppTheme.addNewTextFieldText,letterSpacing: 0.2),)
+                                                        ),
                                                       ],
                                                     ),
                                                   ),
@@ -982,6 +1011,8 @@ bool _keyboardVisible=false;
                                                             qn.OG_isDiscount=qn.saleDetails[index].isDiscount;
                                                             qn.SS_TotalWeight=(Decimal.parse(qn.SS_EmptyWeightOfVehicle)+Decimal.parse((qn.SS_RequiredMaterialQty))).toString();
                                                             qn.SS_MaterialUnitPrice=qn.saleDetails[index].MaterialUnitPrice;
+                                                            qn.OG_isTax=qn.saleDetails[index].TaxAmount>0?true:false;
+
 
                                                             print("qn.SS_DiscountedOutputQtyAmount${qn.SS_MaterialUnitPrice}");
                                                             print("qn.SS_DiscountedOutputQtyAmount${qn.SS_TaxAmount}");
