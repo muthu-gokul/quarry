@@ -122,6 +122,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                 color: AppTheme.yellowColor,
 
                               ),
+                              child: Center(
+                                child: Icon(Icons.person_outline,size: 50,color: AppTheme.bgColor.withOpacity(0.5),),
+                              ),
 
                             ),
                             SizedBox(height: 10,),
@@ -170,7 +173,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                 DrawerContent(
                                   delay: 0.1,
                                   height: 50,
-                                  image: "assets/drawerImages/dashboard.png",
+                                  image: "assets/svg/drawer/myprofile.svg",
                                   title: 'My Profile',
                                   tag: 'MyProfile',
                                   titleColor: AppTheme.yellowColor,
@@ -185,7 +188,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                 DrawerContent(
                                   delay:1,
                                   height: 50,
-                                  image: "assets/drawerImages/dashboard.png",
+                                  image: "assets/svg/drawer/sales-form.svg",
                                   title: 'Sales',
                                   tag: 'SaleDetail',
                                   titleColor: AppTheme.yellowColor,
@@ -206,7 +209,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                 DrawerContent(
                                   delay: 1.5,
                                   height: 50,
-                                  image: "assets/drawerImages/dashboard.png",
+                                  image:  "assets/svg/drawer/purchase.svg",
                                   title: 'Purchase',
                                   tag: 'PurchaseDetail',
                                   titleColor: AppTheme.yellowColor,
@@ -223,7 +226,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                 DrawerContent(
                                   delay: 2,
                                   height: 50,
-                                  image: "assets/drawerImages/dashboard.png",
+                                  image:  "assets/svg/drawer/production.svg",
                                   title: 'Production',
                                   tag: 'ProductionDetail',
                                   titleColor: AppTheme.yellowColor,
@@ -239,7 +242,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                 DrawerContent(
                                   delay: 2.5,
                                   height: 50,
-                                  image: "assets/drawerImages/dashboard.png",
+                                  image:  "assets/svg/drawer/goodsReceived.svg",
                                   title: 'Goods Received',
                                   tag: 'GoodsReceived',
                                   titleColor: AppTheme.yellowColor,
@@ -256,7 +259,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                 DrawerContent(
                                   delay: 3,
                                   height: 50,
-                                  image: "assets/drawerImages/dashboard.png",
+                                  image: "assets/svg/drawer/diesel-management.svg",
                                   title: 'Diesel Management',
                                   tag: 'DieselManagement',
                                   titleColor: AppTheme.yellowColor,
@@ -274,7 +277,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                 DrawerContent(
                                   delay: 3.5,
                                   height: 50,
-                                  image: "assets/drawerImages/dashboard.png",
+                                  image:  "assets/svg/drawer/accounts.svg",
                                   title: 'Accounts',
                                   tag: "Accounts",
                                   titleColor: AppTheme.yellowColor,
@@ -287,7 +290,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                 DrawerContent(
                                   delay:4,
                                   height: 50,
-                                  image: "assets/drawerImages/dashboard.png",
+                                  image:  "assets/svg/drawer/reports.svg",
                                   title: 'Reports',
                                   tag: "Reports",
                                   titleColor: AppTheme.yellowColor,
@@ -301,7 +304,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                 DrawerContent(
                                   delay: 4.5,
                                   height: 50,
-                                  image: "assets/drawerImages/dashboard.png",
+                                  image: "assets/svg/drawer/settings-icon.svg",
                                   title: 'Settings',
                                   tag: "Settings",
                                   titleColor: AppTheme.yellowColor,
@@ -440,9 +443,10 @@ class DrawerContent extends StatelessWidget {
               Hero(
 
                   tag: tag,
-                  child: SvgPicture.asset("assets/svg/settings-icon.svg",width: 30)),
+                  child: SvgPicture.asset(image,width: 30,)),
               SizedBox(width: 10,),
               Text(title, style: TextStyle(fontSize: 16,color:titleColor, fontFamily:'RR'),),
+
             ],
           ),
         ),
@@ -502,7 +506,7 @@ class SettingsPageState extends State<SettingsPage> with TickerProviderStateMixi
                   Hero(
                     transitionOnUserGestures: true,
                     tag: "Settings",
-                    child:SvgPicture.asset("assets/svg/settings-icon.svg",width: 100,height: 100,),
+                    child:SvgPicture.asset("assets/svg/drawer/settings-icon.svg",width: 100,height: 100,),
                   ),
 
                   DrawerContent(
@@ -671,7 +675,7 @@ class ReportsPageState extends State<ReportsPage> with TickerProviderStateMixin{
                   Hero(
                     transitionOnUserGestures: true,
                     tag: "Reports",
-                    child:SvgPicture.asset("assets/svg/settings-icon.svg",width: 100,height: 100,),
+                    child:SvgPicture.asset("assets/svg/drawer/settings-icon.svg",width: 100,height: 100,),
                   ),
 
                   DrawerContent(

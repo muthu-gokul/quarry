@@ -166,7 +166,7 @@ reportView(context,String mailid,int saleIndex) async {
                         children: [
                           pw.Padding(
                             padding: pw.EdgeInsets.all(10),
-                            child: pw.Text("Billed To   : ${customerIndex!=-1?qn.customersList[customerIndex].CustomerName??"":""}"),
+                            child: pw.Text("Billed To   : ${qn.saleDetailsGrid[saleIndex].customerName??""}"),
                           ),
                           pw.Padding(
                             padding: pw.EdgeInsets.all(10),
@@ -180,7 +180,7 @@ reportView(context,String mailid,int saleIndex) async {
                         children: [
                           pw.Padding(
                             padding: pw.EdgeInsets.all(10),
-                            child: pw.Text("Name     : ${customerIndex!=-1?qn.customersList[customerIndex].CustomerName??"":""}"),
+                            child: pw.Text("Name     : ${qn.saleDetailsGrid[saleIndex].customerName??""}"),
                           ),
                           pw.Padding(
                             padding: pw.EdgeInsets.all(10),
@@ -203,7 +203,7 @@ reportView(context,String mailid,int saleIndex) async {
                                     ),
                                     pw.Container(
                                       width: 150,
-                                      child:  pw.Text("${customerIndex!=-1?qn.customersList[customerIndex].CustomerAddress??"":""} \n ${customerIndex!=-1?qn.customersList[customerIndex].CustomerCity??"":""},${customerIndex!=-1?qn.customersList[customerIndex].CustomerState??"":""}",
+                                      child:  pw.Text("${qn.saleDetailsGrid[saleIndex].customerAddress??""} \n ${qn.saleDetailsGrid[saleIndex].customerCity??""},${qn.saleDetailsGrid[saleIndex].customerState??""}",
                                           style: pw.TextStyle(),textAlign: pw.TextAlign.left)
                                       // child: pw.Text("SY NO 154/1B Kushthanapalli(village),Sevaganapalli(post),Hosur,TamilNadu"
                                       //     ,style: pw.TextStyle(),textAlign: pw.TextAlign.left)
@@ -236,7 +236,7 @@ reportView(context,String mailid,int saleIndex) async {
                         children: [
                           pw.Padding(
                             padding: pw.EdgeInsets.all(10),
-                            child: pw.Text("GSTIN     : ${customerIndex!=-1?qn.customersList[customerIndex].CustomerGSTNumber??"":""}"),
+                            child: pw.Text("GSTIN     : ${qn.saleDetailsGrid[saleIndex].customerGstNumber??""}"),
                           ),
                           pw.Padding(
                             padding: pw.EdgeInsets.all(10),
@@ -250,7 +250,7 @@ reportView(context,String mailid,int saleIndex) async {
                         children: [
                           pw.Padding(
                             padding: pw.EdgeInsets.all(10),
-                            child: pw.Text("State      : ${customerIndex!=-1?qn.customersList[customerIndex].CustomerState:""}"),
+                            child: pw.Text("State      : ${qn.saleDetailsGrid[saleIndex].customerState??""}"),
                           ),
                           pw.Padding(
                             padding: pw.EdgeInsets.all(10),
@@ -497,7 +497,7 @@ reportView(context,String mailid,int saleIndex) async {
                                               decoration: pw.BoxDecoration(
                                                   border: pw.Border(right: pw.BorderSide(color: PdfColors.black))
                                               ),
-                                              child: pw.Text("Discount (${qn.saleDetailsGrid[saleIndex].discountValue} ${qn.saleDetailsGrid[saleIndex].isPercentage==1?"%":"Rs"})",
+                                              child: pw.Text("Discount (${qn.saleDetailsGrid[saleIndex].isPercentage==1?qn.saleDetailsGrid[saleIndex].discountValue:""} ${qn.saleDetailsGrid[saleIndex].isPercentage==1?"%":"Rs"})",
                                                   style: pw.TextStyle(fontWeight: pw.FontWeight.bold))
                                           ),
 

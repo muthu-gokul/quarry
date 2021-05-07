@@ -93,12 +93,25 @@ bool _keyboardVisible=false;
     String time = formatterTime.format(now);
     SystemChrome.setEnabledSystemUIOverlays([]);
     return WillPopScope(
-      onWillPop: (){
-        setState(() {
-          _keyboardVisible=false;
-        });
+
+      onWillPop: () async {
+
+
+          setState(() {
+            _keyboardVisible=false;
+          });
+          node.unfocus();
+          Timer(Duration(milliseconds: 300),(){
+            print("Fdsff");
+
+          });
+
+
+
+        return false;
       },
       child: Scaffold(
+          resizeToAvoidBottomInset: false,
         body: AnnotatedRegion<SystemUiOverlayStyle>(
           value: SystemUiOverlayStyle.light.copyWith(
               statusBarColor: AppTheme.yellowColor
@@ -178,8 +191,8 @@ bool _keyboardVisible=false;
                                               }
                                             },
                                             child: Container(
-                                              height: _keyboardVisible ? SizeConfig.screenHeight * 0.5 : SizeConfig.screenHeight,
-                                            //  height:  SizeConfig.screenHeight ,
+                                             // height: _keyboardVisible ? SizeConfig.screenHeight * 0.5 : SizeConfig.screenHeight,
+                                             height:  SizeConfig.screenHeight ,
                                               width: SizeConfig.screenWidth,
 
                                               decoration: BoxDecoration(
@@ -379,7 +392,7 @@ bool _keyboardVisible=false;
                                                       textEditingController: qn.SS_customerNeedWeight,
                                                       textInputType: TextInputType.number,
                                                       isEnabled:qn.SS_selectedMaterialTypeId==null?false: true,
-                                                      scrollPadding: 50,
+                                                      scrollPadding: 500,
                                                       ontap: () {
                                                         setState(() {
                                                           _keyboardVisible=true;
@@ -885,7 +898,7 @@ bool _keyboardVisible=false;
                                                 },
                                                 child: Container(
                                                   height: _keyboardVisible ? SizeConfig.screenHeight * 0.5 : SizeConfig.screenHeight-SizeConfig.height100,
-                                                  //  height:  SizeConfig.screenHeight ,
+                                                  //height:  SizeConfig.screenHeight ,
                                                   width: SizeConfig.screenWidth,
 
                                                   decoration: BoxDecoration(
@@ -972,6 +985,7 @@ bool _keyboardVisible=false;
 
                                                             print("qn.SS_DiscountedOutputQtyAmount${qn.SS_MaterialUnitPrice}");
                                                             print("qn.SS_DiscountedOutputQtyAmount${qn.SS_TaxAmount}");
+                                                            print("qn.SS_GrandTotalAmount${qn.SS_GrandTotalAmount}");
 
                                                           });
                                                         },
@@ -1135,6 +1149,40 @@ bool _keyboardVisible=false;
                                                                 padding: EdgeInsets.only(left: SizeConfig.width10),
                                                                 width: SizeConfig.width140-1,
                                                                 child: Text("${qn.SS_Amount??""}")),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      Container(
+                                                        margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20),
+                                                        height:SizeConfig.height50,
+                                                        width: SizeConfig.width320,
+                                                        decoration: BoxDecoration(
+
+                                                          // borderRadius: BorderRadius.circular(3),
+                                                            border: Border(left: BorderSide(color: AppTheme.addNewTextFieldBorder),
+                                                                right: BorderSide(color: AppTheme.addNewTextFieldBorder),bottom:BorderSide(color: AppTheme.addNewTextFieldBorder))
+
+                                                        ),
+                                                        child: Row(
+                                                          children: [
+
+                                                            Container(
+                                                                padding: EdgeInsets.only(left: SizeConfig.width10),
+                                                                width: SizeConfig.width140-2,
+                                                                child: Text("Discount")
+                                                            ),
+
+                                                            Container(
+                                                                height: SizeConfig.height50,
+                                                                width: 1,
+                                                                color: AppTheme.addNewTextFieldBorder
+                                                            ),
+
+                                                            Container(
+                                                                padding: EdgeInsets.only(left: SizeConfig.width10),
+                                                                width: SizeConfig.width140-1,
+                                                                child: Text(qn.OG_discountValue!=null?"${qn.OG_discountValue??""} ${qn.OG_isPercentage==0?"Rs":"%"}":"")
+                                                            ),
                                                           ],
                                                         ),
                                                       ),

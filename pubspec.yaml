@@ -94,7 +94,17 @@ flutter:
     - assets/goodsIcons/plant.jpg
     - assets/goodsIcons/yes.jpg
     - assets/goodsIcons/no.jpg
-    - assets/svg/settings-icon.svg
+    - assets/svg/drawer/accounts.svg
+    - assets/svg/drawer/diesel-mangement.svg
+    - assets/svg/drawer/employee-details.svg
+    - assets/svg/drawer/goodsReceived.svg
+    - assets/svg/drawer/myprofile.svg
+    - assets/svg/drawer/production.svg
+    - assets/svg/drawer/purchase.svg
+    - assets/svg/drawer/reports.svg
+    - assets/svg/drawer/sales-form.svg
+    - assets/svg/drawer/settings-icon.svg
+
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 

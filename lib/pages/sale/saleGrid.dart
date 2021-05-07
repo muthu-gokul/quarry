@@ -248,7 +248,7 @@ class _SaleGridState extends State<SaleGrid> {
                                           }
                                         });
                                       }),
-                              DataCell(Text("${e.TotalAmount??"0"}",style: TextStyle(fontFamily: 'RR',fontSize: 14,color:qn.selectedIndex==i?Colors.white: Colors.black),),
+                              DataCell(Text("${e.TotalAmount.round()??"0"}",style: TextStyle(fontFamily: 'RR',fontSize: 14,color:qn.selectedIndex==i?Colors.white: Colors.black),),
                                   onTap: (){
                                     setState(() {
                                       if(qn.selectedIndex==-1 || qn.selectedIndex!=i){
@@ -274,7 +274,6 @@ class _SaleGridState extends State<SaleGrid> {
                     ),
                   ),
                 ),
-
 
 
 

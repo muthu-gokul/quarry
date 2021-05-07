@@ -891,7 +891,9 @@ class QuarryNotifier extends ChangeNotifier{
   
   
   InsertSaleDetailDbhit(BuildContext context) async {
-
+   print("INSERT $GrandTotal");
+   print("INSERT $SubTotal");
+   print("INSERT $RoundOffAmount");
     updateInsertSaleLoader(true);
     var body={
       "Fields": [
@@ -1095,9 +1097,10 @@ class QuarryNotifier extends ChangeNotifier{
 
 
   UpdateSaleDetailDbhit(BuildContext context,int UpdateIsMaterialReceived,String UpdateReason) async {
-    print("UpdateIsMaterialReceived$UpdateIsMaterialReceived");
-    print("UPDATE SALE-$SS_selectCustomerId");
+  /*  print("UpdateIsMaterialReceived$UpdateIsMaterialReceived");
+    print("UPDATE SALE-$SS_selectCustomerId");*/
     print("UPDATE UpdateRoundOffAmount-$UpdateRoundOffAmount");
+    print("UPDATE UpdateRoundOffAmount-$UpdateGrandTotalAmount");
     updateInsertSaleLoader(true);
     var body={
       "Fields": [
@@ -1410,72 +1413,98 @@ class QuarryNotifier extends ChangeNotifier{
           PosColumn(text: 'Payment Type: ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
           PosColumn(text: '${sales[0]['PaymentCategoryName']??""}', width: 6, styles: PosStyles(align: PosAlign.right)),
         ]);
-        printer.row([
-          PosColumn(text: 'Material Received: ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
-          PosColumn(text: isEnter?'No / Yes':'Yes', width: 6, styles: PosStyles(align: PosAlign.right)),
-        ]);
+        if(double.parse(sales[0]['OutputMaterialQty']??"0.0")>0){
+          printer.row([
+            PosColumn(text: 'Material Received: ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
+            PosColumn(text: isEnter?'No / Yes':'Yes', width: 6, styles: PosStyles(align: PosAlign.right)),
+          ]);
+        }
+        else{
+          printer.row([
+            PosColumn(text: 'Material Received: ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
+            PosColumn(text: isEnter?'No':'No', width: 6, styles: PosStyles(align: PosAlign.right)),
+          ]);
+        }
+
 
         printer.emptyLines(1);
 
+        if(double.parse(sales[0]['OutputMaterialQty']??"0.0")>0) {
+          if (!isEnter) {
+            printer.hr(ch: "=");
 
+            printer.row([
+              PosColumn(text: ' Material Name',
+                  width: 4,
+                  styles: PosStyles(align: PosAlign.left)),
+              PosColumn(text: 'Rate',
+                  width: 2,
+                  styles: PosStyles(align: PosAlign.right)),
+              PosColumn(text: 'Qty',
+                  width: 3,
+                  styles: PosStyles(align: PosAlign.right)),
+              PosColumn(text: 'Amt',
+                  width: 3,
+                  styles: PosStyles(align: PosAlign.right)),
+            ]);
+            printer.hr(ch: "=");
 
+            printer.row([
+              PosColumn(text: ' ${sales[0]['MaterialName'] ?? ""}',
+                  width: 4,
+                  styles: PosStyles(align: PosAlign.left)),
+              PosColumn(text: '${sales[0]['MaterialUnitPrice']}',
+                  width: 2,
+                  styles: PosStyles(align: PosAlign.right)),
+              PosColumn(
+                  text: '${sales[0]['OutputMaterialQty']} ${sales[0]['UnitName']}',
+                  width: 3,
+                  styles: PosStyles(align: PosAlign.right)),
+              PosColumn(text: '${sales[0]['OutputQtyAmount'] ?? ""}',
+                  width: 3,
+                  styles: PosStyles(align: PosAlign.right)),
+            ]);
+            printer.hr();
+            printer.emptyLines(1);
 
-
-
-        if(!isEnter){
-
-
-          printer.hr(ch: "=");
-
-          printer.row([
-            PosColumn(text: ' Material Name', width: 4, styles: PosStyles(align: PosAlign.left)),
-            PosColumn(text: 'Rate', width: 2, styles: PosStyles(align: PosAlign.right)),
-            PosColumn(text: 'Qty', width: 3, styles: PosStyles(align: PosAlign.right)),
-            PosColumn(text: 'Amt', width: 3, styles: PosStyles(align: PosAlign.right)),
-          ]);
-          printer.hr(ch: "=");
-
-          printer.row([
-            PosColumn(text: ' ${sales[0]['MaterialName']??""}', width: 4, styles: PosStyles(align: PosAlign.left)),
-            PosColumn(text: '${sales[0]['MaterialUnitPrice']}', width: 2, styles: PosStyles(align: PosAlign.right)),
-            PosColumn(text: '${sales[0]['OutputMaterialQty']} ${sales[0]['UnitName']}', width: 3, styles: PosStyles(align: PosAlign.right)),
-            PosColumn(text: '${sales[0]['OutputQtyAmount']??""}', width: 3, styles: PosStyles(align: PosAlign.right)),
-          ]);
-          printer.hr();
-          printer.emptyLines(1);
-
-          printer.row([
-            PosColumn(text: 'SubTotal: ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
-            PosColumn(text: '${sales[0]['OutputQtyAmount']??""}', width: 6, styles: PosStyles(align: PosAlign.right)),
-          ]);
-          if(sales[0]['DiscountValue']!=null && sales[0]['DiscountAmount']!=null){
-            if(sales[0]['DiscountValue']>0){
-              printer.row([
-                PosColumn(text: 'Discount (${sales[0]['DiscountValue']}${sales[0]['IsPercentage']==1?"%":"Rs"})', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
-                PosColumn(text: '-${sales[0]['DiscountAmount']??""}', width: 6, styles: PosStyles(align: PosAlign.right)),
-              ]);
+            printer.row([
+              PosColumn(text: 'SubTotal: ',
+                  width: 6,
+                  styles: PosStyles(align: PosAlign.right, bold: true)),
+              PosColumn(text: '${sales[0]['OutputQtyAmount'] ?? ""}',
+                  width: 6,
+                  styles: PosStyles(align: PosAlign.right)),
+            ]);
+            if (sales[0]['DiscountValue'] != null && sales[0]['DiscountAmount'] != null) {
+              if (sales[0]['DiscountValue'] > 0) {
+                printer.row([
+                  PosColumn(
+                      text: 'Discount (${sales[0]['IsPercentage'] == 1 ?sales[0]['DiscountValue']:""}${sales[0]['IsPercentage'] == 1 ? "%" : "Rs"})',
+                      width: 6, styles: PosStyles(align: PosAlign.right, bold: true)),
+                  PosColumn(text: '-${sales[0]['DiscountAmount'] ?? ""}', width: 6, styles: PosStyles(align: PosAlign.right)),
+                ]);
+              }
             }
-          }
-          printer.row([
-            PosColumn(text: 'GST (${sales[0]['TaxValue']??""}%): ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
-            PosColumn(text: '${sales[0]['TaxAmount']??""}', width: 6, styles: PosStyles(align: PosAlign.right)),
-          ]);
-          if(sales[0]['RoundOffAmount']!=null){
-            if(sales[0]['RoundOffAmount']>0 || sales[0]['RoundOffAmount']<0){
-              printer.row([
-                PosColumn(text: 'RoundOff: ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
-                PosColumn(text: '${sales[0]['RoundOffAmount']??""}', width: 6, styles: PosStyles(align: PosAlign.right)),
-              ]);
-              printer.emptyLines(1);
+            printer.row([
+              PosColumn(text: 'GST (${sales[0]['TaxValue'] ?? ""}%): ', width: 6, styles: PosStyles(align: PosAlign.right, bold: true)),
+              PosColumn(text: '${sales[0]['TaxAmount'] ?? ""}', width: 6, styles: PosStyles(align: PosAlign.right)),
+            ]);
+            if (sales[0]['RoundOffAmount'] != null) {
+              if (sales[0]['RoundOffAmount'] > 0 || sales[0]['RoundOffAmount'] < 0) {
+                printer.row([
+                  PosColumn(text: 'RoundOff: ', width: 6, styles: PosStyles(align: PosAlign.right, bold: true)),
+                  PosColumn(text: '${sales[0]['RoundOffAmount'] ?? ""}', width: 6, styles: PosStyles(align: PosAlign.right)),
+                ]);
+                /*  printer.emptyLines(1);
               printer.row([
                 PosColumn(text: '', width: 1),
                 // PosColumn(text: 'Total: ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
                 PosColumn(text: 'Total: ${Calculation().add(sales[0]['TotalAmount'], sales[0]['RoundOffAmount'])}', width: 11,
                     styles: PosStyles(align: PosAlign.center,height: PosTextSize.size2,width: PosTextSize.size2)),
               ]);
-              printer.emptyLines(1);
-            }
-            else{
+              printer.emptyLines(1);*/
+              }
+              /* else{
               printer.emptyLines(1);
               printer.row([
                 PosColumn(text: '', width: 1),
@@ -1484,73 +1513,94 @@ class QuarryNotifier extends ChangeNotifier{
                     styles: PosStyles(align: PosAlign.center,height: PosTextSize.size2,width: PosTextSize.size2)),
               ]);
               printer.emptyLines(1);
+            }*/
             }
-          }
-          else{
+
             printer.emptyLines(1);
             printer.row([
               PosColumn(text: '', width: 1),
               // PosColumn(text: 'Total: ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
-              PosColumn(text: 'Total: ${sales[0]['TotalAmount']??""}', width: 11,
-                  styles: PosStyles(align: PosAlign.center,height: PosTextSize.size2,width: PosTextSize.size2)),
+              PosColumn(text: 'Total: ${sales[0]['TotalAmount'].round() ?? ""}',
+                  width: 11,
+                  styles: PosStyles(align: PosAlign.center,
+                      height: PosTextSize.size2,
+                      width: PosTextSize.size2)),
             ]);
             printer.emptyLines(1);
           }
 
+          if (customer.isNotEmpty) {
+            printer.row([
+              PosColumn(text: '', width: 1),
+              PosColumn(text: 'Customer Details',
+                  width: 11,
+                  styles: PosStyles(align: PosAlign.center, bold: true,)),
+            ]);
+            printer.emptyLines(1);
+            printer.row([
+              PosColumn(text: '', width: 1),
+              PosColumn(text: 'Name: ${customer[0]['CustomerName'] ?? ""}',
+                  width: 11,
+                  styles: PosStyles(align: PosAlign.center)),
 
+            ]);
 
+            printer.row([
+              PosColumn(text: '', width: 1),
+              PosColumn(
+                  text: 'Phone No: ${customer[0]['CustomerContactNumber'] ??
+                      ""}',
+                  width: 11,
+                  styles: PosStyles(align: PosAlign.center,)),
 
-        }
+            ]);
+            printer.row([
+              PosColumn(text: '', width: 1),
+              PosColumn(text: 'Email: ${customer[0]['CustomerEmail'] ?? ""}',
+                  width: 11,
+                  styles: PosStyles(align: PosAlign.center,)),
 
-        if(customer.isNotEmpty){
-          printer.row([
-            PosColumn(text: '', width: 1),
-            PosColumn(text: 'Customer Details', width: 11, styles: PosStyles(align: PosAlign.center,bold: true,)),
-          ]);
-          printer.emptyLines(1);
-          printer.row([
-            PosColumn(text: '', width: 1),
-            PosColumn(text: 'Name: ${customer[0]['CustomerName']??""}', width: 11, styles: PosStyles(align: PosAlign.center)),
+            ]);
+            if (Customervalues != null) {
+              Customervalues.forEach((key, value) {
+                printer.row([
+                  PosColumn(text: '', width: 1),
+                  PosColumn(text: '${value}',
+                      width: 11,
+                      styles: PosStyles(align: PosAlign.center)),
 
-          ]);
+                ]);
+              });
+            }
 
-          printer.row([
-            PosColumn(text: '', width: 1),
-            PosColumn(text: 'Phone No: ${customer[0]['CustomerContactNumber']??""}', width: 11, styles: PosStyles(align: PosAlign.center,)),
+            printer.row([
+              PosColumn(text: '', width: 1),
+              PosColumn(text: '${customer[0]['CustomerCity'] ??
+                  ""} - ${customer[0]['CustomerZipCode'] ?? ""}',
+                  width: 11,
+                  styles: PosStyles(align: PosAlign.center,)),
 
-          ]);
-          printer.row([
-            PosColumn(text: '', width: 1),
-            PosColumn(text: 'Email: ${customer[0]['CustomerEmail']??""}', width: 11, styles: PosStyles(align: PosAlign.center,)),
+            ]);
+            printer.row([
+              PosColumn(text: '', width: 1),
+              PosColumn(text: '${customer[0]['CustomerState'] ?? ""}.',
+                  width: 11,
+                  styles: PosStyles(align: PosAlign.center,)),
 
-          ]);
-          if(Customervalues!=null){
-            Customervalues.forEach((key, value) {
-              printer.row([
-                PosColumn(text: '', width: 1),
-                PosColumn(text: '${value}', width: 11,styles: PosStyles(align: PosAlign.center)),
+            ]);
+            print(customer[0]['CustomerGSTNumber']);
+            printer.row([
+              PosColumn(text: '', width: 1),
+              PosColumn(
+                  text: 'GST No: ${customer[0]['CustomerGSTNumber'] ?? ""}.',
+                  width: 11,
+                  styles: PosStyles(align: PosAlign.center,)),
 
-              ]);
-            });
+            ]);
           }
-
-          printer.row([
-            PosColumn(text: '', width: 1),
-            PosColumn(text: '${customer[0]['CustomerCity']??""} - ${customer[0]['CustomerZipCode']??""}', width: 11, styles: PosStyles(align: PosAlign.center,)),
-
-          ]);
-          printer.row([
-            PosColumn(text: '', width: 1),
-            PosColumn(text: '${customer[0]['CustomerState']??""}.', width: 11, styles: PosStyles(align: PosAlign.center,)),
-
-          ]);
-          print(customer[0]['CustomerGSTNumber']);
-          printer.row([
-            PosColumn(text: '', width: 1),
-            PosColumn(text: 'GST No: ${customer[0]['CustomerGSTNumber']??""}.', width: 11, styles: PosStyles(align: PosAlign.center,)),
-
-          ]);
         }
+
+
 
         printer.feed(1);
 
@@ -1713,14 +1763,27 @@ class QuarryNotifier extends ChangeNotifier{
             PosColumn(text: 'Payment Type: ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
             PosColumn(text: '${saleDetailsGrid[selectedIndex].PaymentCategoryName??""}', width: 6, styles: PosStyles(align: PosAlign.right)),
           ]);
-          printer.row([
-            PosColumn(text: 'Material Received: ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
-            PosColumn(text: 'Yes', width: 6, styles: PosStyles(align: PosAlign.right)),
-          ]);
+
+          if(double.parse(saleDetailsGrid[selectedIndex].OutputMaterialQty??"0")>0){
+            printer.row([
+              PosColumn(text: 'Material Received: ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
+              PosColumn(text: 'Yes', width: 6, styles: PosStyles(align: PosAlign.right)),
+            ]);
+          }
+          else{
+            printer.row([
+              PosColumn(text: 'Material Received: ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
+              PosColumn(text: 'No', width: 6, styles: PosStyles(align: PosAlign.right)),
+            ]);
+          }
+
 
           printer.emptyLines(1);
 
 
+
+
+          if(double.parse(saleDetailsGrid[selectedIndex].OutputMaterialQty??"0")>0){
 
 
           printer.hr(ch: "=");
@@ -1768,16 +1831,16 @@ class QuarryNotifier extends ChangeNotifier{
                 PosColumn(text: 'RoundOff: ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
                 PosColumn(text: '${saleDetailsGrid[selectedIndex].RoundOffAmount??""}', width: 6, styles: PosStyles(align: PosAlign.right)),
               ]);
-              printer.emptyLines(1);
+          /*    printer.emptyLines(1);
               printer.row([
                 PosColumn(text: '', width: 1),
                 // PosColumn(text: 'Total: ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
                 PosColumn(text: 'Total: ${Calculation().add(saleDetailsGrid[selectedIndex].TotalAmount, saleDetailsGrid[selectedIndex].RoundOffAmount)}', width: 11,
                     styles: PosStyles(align: PosAlign.center,height: PosTextSize.size2,width: PosTextSize.size2)),
               ]);
-              printer.emptyLines(1);
+              printer.emptyLines(1);*/
             }
-            else{
+           /* else{
               printer.emptyLines(1);
               printer.row([
                 PosColumn(text: '', width: 1),
@@ -1786,18 +1849,17 @@ class QuarryNotifier extends ChangeNotifier{
                     styles: PosStyles(align: PosAlign.center,height: PosTextSize.size2,width: PosTextSize.size2)),
               ]);
               printer.emptyLines(1);
-            }
+            }*/
           }
-          else{
             printer.emptyLines(1);
             printer.row([
               PosColumn(text: '', width: 1),
               // PosColumn(text: 'Total: ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
-              PosColumn(text: 'Total: ${saleDetailsGrid[selectedIndex].TotalAmount??""}', width: 11,
+              PosColumn(text: 'Total: ${saleDetailsGrid[selectedIndex].TotalAmount.round()??""}', width: 11,
                   styles: PosStyles(align: PosAlign.center,height: PosTextSize.size2,width: PosTextSize.size2)),
             ]);
             printer.emptyLines(1);
-          }
+
 
 
 
@@ -1851,7 +1913,7 @@ class QuarryNotifier extends ChangeNotifier{
 
             ]);
           }
-
+          }
           printer.feed(1);
 
           printer.cut();
@@ -1950,6 +2012,18 @@ class QuarryNotifier extends ChangeNotifier{
        OG_DiscountAmount=0.0;
        OG_SubTotal=0.0;
        OG_GrandTotal=0.0;
+    }
+    else if(double.parse(SS_EmptyWeightOfVehicle)==double.parse(SS_DifferWeightController.text.toString())){
+      msg="";
+      returnMoney="";
+      SS_UpdatecustomerNeedWeight="0.0";
+      SS_UpdateAmount="0.0";
+      UpdateTaxAmount=0.0;
+      UpdateGrandTotalAmount=0.0;
+      UpdateOutputQtyAmount=0.0;
+      UpdateDiscountAmount=0.0;
+      UpdateDiscountedOutputQtyAmount=0.0;
+      UpdateRoundOffAmount=0.0;
     }
 
    else if(double.parse(SS_TotalWeight)>double.parse(SS_DifferWeightController.text.toString())){
