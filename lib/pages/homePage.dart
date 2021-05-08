@@ -687,7 +687,7 @@ class ReportsPageState extends State<ReportsPage> with TickerProviderStateMixin{
                   DrawerContent(
                     delay: 0.1,
                     height: 50,
-                    image: "assets/drawerImages/dashboard.png",
+                    image: "assets/svg/drawer/reports/salesReport.svg",
                     title: 'Sales Report',
                     tag: 'SalesReport',
                     titleColor: AppTheme.yellowColor,

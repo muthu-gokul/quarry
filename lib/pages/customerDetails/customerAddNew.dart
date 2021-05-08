@@ -193,6 +193,7 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                       AddNewLabelTextField(
                                         labelText: 'Address',
                                         textEditingController: qn.customerAddress,
+                                        maxlines: null,
                                         onEditComplete: (){
                                           node.unfocus();
                                         },

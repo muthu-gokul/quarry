@@ -275,6 +275,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                          labelText: 'Company Name',
                                          isEnabled: isEdit,
                                          textEditingController: qn.CD_quarryname,
+                                         maxlines: null,
                                          onEditComplete: (){
                                            node.unfocus();
                                            Timer(Duration(milliseconds: 50), (){
@@ -291,7 +292,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                        AddNewLabelTextField(
                                          labelText: 'Address',
                                          isEnabled: isEdit,
-                                         // maxLines: 3,
+                                         maxlines: null,
                                          textInputType: TextInputType.text,
                                          scrollPadding: 200,
                                          textEditingController: qn.CD_address,

@@ -182,6 +182,7 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
                           child: NotificationListener<ScrollNotification>(
                               onNotification: (s){
                                 if(s is ScrollStartNotification){
+
                                   if(listViewController.offset==0 && isListScroll && scrollController.offset==100 && listViewController.position.userScrollDirection==ScrollDirection.idle){
                                     Timer(Duration(milliseconds: 100), (){
                                       if(listViewController.position.userScrollDirection!=ScrollDirection.reverse){

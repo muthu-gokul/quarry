@@ -131,6 +131,7 @@ class DropDownField extends FormField<String> {
       );
 
       return Container(
+       // height: 50,
         // width: 300,
         margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,top:SizeConfig.height20,),
         child: Column(
@@ -143,7 +144,7 @@ class DropDownField extends FormField<String> {
               children: <Widget>[
 
                 Container(
-                  height: SizeConfig.height50,
+                 // height:50,
                   //width: SizeConfig.screenWidth-(SizeConfig.width40),
                   width: SizeConfig.screenWidth-(reduceWidth),
 

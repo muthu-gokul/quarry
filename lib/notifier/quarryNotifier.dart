@@ -578,6 +578,10 @@ class QuarryNotifier extends ChangeNotifier{
   double DiscountedSubTotal=0.0;
   double GrandTotal=0.0;
   double RoundOffAmount=0.0;
+  //Driver information
+  TextEditingController driverName=new TextEditingController();
+  TextEditingController driverContactNumber=new TextEditingController();
+  TextEditingController driverBeta=new TextEditingController();
 
   bool isTax=false;
   updateIsTax(bool value){
@@ -728,6 +732,9 @@ class QuarryNotifier extends ChangeNotifier{
     SS_emptyVehicleWeight.clear();
     SS_customerNeedWeight.clear();
     customPriceController.clear();
+    driverContactNumber.clear();
+    driverName.clear();
+    driverBeta.clear();
     SS_Empty_ReqQtyUnit="";
     SS_amount.clear();
     materialPrice="0.0";
@@ -1006,6 +1013,11 @@ class QuarryNotifier extends ChangeNotifier{
           "Key": "DriverContactNumber",
           "Type": "String",
           "Value": driverContactNumber.text
+        },
+        {
+          "Key": "DriverCharges",
+          "Type": "String",
+          "Value": driverBeta.text.isNotEmpty?double.parse(driverBeta.text.toString()):0.0
         },
         {
           "Key": "CustomerId",
@@ -2874,8 +2886,7 @@ class QuarryNotifier extends ChangeNotifier{
   TextEditingController customerContactNumber=new TextEditingController();
   TextEditingController customerEmail=new TextEditingController();
   TextEditingController customerGstNumber=new TextEditingController();
-  TextEditingController driverName=new TextEditingController();
-  TextEditingController driverContactNumber=new TextEditingController();
+
 
   int SS_selectCustomerId=null;
   String SS_CustomerName;
@@ -3214,8 +3225,7 @@ class QuarryNotifier extends ChangeNotifier{
      customerEmail.clear();
      customerGstNumber.clear();
      SS_selectCustomerId=null;
-     driverName.clear();
-     driverContactNumber.clear();
+
   }
 
 

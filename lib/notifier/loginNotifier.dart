@@ -9,14 +9,14 @@ class LoginTable {
 
 
 
-  //LoginTable({this.UserId,this.UserName,this.DataBaseName="TetroPOS_TestQMS"});
-  LoginTable({this.UserId,this.UserName,this.DataBaseName});
+  LoginTable({this.UserId,this.UserName,this.DataBaseName="TetroPOS_TestQMS"});
+ // LoginTable({this.UserId,this.UserName,this.DataBaseName});
 
   factory LoginTable.fromJson(Map<dynamic, dynamic> json) {
     return new LoginTable(
         UserId: json['UserId'],
       UserName: json['UserFirstName'],
-     DataBaseName: json['DataBaseName'],
+   //  DataBaseName: json['DataBaseName'],
     );
   }
 
