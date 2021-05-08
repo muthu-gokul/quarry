@@ -189,7 +189,7 @@ class GoodsToInvoiceState extends State<GoodsToInvoice> with TickerProviderState
                                       color: Colors.white,
                                       boxShadow: [
                                         BoxShadow(
-                                          color: AppTheme.addNewTextFieldText.withOpacity(0.2),
+                                          color: AppTheme.addNewTextFieldText.withOpacity(0.1),
                                           spreadRadius: 2,
                                           blurRadius: 15,
                                           offset: Offset(0, 0), // changes position of shadow
@@ -367,10 +367,10 @@ class GoodsToInvoiceState extends State<GoodsToInvoice> with TickerProviderState
                                                   color: Colors.white,
                                                   boxShadow: [
                                                     showShadow?  BoxShadow(
-                                                      color: AppTheme.addNewTextFieldText.withOpacity(0.3),
+                                                      color: AppTheme.addNewTextFieldText.withOpacity(0.1),
                                                       spreadRadius: 0,
                                                       blurRadius: 15,
-                                                      offset: Offset(10, -8), // changes position of shadow
+                                                      offset: Offset(0, -8), // changes position of shadow
                                                     ):BoxShadow(color: Colors.transparent)
                                                   ]
                                               ),
@@ -891,8 +891,11 @@ class GoodsToInvoiceState extends State<GoodsToInvoice> with TickerProviderState
 
                                     GestureDetector(
                                       onTap: (){
+                                        gr.InsertInvoiceDbHit(context).then((value){
                                           gr.GPO_assignValues();
-                                          Navigator.push(context, _createRouteGoodsToPurchase());
+                                           Navigator.push(context, _createRouteGoodsToPurchase());
+                                        });
+
                                       },
                                       child: Container(
                                         width: SizeConfig.screenWidth*0.4,

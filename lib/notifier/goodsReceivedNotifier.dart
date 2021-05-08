@@ -423,7 +423,7 @@ class GoodsReceivedNotifier extends ChangeNotifier{
 
       if( outGateFormList[OGF_index].isDiscount==0){
 
-        OGF_amount=Calculation().mul(OGF_showReceivedQty, outGateFormList[OGF_index].materialPrice);
+        OGF_amount=Calculation().mul(OGF_dbReceivedQty, outGateFormList[OGF_index].materialPrice);
         OGF_taxAmount=Calculation().taxAmount(taxValue:outGateFormList[OGF_index].taxValue, amount: OGF_amount, discountAmount: 0.0 );
         OGF_TotalAmount=Calculation().totalAmount(amount:OGF_amount, taxAmount: OGF_taxAmount, discountAmount: 0.0);
 
@@ -436,7 +436,7 @@ class GoodsReceivedNotifier extends ChangeNotifier{
 
         if(outGateFormList[OGF_index].isPercentage==1){
 
-          OGF_amount=Calculation().mul(OGF_showReceivedQty, outGateFormList[OGF_index].materialPrice);
+          OGF_amount=Calculation().mul(OGF_dbReceivedQty, outGateFormList[OGF_index].materialPrice);
           OGF_discountAmount=Calculation().discountAmount(discountValue: outGateFormList[OGF_index].discountValue, amount:  OGF_amount);
           OGF_taxAmount=Calculation().taxAmount(taxValue:outGateFormList[OGF_index].taxValue, amount: OGF_amount, discountAmount: OGF_discountAmount );
           OGF_TotalAmount=Calculation().totalAmount(amount: OGF_amount, taxAmount: OGF_taxAmount, discountAmount:  OGF_discountAmount);
@@ -449,7 +449,7 @@ class GoodsReceivedNotifier extends ChangeNotifier{
 
         }
         else if(outGateFormList[OGF_index].isAmount==1){
-          OGF_amount=Calculation().mul(OGF_showReceivedQty, outGateFormList[OGF_index].materialPrice);
+          OGF_amount=Calculation().mul(OGF_dbReceivedQty, outGateFormList[OGF_index].materialPrice);
           OGF_discountAmount=double.parse((Decimal.parse(outGateFormList[OGF_index].discountValue.toString())).toString());
           OGF_taxAmount=Calculation().taxAmount(taxValue:outGateFormList[OGF_index].taxValue, amount: OGF_amount, discountAmount: OGF_discountAmount );
           OGF_TotalAmount=Calculation().totalAmount(amount: OGF_amount, taxAmount: OGF_taxAmount, discountAmount:  OGF_discountAmount);
@@ -481,6 +481,8 @@ class GoodsReceivedNotifier extends ChangeNotifier{
   // ToInvoice List (GINV)-Goods Invoice
   String GINV_PorderNo=null;
   int GINV_PorderId=null;
+  int GINV_PlantId=null;
+  int GINV_SupplierId=null;
   int GINV_GoodsorderId=null;
   String GINV_Date=null;
   double GINV_invoiceAmount=0.0;
@@ -506,7 +508,7 @@ class GoodsReceivedNotifier extends ChangeNotifier{
     GINV_invoiceAmount=0.0;
   }
 
-  // ToPurchase List (GPO)-Goods Purchase
+  // ToPurchase List (GPO)-Goods To Purchase
   String GPO_PorderNo=null;
   int GPO_PorderId=null;
   int GPO_GoodsorderId=null;
@@ -528,13 +530,57 @@ class GoodsReceivedNotifier extends ChangeNotifier{
     GPO_PorderNo=GINV_PorderNo;
     GPO_PorderId=GINV_PorderId;
     GPO_GoodsorderId=GINV_GoodsorderId;
+    double balanceQuantity=0.0;
+    double amount=0.0;
+    double discountAmount=0.0;
+    double taxAmount=0.0;
+    double totalAmount=0.0;
 
     GINV_Materials.forEach((element) {
-      if(element.status=='Not Yet'){
-        GPO_Materials.add(element);
-        GPO_purchaseAmount=GPO_purchaseAmount+(element.amount);
+      if(element.status!='Completed'){
+        balanceQuantity=Calculation().sub(element.quantity, element.receivedQuantity);
+        amount=Calculation().mul(balanceQuantity, element.materialPrice);
+
+        if(element.isDiscount==1){
+          if(element.isPercentage==1){
+            discountAmount=Calculation().discountAmount(discountValue: element.discountValue,amount:amount );
+          }else if(element.isAmount==1){
+            discountAmount=element.discountValue;
+          }
+        }else{
+          discountAmount=0.0;
+        }
+
+        taxAmount=Calculation().taxAmount(taxValue: element.taxValue,discountAmount: discountAmount,amount: amount);
+        totalAmount=Calculation().totalAmount(amount: amount,discountAmount: discountAmount,taxAmount: taxAmount);
+
+        GPO_Materials.add(GoodsReceivedMaterialListModel(
+            materialId:element.materialId,
+          materialName: element.materialName,
+          unitName: element.unitName,
+          materialPrice:element.materialPrice,
+          quantity:balanceQuantity,
+          amount: amount,
+          isDiscount: element.isDiscount,
+          isPercentage: element.isPercentage,
+          isAmount: element.isAmount,
+          discountValue: element.discountValue,
+          discountAmount: discountAmount,
+          taxValue: element.taxValue,
+          taxAmount: taxAmount,
+          totalAmount: totalAmount
+
+        ));
+
       }
     });
+
+    GPO_Materials.forEach((element) {
+      GPO_purchaseAmount=GPO_purchaseAmount+(element.amount);
+    });
+
+    print(GPO_Materials.map((e) => e.toPurchaseJson()));
+
     notifyListeners();
   }
 
@@ -591,13 +637,15 @@ class GoodsReceivedNotifier extends ChangeNotifier{
               GINV_PorderNo=t[0]['PurchaseOrderNumber'];
               GINV_PorderId=t[0]['PurchaseOrderId'];
               GINV_GoodsorderId=t[0]['GoodsReceivedId'];
+              GINV_PlantId=t[0]['PlantId'];
+              GINV_SupplierId=t[0]['SupplierId'];
               GINV_Date=t[0]['Date'];
               var t1=parsed['Table1'] as List;
               var t4=parsed['Table4'] as List;
 
               GINV_Materials=t1.map((e) => GoodsReceivedMaterialListModel.fromJson(e)).toList();
               GINV_Materials.forEach((element) {
-                if(element.status!='Completed'){
+                if(element.status=='Completed' || element.status=='Partially Received'){
                   GINV_invoiceAmount=GINV_invoiceAmount+element.totalAmount;
                 }
               });
@@ -651,6 +699,126 @@ class GoodsReceivedNotifier extends ChangeNotifier{
 
   }
 
+
+ //To invoice Sp
+ Future<dynamic>  InsertInvoiceDbHit(BuildContext context)  async{
+    updateGoodsLoader(true);
+    List js=[];
+    js=GINV_Materials.map((e) => e.toInvoiceJson()).toList();
+    print(js);
+    List oa=[];
+    oa=GINV_OtherChargesList.map((e) => e.toInvoiceJson()).toList();
+    print(oa);
+
+    double subtotal=0.0;
+    double discountAmount=0.0;
+    double discountedSubtotal=0.0;
+    double taxAmount=0.0;
+    double grandTotal=0.0;
+
+    js.forEach((element) {
+      subtotal=Calculation().add(subtotal, element['Subtotal']);
+      discountAmount=Calculation().add(discountAmount, element['DiscountAmount']);
+      discountedSubtotal=Calculation().add(discountedSubtotal, element['DiscountedSubTotal']);
+      taxAmount=Calculation().add(taxAmount, element['TaxAmount']);
+      grandTotal=Calculation().add(grandTotal, element['TotalAmount']);
+    });
+    print(subtotal);
+    print(discountAmount);
+    print(discountedSubtotal);
+    print(taxAmount);
+    print(grandTotal);
+
+    var body={
+      "Fields": [
+        {
+          "Key": "SpName",
+          "Type": "String",
+          "Value": "${Sp.insertInvoiceDetail}"
+        },
+        {
+          "Key": "LoginUserId",
+          "Type": "int",
+          "Value": Provider.of<QuarryNotifier>(context,listen: false).UserId
+        },
+
+
+        {
+          "Key": "PlantId",
+          "Type": "int",
+          "Value": GINV_PlantId
+        },
+
+        {
+          "Key": "InvoiceType",
+          "Type": "String",
+          "Value": "Payable"
+        },
+        {
+          "Key": "PartyId",
+          "Type": "int",
+          "Value": GINV_SupplierId
+        },
+        {
+          "Key": "Subtotal",
+          "Type": "String",
+          "Value": subtotal
+        },
+        {
+          "Key": "DiscountAmount",
+          "Type": "String",
+          "Value": discountAmount
+        },
+        {
+          "Key": "DiscountedSubtotal",
+          "Type": "String",
+          "Value": discountedSubtotal
+        },
+        {
+          "Key": "TaxAmount",
+          "Type": "String",
+          "Value": taxAmount
+        },
+        {
+          "Key": "GrandTotalAmount",
+          "Type": "String",
+          "Value": grandTotal
+        },
+
+        {
+          "Key": "InvoiceMaterialMappingList",
+          "Type": "datatable",
+          "Value": js
+        },
+        {
+          "Key": "InvoiceOtherChargesMappingList",
+          "Type": "datatable",
+          "Value": oa
+        },
+        {
+          "Key": "database",
+          "Type": "String",
+          "Value": Provider.of<QuarryNotifier>(context,listen: false).DataBaseName
+        }
+      ]
+    };
+
+    try{
+      await call.ApiCallGetInvoke(body,context).then((value) {
+
+        if(value!=null){
+
+        }
+
+        updateGoodsLoader(false);
+      });
+    }catch(e){
+      updateGoodsLoader(false);
+      CustomAlert().commonErrorAlert(context, "${Sp.insertInvoiceDetail}" , e.toString());
+    }
+
+
+  }
 
 
 

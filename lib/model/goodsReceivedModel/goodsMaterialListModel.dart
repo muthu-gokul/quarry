@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:quarry/widgets/calculation.dart';
 
 class GoodsReceivedMaterialListModel {
   GoodsReceivedMaterialListModel({
@@ -112,6 +113,45 @@ class GoodsReceivedMaterialListModel {
     "TotalAmount": totalAmount,
     "IsActive": 1,
   };
+
+  Map<String, dynamic> toInvoiceJson() => {
+    "InvoiceMaterialMappingId":null,
+    "InvoiceId":null,
+    "MaterialId":materialId,
+    "MaterialPrice":materialPrice,
+    "MaterialQuantity":receivedQuantity,
+    "Subtotal":amount,
+    "IsDiscount":isDiscount,
+    "IsPercentage":isPercentage,
+    "IsAmount":isAmount,
+    'DiscountValue':discountValue,
+    "DiscountAmount":discountAmount,
+    "DiscountedSubTotal":amount-discountAmount,
+    "TaxValue":taxValue,
+    "TaxAmount":taxAmount,
+    "TotalAmount":totalAmount,
+    "IsActive":1,
+
+  };
+
+  Map<String, dynamic> toPurchaseJson() => {
+    "PurchaseOrderMaterialMappingId":null,
+    "PurchaseOrderId":null,
+    "MaterialId":materialId,
+    "MaterialPrice":materialPrice,
+    "PurchaseQuantity":quantity,
+    "Amount":amount,
+    "IsDiscount":isDiscount,
+    "IsPercentage":isPercentage,
+    "IsAmount":isAmount,
+    'DiscountValue':discountValue,
+    "DiscountAmount":discountAmount,
+    "TaxValue":taxValue,
+    "TaxAmount":taxAmount,
+    "TotalAmount":totalAmount,
+    "IsActive":1,
+
+  };
 }
 
 
@@ -150,5 +190,12 @@ class GoodsOtherChargesModel {
     "OtherChargesName": otherChargesName,
     "OtherChargesAmount": otherChargesAmount,
     "IsActive": 1,
+  };
+  Map<String, dynamic> toInvoiceJson() => {
+    "InvoiceOtherChargesMappingId":null,
+    "InvoiceId":null,
+    "OtherChargesName":otherChargesName,
+    "OtherChargesAmount":otherChargesAmount,
+    "IsActive":1,
   };
 }

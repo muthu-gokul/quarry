@@ -265,9 +265,6 @@ class GoodsOutGateFormState extends State<GoodsOutGateForm> with TickerProviderS
                                   else{
                                     gr.calc();
                                   }
-
-
-
                                 },
                                 textInputType: TextInputType.number,
                               ),

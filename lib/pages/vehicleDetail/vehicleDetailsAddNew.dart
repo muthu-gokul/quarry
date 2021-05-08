@@ -286,18 +286,13 @@ class VehicleDetailAddNewState extends State<VehicleDetailAddNew> with TickerPro
                             node.unfocus();
                             if(qn.VehicleNo.text.isEmpty){
                               CustomAlert().commonErrorAlert(context, "Enter Vehicle Number", "");
-
                             }
                             else if(qn.selectedVehicleTypeId==null){
                               CustomAlert().commonErrorAlert(context, "Select VehicleType", "");
-
                             }
                             else{
                               qn.InsertVehicleDbHit(context);
-
                             }
-
-
                           }),
                         ),
                         Container(
