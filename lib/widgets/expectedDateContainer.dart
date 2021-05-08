@@ -12,12 +12,13 @@ class ExpectedDateContainer extends StatelessWidget {
     return Container(
       margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,top:SizeConfig.height20,),
       padding: EdgeInsets.only(left:SizeConfig.width10,right:SizeConfig.width10),
-      height: SizeConfig.height50,
+      height:50,
       width: double.maxFinite,
       alignment: Alignment.centerLeft,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(3),
-          border: Border.all(color: AppTheme.addNewTextFieldBorder)
+          border: Border.all(color: AppTheme.addNewTextFieldBorder),
+        color: Colors.white
       ),
       child: Row(
         children: [

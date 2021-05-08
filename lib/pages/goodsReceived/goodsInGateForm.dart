@@ -243,7 +243,7 @@ class GoodsInGateFormState extends State<GoodsInGateForm> with TickerProviderSta
                       Center(
                         heightFactor: 0.5,
                         child: FloatingActionButton(backgroundColor: AppTheme.yellowColor, child: Icon(Icons.done,color: AppTheme.bgColor,size: 30,), elevation: 0.1, onPressed: () {
-
+                          print(gr.ML_GoodsorderId);
                           if(gr.vehicleNo.text.isEmpty){
                             CustomAlert().commonErrorAlert(context, "Enter Vehicle Number", "");
                           }

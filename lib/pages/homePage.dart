@@ -227,22 +227,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                 DrawerContent(
                                   delay: 2,
                                   height: 50,
-                                  image:  "assets/svg/drawer/production.svg",
-                                  title: 'Production',
-                                  tag: 'ProductionDetail',
-                                  titleColor: AppTheme.yellowColor,
-                                  callback: (){
-                                    setState(() {
-                                      drawer.menuSelected=12;
-                                      scaffoldkey.currentState.openEndDrawer();
-                                    });
-
-                                    Provider.of<ProductionNotifier>(context, listen: false).GetProductionDbHit(context,null,this);
-                                  },
-                                ),
-                                DrawerContent(
-                                  delay: 2.5,
-                                  height: 50,
                                   image:  "assets/svg/drawer/goodsReceived.svg",
                                   title: 'Goods Received',
                                   tag: 'GoodsReceived',
@@ -256,6 +240,23 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
 
                                   },
                                 ),
+                                DrawerContent(
+                                  delay: 2.5,
+                                  height: 50,
+                                  image:  "assets/svg/drawer/production.svg",
+                                  title: 'Production',
+                                  tag: 'ProductionDetail',
+                                  titleColor: AppTheme.yellowColor,
+                                  callback: (){
+                                    setState(() {
+                                      drawer.menuSelected=12;
+                                      scaffoldkey.currentState.openEndDrawer();
+                                    });
+
+                                    Provider.of<ProductionNotifier>(context, listen: false).GetProductionDbHit(context,null,this);
+                                  },
+                                ),
+
 
                                 DrawerContent(
                                   delay: 3,

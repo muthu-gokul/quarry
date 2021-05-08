@@ -168,7 +168,7 @@ class PaymentGridState extends State<PaymentGrid> with TickerProviderStateMixin{
                     margin: EdgeInsets.only(top: 140),
                     clipBehavior: Clip.antiAlias,
                     decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: AppTheme.gridbodyBgColor,
                         borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10))
                     ),
                     child: Stack(
@@ -671,7 +671,7 @@ class PaymentGridState extends State<PaymentGrid> with TickerProviderStateMixin{
                         ],
                       ),
                       child: Center(
-                        child: Icon(filterOpen?Icons.clear:Icons.search,size: SizeConfig.height30,color: AppTheme.bgColor,),
+                        child: Icon(filterOpen?Icons.clear:Icons.filter_alt_outlined,size: SizeConfig.height30,color: AppTheme.bgColor,),
                       ),
                     ),
                   ),

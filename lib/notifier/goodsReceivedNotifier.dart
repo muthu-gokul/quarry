@@ -138,6 +138,7 @@ class GoodsReceivedNotifier extends ChangeNotifier{
         double.parse(loadedWeight.text))
     ).toList();
     print("Insert-$js");
+    print("ML_PorderId-$ML_PorderId");
 
     List os=[];
     os=IGf_OtherChargesList.map((e) => e.toJson()).toList();
@@ -605,21 +606,29 @@ class GoodsReceivedNotifier extends ChangeNotifier{
 
             }
             else{
+              print("t_$t");
+
+
+
               ML_PorderNo=t[0]['PurchaseOrderNumber'];
               ML_PorderId=t[0]['PurchaseOrderId'];
               ML_GoodsorderId=t[0]['GoodsReceivedId'];
               ML_Date=t[0]['Date'];
+              print("ML_PorderId $ML_PorderId");
               var t1=parsed['Table1'] as List;
-
+              print("t1_$t1");
               ML_Materials=t1.map((e) => GoodsReceivedMaterialListModel.fromJson(e)).toList();
 
               var t2=parsed['Table2'] as List;
               materialTripList=t2.map((e) => GoodsMaterialTripDetailsModel.fromJson(e)).toList();
-
+              print("t2_$t2");
               var t3=parsed['Table3'] as List;
               GoodsMaterialExtraTripModelDetails =t3.map((e) => GoodsMaterialExtraTripModel.fromJson(e)).toList();
+              print("t3_$t3");
               var t4=parsed['Table4'] as List;
               IGf_OtherChargesList =t4.map((e) => GoodsOtherChargesModel.fromJson(e,tickerProviderStateMixin)).toList();
+              print("t4_$t4");
+
             }
 
 

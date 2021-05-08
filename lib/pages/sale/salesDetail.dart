@@ -643,6 +643,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                                                       child: Column(
                                                                                         mainAxisAlignment: MainAxisAlignment.center,
                                                                                         children: [
+
                                                                                           SizedBox(height: 15,),
                                                                                           /*  Text("{pn.purchaseOrdersMappingList[pn.purchaseOrdersMappingList.length-1].materialName??""}",
                                                                                         style: TextStyle(fontFamily: 'RR',fontSize: 18,color: AppTheme.gridTextColor),textAlign: TextAlign.center,),*/
@@ -882,7 +883,8 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                                                                 qn.DiscountAmount=0.0;
                                                                                                 qn.DiscountValue=0.0;
                                                                                                 qn.DiscountedSubTotal=0.0;
-                                                                                              });
+                                                                                                  discountValueError=false;
+                                                                                                });
                                                                                               Navigator.pop(context);
 
                                                                                             },

@@ -255,6 +255,10 @@ class GoodsOutGateFormState extends State<GoodsOutGateForm> with TickerProviderS
                                       gr.calc();
                                     }
                                     else{
+                                      setState(() {
+                                        gr.OGF_emptyWeightofVehicle.clear();
+                                      });
+                                      gr.calc();
                                       CustomAlert().commonErrorAlert(context, "Over Weight", "Empty vehicle weight is higher than Inward Vehicle Weight");
                                     }
                                   }

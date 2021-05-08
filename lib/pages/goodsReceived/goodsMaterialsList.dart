@@ -365,10 +365,10 @@ class GoodsMaterialsListState extends State<GoodsMaterialsList> with TickerProvi
                                               color: Colors.white,
                                               boxShadow: [
                                                 showShadow?  BoxShadow(
-                                                  color: AppTheme.addNewTextFieldText.withOpacity(0.3),
+                                                  color: AppTheme.addNewTextFieldText.withOpacity(0.1),
                                                   spreadRadius: 0,
                                                   blurRadius: 15,
-                                                  offset: Offset(10, -8), // changes position of shadow
+                                                  offset: Offset(0, -8), // changes position of shadow
                                                 ):BoxShadow(color: Colors.transparent)
                                               ]
                                           ),
@@ -678,7 +678,7 @@ class GoodsMaterialsListState extends State<GoodsMaterialsList> with TickerProvi
                       ),
                       Center(
                         heightFactor: 0.5,
-                        child: FloatingActionButton(backgroundColor: AppTheme.yellowColor, child: Icon(Icons.arrow_back), elevation: 0.1, onPressed: () {
+                        child: FloatingActionButton(backgroundColor: AppTheme.yellowColor, child: Icon(Icons.arrow_back,color: AppTheme.bgColor,), elevation: 0.1, onPressed: () {
                           gr.ML_clear();
 
                           Navigator.pop(context);
