@@ -453,8 +453,8 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                 if(qn.customerName.text.isEmpty){
                                   CustomAlert().commonErrorAlert(context, "Enter Name", "");
                                 }
-                                else if(qn.customerContactNumber.text.isEmpty){
-                                  CustomAlert().commonErrorAlert(context, "Enter Contact Number", "");
+                                else if(qn.customerAddress.text.isEmpty){
+                                  CustomAlert().commonErrorAlert(context, "Enter Address", "");
                                 }
                                 else{
                                   qn.InsertCustomerDbHit(context,widget.fromSalePage);

@@ -349,20 +349,24 @@ class MaterialDetailAddNewState extends State<MaterialDetailAddNew> with TickerP
                           heightFactor: 0.5,
                           child: FloatingActionButton(backgroundColor: AppTheme.yellowColor, child: Icon(Icons.save), elevation: 0.1, onPressed: () {
                             node.unfocus();
-                            if(qn.selectedMatCategoryName==null){
-                              CustomAlert().commonErrorAlert(context, "Select Material Type", "");
-                            }
-                            else if(qn.materialName.text.isEmpty)
+                            if(qn.materialName.text.isEmpty)
                             {
                               CustomAlert().commonErrorAlert(context, "Enter Material Name", "");
                             }
-                            else if(qn.materialCode.text.isEmpty)
-                            {
-                              CustomAlert().commonErrorAlert(context, "Enter Material Code", "");
+                            else  if(qn.selectedMatCategoryName==null){
+                              CustomAlert().commonErrorAlert(context, "Select Material Type", "");
                             }
                             else if(qn.selectedUnitName==null)
                             {
                               CustomAlert().commonErrorAlert(context, "Select Unit", "");
+                            }
+                            else if(qn.materialPrice.text.isEmpty)
+                            {
+                              CustomAlert().commonErrorAlert(context, "Enter Material Price", "");
+                            }
+                            else if(qn.materialGst.text.isEmpty)
+                            {
+                              CustomAlert().commonErrorAlert(context, "Enter Material GST", "");
                             }
                             else {
                               qn.InsertMaterialDbHit(context);

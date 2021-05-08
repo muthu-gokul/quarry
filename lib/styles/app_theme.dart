@@ -45,6 +45,7 @@ class AppTheme {
   static TextStyle userGroupTS=TextStyle(fontFamily: 'RL',color: AppTheme.gridTextColor,fontSize: 14);
 
   static TextStyle bgColorTS=TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 16);
+  static TextStyle bgColorTS14=TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 14);
   static TextStyle gridTextColorTS=TextStyle(fontFamily: 'RR',color: AppTheme.gridTextColor,fontSize: 16);
   static TextStyle gridTextColor14=TextStyle(fontFamily: 'RR',color: AppTheme.gridTextColor,fontSize: 14);
 
@@ -73,5 +74,8 @@ static BoxShadow yellowShadow=  BoxShadow(
   offset: Offset(0, 0), // changes position of shadow
   )
   ]*/
+
+ static EdgeInsets gridAppBarPadding=EdgeInsets.only(bottom: 15);
+ static BorderRadius gridTopBorder=BorderRadius.only(topLeft: Radius.circular(15),topRight: Radius.circular(15));
 
 }

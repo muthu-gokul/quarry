@@ -124,7 +124,6 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                             int sensitivity = 5;
                             if (details.delta.dy > sensitivity) {
                               scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
-                                print("GD $isListScroll");
                                 if(isListScroll){
                                   setState(() {
                                     isListScroll=false;
@@ -156,7 +155,6 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                               onNotification: (s){
                                 if(s is ScrollStartNotification){
                                   if(listViewController.offset==0 && isListScroll && scrollController.offset==100 && listViewController.position.userScrollDirection==ScrollDirection.idle){
-                                    print("NS ${listViewController.position.userScrollDirection}");
                                     Timer(Duration(milliseconds: 100), (){
                                       if(listViewController.position.userScrollDirection!=ScrollDirection.reverse){
                                         if(scrollController.position.pixels == scrollController.position.maxScrollExtent){
@@ -181,6 +179,7 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                 scrollDirection: Axis.vertical,
                                 physics: isListScroll?AlwaysScrollableScrollPhysics():NeverScrollableScrollPhysics(),
                                 children: [
+
                                   AddNewLabelTextField(
                                     labelText: 'Supplier Name',
                                     textEditingController: qn.supplierName,
@@ -188,6 +187,7 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                       node.unfocus();
                                     },
                                     ontap: (){
+                                      scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                       setState(() {
                                         isListScroll=true;
                                       });
@@ -286,6 +286,7 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                       node.unfocus();
                                     },
                                     ontap: (){
+                                      scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                       setState(() {
                                         isListScroll=true;
                                       });
@@ -299,6 +300,7 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                       node.unfocus();
                                     },
                                     ontap: (){
+                                      scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                       setState(() {
                                         isListScroll=true;
                                       });
@@ -312,6 +314,7 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                       node.unfocus();
                                     },
                                     ontap: (){
+                                      scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                       setState(() {
                                         isListScroll=true;
                                       });
@@ -597,10 +600,10 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                       }),
                       SizedBox(width: SizeConfig.width5,),
                       Text("Supplier Detail",
-                        style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: SizeConfig.width16),
+                        style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize:16),
                       ),
                       Text(qn.isSupplierEdit?" / Edit":" / Add New",
-                        style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: SizeConfig.width16),
+                        style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: 16),
                       ),
                     ],
                   ),
@@ -645,12 +648,22 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                             if(qn.supplierName.text.isEmpty)
                             {
                               CustomAlert().commonErrorAlert(context, "Enter Supplier Name", "");
-
                             }
                             else if(qn.supplierCategoryId==null)
                             {
                               CustomAlert().commonErrorAlert(context, "Select Supplier Category", "");
-
+                            }
+                            else if(qn.supplierAddress.text.isEmpty)
+                            {
+                              CustomAlert().commonErrorAlert(context, "Enter Supplier Address", "");
+                            }
+                            else if(qn.supplierContactNumber.text.isEmpty)
+                            {
+                              CustomAlert().commonErrorAlert(context, "Enter Supplier Contact Number", "");
+                            }
+                            else if(qn.supplierGstNo.text.isEmpty)
+                            {
+                              CustomAlert().commonErrorAlert(context, "Enter Supplier GST Number", "");
                             }
                             else
                             {

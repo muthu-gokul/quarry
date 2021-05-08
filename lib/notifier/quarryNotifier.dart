@@ -1983,7 +1983,7 @@ class QuarryNotifier extends ChangeNotifier{
   List<SalePrintersList> saleDetailsGridPrintersList=[];
   List<String> saleVehicleNumberList=[];
   //List<String> saleDetailsGridCol=['Vehicle Number','Material Type','Required Qty','Output Material Qty','Amount','Status'];
-  List<String> saleDetailsGridCol=['Date','Sale No','Vehicle Number','Material','Amount'];
+  List<String> saleDetailsGridCol=['Date','Sale No','Vehicle Number','Material','Amount','Customer Name'];
  // List<String> saleDetailsGridCol=["Material Name","Unit","Price","GST","Unit","Price","GST"];
 
 

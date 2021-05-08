@@ -37,8 +37,10 @@ class _CustomerMasterState extends State<CustomerMaster> {
             builder: (context,qn,child)=>  Stack(
               children: [
                 Container(
-                  height: SizeConfig.height50,
+                  height: 70,
+                  padding: EdgeInsets.only(bottom: 15),
                   width: SizeConfig.screenWidth,
+                  color: AppTheme.yellowColor,
                   child: Row(
                     children: [
                       IconButton(icon: Icon(Icons.menu), onPressed: widget.drawerCallback),
@@ -51,6 +53,7 @@ class _CustomerMasterState extends State<CustomerMaster> {
                     ],
                   ),
                 ),
+
                 Container(
                     height: SizeConfig.screenHeight-SizeConfig.height50,
                     width: SizeConfig.screenWidth,

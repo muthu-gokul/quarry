@@ -209,7 +209,7 @@ class _MachineDetailAddNewState extends State<MachineDetailAddNew> with TickerPr
                                  },
                                ),
                                AddNewLabelTextField(
-                                  labelText: 'MoterPower',
+                                  labelText: 'Motor Power',
                                   textEditingController: qn.MoterPower,
                                  scrollPadding: 100,
                                  ontap: (){
@@ -220,7 +220,7 @@ class _MachineDetailAddNewState extends State<MachineDetailAddNew> with TickerPr
                                  },
                                 ),
                                AddNewLabelTextField(
-                                 labelText: 'MachineWeight',
+                                 labelText: 'Machine Specification',
                                  textEditingController: qn.MachineWeight,
                                  scrollPadding: 200,
                                  ontap: (){

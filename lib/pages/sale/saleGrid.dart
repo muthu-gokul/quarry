@@ -264,6 +264,22 @@ class _SaleGridState extends State<SaleGrid> {
                                       }
                                     });
                                   }),
+                              DataCell(Text("${e.customerName??""}",style: TextStyle(fontFamily: 'RR',fontSize: 14,color:qn.selectedIndex==i?Colors.white: Colors.black),),
+                                  onTap: (){
+                                    setState(() {
+                                      if(qn.selectedIndex==-1 || qn.selectedIndex!=i){
+                                        qn.selectedIndex=i;
+                                        if(e.SaleStatus=='Open'){
+                                          isOpen=true;
+                                        }else{
+                                          isOpen=false;
+                                        }
+                                      }
+                                      else {
+                                        qn.selectedIndex=-1;
+                                      }
+                                    });
+                                  }),
 
 
                             ])

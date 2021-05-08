@@ -10,6 +10,7 @@ import 'package:quarry/pages/supplierDetail/supplierAddNew.dart';
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
+import 'package:quarry/widgets/navigationBarIcon.dart';
 
 
 
@@ -87,10 +88,13 @@ class PurchaseDetailsGridState extends State<PurchaseDetailsGrid> with TickerPro
                   height: 70,
                   width: SizeConfig.screenWidth,
                   color: AppTheme.yellowColor,
-                  padding: EdgeInsets.only(bottom: 15),
+                  padding: AppTheme.gridAppBarPadding,
                   child: Row(
                     children: [
-                      IconButton(icon: Icon(Icons.menu), onPressed: widget.drawerCallback),
+                      GestureDetector(
+                        onTap:widget.drawerCallback,
+                        child: NavBarIcon(),
+                      ),
                       SizedBox(width: SizeConfig.width20,),
                       Text("Purchase Details",
                         style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize:16),
@@ -107,7 +111,7 @@ class PurchaseDetailsGridState extends State<PurchaseDetailsGrid> with TickerPro
                     clipBehavior: Clip.antiAlias,
                     decoration: BoxDecoration(
                         color: AppTheme.gridbodyBgColor,
-                      borderRadius: BorderRadius.only(topLeft: Radius.circular(15),topRight: Radius.circular(15))
+                        borderRadius: BorderRadius.only(topLeft: Radius.circular(15),topRight: Radius.circular(15))
                     ),
                     child: Stack(
                       children: [
@@ -187,7 +191,7 @@ class PurchaseDetailsGridState extends State<PurchaseDetailsGrid> with TickerPro
                                                     //  padding: EdgeInsets.only(left: 20,right: 20),
                                                     width: 150,
                                                     child: Text("${DateFormat.yMMMd().format(value.expectedDate)}",
-                                                      style:selectedIndex==i?AppTheme.bgColorTS:AppTheme.gridTextColor14,
+                                                      style:selectedIndex==i?AppTheme.bgColorTS14:AppTheme.gridTextColor14,
                                                     ),
                                                   ),
 
@@ -196,7 +200,7 @@ class PurchaseDetailsGridState extends State<PurchaseDetailsGrid> with TickerPro
                                                     // padding: EdgeInsets.only(left: 20,right: 20),
                                                     width: 150,
                                                     child: Text("${value.NoOfMaterial.toString()}",
-                                                      style:selectedIndex==i?AppTheme.bgColorTS:AppTheme.gridTextColor14,
+                                                      style:selectedIndex==i?AppTheme.bgColorTS14:AppTheme.gridTextColor14,
                                                     ),
 
                                                   ),
@@ -204,7 +208,7 @@ class PurchaseDetailsGridState extends State<PurchaseDetailsGrid> with TickerPro
                                                     alignment: Alignment.center,
                                                     width: 150,
                                                     child: Text("${value.TotalQuantity.toString()}",
-                                                      style:selectedIndex==i?AppTheme.bgColorTS:AppTheme.gridTextColor14,
+                                                      style:selectedIndex==i?AppTheme.bgColorTS14:AppTheme.gridTextColor14,
                                                     ),
                                                   ),
 
@@ -212,14 +216,14 @@ class PurchaseDetailsGridState extends State<PurchaseDetailsGrid> with TickerPro
                                                     width: 150,
                                                     alignment: Alignment.center,
                                                     child: Text("${value.taxAmount.toString()}",
-                                                      style:selectedIndex==i?AppTheme.bgColorTS:AppTheme.gridTextColor14,
+                                                      style:selectedIndex==i?AppTheme.bgColorTS14:AppTheme.gridTextColor14,
                                                     ),
                                                   ),
                                                   Container(
                                                     width: 150,
                                                     alignment: Alignment.center,
                                                     child: Text("${value.Subtotal.toString()}",
-                                                      style:selectedIndex==i?AppTheme.bgColorTS:AppTheme.gridTextColor14,
+                                                      style:selectedIndex==i?AppTheme.bgColorTS14:AppTheme.gridTextColor14,
                                                     ),
                                                   ),
 
@@ -321,8 +325,8 @@ class PurchaseDetailsGridState extends State<PurchaseDetailsGrid> with TickerPro
                                               child: FittedBox(
                                                 fit: BoxFit.contain,
                                                 child: Text("${value.purchaseOrderNumber}",
-                                                    //  style:selectedIndex==i?AppTheme.bgColorTS:AppTheme.gridTextColorTS,
-                                                  style:selectedIndex==i?AppTheme.bgColorTS:AppTheme.gridTextColor14,
+                                                    //  style:selectedIndex==i?AppTheme.bgColorTS14:AppTheme.gridTextColorTS,
+                                                  style:selectedIndex==i?AppTheme.bgColorTS14:AppTheme.gridTextColor14,
                                                 ),
                                               ),
                                             ),
@@ -344,53 +348,12 @@ class PurchaseDetailsGridState extends State<PurchaseDetailsGrid> with TickerPro
 
                       ],
                     )
-
-
-
-
                 ),
 
 
 
 
 
-              /*  Positioned(
-                  bottom: 20,
-                  right: 20,
-                  child: GestureDetector(
-                    behavior: HitTestBehavior.translucent,
-                    onTap: (){
-
-                      pn.updatePurchaseEdit(false);
-                      pn.PurchaseDropDownValues(context);
-                      pn.insertForm();
-                      Navigator.of(context).push(_createRoute());
-
-
-
-                    },
-                    child: Container(
-                      margin: EdgeInsets.only(right: SizeConfig.width10),
-                      height: SizeConfig.width50,
-                      width: SizeConfig.width50,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: AppTheme.yellowColor,
-                        boxShadow: [
-                          BoxShadow(
-                            color: AppTheme.yellowColor.withOpacity(0.4),
-                            spreadRadius: 1,
-                            blurRadius: 5,
-                            offset: Offset(1, 8), // changes position of shadow
-                          ),
-                        ],
-                      ),
-                      child: Center(
-                        child: Icon(Icons.add,size: SizeConfig.height30,color: AppTheme.bgColor,),
-                      ),
-                    ),
-                  ),
-                ),*/
 
                 //bottomNav
                 Positioned(
@@ -553,7 +516,7 @@ class PurchaseDetailsGridState extends State<PurchaseDetailsGrid> with TickerPro
                     ),
                   ),
                 ),
-
+                //addButton
                 Align(
                   alignment: Alignment.bottomCenter,
                   child: GestureDetector(
@@ -587,170 +550,6 @@ class PurchaseDetailsGridState extends State<PurchaseDetailsGrid> with TickerPro
                   ),
                 ),
 
-            /*    //bottomNav
-                Positioned(
-                  bottom: 0,
-                  child: Container(
-                    width: SizeConfig.screenWidth,
-                    height: 60,
-
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.white.withOpacity(0.7),
-                            spreadRadius: 2,
-                            blurRadius: 15,
-                            offset: Offset(0, -20), // changes position of shadow
-                          )
-                        ]
-                    ),
-                    child: Stack(
-
-                      children: [
-                        Container(
-                          margin:EdgeInsets.only(top: 0),
-                          child: CustomPaint(
-                            size: Size( SizeConfig.screenWidth, 55),
-                            painter: RPSCustomPainter(),
-                          ),
-                        ),
-                        Center(
-                          heightFactor: 0.5,
-                          child: GestureDetector(
-                            behavior: HitTestBehavior.translucent,
-                            onTap: (){
-
-                              pn.updatePurchaseEdit(false);
-                              pn.PurchaseDropDownValues(context);
-                              pn.insertForm();
-                              Navigator.of(context).push(_createRoute());
-
-
-
-                            },
-                            child: Container(
-
-                              height: SizeConfig.width50,
-                              width: SizeConfig.width50,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: AppTheme.yellowColor,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: AppTheme.yellowColor.withOpacity(0.4),
-                                    spreadRadius: 1,
-                                    blurRadius: 5,
-                                    offset: Offset(1, 8), // changes position of shadow
-                                  ),
-                                ],
-                              ),
-                              child: Center(
-                                child: Icon(Icons.add,size: SizeConfig.height30,color: AppTheme.bgColor,),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Container(
-                          width:  SizeConfig.screenWidth,
-                          height: 80,
-
-                          child: Stack(
-
-                            children: [
-
-
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-
-                //Edit Or Delete
-                AnimatedPositioned(
-                    bottom:showEdit? 0:-80,
-                    child: Container(
-                      height: 80,
-                      width: SizeConfig.screenWidth,
-                      color: AppTheme.bgColor,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          GestureDetector(
-                            onTap: (){
-                              pn.insertForm();
-                              Navigator.of(context).push(_createRoute());
-                              pn.updatePurchaseEdit(true);
-                              pn.PurchaseDropDownValues(context).then((value) {
-                                pn.GetPurchaseDbHit(context, pn.purchaseGridList[selectedIndex].purchaseOrderId);
-                                setState(() {
-                                  showEdit=false;
-                                  selectedIndex=-1;
-                                });
-                              });
-
-
-                            },
-                            child: Container(
-                              height: 50,
-                              width: SizeConfig.width150,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(25),
-                                  color: AppTheme.indicatorColor
-                              ),
-                              child: Center(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    SvgPicture.asset("assets/svg/edit.svg",height: 20,width: 20,color: AppTheme.yellowColor,),
-                                    SizedBox(width: SizeConfig.width10,),
-                                    Text("Edit",style: TextStyle(fontSize: 20,fontFamily: 'RR',color: Colors.white),),
-
-
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: (){
-
-                              setState(() {
-                                showEdit=false;
-                                selectedIndex=-1;
-                              });
-
-                            },
-                            child: Container(
-                              height: 50,
-                              width: SizeConfig.width150,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(25),
-                                  color: AppTheme.indicatorColor.withOpacity(0.5)
-                              ),
-                              child: Center(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text("Delete",style: TextStyle(fontSize: 20,fontFamily: 'RR',color: Colors.white.withOpacity(0.5)),),
-                                    SizedBox(width: SizeConfig.width10,),
-                                    SvgPicture.asset("assets/svg/delete.svg",height: 20,width: 20,color: AppTheme.yellowColor.withOpacity(0.5),),
-
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    curve: Curves.bounceOut,
-
-
-                    duration: Duration(milliseconds:300)
-                ),*/
 
 
                 Container(
