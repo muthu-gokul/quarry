@@ -37,9 +37,22 @@ class CustomerDetails{
       CustomerLogoFolderName : json['CustomerLogoFolderName'],
       CustomerCreditLimit : json['CustomerCreditLimit'],
       Location : json['Location'],
-
     );
   }
-
+  Map<String, dynamic> toJson() => {
+    "CustomerId": CustomerId,
+    "CustomerName": CustomerName,
+    "Location": Location,
+    "CustomerContactNumber": CustomerContactNumber,
+    "CustomerEmail": CustomerEmail,
+    "CustomerCreditLimit": CustomerCreditLimit,
+  };
+  dynamic get(String propertyName) {
+    var _mapRep = toJson();
+    if (_mapRep.containsKey(propertyName)) {
+      return _mapRep[propertyName];
+    }
+    throw ArgumentError('property not found');
+  }
 
 }

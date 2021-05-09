@@ -76,10 +76,11 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
 
   @override
   Widget build(BuildContext context) {
-    _keyboardVisible = MediaQuery.of(context).viewInsets.bottom != 0;
+    //_keyboardVisible = MediaQuery.of(context).viewInsets.bottom != 0;
     final node=FocusScope.of(context);
     SizeConfig().init(context);
     return Scaffold(
+      resizeToAvoidBottomInset: false,
         key: scaffoldkey,
         body: Consumer<SupplierNotifier>(
             builder: (context,qn,child)=> Stack(
@@ -147,17 +148,22 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                             width: SizeConfig.screenWidth,
 
                             decoration: BoxDecoration(
-                                color: Colors.white,
+                                color: AppTheme.gridbodyBgColor,
                                 borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10))
                             ),
                             alignment: Alignment.topCenter,
                             child: NotificationListener<ScrollNotification>(
                               onNotification: (s){
                                 if(s is ScrollStartNotification){
+
                                   if(listViewController.offset==0 && isListScroll && scrollController.offset==100 && listViewController.position.userScrollDirection==ScrollDirection.idle){
+
                                     Timer(Duration(milliseconds: 100), (){
                                       if(listViewController.position.userScrollDirection!=ScrollDirection.reverse){
-                                        if(scrollController.position.pixels == scrollController.position.maxScrollExtent){
+
+                                        //if(scrollController.position.pixels == scrollController.position.maxScrollExtent){
+                                        if(listViewController.offset==0){
+
                                           scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value) {
                                             if(isListScroll){
                                               setState(() {
@@ -169,8 +175,6 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
 
                                       }
                                     });
-
-
                                   }
                                 }
                               },
@@ -185,11 +189,14 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                     textEditingController: qn.supplierName,
                                     onEditComplete: (){
                                       node.unfocus();
+                                      setState(() {
+                                        _keyboardVisible=false;
+                                      });
                                     },
                                     ontap: (){
                                       scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                       setState(() {
-                                        isListScroll=true;
+                                        _keyboardVisible=true;
                                       });
                                     },
                                   ),
@@ -198,6 +205,9 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                       node.unfocus();
                                       setState(() {
                                         supplierCategoryOpen=true;
+                                        setState(() {
+                                          _keyboardVisible=false;
+                                        });
                                       });
                                       SystemChannels.textInput.invokeMethod('TextInput.hide');
                                     },
@@ -205,32 +215,41 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                       text: qn.supplierCategoryName==null? "Select Category":qn.supplierCategoryName,
                                       textColor: qn.supplierCategoryName==null? AppTheme.addNewTextFieldText.withOpacity(0.5):AppTheme.addNewTextFieldText,
                                       iconColor: qn.supplierCategoryName==null? AppTheme.addNewTextFieldText:AppTheme.yellowColor,
+                                      bgColor:  qn.supplierCategoryName==null? AppTheme.disableColor:Colors.white,
                                     ),
                                   ),
                                   AddNewLabelTextField(
                                     ontap: (){
                                       scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                         setState(() {
-                                          isListScroll=true;
+                                          _keyboardVisible=true;
+                                         // isListScroll=true;
                                         });
                                     },
                                     labelText: 'Address',
                                     textEditingController: qn.supplierAddress,
                                     onEditComplete: (){
                                       node.unfocus();
+                                      setState(() {
+                                        _keyboardVisible=false;
+                                      });
                                     },
                                   ),
                                   AddNewLabelTextField(
                                     ontap: (){
                                       scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                       setState(() {
-                                        isListScroll=true;
+                                        _keyboardVisible=true;
+                                       // isListScroll=true;
                                       });
                                     },
                                     labelText: 'City',
                                     textEditingController: qn.supplierCity,
                                     onEditComplete: (){
                                       node.unfocus();
+                                      setState(() {
+                                        _keyboardVisible=false;
+                                      });
                                     },
                                   ),
 
@@ -238,6 +257,7 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                     ontap: (){
                                       scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                       setState(() {
+                                        _keyboardVisible=true;
                                         isListScroll=true;
                                       });
                                     },
@@ -246,6 +266,9 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                     scrollPadding: 400,
                                     onEditComplete: (){
                                       node.unfocus();
+                                      setState(() {
+                                        _keyboardVisible=false;
+                                      });
                                     },
                                   ),
                                   AddNewLabelTextField(
@@ -253,6 +276,7 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                       scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                       setState(() {
                                         isListScroll=true;
+                                        _keyboardVisible=true;
                                       });
                                     },
                                     labelText: 'Country',
@@ -260,6 +284,9 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                     scrollPadding: 400,
                                     onEditComplete: (){
                                       node.unfocus();
+                                      setState(() {
+                                        _keyboardVisible=false;
+                                      });
                                     },
                                   ),
                                   AddNewLabelTextField(
@@ -267,6 +294,7 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                       scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                       setState(() {
                                         isListScroll=true;
+                                        _keyboardVisible=true;
                                       });
                                     },
                                     labelText: 'Zipcode',
@@ -275,6 +303,9 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                     textInputType: TextInputType.number,
                                     onEditComplete: (){
                                       node.unfocus();
+                                      setState(() {
+                                        _keyboardVisible=false;
+                                      });
                                     },
                                   ),
                                   AddNewLabelTextField(
@@ -284,11 +315,15 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                     textInputType: TextInputType.number,
                                     onEditComplete: (){
                                       node.unfocus();
+                                      setState(() {
+                                        _keyboardVisible=false;
+                                      });
                                     },
                                     ontap: (){
                                       scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                       setState(() {
                                         isListScroll=true;
+                                        _keyboardVisible=true;
                                       });
                                     },
                                   ),
@@ -298,11 +333,15 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                     scrollPadding: 400,
                                     onEditComplete: (){
                                       node.unfocus();
+                                      setState(() {
+                                        _keyboardVisible=false;
+                                      });
                                     },
                                     ontap: (){
                                       scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                       setState(() {
                                         isListScroll=true;
+                                        _keyboardVisible=true;
                                       });
                                     },
                                   ),
@@ -312,11 +351,15 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                     scrollPadding: 400,
                                     onEditComplete: (){
                                       node.unfocus();
+                                      setState(() {
+                                        _keyboardVisible=false;
+                                      });
                                     },
                                     ontap: (){
                                       scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                       setState(() {
                                         isListScroll=true;
+                                        _keyboardVisible=true;
                                       });
                                     },
                                   ),
@@ -578,7 +621,7 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                   ),
 
 
-                                  SizedBox(height: 300,)
+                                  SizedBox(height: _keyboardVisible? SizeConfig.screenHeight*0.5:200,)
                                 ],
                               ),
                             ),
@@ -615,7 +658,8 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                   bottom: 0,
                   child: Container(
                     width: SizeConfig.screenWidth,
-                    height:_keyboardVisible?0:  70,
+                    // height:_keyboardVisible?0:  70,
+                    height: 65,
 
                     decoration: BoxDecoration(
                         color: AppTheme.gridbodyBgColor,
@@ -641,39 +685,7 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                             painter: RPSCustomPainter3(),
                           ),
                         ),
-                        Center(
-                          heightFactor: 0.5,
-                          child: FloatingActionButton(backgroundColor: AppTheme.yellowColor, child: Icon(Icons.save), elevation: 0.1, onPressed: () {
-                            node.unfocus();
-                            if(qn.supplierName.text.isEmpty)
-                            {
-                              CustomAlert().commonErrorAlert(context, "Enter Supplier Name", "");
-                            }
-                            else if(qn.supplierCategoryId==null)
-                            {
-                              CustomAlert().commonErrorAlert(context, "Select Supplier Category", "");
-                            }
-                            else if(qn.supplierAddress.text.isEmpty)
-                            {
-                              CustomAlert().commonErrorAlert(context, "Enter Supplier Address", "");
-                            }
-                            else if(qn.supplierContactNumber.text.isEmpty)
-                            {
-                              CustomAlert().commonErrorAlert(context, "Enter Supplier Contact Number", "");
-                            }
-                            else if(qn.supplierGstNo.text.isEmpty)
-                            {
-                              CustomAlert().commonErrorAlert(context, "Enter Supplier GST Number", "");
-                            }
-                            else
-                            {
-                              qn.InsertSupplierDbHit(context,this);
 
-                            }
-
-
-                          }),
-                        ),
                         Container(
                           width:  SizeConfig.screenWidth,
                           height: 80,
@@ -689,6 +701,63 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                     ),
                   ),
                 ),
+                //addButton
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: GestureDetector(
+                    onTap: (){
+                      node.unfocus();
+                      if(qn.supplierName.text.isEmpty)
+                      {
+                        CustomAlert().commonErrorAlert(context, "Enter Supplier Name", "");
+                      }
+                      else if(qn.supplierCategoryId==null)
+                      {
+                        CustomAlert().commonErrorAlert(context, "Select Supplier Category", "");
+                      }
+                      else if(qn.supplierAddress.text.isEmpty)
+                      {
+                        CustomAlert().commonErrorAlert(context, "Enter Supplier Address", "");
+                      }
+                      else if(qn.supplierContactNumber.text.isEmpty)
+                      {
+                        CustomAlert().commonErrorAlert(context, "Enter Supplier Contact Number", "");
+                      }
+                      else if(qn.supplierGstNo.text.isEmpty)
+                      {
+                        CustomAlert().commonErrorAlert(context, "Enter Supplier GST Number", "");
+                      }
+                      else
+                      {
+                        qn.InsertSupplierDbHit(context,this);
+
+                      }
+                    },
+                    child: Container(
+
+                      height: 65,
+                      width: 65,
+                      margin: EdgeInsets.only(bottom: 20),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: AppTheme.yellowColor,
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppTheme.yellowColor.withOpacity(0.4),
+                            spreadRadius: 1,
+                            blurRadius: 5,
+                            offset: Offset(1, 8), // changes position of shadow
+                          ),
+                        ],
+                      ),
+                      child: Center(
+                        child: Icon(Icons.done,size: SizeConfig.height30,color: AppTheme.bgColor,),
+                      ),
+                    ),
+                  ),
+                ),
+
+
 
 
 

@@ -8,9 +8,9 @@ class NavBarIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 25,
-      width: 25,
+      width: 22,
       color: Colors.transparent,
-      margin: EdgeInsets.only(left: 20),
+      margin: EdgeInsets.only(left: 20,right: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

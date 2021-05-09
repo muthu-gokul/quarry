@@ -27,7 +27,7 @@ class PurchaseOrderGridModel {
 
   factory PurchaseOrderGridModel.fromJson(Map<String, dynamic> json) => PurchaseOrderGridModel(
     purchaseOrderId: json["PurchaseOrderId"],
-    expectedDate: DateTime.parse(json["ExpectedDate"]),
+    expectedDate:json["ExpectedDate"]!=null? DateTime.parse(json["ExpectedDate"]):null,
     purchaseOrderNumber: json["PurchaseOrderNumber"],
     materialId: json["MaterialId"],
     materialName: json["MaterialName"],

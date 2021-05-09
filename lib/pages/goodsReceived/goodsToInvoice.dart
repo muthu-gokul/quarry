@@ -10,6 +10,7 @@ import 'package:quarry/notifier/goodsReceivedNotifier.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/pages/goodsReceived/goodsInGateForm.dart';
 import 'package:quarry/pages/goodsReceived/goodsMaterialTripDetail.dart';
+import 'package:quarry/pages/goodsReceived/goodsReceivedGrid.dart';
 import 'package:quarry/pages/goodsReceived/goodsToPurchase.dart';
 import 'package:quarry/pages/quarryMaster/plantDetailsAddNew.dart';
 import 'package:quarry/references/bottomNavi.dart';
@@ -891,9 +892,15 @@ class GoodsToInvoiceState extends State<GoodsToInvoice> with TickerProviderState
 
                                     GestureDetector(
                                       onTap: (){
-                                        gr.InsertInvoiceDbHit(context).then((value){
-                                          gr.GPO_assignValues();
-                                           Navigator.push(context, _createRouteGoodsToPurchase());
+
+                                        gr.InsertInvoiceDbHit(context,GoodsReceivedGridState()).then((value){
+                                          Navigator.pop(context);
+                                           gr.GPO_assignValues().then((value){
+                                             if(gr.GPO_Materials.isNotEmpty){
+                                               Navigator.push(context, _createRouteGoodsToPurchase());
+                                             }
+                                           });
+
                                         });
 
                                       },

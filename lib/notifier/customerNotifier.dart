@@ -11,13 +11,7 @@ import 'package:quarry/widgets/alertDialog.dart';
 
 class CustomerNotifier extends ChangeNotifier {
 
-  List<String>customerGridCol = [
-    "CustomerName",
-    "Location",
-    "CustomerContactNumber",
-    "CustomerEmail",
-    "CustomerCreditLimit"
-  ];
+  List<String>customerGridCol = ["Customer Name", "Location", "ContactNumber","Email", "CreditLimit"];
   List<CustomerDetails> customerGridList = [];
 
   TextEditingController customerName = new TextEditingController();
@@ -205,7 +199,7 @@ class CustomerNotifier extends ChangeNotifier {
 
         var parsed = json.decode(value);
         var t = parsed['Table'] as List;
-        print(t);
+       // print(t);
         if(customerId!=null){
           editCustomerId=t[0]['CustomerId'];
           customerName.text=t[0]['CustomerName'];
@@ -218,12 +212,8 @@ class CustomerNotifier extends ChangeNotifier {
           customerContactNumber.text=t[0]['CustomerContactNumber'];
           customerEmail.text=t[0]['CustomerEmail'];
           customerCreditLimit.text=t[0]['CustomerCreditLimit'].toString();
-          if(customerCreditLimit.text.isNotEmpty){
-            isCreditCustomer=true;
-          }
-          else{
-            isCreditCustomer=false;
-          }
+          isCreditCustomer=t[0]['IsCreditCustomer']==0?false:true;
+
         }
         else{
           customerGridList = t.map((e) => CustomerDetails.fromJson(e)).toList();

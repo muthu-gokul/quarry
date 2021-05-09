@@ -26,10 +26,9 @@ class VehicleDetailAddNewState extends State<VehicleDetailAddNew> with TickerPro
   ScrollController scrollController;
   ScrollController listViewController;
 
-
   bool isVehicleTypeOpen=false;
-  bool _keyboardVisible = false;
-
+  //bool _keyboardVisible = false;
+  //bool isListScroll=false;
 
   @override
   void initState() {
@@ -43,20 +42,6 @@ class VehicleDetailAddNewState extends State<VehicleDetailAddNew> with TickerPro
 
       });
 
-
-/*      listViewController.addListener(() {
-
-        if(listViewController.offset>20){
-
-          scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
-
-
-        }
-        else if(listViewController.offset==0){
-          scrollController.animateTo(0, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
-        }
-      });*/
-
     });
     super.initState();
   }
@@ -67,9 +52,9 @@ class VehicleDetailAddNewState extends State<VehicleDetailAddNew> with TickerPro
     final node=FocusScope.of(context);
 
     SizeConfig().init(context);
-    _keyboardVisible = MediaQuery.of(context).viewInsets.bottom != 0;
     return Scaffold(
         key: scaffoldkey,
+        resizeToAvoidBottomInset: false,
         body: Consumer<VehicleNotifier>(
             builder: (context,qn,child)=> Stack(
               children: [
@@ -92,12 +77,7 @@ class VehicleDetailAddNewState extends State<VehicleDetailAddNew> with TickerPro
                             )
 
                         ),
-                      ),
-
-
-
-
-
+                      )
                     ],
                   ),
                 ),
@@ -117,7 +97,7 @@ class VehicleDetailAddNewState extends State<VehicleDetailAddNew> with TickerPro
                           width: SizeConfig.screenWidth,
 
                           decoration: BoxDecoration(
-                              color: Colors.white,
+                              color: AppTheme.gridbodyBgColor,
                               borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10))
                           ),
                           child:  GestureDetector(
@@ -182,6 +162,7 @@ class VehicleDetailAddNewState extends State<VehicleDetailAddNew> with TickerPro
                                     text: qn.selectedVehicleTypeName==null? "Select Vehicle Type":qn.selectedVehicleTypeName,
                                     textColor: qn.selectedVehicleTypeName==null? AppTheme.addNewTextFieldText.withOpacity(0.5):AppTheme.addNewTextFieldText,
                                     iconColor: qn.selectedVehicleTypeName==null? AppTheme.addNewTextFieldText:AppTheme.yellowColor,
+                                    bgColor: qn.selectedVehicleTypeName==null? AppTheme.disableColor:Colors.white,
                                   ),
                                 ),
 
@@ -238,10 +219,10 @@ class VehicleDetailAddNewState extends State<VehicleDetailAddNew> with TickerPro
                       }),
                       SizedBox(width: SizeConfig.width5,),
                       Text("Vehicle Master ",
-                        style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: SizeConfig.width16),
+                        style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize:16),
                       ),
                       Text(qn.isVehicleEdit?" / Edit":"/ Add New",
-                        style: TextStyle(fontFamily: 'RR',color: Color(0xFF367BF5),fontSize: SizeConfig.width16),
+                        style: TextStyle(fontFamily: 'RR',color: Color(0xFF367BF5),fontSize: 16),
                       ),
                       Spacer(),
 
@@ -249,12 +230,14 @@ class VehicleDetailAddNewState extends State<VehicleDetailAddNew> with TickerPro
                   ),
                 ),
 
+
                 //bottomNav
                 Positioned(
                   bottom: 0,
                   child: Container(
                     width: SizeConfig.screenWidth,
-                    height:_keyboardVisible?0:  70,
+                    // height:_keyboardVisible?0:  70,
+                    height: 65,
 
                     decoration: BoxDecoration(
                         color: AppTheme.gridbodyBgColor,
@@ -280,21 +263,7 @@ class VehicleDetailAddNewState extends State<VehicleDetailAddNew> with TickerPro
                             painter: RPSCustomPainter3(),
                           ),
                         ),
-                        Center(
-                          heightFactor: 0.5,
-                          child: FloatingActionButton(backgroundColor: AppTheme.yellowColor, child: Icon(Icons.save), elevation: 0.1, onPressed: () {
-                            node.unfocus();
-                            if(qn.VehicleNo.text.isEmpty){
-                              CustomAlert().commonErrorAlert(context, "Enter Vehicle Number", "");
-                            }
-                            else if(qn.selectedVehicleTypeId==null){
-                              CustomAlert().commonErrorAlert(context, "Select VehicleType", "");
-                            }
-                            else{
-                              qn.InsertVehicleDbHit(context);
-                            }
-                          }),
-                        ),
+
                         Container(
                           width:  SizeConfig.screenWidth,
                           height: 80,
@@ -310,49 +279,50 @@ class VehicleDetailAddNewState extends State<VehicleDetailAddNew> with TickerPro
                     ),
                   ),
                 ),
+                //addButton
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: GestureDetector(
+                    onTap: (){
+                      node.unfocus();
+                      if(qn.VehicleNo.text.isEmpty){
+                        CustomAlert().commonErrorAlert(context, "Enter Vehicle Number", "");
+                      }
+                      else if(qn.selectedVehicleTypeId==null){
+                        CustomAlert().commonErrorAlert(context, "Select VehicleType", "");
+                      }
+                      else{
+                        qn.InsertVehicleDbHit(context);
+                      }
+                    },
+                    child: Container(
 
-
- /*               //Save Button
-                Positioned(
-                  bottom: 0,
-                  child: Container(
-                    height:_keyboardVisible?0: SizeConfig.height70,
-                    width: SizeConfig.screenWidth,
-                    color: AppTheme.grey,
-                    child: Center(
-                      child: GestureDetector(
-                        onTap: (){
-                          node.unfocus();
-                          if(qn.VehicleNo.text.isEmpty){
-                            CustomAlert().commonErrorAlert(context, "Enter Vehicle Number", "");
-
-                          }
-                          else if(qn.selectedVehicleTypeId==null){
-                            CustomAlert().commonErrorAlert(context, "Select VehicleType", "");
-
-                          }
-                          else{
-                            qn.InsertVehicleDbHit(context);
-
-                          }
-
-
-                        },
-                        child: Container(
-                          height: SizeConfig.height50,
-                          width: SizeConfig.width120,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(SizeConfig.height25),
-                              color: AppTheme.bgColor
+                      height: 65,
+                      width: 65,
+                      margin: EdgeInsets.only(bottom: 20),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: AppTheme.yellowColor,
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppTheme.yellowColor.withOpacity(0.4),
+                            spreadRadius: 1,
+                            blurRadius: 5,
+                            offset: Offset(1, 8), // changes position of shadow
                           ),
-                          child: Center(
-                            child: Text(qn.isVehicleEdit?"Update":"Save",style: AppTheme.TSWhite20,),
-                          ),
-                        ),
+                        ],
+                      ),
+                      child: Center(
+                        child: Icon(Icons.done,size: SizeConfig.height30,color: AppTheme.bgColor,),
                       ),
                     ),
                   ),
-                ),*/
+                ),
+
+
+
+
+
 
                 Container(
                   height: qn.vehicleLoader? SizeConfig.screenHeight:0,

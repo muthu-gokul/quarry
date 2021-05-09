@@ -15,6 +15,7 @@ import 'package:quarry/pages/quarryMaster/plantDetailsAddNew.dart';
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
+import 'package:quarry/widgets/navigationBarIcon.dart';
 
 import '../../styles/size.dart';
 
@@ -583,8 +584,10 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
 
                 child: Row(
                   children: [
-                    IconButton(icon: Icon(Icons.menu,color:AppTheme.bgColor,), onPressed: widget.drawerCallback),
-                    SizedBox(width: SizeConfig.width5,),
+                    GestureDetector(
+                      onTap:widget.drawerCallback,
+                      child: NavBarIcon(),
+                    ),
                     Text("Goods Received",
                       style: TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 16),
                     ),

@@ -4,12 +4,19 @@ import '../../styles/app_theme.dart';
 import '../../styles/size.dart';
 
 class CustomDataTable extends StatefulWidget {
-  List<String> dieselPurchaseGridCol=[];
-  Widget scrollable;
-  Widget nonScrollable;
-  CustomDataTable({this.nonScrollable,this.scrollable,this.dieselPurchaseGridCol});
+  List<String> gridCol=[];
+  List<String> gridDataRowList=[];
+  List<dynamic> gridData=[];
+
+  int selectedIndex;
+  VoidCallback voidCallback;
+  Function(int) func;
+  double topMargin;//70 || 50
+  double gridBodyReduceHeight;// 260  // 140
+
+  CustomDataTable({this.gridCol,this.gridDataRowList,this.gridData,this.selectedIndex,this.voidCallback,this.func,this.topMargin,this.gridBodyReduceHeight});
   @override
-  _CustomDataTableState createState() => _CustomDataTableState(nonScrollable: nonScrollable,scrollable: scrollable,dieselPurchaseGridCol: dieselPurchaseGridCol);
+  _CustomDataTableState createState() => _CustomDataTableState(gridCol: gridCol,gridDataRowList: gridDataRowList,voidCallback: voidCallback);
 }
 
 class _CustomDataTableState extends State<CustomDataTable> {
@@ -21,11 +28,12 @@ class _CustomDataTableState extends State<CustomDataTable> {
   ScrollController verticalRight=new ScrollController();
 
   bool showShadow=false;
-  List<String> dieselPurchaseGridCol=[];
-  Widget scrollable;
-  Widget nonScrollable;
+  List<String> gridCol=[];
+  List<String> gridDataRowList=[];
 
-  _CustomDataTableState({this.nonScrollable,this.scrollable,this.dieselPurchaseGridCol});
+  VoidCallback voidCallback;
+
+  _CustomDataTableState({this.gridCol,this.gridDataRowList,this.voidCallback});
 
   @override
   void initState() {
@@ -70,10 +78,15 @@ class _CustomDataTableState extends State<CustomDataTable> {
 
   @override
   Widget build(BuildContext context) {
+    // print("CustomTable");
+    // print(widget.gridData);
+    // print(gridDataRowList);
+    // print(gridCol);
+    // print(widget.selectedIndex);
     return Container(
-        height: SizeConfig.screenHeight-140,
+        height: SizeConfig.screenHeight-widget.topMargin,
         width: SizeConfig.screenWidth,
-        margin: EdgeInsets.only(top: 140),
+        margin: EdgeInsets.only(top: widget.topMargin),
         clipBehavior: Clip.antiAlias,
         decoration: BoxDecoration(
             color:AppTheme.gridbodyBgColor,
@@ -90,13 +103,13 @@ class _CustomDataTableState extends State<CustomDataTable> {
                 children: [
                   Container(
                     height: 50,
-                    width: SizeConfig.screenWidth-150,
+                    width: SizeConfig.screenWidth-149,
                     color: showShadow? AppTheme.bgColor.withOpacity(0.8):AppTheme.bgColor,
                     child: SingleChildScrollView(
                       controller: header,
                       scrollDirection: Axis.horizontal,
                       child: Row(
-                          children: dieselPurchaseGridCol.asMap().
+                          children: gridCol.asMap().
                           map((i, value) => MapEntry(i, i==0?Container():
                           Container(
                               alignment: Alignment.center,
@@ -110,21 +123,55 @@ class _CustomDataTableState extends State<CustomDataTable> {
 
                   ),
                   Container(
-                    height: SizeConfig.screenHeight-260,
-                    width: SizeConfig.screenWidth-150,
+                    height: SizeConfig.screenHeight-widget.gridBodyReduceHeight,
+                    width: SizeConfig.screenWidth-149,
                     alignment: Alignment.topCenter,
                     color: AppTheme.gridbodyBgColor,
                     child: SingleChildScrollView(
                       controller: body,
                       scrollDirection: Axis.horizontal,
                       child: Container(
-                        height: SizeConfig.screenHeight-260,
+                        height: SizeConfig.screenHeight-widget.gridBodyReduceHeight,
                         alignment: Alignment.topCenter,
                         color:AppTheme.gridbodyBgColor,
                         child: SingleChildScrollView(
                           controller: verticalRight,
                           scrollDirection: Axis.vertical,
-                          child: scrollable
+                          child: Column(
+                              children:widget.gridData.asMap().
+                              map((i, value) => MapEntry(
+                                  i,InkWell(
+                             //   onTap: widget.voidCallback,
+                                onTap: (){
+                                  widget.func(i);
+                                  //setState(() {});
+                                },
+                                child: Container(
+
+                                  decoration: BoxDecoration(
+                                    border: AppTheme.gridBottomborder,
+                                    color: widget.selectedIndex==i?AppTheme.yellowColor:AppTheme.gridbodyBgColor,
+                                  ),
+                                  height: 50,
+                                  // padding: EdgeInsets.only(top: 20,bottom: 20),
+                                  child: Row(
+                                    children: gridDataRowList.asMap().map((j, v) => MapEntry(j,
+                                      j==0?Container():Container(
+                                        alignment: Alignment.center,
+                                        // padding: EdgeInsets.only(left: 20,right: 20),
+                                        width: 150,
+                                        child: Text("${value.get(v)??""}",
+                                          style:widget.selectedIndex==i?AppTheme.bgColorTS14:AppTheme.gridTextColor14,
+                                        ),
+
+                                      ),
+                                    )).values.toList()
+                                  ),
+                                ),
+                              )
+                              )
+                              ).values.toList()
+                          ),
                         ),
 
 
@@ -147,31 +194,67 @@ class _CustomDataTableState extends State<CustomDataTable> {
                     width: 150,
                     color: AppTheme.bgColor,
                     alignment: Alignment.center,
-                    child: Text("${dieselPurchaseGridCol[0]}",style: AppTheme.TSWhite166,),
+                    child: Text("${gridCol[0]}",style: AppTheme.TSWhite166,),
 
                   ),
                   Container(
-                    height: SizeConfig.screenHeight-260,
+                    height: SizeConfig.screenHeight-widget.gridBodyReduceHeight,
                     alignment: Alignment.topCenter,
                     decoration: BoxDecoration(
                         color: AppTheme.gridbodyBgColor,
                         boxShadow: [
                           showShadow?  BoxShadow(
-                            color: AppTheme.addNewTextFieldText.withOpacity(0.3),
+                            color: AppTheme.addNewTextFieldText.withOpacity(0.1),
                             spreadRadius: 0,
                             blurRadius: 15,
-                            offset: Offset(10, -8), // changes position of shadow
+                            offset: Offset(0, -8), // changes position of shadow
                           ):BoxShadow(color: Colors.transparent)
                         ]
                     ),
                     child: Container(
-                      height: SizeConfig.screenHeight-260,
+                      height: SizeConfig.screenHeight-widget.gridBodyReduceHeight,
                       alignment: Alignment.topCenter,
 
                       child: SingleChildScrollView(
                         controller: verticalLeft,
                         scrollDirection: Axis.vertical,
-                        child: nonScrollable
+                        child: Column(
+                            children: widget.gridData.asMap().
+                            map((i, value) => MapEntry(
+                                i,InkWell(
+                              onTap: (){
+                                widget.func(i);
+                                //setState(() {});
+                              },
+                              child:  Container(
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  border: AppTheme.gridBottomborder,
+                                  color: widget.selectedIndex==i?AppTheme.yellowColor:AppTheme.gridbodyBgColor,
+                                ),
+                                height: 50,
+                                width: 150,
+                                child: Container(
+                                  padding: EdgeInsets.only(left: 10,right: 10,top: 3,bottom: 3),
+
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(50),
+                                    //color:value.invoiceType=='Receivable'? Colors.green:AppTheme.red,
+                                  ),
+                                  child: FittedBox(
+                                    fit: BoxFit.contain,
+                                    child: Text("${value.get(gridDataRowList[0])}",
+                                      style:widget.selectedIndex==i?AppTheme.bgColorTS14:AppTheme.gridTextColor14,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            )
+                            )
+                            ).values.toList()
+
+
+                        ),
                       ),
 
 

@@ -18,11 +18,29 @@ class MachineGridModel{
       machineType: json['MachineType'],
       machineModel: json['MachineModel'],
       machineCapacity: json['Capacity'],
-      machineMotorPower: json['MoterPower'],
-      machineWeight: json['MachineWeight'],
+      machineMotorPower: json['MotorPower'],
+      machineWeight: json['MachineSpecification'],
       companyId: json['CompanyId'],
     );
   }
 
+  Map<String, dynamic> toJson() => {
+    "MachineId": machineId,
+    "MachineName": machineName,
+    "MachineType": machineType,
+    "MachineModel": machineModel,
+    "Capacity": machineCapacity,
+    "MotorPower": machineMotorPower,
+    "MachineSpecification": machineWeight,
+    "CompanyId": companyId,
+  };
+
+  dynamic get(String propertyName) {
+    var _mapRep = toJson();
+    if (_mapRep.containsKey(propertyName)) {
+      return _mapRep[propertyName];
+    }
+    throw ArgumentError('Property not found');
+  }
 
 }

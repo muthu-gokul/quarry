@@ -67,8 +67,9 @@ class _MachineDetailAddNewState extends State<MachineDetailAddNew> with TickerPr
 
     final node=FocusScope.of(context);
     SizeConfig().init(context);
-    _keyboardVisible = MediaQuery.of(context).viewInsets.bottom != 0;
+   // _keyboardVisible = MediaQuery.of(context).viewInsets.bottom != 0;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       key: scaffoldkey,
      body: Consumer<MachineNotifier>(
          builder: (context,qn,child)=> Stack(
@@ -154,7 +155,8 @@ class _MachineDetailAddNewState extends State<MachineDetailAddNew> with TickerPr
                            }
                          },
                          child: Container(
-                           height:_keyboardVisible?SizeConfig.screenHeight*0.5 :SizeConfig.screenHeight-100,
+                        //   height:_keyboardVisible?SizeConfig.screenHeight*0.5 :SizeConfig.screenHeight-100,
+                           height: SizeConfig.screenHeight-100,
                            width: SizeConfig.screenWidth,
 
                            decoration: BoxDecoration(
@@ -211,23 +213,35 @@ class _MachineDetailAddNewState extends State<MachineDetailAddNew> with TickerPr
                                AddNewLabelTextField(
                                   labelText: 'Motor Power',
                                   textEditingController: qn.MoterPower,
-                                 scrollPadding: 100,
+                                 scrollPadding: 400,
                                  ontap: (){
                                    scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                   setState(() {
+                                     _keyboardVisible=true;
+                                   });
                                  },
                                  onEditComplete: (){
                                    node.unfocus();
+                                   setState(() {
+                                     _keyboardVisible=false;
+                                   });
                                  },
                                 ),
                                AddNewLabelTextField(
                                  labelText: 'Machine Specification',
-                                 textEditingController: qn.MachineWeight,
-                                 scrollPadding: 200,
+                                 textEditingController: qn.MachineSpecification,
+                                 scrollPadding: 450,
                                  ontap: (){
                                    scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                   setState(() {
+                                     _keyboardVisible=true;
+                                   });
                                  },
                                  onEditComplete: (){
                                    node.unfocus();
+                                   setState(() {
+                                     _keyboardVisible=false;
+                                   });
                                  },
                                ),
                                // // AddNewLabelTextField(
@@ -236,7 +250,8 @@ class _MachineDetailAddNewState extends State<MachineDetailAddNew> with TickerPr
                                // //   scrollPadding: 100,
                                // // ),
 
-                               SizedBox(height: SizeConfig.height100,)
+
+                               SizedBox(height: _keyboardVisible? SizeConfig.screenHeight*0.5:200,)
                              ],
                            ),
                          ),
@@ -274,7 +289,7 @@ class _MachineDetailAddNewState extends State<MachineDetailAddNew> with TickerPr
                bottom: 0,
                child: Container(
                  width: SizeConfig.screenWidth,
-                 height:_keyboardVisible?0:  70,
+                 height:  70,
 
                  decoration: BoxDecoration(
                      color: AppTheme.gridbodyBgColor,

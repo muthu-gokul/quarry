@@ -10,14 +10,14 @@ import 'package:quarry/widgets/alertDialog.dart';
 
 class MachineNotifier extends ChangeNotifier{
 
-  List<String>machineGridCol=["MachineName","MachineType","MachineModel","MachineWeight"];
+  List<String>machineGridCol=["MachineName","Type","Model","Specification"];
   List< MachineGridModel> machineGridList=[];
 
 
   TextEditingController MachineName=new TextEditingController();
   TextEditingController MachineType=new TextEditingController();
   TextEditingController MachineModel=new TextEditingController();
-  TextEditingController MachineWeight=new TextEditingController();
+  TextEditingController MachineSpecification=new TextEditingController();
   TextEditingController Capacity=new TextEditingController();
   TextEditingController MoterPower=new TextEditingController();
 
@@ -69,14 +69,14 @@ class MachineNotifier extends ChangeNotifier{
           "Value":Capacity.text
         },
         {
-          "Key": "MoterPower",
+          "Key": "MotorPower",
           "Type": "String",
           "Value": MoterPower.text
         },
         {
-          "Key": "MachineWeight",
+          "Key": "MachineSpecification",
           "Type": "String",
-          "Value": MachineWeight.text
+          "Value": MachineSpecification.text
         },
 
         {
@@ -155,7 +155,7 @@ class MachineNotifier extends ChangeNotifier{
             MachineModel.text=t[0]['MachineModel'];
             Capacity.text=t[0]['Capacity'].toString();
             MoterPower.text=t[0]['MoterPower'].toString();
-            MachineWeight.text=t[0]['MachineWeight'].toString();
+            MachineSpecification.text=t[0]['MachineSpecification'].toString();
 
           }
           else{
@@ -191,7 +191,7 @@ class MachineNotifier extends ChangeNotifier{
     MachineName.clear();
     MachineType.clear();
     MachineModel.clear();
-    MachineWeight.clear();
+    MachineSpecification.clear();
     Capacity.clear();
     MoterPower.clear();
 

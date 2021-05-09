@@ -105,7 +105,6 @@ class SupplierDetailsGridState extends State<SupplierDetailsGrid> with TickerPro
                         onTap:widget.drawerCallback,
                         child: NavBarIcon(),
                       ),
-                      SizedBox(width: SizeConfig.width20,),
                       Text("Supplier Details",
                         style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: SizeConfig.width16),
                       ),

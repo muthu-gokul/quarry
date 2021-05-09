@@ -8,6 +8,7 @@ import 'package:quarry/notifier/goodsReceivedNotifier.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/pages/goodsReceived/goodsInGateForm.dart';
 import 'package:quarry/pages/goodsReceived/goodsMaterialTripDetail.dart';
+import 'package:quarry/pages/goodsReceived/goodsReceivedGrid.dart';
 import 'package:quarry/pages/quarryMaster/plantDetailsAddNew.dart';
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
@@ -107,7 +108,7 @@ class GoodsToPurchaseState extends State<GoodsToPurchase> with TickerProviderSta
     super.initState();
   }
 
-  List<String> gridcol=["Material","Qty","Received Qty","Per Ton","Amount","Status"];
+  List<String> gridcol=["Material","Qty","Per Ton","Amount","Status"];
 
   @override
   Widget build(BuildContext context) {
@@ -285,13 +286,7 @@ class GoodsToPurchaseState extends State<GoodsToPurchase> with TickerProviderSta
                                                                   ),
 
                                                                 ),
-                                                                Container(
-                                                                  alignment: Alignment.center,
-                                                                  width: valueContainerWidth,
-                                                                  child: Text("${value.receivedQuantity}",
-                                                                    style:AppTheme.ML_bgCT,
-                                                                  ),
-                                                                ),
+
 
                                                                 Container(
                                                                   width: valueContainerWidth,
@@ -528,7 +523,9 @@ class GoodsToPurchaseState extends State<GoodsToPurchase> with TickerProviderSta
 
                                     GestureDetector(
                                       onTap: (){
-
+                                        gr.InsertPurchaseDbHit(context, GoodsReceivedGridState()).then((value){
+                                          Navigator.pop(context);
+                                        });
                                       },
                                       child: Container(
                                         width: SizeConfig.screenWidth*0.4,

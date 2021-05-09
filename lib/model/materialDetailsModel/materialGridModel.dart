@@ -40,5 +40,30 @@ class MaterialGridModel {
     taxValue: json["TaxValue"],
   );
 
+  Map<String, dynamic> toJson() => {
+    "MaterialId": materialId,
+    "MaterialCode": materialCode,
+    "MaterialName": materialName,
+    "MaterialCategoryId": materialCategoryId,
+    "MaterialCategoryName": materialCategoryName,
+    "MaterialUnitId": materialUnitId,
+    "UnitName": unitName,
+    "MaterialUnitPrice": materialUnitPrice,
+    "MaterialDescription": materialDescription,
+    "MaterialHSNCode": materialHsnCode,
+    "TaxValue": taxValue,
+  };
+
+
+
+
+  dynamic get(String propertyName) {
+    var _mapRep = toJson();
+    if (_mapRep.containsKey(propertyName)) {
+      return _mapRep[propertyName];
+    }
+    throw ArgumentError('propery not found');
+  }
+
 
 }

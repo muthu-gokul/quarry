@@ -302,10 +302,10 @@ class MaterialDetailAddNewState extends State<MaterialDetailAddNew> with TickerP
                       }),
                       SizedBox(width: SizeConfig.width5,),
                       Text("Material Detail",
-                        style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: SizeConfig.width16),
+                        style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: 16),
                       ),
                       Text(qn.isMaterialEdit?" / Edit":" / Add New",
-                        style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: SizeConfig.width16),
+                        style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: 16),
                       ),
                       Spacer(),
 

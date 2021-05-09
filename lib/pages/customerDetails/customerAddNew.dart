@@ -67,9 +67,10 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
     final node = FocusScope.of(context);
 
     SizeConfig().init(context);
-    _keyboardVisible = MediaQuery.of(context).viewInsets.bottom != 0;
+   // _keyboardVisible = MediaQuery.of(context).viewInsets.bottom != 0;
     return Scaffold(
         key: scaffoldkey,
+        resizeToAvoidBottomInset: false,
         body: Consumer<CustomerNotifier>(
             builder: (context, qn, child) =>
                 Stack(
@@ -151,10 +152,15 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                 child: NotificationListener<ScrollNotification>(
                                   onNotification: (s){
                                     if(s is ScrollStartNotification){
+
                                       if(listViewController.offset==0 && isListScroll && scrollController.offset==100 && listViewController.position.userScrollDirection==ScrollDirection.idle){
+
                                         Timer(Duration(milliseconds: 100), (){
                                           if(listViewController.position.userScrollDirection!=ScrollDirection.reverse){
-                                            if(scrollController.position.pixels == scrollController.position.maxScrollExtent){
+
+                                            //if(scrollController.position.pixels == scrollController.position.maxScrollExtent){
+                                            if(listViewController.offset==0){
+
                                               scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value) {
                                                 if(isListScroll){
                                                   setState(() {
@@ -166,8 +172,6 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
 
                                           }
                                         });
-
-
                                       }
                                     }
                                   },
@@ -181,11 +185,15 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                         textEditingController: qn.customerName,
                                         onEditComplete: (){
                                           node.unfocus();
+                                          setState(() {
+                                            _keyboardVisible=false;
+                                          });
                                         },
                                         ontap: (){
                                           scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                           setState(() {
-                                            isListScroll=true;
+                                            //isListScroll=true;
+                                            _keyboardVisible=true;
                                           });
                                         },
                                       ),
@@ -196,11 +204,15 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                         maxlines: null,
                                         onEditComplete: (){
                                           node.unfocus();
+                                          setState(() {
+                                            _keyboardVisible=false;
+                                          });
                                         },
                                         ontap: (){
                                           scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                           setState(() {
-                                            isListScroll=true;
+                                            _keyboardVisible=true;
+                                           // isListScroll=true;
                                           });
                                         },
                                       ),
@@ -209,11 +221,15 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                         textEditingController: qn.customerCity,
                                         onEditComplete: (){
                                           node.unfocus();
+                                          setState(() {
+                                            _keyboardVisible=false;
+                                          });
                                         },
                                         ontap: (){
                                           scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                           setState(() {
-                                            isListScroll=true;
+                                            _keyboardVisible=true;
+                                            //isListScroll=true;
                                           });
                                         },
                                       ),
@@ -222,11 +238,15 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                         textEditingController: qn.customerState,
                                         onEditComplete: (){
                                           node.unfocus();
+                                          setState(() {
+                                            _keyboardVisible=false;
+                                          });
                                         },
                                         ontap: (){
                                           scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                           setState(() {
-                                            isListScroll=true;
+                                            _keyboardVisible=true;
+                                            //isListScroll=true;
                                           });
                                         },
                                         scrollPadding: 100,
@@ -237,11 +257,15 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                         scrollPadding: 400,
                                         onEditComplete: (){
                                           node.unfocus();
+                                          setState(() {
+                                            _keyboardVisible=false;
+                                          });
                                         },
                                         ontap: (){
                                           scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                           setState(() {
-                                            isListScroll=true;
+                                           // isListScroll=true;
+                                            _keyboardVisible=true;
                                           });
                                         },
                                       ),
@@ -251,10 +275,14 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                         scrollPadding: 400,
                                         onEditComplete: (){
                                           node.unfocus();
+                                          setState(() {
+                                            _keyboardVisible=false;
+                                          });
                                         },
                                         ontap: (){
                                           scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                           setState(() {
+                                            _keyboardVisible=true;
                                             isListScroll=true;
                                           });
                                         },
@@ -266,14 +294,14 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                         onEditComplete: (){
                                           node.unfocus();
                                           setState(() {
-                                           // _keyboardVisible=false;
+                                            _keyboardVisible=false;
                                           });
                                         },
                                         ontap: (){
                                           scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                           setState(() {
                                             isListScroll=true;
-                                           // _keyboardVisible=true;
+                                            _keyboardVisible=true;
                                           });
                                         },
                                       ),
@@ -284,14 +312,14 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                         onEditComplete: (){
                                           node.unfocus();
                                           setState(() {
-                                           // _keyboardVisible=false;
+                                            _keyboardVisible=false;
                                           });
                                         },
                                         ontap: (){
                                           scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                           setState(() {
                                             isListScroll=true;
-                                           // _keyboardVisible=true;
+                                            _keyboardVisible=true;
                                           });
                                         },
                                       ),
@@ -301,11 +329,15 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                         scrollPadding: 400,
                                         onEditComplete: (){
                                           node.unfocus();
+                                          setState(() {
+                                            _keyboardVisible=false;
+                                          });
                                         },
                                         ontap: (){
                                           scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                           setState(() {
                                             isListScroll=true;
+                                            _keyboardVisible=true;
                                           });
                                         },
                                       ),
@@ -322,6 +354,7 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                                 onChanged: (v){
                                                   setState(() {
                                                     qn.isCreditCustomer=v;
+                                                    _keyboardVisible=false;
                                                   });
 
                                             }),
@@ -329,6 +362,7 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                                 onTap: (){
                                                   setState(() {
                                                     qn.isCreditCustomer=!qn.isCreditCustomer;
+                                                    _keyboardVisible=false;
                                                   });
                                                 },
                                                 child: Text("IsCredit Customer", style:  TextStyle(fontFamily: 'RR',fontSize: 16,color:AppTheme.addNewTextFieldText,letterSpacing: 0.2),))
@@ -350,10 +384,17 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                         ),
                                         child:qn.isCreditCustomer? TextField(
                                           scrollPadding: EdgeInsets.only(bottom: 400),
+                                          onEditingComplete: (){
+                                            node.unfocus();
+                                            setState(() {
+                                              _keyboardVisible=false;
+                                            });
+                                          },
                                           onTap: (){
                                             scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                             setState(() {
                                               isListScroll=true;
+                                              _keyboardVisible=true;
                                             });
                                           },
                                           style:  TextStyle(fontFamily: 'RR',fontSize: 15,color:AppTheme.addNewTextFieldText,letterSpacing: 0.2),
@@ -371,7 +412,7 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                         ):Container(),
                                       ),
 
-                                      SizedBox(height:300,),
+                                      SizedBox(height: _keyboardVisible? SizeConfig.screenHeight*0.5:200,)
                                     ],
                                   ),
                                 ),
@@ -401,12 +442,12 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                           Text("Customer Detail",
                             style: TextStyle(fontFamily: 'RR',
                                 color: Colors.black,
-                                fontSize: SizeConfig.width16),
+                                fontSize: 16),
                           ),
                           Text(qn.isCustomerEdit ? " / Edit" : " / Add New",
                             style: TextStyle(fontFamily: 'RR',
                                 color: Colors.black,
-                                fontSize: SizeConfig.width16),
+                                fontSize: 16),
                           ),
                           Spacer(),
 
@@ -420,7 +461,8 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                       bottom: 0,
                       child: Container(
                         width: SizeConfig.screenWidth,
-                        height:_keyboardVisible?0:  70,
+                       // height:_keyboardVisible?0:  70,
+                        height: 65,
 
                         decoration: BoxDecoration(
                             color: AppTheme.gridbodyBgColor,
@@ -446,22 +488,7 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                 painter: RPSCustomPainter3(),
                               ),
                             ),
-                            Center(
-                              heightFactor: 0.5,
-                              child: FloatingActionButton(backgroundColor: AppTheme.yellowColor, child: Icon(Icons.save), elevation: 0.1, onPressed: () {
-                                node.unfocus();
-                                if(qn.customerName.text.isEmpty){
-                                  CustomAlert().commonErrorAlert(context, "Enter Name", "");
-                                }
-                                else if(qn.customerAddress.text.isEmpty){
-                                  CustomAlert().commonErrorAlert(context, "Enter Address", "");
-                                }
-                                else{
-                                  qn.InsertCustomerDbHit(context,widget.fromSalePage);
-                                }
 
-                              }),
-                            ),
                             Container(
                               width:  SizeConfig.screenWidth,
                               height: 80,
@@ -474,6 +501,45 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                               ),
                             )
                           ],
+                        ),
+                      ),
+                    ),
+                    //addButton
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: GestureDetector(
+                        onTap: (){
+                          node.unfocus();
+                          if(qn.customerName.text.isEmpty){
+                            CustomAlert().commonErrorAlert(context, "Enter Name", "");
+                          }
+                          else if(qn.customerAddress.text.isEmpty){
+                            CustomAlert().commonErrorAlert(context, "Enter Address", "");
+                          }
+                          else{
+                            qn.InsertCustomerDbHit(context,widget.fromSalePage);
+                          }
+                        },
+                        child: Container(
+
+                          height: 65,
+                          width: 65,
+                          margin: EdgeInsets.only(bottom: 20),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: AppTheme.yellowColor,
+                            boxShadow: [
+                              BoxShadow(
+                                color: AppTheme.yellowColor.withOpacity(0.4),
+                                spreadRadius: 1,
+                                blurRadius: 5,
+                                offset: Offset(1, 8), // changes position of shadow
+                              ),
+                            ],
+                          ),
+                          child: Center(
+                            child: Icon(Icons.done,size: SizeConfig.height30,color: AppTheme.bgColor,),
+                          ),
                         ),
                       ),
                     ),

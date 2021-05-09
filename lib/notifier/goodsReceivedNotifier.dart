@@ -305,8 +305,9 @@ class GoodsReceivedNotifier extends ChangeNotifier{
       };
 
       js.add(ma);
-      print(js);
+      print("Update_$js");
     }
+
 
     var body={
       "Fields": [
@@ -512,6 +513,8 @@ class GoodsReceivedNotifier extends ChangeNotifier{
   String GPO_PorderNo=null;
   int GPO_PorderId=null;
   int GPO_GoodsorderId=null;
+  int GPO_PlantId=null;
+  int GPO_SupplierId=null;
   String GPO_Date=null;
   double GPO_purchaseAmount=0.0;
   List<GoodsReceivedMaterialListModel> GPO_Materials=[];
@@ -525,11 +528,13 @@ class GoodsReceivedNotifier extends ChangeNotifier{
     GPO_purchaseAmount=0.0;
   }
 
-  GPO_assignValues(){
+  Future<dynamic> GPO_assignValues() async{
     GPO_Date=GINV_Date;
     GPO_PorderNo=GINV_PorderNo;
     GPO_PorderId=GINV_PorderId;
     GPO_GoodsorderId=GINV_GoodsorderId;
+    GPO_PlantId=GINV_PlantId;
+    GPO_SupplierId=GINV_SupplierId;
     double balanceQuantity=0.0;
     double amount=0.0;
     double discountAmount=0.0;
@@ -571,14 +576,11 @@ class GoodsReceivedNotifier extends ChangeNotifier{
           totalAmount: totalAmount
 
         ));
-
+        GPO_purchaseAmount=Calculation().add(GPO_purchaseAmount, totalAmount);
       }
     });
 
-    GPO_Materials.forEach((element) {
-      GPO_purchaseAmount=GPO_purchaseAmount+(element.amount);
-    });
-
+ 
     print(GPO_Materials.map((e) => e.toPurchaseJson()));
 
     notifyListeners();
@@ -701,10 +703,15 @@ class GoodsReceivedNotifier extends ChangeNotifier{
 
 
  //To invoice Sp
- Future<dynamic>  InsertInvoiceDbHit(BuildContext context)  async{
+ Future<dynamic>  InsertInvoiceDbHit(BuildContext context,TickerProviderStateMixin tickerProviderStateMixin)  async{
     updateGoodsLoader(true);
     List js=[];
-    js=GINV_Materials.map((e) => e.toInvoiceJson()).toList();
+    GINV_Materials.forEach((element) {
+      if(element.status!='Not Yet'){
+        js.add(element.toInvoiceJson());
+      }
+    });
+    //   js=gr.GINV_Materials.map((e) => e.toInvoiceJson()).toList();
     print(js);
     List oa=[];
     oa=GINV_OtherChargesList.map((e) => e.toInvoiceJson()).toList();
@@ -719,7 +726,7 @@ class GoodsReceivedNotifier extends ChangeNotifier{
     js.forEach((element) {
       subtotal=Calculation().add(subtotal, element['Subtotal']);
       discountAmount=Calculation().add(discountAmount, element['DiscountAmount']);
-      discountedSubtotal=Calculation().add(discountedSubtotal, element['DiscountedSubTotal']);
+      discountedSubtotal=Calculation().sub(subtotal, discountAmount);
       taxAmount=Calculation().add(taxAmount, element['TaxAmount']);
       grandTotal=Calculation().add(grandTotal, element['TotalAmount']);
     });
@@ -807,7 +814,7 @@ class GoodsReceivedNotifier extends ChangeNotifier{
       await call.ApiCallGetInvoke(body,context).then((value) {
 
         if(value!=null){
-
+          GetGoodsDbHit(context, null, null, false, tickerProviderStateMixin);
         }
 
         updateGoodsLoader(false);
@@ -820,7 +827,122 @@ class GoodsReceivedNotifier extends ChangeNotifier{
 
   }
 
+// To purchase Sp
+ Future<dynamic> InsertPurchaseDbHit(BuildContext context,TickerProviderStateMixin tickerProviderStateMixin)  async{
+    updateGoodsLoader(true);
+    List js=[];
+    js=GPO_Materials.map((e) => e.toPurchaseJson()).toList();
+    print(js);
+    List oa=[];
+    print(oa);
+    double subtotal=0.0;
+    double discountAmount=0.0;
+    double discountedSubtotal=0.0;
+    double taxAmount=0.0;
+    double grandTotal=0.0;
 
+    js.forEach((element) {
+      subtotal=Calculation().add(subtotal, element['Amount']);
+      discountAmount=Calculation().add(discountAmount, element['DiscountAmount']);
+      discountedSubtotal=Calculation().sub(subtotal, discountAmount);
+      taxAmount=Calculation().add(taxAmount, element['TaxAmount']);
+      grandTotal=Calculation().add(grandTotal, element['TotalAmount']);
+    });
+    var body={
+      "Fields": [
+        {
+          "Key": "SpName",
+          "Type": "String",
+          "Value": "${Sp.insertPurchaseDetail}"
+        },
+        {
+          "Key": "LoginUserId",
+          "Type": "int",
+          "Value": Provider.of<QuarryNotifier>(context,listen: false).UserId
+        },
+        {
+          "Key": "PlantId",
+          "Type": "int",
+          "Value": GPO_PlantId
+        },
+        {
+          "Key": "ExpectedDate",
+          "Type": "String",
+          "Value": null
+        },
+        {
+          "Key": "SupplierType",
+          "Type": "String",
+          "Value": ""
+        },
+        {
+          "Key": "Supplier",
+          "Type": "int",
+          "Value": GPO_SupplierId
+        },
+        {
+          "Key": "Subtotal",
+          "Type": "String",
+          "Value": subtotal
+        },
+        {
+          "Key": "DiscountAmount",
+          "Type": "String",
+          "Value": discountAmount
+        },
+        {
+          "Key": "DiscountedSubtotal",
+          "Type": "String",
+          "Value": discountedSubtotal
+        },
+        {
+          "Key": "TaxAmount",
+          "Type": "String",
+          "Value": taxAmount
+        },
+        {
+          "Key": "GrandTotalAmount",
+          "Type": "String",
+          "Value": grandTotal
+        },
+
+        {
+          "Key": "PurchaseOrderMaterialMappingList",
+          "Type": "datatable",
+          "Value": js
+        },
+        {
+          "Key": "PurchaseOrderOtherChargesMappingList",
+          "Type": "datatable",
+          "Value": oa
+        },
+        {
+          "Key": "database",
+          "Type": "String",
+          "Value": Provider.of<QuarryNotifier>(context,listen: false).DataBaseName
+        }
+      ]
+    };
+
+    try{
+      await call.ApiCallGetInvoke(body,context).then((value) {
+
+        if(value!=null){
+          var parsed=json.decode(value);
+
+
+          GetGoodsDbHit(context, null,null,false,tickerProviderStateMixin);
+        }
+
+        updateGoodsLoader(false);
+      });
+    }catch(e){
+      updateGoodsLoader(false);
+      CustomAlert().commonErrorAlert(context, "${Sp.insertPurchaseDetail}" , e.toString());
+    }
+
+
+  }
 
   bool isGoodsEdit=false;
   updateGoodsEdit(bool value){

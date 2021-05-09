@@ -150,7 +150,6 @@ class GoodsReceivedMaterialListModel {
     "TaxAmount":taxAmount,
     "TotalAmount":totalAmount,
     "IsActive":1,
-
   };
 }
 
