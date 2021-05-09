@@ -12,6 +12,7 @@ import 'package:quarry/pages/quarryMaster/quarryLocationAddNew.dart';
 import 'package:quarry/pages/sale/salesDetail.dart';
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
+import 'package:quarry/styles/constants.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/customTextField.dart';
@@ -298,6 +299,7 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                       });
                                     },
                                     labelText: 'Zipcode',
+                                    textLength: zipcodeLength,
                                     textEditingController: qn.supplierZipcode,
                                     scrollPadding: 400,
                                     textInputType: TextInputType.number,
@@ -311,6 +313,7 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                   AddNewLabelTextField(
                                     labelText: 'Contact Number',
                                     textEditingController: qn.supplierContactNumber,
+                                    textLength: phoneNoLength,
                                     scrollPadding: 400,
                                     textInputType: TextInputType.number,
                                     onEditComplete: (){
@@ -535,8 +538,14 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                           alignment: Alignment.center,
                                           margin: EdgeInsets.only(top:SizeConfig.height20,right: SizeConfig.width20),
                                           child: TextFormField(
-
-                                            scrollPadding: EdgeInsets.only(bottom: 50),
+                                            onTap: (){
+                                              scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                              setState(() {
+                                                isListScroll=true;
+                                                _keyboardVisible=true;
+                                              });
+                                            },
+                                            scrollPadding: EdgeInsets.only(bottom: 400),
                                             style:  TextStyle(fontFamily: 'RR',fontSize: 15,color:AppTheme.addNewTextFieldText,letterSpacing: 0.2),
                                             controller: qn.materialPrice,
                                             decoration: InputDecoration(
@@ -562,6 +571,12 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                               FilteringTextInputFormatter.allow(RegExp('[0-9.]')),
                                             ],
                                             textInputAction: TextInputAction.done,
+                                            onEditingComplete: (){
+                                              node.unfocus();
+                                              setState(() {
+                                                _keyboardVisible=false;
+                                              });
+                                            },
                                             onChanged: (v){
 
                                             },

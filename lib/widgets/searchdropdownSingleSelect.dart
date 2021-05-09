@@ -123,16 +123,19 @@ class DropDownField extends FormField<String> {
             borderRadius: BorderRadius.circular(3),
               borderSide: BorderSide(color: AppTheme.addNewTextFieldBorder)
           ),
-          hintStyle: hintStyle,
+          hintStyle: TextStyle(fontFamily: 'RL',fontSize: 15,color: AppTheme.addNewTextFieldText.withOpacity(0.9)),
           labelStyle: labelStyle,
           hintText: hintText,
           labelText: labelText,
-        contentPadding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0),
+        contentPadding: new EdgeInsets.symmetric(vertical: 10.0, horizontal: 8.0),
       );
 
       return Container(
        // height: 50,
         // width: 300,
+        constraints: BoxConstraints(
+          minHeight:20
+        ),
         margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,top:SizeConfig.height20,),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -144,10 +147,13 @@ class DropDownField extends FormField<String> {
               children: <Widget>[
 
                 Container(
-                 // height:50,
+                  height:50,
                   //width: SizeConfig.screenWidth-(SizeConfig.width40),
-                  width: SizeConfig.screenWidth-(reduceWidth),
 
+                  width: SizeConfig.screenWidth-(reduceWidth),
+                  constraints: BoxConstraints(
+                      minHeight:20
+                  ),
                   child: TextFormField(
                     onTap: (){
                       state._showdropdown=true;
@@ -296,17 +302,24 @@ class DropDownField extends FormField<String> {
               //   maxHeight: 150,
               //   minHeight: 50
               // ),
-              child: ListView(
-                cacheExtent: 0.0,
-                scrollDirection: Axis.vertical,
+              child: RawScrollbar(
+                isAlwaysShown: true,
+                radius: Radius.circular(4),
+                thickness: 4,
                 controller: _scrollController,
-                // padding: EdgeInsets.only(left: 40.0),
-                children: items.isNotEmpty
-                    ? ListTile.divideTiles(
-                    context: field.context,
-                    tiles: state._getChildren(state._items))
-                    .toList()
-                    : List(),
+                thumbColor: Colors.grey,
+                child: ListView(
+                  cacheExtent: 0.0,
+                  scrollDirection: Axis.vertical,
+                  controller: _scrollController,
+                  // padding: EdgeInsets.only(left: 40.0),
+                  children: items.isNotEmpty
+                      ? ListTile.divideTiles(
+                      context: field.context,
+                      tiles: state._getChildren(state._items))
+                      .toList()
+                      : List(),
+                ),
               ),
             ):Container(),
           ],

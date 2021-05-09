@@ -112,10 +112,10 @@ class _CustomDataTableState extends State<CustomDataTable> {
                           children: gridCol.asMap().
                           map((i, value) => MapEntry(i, i==0?Container():
                           Container(
-                              alignment: Alignment.center,
-                              //  padding: EdgeInsets.only(left: 20,right: 20),
-                              width: 150,
-                              child: Text(value,style: AppTheme.TSWhite166,)
+                              alignment: Alignment.centerLeft,
+                                padding: EdgeInsets.only(left: 10),
+                              width: 160,
+                              child: FittedBox(child: Text(value,style: AppTheme.TSWhite166,))
                           )
                           )).values.toList()
                       ),
@@ -153,17 +153,23 @@ class _CustomDataTableState extends State<CustomDataTable> {
                                     color: widget.selectedIndex==i?AppTheme.yellowColor:AppTheme.gridbodyBgColor,
                                   ),
                                   height: 50,
-                                  // padding: EdgeInsets.only(top: 20,bottom: 20),
+                                   margin: EdgeInsets.only(bottom:i==widget.gridData.length-1?70: 0),
                                   child: Row(
                                     children: gridDataRowList.asMap().map((j, v) => MapEntry(j,
                                       j==0?Container():Container(
-                                        alignment: Alignment.center,
-                                        // padding: EdgeInsets.only(left: 20,right: 20),
-                                        width: 150,
-                                        child: Text("${value.get(v)??""}",
-                                          style:widget.selectedIndex==i?AppTheme.bgColorTS14:AppTheme.gridTextColor14,
-                                        ),
+                                        width: 160,
+                                        height: 50,
+                                        alignment: Alignment.centerLeft,
+                                         padding: EdgeInsets.only(left: 10),
+                                         decoration: BoxDecoration(
 
+                                         ),
+
+                                        child: FittedBox(
+                                          child: Text("${value.get(v).toString().isNotEmpty?value.get(v):" "}",
+                                            style:widget.selectedIndex==i?AppTheme.bgColorTS14:AppTheme.gridTextColor14,
+                                          ),
+                                        ),
                                       ),
                                     )).values.toList()
                                   ),
@@ -193,7 +199,8 @@ class _CustomDataTableState extends State<CustomDataTable> {
                     height: 50,
                     width: 150,
                     color: AppTheme.bgColor,
-                    alignment: Alignment.center,
+                    padding: EdgeInsets.only(left: 10),
+                    alignment: Alignment.centerLeft,
                     child: Text("${gridCol[0]}",style: AppTheme.TSWhite166,),
 
                   ),
@@ -227,7 +234,9 @@ class _CustomDataTableState extends State<CustomDataTable> {
                                 //setState(() {});
                               },
                               child:  Container(
-                                alignment: Alignment.center,
+                                alignment: Alignment.centerLeft,
+                                padding: EdgeInsets.only(left: 10),
+                                margin: EdgeInsets.only(bottom:i==widget.gridData.length-1?70: 0),
                                 decoration: BoxDecoration(
                                   border: AppTheme.gridBottomborder,
                                   color: widget.selectedIndex==i?AppTheme.yellowColor:AppTheme.gridbodyBgColor,
@@ -235,8 +244,7 @@ class _CustomDataTableState extends State<CustomDataTable> {
                                 height: 50,
                                 width: 150,
                                 child: Container(
-                                  padding: EdgeInsets.only(left: 10,right: 10,top: 3,bottom: 3),
-
+                               //   padding: EdgeInsets.only(left: 10,right: 10,top: 3,bottom: 3),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(50),
                                     //color:value.invoiceType=='Receivable'? Colors.green:AppTheme.red,

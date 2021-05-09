@@ -295,7 +295,50 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                       scrollDirection: Axis.vertical,
                                                       physics: isListScroll?AlwaysScrollableScrollPhysics():NeverScrollableScrollPhysics(),
                                                       children: [
+                                                        DropDownField(
 
+
+
+                                                          add: (){
+                                                          },
+                                                          nodeFocus: (){
+                                                            node.unfocus();
+                                                          },
+                                                          value: qn.SS_vehicleNo.text,
+                                                          controller: qn.SS_vehicleNo,
+                                                          reduceWidth: SizeConfig.width40,
+                                                          // qtycontroller:qn.brandQtyController,
+                                                          // unit: qn.MM_selectPrimaryUnit.toString(),
+
+                                                          required: false,
+                                                          // icon: Container(
+                                                          //   height: 50,
+                                                          //   width: 50,
+                                                          //   margin: EdgeInsets.only(left: 20,right: 20),
+                                                          //   decoration: BoxDecoration(
+                                                          //       shape: BoxShape.circle,
+                                                          //       color: Color(0xFFDEE2FE)
+                                                          //   ),
+                                                          // ),
+
+                                                          hintText: 'Search Vehicle',
+                                                          textStyle: TextStyle(fontFamily: 'RR',fontSize: 20,color: AppTheme.addNewTextFieldText),
+                                                          items: qn.filtersales_vehiclesList,
+                                                          strict: false,
+                                                          setter: (dynamic newValue) {
+                                                            // print(newValue);
+                                                            // qn.SS_LoadedVehicleNo=newValue;
+                                                            // print(qn.SS_LoadedVehicleNo);
+                                                            // qn.MM_selectBrand = newValue;
+                                                          },
+                                                          onValueChanged: (v){
+                                                            node.unfocus();
+                                                            setState(() {
+                                                              qn.SS_vehicleNo.text=v;
+
+                                                            });
+                                                          },
+                                                        ),
 
                                                         AddNewLabelTextField(
                                                           labelText: 'Vehicle Number',
@@ -447,6 +490,10 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                             scrollPadding: EdgeInsets.only(bottom: 500),
                                                             onTap: (){
                                                               scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                                              setState(() {
+                                                                _keyboardVisible=true;
+                                                                isListScroll=true;
+                                                              });
 
                                                             },
                                                             style:  TextStyle(fontFamily: 'RR',fontSize: 15,color:AppTheme.addNewTextFieldText,letterSpacing: 0.2),
@@ -483,10 +530,12 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                             isEnabled:qn.SS_selectedMaterialTypeId==null?false: true,
                                                             scrollPadding: 500,
                                                             ontap: () {
+                                                              scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+
                                                               setState(() {
                                                                 _keyboardVisible=true;
+                                                                isListScroll=true;
                                                               });
-                                                              scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                                             },
                                                             onChange: (v){
                                                               qn.weightToAmount();
@@ -531,7 +580,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                             labelText: 'Amount',
                                                             textEditingController: qn.SS_amount,
                                                             textInputType: TextInputType.number,
-                                                            scrollPadding: 50,
+                                                            scrollPadding: 400,
                                                             isEnabled:qn.SS_selectedMaterialTypeId==null?false: true,
 
                                                             onChange: (v){
@@ -541,6 +590,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                             ontap: () {
                                                               setState(() {
                                                                 _keyboardVisible=true;
+                                                                isListScroll=true;
                                                               });
                                                               scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                                             },
@@ -1109,10 +1159,10 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                           }),
                                           SizedBox(width: SizeConfig.width5,),
                                           Text("Sales",
-                                            style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: SizeConfig.width16),
+                                            style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: 16),
                                           ),
                                           Text(qn.tabController.index==0?" / In Gate":" / Out Gate",
-                                            style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: SizeConfig.width16),
+                                            style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: 16),
                                           ),
                                         ],
                                       ),
@@ -1668,10 +1718,10 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                           }),
                                           SizedBox(width: SizeConfig.width5,),
                                           Text("Sales",
-                                            style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: SizeConfig.width16),
+                                            style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: 16),
                                           ),
                                           Text(qn.tabController.index==0?" / In Gate":" / Out Gate",
-                                            style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: SizeConfig.width16),
+                                            style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: 16),
                                           ),
                                         ],
                                       ),

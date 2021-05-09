@@ -121,6 +121,7 @@ class SaleDetails{
   double TaxPercentage;
   double TaxAmount;
   double TotalAmount;
+  int RoundedTotalAmount;
   double RoundOffAmount;
   String LoadWeightOfVehicle;
   String PaymentCategoryName;
@@ -168,6 +169,7 @@ class SaleDetails{
     this.customerGstNumber,
     this.driverName,
     this.driverContactNumber,
+    this.RoundedTotalAmount
   });
 
 
@@ -212,6 +214,7 @@ class SaleDetails{
       TaxPercentage: json['TaxValue'],
       TaxAmount: json['TaxAmount'],
       TotalAmount: json['TotalAmount'],
+      RoundedTotalAmount: json['TotalAmount'].round(),
       AmountInWords: json['AmountInWords'],
       RoundOffAmount: json['RoundOffAmount'],
       customerId: json["CustomerId"],
@@ -228,7 +231,21 @@ class SaleDetails{
       driverContactNumber: json["DriverContactNumber"],
     );
   }
-
+  Map<String, dynamic> toJson() => {
+    "SaleDate": SaleDate,
+    "SaleNumber": SaleNumber,
+    "VehicleNumber": VehicleNumber,
+    "MaterialName": MaterialName,
+    "RoundedTotalAmount": RoundedTotalAmount,
+    "CustomerName": customerName,
+  };
+  dynamic get(String propertyName) {
+    var _mapRep = toJson();
+    if (_mapRep.containsKey(propertyName)) {
+      return _mapRep[propertyName];
+    }
+    throw ArgumentError('property not found');
+  }
 }
 
 class SaleGridReport{

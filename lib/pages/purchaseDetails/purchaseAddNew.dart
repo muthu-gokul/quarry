@@ -1576,336 +1576,344 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                                      itemBuilder: (context,index){
                                        return GestureDetector(
                                          onTap: (){
-                                           setState(() {
-                                             indentQty='';
-                                             disValue='';
-                                             discountKeyPad=false;
-                                             pn.isDiscountPercentage=true;
-                                             pn.purchaseOrdersMappingList.add(
-                                               PurchaseOrderMaterialMappingListModel(
-                                                 PurchaseOrderMaterialMappingId:null,
-                                                 PurchaseOrderId:null,
-                                                 MaterialId:pn.filterMaterialsList[index].materialId,
-                                                 materialName:pn.filterMaterialsList[index].materialName,
-                                                 MaterialPrice:pn.filterMaterialsList[index].materialPrice,
-                                                 PurchaseQuantity:0,
-                                                 Amount:pn.filterMaterialsList[index].materialPrice,
-                                                 IsDiscount:0,
-                                                 IsPercentage:0,
-                                                 IsAmount:0,
-                                                 DiscountValue:0.0,
-                                                 DiscountAmount:0.0,
-                                                 TaxValue:pn.filterMaterialsList[index].taxValue,
-                                                 TaxAmount:0.0,
-                                                 TotalAmount:0.0,
-                                                 IsActive:1,
-                                                 materialUnitId:pn.filterMaterialsList[index].materialUnitId,
-                                                 unitName:pn.filterMaterialsList[index].unitName,
-                                                 purchaseQty: TextEditingController()..text=""
-                                               )
-                                             );
-                                           });
 
-                                           showDialog(context: context,
-                                              barrierDismissible: false,
+                                           if(pn.purchaseOrdersMappingList.any((element) => element.materialName==pn.filterMaterialsList[index].materialName)){
+                                             CustomAlert().commonErrorAlert(context, "Material Exists", "");
+                                           }
+                                           else{
+                                             setState(() {
+                                               indentQty='';
+                                               disValue='';
+                                               discountKeyPad=false;
+                                               pn.isDiscountPercentage=true;
+                                               pn.purchaseOrdersMappingList.add(
+                                                   PurchaseOrderMaterialMappingListModel(
+                                                       PurchaseOrderMaterialMappingId:null,
+                                                       PurchaseOrderId:null,
+                                                       MaterialId:pn.filterMaterialsList[index].materialId,
+                                                       materialName:pn.filterMaterialsList[index].materialName,
+                                                       MaterialPrice:pn.filterMaterialsList[index].materialPrice,
+                                                       PurchaseQuantity:0,
+                                                       Amount:pn.filterMaterialsList[index].materialPrice,
+                                                       IsDiscount:0,
+                                                       IsPercentage:0,
+                                                       IsAmount:0,
+                                                       DiscountValue:0.0,
+                                                       DiscountAmount:0.0,
+                                                       TaxValue:pn.filterMaterialsList[index].taxValue,
+                                                       TaxAmount:0.0,
+                                                       TotalAmount:0.0,
+                                                       IsActive:1,
+                                                       materialUnitId:pn.filterMaterialsList[index].materialUnitId,
+                                                       unitName:pn.filterMaterialsList[index].unitName,
+                                                       purchaseQty: TextEditingController()..text=""
+                                                   )
+                                               );
+                                             });
 
-                                               builder: (context){
-                                                 return StatefulBuilder(
-                                                   builder:(context,setState){
-                                                     return Consumer<PurchaseNotifier>(
-                                                       builder: (context,pn,child)=>Dialog(
-                                                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10), ),
+                                             showDialog(context: context,
+                                                 barrierDismissible: false,
 
-                                                         child: Container(
-                                                           height: SizeConfig.screenHeight*0.85,
+                                                 builder: (context){
+                                                   return StatefulBuilder(
+                                                     builder:(context,setState){
+                                                       return Consumer<PurchaseNotifier>(
+                                                         builder: (context,pn,child)=>Dialog(
+                                                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10), ),
 
-                                                           width: SizeConfig.screenWidth*0.9,
-                                                           decoration: BoxDecoration(
-                                                               borderRadius: BorderRadius.circular(10),
-                                                               color: Colors.white
-                                                           ),
-                                                           child: Column(
-                                                             children: [
-                                                               Spacer(),
-                                                             //  SizedBox(height: 15,),
-                                                               Text("${pn.purchaseOrdersMappingList[pn.purchaseOrdersMappingList.length-1].materialName??""}",
-                                                                 style: TextStyle(fontFamily: 'RR',fontSize: 18,color: AppTheme.gridTextColor),textAlign: TextAlign.center,),
-                                                               SizedBox(height: 10,),
-                                                               discountKeyPad?
-                                                               Row(
-                                                                 mainAxisAlignment: MainAxisAlignment.center,
-                                                                 children: [
-                                                                   Text("${indentQty.isEmpty?"0":indentQty} ${pn.filterMaterialsList[pn.filterMaterialsList.length-1].unitName??""}",
-                                                                     style: TextStyle(fontFamily: 'RL',fontSize: 16,color: AppTheme.gridTextColor),textAlign: TextAlign.center,),
-                                                                   SizedBox(width: 20,),
+                                                           child: Container(
+                                                             height: SizeConfig.screenHeight*0.85,
 
-                                                                   Text("${disValue.isEmpty?"0":disValue}",
-                                                                     style: TextStyle(fontFamily: 'RM',fontSize: 20,color: AppTheme.gridTextColor),textAlign: TextAlign.center,),
-                                                                   SizedBox(width: 20,),
-                                                                   GestureDetector(
-                                                                     onTap: (){
-                                                                       pn.updateisDiscountPercentage(false);
+                                                             width: SizeConfig.screenWidth*0.9,
+                                                             decoration: BoxDecoration(
+                                                                 borderRadius: BorderRadius.circular(10),
+                                                                 color: Colors.white
+                                                             ),
+                                                             child: Column(
+                                                               children: [
+                                                                 Spacer(),
+                                                                 //  SizedBox(height: 15,),
+                                                                 Text("${pn.purchaseOrdersMappingList[pn.purchaseOrdersMappingList.length-1].materialName??""}",
+                                                                   style: TextStyle(fontFamily: 'RR',fontSize: 18,color: AppTheme.gridTextColor),textAlign: TextAlign.center,),
+                                                                 SizedBox(height: 10,),
+                                                                 discountKeyPad?
+                                                                 Row(
+                                                                   mainAxisAlignment: MainAxisAlignment.center,
+                                                                   children: [
+                                                                     Text("${indentQty.isEmpty?"0":indentQty} ${pn.filterMaterialsList[pn.filterMaterialsList.length-1].unitName??""}",
+                                                                       style: TextStyle(fontFamily: 'RL',fontSize: 16,color: AppTheme.gridTextColor),textAlign: TextAlign.center,),
+                                                                     SizedBox(width: 20,),
 
-                                                                     },
-                                                                     child: AnimatedContainer(
-                                                                       duration: Duration(milliseconds: 200),
-                                                                       curve: Curves.easeIn,
-                                                                       height: 35,
-                                                                       width: 35,
-                                                                       decoration: BoxDecoration(
-                                                                           shape: BoxShape.circle,
-                                                                           border: Border.all(color: pn.isDiscountPercentage?AppTheme.addNewTextFieldBorder:Colors.transparent),
-                                                                           color: pn.isDiscountPercentage?AppTheme.EFEFEF:AppTheme.addNewTextFieldFocusBorder
+                                                                     Text("${disValue.isEmpty?"0":disValue}",
+                                                                       style: TextStyle(fontFamily: 'RM',fontSize: 20,color: AppTheme.gridTextColor),textAlign: TextAlign.center,),
+                                                                     SizedBox(width: 20,),
+                                                                     GestureDetector(
+                                                                       onTap: (){
+                                                                         pn.updateisDiscountPercentage(false);
+
+                                                                       },
+                                                                       child: AnimatedContainer(
+                                                                         duration: Duration(milliseconds: 200),
+                                                                         curve: Curves.easeIn,
+                                                                         height: 35,
+                                                                         width: 35,
+                                                                         decoration: BoxDecoration(
+                                                                             shape: BoxShape.circle,
+                                                                             border: Border.all(color: pn.isDiscountPercentage?AppTheme.addNewTextFieldBorder:Colors.transparent),
+                                                                             color: pn.isDiscountPercentage?AppTheme.EFEFEF:AppTheme.addNewTextFieldFocusBorder
+                                                                         ),
+                                                                         child: Center(
+                                                                           child: Text("₹",style: pn.isDiscountPercentage?AppTheme.discountDeactive:AppTheme.discountactive,),
+                                                                         ),
+
                                                                        ),
-                                                                       child: Center(
-                                                                         child: Text("₹",style: pn.isDiscountPercentage?AppTheme.discountDeactive:AppTheme.discountactive,),
-                                                                       ),
-
                                                                      ),
-                                                                   ),
-                                                                   SizedBox(width: 10,),
-                                                                   GestureDetector(
-                                                                     onTap: (){
+                                                                     SizedBox(width: 10,),
+                                                                     GestureDetector(
+                                                                       onTap: (){
 
-                                                                       pn.updateisDiscountPercentage(true);
+                                                                         pn.updateisDiscountPercentage(true);
 
-                                                                     },
-                                                                     child: AnimatedContainer(
-                                                                       duration: Duration(milliseconds: 200),
-                                                                       curve: Curves.easeIn,
-                                                                       height: 35,
-                                                                       width: 35,
-                                                                       decoration: BoxDecoration(
-                                                                           shape: BoxShape.circle,
-                                                                           border: Border.all(color: pn.isDiscountPercentage?Colors.transparent:AppTheme.addNewTextFieldBorder),
-                                                                           color: pn.isDiscountPercentage?AppTheme.addNewTextFieldFocusBorder:AppTheme.EFEFEF
+                                                                       },
+                                                                       child: AnimatedContainer(
+                                                                         duration: Duration(milliseconds: 200),
+                                                                         curve: Curves.easeIn,
+                                                                         height: 35,
+                                                                         width: 35,
+                                                                         decoration: BoxDecoration(
+                                                                             shape: BoxShape.circle,
+                                                                             border: Border.all(color: pn.isDiscountPercentage?Colors.transparent:AppTheme.addNewTextFieldBorder),
+                                                                             color: pn.isDiscountPercentage?AppTheme.addNewTextFieldFocusBorder:AppTheme.EFEFEF
+                                                                         ),
+                                                                         child: Center(
+
+                                                                           child: Text("%",style: pn.isDiscountPercentage?AppTheme.discountactive:AppTheme.discountDeactive,),
+                                                                         ),
+
                                                                        ),
-                                                                       child: Center(
-
-                                                                         child: Text("%",style: pn.isDiscountPercentage?AppTheme.discountactive:AppTheme.discountDeactive,),
-                                                                       ),
-
                                                                      ),
-                                                                   ),
-                                                                 ],
-                                                               ):
+                                                                   ],
+                                                                 ):
 
 
 
 
-                                                               Text("${indentQty.isEmpty?"0":indentQty} ${pn.purchaseOrdersMappingList[pn.purchaseOrdersMappingList.length-1].unitName??""}",
-                                                                 style: TextStyle(fontFamily: 'RM',fontSize: 20,color: AppTheme.gridTextColor),textAlign: TextAlign.center,),
+                                                                 Text("${indentQty.isEmpty?"0":indentQty} ${pn.purchaseOrdersMappingList[pn.purchaseOrdersMappingList.length-1].unitName??""}",
+                                                                   style: TextStyle(fontFamily: 'RM',fontSize: 20,color: AppTheme.gridTextColor),textAlign: TextAlign.center,),
 
-                                                               SizedBox(height: 10,),
-                                                               discountValueError?FittedBox(
-                                                                 fit: BoxFit.contain,
-                                                                 child: Text("* Discount Value should be less than 100%",style: TextStyle(fontFamily: 'RR',fontSize: 14,color: AppTheme.red),
-                                                                   textAlign: TextAlign.center,),
-                                                               ):Container(),
-                                                               Container(
-                                                                   margin: EdgeInsets.only(top: 20),
-                                                                   width: SizeConfig.screenWidth*0.8,
-                                                                   child: Wrap(
-                                                                       spacing: 10,
-                                                                       runSpacing: 10,
-                                                                       direction: Axis.horizontal,
-                                                                       alignment: WrapAlignment.center,
-                                                                       children: numbers
-                                                                           .asMap().map((i, element) => MapEntry(i,
-                                                                           GestureDetector(
-                                                                             onTap: () {
-                                                                               setState(() {
-                                                                                 if (numbers[i] == 'X') {
+                                                                 SizedBox(height: 10,),
+                                                                 discountValueError?FittedBox(
+                                                                   fit: BoxFit.contain,
+                                                                   child: Text("* Discount Value should be less than 100%",style: TextStyle(fontFamily: 'RR',fontSize: 14,color: AppTheme.red),
+                                                                     textAlign: TextAlign.center,),
+                                                                 ):Container(),
+                                                                 Container(
+                                                                     margin: EdgeInsets.only(top: 20),
+                                                                     width: SizeConfig.screenWidth*0.8,
+                                                                     child: Wrap(
+                                                                         spacing: 10,
+                                                                         runSpacing: 10,
+                                                                         direction: Axis.horizontal,
+                                                                         alignment: WrapAlignment.center,
+                                                                         children: numbers
+                                                                             .asMap().map((i, element) => MapEntry(i,
+                                                                             GestureDetector(
+                                                                               onTap: () {
+                                                                                 setState(() {
+                                                                                   if (numbers[i] == 'X') {
 
-                                                                                   if(!discountKeyPad){
-                                                                                     indentQty = indentQty.substring(0, indentQty.length - 1);
-                                                                                   } else{
-                                                                                     disValue = disValue.substring(0, disValue.length - 1);
+                                                                                     if(!discountKeyPad){
+                                                                                       indentQty = indentQty.substring(0, indentQty.length - 1);
+                                                                                     } else{
+                                                                                       disValue = disValue.substring(0, disValue.length - 1);
+                                                                                     }
+
+                                                                                     reorderLevelIndex=i;
                                                                                    }
-
-                                                                                   reorderLevelIndex=i;
-                                                                                 }
-                                                                                 else if (numbers[i] == '.') {
+                                                                                   else if (numbers[i] == '.') {
 
 
-                                                                                   if(!discountKeyPad){
-                                                                                     if(indentQty.length<6 && indentQty.length>=1){
-                                                                                       if(indentQty.contains('.')){}
+                                                                                     if(!discountKeyPad){
+                                                                                       if(indentQty.length<6 && indentQty.length>=1){
+                                                                                         if(indentQty.contains('.')){}
+                                                                                         else{
+                                                                                           setState(() {
+                                                                                             indentQty=indentQty+'.';
+                                                                                           });
+                                                                                         }
+                                                                                       }
+                                                                                     }
+                                                                                     else{
+                                                                                       if(disValue.length<5 && disValue.length>=1){
+                                                                                         if(disValue.contains('.')){}
+                                                                                         else{
+                                                                                           setState(() {
+                                                                                             disValue=disValue+'.';
+                                                                                           });
+                                                                                         }
+                                                                                       }
+                                                                                     }
+
+                                                                                     reorderLevelIndex=i;
+                                                                                   }
+                                                                                   else {
+
+                                                                                     if(!discountKeyPad){
+                                                                                       if(indentQty.isEmpty && numbers[i]=='0'){}
                                                                                        else{
                                                                                          setState(() {
-                                                                                           indentQty=indentQty+'.';
+                                                                                           reorderLevelIndex = i;
                                                                                          });
+                                                                                         if(indentQty.length<6){
+                                                                                           setState(() {
+                                                                                             indentQty=indentQty+numbers[i];
+                                                                                           });
+                                                                                         }
                                                                                        }
                                                                                      }
-                                                                                   }
-                                                                                   else{
-                                                                                     if(disValue.length<5 && disValue.length>=1){
-                                                                                       if(disValue.contains('.')){}
+                                                                                     else{
+                                                                                       if(disValue.isEmpty && numbers[i]=='0'){}
                                                                                        else{
                                                                                          setState(() {
-                                                                                           disValue=disValue+'.';
+                                                                                           reorderLevelIndex = i;
                                                                                          });
+                                                                                         if(disValue.length<5){
+                                                                                           setState(() {
+                                                                                             disValue=disValue+numbers[i];
+                                                                                           });
+                                                                                         }
                                                                                        }
                                                                                      }
+
+
                                                                                    }
-
-                                                                                   reorderLevelIndex=i;
-                                                                                 }
-                                                                                 else {
-
-                                                                                   if(!discountKeyPad){
-                                                                                     if(indentQty.isEmpty && numbers[i]=='0'){}
-                                                                                     else{
-                                                                                       setState(() {
-                                                                                         reorderLevelIndex = i;
-                                                                                       });
-                                                                                       if(indentQty.length<6){
-                                                                                         setState(() {
-                                                                                           indentQty=indentQty+numbers[i];
-                                                                                         });
-                                                                                       }
-                                                                                     }
-                                                                                   }
-                                                                                   else{
-                                                                                     if(disValue.isEmpty && numbers[i]=='0'){}
-                                                                                     else{
-                                                                                       setState(() {
-                                                                                         reorderLevelIndex = i;
-                                                                                       });
-                                                                                       if(disValue.length<5){
-                                                                                         setState(() {
-                                                                                           disValue=disValue+numbers[i];
-                                                                                         });
-                                                                                       }
-                                                                                     }
-                                                                                   }
-
-
-                                                                                 }
-                                                                               });
-                                                                               Timer(Duration(milliseconds: 300), (){
-                                                                                 setState((){
-                                                                                   reorderLevelIndex=-1;
                                                                                  });
-                                                                               });
-                                                                             },
-                                                                             child: AnimatedContainer(
-                                                                                 height: SizeConfig.screenWidth*0.19,
-                                                                                 width: SizeConfig.screenWidth*0.19,
-                                                                                 duration: Duration(milliseconds: 200),
-                                                                                 curve: Curves.easeIn,
-                                                                                 decoration: BoxDecoration(
-                                                                                   color: reorderLevelIndex == i?AppTheme.yellowColor:AppTheme.unitSelectColor,
-                                                                                   border: Border.all(color: AppTheme.addNewTextFieldBorder),
-                                                                                   borderRadius: BorderRadius.circular(10),
-                                                                                 ),
-                                                                                 child: Center(
-                                                                                     child: Text(numbers[i],
-                                                                                       style: TextStyle(fontFamily: 'RR', color:reorderLevelIndex == i?Colors.white:AppTheme.gridTextColor, fontSize: 28,),
-                                                                                       textAlign: TextAlign.center,
-                                                                                     )
-                                                                                 )
-                                                                             ),
-                                                                           )))
-                                                                           .values
-                                                                           .toList()
-                                                                   )
-                                                               ),
-                                                               SizedBox(height: 10,),
-                                                               Row(
-                                                                 crossAxisAlignment: CrossAxisAlignment.center,
-                                                                 mainAxisAlignment: MainAxisAlignment.center,
-                                                                 children: [
-                                                                   Checkbox(
-                                                                       activeColor: AppTheme.addNewTextFieldFocusBorder,
-                                                                       value: discountKeyPad,
-                                                                       onChanged: (v){
-                                                                         setState((){
+                                                                                 Timer(Duration(milliseconds: 300), (){
+                                                                                   setState((){
+                                                                                     reorderLevelIndex=-1;
+                                                                                   });
+                                                                                 });
+                                                                               },
+                                                                               child: AnimatedContainer(
+                                                                                   height: SizeConfig.screenWidth*0.19,
+                                                                                   width: SizeConfig.screenWidth*0.19,
+                                                                                   duration: Duration(milliseconds: 200),
+                                                                                   curve: Curves.easeIn,
+                                                                                   decoration: BoxDecoration(
+                                                                                     color: reorderLevelIndex == i?AppTheme.yellowColor:AppTheme.unitSelectColor,
+                                                                                     border: Border.all(color: AppTheme.addNewTextFieldBorder),
+                                                                                     borderRadius: BorderRadius.circular(10),
+                                                                                   ),
+                                                                                   child: Center(
+                                                                                       child: Text(numbers[i],
+                                                                                         style: TextStyle(fontFamily: 'RR', color:reorderLevelIndex == i?Colors.white:AppTheme.gridTextColor, fontSize: 28,),
+                                                                                         textAlign: TextAlign.center,
+                                                                                       )
+                                                                                   )
+                                                                               ),
+                                                                             )))
+                                                                             .values
+                                                                             .toList()
+                                                                     )
+                                                                 ),
+                                                                 SizedBox(height: 10,),
+                                                                 Row(
+                                                                   crossAxisAlignment: CrossAxisAlignment.center,
+                                                                   mainAxisAlignment: MainAxisAlignment.center,
+                                                                   children: [
+                                                                     Checkbox(
+                                                                         activeColor: AppTheme.addNewTextFieldFocusBorder,
+                                                                         value: discountKeyPad,
+                                                                         onChanged: (v){
+                                                                           setState((){
 
-                                                                           discountKeyPad=v;
-                                                                         });
+                                                                             discountKeyPad=v;
+                                                                           });
+                                                                         }
+                                                                     ),
+
+                                                                     Text("Discount",style: TextStyle(fontFamily: 'RR',fontSize: 16,color: AppTheme.addNewTextFieldFocusBorder))
+
+                                                                   ],
+                                                                 ),
+                                                                 SizedBox(height: 10,),
+                                                                 GestureDetector(
+                                                                   onTap: (){
+
+                                                                     if(pn.isDiscountPercentage){
+                                                                       if(disValue.isNotEmpty){
+                                                                         if(double.parse(disValue)<100){
+                                                                           setState((){
+                                                                             discountValueError=false;
+                                                                           });
+                                                                           pn.updateIsDiscountFromQtyShowDialog(pn.purchaseOrdersMappingList.length-1,disValue,indentQty);
+                                                                           Navigator.pop(context);
+                                                                         }
+                                                                         else{
+                                                                           setState((){
+                                                                             discountValueError=true;
+                                                                           });
+                                                                         }
                                                                        }
-                                                                   ),
-
-                                                                   Text("Discount",style: TextStyle(fontFamily: 'RR',fontSize: 16,color: AppTheme.addNewTextFieldFocusBorder))
-
-                                                                 ],
-                                                               ),
-                                                               SizedBox(height: 10,),
-                                                               GestureDetector(
-                                                                 onTap: (){
-
-                                                                   if(pn.isDiscountPercentage){
-                                                                     if(disValue.isNotEmpty){
-                                                                       if(double.parse(disValue)<100){
+                                                                       else{
                                                                          setState((){
                                                                            discountValueError=false;
                                                                          });
                                                                          pn.updateIsDiscountFromQtyShowDialog(pn.purchaseOrdersMappingList.length-1,disValue,indentQty);
                                                                          Navigator.pop(context);
                                                                        }
-                                                                       else{
-                                                                         setState((){
-                                                                           discountValueError=true;
-                                                                         });
-                                                                       }
+
                                                                      }
-                                                                     else{
+                                                                     else {
                                                                        setState((){
                                                                          discountValueError=false;
                                                                        });
                                                                        pn.updateIsDiscountFromQtyShowDialog(pn.purchaseOrdersMappingList.length-1,disValue,indentQty);
                                                                        Navigator.pop(context);
                                                                      }
-
-                                                                   }
-                                                                   else {
+                                                                   },
+                                                                   child: Container(
+                                                                     height: 50,
+                                                                     width: 150,
+                                                                     decoration: BoxDecoration(
+                                                                         borderRadius: BorderRadius.circular(10),
+                                                                         color: AppTheme.yellowColor
+                                                                     ),
+                                                                     child: Center(
+                                                                       child: Text("Done",style: AppTheme.TSWhite20,),
+                                                                     ),
+                                                                   ),
+                                                                 ),
+                                                                 GestureDetector(
+                                                                   onTap: (){
                                                                      setState((){
                                                                        discountValueError=false;
                                                                      });
-                                                                     pn.updateIsDiscountFromQtyShowDialog(pn.purchaseOrdersMappingList.length-1,disValue,indentQty);
+                                                                     pn.removepurchaseOrdersMappingList(pn.purchaseOrdersMappingList.length-1);
                                                                      Navigator.pop(context);
-                                                                   }
-                                                                 },
-                                                                 child: Container(
-                                                                   height: 50,
-                                                                   width: 150,
-                                                                   decoration: BoxDecoration(
-                                                                       borderRadius: BorderRadius.circular(10),
-                                                                       color: AppTheme.yellowColor
-                                                                   ),
-                                                                   child: Center(
-                                                                     child: Text("Done",style: AppTheme.TSWhite20,),
-                                                                   ),
-                                                                 ),
-                                                               ),
-                                                               GestureDetector(
-                                                                 onTap: (){
-                                                                   setState((){
-                                                                     discountValueError=false;
-                                                                   });
-                                                                   pn.removepurchaseOrdersMappingList(pn.purchaseOrdersMappingList.length-1);
-                                                                   Navigator.pop(context);
 
-                                                                 },
-                                                                 child: Container(
-                                                                   height: 50,
-                                                                   width: 150,
-                                                                   child: Center(
-                                                                     child: Text("Cancel",style: TextStyle(fontFamily: 'RL',fontSize: 20,color: Color(0xFFA1A1A1))),
+                                                                   },
+                                                                   child: Container(
+                                                                     height: 50,
+                                                                     width: 150,
+                                                                     child: Center(
+                                                                       child: Text("Cancel",style: TextStyle(fontFamily: 'RL',fontSize: 20,color: Color(0xFFA1A1A1))),
+                                                                     ),
                                                                    ),
                                                                  ),
-                                                               ),
-                                                               Spacer(),
-                                                             ],
+                                                                 Spacer(),
+                                                               ],
+                                                             ),
                                                            ),
                                                          ),
-                                                       ),
-                                                     );
-                                                   },
-                                                 );
-                                               }
-                                           );
+                                                       );
+                                                     },
+                                                   );
+                                                 }
+                                             );
+                                           }
+
+
 
                                          },
                                          child: Container(

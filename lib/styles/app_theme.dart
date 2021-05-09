@@ -53,9 +53,7 @@ class AppTheme {
   static const Color popUpSelectedColor=Color(0xFF3B3B3D);
   static const Color editDisableColor=Color(0xFFF2F2F2);
 
-  static  Border gridBottomborder= Border(
-      bottom: BorderSide(color: AppTheme.addNewTextFieldBorder.withOpacity(0.5))
-  );
+  static  Border gridBottomborder= Border(bottom: BorderSide(color: AppTheme.addNewTextFieldBorder.withOpacity(0.5)));
 
 
   //yellow BoxShadow
@@ -77,5 +75,9 @@ static BoxShadow yellowShadow=  BoxShadow(
 
  static EdgeInsets gridAppBarPadding=EdgeInsets.only(bottom: 15);
  static BorderRadius gridTopBorder=BorderRadius.only(topLeft: Radius.circular(15),topRight: Radius.circular(15));
+
+
+ //Appbar TextStyle
+ static TextStyle appBarTS=TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 16);
 
 }

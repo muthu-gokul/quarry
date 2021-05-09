@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:ffi';
 
 import 'package:flutter/cupertino.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/api/ApiManager.dart';
 import 'package:quarry/api/sp.dart';
@@ -751,6 +752,11 @@ class GoodsReceivedNotifier extends ChangeNotifier{
 
 
         {
+          "Key": "PurchaseOrderId",
+          "Type": "int",
+          "Value": GINV_PorderId
+        },
+        {
           "Key": "PlantId",
           "Type": "int",
           "Value": GINV_PlantId
@@ -868,7 +874,7 @@ class GoodsReceivedNotifier extends ChangeNotifier{
         {
           "Key": "ExpectedDate",
           "Type": "String",
-          "Value": null
+          "Value": DateFormat("yyyy-MM-dd").format(DateTime.now().add(Duration(days: 2)))
         },
         {
           "Key": "SupplierType",

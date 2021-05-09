@@ -566,7 +566,9 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
 
 
                                 },
-                                child: Image.asset("assets/goodsIcons/invoice.jpg")),
+                             //   child:Icon(Icons.cancel,size: 35,)
+                                child:isInvoice? Icon(Icons.cancel,size: 35,) :Image.asset("assets/goodsIcons/invoice.jpg")
+                            ),
                           ],
                         ),
                       )

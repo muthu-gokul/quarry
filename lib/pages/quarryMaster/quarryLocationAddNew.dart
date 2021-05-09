@@ -4,13 +4,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/pages/quarryMaster/plantDetailsGrid.dart';
+import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/autocompleteText.dart';
 import 'package:quarry/widgets/customTextField.dart';
+import 'package:quarry/widgets/navigationBarIcon.dart';
 
 import '../qLocMaterials.dart';
 import '../qLocPAyment.dart';
@@ -37,9 +40,8 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
   double silverBodyTopMargin=0;
 
 
+  bool _keyboardVisible=false;
   bool isListScroll=false;
-
-  bool _keyboardVisible = false;
 
   @override
   void initState() {
@@ -117,6 +119,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
 
     return Scaffold(
       key: scaffoldkey,
+      resizeToAvoidBottomInset: false,
       body: Consumer<QuarryNotifier>(
                  builder: (context,qn,child)=> Stack(
                    children: [
@@ -188,13 +191,11 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                              SizedBox(height: 160,),
                              GestureDetector(
                                onVerticalDragUpdate: (details){
-                                 //  print("DFSfddsf");
-                                 int sensitivity = 5;
 
+                                 int sensitivity = 5;
                                  if (details.delta.dy > sensitivity) {
                                    scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
                                      if(isListScroll){
-                                       // print("ISCROLLG");
                                        setState(() {
                                          isListScroll=false;
                                        });
@@ -205,15 +206,10 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                    scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
 
                                      if(!isListScroll){
-                                       //  print("THENN");
                                        setState(() {
                                          isListScroll=true;
                                        });
                                      }
-                                     /*Timer(Duration(milliseconds: 100), (){
-
-                               });*/
-
                                    });
                                  }
                                },
@@ -231,20 +227,23 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                  width: SizeConfig.screenWidth,
                                  alignment: Alignment.topCenter,
                                  decoration: BoxDecoration(
-                                     color: Colors.white,
+                                     color: AppTheme.gridbodyBgColor,
                                    borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10))
                                  ),
                                  child: NotificationListener<ScrollNotification>(
                                    onNotification: (s){
                                      if(s is ScrollStartNotification){
+
                                        if(listViewController.offset==0 && isListScroll && scrollController.offset==100 && listViewController.position.userScrollDirection==ScrollDirection.idle){
 
                                          Timer(Duration(milliseconds: 100), (){
                                            if(listViewController.position.userScrollDirection!=ScrollDirection.reverse){
-                                             if(scrollController.position.pixels == scrollController.position.maxScrollExtent){
+
+                                             //if(scrollController.position.pixels == scrollController.position.maxScrollExtent){
+                                             if(listViewController.offset==0){
+
                                                scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value) {
                                                  if(isListScroll){
-
                                                    setState(() {
                                                      isListScroll=false;
                                                    });
@@ -254,8 +253,6 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
 
                                            }
                                          });
-
-
                                        }
                                      }
                                    },
@@ -340,6 +337,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                            scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
                                            setState(() {
                                              _keyboardVisible=true;
+                                             isListScroll=true;
                                            });
                                          },
                                          onEditComplete: (){
@@ -353,6 +351,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                        ),
                                        AddNewLabelTextField(
                                          labelText: 'ZipCode',
+                                         textLength: 6,
                                          isEnabled: isEdit,
                                          textInputType: TextInputType.number,
                                          scrollPadding: 400,
@@ -361,6 +360,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                            scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
                                            setState(() {
                                              _keyboardVisible=true;
+                                             isListScroll=true;
                                            });
                                          },
                                          onEditComplete: (){
@@ -374,6 +374,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                        ),
                                        AddNewLabelTextField(
                                          scrollPadding: 500,
+                                         textLength: 10,
                                          labelText: 'Contact Number',
                                          isEnabled: isEdit,
                                          textInputType: TextInputType.number,
@@ -382,6 +383,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                            scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
                                            setState(() {
                                              _keyboardVisible=true;
+                                             isListScroll=true;
                                            });
                                          },
                                          onEditComplete: (){
@@ -389,6 +391,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                            Timer(Duration(milliseconds: 50), (){
                                              setState(() {
                                                _keyboardVisible=false;
+                                               isListScroll=true;
                                              });
                                            });
                                          },
@@ -424,6 +427,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                            scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
                                            setState(() {
                                              _keyboardVisible=true;
+                                             isListScroll=true;
                                            });
                                          },
                                          onEditComplete: (){
@@ -431,6 +435,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                            Timer(Duration(milliseconds: 50), (){
                                              setState(() {
                                                _keyboardVisible=false;
+                                               isListScroll=true;
                                              });
                                            });
                                          },
@@ -617,10 +622,13 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                        width: SizeConfig.screenWidth,
                        child: Row(
                          children: [
-                           IconButton(icon: Icon(Icons.menu), onPressed: widget.drawerCallback),
-                           SizedBox(width: SizeConfig.width5,),
+                           GestureDetector(
+                             onTap: widget.drawerCallback,
+                             child: NavBarIcon(),
+                           ),
+
                            Text("Company Detail",
-                             style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: SizeConfig.width16),
+                             style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize:16),
                            ),
                            Spacer(),
 
@@ -628,43 +636,170 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                        ),
                      ),
 
+
+                     //bottomNav
                      Positioned(
                        bottom: 0,
                        child: Container(
-                         height: _keyboardVisible ? 0 : SizeConfig.height70,
                          width: SizeConfig.screenWidth,
-                         color: AppTheme.grey,
-                         child: Center(
-                           child: GestureDetector(
-                             onTap: (){
-                               if(isEdit){
-                                 setState(() {
-                                   isEdit=false;
-                                 });
-                                 qn.UpdateQuarryDetailDbhit(context);
-                               }
-                               else{
-                                 setState(() {
-                                   isEdit=true;
-                                 });
-                               }
+                         height:_keyboardVisible?0: 70,
 
-                             },
-                             child: Container(
-                               height: SizeConfig.height50,
-                               width: SizeConfig.width120,
-                               decoration: BoxDecoration(
-                                   borderRadius: BorderRadius.circular(SizeConfig.height25),
-                                   color: AppTheme.bgColor
-                               ),
-                               child: Center(
-                                 child: Text(!isEdit?"Edit":"Update",style: AppTheme.TSWhite20,),
+                         decoration: BoxDecoration(
+                             color: AppTheme.gridbodyBgColor,
+                             boxShadow: [
+                               BoxShadow(
+                                 color: AppTheme.gridbodyBgColor,
+                                 spreadRadius: 2,
+                                 blurRadius: 15,
+                                 offset: Offset(0, -20), // changes position of shadow
+                               )
+                             ]
+                         ),
+                         child: Stack(
+
+                           children: [
+                             Container(
+                               margin:EdgeInsets.only(top: 0),
+                               child: CustomPaint(
+                                 size: Size( SizeConfig.screenWidth, 65),
+                                 painter: RPSCustomPainter3(),
                                ),
                              ),
+
+                             Container(
+                               width:  SizeConfig.screenWidth,
+                               height: 80,
+
+                               child: Stack(
+
+                                 children: [
+
+
+
+                                   AnimatedPositioned(
+                                     bottom:isEdit?20:-60,
+                                     duration: Duration(milliseconds: 300,),
+                                     curve: Curves.bounceInOut,
+                                     child: Container(
+
+                                         width: SizeConfig.screenWidth,
+                                         child: Row(
+                                           crossAxisAlignment: CrossAxisAlignment.center,
+                                           children: [
+                                             SizedBox(width: SizeConfig.width20,),
+                                             GestureDetector(
+                                               onTap: (){
+                                                 setState(() {
+                                                   isEdit=false;
+                                                 });
+                                                 qn.UpdateQuarryDetailDbhit(context);
+                                               },
+                                               child: Container(
+                                                 width: 90,
+                                                 decoration: BoxDecoration(
+                                                     boxShadow: [
+                                                       BoxShadow(
+                                                         color: AppTheme.yellowColor.withOpacity(0.7),
+                                                         spreadRadius: -3,
+                                                         blurRadius: 15,
+                                                         offset: Offset(0, 7), // changes position of shadow
+                                                       )
+                                                     ]
+                                                 ),
+                                                 child:FittedBox(
+                                                   child: Row(
+                                                     children: [
+                                                       SvgPicture.asset("assets/svg/edit.svg",height: 20,width: 20,color: AppTheme.yellowColor,),
+                                                       SizedBox(width: SizeConfig.width10,),
+                                                       Text("Update",style: TextStyle(fontSize: 20,fontFamily: 'RR',color:Color(0xFFFF9D10)),),
+
+
+                                                     ],
+                                                   ),
+                                                 ),
+                                               ),
+                                             ),
+                                             Spacer(),
+                                             GestureDetector(
+                                               onTap: (){
+                                                 setState(() {
+                                                   isEdit=false;
+                                                 });
+                                               },
+                                               child: Container(
+                                                 width: 90,
+                                                 decoration: BoxDecoration(
+                                                     boxShadow: [
+                                                       BoxShadow(
+                                                         color: AppTheme.red.withOpacity(0.5),
+                                                         spreadRadius: -3,
+                                                         blurRadius: 25,
+                                                         offset: Offset(0, 7), // changes position of shadow
+                                                       )
+                                                     ]
+                                                 ),
+                                                 child:FittedBox(
+                                                   child: Row(
+                                                     children: [
+                                                       Text("Cancel",style: TextStyle(fontSize: 18,fontFamily: 'RR',color:Colors.red),),
+                                                       SizedBox(width: SizeConfig.width10,),
+                                                       SvgPicture.asset("assets/svg/delete.svg",height: 20,width: 20,color: AppTheme.red,),
+
+
+
+
+                                                     ],
+                                                   ),
+                                                 ),
+                                               ),
+                                             ),
+                                             SizedBox(width: SizeConfig.width10,),
+                                           ],
+                                         )
+                                     ),
+                                   )
+
+                                 ],
+                               ),
+                             )
+                           ],
+                         ),
+                       ),
+                     ),
+                     //addButton
+                     Align(
+                       alignment: Alignment.bottomCenter,
+                       child: GestureDetector(
+                         onTap: (){
+                             setState(() {
+                               isEdit=true;
+                             });
+                         },
+                         child: Container(
+
+                           height:_keyboardVisible?0: 65,
+                           width: 65,
+                           margin: EdgeInsets.only(bottom: 20),
+                           decoration: BoxDecoration(
+                             shape: BoxShape.circle,
+                             color: AppTheme.yellowColor,
+                             boxShadow: [
+                               BoxShadow(
+                                 color: AppTheme.yellowColor.withOpacity(0.4),
+                                 spreadRadius: 1,
+                                 blurRadius: 5,
+                                 offset: Offset(1, 8), // changes position of shadow
+                               ),
+                             ],
+                           ),
+                           child: Center(
+                             child:_keyboardVisible?Container(): Icon(Icons.edit_outlined,size: SizeConfig.height30,color: AppTheme.bgColor,),
                            ),
                          ),
                        ),
                      ),
+
+
 
                      Container(
 

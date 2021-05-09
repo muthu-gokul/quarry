@@ -14,6 +14,7 @@ import 'package:quarry/model/plantDetailsModel/plantLicenseModel.dart';
 import 'package:quarry/model/plantDetailsModel/plantTypeModel.dart';
 import 'package:quarry/model/quarryLocModel.dart';
 import 'package:quarry/model/saleModel.dart';
+import 'package:quarry/model/salesVehiclesModel.dart';
 import 'package:quarry/model/vendorModel.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/alertDialog.dart';
@@ -488,8 +489,11 @@ class QuarryNotifier extends ChangeNotifier{
   List<PaymentType> sale_paymentList=[];
   List<CustomerModel> sale_customerList=[];
   List<CustomerModel> filterSale_customerList=[];
+  List<SalesVehiclesModel> sales_vehiclesList=[];
+  List<String> filtersales_vehiclesList=[];
 
   Future<dynamic> SalesDropDownValues(BuildContext context) async {
+    filtersales_vehiclesList.clear();
     updateInsertSaleLoader(true);
     var body={
       "Fields": [
@@ -524,6 +528,7 @@ class QuarryNotifier extends ChangeNotifier{
           var t1=parsed['Table1'] as List;
           var t2=parsed['Table2'] as List;
           var t3=parsed['Table3'] as List;
+          var t4=parsed['Table4'] as List;
 
 
           vehicleList=t.map((e) => VehicleType.fromJson(e)).toList();
@@ -531,7 +536,10 @@ class QuarryNotifier extends ChangeNotifier{
           sale_paymentList=t2.map((e) => PaymentType.fromJson(e)).toList();
           sale_customerList=t3.map((e) => CustomerModel.fromJson(e)).toList();
           filterSale_customerList=t3.map((e) => CustomerModel.fromJson(e)).toList();
-
+          sales_vehiclesList=t4.map((e) => SalesVehiclesModel.fromJson(e)).toList();
+          sales_vehiclesList.forEach((element) {
+            filtersales_vehiclesList.add(element.vehicleNumber);
+          });
 
         }
         updateInsertSaleLoader(false);
@@ -1087,24 +1095,28 @@ class QuarryNotifier extends ChangeNotifier{
 
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
-        var parsed=json.decode(value);
 
-        print(parsed);
-        var t=parsed['Table'] as List;
-        var t1=parsed['Table1'] as List;
-        var t2=parsed['Table2'] as List;
-        var t3=parsed['Table3'] as List;
-        print(t);
-        print(t1);
-        print(t2);
-        print(t3);
-        //notifyListeners();
-        clearEmptyForm();
-        clearCustomerDetails();
-        printItemwise(context,t3,t,t2,t1,true);
-        updateInsertSaleLoader(false);
-        GetSaleDetailDbhit(context);
-        CustomAlert().billSuccessAlert(context,"","Inward Receipt Successfully Saved","","");
+        if(value!=null){
+          var parsed=json.decode(value);
+
+          print(parsed);
+          var t=parsed['Table'] as List;
+          var t1=parsed['Table1'] as List;
+          var t2=parsed['Table2'] as List;
+          var t3=parsed['Table3'] as List;
+          print(t);
+          print(t1);
+          print(t2);
+          print(t3);
+          //notifyListeners();
+          clearEmptyForm();
+          clearCustomerDetails();
+          printItemwise(context,t3,t,t2,t1,true);
+          updateInsertSaleLoader(false);
+          GetSaleDetailDbhit(context);
+          CustomAlert().billSuccessAlert(context,"","Inward Receipt Successfully Saved","","");
+        }
+
       });
     }
     catch(e){
@@ -2290,6 +2302,7 @@ class QuarryNotifier extends ChangeNotifier{
     SS_DifferWeight;
 
     SS_MaterialUnitPrice=0.0;
+    selectedIndex=-1;
 
     msg="";
     returnMoney="";

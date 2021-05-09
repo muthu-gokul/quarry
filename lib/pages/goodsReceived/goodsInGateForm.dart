@@ -301,7 +301,7 @@ class GoodsInGateFormState extends State<GoodsInGateForm> with TickerProviderSta
                       print(gr.IGF_Materials.length);
                     }),
                     SizedBox(width: SizeConfig.width5,),
-                    Text("${gr.ML_PorderNo} inGate",
+                    Text("InGate Form",
                       style: TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 16),
                     ),
 
@@ -312,7 +312,7 @@ class GoodsInGateFormState extends State<GoodsInGateForm> with TickerProviderSta
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(50)
                       ),
-                      child: Text("${gr.ML_Date}",
+                      child: Text("${gr.ML_PorderNo}",
                         style: TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 16),
                       ),
                     ),

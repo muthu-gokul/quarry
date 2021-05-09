@@ -29,6 +29,21 @@ class VehicleGridModel{
       EmptyWeight: json['EmptyWeightOfVehicle'],
     );
   }
+  Map<String, dynamic> toJson() => {
+    "VehicleId": VehicleId,
+    "VehicleNumber": VehicleNo,
+    "VehicleDescription": VehicleDescript,
+    "VehicleTypeId": VehicleTypeId,
+    "VehicleTypeName": VehicleTypeName,
+    "VehicleModel": VehicleModel,
+    "EmptyWeightOfVehicle": EmptyWeight,
+  };
 
-
+  dynamic get(String propertyName) {
+    var _mapRep = toJson();
+    if (_mapRep.containsKey(propertyName)) {
+      return _mapRep[propertyName];
+    }
+    throw ArgumentError('property not found');
+  }
 }

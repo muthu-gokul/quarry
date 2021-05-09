@@ -103,6 +103,7 @@ class PurchaseDetailsGridState extends State<PurchaseDetailsGrid> with TickerPro
                     ],
                   ),
                 ),
+
                 Container(
                     height: SizeConfig.screenHeight-50,
                     width: SizeConfig.screenWidth,
@@ -175,7 +176,7 @@ class PurchaseDetailsGridState extends State<PurchaseDetailsGrid> with TickerPro
                                               });
                                             },
                                             child: Container(
-
+                                              margin: EdgeInsets.only(bottom:i==pn.purchaseGridList.length-1?70: 0),
                                               decoration: BoxDecoration(
                                                 border: AppTheme.gridBottomborder,
                                                 color: selectedIndex==i?AppTheme.yellowColor:AppTheme.gridbodyBgColor,
@@ -308,6 +309,7 @@ class PurchaseDetailsGridState extends State<PurchaseDetailsGrid> with TickerPro
                                           },
                                           child:  Container(
                                             alignment: Alignment.center,
+                                            margin: EdgeInsets.only(bottom:i==pn.purchaseGridList.length-1?70: 0),
                                             decoration: BoxDecoration(
                                               border: AppTheme.gridBottomborder,
                                               color: selectedIndex==i?AppTheme.yellowColor:AppTheme.gridbodyBgColor,

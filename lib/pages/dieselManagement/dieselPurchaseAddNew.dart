@@ -39,13 +39,14 @@ class DieselPurchaseFormState extends State<DieselPurchaseForm> with TickerProvi
   ScrollController scrollController;
   ScrollController listViewController;
 
-  bool _keyboardVisible=false;
+
   bool isPlantOpen=false;
   bool isPurchaserOpen=false;
   bool isSupplierOpen=false;
   bool isVehicleOpen=false;
 
-
+  bool _keyboardVisible=false;
+  bool isListScroll=false;
 
   @override
   void initState() {
@@ -58,37 +59,8 @@ class DieselPurchaseFormState extends State<DieselPurchaseForm> with TickerProvi
       setState(() {
 
       });
-      listViewController.addListener(() {
-        if(listViewController.position.userScrollDirection == ScrollDirection.forward){
-          /*print("Down");*/
-        } else
-        if(listViewController.position.userScrollDirection == ScrollDirection.reverse){
-          /*print("Up");*/
-          scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
-        }
-        print("LISt-${listViewController.offset}");
-        if(listViewController.offset>20){
-
-          scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
 
 
-        }
-        else if(listViewController.offset==0){
-          scrollController.animateTo(0, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
-        }
-      });
-
-/*      listViewController.addListener(() {
-        if(listViewController.offset>10){
-          if(scrollController.offset==0){
-            scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
-          }
-
-        }
-        else if(listViewController.offset==0){
-          scrollController.animateTo(0, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
-        }
-      });*/
 
     });
     super.initState();
@@ -100,6 +72,7 @@ class DieselPurchaseFormState extends State<DieselPurchaseForm> with TickerProvi
     final node=FocusScope.of(context);
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Consumer<DieselNotifier>(
           builder: (context,dn,child)=> Stack(
             children: [
@@ -151,37 +124,146 @@ class DieselPurchaseFormState extends State<DieselPurchaseForm> with TickerProvi
                             borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10))
                         ),
                         alignment: Alignment.topCenter,
-                        child: Container(
-                          height:_keyboardVisible?SizeConfig.screenHeight*0.5 :SizeConfig.screenHeight-100,
-                          width: SizeConfig.screenWidth,
+                        child: GestureDetector(
+                          onVerticalDragUpdate: (details){
 
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10))
-                          ),
-                          child: NotificationListener<ScrollNotification>(
-                            onNotification: (s){
-                              if(s is ScrollStartNotification){
+                            int sensitivity = 5;
+                            if (details.delta.dy > sensitivity) {
+                              scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
+                                if(isListScroll){
+                                  setState(() {
+                                    isListScroll=false;
+                                  });
+                                }
+                              });
 
-                                print("Scroll Start");
-                                // if(scrollController.offset==100){
-                                //   scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
-                                // }
-                              }
-                            },
-                            child: ListView(
-                              controller: listViewController,
-                              scrollDirection: Axis.vertical,
+                            } else if(details.delta.dy < -sensitivity){
+                              scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
 
-                              children: [
+                                if(!isListScroll){
+                                  setState(() {
+                                    isListScroll=true;
+                                  });
+                                }
+                              });
+                            }
+                          },
+                          child: Container(
+                          //  height:_keyboardVisible?SizeConfig.screenHeight*0.5 :SizeConfig.screenHeight-100,
+                            height:SizeConfig.screenHeight,
+                            width: SizeConfig.screenWidth,
 
-                                CurrentDate(DateTime.now()),
+                            decoration: BoxDecoration(
+                                color: AppTheme.gridbodyBgColor,
+                                borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10))
+                            ),
+                            child: NotificationListener<ScrollNotification>(
+                              onNotification: (s){
+                                if(s is ScrollStartNotification){
+
+                                  if(listViewController.offset==0 && isListScroll && scrollController.offset==100 && listViewController.position.userScrollDirection==ScrollDirection.idle){
+
+                                    Timer(Duration(milliseconds: 100), (){
+                                      if(listViewController.position.userScrollDirection!=ScrollDirection.reverse){
+
+                                        //if(scrollController.position.pixels == scrollController.position.maxScrollExtent){
+                                        if(listViewController.offset==0){
+
+                                          scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value) {
+                                            if(isListScroll){
+                                              setState(() {
+                                                isListScroll=false;
+                                              });
+                                            }
+                                          });
+                                        }
+
+                                      }
+                                    });
+                                  }
+                                }
+                              },
+                              child: ListView(
+                                controller: listViewController,
+                                scrollDirection: Axis.vertical,
+                                physics: isListScroll?AlwaysScrollableScrollPhysics():NeverScrollableScrollPhysics(),
+
+                                children: [
+
+                                  CurrentDate(DateTime.now()),
 
 
-                                GestureDetector(
-                                  onTap: (){
+                                  GestureDetector(
+                                    onTap: (){
 
-                                    if(dn.plantCount!=1){
+                                      if(dn.plantCount!=1){
+                                        node.unfocus();
+
+                                        Timer(Duration(milliseconds: 50), (){
+                                          setState(() {
+                                            _keyboardVisible=false;
+                                          });
+                                        });
+                                        setState(() {
+                                          isPlantOpen=true;
+                                        });
+                                      }
+
+
+                                    },
+                                    child: SidePopUpParent(
+                                      text: dn.DP_PlantName==null? "Select Plant":dn.DP_PlantName,
+                                      textColor: dn.DP_PlantName==null? AppTheme.addNewTextFieldText.withOpacity(0.5):AppTheme.addNewTextFieldText,
+                                      iconColor: dn.DP_PlantName==null? AppTheme.addNewTextFieldText:AppTheme.yellowColor,
+                                      bgColor: dn.DP_PlantName==null? AppTheme.disableColor:Colors.white,
+
+                                    ),
+                                  ),
+
+                                  AddNewLabelTextField(
+                                    textEditingController: dn.DP_billno,
+                                    labelText: "Bill Number",
+                                    ontap: (){
+                                      scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                      setState(() {
+                                        _keyboardVisible=true;
+                                      });
+                                    },
+                                    onEditComplete: (){
+                                      node.unfocus();
+                                      Timer(Duration(milliseconds: 300), (){
+                                        setState(() {
+                                          _keyboardVisible=false;
+                                        });
+                                      });
+                                    },
+
+                                  ),
+                                  GestureDetector(
+                                    onTap: () async{
+                                      final DateTime picked = await showDatePicker(
+                                        context: context,
+                                        initialDate:  dn.DP_billDate, // Refer step 1
+                                        firstDate: DateTime(2000),
+                                        lastDate: DateTime(2100),
+                                      );
+                                      if (picked != null)
+                                        setState(() {
+                                          dn.DP_billDate = picked;
+                                          print(dn.DP_billDate);
+                                        });
+                                    },
+                                    child: ExpectedDateContainer(
+                                    //  text: DateFormat("yyyy-MM-dd").format(dn.DP_billDate)==DateFormat("yyyy-MM-dd").format(DateTime.now())?"Select Bill Date":"${DateFormat.yMMMd().format(dn.DP_billDate)}",
+                                      text: "${DateFormat.yMMMd().format(dn.DP_billDate)}",
+                                      textColor:AppTheme.addNewTextFieldText,
+                                     // textColor:DateFormat("yyyy-MM-dd").format(dn.DP_billDate)==DateFormat("yyyy-MM-dd").format(DateTime.now())? AppTheme.addNewTextFieldText.withOpacity(0.5):AppTheme.addNewTextFieldText,
+                                    ),
+                                  ),
+                                  GestureDetector(
+                                    onTap: (){
+
+
                                       node.unfocus();
 
                                       Timer(Duration(milliseconds: 50), (){
@@ -190,261 +272,198 @@ class DieselPurchaseFormState extends State<DieselPurchaseForm> with TickerProvi
                                         });
                                       });
                                       setState(() {
-                                        isPlantOpen=true;
+                                        isPurchaserOpen=true;
                                       });
-                                    }
 
 
-                                  },
-                                  child: SidePopUpParent(
-                                    text: dn.DP_PlantName==null? "Select Plant":dn.DP_PlantName,
-                                    textColor: dn.DP_PlantName==null? AppTheme.addNewTextFieldText.withOpacity(0.5):AppTheme.addNewTextFieldText,
-                                    iconColor: dn.DP_PlantName==null? AppTheme.addNewTextFieldText:AppTheme.yellowColor,
-                                    bgColor: dn.DP_PlantName==null? AppTheme.disableColor:Colors.white,
+
+                                    },
+                                    child: SidePopUpParent(
+                                      text: dn.DP_purchaserName==null? "Select Purchaser":dn.DP_purchaserName,
+                                      textColor: dn.DP_purchaserName==null? AppTheme.addNewTextFieldText.withOpacity(0.5):AppTheme.addNewTextFieldText,
+                                      iconColor: dn.DP_purchaserName==null? AppTheme.addNewTextFieldText:AppTheme.yellowColor,
+                                      bgColor: dn.DP_purchaserName==null? AppTheme.disableColor:Colors.white,
+
+                                    ),
+                                  ),
+                                  GestureDetector(
+                                    onTap: (){
+
+
+                                      node.unfocus();
+
+                                      Timer(Duration(milliseconds: 50), (){
+                                        setState(() {
+                                          _keyboardVisible=false;
+                                        });
+                                      });
+                                      setState(() {
+                                        isSupplierOpen=true;
+                                      });
+
+
+
+                                    },
+                                    child: SidePopUpParent(
+                                      text: dn.DP_supplierName==null? "Select Supplier":dn.DP_supplierName,
+                                      textColor: dn.DP_supplierName==null? AppTheme.addNewTextFieldText.withOpacity(0.5):AppTheme.addNewTextFieldText,
+                                      iconColor: dn.DP_supplierName==null? AppTheme.addNewTextFieldText:AppTheme.yellowColor,
+                                      bgColor: dn.DP_supplierName==null? AppTheme.disableColor:Colors.white,
+
+                                    ),
+                                  ),
+                                  AddNewLabelTextField(
+                                    textEditingController: dn.DP_location,
+                                    labelText: "Location",
+                                    scrollPadding: 450,
+                                    ontap: (){
+                                      scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                      setState(() {
+                                        _keyboardVisible=true;
+                                        isListScroll=true;
+                                      });
+                                    },
+                                    onEditComplete: (){
+                                      node.unfocus();
+                                      Timer(Duration(milliseconds: 300), (){
+                                        setState(() {
+                                          _keyboardVisible=false;
+                                        });
+                                      });
+                                    },
 
                                   ),
-                                ),
-
-                                AddNewLabelTextField(
-                                  textEditingController: dn.DP_billno,
-                                  labelText: "Bill Number",
-                                  ontap: (){
-                                    scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
-                                    setState(() {
-                                      _keyboardVisible=true;
-                                    });
-                                  },
-                                  onEditComplete: (){
-                                    node.unfocus();
-                                    Timer(Duration(milliseconds: 300), (){
+                                  AddNewLabelTextField(
+                                    textEditingController: dn.DP_contactNo,
+                                    labelText: "Contact Number",
+                                    textInputType: TextInputType.number,
+                                    scrollPadding: 500,
+                                    ontap: (){
+                                      scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                       setState(() {
-                                        _keyboardVisible=false;
+                                        _keyboardVisible=true;
+                                        isListScroll=true;
                                       });
-                                    });
-                                  },
-
-                                ),
-                                GestureDetector(
-                                  onTap: () async{
-                                    final DateTime picked = await showDatePicker(
-                                      context: context,
-                                      initialDate:  dn.DP_billDate, // Refer step 1
-                                      firstDate: DateTime(2000),
-                                      lastDate: DateTime(2100),
-                                    );
-                                    if (picked != null)
-                                      setState(() {
-                                        dn.DP_billDate = picked;
-                                        print(dn.DP_billDate);
+                                    },
+                                    onEditComplete: (){
+                                      node.unfocus();
+                                      Timer(Duration(milliseconds: 300), (){
+                                        setState(() {
+                                          _keyboardVisible=false;
+                                        });
                                       });
-                                  },
-                                  child: ExpectedDateContainer(
-                                  //  text: DateFormat("yyyy-MM-dd").format(dn.DP_billDate)==DateFormat("yyyy-MM-dd").format(DateTime.now())?"Select Bill Date":"${DateFormat.yMMMd().format(dn.DP_billDate)}",
-                                    text: "${DateFormat.yMMMd().format(dn.DP_billDate)}",
-                                    textColor:AppTheme.addNewTextFieldText,
-                                   // textColor:DateFormat("yyyy-MM-dd").format(dn.DP_billDate)==DateFormat("yyyy-MM-dd").format(DateTime.now())? AppTheme.addNewTextFieldText.withOpacity(0.5):AppTheme.addNewTextFieldText,
-                                  ),
-                                ),
-                                GestureDetector(
-                                  onTap: (){
-
-
-                                    node.unfocus();
-
-                                    Timer(Duration(milliseconds: 50), (){
-                                      setState(() {
-                                        _keyboardVisible=false;
-                                      });
-                                    });
-                                    setState(() {
-                                      isPurchaserOpen=true;
-                                    });
-
-
-
-                                  },
-                                  child: SidePopUpParent(
-                                    text: dn.DP_purchaserName==null? "Select Purchaser":dn.DP_purchaserName,
-                                    textColor: dn.DP_purchaserName==null? AppTheme.addNewTextFieldText.withOpacity(0.5):AppTheme.addNewTextFieldText,
-                                    iconColor: dn.DP_purchaserName==null? AppTheme.addNewTextFieldText:AppTheme.yellowColor,
-                                    bgColor: dn.DP_purchaserName==null? AppTheme.disableColor:Colors.white,
+                                    },
 
                                   ),
-                                ),
-                                GestureDetector(
-                                  onTap: (){
 
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
 
-                                    node.unfocus();
+                                      Checkbox(
 
-                                    Timer(Duration(milliseconds: 50), (){
+                                          fillColor:MaterialStateColor.resolveWith((states) => AppTheme.yellowColor),
+                                          checkColor: AppTheme.bgColor.withOpacity(0.5),
+                                          value: dn.DP_isVehicle,
+                                          onChanged: (v){
+                                            setState(() {
+                                              dn.DP_isVehicle=!dn.DP_isVehicle;
+                                            });
+                                          }),
+                                      Text("Is Vehicle",style: TextStyle(fontFamily: 'RR',fontSize: 16,color: AppTheme.addNewTextFieldText),),
+                                      SizedBox(width: SizeConfig.width20,),
+                                    ],
+                                  ),
+
+                                  GestureDetector(
+                                    onTap: (){
                                       setState(() {
-                                        _keyboardVisible=false;
+                                        isVehicleOpen=true;
                                       });
-                                    });
-                                    setState(() {
-                                      isSupplierOpen=true;
-                                    });
+                                    },
+                                    child: AnimatedContainer(
+                                      height: dn.DP_isVehicle? SizeConfig.height50:0,
+                                      duration: Duration(milliseconds: 300),
+                                      curve: Curves.easeIn,
+                                     //   margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20),
+                                     /* decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(3),
+                                          border: Border.all(color:AppTheme.addNewTextFieldBorder),
+                                          color: Colors.transparent
+                                      ),*/
+                                      alignment: Alignment.topCenter,
+                                      child: SidePopUpParentWithoutTopMargin(
+                                        text: dn.DP_vehicleName==null? "Select Vehicle":dn.DP_vehicleName,
+                                        textColor: dn.DP_vehicleName==null? AppTheme.addNewTextFieldText.withOpacity(0.5):AppTheme.addNewTextFieldText,
+                                        iconColor: dn.DP_vehicleName==null? AppTheme.addNewTextFieldText:AppTheme.yellowColor,
+                                        bgColor: dn.DP_vehicleName==null? AppTheme.disableColor:Colors.white,
+
+                                      )
+                                    ),
+                                  ),
 
 
-
-                                  },
-                                  child: SidePopUpParent(
-                                    text: dn.DP_supplierName==null? "Select Supplier":dn.DP_supplierName,
-                                    textColor: dn.DP_supplierName==null? AppTheme.addNewTextFieldText.withOpacity(0.5):AppTheme.addNewTextFieldText,
-                                    iconColor: dn.DP_supplierName==null? AppTheme.addNewTextFieldText:AppTheme.yellowColor,
-                                    bgColor: dn.DP_supplierName==null? AppTheme.disableColor:Colors.white,
+                                  AddNewLabelTextField(
+                                    textEditingController: dn.DP_dieselQTY,
+                                    labelText: "Diesel Quantity",
+                                    textInputType: TextInputType.number,
+                                    scrollPadding: 550,
+                                    ontap: (){
+                                      scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                      setState(() {
+                                        _keyboardVisible=true;
+                                        isListScroll=true;
+                                      });
+                                    },
+                                    onEditComplete: (){
+                                      node.unfocus();
+                                      Timer(Duration(milliseconds: 300), (){
+                                        setState(() {
+                                          _keyboardVisible=false;
+                                        });
+                                      });
+                                    },
+                                    onChange: (v){
+                                      dn.dieselCalc();
+                                    },
+                                  ),
+                                  AddNewLabelTextField(
+                                    textEditingController: dn.DP_dieselPrice,
+                                    labelText: "Diesel Price",
+                                    textInputType: TextInputType.number,
+                                    scrollPadding: 550,
+                                    ontap: (){
+                                      scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                      setState(() {
+                                        _keyboardVisible=true;
+                                        isListScroll=true;
+                                      });
+                                    },
+                                    onEditComplete: (){
+                                      node.unfocus();
+                                      Timer(Duration(milliseconds: 300), (){
+                                        setState(() {
+                                          _keyboardVisible=false;
+                                        });
+                                      });
+                                    },
+                                    onChange: (v){
+                                      dn.dieselCalc();
+                                    },
 
                                   ),
-                                ),
-                                AddNewLabelTextField(
-                                  textEditingController: dn.DP_location,
-                                  labelText: "Location",
-                                  scrollPadding: 100,
-                                  ontap: (){
-                                    //scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
-                                    scrollController.jumpTo(100);
-                                    setState(() {
-                                      _keyboardVisible=true;
-                                    });
-                                  },
-                                  onEditComplete: (){
-                                    node.unfocus();
-                                    Timer(Duration(milliseconds: 300), (){
-                                      setState(() {
-                                        _keyboardVisible=false;
-                                      });
-                                    });
-                                  },
 
-                                ),
-                                AddNewLabelTextField(
-                                  textEditingController: dn.DP_contactNo,
-                                  labelText: "Contact Number",
-                                  textInputType: TextInputType.number,
-                                  scrollPadding: 100,
-                                  ontap: (){
-                                    scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
-                                    setState(() {
-                                      _keyboardVisible=true;
-                                    });
-                                  },
-                                  onEditComplete: (){
-                                    node.unfocus();
-                                    Timer(Duration(milliseconds: 300), (){
-                                      setState(() {
-                                        _keyboardVisible=false;
-                                      });
-                                    });
-                                  },
-
-                                ),
-
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-
-                                    Checkbox(
-
-                                        fillColor:MaterialStateColor.resolveWith((states) => AppTheme.yellowColor),
-                                        checkColor: AppTheme.bgColor.withOpacity(0.5),
-                                        value: dn.DP_isVehicle,
-                                        onChanged: (v){
-                                          setState(() {
-                                            dn.DP_isVehicle=!dn.DP_isVehicle;
-                                          });
-                                        }),
-                                    Text("Is Vehicle",style: TextStyle(fontFamily: 'RR',fontSize: 16,color: AppTheme.addNewTextFieldText),),
-                                    SizedBox(width: SizeConfig.width20,),
-                                  ],
-                                ),
-
-                                GestureDetector(
-                                  onTap: (){
-                                    setState(() {
-                                      isVehicleOpen=true;
-                                    });
-                                  },
-                                  child: AnimatedContainer(
-                                    height: dn.DP_isVehicle? SizeConfig.height50:0,
-                                    duration: Duration(milliseconds: 300),
-                                    curve: Curves.easeIn,
-                                   //   margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20),
-                                   /* decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(3),
-                                        border: Border.all(color:AppTheme.addNewTextFieldBorder),
-                                        color: Colors.transparent
-                                    ),*/
-                                    alignment: Alignment.topCenter,
-                                    child: SidePopUpParentWithoutTopMargin(
-                                      text: dn.DP_vehicleName==null? "Select Vehicle":dn.DP_vehicleName,
-                                      textColor: dn.DP_vehicleName==null? AppTheme.addNewTextFieldText.withOpacity(0.5):AppTheme.addNewTextFieldText,
-                                      iconColor: dn.DP_vehicleName==null? AppTheme.addNewTextFieldText:AppTheme.yellowColor,
-                                      bgColor: dn.DP_vehicleName==null? AppTheme.disableColor:Colors.white,
-
-                                    )
-                                  ),
-                                ),
-
-
-                                AddNewLabelTextField(
-                                  textEditingController: dn.DP_dieselQTY,
-                                  labelText: "Diesel Quantity",
-                                  textInputType: TextInputType.number,
-                                  scrollPadding: 100,
-                                  ontap: (){
-                                    scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
-                                    setState(() {
-                                      _keyboardVisible=true;
-                                    });
-                                  },
-                                  onEditComplete: (){
-                                    node.unfocus();
-                                    Timer(Duration(milliseconds: 300), (){
-                                      setState(() {
-                                        _keyboardVisible=false;
-                                      });
-                                    });
-                                  },
-                                  onChange: (v){
-                                    dn.dieselCalc();
-                                  },
-                                ),
-                                AddNewLabelTextField(
-                                  textEditingController: dn.DP_dieselPrice,
-                                  labelText: "Diesel Price",
-                                  textInputType: TextInputType.number,
-                                  scrollPadding: 100,
-                                  ontap: (){
-                                    scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
-                                    setState(() {
-                                      _keyboardVisible=true;
-                                    });
-                                  },
-                                  onEditComplete: (){
-                                    node.unfocus();
-                                    Timer(Duration(milliseconds: 300), (){
-                                      setState(() {
-                                        _keyboardVisible=false;
-                                      });
-                                    });
-                                  },
-                                  onChange: (v){
-                                    dn.dieselCalc();
-                                  },
-
-                                ),
-
-                                SizedBox(height: 20,),
-                                Text("Total Amount",style: TextStyle(fontSize: 14,fontFamily: 'RR',color: AppTheme.hintColor),
-                                textAlign: TextAlign.center,
-                                ),
-                                Text("${dn.totalAmount}",style: TextStyle(fontSize: 25,fontFamily: 'RB',color: AppTheme.addNewTextFieldText),
+                                  SizedBox(height: 20,),
+                                  Text("Total Amount",style: TextStyle(fontSize: 14,fontFamily: 'RR',color: AppTheme.hintColor),
                                   textAlign: TextAlign.center,
-                                ),
+                                  ),
+                                  Text("${dn.totalAmount}",style: TextStyle(fontSize: 25,fontFamily: 'RB',color: AppTheme.addNewTextFieldText),
+                                    textAlign: TextAlign.center,
+                                  ),
 
-                                SizedBox(height: SizeConfig.height100,)
-                              ],
+                                  SizedBox(height:_keyboardVisible?SizeConfig.screenHeight*0.5: SizeConfig.height250,)
+                                ],
+                              ),
                             ),
                           ),
                         ),
@@ -455,16 +474,13 @@ class DieselPurchaseFormState extends State<DieselPurchaseForm> with TickerProvi
               ),
 
 
-
-
               //bottomNav
-              AnimatedPositioned(
-                duration: Duration(milliseconds: 100),
-                curve: Curves.easeIn,
-                bottom: _keyboardVisible?-90:0,
+              Positioned(
+                bottom: 0,
                 child: Container(
                   width: SizeConfig.screenWidth,
-                  height:70,
+                  // height:_keyboardVisible?0:  70,
+                  height: 65,
 
                   decoration: BoxDecoration(
                       color: AppTheme.gridbodyBgColor,
@@ -480,27 +496,17 @@ class DieselPurchaseFormState extends State<DieselPurchaseForm> with TickerProvi
                   child: Stack(
 
                     children: [
-                      CustomPaint(
-                        size: Size( SizeConfig.screenWidth, 65),
-                        painter: RPSCustomPainter3(),
-                      ),
-                      Center(
-                        heightFactor: 0.5,
-                        child: FloatingActionButton(backgroundColor: AppTheme.yellowColor, child: Icon(Icons.done,color: AppTheme.bgColor,size: 30,), elevation: 0.1, onPressed: () {
-                          dn.InsertDieselPurchaseDbHit(context);
-                       /*   if(dn.vehicleNo.text.isEmpty){
-                            CustomAlert().commonErrorAlert(context, "Enter Vehicle Number", "");
-                          }
-                          else if(dn.loadedWeight.text.isEmpty){
-                            CustomAlert().commonErrorAlert(context, "Enter Loaded Weight", "");
-                          }
-                          else{
-                            dn.InsertGoodsDbHit(context);
-                          }*/
+                      Container(
+                        decoration: BoxDecoration(
 
-
-                        }),
+                        ),
+                        margin:EdgeInsets.only(top: 0),
+                        child: CustomPaint(
+                          size: Size( SizeConfig.screenWidth, 65),
+                          painter: RPSCustomPainter3(),
+                        ),
                       ),
+
                       Container(
                         width:  SizeConfig.screenWidth,
                         height: 80,
@@ -516,6 +522,41 @@ class DieselPurchaseFormState extends State<DieselPurchaseForm> with TickerProvi
                   ),
                 ),
               ),
+              //addButton
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: GestureDetector(
+                  onTap: (){
+                    node.unfocus();
+                    dn.InsertDieselPurchaseDbHit(context);
+                  },
+                  child: Container(
+
+                    height: 65,
+                    width: 65,
+                    margin: EdgeInsets.only(bottom: 20),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: AppTheme.yellowColor,
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppTheme.yellowColor.withOpacity(0.4),
+                          spreadRadius: 1,
+                          blurRadius: 5,
+                          offset: Offset(1, 8), // changes position of shadow
+                        ),
+                      ],
+                    ),
+                    child: Center(
+                      child: Icon(Icons.done,size: SizeConfig.height30,color: AppTheme.bgColor,),
+                    ),
+                  ),
+                ),
+              ),
+
+
+
+
 
 
               Container(

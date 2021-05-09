@@ -13,7 +13,9 @@ import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/dateRangePicker.dart' as DateRagePicker;
+import 'package:quarry/widgets/navigationBarIcon.dart';
 import 'package:quarry/widgets/reportpdf.dart';
+import 'package:quarry/widgets/staticColumnScroll/customDataTable.dart';
 
 
 
@@ -30,8 +32,14 @@ class _SaleGridState extends State<SaleGrid> {
 
 
   bool showEdit=false;
+  ScrollController header=new ScrollController();
+  ScrollController body=new ScrollController();
+  ScrollController verticalLeft=new ScrollController();
+  ScrollController verticalRight=new ScrollController();
 
+  bool showShadow=false;
 
+  List<String> gridDataRowList=["SaleDate","SaleNumber","VehicleNumber","MaterialName","RoundedTotalAmount","CustomerName"];
 
 
   @override
@@ -42,7 +50,41 @@ class _SaleGridState extends State<SaleGrid> {
 
   @override
   void initState() {
-    print("SALE IMIY");
+    header.addListener(() {
+      if(body.offset!=header.offset){
+        body.jumpTo(header.offset);
+      }
+      if(header.offset==0){
+        setState(() {
+          showShadow=false;
+        });
+      }
+      else{
+        if(!showShadow){
+          setState(() {
+            showShadow=true;
+          });
+        }
+      }
+    });
+
+    body.addListener(() {
+      if(header.offset!=body.offset){
+        header.jumpTo(body.offset);
+      }
+    });
+
+    verticalLeft.addListener(() {
+      if(verticalRight.offset!=verticalLeft.offset){
+        verticalRight.jumpTo(verticalLeft.offset);
+      }
+    });
+
+    verticalRight.addListener(() {
+      if(verticalLeft.offset!=verticalRight.offset){
+        verticalLeft.jumpTo(verticalRight.offset);
+      }
+    });
     super.initState();
   }
   DateTime dateTime=DateTime.parse('2021-01-01');
@@ -58,7 +100,7 @@ class _SaleGridState extends State<SaleGrid> {
             builder: (context,qn,child)=>  Stack(
               children: [
                 Container(
-                  height: SizeConfig.height140,
+                  height: 160,
                   width: SizeConfig.screenWidth,
                    color: AppTheme.yellowColor,
 
@@ -67,10 +109,12 @@ class _SaleGridState extends State<SaleGrid> {
                     children: [
                       Row(
                         children: [
-                          IconButton(icon: Icon(Icons.menu), onPressed: widget.drawerCallback),
-                          SizedBox(width: SizeConfig.width10,),
+                          GestureDetector(
+                            onTap: widget.drawerCallback,
+                            child: NavBarIcon(),
+                          ),
                           Text("Sales Detail",
-                            style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: SizeConfig.width16),
+                            style: AppTheme.appBarTS
                           ),
                           Spacer(),
                           Theme(
@@ -162,134 +206,253 @@ class _SaleGridState extends State<SaleGrid> {
                     ],
                   )
                 ),
+
+
+
+
                 Container(
-                  height: SizeConfig.screenHeight-(SizeConfig.height140+SizeConfig.height80),
-                  // width: SizeConfig.screenWidth,
-                  width: SizeConfig.screenWidth,
-                  margin: EdgeInsets.only(top: SizeConfig.height140,bottom: SizeConfig.height100),
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.vertical,
-                    child: SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child:DataTable(
-
-                            headingRowColor:  MaterialStateColor.resolveWith((states) =>AppTheme.bgColor),
-                            showBottomBorder: true,
-                            columns: qn.saleDetailsGridCol.map((e) => DataColumn(
-                              label:Text(e,style: TextStyle(fontFamily: 'RB',fontSize: 16,color: Colors.white),),
-                            )).toList(),
-                            rows: qn.saleDetailsGrid.asMap().map((i,e) => MapEntry(i, DataRow(
-                                color: MaterialStateColor.resolveWith((states) =>qn.selectedIndex==i? AppTheme.bgColor.withOpacity(0.7):e.SaleStatus=='Open'?Colors.red.withOpacity(0.2):Colors.green.withOpacity(0.2)),
-                                cells: [
-                              DataCell(Text(e.SaleDate,style: TextStyle(fontFamily: 'RR',fontSize: 14,color:qn.selectedIndex==i?Colors.white: Colors.black),textAlign: TextAlign.center,),
-                                  onTap: (){
-
-                                    setState(() {
-                                      if(qn.selectedIndex==-1 || qn.selectedIndex!=i){
-                                        qn.selectedIndex=i;
-                                        if(e.SaleStatus=='Open'){
-                                          isOpen=true;
-                                        }else{
-                                          isOpen=false;
-                                        }
-                                      }
-                                      else {
-                                        qn.selectedIndex=-1;
-                                      }
-                                    });
-
-                                  }
-                              ),
-                              DataCell(Text(e.SaleNumber.toString(),style: TextStyle(fontFamily: 'RR',fontSize: 14,color:qn.selectedIndex==i?Colors.white: Colors.black),),
-                                  onTap: (){
-                                    setState(() {
-                                      if(qn.selectedIndex==-1 || qn.selectedIndex!=i){
-                                        qn.selectedIndex=i;
-                                        if(e.SaleStatus=='Open'){
-                                          isOpen=true;
-                                        }else{
-                                          isOpen=false;
-                                        }
-                                      }
-                                      else {
-                                        qn.selectedIndex=-1;
-                                      }
-                                    });
-                                  }),
-                              DataCell(Text(e.VehicleNumber??"",style: TextStyle(fontFamily: 'RR',fontSize: 14,color:qn.selectedIndex==i?Colors.white: Colors.black),textAlign: TextAlign.center,),
-                                  onTap: (){
-                                    setState(() {
-                                      if(qn.selectedIndex==-1 || qn.selectedIndex!=i){
-                                        qn.selectedIndex=i;
-                                        if(e.SaleStatus=='Open'){
-                                          isOpen=true;
-                                        }else{
-                                          isOpen=false;
-                                        }
-                                      }
-                                      else {
-                                        qn.selectedIndex=-1;
-                                      }
-                                    });
-                                  }),
-                                  DataCell(Text("${e.MaterialName??""}",style: TextStyle(fontFamily: 'RR',fontSize: 14,color:qn.selectedIndex==i?Colors.white: Colors.black),),
-                                      onTap: (){
-                                        setState(() {
-                                          if(qn.selectedIndex==-1 || qn.selectedIndex!=i){
-                                            qn.selectedIndex=i;
-                                            if(e.SaleStatus=='Open'){
-                                              isOpen=true;
-                                            }else{
-                                              isOpen=false;
-                                            }
-                                          }
-                                          else {
-                                            qn.selectedIndex=-1;
-                                          }
-                                        });
-                                      }),
-                              DataCell(Text("${e.TotalAmount.round()??"0"}",style: TextStyle(fontFamily: 'RR',fontSize: 14,color:qn.selectedIndex==i?Colors.white: Colors.black),),
-                                  onTap: (){
-                                    setState(() {
-                                      if(qn.selectedIndex==-1 || qn.selectedIndex!=i){
-                                        qn.selectedIndex=i;
-                                        if(e.SaleStatus=='Open'){
-                                          isOpen=true;
-                                        }else{
-                                          isOpen=false;
-                                        }
-                                      }
-                                      else {
-                                        qn.selectedIndex=-1;
-                                      }
-                                    });
-                                  }),
-                              DataCell(Text("${e.customerName??""}",style: TextStyle(fontFamily: 'RR',fontSize: 14,color:qn.selectedIndex==i?Colors.white: Colors.black),),
-                                  onTap: (){
-                                    setState(() {
-                                      if(qn.selectedIndex==-1 || qn.selectedIndex!=i){
-                                        qn.selectedIndex=i;
-                                        if(e.SaleStatus=='Open'){
-                                          isOpen=true;
-                                        }else{
-                                          isOpen=false;
-                                        }
-                                      }
-                                      else {
-                                        qn.selectedIndex=-1;
-                                      }
-                                    });
-                                  }),
-
-
-                            ])
-                            )
-                            ).values.toList()
-                        )
-
+                    height: SizeConfig.screenHeight-140,
+                    width: SizeConfig.screenWidth,
+                    margin: EdgeInsets.only(top: 140),
+                    clipBehavior: Clip.antiAlias,
+                    decoration: BoxDecoration(
+                        color: AppTheme.gridbodyBgColor,
+                        borderRadius: BorderRadius.only(topLeft: Radius.circular(15),topRight: Radius.circular(15))
                     ),
-                  ),
+                    child: Stack(
+                      children: [
+
+                        //Scrollable
+                        Positioned(
+                          left:149,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Container(
+                                height: 50,
+                                width: SizeConfig.screenWidth-149,
+                                color: showShadow? AppTheme.bgColor.withOpacity(0.8):AppTheme.bgColor,
+                                child: SingleChildScrollView(
+                                  controller: header,
+                                  scrollDirection: Axis.horizontal,
+                                  child: Row(
+                                      children: qn.saleDetailsGridCol.asMap().
+                                      map((i, value) => MapEntry(i, i==0?Container():
+                                      Container(
+                                          alignment: Alignment.center,
+                                          width: 150,
+                                          child: Text(value,style: AppTheme.TSWhite166,)
+                                      )
+                                      )).values.toList()
+                                  ),
+                                ),
+
+                              ),
+                              Container(
+                                height: SizeConfig.screenHeight-260,
+                                width: SizeConfig.screenWidth-149,
+                                alignment: Alignment.topCenter,
+                                color: AppTheme.gridbodyBgColor,
+                                child: SingleChildScrollView(
+                                  controller: body,
+                                  scrollDirection: Axis.horizontal,
+                                  child: Container(
+                                    height: SizeConfig.screenHeight-260,
+                                    alignment: Alignment.topCenter,
+                                    color: AppTheme.gridbodyBgColor,
+                                    child: SingleChildScrollView(
+                                      controller: verticalRight,
+                                      scrollDirection: Axis.vertical,
+                                      child: Column(
+                                          children:qn.saleDetailsGrid.asMap().
+                                          map((i, value) => MapEntry(
+                                              i,InkWell(
+                                            onTap: (){
+
+                                              setState(() {
+                                                if(qn.selectedIndex==-1 || qn.selectedIndex!=i){
+                                                  qn.selectedIndex=i;
+                                                  if(qn.saleDetailsGrid[i].SaleStatus=='Open'){
+                                                    isOpen=true;
+                                                  }else{
+                                                    isOpen=false;
+                                                  }
+                                                }
+                                                else {
+                                                  qn.selectedIndex=-1;
+                                                }
+                                              });
+
+
+                                            },
+                                            child: Container(
+                                              margin: EdgeInsets.only(bottom:i==qn.saleDetailsGrid.length-1?70: 0),
+                                              decoration: BoxDecoration(
+                                                border: AppTheme.gridBottomborder,
+                                                color: qn.selectedIndex==i?AppTheme.yellowColor:value.SaleStatus=='Open'?Colors.red.withOpacity(0.2):Colors.green.withOpacity(0.2),
+                                              ),
+                                              height: 50,
+                                              // padding: EdgeInsets.only(top: 20,bottom: 20),
+                                              child: Row(
+                                                children: [
+
+
+                                                  Container(
+                                                    alignment: Alignment.center,
+                                                    width: 150,
+                                                    child: Text("${value.SaleNumber}",
+                                                      style: qn.selectedIndex==i?AppTheme.bgColorTS14:AppTheme.gridTextColor14,
+                                                    ),
+                                                  ),
+
+                                                  Container(
+                                                    width: 150,
+                                                    alignment: Alignment.center,
+                                                    child: Text("${value.VehicleNumber}",
+                                                      style: qn.selectedIndex==i?AppTheme.bgColorTS14:AppTheme.gridTextColor14,
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    width: 150,
+                                                    alignment: Alignment.center,
+                                                    child: Text("${value.MaterialName}",
+                                                      style: qn.selectedIndex==i?AppTheme.bgColorTS14:AppTheme.gridTextColor14,
+                                                    ),
+                                                  ),
+
+                                                  Container(
+                                                    width: 150,
+                                                    alignment: Alignment.center,
+                                                    child: Text("${value.RoundedTotalAmount}",
+                                                      style: qn.selectedIndex==i?AppTheme.bgColorTS:AppTheme.gridTextColor14,
+                                                    ),
+                                                  ),
+
+                                                  Container(
+                                                    width: 150,
+                                                    alignment: Alignment.center,
+                                                    child: Text("${value.CustomerName??" "}",
+                                                      style: qn.selectedIndex==i?AppTheme.bgColorTS:AppTheme.gridTextColor14,
+                                                    ),
+                                                  ),
+
+
+                                                ],
+                                              ),
+                                            ),
+                                          )
+                                          )
+                                          ).values.toList()
+                                      ),
+                                    ),
+
+
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+
+
+                        //not Scrollable
+                        Positioned(
+                          left: 0,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Container(
+                                height: 50,
+                                width: 150,
+                                color: AppTheme.bgColor,
+                                alignment: Alignment.center,
+                                child: Text("${qn.saleDetailsGridCol[0]}",style: AppTheme.TSWhite166,),
+
+                              ),
+                              Container(
+                                height: SizeConfig.screenHeight-260,
+                                alignment: Alignment.topCenter,
+                                decoration: BoxDecoration(
+                                    color: AppTheme.gridbodyBgColor,
+                                    boxShadow: [
+                                      showShadow?  BoxShadow(
+                                        color: AppTheme.addNewTextFieldText.withOpacity(0.1),
+                                        spreadRadius: 0,
+                                        blurRadius: 15,
+                                        offset: Offset(0, -8), // changes position of shadow
+                                      ):BoxShadow(color: Colors.transparent)
+                                    ]
+                                ),
+                                child: Container(
+                                  height: SizeConfig.screenHeight-260,
+                                  alignment: Alignment.topCenter,
+
+                                  child: SingleChildScrollView(
+                                    controller: verticalLeft,
+                                    scrollDirection: Axis.vertical,
+                                    child: Column(
+                                        children: qn.saleDetailsGrid.asMap().
+                                        map((i, value) => MapEntry(
+                                            i,InkWell(
+                                          onTap: (){
+                                            setState(() {
+                                              if(qn.selectedIndex==-1 || qn.selectedIndex!=i){
+                                                qn.selectedIndex=i;
+                                                if(qn.saleDetailsGrid[i].SaleStatus=='Open'){
+                                                  isOpen=true;
+                                                }else{
+                                                  isOpen=false;
+                                                }
+                                              }
+                                              else {
+                                                qn.selectedIndex=-1;
+                                              }
+                                            });
+                                          },
+                                          child:  Container(
+                                            alignment: Alignment.center,
+                                            margin: EdgeInsets.only(bottom:i==qn.saleDetailsGrid.length-1?70: 0),
+                                            decoration: BoxDecoration(
+                                              border: AppTheme.gridBottomborder,
+                                              color:  qn.selectedIndex==i?AppTheme.yellowColor:value.SaleStatus=='Open'?Colors.red.withOpacity(0.2):Colors.green.withOpacity(0.2),
+                                            ),
+                                            height: 50,
+                                            width: 150,
+                                            child: Container(
+                                              padding: EdgeInsets.only(left: 10,right: 10,top: 3,bottom: 3),
+
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(50),
+                                                //color:value.invoiceType=='Receivable'? Colors.green:AppTheme.red,
+                                              ),
+                                              child: FittedBox(
+                                                fit: BoxFit.contain,
+                                                child: Text("${value.SaleDate}",
+                                                  //  style: qn.selectedIndex==i?AppTheme.bgColorTS14:AppTheme.gridTextColorTS,
+                                                  style: qn.selectedIndex==i?AppTheme.bgColorTS14:AppTheme.gridTextColor14,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                        )
+                                        ).values.toList()
+
+
+                                    ),
+                                  ),
+
+
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+
+                      ],
+                    )
                 ),
+
 
 
 

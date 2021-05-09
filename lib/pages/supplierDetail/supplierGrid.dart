@@ -8,6 +8,7 @@ import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/navigationBarIcon.dart';
+import 'package:quarry/widgets/staticColumnScroll/customDataTable.dart';
 import 'supplierAddNew.dart';
 
 
@@ -23,28 +24,20 @@ class SupplierDetailsGridState extends State<SupplierDetailsGrid> with TickerPro
   bool showEdit=false;
   int selectedIndex;
 
+  List<String> gridDataRowList=["SupplierName","SupplierCategoryName","Location","SupplierContactNumber"];
+
+  //width
+  double categoryWidth=0.0;
+  GlobalKey categoryKey= GlobalKey();
+
   ScrollController header=new ScrollController();
   ScrollController body=new ScrollController();
   ScrollController verticalLeft=new ScrollController();
   ScrollController verticalRight=new ScrollController();
   bool showShadow=false;
 
-
-  //width
-  double categoryWidth=0.0;
-  GlobalKey categoryKey= GlobalKey();
-
   @override
   void initState() {
-    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-      categoryWidth=categoryKey.currentContext.size.width;
-      setState(() {
-
-      });
-    });
-
-
-
     header.addListener(() {
       if(body.offset!=header.offset){
         body.jumpTo(header.offset);
@@ -114,7 +107,31 @@ class SupplierDetailsGridState extends State<SupplierDetailsGrid> with TickerPro
                   ),
                 ),
 
-                Container(
+                CustomDataTable(
+                  topMargin: 50,
+                  gridBodyReduceHeight: 140,
+                  selectedIndex: selectedIndex,
+                  gridCol: sn.supplierGridCol,
+                  gridData:sn.supplierGridList,
+                  gridDataRowList: gridDataRowList,
+                  func: (index){
+                    if(selectedIndex==index){
+                      setState(() {
+                        selectedIndex=-1;
+                        showEdit=false;
+                      });
+
+                    }
+                    else{
+                      setState(() {
+                        selectedIndex=index;
+                        showEdit=true;
+                      });
+                    }
+                  },
+                ),
+
+                /*Container(
                     height: SizeConfig.screenHeight-50,
                     width: SizeConfig.screenWidth,
                     margin: EdgeInsets.only(top: 50),
@@ -340,91 +357,8 @@ class SupplierDetailsGridState extends State<SupplierDetailsGrid> with TickerPro
 
                       ],
                     )
-                ),
-
-               /* Container(
-                    height: SizeConfig.screenHeight-50,
-                    width: SizeConfig.screenWidth,
-                    color: Colors.white,
-                    margin: EdgeInsets.only(top: 50),
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child:DataTable(
-                          headingRowColor:  MaterialStateColor.resolveWith((states) => AppTheme.bgColor),
-                          showBottomBorder: true,
-                          columns: sn.supplierGridCol.map((e) => DataColumn(
-                              label: Text(e,style: TextStyle(fontFamily: 'RB',fontSize: 16,color: Colors.white),textAlign: TextAlign.center,)
-                          )).toList(),
-                          rows: sn.supplierGridList.asMap().map((i,e) => MapEntry(i,
-
-                              DataRow(
-                                  color:  MaterialStateColor.resolveWith((states) =>selectedIndex==i? AppTheme.yellowColor:Colors.white),
-
-                                  cells: [
-                                    DataCell(
-                                        Text(e.supplierName,style: TextStyle(fontFamily: 'RR',fontSize: 16,color:selectedIndex==i? AppTheme.bgColor:AppTheme.gridTextColor),),
-                                        onTap: (){
-                                          setState(() {
-
-                                            if(selectedIndex==i){
-                                              selectedIndex=-1;
-                                              showEdit=false;
-                                            } else{
-                                              selectedIndex=i;
-                                              showEdit=true;
-                                            }
-
-
-                                          });
-                                        }
-                                    ),
-                                    DataCell(Text(e.supplierCategoryName??"",style: TextStyle(fontFamily: 'RR',fontSize: 16,color: selectedIndex==i? AppTheme.bgColor: AppTheme.gridTextColor),),
-                                        onTap: (){
-                                          setState(() {
-                                            if(selectedIndex==i){
-                                              selectedIndex=-1;
-                                              showEdit=false;
-                                            } else{
-                                              selectedIndex=i;
-                                              showEdit=true;
-                                            }
-                                          });
-                                        }
-                                    ),
-                                    DataCell(Text(e.location.toString(),style: TextStyle(fontFamily: 'RR',fontSize: 16,color:selectedIndex==i? AppTheme.bgColor:  AppTheme.gridTextColor),),
-                                        onTap: (){
-                                          setState(() {
-                                            if(selectedIndex==i){
-                                              selectedIndex=-1;
-                                              showEdit=false;
-                                            } else{
-                                              selectedIndex=i;
-                                              showEdit=true;
-                                            }
-                                          });
-                                        }
-                                    ),
-                                    DataCell(Text("${e.supplierContactNumber.toString()}",style: TextStyle(fontFamily: 'RR',fontSize: 16,color:selectedIndex==i? AppTheme.bgColor:  AppTheme.gridTextColor),),
-                                        onTap: (){
-                                          setState(() {
-                                            if(selectedIndex==i){
-                                              selectedIndex=-1;
-                                              showEdit=false;
-                                            } else{
-                                              selectedIndex=i;
-                                              showEdit=true;
-                                            }
-                                          });
-                                        }
-                                    ),
-
-                                  ])
-                          )
-                          ).values.toList()
-
-                      ),
-                    )
                 ),*/
+
 
                 //bottomNav
                 Positioned(

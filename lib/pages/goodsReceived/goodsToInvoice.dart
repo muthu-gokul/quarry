@@ -951,7 +951,7 @@ class GoodsToInvoiceState extends State<GoodsToInvoice> with TickerProviderState
                       Navigator.pop(context);
                     }),
                     SizedBox(width: SizeConfig.width5,),
-                    Text("${gr.GINV_PorderNo} toInvoice",
+                    Text("Goods to Invoice",
                       style: TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 16),
                     ),
 
@@ -962,7 +962,7 @@ class GoodsToInvoiceState extends State<GoodsToInvoice> with TickerProviderState
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(50)
                       ),
-                      child: Text("${gr.GINV_Date}",
+                      child: Text("${gr.GINV_PorderNo}",
                         style: TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 16),
                       ),
                     ),

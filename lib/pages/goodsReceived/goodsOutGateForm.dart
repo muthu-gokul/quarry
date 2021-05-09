@@ -366,7 +366,7 @@ class GoodsOutGateFormState extends State<GoodsOutGateForm> with TickerProviderS
 
                     }),
                     SizedBox(width: SizeConfig.width5,),
-                    Text("${gr.OGF_index!=null && gr.OGF_index!=-1? gr.outGateFormList[gr.OGF_index].purchaseOrderNumber:""} outGate",
+                    Text("${gr.OGF_index!=null && gr.OGF_index!=-1? gr.outGateFormList[gr.OGF_index].purchaseOrderNumber:""}",
                       style: TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 16),
                     ),
 

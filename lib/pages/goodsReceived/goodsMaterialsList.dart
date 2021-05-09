@@ -720,7 +720,7 @@ class GoodsMaterialsListState extends State<GoodsMaterialsList> with TickerProvi
                       Navigator.pop(context);
                     }),
                     SizedBox(width: SizeConfig.width5,),
-                    Text("${gr.ML_PorderNo} materialsList",
+                    Text("Goods Materials List",
                       style: TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 16),
                     ),
 
@@ -731,7 +731,7 @@ class GoodsMaterialsListState extends State<GoodsMaterialsList> with TickerProvi
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(50)
                       ),
-                      child: Text("${gr.ML_Date}",
+                      child: Text("${gr.ML_PorderNo}",
                         style: TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 16),
                       ),
                     ),
