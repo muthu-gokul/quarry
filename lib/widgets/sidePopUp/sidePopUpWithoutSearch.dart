@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
+import 'package:quarry/widgets/innerShadow.dart';
 
 class PopUpStatic extends StatefulWidget {
 
@@ -13,7 +14,7 @@ class PopUpStatic extends StatefulWidget {
   List<dynamic> dataList;
   String propertyKeyName;
   String propertyKeyId;
-  int selectedId;
+  dynamic selectedId;
 
   Function(int) itemOnTap;
   VoidCallback closeOnTap;
@@ -63,28 +64,22 @@ class _PopUpStaticState extends State<PopUpStatic> {
                   borderRadius: BorderRadius.circular(10),
                   color: Colors.white
               ),
-              child: Column(
+              clipBehavior: Clip.antiAlias,
+              child: Stack(
                 children: [
                   Container(
-                    height: 50,
-                    width: SizeConfig.screenWidth,
-                    margin: EdgeInsets.only(left: SizeConfig.width20,right: SizeConfig.width20),
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                    ),
-                    child: Center(
-                      child: Text(widget.title,style: TextStyle(fontFamily: 'RR',fontSize: 16,color: AppTheme.bgColor),),
-                    ),
-                  ),
-                  Container(
                     padding: EdgeInsets.only(right: 5,left: 5),
+                    margin: EdgeInsets.only(top: 50),
                     height: widget.dataList.length*60.0,
                     constraints: BoxConstraints(
-                      minHeight: 60,
-                      maxHeight: SizeConfig.screenHeight*0.63-90
+                        minHeight: 60,
+                        maxHeight: SizeConfig.screenHeight*0.63-70
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
                     ),
                     width: SizeConfig.screenWidth-SizeConfig.width60,
-                    color: Colors.white,
+
                     child: RawScrollbar(
                       isAlwaysShown: widget.isAlwaysShown,
                       thumbColor: AppTheme.srollBarColor,
@@ -117,7 +112,7 @@ class _PopUpStaticState extends State<PopUpStatic> {
                                 child: Center(
                                   child: FittedBox(
                                     fit: BoxFit.contain,
-                                    child: Text("${widget.dataList[index].get(widget.propertyKeyName)}",style: TextStyle(fontFamily: 'RR',fontSize: 16,
+                                    child: Text("${widget.dataList[index].get(widget.propertyKeyName)}",style: TextStyle(fontFamily: 'RR',fontSize: 14,
                                         color: widget.selectedId==null ?AppTheme.bgColor:widget.selectedId==widget.dataList[index].get(widget.propertyKeyId)?Colors.white:AppTheme.bgColor
 
                                     ),),
@@ -128,6 +123,28 @@ class _PopUpStaticState extends State<PopUpStatic> {
                           }),
                     ),
                   ),
+
+                  Container(
+                    height: 50,
+                    width: SizeConfig.screenWidth,
+                    //  margin: EdgeInsets.only(left: SizeConfig.width20,right: SizeConfig.width20),
+                    decoration: BoxDecoration(
+                        color: AppTheme.yellowColor,
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppTheme.gridbodyBgColor,
+                            spreadRadius: 2,
+                            blurRadius: 15,
+                            offset: Offset(0, 20), // changes position of shadow
+                          )
+                        ]
+                    ),
+                    child: Center(
+                      child: Text(widget.title,style: TextStyle(fontFamily: 'RM',fontSize: 16,color: AppTheme.bgColor),),
+                    ),
+                  ),
+
+
                   /*SizedBox(height: 20,),
                   GestureDetector(
                     onTap: (){
@@ -172,10 +189,10 @@ class _PopUpStaticState extends State<PopUpStatic> {
                   width: 30,
                   decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: AppTheme.yellowColor
+                      color: AppTheme.bgColor
                   ),
                   child: Center(
-                    child: Icon(Icons.clear,color: AppTheme.bgColor,),
+                    child: Icon(Icons.clear,color: AppTheme.yellowColor,size: 18,),
                   ),
                 ),
               ),

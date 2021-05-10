@@ -23,6 +23,7 @@ class PaymentNotifier extends ChangeNotifier{
   List<PlantUserModel> plantList=[];
   int plantCount=0;
   Future<dynamic> PlantUserDropDownValues(BuildContext context) async {
+    plantCount=0;
     updatePaymentLoader(true);
     var body={
       "Fields": [
@@ -56,6 +57,7 @@ class PaymentNotifier extends ChangeNotifier{
           var t=parsed['Table'] as List;
           var t1=parsed['Table1'] as List;
 
+
           plantList=t1.map((e) => PlantUserModel.fromJson(e)).toList();
           plantList.forEach((element) {
             if(element.userId==Provider.of<QuarryNotifier>(context,listen: false).UserId){
@@ -67,6 +69,7 @@ class PaymentNotifier extends ChangeNotifier{
 
             }
           });
+
 
           if(!isPaymentEdit){
             if(plantCount!=1){
@@ -264,6 +267,7 @@ class PaymentNotifier extends ChangeNotifier{
           var parsed=json.decode(value);
           Navigator.pop(context);
           clearEditForm();
+          clearInsertForm();
           GetPaymentDbHit(context, null,tickerProviderStateMixin);
         }
 

@@ -398,6 +398,11 @@ class InvoiceNotifier extends ChangeNotifier{
           "Type": "int",
           "Value": PlantId
         },
+        {
+          "Key": "PurchaseOrderId",
+          "Type": "int",
+          "Value": null
+        },
 
         {
           "Key": "InvoiceType",

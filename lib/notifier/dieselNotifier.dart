@@ -106,6 +106,7 @@ class DieselNotifier extends ChangeNotifier{
   List<FuelSupplierModel> fuelSupplierList=[];
   List<FuelPurchaserModel> fuelPurchaserList=[];
   List<DieselVehicleModel> vehicleList=[];
+  List<DieselVehicleModel> filterVehicleList=[];
 
   List<FuelPurchaserModel> issuedByList=[];
   List<DieselMachineModel> machineList=[];
@@ -150,6 +151,7 @@ class DieselNotifier extends ChangeNotifier{
           fuelSupplierList=t.map((e) => FuelSupplierModel.fromJson(e)).toList();
           fuelPurchaserList=t1.map((e) => FuelPurchaserModel.fromJson(e)).toList();
           vehicleList=t2.map((e) => DieselVehicleModel.fromJson(e)).toList();
+          filterVehicleList=t2.map((e) => DieselVehicleModel.fromJson(e)).toList();
 
           machineList=t3.map((e) => DieselMachineModel.fromJson(e)).toList();
           issuedByList=t4.map((e) => FuelPurchaserModel.fromJson(e)).toList();
@@ -165,6 +167,17 @@ class DieselNotifier extends ChangeNotifier{
       updateDieselLoader(false);
       CustomAlert().commonErrorAlert(context, "${Sp.MasterdropDown}" , e.toString());
     }
+  }
+
+
+  searchVehicle(String value){
+    if(value.isEmpty){
+      filterVehicleList=vehicleList;
+    }
+    else{
+      filterVehicleList=vehicleList.where((element) => element.vehicleNumber.toLowerCase().contains(value.toLowerCase())).toList();
+    }
+    notifyListeners();
   }
 
 

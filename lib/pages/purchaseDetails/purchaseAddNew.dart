@@ -20,6 +20,7 @@ import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/customTextField.dart';
 import 'package:quarry/widgets/expectedDateContainer.dart';
+import 'package:quarry/widgets/sidePopUp/sidePopUpWithoutSearch.dart';
 
 
 class PurchaseOrdersAddNew extends StatefulWidget {
@@ -617,7 +618,7 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
 
 
 
-                                                                                                    Text("${indentQty.isEmpty?"0":indentQty} ${pn.purchaseOrdersMappingList[pn.purchaseOrdersMappingList.length-1].unitName??""}",
+                                                                                                    Text("${indentQty.isEmpty?"0":indentQty} ${value.unitName??""}",
                                                                                                       style: TextStyle(fontFamily: 'RM',fontSize: 20,color: AppTheme.gridTextColor),textAlign: TextAlign.center,),
 
                                                                                                     SizedBox(height: 10,),
@@ -1294,200 +1295,65 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
 
 
 ///////////////////////////////////////      SUPPLIER TYPE ////////////////////////////////
-                Align(
-                  alignment: Alignment.center,
-                  child: AnimatedContainer(
-                      duration: Duration(milliseconds: 300),
-                      curve: Curves.easeIn,
-                      width: SizeConfig.screenWidth,
-                      height: SizeConfig.height430,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.white,
-                      ),
-                      clipBehavior: Clip.antiAlias,
-                      margin: EdgeInsets.only(left: SizeConfig.width30,right: SizeConfig.width30),
-                      transform: Matrix4.translationValues(supplierTypeOpen?0:SizeConfig.screenWidth, 0, 0),
 
-                      child:Container(
-                        height: SizeConfig.height430,
-                        width: SizeConfig.screenWidth,
-                        color: Colors.white,
-                        //  padding: EdgeInsets.only(left: SizeConfig.width20,right: SizeConfig.width20,bottom: SizeConfig.height10),
-                        child:Column (
-                          // crossAxisAlignment: CrossAxisAlignment.center,
-                          // mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                height: SizeConfig.height50,
-                                child: Stack(
-                                  children: [
-                                    Align(
-                                      alignment: Alignment.topRight,
-                                      child: IconButton(icon: Icon(Icons.cancel), onPressed: (){
-                                        setState(() {
-                                          supplierTypeOpen=false;
-                                        });
-                                      }),
-                                    ),
-                                    Align(
-                                        alignment: Alignment.center,
-                                        child: Text('Select Supplier Type',style:TextStyle(color:Colors.black,fontFamily: 'RR',fontSize:16),)),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(height: SizeConfig.height10,),
-                              Container(
-                                height: SizeConfig.screenHeight*(300/720),
-                                /*color: Colors.red,*/
-                                margin: EdgeInsets.only(left: SizeConfig.width30,right: SizeConfig.width30),
-                                child: ListView.builder(
-                                  itemCount: pn.supplierTypeList.length,
-                                  itemBuilder: (context,index){
-                                    return GestureDetector(
-                                      onTap: (){
-                                        setState(() {
-                                          pn.supplierType= pn.supplierTypeList[index].supplierType;
-                                          pn.filterSuppliersList=pn.suppliersList.where((element) => element.supplierType.toLowerCase()==pn.supplierType.toLowerCase()).toList();
-                                          if(pn.supplierId!=null){
-                                            pn.supplierId=null;
-                                            pn.supplierName=null;
-                                          }
+                PopUpStatic(
+                  title: "Select Supplier Type",
+                  isOpen: supplierTypeOpen,
+                  dataList: pn.supplierTypeList,
+                  propertyKeyName:"SupplierType",
+                  propertyKeyId: "SupplierType",
+                  selectedId: pn.supplierType,
+                  itemOnTap: (index){
+                    setState(() {
+                      pn.supplierType= pn.supplierTypeList[index].supplierType;
+                      pn.filterSuppliersList=pn.suppliersList.where((element) => element.supplierType.toLowerCase()==pn.supplierType.toLowerCase()).toList();
+                      if(pn.supplierId!=null){
+                        pn.supplierId=null;
+                        pn.supplierName=null;
+                      }
 
-                                          supplierTypeOpen=false;
-                                        });
-
-                                      },
-                                      child: Container(
-                                        margin: EdgeInsets.only(bottom: 20),
-                                        alignment: Alignment.center,
-                                        decoration:BoxDecoration(
-                                            borderRadius:BorderRadius.circular(8),
-                                            border: Border.all(color: pn.supplierType==null? AppTheme.addNewTextFieldBorder:pn.supplierType==pn.supplierTypeList[index].supplierType?Colors.transparent: AppTheme.addNewTextFieldBorder),
-                                            color: pn.supplierType==null? Colors.white: pn.supplierType==pn.supplierTypeList[index].supplierType?AppTheme.popUpSelectedColor:Colors.white
-                                        ),
-                                        width:300,
-                                        height:50,
-                                        child: Text("${pn.supplierTypeList[index].supplierType}",
-                                          style: TextStyle(color:pn.supplierType==null? AppTheme.grey:pn.supplierType==pn.supplierTypeList[index].supplierType?Colors.white:AppTheme.grey,
-                                              fontSize:18,fontFamily: 'RR'),
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ),
-
-
-
-
-                            ]
-
-
-                        ),
-                      )
-                  ),
+                      supplierTypeOpen=false;
+                    });
+                  },
+                  closeOnTap: (){
+                    setState(() {
+                      supplierTypeOpen=false;
+                    });
+                  },
                 ),
+
 
 ///////////////////////////////////////      SUPPLIER LIST ////////////////////////////////
-                Align(
-                  alignment: Alignment.center,
-                  child: AnimatedContainer(
-                      duration: Duration(milliseconds: 300),
-                      curve: Curves.easeIn,
-                      width: SizeConfig.screenWidth,
-                      height: SizeConfig.height430,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.white,
-                      ),
-                      clipBehavior: Clip.antiAlias,
-                      margin: EdgeInsets.only(left: SizeConfig.width30,right: SizeConfig.width30),
-                      transform: Matrix4.translationValues(suppliersListOpen?0:SizeConfig.screenWidth, 0, 0),
-
-                      child:Container(
-                        height: SizeConfig.height430,
-                        width: SizeConfig.screenWidth,
-                        color: Colors.white,
-                        //  padding: EdgeInsets.only(left: SizeConfig.width20,right: SizeConfig.width20,bottom: SizeConfig.height10),
-                        child:Column (
-                          // crossAxisAlignment: CrossAxisAlignment.center,
-                          // mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                height: SizeConfig.height50,
-                                child: Stack(
-                                  children: [
-                                    Align(
-                                      alignment: Alignment.topRight,
-                                      child: IconButton(icon: Icon(Icons.cancel), onPressed: (){
-                                        setState(() {
-                                          suppliersListOpen=false;
-                                        });
-                                      }),
-                                    ),
-                                    Align(
-                                        alignment: Alignment.center,
-                                        child: Text('Select Supplier',style:TextStyle(color:Colors.black,fontFamily: 'RR',fontSize:16),)),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(height: SizeConfig.height10,),
-                              Container(
-                                height: SizeConfig.screenHeight*(300/720),
-                                /*color: Colors.red,*/
-                                margin: EdgeInsets.only(left: SizeConfig.width30,right: SizeConfig.width30),
-                                child: ListView.builder(
-                                  itemCount: pn.filterSuppliersList.length,
-                                  itemBuilder: (context,index){
-                                    return GestureDetector(
-                                      onTap: (){
-
-                                        setState(() {
-                                          pn.supplierId=pn.filterSuppliersList[index].supplierId;
-                                          pn.supplierName=pn.filterSuppliersList[index].supplierName;
-                                          if(pn.filterSuppliersList[index].supplierType=='External'){
-                                            pn.filterMaterialsList=pn.materialsList.where((element) => element.supplierId==pn.filterSuppliersList[index].supplierId
-                                            && element.SupplierType=='External'
-                                            ).toList();
-                                          }
-                                          else{
-                                            pn.filterMaterialsList=pn.materialsList.where((element) => element.SupplierType=='Internal').toList();
-                                          }
-                                          suppliersListOpen=false;
-                                        });
-
-                                      },
-                                      child: Container(
-                                        margin: EdgeInsets.only(bottom: 20),
-                                        alignment: Alignment.center,
-                                        decoration:BoxDecoration(
-                                            borderRadius:BorderRadius.circular(8),
-                                            border: Border.all(color: pn.supplierId==null? AppTheme.addNewTextFieldBorder:pn.supplierId==pn.filterSuppliersList[index].supplierId?Colors.transparent: AppTheme.addNewTextFieldBorder),
-                                            color: pn.supplierId==null? Colors.white: pn.supplierId==pn.filterSuppliersList[index].supplierId?AppTheme.popUpSelectedColor:Colors.white
-                                        ),
-                                        width:300,
-                                        height:50,
-                                        child: Text("${pn.filterSuppliersList[index].supplierName}",
-                                          style: TextStyle(color:pn.supplierId==null? AppTheme.grey:pn.supplierId==pn.filterSuppliersList[index].supplierId?Colors.white:AppTheme.grey,
-                                              fontSize:18,fontFamily: 'RR'),
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ),
-
-
-
-
-                            ]
-
-
-                        ),
-                      )
-                  ),
+                PopUpStatic(
+                  title: "Select Supplier",
+                  isOpen: suppliersListOpen,
+                  isAlwaysShown: true,
+                  dataList: pn.filterSuppliersList,
+                  propertyKeyName:"SupplierName",
+                  propertyKeyId: "SupplierId",
+                  selectedId: pn.supplierId,
+                  itemOnTap: (index){
+                    setState(() {
+                      pn.supplierId=pn.filterSuppliersList[index].supplierId;
+                      pn.supplierName=pn.filterSuppliersList[index].supplierName;
+                      if(pn.filterSuppliersList[index].supplierType=='External'){
+                        pn.filterMaterialsList=pn.materialsList.where((element) => element.supplierId==pn.filterSuppliersList[index].supplierId
+                            && element.SupplierType=='External'
+                        ).toList();
+                      }
+                      else{
+                        pn.filterMaterialsList=pn.materialsList.where((element) => element.SupplierType=='Internal').toList();
+                      }
+                      suppliersListOpen=false;
+                    });
+                  },
+                  closeOnTap: (){
+                    setState(() {
+                      suppliersListOpen=false;
+                    });
+                  },
                 ),
+
 
 
 ///////////////////////////////////////      MATERIALS LIST ////////////////////////////////

@@ -20,6 +20,8 @@ import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/currentDateContainer.dart';
 import 'package:quarry/widgets/customTextField.dart';
 import 'package:quarry/widgets/expectedDateContainer.dart';
+import 'package:quarry/widgets/sidePopUp/sidePopUpSearchOnly.dart';
+import 'package:quarry/widgets/sidePopUp/sidePopUpWithoutSearch.dart';
 
 
 
@@ -47,6 +49,8 @@ class DieselPurchaseFormState extends State<DieselPurchaseForm> with TickerProvi
 
   bool _keyboardVisible=false;
   bool isListScroll=false;
+
+  TextEditingController vehicleSearchController = new TextEditingController();
 
   @override
   void initState() {
@@ -368,6 +372,9 @@ class DieselPurchaseFormState extends State<DieselPurchaseForm> with TickerProvi
                                           onChanged: (v){
                                             setState(() {
                                               dn.DP_isVehicle=!dn.DP_isVehicle;
+                                              dn.DP_vehicleId=null;
+                                              dn.DP_vehicleName=null;
+
                                             });
                                           }),
                                       Text("Is Vehicle",style: TextStyle(fontFamily: 'RR',fontSize: 16,color: AppTheme.addNewTextFieldText),),
@@ -382,7 +389,7 @@ class DieselPurchaseFormState extends State<DieselPurchaseForm> with TickerProvi
                                       });
                                     },
                                     child: AnimatedContainer(
-                                      height: dn.DP_isVehicle? SizeConfig.height50:0,
+                                      height: dn.DP_isVehicle?50:0,
                                       duration: Duration(milliseconds: 300),
                                       curve: Curves.easeIn,
                                      //   margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20),
@@ -611,7 +618,29 @@ class DieselPurchaseFormState extends State<DieselPurchaseForm> with TickerProvi
 
 
               ///////////////////////////////////////   Plant List    ////////////////////////////////
-              Align(
+
+              PopUpStatic(
+                title: "Select Plant",
+                isOpen: isPlantOpen,
+                dataList: dn.plantList,
+                propertyKeyName:"PlantName",
+                propertyKeyId: "PlantId",
+                selectedId: dn.DP_PlantId,
+                itemOnTap: (index){
+                  setState(() {
+                    dn.DP_PlantId=dn.plantList[index].plantId;
+                    dn.DP_PlantName=dn.plantList[index].plantName;
+                    isPlantOpen=false;
+                  });
+                },
+                closeOnTap: (){
+                  setState(() {
+                    isPlantOpen=false;
+                  });
+                },
+              ),
+
+             /* Align(
                 alignment: Alignment.center,
                 child: AnimatedContainer(
                     duration: Duration(milliseconds: 300),
@@ -694,30 +723,6 @@ class DieselPurchaseFormState extends State<DieselPurchaseForm> with TickerProvi
                               ),
                             ),
 
-                            /* Container(
-
-                              width:150,
-                              height:SizeConfig.height50,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(25.0),
-                                color: AppTheme.yellowColor,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: AppTheme.yellowColor.withOpacity(0.4),
-                                    spreadRadius: 1,
-                                    blurRadius: 5,
-                                    offset: Offset(1, 8), // changes position of shadow
-                                  ),
-                                ],
-                              ),
-                              child: Center(
-                                  child: Text("+ Add New",style: TextStyle(color:Colors.black,fontSize:18,),
-                                  )
-                              ),
-
-
-                            )*/
-
 
 
                           ]
@@ -726,286 +731,91 @@ class DieselPurchaseFormState extends State<DieselPurchaseForm> with TickerProvi
                       ),
                     )
                 ),
-              ),
+              ),*/
 
               ///////////////////////////////////////   Purchaser List    ////////////////////////////////
-              Align(
-                alignment: Alignment.center,
-                child: AnimatedContainer(
-                    duration: Duration(milliseconds: 300),
-                    curve: Curves.easeIn,
-                    width: SizeConfig.screenWidth,
-                    height: 400,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Colors.white,
-                    ),
-                    clipBehavior: Clip.antiAlias,
-                    margin: EdgeInsets.only(left: SizeConfig.width30,right: SizeConfig.width30),
-                    transform: Matrix4.translationValues(isPurchaserOpen?0:SizeConfig.screenWidth, 0, 0),
-
-                    child:Container(
-                      height: 400,
-                      width: SizeConfig.screenWidth,
-                      color: Colors.white,
-                      //  padding: EdgeInsets.only(left: SizeConfig.width20,right: SizeConfig.width20,bottom: SizeConfig.height10),
-                      child:Column (
-                        // crossAxisAlignment: CrossAxisAlignment.center,
-                        // mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              height: SizeConfig.height50,
-                              child: Stack(
-                                children: [
-                                  Align(
-                                    alignment: Alignment.topRight,
-                                    child: IconButton(icon: Icon(Icons.cancel), onPressed: (){
-                                      setState(() {
-                                        isPurchaserOpen=false;
-                                      });
-                                    }),
-                                  ),
-                                  Align(
-                                      alignment: Alignment.center,
-                                      child: Text('Select Purchaser',style:TextStyle(color:Colors.black,fontFamily: 'RR',fontSize:16),)),
-                                ],
-                              ),
-                            ),
-                            SizedBox(height: SizeConfig.height10,),
-
-
-
-
-                            Container(
-                              height: SizeConfig.screenHeight*(300/720),
-
-                              margin: EdgeInsets.only(left: SizeConfig.width30,right: SizeConfig.width30),
-                              child: ListView.builder(
-                                itemCount: dn.fuelPurchaserList.length,
-                                itemBuilder: (context,index){
-                                  return GestureDetector(
-                                    onTap: (){
-                                      setState(() {
-                                        dn.DP_purchaserId=dn.fuelPurchaserList[index].employeeId;
-                                        dn.DP_purchaserName=dn.fuelPurchaserList[index].employeeName;
-                                        isPurchaserOpen=false;
-                                      });
-
-                                    },
-                                    child: Container(
-                                      margin: EdgeInsets.only(bottom: 20),
-                                      alignment: Alignment.center,
-                                      decoration:BoxDecoration(
-                                          borderRadius:BorderRadius.circular(8),
-                                          border: Border.all(color: dn.DP_purchaserId==null? AppTheme.addNewTextFieldBorder:dn.DP_purchaserId==dn.fuelPurchaserList[index].employeeId?Colors.transparent: AppTheme.addNewTextFieldBorder),
-                                          color: dn.DP_purchaserId==null? Colors.white: dn.DP_purchaserId==dn.fuelPurchaserList[index].employeeId?AppTheme.popUpSelectedColor:Colors.white
-                                      ),
-                                      width:300,
-                                      height:50,
-                                      child: Text("${dn.fuelPurchaserList[index].employeeName}",
-                                        style: TextStyle(color:dn.DP_purchaserId==null? AppTheme.grey:dn.DP_purchaserId==dn.fuelPurchaserList[index].employeeId?Colors.white:AppTheme.grey,
-                                            fontSize:18,fontFamily: 'RR'),
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-
-
-                          ]
-
-
-                      ),
-                    )
-                ),
+              PopUpStatic(
+                title: "Select Purchaser",
+                isAlwaysShown: true,
+                isOpen: isPurchaserOpen,
+                dataList: dn.fuelPurchaserList,
+                propertyKeyName:"EmployeeName",
+                propertyKeyId: "EmployeeId",
+                selectedId: dn.DP_purchaserId,
+                itemOnTap: (index){
+                  setState(() {
+                    dn.DP_purchaserId=dn.fuelPurchaserList[index].employeeId;
+                    dn.DP_purchaserName=dn.fuelPurchaserList[index].employeeName;
+                    isPurchaserOpen=false;
+                  });
+                },
+                closeOnTap: (){
+                  setState(() {
+                    isPurchaserOpen=false;
+                  });
+                },
               ),
+
 
               ///////////////////////////////////////   Supplier List    ////////////////////////////////
-              Align(
-                alignment: Alignment.center,
-                child: AnimatedContainer(
-                    duration: Duration(milliseconds: 300),
-                    curve: Curves.easeIn,
-                    width: SizeConfig.screenWidth,
-                    height: 400,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Colors.white,
-                    ),
-                    clipBehavior: Clip.antiAlias,
-                    margin: EdgeInsets.only(left: SizeConfig.width30,right: SizeConfig.width30),
-                    transform: Matrix4.translationValues(isSupplierOpen?0:SizeConfig.screenWidth, 0, 0),
-
-                    child:Container(
-                      height: 400,
-                      width: SizeConfig.screenWidth,
-                      color: Colors.white,
-                      //  padding: EdgeInsets.only(left: SizeConfig.width20,right: SizeConfig.width20,bottom: SizeConfig.height10),
-                      child:Column (
-                        // crossAxisAlignment: CrossAxisAlignment.center,
-                        // mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              height: SizeConfig.height50,
-                              child: Stack(
-                                children: [
-                                  Align(
-                                    alignment: Alignment.topRight,
-                                    child: IconButton(icon: Icon(Icons.cancel), onPressed: (){
-                                      setState(() {
-                                        isSupplierOpen=false;
-                                      });
-                                    }),
-                                  ),
-                                  Align(
-                                      alignment: Alignment.center,
-                                      child: Text('Select Supplier',style:TextStyle(color:Colors.black,fontFamily: 'RR',fontSize:16),)),
-                                ],
-                              ),
-                            ),
-                            SizedBox(height: SizeConfig.height10,),
-
-
-
-
-                            Container(
-                              height: SizeConfig.screenHeight*(300/720),
-
-                              margin: EdgeInsets.only(left: SizeConfig.width30,right: SizeConfig.width30),
-                              child: ListView.builder(
-                                itemCount: dn.fuelSupplierList.length,
-                                itemBuilder: (context,index){
-                                  return GestureDetector(
-                                    onTap: (){
-                                      setState(() {
-                                        dn.DP_supplierId=dn.fuelSupplierList[index].supplierId;
-                                        dn.DP_supplierName=dn.fuelSupplierList[index].supplierName;
-                                        isSupplierOpen=false;
-                                      });
-
-                                    },
-                                    child: Container(
-                                      margin: EdgeInsets.only(bottom: 20),
-                                      alignment: Alignment.center,
-                                      decoration:BoxDecoration(
-                                          borderRadius:BorderRadius.circular(8),
-                                          border: Border.all(color: dn.DP_supplierId==null? AppTheme.addNewTextFieldBorder:dn.DP_supplierId==dn.fuelSupplierList[index].supplierId?Colors.transparent: AppTheme.addNewTextFieldBorder),
-                                          color: dn.DP_supplierId==null? Colors.white: dn.DP_supplierId==dn.fuelSupplierList[index].supplierId?AppTheme.popUpSelectedColor:Colors.white
-                                      ),
-                                      width:300,
-                                      height:50,
-                                      child: Text("${dn.fuelSupplierList[index].supplierName}",
-                                        style: TextStyle(color:dn.DP_supplierId==null? AppTheme.grey:dn.DP_supplierId==dn.fuelSupplierList[index].supplierId?Colors.white:AppTheme.grey,
-                                            fontSize:18,fontFamily: 'RR'),
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-
-
-                          ]
-
-
-                      ),
-                    )
-                ),
+              PopUpStatic(
+                title: "Select Supplier",
+                isAlwaysShown: true,
+                isOpen: isSupplierOpen,
+                dataList: dn.fuelSupplierList,
+                propertyKeyName:"SupplierName",
+                propertyKeyId: "SupplierId",
+                selectedId: dn.DP_supplierId,
+                itemOnTap: (index){
+                  setState(() {
+                    dn.DP_supplierId=dn.fuelSupplierList[index].supplierId;
+                    dn.DP_supplierName=dn.fuelSupplierList[index].supplierName;
+                    isSupplierOpen=false;
+                  });
+                },
+                closeOnTap: (){
+                  setState(() {
+                    isSupplierOpen=false;
+                  });
+                },
               ),
+
 
               ///////////////////////////////////////   Vehicle List    ////////////////////////////////
-              Align(
-                alignment: Alignment.center,
-                child: AnimatedContainer(
-                    duration: Duration(milliseconds: 300),
-                    curve: Curves.easeIn,
-                    width: SizeConfig.screenWidth,
-                    height: 400,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Colors.white,
-                    ),
-                    clipBehavior: Clip.antiAlias,
-                    margin: EdgeInsets.only(left: SizeConfig.width30,right: SizeConfig.width30),
-                    transform: Matrix4.translationValues(isVehicleOpen?0:SizeConfig.screenWidth, 0, 0),
 
-                    child:Container(
-                      height: 400,
-                      width: SizeConfig.screenWidth,
-                      color: Colors.white,
-                      //  padding: EdgeInsets.only(left: SizeConfig.width20,right: SizeConfig.width20,bottom: SizeConfig.height10),
-                      child:Column (
-                        // crossAxisAlignment: CrossAxisAlignment.center,
-                        // mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              height: SizeConfig.height50,
-                              child: Stack(
-                                children: [
-                                  Align(
-                                    alignment: Alignment.topRight,
-                                    child: IconButton(icon: Icon(Icons.cancel), onPressed: (){
-                                      setState(() {
-                                        isVehicleOpen=false;
-                                      });
-                                    }),
-                                  ),
-                                  Align(
-                                      alignment: Alignment.center,
-                                      child: Text('Select Vehicle',style:TextStyle(color:Colors.black,fontFamily: 'RR',fontSize:16),)),
-                                ],
-                              ),
-                            ),
-                            SizedBox(height: SizeConfig.height10,),
+              PopUpSearchOnly(
+                isOpen: isVehicleOpen,
+                searchController: vehicleSearchController,
+                searchHintText: "Search Vehicle Number",
 
+                dataList: dn.filterVehicleList,
+                propertyKeyId: "VehicleId",
+                propertyKeyName: "VehicleNumber",
+                selectedId: dn.DP_vehicleId,
 
-
-
-                            Container(
-                              height: SizeConfig.screenHeight*(300/720),
-
-                              margin: EdgeInsets.only(left: SizeConfig.width30,right: SizeConfig.width30),
-                              child: ListView.builder(
-                                itemCount: dn.vehicleList.length,
-                                itemBuilder: (context,index){
-                                  return GestureDetector(
-                                    onTap: (){
-                                      setState(() {
-                                        dn.DP_vehicleId=dn.vehicleList[index].vehicleId;
-                                        dn.DP_vehicleName=dn.vehicleList[index].vehicleNumber;
-                                        isVehicleOpen=false;
-                                      });
-
-                                    },
-                                    child: Container(
-                                      margin: EdgeInsets.only(bottom: 20),
-                                      alignment: Alignment.center,
-                                      decoration:BoxDecoration(
-                                          borderRadius:BorderRadius.circular(8),
-                                          border: Border.all(color: dn.DP_vehicleId==null? AppTheme.addNewTextFieldBorder:dn.DP_vehicleId==dn.vehicleList[index].vehicleId?Colors.transparent: AppTheme.addNewTextFieldBorder),
-                                          color: dn.DP_vehicleId==null? Colors.white: dn.DP_vehicleId==dn.vehicleList[index].vehicleId?AppTheme.popUpSelectedColor:Colors.white
-                                      ),
-                                      width:300,
-                                      height:50,
-                                      child: Text("${dn.vehicleList[index].vehicleNumber}",
-                                        style: TextStyle(color:dn.DP_vehicleId==null? AppTheme.grey:dn.DP_vehicleId==dn.vehicleList[index].vehicleId?Colors.white:AppTheme.grey,
-                                            fontSize:18,fontFamily: 'RR'),
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-
-
-                          ]
-
-
-                      ),
-                    )
-                ),
+                searchOnchange: (v){
+                  dn.searchVehicle(v);
+                },
+                itemOnTap: (index){
+                  node.unfocus();
+                  setState(() {
+                    dn.DP_vehicleId=dn.vehicleList[index].vehicleId;
+                    dn.DP_vehicleName=dn.vehicleList[index].vehicleNumber;
+                    isVehicleOpen=false;
+                    dn.filterVehicleList=dn.vehicleList;
+                  });
+                  vehicleSearchController.clear();
+                },
+                closeOnTap: (){
+                  node.unfocus();
+                  setState(() {
+                    isVehicleOpen=false;
+                  });
+                  vehicleSearchController.clear();
+                },
               ),
+
+
             ],
           )
       ),

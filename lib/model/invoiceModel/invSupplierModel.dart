@@ -20,4 +20,12 @@ class InvoiceSupplierModel {
     "SupplierName": supplierName,
     "SupplierType": supplierType,
   };
+  dynamic get(String propertyName) {
+    var _mapRep = toJson();
+    if (_mapRep.containsKey(propertyName)) {
+      return _mapRep[propertyName];
+    }
+    throw ArgumentError('property not found');
+  }
+
 }

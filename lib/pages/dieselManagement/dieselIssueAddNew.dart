@@ -17,6 +17,7 @@ import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/currentDateContainer.dart';
 import 'package:quarry/widgets/customTextField.dart';
 import 'package:quarry/widgets/expectedDateContainer.dart';
+import 'package:quarry/widgets/sidePopUp/sidePopUpWithoutSearch.dart';
 
 
 
@@ -97,6 +98,7 @@ class DieselIssueFormState extends State<DieselIssueForm> with TickerProviderSta
     final node=FocusScope.of(context);
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Consumer<DieselNotifier>(
           builder: (context,dn,child)=> Stack(
             children: [
@@ -160,7 +162,8 @@ class DieselIssueFormState extends State<DieselIssueForm> with TickerProviderSta
                             }
                           },
                           child: Container(
-                            height:_keyboardVisible?SizeConfig.screenHeight*0.5 :SizeConfig.screenHeight-100,
+
+                            height:SizeConfig.screenHeight-100,
                             width: SizeConfig.screenWidth,
 
                             decoration: BoxDecoration(
@@ -308,8 +311,9 @@ class DieselIssueFormState extends State<DieselIssueForm> with TickerProviderSta
                                         });
                                       });
                                     },
-
                                   ),
+
+                                  SizedBox(height: _keyboardVisible? SizeConfig.screenHeight*0.5:200,)
                                 ],
                               ),
                             ),
@@ -328,7 +332,7 @@ class DieselIssueFormState extends State<DieselIssueForm> with TickerProviderSta
               AnimatedPositioned(
                 duration: Duration(milliseconds: 100),
                 curve: Curves.easeIn,
-                bottom: _keyboardVisible?-90:0,
+                bottom: 0,
                 child: Container(
                   width: SizeConfig.screenWidth,
                   height:70,
@@ -429,290 +433,80 @@ class DieselIssueFormState extends State<DieselIssueForm> with TickerProviderSta
 
 
               ///////////////////////////////////////   Machine List    ////////////////////////////////
-              Align(
-                alignment: Alignment.center,
-                child: AnimatedContainer(
-                    duration: Duration(milliseconds: 300),
-                    curve: Curves.easeIn,
-                    width: SizeConfig.screenWidth,
-                    height: 400,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Colors.white,
-                    ),
-                    clipBehavior: Clip.antiAlias,
-                    margin: EdgeInsets.only(left: SizeConfig.width30,right: SizeConfig.width30),
-                    transform: Matrix4.translationValues(isMachineOpen?0:SizeConfig.screenWidth, 0, 0),
-
-                    child:Container(
-                      height: 400,
-                      width: SizeConfig.screenWidth,
-                      color: Colors.white,
-                      //  padding: EdgeInsets.only(left: SizeConfig.width20,right: SizeConfig.width20,bottom: SizeConfig.height10),
-                      child:Column (
-                        // crossAxisAlignment: CrossAxisAlignment.center,
-                        // mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              height: SizeConfig.height50,
-                              child: Stack(
-                                children: [
-                                  Align(
-                                    alignment: Alignment.topRight,
-                                    child: IconButton(icon: Icon(Icons.cancel), onPressed: (){
-                                      setState(() {
-                                        isMachineOpen=false;
-                                      });
-                                    }),
-                                  ),
-                                  Align(
-                                      alignment: Alignment.center,
-                                      child: Text('Select Machine',style:TextStyle(color:Colors.black,fontFamily: 'RR',fontSize:16),)),
-                                ],
-                              ),
-                            ),
-                            SizedBox(height: SizeConfig.height10,),
-
-
-
-
-                            Container(
-                              height: SizeConfig.screenHeight*(300/720),
-
-                              margin: EdgeInsets.only(left: SizeConfig.width30,right: SizeConfig.width30),
-                              child: ListView.builder(
-                                itemCount: dn.machineList.length,
-                                itemBuilder: (context,index){
-                                  return GestureDetector(
-                                    onTap: (){
-                                      setState(() {
-                                        dn.DI_machineID=dn.machineList[index].machineId;
-                                        dn.DI_machineName=dn.machineList[index].machineName;
-                                        isMachineOpen=false;
-                                      });
-
-                                    },
-                                    child: Container(
-                                      margin: EdgeInsets.only(bottom: 20),
-                                      alignment: Alignment.center,
-                                      decoration:BoxDecoration(
-                                          borderRadius:BorderRadius.circular(8),
-                                          border: Border.all(color: dn.DI_machineID==null? AppTheme.addNewTextFieldBorder:dn.DI_machineID==dn.machineList[index].machineId?Colors.transparent: AppTheme.addNewTextFieldBorder),
-                                          color: dn.DI_machineID==null? Colors.white: dn.DI_machineID==dn.machineList[index].machineId?AppTheme.popUpSelectedColor:Colors.white
-                                      ),
-                                      width:300,
-                                      height:50,
-                                      child: Text("${dn.machineList[index].machineName}",
-                                        style: TextStyle(color:dn.DI_machineID==null? AppTheme.grey:dn.DI_machineID==dn.machineList[index].machineId?Colors.white:AppTheme.grey,
-                                            fontSize:18,fontFamily: 'RR'),
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-
-
-                          ]
-
-
-                      ),
-                    )
-                ),
+              PopUpStatic(
+                title: "Select Machine",
+                isAlwaysShown: true,
+                isOpen: isMachineOpen,
+                dataList: dn.machineList,
+                propertyKeyName:"MachineName",
+                propertyKeyId: "MachineId",
+                selectedId: dn.DI_machineID,
+                itemOnTap: (index){
+                  setState(() {
+                    dn.DI_machineID=dn.machineList[index].machineId;
+                    dn.DI_machineName=dn.machineList[index].machineName;
+                    isMachineOpen=false;
+                  });
+                },
+                closeOnTap: (){
+                  setState(() {
+                    isMachineOpen=false;
+                  });
+                },
               ),
+
 
 
 
               ///////////////////////////////////////   Issued By List    ////////////////////////////////
-              Align(
-                alignment: Alignment.center,
-                child: AnimatedContainer(
-                    duration: Duration(milliseconds: 300),
-                    curve: Curves.easeIn,
-                    width: SizeConfig.screenWidth,
-                    height: 400,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Colors.white,
-                    ),
-                    clipBehavior: Clip.antiAlias,
-                    margin: EdgeInsets.only(left: SizeConfig.width30,right: SizeConfig.width30),
-                    transform: Matrix4.translationValues(isIssueOpen?0:SizeConfig.screenWidth, 0, 0),
-
-                    child:Container(
-                      height: 400,
-                      width: SizeConfig.screenWidth,
-                      color: Colors.white,
-                      //  padding: EdgeInsets.only(left: SizeConfig.width20,right: SizeConfig.width20,bottom: SizeConfig.height10),
-                      child:Column (
-                        // crossAxisAlignment: CrossAxisAlignment.center,
-                        // mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              height: SizeConfig.height50,
-                              child: Stack(
-                                children: [
-                                  Align(
-                                    alignment: Alignment.topRight,
-                                    child: IconButton(icon: Icon(Icons.cancel), onPressed: (){
-                                      setState(() {
-                                        isIssueOpen=false;
-                                      });
-                                    }),
-                                  ),
-                                  Align(
-                                      alignment: Alignment.center,
-                                      child: Text('Select Issued By',style:TextStyle(color:Colors.black,fontFamily: 'RR',fontSize:16),)),
-                                ],
-                              ),
-                            ),
-                            SizedBox(height: SizeConfig.height10,),
-
-
-
-
-                            Container(
-                              height: SizeConfig.screenHeight*(300/720),
-
-                              margin: EdgeInsets.only(left: SizeConfig.width30,right: SizeConfig.width30),
-                              child: ListView.builder(
-                                itemCount: dn.issuedByList.length,
-                                itemBuilder: (context,index){
-                                  return GestureDetector(
-                                    onTap: (){
-                                      setState(() {
-                                        dn.DI_issueID=dn.issuedByList[index].employeeId;
-                                        dn.DI_issueName=dn.issuedByList[index].employeeName;
-                                        isIssueOpen=false;
-                                      });
-
-                                    },
-                                    child: Container(
-                                      margin: EdgeInsets.only(bottom: 20),
-                                      alignment: Alignment.center,
-                                      decoration:BoxDecoration(
-                                          borderRadius:BorderRadius.circular(8),
-                                          border: Border.all(color: dn.DI_issueID==null? AppTheme.addNewTextFieldBorder:dn.DI_issueID==dn.issuedByList[index].employeeId?Colors.transparent: AppTheme.addNewTextFieldBorder),
-                                          color: dn.DI_issueID==null? Colors.white: dn.DI_issueID==dn.issuedByList[index].employeeId?AppTheme.popUpSelectedColor:Colors.white
-                                      ),
-                                      width:300,
-                                      height:50,
-                                      child: Text("${dn.issuedByList[index].employeeName}",
-                                          style: TextStyle(color:dn.DI_issueID==null? AppTheme.grey:dn.DI_issueID==dn.issuedByList[index].employeeId?Colors.white:AppTheme.grey,
-                                              fontSize:18,fontFamily: 'RR')
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-
-
-                          ]
-
-
-                      ),
-                    )
-                ),
+              PopUpStatic(
+                title: "Select Issued By",
+                isAlwaysShown: true,
+                isOpen: isIssueOpen,
+                dataList: dn.issuedByList,
+                propertyKeyName:"EmployeeName",
+                propertyKeyId: "EmployeeId",
+                selectedId: dn.DI_issueID,
+                itemOnTap: (index){
+                  setState(() {
+                    dn.DI_issueID=dn.issuedByList[index].employeeId;
+                    dn.DI_issueName=dn.issuedByList[index].employeeName;
+                    isIssueOpen=false;
+                  });
+                },
+                closeOnTap: (){
+                  setState(() {
+                    isIssueOpen=false;
+                  });
+                },
               ),
+
 
 
 
 
               ///////////////////////////////////////   Plant List    ////////////////////////////////
-              Align(
-                alignment: Alignment.center,
-                child: AnimatedContainer(
-                    duration: Duration(milliseconds: 300),
-                    curve: Curves.easeIn,
-                    width: SizeConfig.screenWidth,
-                    height: 400,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Colors.white,
-                    ),
-                    clipBehavior: Clip.antiAlias,
-                    margin: EdgeInsets.only(left: SizeConfig.width30,right: SizeConfig.width30),
-                    transform: Matrix4.translationValues(isPlantOpen?0:SizeConfig.screenWidth, 0, 0),
-
-                    child:Container(
-                      height: 400,
-                      width: SizeConfig.screenWidth,
-                      color: Colors.white,
-                      //  padding: EdgeInsets.only(left: SizeConfig.width20,right: SizeConfig.width20,bottom: SizeConfig.height10),
-                      child:Column (
-                        // crossAxisAlignment: CrossAxisAlignment.center,
-                        // mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              height: SizeConfig.height50,
-                              child: Stack(
-                                children: [
-                                  Align(
-                                    alignment: Alignment.topRight,
-                                    child: IconButton(icon: Icon(Icons.cancel), onPressed: (){
-                                      setState(() {
-                                        isPlantOpen=false;
-                                      });
-                                    }),
-                                  ),
-                                  Align(
-                                      alignment: Alignment.center,
-                                      child: Text('Select Plant',style:TextStyle(color:Colors.black,fontFamily: 'RR',fontSize:16),)),
-                                ],
-                              ),
-                            ),
-                            SizedBox(height: SizeConfig.height10,),
-
-
-
-
-                            Container(
-                              height: SizeConfig.screenHeight*(300/720),
-
-                              margin: EdgeInsets.only(left: SizeConfig.width30,right: SizeConfig.width30),
-                              child: ListView.builder(
-                                itemCount: dn.plantList.length,
-                                itemBuilder: (context,index){
-                                  return GestureDetector(
-                                    onTap: (){
-                                      setState(() {
-                                        dn.DI_plantID=dn.plantList[index].plantId;
-                                        dn.DI_plantName=dn.plantList[index].plantName;
-                                        isPlantOpen=false;
-                                      });
-
-                                    },
-                                    child: Container(
-                                      margin: EdgeInsets.only(bottom: 20),
-                                      alignment: Alignment.center,
-                                      decoration:BoxDecoration(
-                                          borderRadius:BorderRadius.circular(8),
-                                          border: Border.all(color: dn.DI_plantID==null? AppTheme.addNewTextFieldBorder:dn.DI_plantID==dn.plantList[index].plantId?Colors.transparent: AppTheme.addNewTextFieldBorder),
-                                          color: dn.DI_plantID==null? Colors.white: dn.DI_plantID==dn.plantList[index].plantId?AppTheme.popUpSelectedColor:Colors.white
-                                      ),
-                                      width:300,
-                                      height:50,
-                                      child: Text("${dn.plantList[index].plantName}",
-                                        style: TextStyle(color:dn.DI_plantID==null? AppTheme.grey:dn.DI_plantID==dn.plantList[index].plantId?Colors.white:AppTheme.grey,
-                                            fontSize:18,fontFamily: 'RR'),
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-
-
-
-
-                          ]
-
-
-                      ),
-                    )
-                ),
+              PopUpStatic(
+                title: "Select Plant",
+                isOpen: isPlantOpen,
+                dataList: dn.plantList,
+                propertyKeyName:"PlantName",
+                propertyKeyId: "PlantId",
+                selectedId: dn.DI_plantID,
+                itemOnTap: (index){
+                  setState(() {
+                    dn.DI_plantID=dn.plantList[index].plantId;
+                    dn.DI_plantName=dn.plantList[index].plantName;
+                    isPlantOpen=false;
+                  });
+                },
+                closeOnTap: (){
+                  setState(() {
+                    isPlantOpen=false;
+                  });
+                },
               ),
+
             ],
           )
       ),

@@ -12,6 +12,7 @@ import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/customTextField.dart';
+import 'package:quarry/widgets/sidePopUp/sidePopUpWithoutSearch.dart';
 
 
 class ProductionDetailAddNew extends StatefulWidget {
@@ -781,326 +782,93 @@ class ProductionDetailAddNewState extends State<ProductionDetailAddNew> with Tic
 
 
 ///////////////////////////////////////      Machine CATEGORY ////////////////////////////////
-                Align(
-                  alignment: Alignment.center,
-                  child: AnimatedContainer(
-                      duration: Duration(milliseconds: 300),
-                      curve: Curves.easeIn,
-                      width: SizeConfig.screenWidth,
-                      height: SizeConfig.height430,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.white,
-                      ),
-                      clipBehavior: Clip.antiAlias,
-                      margin: EdgeInsets.only(
-                          left: SizeConfig.width30, right: SizeConfig.width30),
-                      transform: Matrix4.translationValues(
-                          machineCategoryOpen ? 0 : SizeConfig.screenWidth, 0,
-                          0),
 
-                      child: Container(
-                        height: SizeConfig.height430,
-                        width: SizeConfig.screenWidth,
-                        color: Colors.white,
-                        //  padding: EdgeInsets.only(left: SizeConfig.width20,right: SizeConfig.width20,bottom: SizeConfig.height10),
-                        child: Column(
-                          // crossAxisAlignment: CrossAxisAlignment.center,
-                          // mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                height: SizeConfig.height50,
-                                child: Stack(
-                                  children: [
-                                    Align(
-                                      alignment: Alignment.topRight,
-                                      child: IconButton(
-                                          icon: Icon(Icons.cancel),
-                                          onPressed: () {
-                                            setState(() {
-                                              machineCategoryOpen = false;
-                                            });
-                                          }),
-                                    ),
-                                    Align(
-                                        alignment: Alignment.center,
-                                        child: Text('Select Machine Category',
-                                          style: TextStyle(color: Colors.black,
-                                              fontFamily: 'RR',
-                                              fontSize: 16),)),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(height: SizeConfig.height10,),
-                              Container(
-                                height: SizeConfig.screenHeight * (300 / 720),
-                                color: Colors.white,
-                                margin: EdgeInsets.only(left: SizeConfig
-                                    .width30, right: SizeConfig.width30),
-                                child: ListView.builder(
-                                   itemCount: qn.machineCategoryList.length,
-                                  itemBuilder: (context, index) {
-                                    return GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          qn.selectMachineId=qn.machineCategoryList[index].machineId;
-                                          qn.selectMachineName=qn.machineCategoryList[index].machineName;
-                                          machineCategoryOpen = false;
-                                        });
-                                      },
-                                      child: Container(
-                                        margin: EdgeInsets.only(bottom: 20),
-                                        alignment: Alignment.center,
-                                        decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(
-                                                8),
-                                            border: Border.all(
-                                                color: qn.selectMachineId ==
-                                                    null ? AppTheme
-                                                    .addNewTextFieldBorder : qn
-                                                    .selectMachineId ==
-                                                    qn.machineCategoryList[index]
-                                                        .machineId
-                                                    ? Colors.transparent
-                                                    : AppTheme
-                                                    .addNewTextFieldBorder),
-                                            color: qn.selectMachineId == null
-                                                ? Colors.white
-                                                : qn.selectMachineId ==
-                                                qn.machineCategoryList[index]
-                                                    .machineId ? AppTheme
-                                                .popUpSelectedColor : Colors
-                                                .white
-                                        ),
-                                        width: 300,
-                                        height: 50,
-                                        child: Text("${qn.machineCategoryList[index]
-                                            .machineName}",
-                                          style: TextStyle(
-                                              color: qn.selectMachineId == null
-                                                  ? AppTheme.grey
-                                                  : qn.selectMachineId ==
-                                                  qn.machineCategoryList[index]
-                                                      .machineId ? Colors
-                                                  .white : AppTheme.grey,
-                                              fontSize: 18, fontFamily: 'RR'),
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ),
-
-
-                            ]
-
-
-                        ),
-                      )
-                  ),
+                PopUpStatic(
+                  title: "Select Machine",
+                  isOpen: machineCategoryOpen,
+                  dataList: qn.machineCategoryList,
+                  propertyKeyName:"MachineName",
+                  propertyKeyId: "MachineId",
+                  selectedId: qn.selectMachineId,
+                  itemOnTap: (index){
+                    setState(() {
+                      qn.selectMachineId=qn.machineCategoryList[index].machineId;
+                      qn.selectMachineName=qn.machineCategoryList[index].machineName;
+                      machineCategoryOpen = false;
+                    });
+                  },
+                  closeOnTap: (){
+                    setState(() {
+                      machineCategoryOpen=false;
+                    });
+                  },
                 ),
+
+
 
 ///////////////////////////////////////      Input MATERIAL ////////////////////////////////
-               Align(
-                  alignment: Alignment.center,
-                  child: AnimatedContainer(
-                      duration: Duration(milliseconds: 300),
-                      curve: Curves.easeIn,
-                      width: SizeConfig.screenWidth,
-                      height: SizeConfig.height430,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.white,
-                      ),
-                      clipBehavior: Clip.antiAlias,
-                      margin: EdgeInsets.only(
-                          left: SizeConfig.width30, right: SizeConfig.width30),
-                       transform: Matrix4.translationValues(inputMaterialOpen?0:SizeConfig.screenWidth, 0, 0),
-
-                      child: Container(
-                        height: SizeConfig.height430,
-                        width: SizeConfig.screenWidth,
-                        color: Colors.white,
-                        //  padding: EdgeInsets.only(left: SizeConfig.width20,right: SizeConfig.width20,bottom: SizeConfig.height10),
-                        child: Column(
-                          // crossAxisAlignment: CrossAxisAlignment.center,
-                          // mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                height: SizeConfig.height50,
-                                child: Stack(
-                                  children: [
-                                    Align(
-                                      alignment: Alignment.topRight,
-                                      child: IconButton(
-                                          icon: Icon(Icons.cancel),
-                                          onPressed: () {
-                                            setState(() {
-                                              inputMaterialOpen=false;
-                                            });
-                                          }),
-                                    ),
-                                    Align(
-                                        alignment: Alignment.center,
-                                        child: Text('Select Input Material',
-                                          style: TextStyle(color: Colors.black,
-                                              fontFamily: 'RR',
-                                              fontSize: 16),)),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(height: SizeConfig.height10,),
-                              Container(
-                                height: SizeConfig.screenHeight * (300 / 720),
-                                color: Colors.white,
-                                margin: EdgeInsets.only(left: SizeConfig
-                                    .width30, right: SizeConfig.width30),
-                                child: ListView.builder(
-                                  itemCount: qn.inputMaterialList.length,
-                                  itemBuilder: (context, index) {
-                                    return GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          qn.selectInputTypeId=qn.inputMaterialList[index].materialId;
-                                          qn.selectInputTypeName=qn.inputMaterialList[index].materialName;
-                                          qn.selectInputUnitId=qn.inputMaterialList[index].MaterialUnitId;
-                                          qn.selectInputUnitName=qn.inputMaterialList[index].UnitName;
-                                          inputMaterialOpen=false;
-                                        });
-                                      },
-                                      child: Container(
-                                        margin: EdgeInsets.only(bottom: 20),
-                                        alignment: Alignment.center,
-                                        decoration:BoxDecoration(
-                                            borderRadius:BorderRadius.circular(8),
-                                            border: Border.all(color: qn.selectInputTypeId==null? AppTheme.addNewTextFieldBorder:qn.selectInputTypeId==qn.inputMaterialList[index].materialId?Colors.transparent: AppTheme.addNewTextFieldBorder),
-                                            color: qn.selectInputTypeId==null? Colors.white: qn.selectInputTypeId==qn.inputMaterialList[index].materialId?AppTheme.popUpSelectedColor:Colors.white
-                                        ),
-                                        width: 300,
-                                        height: 50,
-                                        child: Text("${qn.inputMaterialList[index].materialName}",
-                                          style: TextStyle(color:qn.selectInputTypeId==null? AppTheme.grey:qn.selectInputTypeId==qn.inputMaterialList[index].materialId?Colors.white:AppTheme.grey,
-                                              fontSize:18,fontFamily: 'RR'),
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ),
-
-
-                            ]
-
-
-                        ),
-                      )
-                  ),
-    ),
-                /////////////////////////////////// material Name/////////////////////////////////////////////////////
-                Align(
-                  alignment: Alignment.center,
-                  child: AnimatedContainer(
-                      duration: Duration(milliseconds: 300),
-                      curve: Curves.easeIn,
-                      width: SizeConfig.screenWidth,
-                      height: SizeConfig.height430,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.white,
-                      ),
-                      clipBehavior: Clip.antiAlias,
-                      margin: EdgeInsets.only(left: SizeConfig.width30,right: SizeConfig.width30),
-                      transform: Matrix4.translationValues(productionMaterailOpen?0:SizeConfig.screenWidth, 0, 0),
-
-                      child:Container(
-                        height: SizeConfig.height430,
-                        width: SizeConfig.screenWidth,
-                        color: Colors.white,
-                        //  padding: EdgeInsets.only(left: SizeConfig.width20,right: SizeConfig.width20,bottom: SizeConfig.height10),
-                        child:Column (
-                          // crossAxisAlignment: CrossAxisAlignment.center,
-                          // mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                height: SizeConfig.height50,
-                                child: Stack(
-                                  children: [
-                                    Align(
-                                      alignment: Alignment.topRight,
-                                      child: IconButton(icon: Icon(Icons.cancel), onPressed: (){
-                                        setState(() {
-                                          productionMaterailOpen=false;
-                                        });
-                                      }),
-                                    ),
-                                    Align(
-                                        alignment: Alignment.center,
-                                        child: Text('Select Material',style:TextStyle(color:Colors.black,fontFamily: 'RR',fontSize:16),)),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(height: SizeConfig.height10,),
-                              Container(
-                                height: SizeConfig.screenHeight*(300/720),
-                                /*color: Colors.red,*/
-                                margin: EdgeInsets.only(left: SizeConfig.width30,right: SizeConfig.width30),
-                                child: ListView.builder(
-                                  itemCount: qn.MaterialList.length,
-                                  itemBuilder: (context,index){
-                                    return GestureDetector(
-                                      onTap: (){
-                                        if(qn.MaterialList[index].materialName.toLowerCase()!='dust'){
-                                          setState(() {
-                                            qn.productionMaterialId=qn.MaterialList[index].materialId;
-                                            qn.productionMaterialName=qn.MaterialList[index].materialName;
-                                            productionMaterailOpen=false;
-                                          });
-                                        }
-                                        else{
-                                          if(qn.productionMaterialMappingList.any((element) => element.MaterialName.toLowerCase()=='dust')){
-                                            CustomAlert().commonErrorAlert(context, "Dust Already Added", "You cant add Extra Dust");
-                                          }
-                                          else{
-                                            setState(() {
-                                              qn.productionMaterialId=qn.MaterialList[index].materialId;
-                                              qn.productionMaterialName=qn.MaterialList[index].materialName;
-                                              productionMaterailOpen=false;
-                                            });
-                                          }
-                                        }
-
-
-                                      },
-                                      child: Container(
-                                        margin: EdgeInsets.only(bottom: 20),
-                                        alignment: Alignment.center,
-                                        decoration:BoxDecoration(
-                                            borderRadius:BorderRadius.circular(8),
-                                            border: Border.all(color: qn.productionMaterialId==null? AppTheme.addNewTextFieldBorder:qn.productionMaterialId==qn.MaterialList[index].materialId?Colors.transparent: AppTheme.addNewTextFieldBorder),
-                                            color: qn.productionMaterialId==null? Colors.white: qn.productionMaterialId==qn.MaterialList[index].materialId?AppTheme.popUpSelectedColor:Colors.white
-                                        ),
-                                        width:300,
-                                        height:50,
-                                        child: Text("${qn.MaterialList[index].materialName}",
-                                          style: TextStyle(color:qn.productionMaterialId==null? AppTheme.grey:qn.productionMaterialId==qn.MaterialList[index].materialId?Colors.white:AppTheme.grey,
-                                              fontSize:18,fontFamily: 'RR'),
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ),
-
-
-
-
-                            ]
-
-
-                        ),
-                      )
-                  ),
+                PopUpStatic(
+                  title: "Select Input Material",
+                  isAlwaysShown: true,
+                  isOpen: inputMaterialOpen,
+                  dataList: qn.inputMaterialList,
+                  propertyKeyName:"MaterialName",
+                  propertyKeyId: "MaterialId",
+                  selectedId: qn.inputMaterialList,
+                  itemOnTap: (index){
+                    setState(() {
+                      qn.selectInputTypeId=qn.inputMaterialList[index].materialId;
+                      qn.selectInputTypeName=qn.inputMaterialList[index].materialName;
+                      qn.selectInputUnitId=qn.inputMaterialList[index].MaterialUnitId;
+                      qn.selectInputUnitName=qn.inputMaterialList[index].UnitName;
+                      inputMaterialOpen=false;
+                    });
+                  },
+                  closeOnTap: (){
+                    setState(() {
+                      inputMaterialOpen=false;
+                    });
+                  },
                 ),
+
+                /////////////////////////////////// material Name/////////////////////////////////////////////////////
+                PopUpStatic(
+                  title: "Select Material",
+                  isAlwaysShown: true,
+                  isOpen: productionMaterailOpen,
+                  dataList: qn.MaterialList,
+                  propertyKeyName:"MaterialName",
+                  propertyKeyId: "MaterialId",
+                  selectedId: qn.productionMaterialId,
+                  itemOnTap: (index){
+                    if(qn.MaterialList[index].materialName.toLowerCase()!='dust'){
+                      setState(() {
+                        qn.productionMaterialId=qn.MaterialList[index].materialId;
+                        qn.productionMaterialName=qn.MaterialList[index].materialName;
+                        productionMaterailOpen=false;
+                      });
+                    }
+                    else{
+                      if(qn.productionMaterialMappingList.any((element) => element.MaterialName.toLowerCase()=='dust')){
+                        CustomAlert().commonErrorAlert(context, "Dust Already Added", "You cant add Extra Dust");
+                      }
+                      else{
+                        setState(() {
+                          qn.productionMaterialId=qn.MaterialList[index].materialId;
+                          qn.productionMaterialName=qn.MaterialList[index].materialName;
+                          productionMaterailOpen=false;
+                        });
+                      }
+                    }
+                  },
+                  closeOnTap: (){
+                    setState(() {
+                      productionMaterailOpen=false;
+                    });
+                  },
+                ),
+
+
 
               ],
             ),

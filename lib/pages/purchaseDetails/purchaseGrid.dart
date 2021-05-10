@@ -525,6 +525,11 @@ class PurchaseDetailsGridState extends State<PurchaseDetailsGrid> with TickerPro
                       pn.updatePurchaseEdit(false);
                       pn.PurchaseDropDownValues(context);
                       pn.insertForm();
+                      if(selectedIndex!=-1){
+                        setState(() {
+                          selectedIndex=-1;
+                        });
+                      }
                       Navigator.of(context).push(_createRoute());
                     },
                     child: Container(

@@ -16,4 +16,12 @@ class PaymentTypeModel {
     "PaymentCategoryId": paymentCategoryId,
     "PaymentCategoryName": paymentCategoryName,
   };
+  dynamic get(String propertyName) {
+    var _mapRep = toJson();
+    if (_mapRep.containsKey(propertyName)) {
+      return _mapRep[propertyName];
+    }
+    throw ArgumentError('property not found');
+  }
+
 }

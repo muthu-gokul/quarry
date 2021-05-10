@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
 
-class PopUpSearch extends StatefulWidget {
+class PopUpSearchOnly extends StatefulWidget {
 
   bool isOpen;
   TextEditingController searchController;
@@ -17,16 +17,16 @@ class PopUpSearch extends StatefulWidget {
   Function(String) searchOnchange;
   Function(int) itemOnTap;
   VoidCallback closeOnTap;
-  VoidCallback addNewOnTap;
+  //VoidCallback addNewOnTap;
 
-  PopUpSearch({this.isOpen,this.searchController,this.searchOnchange,this.itemOnTap,this.dataList,
-    this.propertyKeyName,this.propertyKeyId,this.selectedId,this.addNewOnTap,this.closeOnTap,this.searchHintText});
+  PopUpSearchOnly({this.isOpen,this.searchController,this.searchOnchange,this.itemOnTap,this.dataList,
+    this.propertyKeyName,this.propertyKeyId,this.selectedId,this.closeOnTap,this.searchHintText});
 
   @override
-  _PopUpSearchState createState() => _PopUpSearchState();
+  _PopUpSearchOnlyState createState() => _PopUpSearchOnlyState();
 }
 
-class _PopUpSearchState extends State<PopUpSearch> {
+class _PopUpSearchOnlyState extends State<PopUpSearchOnly> {
   ScrollController listController=new ScrollController();
 
   @override
@@ -108,7 +108,7 @@ class _PopUpSearchState extends State<PopUpSearch> {
                     ),
                   ),
                   Container(
-                    height: SizeConfig.screenHeight*0.63- 190,
+                    height: SizeConfig.screenHeight*0.63- 120,
                     width: SizeConfig.screenWidth-SizeConfig.width60,
                     color: Colors.white,
                     padding: EdgeInsets.only(right: 5,left: 5),
@@ -155,7 +155,9 @@ class _PopUpSearchState extends State<PopUpSearch> {
                           }),
                     ),
                   ),
-                  SizedBox(height: 20,),
+
+              //Add Button
+              /*    SizedBox(height: 20,),
                   GestureDetector(
                     onTap: (){
                       widget.addNewOnTap();
@@ -182,7 +184,7 @@ class _PopUpSearchState extends State<PopUpSearch> {
                           )
                       ),
                     ),
-                  ),
+                  ),*/
                 ],
               ),
 

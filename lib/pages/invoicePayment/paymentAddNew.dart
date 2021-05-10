@@ -16,6 +16,7 @@ import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/currentDateContainer.dart';
 import 'package:quarry/widgets/customTextField.dart';
+import 'package:quarry/widgets/sidePopUp/sidePopUpWithoutSearch.dart';
 
 class PaymentAddNewForm extends StatefulWidget {
   @override
@@ -58,6 +59,7 @@ class PaymentAddNewFormState extends State<PaymentAddNewForm> with TickerProvide
 
     return Scaffold(
       key: scaffoldkey,
+      resizeToAvoidBottomInset: false,
       body: Consumer<PaymentNotifier>(
         builder: (context, qn, child) =>
             Stack(
@@ -139,7 +141,7 @@ class PaymentAddNewFormState extends State<PaymentAddNewForm> with TickerProvide
                               }
                             },
                             child: Container(
-                              height: _keyboardVisible ? SizeConfig.screenHeight * 0.5 : SizeConfig.screenHeight - 100,
+                              height: SizeConfig.screenHeight - 100,
                               width: SizeConfig.screenWidth,
 
                               decoration: BoxDecoration(
@@ -301,10 +303,10 @@ class PaymentAddNewFormState extends State<PaymentAddNewForm> with TickerProvide
 
                                       },
                                       child: SidePopUpParent(
-                                        text: qn.selectedPartyName==null? "Mode of Payment":qn.selectedPartyName,
-                                        textColor: qn.selectedPartyName==null? AppTheme.addNewTextFieldText.withOpacity(0.5):AppTheme.addNewTextFieldText,
-                                        iconColor: qn.selectedPartyName==null? AppTheme.addNewTextFieldText:AppTheme.yellowColor,
-                                        bgColor: qn.selectedPartyName==null? AppTheme.disableColor:Colors.white,
+                                        text: qn.paymentCategoryName==null? "Mode of Payment":qn.paymentCategoryName,
+                                        textColor: qn.paymentCategoryName==null? AppTheme.addNewTextFieldText.withOpacity(0.5):AppTheme.addNewTextFieldText,
+                                        iconColor: qn.paymentCategoryName==null? AppTheme.addNewTextFieldText:AppTheme.yellowColor,
+                                        bgColor: qn.paymentCategoryName==null? AppTheme.disableColor:Colors.white,
 
                                       ),
                                     ),
@@ -315,7 +317,7 @@ class PaymentAddNewFormState extends State<PaymentAddNewForm> with TickerProvide
 
 
 
-                                    SizedBox(height: SizeConfig.height50,)
+                                    SizedBox(height:_keyboardVisible ? SizeConfig.screenHeight * 0.5 :  SizeConfig.height50,)
                                   ],
                                 ),
                               ),
@@ -340,7 +342,7 @@ class PaymentAddNewFormState extends State<PaymentAddNewForm> with TickerProvide
                       Text(qn.isPaymentReceivable?"Add New Receivable":"Add New Payable",
                         style: TextStyle(fontFamily: 'RR',
                             color: Colors.black,
-                            fontSize: SizeConfig.width16),
+                            fontSize: 16),
                       ),
 
                     ],
@@ -353,7 +355,7 @@ class PaymentAddNewFormState extends State<PaymentAddNewForm> with TickerProvide
                   bottom: 0,
                   child: Container(
                     width: SizeConfig.screenWidth,
-                    height:_keyboardVisible?0: 70,
+                    height:70,
 
                     decoration: BoxDecoration(
                         color: AppTheme.gridbodyBgColor,
@@ -382,8 +384,8 @@ class PaymentAddNewFormState extends State<PaymentAddNewForm> with TickerProvide
                             behavior: HitTestBehavior.translucent,
                             onTap: (){
 
-                              if(qn.paymentMappingList.isEmpty){
-                                CustomAlert().commonErrorAlert(context, "Add Payment", "");
+                              if(qn.amount.text.isEmpty){
+                                CustomAlert().commonErrorAlert(context, "Add Amount", "");
                               }
 
                               else{
@@ -453,313 +455,79 @@ class PaymentAddNewFormState extends State<PaymentAddNewForm> with TickerProvide
 
 
                 /////////////////////////////////// payment type /////////////////////////////////////////////////////
-                Align(
-                  alignment: Alignment.center,
-                  child: AnimatedContainer(
-                      duration: Duration(milliseconds: 300),
-                      curve: Curves.easeIn,
-                      width: SizeConfig.screenWidth,
-                      height: SizeConfig.height430,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.white,
-                      ),
-                      clipBehavior: Clip.antiAlias,
-                      margin: EdgeInsets.only(left: SizeConfig.width30,right: SizeConfig.width30),
-                      transform: Matrix4.translationValues(paymentCategoryOpen?0:SizeConfig.screenWidth, 0, 0),
-
-                      child:Container(
-                        height: SizeConfig.height430,
-                        width: SizeConfig.screenWidth,
-                        color: Colors.white,
-                        //  padding: EdgeInsets.only(left: SizeConfig.width20,right: SizeConfig.width20,bottom: SizeConfig.height10),
-                        child:Column (
-                          // crossAxisAlignment: CrossAxisAlignment.center,
-                          // mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                height: SizeConfig.height50,
-                                child: Stack(
-                                  children: [
-                                    Align(
-                                      alignment: Alignment.topRight,
-                                      child: IconButton(icon: Icon(Icons.cancel), onPressed: (){
-                                        setState(() {
-                                          paymentCategoryOpen=false;
-                                        });
-                                      }),
-                                    ),
-                                    Align(
-                                        alignment: Alignment.center,
-                                        child: Text('Select Material',style:TextStyle(color:Colors.black,fontFamily: 'RR',fontSize:16),)),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(height: SizeConfig.height10,),
-                              Container(
-                                height: SizeConfig.screenHeight*(300/720),
-                                /*color: Colors.red,*/
-                                margin: EdgeInsets.only(left: SizeConfig.width30,right: SizeConfig.width30),
-                                child: ListView.builder(
-                                  itemCount: qn.paymentTypeList.length,
-                                  itemBuilder: (context,index){
-                                    return GestureDetector(
-                                      onTap: (){
-
-                                        setState(() {
-                                          qn.paymentCategoryId=qn.paymentTypeList[index].paymentCategoryId;
-                                          qn.paymentCategoryName=qn.paymentTypeList[index].paymentCategoryName;
-                                          paymentCategoryOpen=false;
-                                        });
-
-
-
-
-                                      },
-                                      child: Container(
-                                        margin: EdgeInsets.only(bottom: 20),
-                                        alignment: Alignment.center,
-                                        decoration:BoxDecoration(
-                                            borderRadius:BorderRadius.circular(8),
-                                            border: Border.all(color: qn.paymentCategoryId==null? AppTheme.addNewTextFieldBorder:qn.paymentCategoryId==qn.paymentTypeList[index].paymentCategoryId?Colors.transparent: AppTheme.addNewTextFieldBorder),
-                                            color: qn.paymentCategoryId==null? Colors.white: qn.paymentCategoryId==qn.paymentTypeList[index].paymentCategoryId?AppTheme.popUpSelectedColor:Colors.white
-                                        ),
-                                        width:300,
-                                        height:50,
-                                        child: Text("${qn.paymentTypeList[index].paymentCategoryName}",
-                                          style: TextStyle(color:qn.paymentCategoryId==null? AppTheme.grey:qn.paymentCategoryId==qn.paymentTypeList[index].paymentCategoryId?Colors.white:AppTheme.grey,
-                                              fontSize:18,fontFamily: 'RR'),
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ),
-
-
-
-
-                            ]
-
-
-                        ),
-                      )
-                  ),
+                PopUpStatic(
+                  title: "Select Payment Type",
+                  isOpen: paymentCategoryOpen,
+                  dataList: qn.paymentTypeList,
+                  propertyKeyName:"PaymentCategoryName",
+                  propertyKeyId: "PaymentCategoryId",
+                  selectedId:qn.paymentCategoryId,
+                  itemOnTap: (index){
+                    setState(() {
+                      qn.paymentCategoryId=qn.paymentTypeList[index].paymentCategoryId;
+                      qn.paymentCategoryName=qn.paymentTypeList[index].paymentCategoryName;
+                      paymentCategoryOpen=false;
+                    });
+                  },
+                  closeOnTap: (){
+                    setState(() {
+                      paymentCategoryOpen=false;
+                    });
+                  },
                 ),
+
 
 
                 ///////////////////////////////////////   Plant List    ////////////////////////////////
-                Align(
-                  alignment: Alignment.center,
-                  child: AnimatedContainer(
-                      duration: Duration(milliseconds: 300),
-                      curve: Curves.easeIn,
-                      width: SizeConfig.screenWidth,
-                      height: 400,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.white,
-                      ),
-                      clipBehavior: Clip.antiAlias,
-                      margin: EdgeInsets.only(left: SizeConfig.width30,right: SizeConfig.width30),
-                      transform: Matrix4.translationValues(isPlantOpen?0:SizeConfig.screenWidth, 0, 0),
-
-                      child:Container(
-                        height: 400,
-                        width: SizeConfig.screenWidth,
-                        color: Colors.white,
-                        //  padding: EdgeInsets.only(left: SizeConfig.width20,right: SizeConfig.width20,bottom: SizeConfig.height10),
-                        child:Column (
-                          // crossAxisAlignment: CrossAxisAlignment.center,
-                          // mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                height: SizeConfig.height50,
-                                child: Stack(
-                                  children: [
-                                    Align(
-                                      alignment: Alignment.topRight,
-                                      child: IconButton(icon: Icon(Icons.cancel), onPressed: (){
-                                        setState(() {
-                                          isPlantOpen=false;
-                                        });
-                                      }),
-                                    ),
-                                    Align(
-                                        alignment: Alignment.center,
-                                        child: Text('Select Plant',style:TextStyle(color:Colors.black,fontFamily: 'RR',fontSize:16),)),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(height: SizeConfig.height10,),
-
-
-
-
-                              Container(
-                                height: SizeConfig.screenHeight*(300/720),
-
-                                margin: EdgeInsets.only(left: SizeConfig.width30,right: SizeConfig.width30),
-                                child: ListView.builder(
-                                  itemCount: qn.plantList.length,
-                                  itemBuilder: (context,index){
-                                    return GestureDetector(
-                                      onTap: (){
-                                        setState(() {
-                                          qn.PlantId=qn.plantList[index].plantId;
-                                          qn.PlantName=qn.plantList[index].plantName;
-                                          isPlantOpen=false;
-                                        });
-
-                                      },
-                                      child: Container(
-                                        margin: EdgeInsets.only(bottom: 20),
-                                        alignment: Alignment.center,
-                                        decoration:BoxDecoration(
-                                            borderRadius:BorderRadius.circular(8),
-                                            border: Border.all(color: qn.PlantId==null? AppTheme.addNewTextFieldBorder:qn.PlantId==qn.plantList[index].plantId?Colors.transparent: AppTheme.addNewTextFieldBorder),
-                                            color: qn.PlantId==null? Colors.white: qn.PlantId==qn.plantList[index].plantId?AppTheme.popUpSelectedColor:Colors.white
-                                        ),
-                                        width:300,
-                                        height:50,
-                                        child: Text("${qn.plantList[index].plantName}",
-                                          style: TextStyle(color:qn.PlantId==null? AppTheme.grey:qn.PlantId==qn.plantList[index].plantId?Colors.white:AppTheme.grey,
-                                              fontSize:18,fontFamily: 'RR'),
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ),
-
-                              /* Container(
-
-                              width:150,
-                              height:SizeConfig.height50,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(25.0),
-                                color: AppTheme.yellowColor,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: AppTheme.yellowColor.withOpacity(0.4),
-                                    spreadRadius: 1,
-                                    blurRadius: 5,
-                                    offset: Offset(1, 8), // changes position of shadow
-                                  ),
-                                ],
-                              ),
-                              child: Center(
-                                  child: Text("+ Add New",style: TextStyle(color:Colors.black,fontSize:18,),
-                                  )
-                              ),
-
-
-                            )*/
-
-
-
-                            ]
-
-
-                        ),
-                      )
-                  ),
+                PopUpStatic(
+                  title: "Select Plant",
+                  isOpen: isPlantOpen,
+                  dataList: qn.plantList,
+                  propertyKeyName:"PlantName",
+                  propertyKeyId: "PlantId",
+                  selectedId:qn.PlantId,
+                  itemOnTap: (index){
+                    setState(() {
+                      qn.PlantId=qn.plantList[index].plantId;
+                      qn.PlantName=qn.plantList[index].plantName;
+                      isPlantOpen=false;
+                    });
+                  },
+                  closeOnTap: (){
+                    setState(() {
+                      isPlantOpen=false;
+                    });
+                  },
                 ),
+                
 
                 ///////////////////////////////////////      SUPPLIER LIST ////////////////////////////////
-                Align(
-                  alignment: Alignment.center,
-                  child: AnimatedContainer(
-                      duration: Duration(milliseconds: 300),
-                      curve: Curves.easeIn,
-                      width: SizeConfig.screenWidth,
-                      height: SizeConfig.height430,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.white,
-                      ),
-                      clipBehavior: Clip.antiAlias,
-                      margin: EdgeInsets.only(left: SizeConfig.width30,right: SizeConfig.width30),
-                      transform: Matrix4.translationValues(suppliersListOpen?0:SizeConfig.screenWidth, 0, 0),
+                PopUpStatic(
+                  title: "Select Party Name",
+                  isOpen: suppliersListOpen,
+                  isAlwaysShown: true,
+                  dataList: qn.filterPaymentSupplierList,
+                  propertyKeyName:"SupplierName",
+                  propertyKeyId: "SupplierId",
+                  selectedId:qn.selectedPartyId,
+                  itemOnTap: (index){
 
-                      child:Container(
-                        height: SizeConfig.height430,
-                        width: SizeConfig.screenWidth,
-                        color: Colors.white,
-                        //  padding: EdgeInsets.only(left: SizeConfig.width20,right: SizeConfig.width20,bottom: SizeConfig.height10),
-                        child:Column (
-                          // crossAxisAlignment: CrossAxisAlignment.center,
-                          // mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                height: SizeConfig.height50,
-                                child: Stack(
-                                  children: [
-                                    Align(
-                                      alignment: Alignment.topRight,
-                                      child: IconButton(icon: Icon(Icons.cancel), onPressed: (){
-                                        setState(() {
-                                          suppliersListOpen=false;
-                                        });
-                                      }),
-                                    ),
-                                    Align(
-                                        alignment: Alignment.center,
-                                        child: Text('Select Party',style:TextStyle(color:Colors.black,fontFamily: 'RR',fontSize:16),)),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(height: SizeConfig.height10,),
-                              Container(
-                                height: SizeConfig.screenHeight*(300/720),
-                                /*color: Colors.red,*/
-                                margin: EdgeInsets.only(left: SizeConfig.width30,right: SizeConfig.width30),
-                                child: ListView.builder(
-                                  itemCount: qn.filterPaymentSupplierList.length,
-                                  itemBuilder: (context,index){
-                                    return GestureDetector(
-                                      onTap: (){
-
-                                        setState(() {
-                                          qn.selectedPartyId=qn.filterPaymentSupplierList[index].supplierId;
-                                          qn.selectedPartyName=qn.filterPaymentSupplierList[index].supplierName;
+                    setState(() {
+                      qn.selectedPartyId=qn.filterPaymentSupplierList[index].supplierId;
+                      qn.selectedPartyName=qn.filterPaymentSupplierList[index].supplierName;
 
 
 
-                                          suppliersListOpen=false;
-                                        });
-
-                                      },
-                                      child: Container(
-                                        margin: EdgeInsets.only(bottom: 20),
-                                        alignment: Alignment.center,
-                                        decoration:BoxDecoration(
-                                            borderRadius:BorderRadius.circular(8),
-                                            border: Border.all(color: qn.selectedPartyId==null? AppTheme.addNewTextFieldBorder:qn.selectedPartyId==qn.filterPaymentSupplierList[index].supplierId?Colors.transparent: AppTheme.addNewTextFieldBorder),
-                                            color: qn.selectedPartyId==null? Colors.white: qn.selectedPartyId==qn.filterPaymentSupplierList[index].supplierId?AppTheme.popUpSelectedColor:Colors.white
-                                        ),
-                                        width:300,
-                                        height:50,
-                                        child: Text("${qn.filterPaymentSupplierList[index].supplierName}",
-                                          style: TextStyle(color:qn.selectedPartyId==null? AppTheme.grey:qn.selectedPartyId==qn.filterPaymentSupplierList[index].supplierId?Colors.white:AppTheme.grey,
-                                              fontSize:18,fontFamily: 'RR'),
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ),
-
-
-
-
-                            ]
-
-
-                        ),
-                      )
-                  ),
+                      suppliersListOpen=false;
+                    });
+                  },
+                  closeOnTap: (){
+                    setState(() {
+                      suppliersListOpen=false;
+                    });
+                  },
                 ),
+
               ],
             ),
       ),

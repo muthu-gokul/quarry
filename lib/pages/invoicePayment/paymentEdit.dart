@@ -55,6 +55,7 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
     SizeConfig().init(context);
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       key: scaffoldkey,
       body: Consumer<PaymentNotifier>(
         builder: (context, qn, child) =>
@@ -109,11 +110,9 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
                             onVerticalDragUpdate: (details){
 
                               int sensitivity = 5;
-
                               if (details.delta.dy > sensitivity) {
                                 scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
                                   if(isListScroll){
-
                                     setState(() {
                                       isListScroll=false;
                                     });
@@ -124,20 +123,15 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
                                 scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
 
                                   if(!isListScroll){
-
                                     setState(() {
                                       isListScroll=true;
                                     });
                                   }
-                                  /*Timer(Duration(milliseconds: 100), (){
-
-                               });*/
-
                                 });
                               }
                             },
                             child: Container(
-                              height: _keyboardVisible ? SizeConfig.screenHeight * 0.5 : SizeConfig.screenHeight - 100,
+                              height: SizeConfig.screenHeight - 100,
                               width: SizeConfig.screenWidth,
 
                               decoration: BoxDecoration(
@@ -149,15 +143,15 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
                               child: NotificationListener<ScrollNotification>(
                                 onNotification: (s){
                                   if(s is ScrollStartNotification){
-                                    print(listViewController.hasListeners);
-                                    print(listViewController.position.userScrollDirection);
-                                    //    print(listViewController.position);
+
                                     if(listViewController.offset==0 && isListScroll && scrollController.offset==100 && listViewController.position.userScrollDirection==ScrollDirection.idle){
 
                                       Timer(Duration(milliseconds: 100), (){
                                         if(listViewController.position.userScrollDirection!=ScrollDirection.reverse){
-                                          if(scrollController.position.pixels == scrollController.position.maxScrollExtent){
-                                            //scroll end
+
+                                          //if(scrollController.position.pixels == scrollController.position.maxScrollExtent){
+                                          if(listViewController.offset==0){
+
                                             scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value) {
                                               if(isListScroll){
                                                 setState(() {
@@ -169,8 +163,6 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
 
                                         }
                                       });
-
-
                                     }
                                   }
                                 },
@@ -516,12 +508,13 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
                                                       onTap: (){
                                                         setState(() {
                                                           _keyboardVisible=true;
+                                                          isListScroll=true;
                                                         });
                                                         scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
 
                                                       },
 
-                                                      scrollPadding: EdgeInsets.only(bottom: 100),
+                                                      scrollPadding: EdgeInsets.only(bottom: 450),
                                                       style: TextStyle(fontFamily: 'RR', fontSize: 15,
                                                           color: AppTheme.addNewTextFieldText, letterSpacing: 0.2),
                                                       controller: qn.amount,
@@ -565,6 +558,7 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
                                                       Timer(Duration(milliseconds: 100), (){
                                                         setState(() {
                                                           _keyboardVisible=false;
+
                                                         });
 
                                                         if(qn.paymentCategoryId==null){
@@ -682,11 +676,12 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
                                     AddNewLabelTextField(
                                       labelText: "Comments",
                                       maxlines: 5,
-                                      scrollPadding: 100,
+                                      scrollPadding: 400,
                                       textEditingController: qn.comment,
                                       ontap: (){
                                         setState(() {
                                           _keyboardVisible=true;
+                                          isListScroll=true;
                                         });
                                         scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
 
@@ -709,6 +704,7 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
                                           width: SizeConfig.screenWidth,
                                           alignment: Alignment.center,
                                           padding: EdgeInsets.only(left: SizeConfig.screenWidth*0.4),
+                                          margin: EdgeInsets.only(top: 10),
                                           child: Column(
                                             crossAxisAlignment: CrossAxisAlignment.start,
 
@@ -729,7 +725,7 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
                                           ),
                                         )
                                     ),
-                                    SizedBox(height: SizeConfig.height50,)
+                                    SizedBox(height:  _keyboardVisible ? SizeConfig.screenHeight * 0.5 :SizeConfig.height50,)
                                   ],
                                 ),
                               ),
@@ -748,6 +744,7 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
                     children: [
                       IconButton(icon: Icon(Icons.arrow_back), onPressed: () {
                        qn.clearEditForm();
+                       qn.clearInsertForm();
                         Navigator.pop(context);
                       }),
                       SizedBox(width: SizeConfig.width5,),
