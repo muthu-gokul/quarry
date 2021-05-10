@@ -80,4 +80,8 @@ static BoxShadow yellowShadow=  BoxShadow(
  //Appbar TextStyle
  static TextStyle appBarTS=TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 16);
 
+ //rawScrollBar Properties
+  static const Color srollBarColor=Colors.grey;
+  static const double scrollBarRadius=5.0;
+  static const double scrollBarThickness=4.0;
 }

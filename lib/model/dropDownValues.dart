@@ -13,7 +13,17 @@ class VehicleType{
       VehicleTypeName: json['VehicleTypeName'],
     );
   }
-
+  Map<String, dynamic> toJson() => {
+    "VehicleTypeId": VehicleTypeId,
+    "VehicleTypeName": VehicleTypeName,
+  };
+  dynamic get(String propertyName) {
+    var _mapRep = toJson();
+    if (_mapRep.containsKey(propertyName)) {
+      return _mapRep[propertyName];
+    }
+    throw ArgumentError('property not found');
+  }
 }
 
 
@@ -47,6 +57,18 @@ class MaterialTypelist{
     );
   }
 
+  Map<String, dynamic> toJson() => {
+    "MaterialId": MaterialId,
+    "MaterialName": MaterialName,
+  };
+  dynamic get(String propertyName) {
+    var _mapRep = toJson();
+    if (_mapRep.containsKey(propertyName)) {
+      return _mapRep[propertyName];
+    }
+    throw ArgumentError('property not found');
+  }
+
 }
 
 
@@ -65,7 +87,17 @@ class PaymentType{
       PaymentCategoryName: json['PaymentCategoryName'],
     );
   }
-
+  Map<String, dynamic> toJson() => {
+    "PaymentCategoryId": PaymentCategoryId,
+    "PaymentCategoryName": PaymentCategoryName,
+  };
+  dynamic get(String propertyName) {
+    var _mapRep = toJson();
+    if (_mapRep.containsKey(propertyName)) {
+      return _mapRep[propertyName];
+    }
+    throw ArgumentError('property not found');
+  }
 }
 
 class CustomerModel {

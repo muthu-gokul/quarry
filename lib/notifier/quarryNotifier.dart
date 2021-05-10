@@ -485,6 +485,7 @@ class QuarryNotifier extends ChangeNotifier{
 
 
   List<VehicleType> vehicleList=[];
+  List<VehicleType> filterVehicleTypeList=[];
   List<MaterialTypelist> sale_materialList=[];
   List<PaymentType> sale_paymentList=[];
   List<CustomerModel> sale_customerList=[];
@@ -532,6 +533,7 @@ class QuarryNotifier extends ChangeNotifier{
 
 
           vehicleList=t.map((e) => VehicleType.fromJson(e)).toList();
+          filterVehicleTypeList=t.map((e) => VehicleType.fromJson(e)).toList();
           sale_materialList=t1.map((e) => MaterialTypelist.fromJson(e)).toList();
           sale_paymentList=t2.map((e) => PaymentType.fromJson(e)).toList();
           sale_customerList=t3.map((e) => CustomerModel.fromJson(e)).toList();
@@ -551,12 +553,86 @@ class QuarryNotifier extends ChangeNotifier{
     }
   }
 
+
+
+
   searchCustomer(String value){
     if(value.isEmpty){
       filterSale_customerList=sale_customerList;
     }
     else{
       filterSale_customerList=sale_customerList.where((element) => element.customerName.toLowerCase().contains(value.toLowerCase())).toList();
+    }
+    notifyListeners();
+  }
+
+
+  InsertVehicleTypeDbhit(BuildContext context,String vehicleTypeName) async {
+    updateInsertSaleLoader(true);
+    var body={
+      "Fields": [
+        {
+          "Key": "SpName",
+          "Type": "String",
+          "Value": "${Sp.insertVehicleType}"
+        },
+        {
+          "Key": "LoginUserId",
+          "Type": "int",
+          "Value": UserId
+        },
+        {
+          "Key": "VehicleTypeName",
+          "Type": "String",
+          "Value": vehicleTypeName
+        },
+        {
+          "Key": "CompanyId",
+          "Type": "int",
+          "Value": 1
+        },
+
+        {
+          "Key": "database",
+          "Type": "String",
+          "Value": DataBaseName
+        }
+      ]
+    };
+
+    try{
+      await call.ApiCallGetInvoke(body,context).then((value) {
+
+        if(value!=null){
+          var parsed=json.decode(value);
+
+          print(parsed);
+          var t=parsed['Table'] as List;
+          SS_selectedVehicleTypeId=t[0]['VehicleTypeId'];
+          SS_selectedVehicleTypeName=t[0]['VehicleTypeName'];
+          vehicleList.add(VehicleType(
+            VehicleTypeId: SS_selectedVehicleTypeId,
+            VehicleTypeName: SS_selectedVehicleTypeName
+          ));
+          filterVehicleTypeList=vehicleList;
+        }
+        updateInsertSaleLoader(false);
+
+      });
+    }
+    catch(e){
+      updateInsertSaleLoader(false);
+      CustomAlert().commonErrorAlert(context, "${Sp.insertVehicleType}" , e.toString());
+    }
+  }
+
+
+  searchVehicleType(String value){
+    if(value.isEmpty){
+      filterVehicleTypeList=vehicleList;
+    }
+    else{
+      filterVehicleTypeList=vehicleList.where((element) => element.VehicleTypeName.toLowerCase().contains(value.toLowerCase())).toList();
     }
     notifyListeners();
   }
@@ -2914,6 +2990,7 @@ class QuarryNotifier extends ChangeNotifier{
       customerId: SS_selectCustomerId,
       customerName: SS_selectedCustomerName
     ));
+    filterSale_customerList=sale_customerList;
     notifyListeners();
   }
 

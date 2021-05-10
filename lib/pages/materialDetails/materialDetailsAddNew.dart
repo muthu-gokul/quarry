@@ -71,6 +71,7 @@ class MaterialDetailAddNewState extends State<MaterialDetailAddNew> with TickerP
     _keyboardVisible = MediaQuery.of(context).viewInsets.bottom != 0;
     return Scaffold(
         key: scaffoldkey,
+        resizeToAvoidBottomInset: false,
         body: Consumer<MaterialNotifier>(
             builder: (context,qn,child)=> Stack(
               children: [
@@ -145,7 +146,8 @@ class MaterialDetailAddNewState extends State<MaterialDetailAddNew> with TickerP
                               }
                             },
                             child: Container(
-                              height:_keyboardVisible?SizeConfig.screenHeight*0.5 :SizeConfig.screenHeight-100,
+                             // height:_keyboardVisible?SizeConfig.screenHeight*0.5 :SizeConfig.screenHeight-100,
+                              height:SizeConfig.screenHeight-100,
                               width: SizeConfig.screenWidth,
 
                               decoration: BoxDecoration(
@@ -233,7 +235,7 @@ class MaterialDetailAddNewState extends State<MaterialDetailAddNew> with TickerP
                                     labelText: 'Price',
                                     textEditingController: qn.materialPrice,
                                     textInputType: TextInputType.number,
-                                    scrollPadding: 100,
+                                    scrollPadding: 300,
                                     onEditComplete: (){
                                       node.unfocus();
                                     },
@@ -249,7 +251,7 @@ class MaterialDetailAddNewState extends State<MaterialDetailAddNew> with TickerP
                                           color: AppTheme.yellowColor
                                       ),
                                       child: Center(
-                                        child: Text("Rs",style: AppTheme.TSWhite16,),
+                                        child: Text("Rs",style: AppTheme.TSWhiteML,),
                                       ),
                                     ),
                                   ),
@@ -257,7 +259,7 @@ class MaterialDetailAddNewState extends State<MaterialDetailAddNew> with TickerP
                                     labelText: 'GST',
                                     textEditingController: qn.materialGst,
                                     textInputType: TextInputType.number,
-                                    scrollPadding: 100,
+                                    scrollPadding: 300,
                                     onEditComplete: (){
                                       node.unfocus();
                                     },
@@ -273,12 +275,12 @@ class MaterialDetailAddNewState extends State<MaterialDetailAddNew> with TickerP
                                         color: AppTheme.yellowColor
                                       ),
                                       child: Center(
-                                        child: Text("%",style: AppTheme.TSWhite20,),
+                                        child: Text("%",style: AppTheme.TSWhite166,),
                                       ),
                                     ),
                                   ),
 
-                                  SizedBox(height: SizeConfig.height50,)
+                                  SizedBox(height:_keyboardVisible?SizeConfig.screenHeight*0.5 : SizeConfig.height50,)
                                 ],
                               ),
                             ),
@@ -319,7 +321,8 @@ class MaterialDetailAddNewState extends State<MaterialDetailAddNew> with TickerP
                   bottom: 0,
                   child: Container(
                     width: SizeConfig.screenWidth,
-                    height:_keyboardVisible?0:  70,
+                    // height:_keyboardVisible?0:  70,
+                    height:70,
 
                     decoration: BoxDecoration(
                         color: AppTheme.gridbodyBgColor,

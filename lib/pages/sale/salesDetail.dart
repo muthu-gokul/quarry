@@ -17,6 +17,8 @@ import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/customTextField.dart';
 import 'package:quarry/widgets/decimal.dart';
 import 'package:quarry/widgets/searchdropdownSingleSelect.dart';
+import 'package:quarry/widgets/sidePopUp/sidePopUpWithSearch.dart';
+import 'package:quarry/widgets/sidePopUp/sidePopUpWithoutSearch.dart';
 
 import '../../notifier/quarryNotifier.dart';
 import '../../styles/app_theme.dart';
@@ -44,6 +46,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
   final formatterTime = DateFormat.jm();
 
   bool isTransportModeOpen=false;
+  bool isAddTransportOpen=false;
   bool isPaymentTypeOpen=false;
   bool isMaterialTypeOpen=false;
   bool isCustomerDetaislOpen=false;
@@ -55,6 +58,8 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
   String disValue="";
   bool discountValueError=false;
   TextEditingController customerSearchController =new TextEditingController();
+  TextEditingController transportTypeSearchController =new TextEditingController();
+  TextEditingController addTransportTypeController =new TextEditingController();
 
   Animation driverArrowAnimation;
   AnimationController driverArrowAnimationController;
@@ -122,7 +127,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
         return false;
       },
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
+       resizeToAvoidBottomInset: false,
         body: AnnotatedRegion<SystemUiOverlayStyle>(
           value: SystemUiOverlayStyle.light.copyWith(
               statusBarColor: AppTheme.yellowColor
@@ -340,25 +345,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                           },
                                                         ),
 
-                                                        AddNewLabelTextField(
-                                                          labelText: 'Vehicle Number',
-                                                          textEditingController: qn.SS_vehicleNo,
-                                                          ontap: () {
-                                                            setState(() {
-                                                              _keyboardVisible=true;
-                                                            });
-                                                            scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
-                                                          },
 
-                                                          onEditComplete: () {
-                                                            node.unfocus();
-                                                            Timer(Duration(milliseconds: 100), (){
-                                                              setState(() {
-                                                                _keyboardVisible=false;
-                                                              });
-                                                            });
-                                                          },
-                                                        ),
 
                                                         GestureDetector(
 
@@ -1912,8 +1899,8 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
 
                 Container(
 
-                  height: isTransportModeOpen || isPaymentTypeOpen || isCustomerDetaislOpen || isMaterialTypeOpen? SizeConfig.screenHeight:0,
-                  width: isTransportModeOpen || isPaymentTypeOpen || isCustomerDetaislOpen || isMaterialTypeOpen? SizeConfig.screenWidth:0,
+                  height: isTransportModeOpen || isPaymentTypeOpen || isCustomerDetaislOpen || isMaterialTypeOpen || isAddTransportOpen? SizeConfig.screenHeight:0,
+                  width: isTransportModeOpen || isPaymentTypeOpen || isCustomerDetaislOpen || isMaterialTypeOpen || isAddTransportOpen? SizeConfig.screenWidth:0,
                   color: Colors.black.withOpacity(0.5),
 
                 ),
@@ -1935,561 +1922,279 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                 ),
 
 ///////////////////////////////// Transport Type /////////////////////////////////
+
+                PopUpSearch(
+                  isOpen: isTransportModeOpen,
+                  searchController: transportTypeSearchController,
+                  searchHintText: "Search Vehicle Type",
+
+                  dataList: qn.filterVehicleTypeList,
+                  propertyKeyId: "VehicleTypeId",
+                  propertyKeyName: "VehicleTypeName",
+                  selectedId: qn.SS_selectedVehicleTypeId,
+
+                  searchOnchange: (v){
+                    qn.searchVehicleType(v);
+                  },
+                  itemOnTap: (index){
+                    node.unfocus();
+                    setState(() {
+                      isTransportModeOpen=false;
+                      qn.SS_selectedVehicleTypeId=qn.filterVehicleTypeList[index].VehicleTypeId;
+                      qn.SS_selectedVehicleTypeName=qn.filterVehicleTypeList[index].VehicleTypeName;
+
+                    });
+                    transportTypeSearchController.clear();
+                  },
+                  closeOnTap: (){
+                    node.unfocus();
+                    setState(() {
+                      isTransportModeOpen=false;
+                    });
+                    transportTypeSearchController.clear();
+                  },
+                  addNewOnTap: (){
+                    setState(() {
+                      isTransportModeOpen=false;
+                      isAddTransportOpen=true;
+                    });
+                  },
+                ),
+
+
+
+/////////////////// add new transport Type //////
                 Align(
                   alignment: Alignment.center,
                   child: AnimatedContainer(
-                    duration: Duration(milliseconds: 300),
-                    curve: Curves.easeIn,
-                    width: SizeConfig.screenWidth,
-                    height: SizeConfig.screenHeight*0.5,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Colors.white,
-                    ),
-                    clipBehavior: Clip.antiAlias,
+                      duration: Duration(milliseconds: 300),
+                      curve: Curves.easeIn,
+                      width: SizeConfig.screenWidth,
+                      height: 250,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.white,
+                      ),
+                      clipBehavior: Clip.antiAlias,
+                      margin: EdgeInsets.only(left: SizeConfig.width30,right: SizeConfig.width30),
+                      transform: Matrix4.translationValues(isAddTransportOpen?0:SizeConfig.screenWidth, 0, 0),
 
-                    margin: EdgeInsets.only(left: SizeConfig.width30,right: SizeConfig.width30,),
-                    transform: Matrix4.translationValues(isTransportModeOpen?0:SizeConfig.screenWidth, 0, 0),
-                    child: Stack(
-                      children: [
-                        Container(
-                          height: SizeConfig.height70,
-                          width: double.maxFinite,
-                          color: Colors.white,
-                          padding: EdgeInsets.only(left: SizeConfig.width20,right: SizeConfig.width20,bottom: SizeConfig.height10),
-
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
+                      child:Container(
+                        height:250,
+                        width: SizeConfig.screenWidth,
+                        color: Colors.white,
+                        child:Column (
                             children: [
-                              Spacer(),
-                              Text('Select Vehicle Type',style: AppTheme.bgColorTS,),
-                              Spacer(),
-                              GestureDetector(
-                                onTap: (){
-                                  setState(() {
-                                    isTransportModeOpen=false;
-                                  });
-                                },
-                                child: Container(
-                                  height: SizeConfig.height30,
-                                  width: SizeConfig.height30,
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: AppTheme.bgColor
+                              SizedBox(height: 40,),
+                              Container(
+                                height: 50,
+                                child: Stack(
+                                  children: [
+                                    Align(
+                                      alignment: Alignment.center,
+                                      child:Container(
+                                        height: 50,
+                                        width: SizeConfig.screenWidth,
+                                        margin: EdgeInsets.only(left: SizeConfig.width20,right: SizeConfig.width20),
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(25),
+                                            /*      border: Border.all(color: AppTheme.addNewTextFieldBorder),*/
+                                            color: Colors.white,
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: AppTheme.addNewTextFieldText.withOpacity(0.2),
+                                                spreadRadius: 2,
+                                                blurRadius: 15,
+                                                offset: Offset(0, 0), // changes position of shadow
+                                              )
+                                            ]
+                                        ),
+                                        child:Container(
+                                          padding: EdgeInsets.only(left: 20),
+                                          width: SizeConfig.screenWidth*0.52,
+                                          child: TextField(
+                                              controller: addTransportTypeController,
+                                            scrollPadding: EdgeInsets.only(bottom: 500),
+                                            style:  TextStyle(fontFamily: 'RR',fontSize: 15,color:AppTheme.addNewTextFieldText,letterSpacing: 0.2),
+                                            decoration: InputDecoration(
 
-                                  ),
-                                  child: Center(
-                                    child:  Icon(Icons.close,
-                                      color: Colors.white,size: 20,),
-                                  ),
-                                ),
-                              )
-
-                            ],
-                          ),
-
-                        ),
-                        Positioned(
-                          top: SizeConfig.height60,
-                          child: Container(
-                            height: SizeConfig.screenHeight*0.5- SizeConfig.height80,
-                            width: SizeConfig.screenWidth-SizeConfig.width60,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: Colors.white
-                            ),
-                            child: ListView.builder(
-                                itemCount: qn.vehicleList.length,
-                                itemBuilder: (context,index){
-                                  return GestureDetector(
-                                    onTap: (){
-
-                                      setState(() {
-                                        isTransportModeOpen=false;
-                                        qn.SS_selectedVehicleTypeId=qn.vehicleList[index].VehicleTypeId;
-                                        qn.SS_selectedVehicleTypeName=qn.vehicleList[index].VehicleTypeName;
-                                      });
-                                    },
-                                    child: Container(
-                                      margin: EdgeInsets.only(left: SizeConfig.width50,right:  SizeConfig.width50,top: SizeConfig.height20),
-
-                                      height: SizeConfig.height50,
-                                      width: SizeConfig.screenWidth,
-                                      decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(5),
-                                          border: Border.all(color: AppTheme.addNewTextFieldBorder),
-                                          color: qn.SS_selectedVehicleTypeId==null ?Colors.white:qn.SS_selectedVehicleTypeId==qn.vehicleList[index].VehicleTypeId?AppTheme.bgColor:Colors.white
-
-                                      ),
-                                      child: Center(
-                                        child: Text("${qn.vehicleList[index].VehicleTypeName}",style: TextStyle(fontFamily: 'RR',fontSize: 18,
-                                            color: qn.SS_selectedVehicleTypeId==null ?AppTheme.bgColor:qn.SS_selectedVehicleTypeId==qn.vehicleList[index].VehicleTypeId?Colors.white:AppTheme.bgColor
-
-                                        ),),
+                                                border: InputBorder.none,
+                                                focusedBorder: InputBorder.none,
+                                                errorBorder: InputBorder.none,
+                                                focusedErrorBorder: InputBorder.none,
+                                                enabledBorder: InputBorder.none,
+                                                hintText: "Vehicle Type Name",
+                                                hintStyle: AppTheme.hintText
+                                            ),
+                                            inputFormatters: [
+                                                FilteringTextInputFormatter.allow(RegExp('[A-Za-z]')),
+                                            ],
+                                            // keyboardType: otherChargesTextFieldOpen?TextInputType.number:TextInputType.text,
+                                          ),
+                                        ),
                                       ),
                                     ),
-                                  );
-                                }),
 
-                          ),
-                        )
+                                  ],
+                                ),
+                              ),
+                              SizedBox(height: 40,),
+                              GestureDetector(
+                                onTap: (){
+                                  node.unfocus();
+                                  qn.InsertVehicleTypeDbhit(context, addTransportTypeController.text);
+                                 setState(() {
+                                   isAddTransportOpen=false;
+                                 });
+                                  addTransportTypeController.clear();
 
-                      ],
-                    ),
+                                },
+                                child: Container(
+                                  height: 40,
+                                  width: 120,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(25),
+                                      color: AppTheme.yellowColor
+                                  ),
+                                  child: Center(
+                                    child: Text("Add",style:TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 18),),
+                                  ),
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: (){
+                                  node.unfocus();
+                                  setState(() {
+                                    isAddTransportOpen=false;
+                                  });
+                                  addTransportTypeController.clear();
+
+
+                                },
+                                child: Container(
+                                  height: 50,
+                                  width: 150,
+                                  child: Center(
+                                    child: Text("Cancel",style: TextStyle(fontFamily: 'RL',fontSize: 18,color: Color(0xFFA1A1A1))),
+                                  ),
+                                ),
+                              ),
+
+
+
+
+                            ]
+
+
+                        ),
+                      )
                   ),
                 ),
+
 
 
 
 ///////////////////////////////// Material  Type //////////////////////////////////
-                Align(
-                  alignment: Alignment.center,
-                  child: AnimatedContainer(
-                    duration: Duration(milliseconds: 300),
-                    curve: Curves.easeIn,
-                    width: SizeConfig.screenWidth,
-                    height: SizeConfig.screenHeight*0.5,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Colors.white,
-                    ),
-                    clipBehavior: Clip.antiAlias,
 
-                    margin: EdgeInsets.only(left: SizeConfig.width30,right: SizeConfig.width30,),
-                    transform: Matrix4.translationValues(isMaterialTypeOpen?0:SizeConfig.screenWidth, 0, 0),
-                    child: Stack(
-                      children: [
-                        Container(
-                          height: SizeConfig.height70,
-                          width: double.maxFinite,
-                          color: Colors.white,
-                          padding: EdgeInsets.only(left: SizeConfig.width20,right: SizeConfig.width20,bottom: SizeConfig.height10),
+                PopUpStatic(
+                  title: "Select Material",
 
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Spacer(),
-                              Text('Select Material Type',style: AppTheme.bgColorTS,),
-                              Spacer(),
-                              GestureDetector(
-                                onTap: (){
-                                  setState(() {
-                                    isMaterialTypeOpen=false;
-                                  });
-                                },
-                                child: Container(
-                                  height: SizeConfig.height30,
-                                  width: SizeConfig.height30,
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: AppTheme.bgColor
+                  isOpen: isMaterialTypeOpen,
+                  dataList: qn.sale_materialList,
+                  propertyKeyName:"MaterialName",
+                  propertyKeyId: "MaterialId",
+                  selectedId: qn.SS_selectedMaterialTypeId,
+                  itemOnTap: (index){
+                    setState(() {
+                      isMaterialTypeOpen=false;
+                      qn.SS_selectedMaterialTypeId=qn.sale_materialList[index].MaterialId;
+                      qn.SS_selectedMaterialTypeName=qn.sale_materialList[index].MaterialName;
+                      qn.SS_Empty_ReqQtyUnit=qn.sale_materialList[index].MaterialUnitName;
+                    });
+                  },
+                  closeOnTap: (){
+                    setState(() {
+                      isMaterialTypeOpen=false;
+                    });
+                  },
 
-                                  ),
-                                  child: Center(
-                                    child:  Icon(Icons.close,
-                                      color: Colors.white,size: 20,),
-                                  ),
-                                ),
-                              )
 
-                            ],
-                          ),
-
-                        ),
-                        Positioned(
-                          top: SizeConfig.height60,
-                          child: Container(
-                            height: SizeConfig.screenHeight*0.5- SizeConfig.height80,
-                            width: SizeConfig.screenWidth-SizeConfig.width60,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: Colors.white
-                            ),
-                            child: ListView.builder(
-                                itemCount: qn.sale_materialList.length,
-                                itemBuilder: (context,index){
-                                  return GestureDetector(
-                                    onTap: (){
-
-                                      setState(() {
-                                        isMaterialTypeOpen=false;
-                                        qn.SS_selectedMaterialTypeId=qn.sale_materialList[index].MaterialId;
-                                        qn.SS_selectedMaterialTypeName=qn.sale_materialList[index].MaterialName;
-                                        qn.SS_Empty_ReqQtyUnit=qn.sale_materialList[index].MaterialUnitName;
-                                      });
-                                      qn.weightToAmount();
-                                    },
-                                    child: Container(
-                                      margin: EdgeInsets.only(left: SizeConfig.width50,right:  SizeConfig.width50,top: SizeConfig.height20),
-
-                                      height: SizeConfig.height50,
-                                      width: double.maxFinite,
-                                      decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(5),
-                                          border: Border.all(color: AppTheme.addNewTextFieldBorder),
-                                          //color: Colors.white
-                                          color: qn.SS_selectedMaterialTypeId==null ?Colors.white:qn.SS_selectedMaterialTypeId==qn.sale_materialList[index].MaterialId?AppTheme.bgColor:Colors.white
-
-                                      ),
-                                      child: Center(
-                                        child: Text("${qn.sale_materialList[index].MaterialName}",style: TextStyle(fontFamily: 'RR',fontSize: 18,
-                                            color: qn.SS_selectedMaterialTypeId==null ?AppTheme.bgColor:qn.SS_selectedMaterialTypeId==qn.sale_materialList[index].MaterialId?Colors.white:AppTheme.bgColor
-
-                                        ),),
-                                      ),
-                                    ),
-                                  );
-                                }),
-
-                          ),
-                        )
-
-                      ],
-                    ),
-                  ),
                 ),
-
-
-
-
 
 
 
 
 ///////////////////////////////// Payment Type //////////////////////////////////
-                Align(
-                  alignment: Alignment.center,
-                  child: AnimatedContainer(
-                    duration: Duration(milliseconds: 300),
-                    curve: Curves.easeIn,
-                    width: SizeConfig.screenWidth,
-                    height: SizeConfig.screenHeight*0.5,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Colors.white,
-                    ),
-                    clipBehavior: Clip.antiAlias,
 
-                    margin: EdgeInsets.only(left: SizeConfig.width30,right: SizeConfig.width30,),
-                    transform: Matrix4.translationValues(isPaymentTypeOpen?0:SizeConfig.screenWidth, 0, 0),
-                    child: Stack(
-                      children: [
-                        Container(
-                          height: SizeConfig.height70,
-                          width: double.maxFinite,
-                          color: Colors.white,
-                          padding: EdgeInsets.only(left: SizeConfig.width20,right: SizeConfig.width20,bottom: SizeConfig.height10),
+                PopUpStatic(
+                  title: "Select Payment Type",
 
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Spacer(),
-                              Text('Select Payment Type',style: AppTheme.bgColorTS,),
-                              Spacer(),
-                              GestureDetector(
-                                onTap: (){
-                                  setState(() {
-                                    isPaymentTypeOpen=false;
-                                  });
-                                },
-                                child: Container(
-                                  height: SizeConfig.height30,
-                                  width: SizeConfig.height30,
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: AppTheme.bgColor
+                  isOpen: isPaymentTypeOpen,
+                  dataList: qn.sale_paymentList,
+                    propertyKeyName:"PaymentCategoryName",
+                  propertyKeyId: "PaymentCategoryId",
+                  selectedId: qn.SS_selectedPaymentTypeId,
+                  itemOnTap: (index){
+                    setState(() {
+                      isPaymentTypeOpen=false;
+                      qn.SS_selectedPaymentTypeId=qn.sale_paymentList[index].PaymentCategoryId;
+                      qn.SS_selectedPaymentTypeString=qn.sale_paymentList[index].PaymentCategoryName;
+                    });
+                  },
+                  closeOnTap: (){
+                    setState(() {
+                      isPaymentTypeOpen=false;
+                    });
+                  },
 
-                                  ),
-                                  child: Center(
-                                    child:  Icon(Icons.close,
-                                      color: Colors.white,size: 20,),
-                                  ),
-                                ),
-                              )
 
-                            ],
-                          ),
-
-                        ),
-                        Positioned(
-                          top: SizeConfig.height60,
-                          child: Container(
-                            height: SizeConfig.screenHeight*0.5- SizeConfig.height80,
-                            width: SizeConfig.screenWidth-SizeConfig.width60,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: Colors.white
-                            ),
-                            child: ListView.builder(
-                                itemCount: qn.sale_paymentList.length,
-                                itemBuilder: (context,index){
-                                  return GestureDetector(
-                                    onTap: (){
-                                      setState(() {
-                                        isPaymentTypeOpen=false;
-                                        qn.SS_selectedPaymentTypeId=qn.sale_paymentList[index].PaymentCategoryId;
-                                        qn.SS_selectedPaymentTypeString=qn.sale_paymentList[index].PaymentCategoryName;
-                                      });
-
-                                    },
-                                    child: Container(
-                                      margin: EdgeInsets.only(left: SizeConfig.width50,right:  SizeConfig.width50,top: SizeConfig.height20),
-
-                                      height: SizeConfig.height50,
-                                      width: double.maxFinite,
-                                      decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(5),
-                                          border: Border.all(color: AppTheme.addNewTextFieldBorder),
-                                          color: qn.SS_selectedPaymentTypeId==null ?Colors.white:qn.SS_selectedPaymentTypeId==qn.sale_paymentList[index].PaymentCategoryId?AppTheme.bgColor:Colors.white
-                                      ),
-                                      child: Center(
-                                        child: Text("${qn.sale_paymentList[index].PaymentCategoryName}",style: TextStyle(fontFamily: 'RR',fontSize: 18,
-                                            color: qn.SS_selectedPaymentTypeId==null ?AppTheme.bgColor:qn.SS_selectedPaymentTypeId==qn.sale_paymentList[index].PaymentCategoryId?Colors.white:AppTheme.bgColor
-
-                                        ),),
-                                      ),
-                                    ),
-                                  );
-                                }),
-
-                          ),
-                        )
-
-                      ],
-                    ),
-                  ),
                 ),
-
-
-
-
-
 
 
 
 ///////////////////////////////// Customer Details //////////////////////////////////
-                Align(
-                  alignment: Alignment.center,
-                  child: AnimatedContainer(
-                    duration: Duration(milliseconds: 300),
-                    curve: Curves.easeIn,
-                    width: SizeConfig.screenWidth,
-                    height: SizeConfig.screenHeight*0.65,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Colors.transparent,
-                    ),
-                    clipBehavior: Clip.antiAlias,
-                    alignment: Alignment.topCenter,
 
-                    margin: EdgeInsets.only(left: SizeConfig.width30,right: SizeConfig.width30,),
-                    transform: Matrix4.translationValues(isCustomerDetaislOpen?0:SizeConfig.screenWidth, 0, 0),
-                    child: Stack(
-                      children: [
-                        /*Container(
-                          height: SizeConfig.height70,
-                          width: double.maxFinite,
-                          color: Colors.white,
-                          padding: EdgeInsets.only(left: SizeConfig.width20,right: SizeConfig.width20,bottom: SizeConfig.height10),
+                PopUpSearch(
+                  isOpen: isCustomerDetaislOpen,
+                  searchController: customerSearchController,
+                  searchHintText: "Search Customer Name",
 
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Spacer(),
-                              Text('Select Customer',style: AppTheme.bgColorTS,),
-                              Spacer(),
-                              GestureDetector(
-                                onTap: (){
-                                  setState(() {
-                                    isCustomerDetaislOpen=false;
-                                  });
-                                },
-                                child: Container(
-                                  height: SizeConfig.height30,
-                                  width: SizeConfig.height30,
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: AppTheme.bgColor
+                  dataList: qn.filterSale_customerList,
+                  propertyKeyId: "CustomerId",
+                  propertyKeyName: "CustomerName",
+                  selectedId: qn.SS_selectCustomerId,
 
-                                  ),
-                                  child: Center(
-                                    child:  Icon(Icons.close,
-                                      color: Colors.white,size: 20,),
-                                  ),
-                                ),
-                              )
-
-                            ],
-                          ),
-
-                        ),*/
-
-                        Positioned(
-                          top:SizeConfig.screenHeight*0.02,
-                          child: Container(
-                            height: SizeConfig.screenHeight*0.63,
-                            width: SizeConfig.screenWidth-SizeConfig.width60,
-                          //  margin: EdgeInsets.only(left: SizeConfig.width20,right: SizeConfig.width30,),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: Colors.white
-                            ),
-                            child: Column(
-                              children: [
-                                Container(
-                                  height: SizeConfig.height40,
-                                  width: SizeConfig.screenWidth,
-                                  margin: EdgeInsets.only(left: SizeConfig.width20,right: SizeConfig.width20,top: SizeConfig.width20,bottom: SizeConfig.width20),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(50),
-                                      color: Colors.white,
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: AppTheme.addNewTextFieldText.withOpacity(0.2),
-                                          spreadRadius: 2,
-                                          blurRadius: 15,
-                                          offset: Offset(0, 0), // changes position of shadow
-                                        )
-                                      ]
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      SizedBox(width: SizeConfig.width10,),
-                                      Icon(Icons.search,color: AppTheme.hintColor,),
-                                      SizedBox(width: SizeConfig.width10,),
-                                      Container(
-                                        width: SizeConfig.screenWidth*0.45,
-                                        child: TextField(
-                                            controller: customerSearchController,
-                                            scrollPadding: EdgeInsets.only(bottom: 400),
-                                          style:  TextStyle(fontFamily: 'RR',fontSize: 15,color:AppTheme.addNewTextFieldText,letterSpacing: 0.2),
-                                          decoration: InputDecoration(
-                                              border: InputBorder.none,
-                                              focusedBorder: InputBorder.none,
-                                              errorBorder: InputBorder.none,
-                                              focusedErrorBorder: InputBorder.none,
-                                              enabledBorder: InputBorder.none,
-                                              hintText: "Search Customer",
-                                              hintStyle: AppTheme.hintText
-                                          ),
-                                          onChanged: (v){
-                                              qn.searchCustomer(v);
-                                          },
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                                Container(
-                                  height: SizeConfig.screenHeight*0.6- SizeConfig.height150,
-                                  width: SizeConfig.screenWidth-SizeConfig.width60,
-                                  color: Colors.white,
-                                  child: ListView.builder(
-                                      itemCount: qn.filterSale_customerList.length,
-                                      itemBuilder: (context,index){
-                                        return GestureDetector(
-                                          onTap: (){
-                                            node.unfocus();
-                                            setState(() {
-                                              isCustomerDetaislOpen=false;
-                                              qn.SS_selectCustomerId=qn.filterSale_customerList[index].customerId;
-                                              qn.SS_selectedCustomerName=qn.filterSale_customerList[index].customerName;
-                                              qn.filterSale_customerList=qn.sale_customerList;
-                                            });
-                                            customerSearchController.clear();
+                  searchOnchange: (v){
+                    qn.searchCustomer(v);
+                  },
+                  itemOnTap: (index){
+                    node.unfocus();
+                    setState(() {
+                      isCustomerDetaislOpen=false;
+                      qn.SS_selectCustomerId=qn.filterSale_customerList[index].customerId;
+                      qn.SS_selectedCustomerName=qn.filterSale_customerList[index].customerName;
+                    });
+                    customerSearchController.clear();
+                  },
+                  closeOnTap: (){
+                      node.unfocus();
+                      setState(() {
+                        isCustomerDetaislOpen=false;
+                      });
+                      customerSearchController.clear();
+                      },
+                  addNewOnTap: (){
+                    setState(() {
+                      isCustomerDetaislOpen=false;
+                    });
+                    Navigator.push(context, _createRouteCustomer());
+                  },
 
 
-                                          },
-                                          child: Container(
-                                            margin: EdgeInsets.only(left: SizeConfig.width50,right:  SizeConfig.width50,bottom: SizeConfig.height20),
-                                            padding: EdgeInsets.only(left:5,right:5),
-
-                                            height: SizeConfig.height40,
-                                            width: double.maxFinite,
-                                            decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.circular(5),
-                                                border: Border.all(color: AppTheme.addNewTextFieldBorder),
-                                                color: qn.SS_selectCustomerId==null ?Color(0xFFf8f8f8):qn.SS_selectCustomerId==qn.filterSale_customerList[index].customerId?AppTheme.bgColor:Colors.white
-                                            ),
-                                            child: Center(
-                                              child: FittedBox(
-                                                fit: BoxFit.contain,
-                                                child: Text("${qn.filterSale_customerList[index].customerName}",style: TextStyle(fontFamily: 'RR',fontSize: 16,
-                                                    color: qn.SS_selectCustomerId==null ?AppTheme.bgColor:qn.SS_selectCustomerId==qn.filterSale_customerList[index].customerId?Colors.white:AppTheme.bgColor
-
-                                                ),),
-                                              ),
-                                            ),
-                                          ),
-                                        );
-                                      }),
-                                ),
-                                SizedBox(height: SizeConfig.height20,),
-                                GestureDetector(
-                                  onTap: (){
-                                    setState(() {
-                                      isCustomerDetaislOpen=false;
-                                    });
-                                    Navigator.push(context, _createRouteCustomer());
-
-                                  },
-                                  child: Container(
-                                    width:SizeConfig.screenWidth*0.4,
-                                    height:SizeConfig.height50,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(50.0),
-                                      color: AppTheme.yellowColor,
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: AppTheme.yellowColor.withOpacity(0.4),
-                                          spreadRadius: 1,
-                                          blurRadius: 5,
-                                          offset: Offset(1, 8), // changes position of shadow
-                                        ),
-                                      ],
-                                    ),
-                                    child: Center(
-                                        child: Text("Add New",style: AppTheme.bgColorTS,
-                                        )
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-
-                          ),
-                        ),
-                        Positioned(
-                          right: 5,
-                          child: GestureDetector(
-                            onTap: (){
-                              node.unfocus();
-                              setState(() {
-                                isCustomerDetaislOpen=false;
-                              });
-                            },
-                            child: Container(
-                              height: 30,
-                              width: 30,
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: AppTheme.yellowColor
-                              ),
-                              child: Center(
-                                child: Icon(Icons.clear,color: AppTheme.bgColor,),
-                              ),
-                            ),
-                          ),
-                        ),
-
-                      ],
-                    ),
-                  ),
                 ),
+
+
+
 
 
               ],

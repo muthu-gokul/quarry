@@ -882,7 +882,7 @@ class SaleReportHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: SizeConfig.height80,
+      height: 80,
       width: SizeConfig.screenWidth*0.31,
       /*argin: EdgeInsets.only(right: SizeConfig.width10),*/
       decoration: BoxDecoration(
