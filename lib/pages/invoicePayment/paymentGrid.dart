@@ -240,6 +240,7 @@ class PaymentGridState extends State<PaymentGrid> with TickerProviderStateMixin{
                                                 color: selectedIndex==i?value.invoiceType=='Receivable'? Colors.green:AppTheme.red:AppTheme.gridbodyBgColor,
                                               ),
                                               height: 50,
+                                              margin: EdgeInsets.only(bottom:i==pn.filterGridPaymentList.length-1?70: 0),
                                               // padding: EdgeInsets.only(top: 20,bottom: 20),
                                               child: Row(
                                                 children: [
@@ -314,13 +315,13 @@ class PaymentGridState extends State<PaymentGrid> with TickerProviderStateMixin{
                                 height: SizeConfig.screenHeight-260,
                                 alignment: Alignment.topCenter,
                                 decoration: BoxDecoration(
-                                    color: AppTheme.gridbodyBgColor,
+                                    color:showShadow? AppTheme.gridbodyBgColor:Colors.transparent,
                                     boxShadow: [
                                       showShadow?  BoxShadow(
                                         color: AppTheme.addNewTextFieldText.withOpacity(0.3),
                                         spreadRadius: 0,
                                         blurRadius: 15,
-                                        offset: Offset(10, -8), // changes position of shadow
+                                        offset: Offset(0, -8), // changes position of shadow
                                       ):BoxShadow(color: Colors.transparent)
                                     ]
                                 ),
@@ -678,89 +679,7 @@ class PaymentGridState extends State<PaymentGrid> with TickerProviderStateMixin{
                 ),
 
 
-                //Edit Or Delete
-                /* AnimatedPositioned(
-                    bottom:showEdit? 0:-80,
-                    child: Container(
-                      height: 80,
-                      width: SizeConfig.screenWidth,
-                      color: AppTheme.bgColor,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          GestureDetector(
-                            onTap: (){
-                              pn.insertForm();
-                              Navigator.of(context).push(_createRoute());
-                              pn.updatePurchaseEdit(true);
-                              pn.PurchaseDropDownValues(context).then((value) {
-                                pn.GetPurchaseDbHit(context, pn.purchaseGridList[selectedIndex].purchaseOrderId);
-                                setState(() {
-                                  showEdit=false;
-                                  selectedIndex=-1;
-                                });
-                              });
 
-
-                            },
-                            child: Container(
-                              height: 50,
-                              width: SizeConfig.width150,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(25),
-                                  color: AppTheme.indicatorColor
-                              ),
-                              child: Center(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    SvgPicture.asset("assets/svg/edit.svg",height: 20,width: 20,color: AppTheme.yellowColor,),
-                                    SizedBox(width: SizeConfig.width10,),
-                                    Text("Edit",style: TextStyle(fontSize: 20,fontFamily: 'RR',color: Colors.white),),
-
-
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: (){
-
-                              setState(() {
-                                showEdit=false;
-                                selectedIndex=-1;
-                              });
-
-                            },
-                            child: Container(
-                              height: 50,
-                              width: SizeConfig.width150,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(25),
-                                  color: AppTheme.indicatorColor.withOpacity(0.5)
-                              ),
-                              child: Center(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text("Delete",style: TextStyle(fontSize: 20,fontFamily: 'RR',color: Colors.white.withOpacity(0.5)),),
-                                    SizedBox(width: SizeConfig.width10,),
-                                    SvgPicture.asset("assets/svg/delete.svg",height: 20,width: 20,color: AppTheme.yellowColor.withOpacity(0.5),),
-
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    curve: Curves.bounceOut,
-
-
-                    duration: Duration(milliseconds:300)
-                ),*/
 
 
                 Container(

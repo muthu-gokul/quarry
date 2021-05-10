@@ -38,7 +38,7 @@ class InvoiceGridState extends State<InvoiceGrid> with TickerProviderStateMixin{
   ScrollController verticalRight=new ScrollController();
 
   bool showShadow=false;
-
+  bool filterOpen=false;
   @override
   void initState() {
     header.addListener(() {
@@ -173,8 +173,6 @@ class InvoiceGridState extends State<InvoiceGrid> with TickerProviderStateMixin{
                     height: SizeConfig.screenHeight-140,
                     width: SizeConfig.screenWidth,
                     margin: EdgeInsets.only(top: 140),
-
-
                     clipBehavior: Clip.antiAlias,
                     decoration: BoxDecoration(
                         color: AppTheme.gridbodyBgColor,
@@ -191,7 +189,7 @@ class InvoiceGridState extends State<InvoiceGrid> with TickerProviderStateMixin{
                             children: [
                               Container(
                                 height: 50,
-                                width: SizeConfig.screenWidth-150,
+                                width: SizeConfig.screenWidth-149,
                                 color: showShadow? AppTheme.bgColor.withOpacity(0.8):AppTheme.bgColor,
                                 child: SingleChildScrollView(
                                   controller: header,
@@ -200,8 +198,7 @@ class InvoiceGridState extends State<InvoiceGrid> with TickerProviderStateMixin{
                                       children: inv.invoiceGridCol.asMap().
                                       map((i, value) => MapEntry(i, i==0?Container():
                                       Container(
-                                          alignment: Alignment.center,
-                                          //  padding: EdgeInsets.only(left: 20,right: 20),
+                                          alignment: Alignment.centerLeft,
                                           width: 150,
                                           child: Text(value,style: AppTheme.TSWhite166,)
                                       )
@@ -212,9 +209,8 @@ class InvoiceGridState extends State<InvoiceGrid> with TickerProviderStateMixin{
                               ),
                               Container(
                                 height: SizeConfig.screenHeight-260,
-                                width: SizeConfig.screenWidth-150,
+                                width: SizeConfig.screenWidth-149,
                                 alignment: Alignment.topCenter,
-
                                 color: AppTheme.gridbodyBgColor,
                                 child: SingleChildScrollView(
                                   controller: body,
@@ -227,7 +223,7 @@ class InvoiceGridState extends State<InvoiceGrid> with TickerProviderStateMixin{
                                       controller: verticalRight,
                                       scrollDirection: Axis.vertical,
                                       child: Column(
-                                          children:inv.invoiceGridList.asMap().
+                                          children:inv.filterInvoiceGridList.asMap().
                                           map((i, value) => MapEntry(
                                               i,InkWell(
                                             onTap: (){
@@ -247,42 +243,43 @@ class InvoiceGridState extends State<InvoiceGrid> with TickerProviderStateMixin{
                                             child: Container(
 
                                               decoration: BoxDecoration(
-                                                color: selectedIndex==i?AppTheme.yellowColor:AppTheme.gridbodyBgColor,
+                                                border: AppTheme.gridBottomborder,
+                                                color: selectedIndex==i?value.invoiceType=='Receivable'? Colors.green:AppTheme.red:AppTheme.gridbodyBgColor,
                                               ),
-                                              height: 60,
+                                              height: 50,
+                                              margin: EdgeInsets.only(bottom:i==inv.filterInvoiceGridList.length-1?70: 0),
+                                              // padding: EdgeInsets.only(top: 20,bottom: 20),
                                               child: Row(
                                                 children: [
 
 
                                                   Container(
-                                                    alignment: Alignment.center,
+                                                    alignment: Alignment.centerLeft,
+                                                    // padding: EdgeInsets.only(left: 20,right: 20),
                                                     width: 150,
-                                                    child: Text("${value.invoiceType}",
-                                                      style:selectedIndex==i?AppTheme.bgColorTS:AppTheme.gridTextColorTS,
+                                                    child: Text("${DateFormat.yMMMd().format(value.invoiceDate)}",
+                                                      style:selectedIndex==i?AppTheme.TSWhiteML:AppTheme.gridTextColor14,
+                                                    ),
+
+                                                  ),
+                                                  Container(
+                                                    alignment: Alignment.centerLeft,
+                                                    width: 150,
+                                                    child: Text("${value.partyName}",
+                                                      style:selectedIndex==i?AppTheme.TSWhiteML:AppTheme.gridTextColor14,
                                                     ),
                                                   ),
 
                                                   Container(
                                                     width: 150,
-                                                    alignment: Alignment.center,
-                                                    child: Text("${DateFormat.yMMMd().format(value.invoiceDate)}",
-                                                      style:selectedIndex==i?AppTheme.bgColorTS:AppTheme.gridTextColorTS,
-                                                    ),
-                                                  ),
-                                                  Container(
-                                                    alignment: Alignment.center,
-                                                    width: 150,
-                                                    child: Text("${value.partyName}",
-                                                      style:selectedIndex==i?AppTheme.bgColorTS:AppTheme.gridTextColorTS,
-                                                    ),
-                                                  ),
-                                                  Container(
-                                                    alignment: Alignment.center,
-                                                    width: 150,
+                                                    alignment: Alignment.centerLeft,
                                                     child: Text("${value.grandTotalAmount}",
-                                                      style:selectedIndex==i?AppTheme.bgColorTS:AppTheme.gridTextColorTS,
+                                                      style:selectedIndex==i?AppTheme.TSWhiteML:AppTheme.gridTextColor14,
                                                     ),
                                                   ),
+
+
+
                                                 ],
                                               ),
                                             ),
@@ -296,7 +293,6 @@ class InvoiceGridState extends State<InvoiceGrid> with TickerProviderStateMixin{
                                   ),
                                 ),
                               ),
-                              SizedBox(height: 30,),
                             ],
                           ),
                         ),
@@ -312,21 +308,22 @@ class InvoiceGridState extends State<InvoiceGrid> with TickerProviderStateMixin{
                                 height: 50,
                                 width: 150,
                                 color: AppTheme.bgColor,
-                                alignment: Alignment.center,
+                                alignment: Alignment.centerLeft,
                                 child: Text("${inv.invoiceGridCol[0]}",style: AppTheme.TSWhite166,),
 
                               ),
                               Container(
                                 height: SizeConfig.screenHeight-260,
+                                width: 150,
                                 alignment: Alignment.topCenter,
                                 decoration: BoxDecoration(
-                                    color: AppTheme.gridbodyBgColor,
+                                    color:showShadow? AppTheme.gridbodyBgColor:Colors.transparent,
                                     boxShadow: [
                                       showShadow?  BoxShadow(
-                                        color: AppTheme.addNewTextFieldText.withOpacity(0.3),
+                                        color: AppTheme.addNewTextFieldText.withOpacity(0.1),
                                         spreadRadius: 0,
                                         blurRadius: 15,
-                                        offset: Offset(10, -8), // changes position of shadow
+                                        offset: Offset(0, -8), // changes position of shadow
                                       ):BoxShadow(color: Colors.transparent)
                                     ]
                                 ),
@@ -338,7 +335,7 @@ class InvoiceGridState extends State<InvoiceGrid> with TickerProviderStateMixin{
                                     controller: verticalLeft,
                                     scrollDirection: Axis.vertical,
                                     child: Column(
-                                        children: inv.invoiceGridList.asMap().
+                                        children: inv.filterInvoiceGridList.asMap().
                                         map((i, value) => MapEntry(
                                             i,InkWell(
                                           onTap: (){
@@ -358,24 +355,26 @@ class InvoiceGridState extends State<InvoiceGrid> with TickerProviderStateMixin{
                                           child:  Container(
                                             alignment: Alignment.center,
                                             decoration: BoxDecoration(
-                                              color: selectedIndex==i?AppTheme.yellowColor:AppTheme.gridbodyBgColor,
-
-                                              boxShadow:[
-                                                /*    selectedIndex==i? BoxShadow(
-                                                  color: AppTheme.yellowColor.withOpacity(0.4),
-                                                  spreadRadius: 2,
-                                                  blurRadius: 5,
-                                                  offset: Offset(1, 8), // changes position of shadow
-                                                ):BoxShadow(
-                                                    color: Colors.white
-                                                ),*/
-                                              ],
+                                              border: AppTheme.gridBottomborder,
+                                              color: selectedIndex==i?value.invoiceType=='Receivable'? Colors.green:AppTheme.red:AppTheme.gridbodyBgColor,
                                             ),
-                                            height: 60,
-                                            //  padding: EdgeInsets.only(left: 20,right: 20,bottom: 20,top: 20),
+                                            height: 50,
                                             width: 150,
-                                            child: Text("${value.invoiceNumber}",
-                                              style:selectedIndex==i?AppTheme.bgColorTS:AppTheme.gridTextColorTS,
+                                            margin: EdgeInsets.only(bottom:i==inv.filterInvoiceGridList.length-1?70: 0),
+                                            child: Container(
+                                              padding: EdgeInsets.only(left: 10,right: 10,top: 3,bottom: 3),
+
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(50),
+                                                color:value.invoiceType=='Receivable'? Colors.green:AppTheme.red,
+                                              ),
+                                              child: FittedBox(
+                                                fit: BoxFit.contain,
+                                                child: Text("${value.invoiceNumber}",
+                                                    //  style:selectedIndex==i?AppTheme.bgColorTS:AppTheme.gridTextColorTS,
+                                                    style:TextStyle(fontFamily: 'RR',fontSize: 12,color: Colors.white,letterSpacing: 0.1)
+                                                ),
+                                              ),
                                             ),
                                           ),
                                         )
@@ -389,7 +388,6 @@ class InvoiceGridState extends State<InvoiceGrid> with TickerProviderStateMixin{
 
                                 ),
                               ),
-                              SizedBox(height: 30,),
                             ],
                           ),
                         ),
@@ -404,7 +402,6 @@ class InvoiceGridState extends State<InvoiceGrid> with TickerProviderStateMixin{
 
 
                 ),
-
 
 
 
@@ -431,56 +428,13 @@ class InvoiceGridState extends State<InvoiceGrid> with TickerProviderStateMixin{
 
                       children: [
                         Container(
-                          decoration: BoxDecoration(
-
-                          ),
                           margin:EdgeInsets.only(top: 0),
                           child: CustomPaint(
                             size: Size( SizeConfig.screenWidth, 65),
-                            //  painter: RPSCustomPainter(),
                             painter: RPSCustomPainter3(),
                           ),
                         ),
-                        Center(
-                          heightFactor: 0.5,
-                          child: GestureDetector(
-                            behavior: HitTestBehavior.translucent,
-                            onTap: (){
-                              inv.insertForm();
-                              Navigator.of(context).push(_createRoute());
-                              inv.updateInvoiceEdit(false);
-                              inv.PlantUserDropDownValues(context).then((value){
-                                inv.InvoiceDropDownValues(context);
-                              });
 
-
-
-
-
-
-                            },
-                            child: Container(
-
-                              height: SizeConfig.width50,
-                              width: SizeConfig.width50,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: AppTheme.yellowColor,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: AppTheme.yellowColor.withOpacity(0.4),
-                                    spreadRadius: 1,
-                                    blurRadius: 5,
-                                    offset: Offset(1, 8), // changes position of shadow
-                                  ),
-                                ],
-                              ),
-                              child: Center(
-                                child: Icon(Icons.add,size: SizeConfig.height30,color: AppTheme.bgColor,),
-                              ),
-                            ),
-                          ),
-                        ),
                         Container(
                           width:  SizeConfig.screenWidth,
                           height: 80,
@@ -488,6 +442,45 @@ class InvoiceGridState extends State<InvoiceGrid> with TickerProviderStateMixin{
                           child: Stack(
 
                             children: [
+
+                              AnimatedPositioned(
+                                bottom:showEdit?-60:0,
+                                duration: Duration(milliseconds: 300,),
+                                curve: Curves.bounceInOut,
+                                child: Container(
+                                  height: 70,
+                                  width: SizeConfig.screenWidth,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      IconButton(icon: Icon(Icons.picture_as_pdf,color: Colors.grey,), onPressed: (){
+
+                                      }),
+                                      IconButton(icon: Icon(Icons.exit_to_app,color: Colors.grey,), onPressed: (){
+
+                                      }),
+                                      SizedBox(width: SizeConfig.width50,),
+                                      IconButton(icon: Icon(Icons.add_comment_sharp,color: Colors.grey,), onPressed: (){
+                                        inv.insertForm();
+                                        Navigator.of(context).push(_createRoute());
+                                        inv.updateInvoiceEdit(false);
+                                        inv.PlantUserDropDownValues(context).then((value){
+                                          inv.InvoiceDropDownValues(context);
+                                        });
+                                      }),
+                                      GestureDetector(
+                                        onTap: (){
+
+                                        },
+                                        child: IconButton(icon: Icon(Icons.share,color: Colors.grey,), onPressed: (){
+
+                                        }),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
 
                               AnimatedPositioned(
                                 bottom:showEdit?15:-60,
@@ -505,7 +498,7 @@ class InvoiceGridState extends State<InvoiceGrid> with TickerProviderStateMixin{
                                             inv.insertForm();
                                             inv.updateInvoiceEdit(true);
                                             inv.PlantUserDropDownValues(context).then((value) {
-                                              inv.GetInvoiceDbHit(context, inv.invoiceGridList[selectedIndex].invoiceId);
+                                              inv.GetInvoiceDbHit(context, inv.filterInvoiceGridList[selectedIndex].invoiceId);
                                               Navigator.push(context, _createRoute());
                                               setState(() {
                                                 selectedIndex=-1;
@@ -513,8 +506,6 @@ class InvoiceGridState extends State<InvoiceGrid> with TickerProviderStateMixin{
                                               });
 
                                             });
-
-
 
                                           },
                                           child: Container(
@@ -582,6 +573,121 @@ class InvoiceGridState extends State<InvoiceGrid> with TickerProviderStateMixin{
                     ),
                   ),
                 ),
+
+
+////////////////////// animated icons   //////////
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: GestureDetector(
+                    onTap: (){
+                      inv.updateInvoiceReceivable(false);
+                      inv.filterGridValues();
+                      setState(() {
+                        filterOpen=false;
+                      });
+                    },
+                    child: AnimatedContainer(
+                      duration: Duration(milliseconds: 300),
+                      curve: Curves.fastOutSlowIn,
+
+                      height: 60,
+                      width: 60,
+                      margin: EdgeInsets.only(bottom:filterOpen?70: 20,left:filterOpen?120: 0),
+                      //   margin: EdgeInsets.only(bottom: 70,left: 120),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: AppTheme.red,
+                        boxShadow: [
+                          filterOpen? BoxShadow(
+                            color: AppTheme.red.withOpacity(0.4),
+                            spreadRadius: 1,
+                            blurRadius: 5,
+                            offset: Offset(1, 8), // changes position of shadow
+                          ):BoxShadow(),
+                        ],
+                      ),
+                      child: Center(
+                        child: Icon(Icons.clean_hands,size: 30,color: Colors.white,),
+                      ),
+                    ),
+                  ),
+                ),
+
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: GestureDetector(
+                    onTap: (){
+                      inv.updateInvoiceReceivable(true);
+                      inv.filterGridValues();
+                      setState(() {
+                        filterOpen=false;
+                      });
+
+                    },
+                    child: AnimatedContainer(
+                      duration: Duration(milliseconds: 300),
+                      curve: Curves.fastOutSlowIn,
+
+                      height: 60,
+                      width: 60,
+                      //  margin: EdgeInsets.only(bottom: 70,right: 120),
+                      margin: EdgeInsets.only(bottom:filterOpen?70: 20,right:filterOpen?120: 0),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.green,
+                        boxShadow: [
+                          filterOpen? BoxShadow(
+                            color: Colors.green.withOpacity(0.4),
+                            spreadRadius: 1,
+                            blurRadius: 5,
+                            offset: Offset(1, 8), // changes position of shadow
+                          ):BoxShadow(),
+                        ],
+                      ),
+                      child: Center(
+                        child: Icon(Icons.receipt,size: 30,color: Colors.white,),
+                      ),
+                    ),
+                  ),
+                ),
+
+                
+                //filterButton
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: GestureDetector(
+                    onTap: (){
+
+                      setState(() {
+                        filterOpen=!filterOpen;
+                      });
+                    },
+                    child: Container(
+
+                      height: 65,
+                      width: 65,
+                      margin: EdgeInsets.only(bottom: 18),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: AppTheme.yellowColor,
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppTheme.yellowColor.withOpacity(0.4),
+                            spreadRadius: 1,
+                            blurRadius: 5,
+                            offset: Offset(1, 8), // changes position of shadow
+                          ),
+                        ],
+                      ),
+                      child: Center(
+                        child: Icon(filterOpen?Icons.clear:Icons.filter_alt_outlined,size: SizeConfig.height30,color: AppTheme.bgColor,),
+                      ),
+                    ),
+                  ),
+                ),
+
+
+           
 
 
 

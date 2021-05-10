@@ -379,6 +379,8 @@ double totalAmount=0.0;
 
   List<String> dieselPurchaseGridCol=["Bill Number","Purchaser Name","Location","Contact Number","Diesel Quantity","Diesel Rate","Amount","Date"];
   List<DieselPurchaseGridModel> dieselPurchaseGridList=[];
+  var dieselPurchaseGridOverAllHeader={};
+
   GetDieselPurchaseDbHit(BuildContext context,int dieselPurchaseId)  async{
 
     updateDieselLoader(true);
@@ -438,6 +440,8 @@ double totalAmount=0.0;
             totalAmount=t[0]['TotalAmount'];
           }
           else{
+
+            dieselPurchaseGridOverAllHeader=parsed['Table1'][0];
             dieselPurchaseGridList=t.map((e) => DieselPurchaseGridModel.fromJson(e)).toList();
           }
         }
@@ -573,6 +577,9 @@ double totalAmount=0.0;
 
   List<DieselIssueGridModel> dieselIssueGridList=[];
   List<String> dieselIssueGridCol=["Date","Machine Name","Fuel Reading","Issued By","Diesel Quantity"];
+  var dieselIssueGridOverAllHeader={};
+
+
   GetDieselIssueDbHit(BuildContext context,int dieselIssueId)  async{
 
     updateDieselLoader(true);
@@ -620,6 +627,7 @@ double totalAmount=0.0;
             DI_issueName=t[0]['IssuedName'];
           }
           else{
+            dieselIssueGridOverAllHeader=parsed['Table1'][0];
             dieselIssueGridList=t.map((e) => DieselIssueGridModel.fromJson(e)).toList();
           }
         }
@@ -653,3 +661,5 @@ double totalAmount=0.0;
     notifyListeners();
   }
 }
+
+

@@ -266,7 +266,7 @@ class SupplierNotifier extends ChangeNotifier{
           var parsed=json.decode(value);
           var t=parsed['Table'] as List;
 
-          print(t);
+          print("t_$t");
           if(supplierId!=null){
             var t1=parsed['Table1'] as List;
             print(t1);

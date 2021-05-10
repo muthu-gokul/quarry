@@ -11,6 +11,7 @@ import 'package:quarry/pages/productionDetails/productionDetailsAddNew.dart';
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
+import 'package:quarry/widgets/navigationBarIcon.dart';
 
 import 'dieselPurchaseAddNew.dart';
 
@@ -109,7 +110,10 @@ class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
 
                           child: Row(
                             children: [
-                              IconButton(icon: Icon(Icons.menu), onPressed: widget.drawerCallback),
+                              GestureDetector(
+                                onTap: widget.drawerCallback,
+                                child: NavBarIcon(),
+                              ),
                               /*SizedBox(width: SizeConfig.width10,),*/
                               Text("Diesel Management",
                                 style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize:16),
@@ -133,21 +137,21 @@ class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
                         ),
                         Container(
                             margin: EdgeInsets.only(top: 50),
-                            padding: EdgeInsets.only(left:5,),
+                            padding: EdgeInsets.only(left:5),
                             color: AppTheme.yellowColor,
                             height: 110,
                             alignment: Alignment.topCenter,
 
-                          /*  child:SingleChildScrollView(
+                            child:SingleChildScrollView(
                               scrollDirection: Axis.horizontal,
                               child: Row(
 
                                   crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: pn.gridOverAllHeader.asMap().
+                                  children: dn.dieselPurchaseGridOverAllHeader.
                                   map((i, value) => MapEntry(i,
                                       Container(
-                                        height: SizeConfig.height80,
-                                        width: SizeConfig.width120,
+                                        height: 80,
+                                        width: SizeConfig.screenWidth*0.35,
                                         margin: EdgeInsets.only(right: SizeConfig.width10),
                                         //padding: EdgeInsets.only(right: SizeConfig.width10),
                                         decoration: BoxDecoration(
@@ -162,25 +166,22 @@ class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
                                               mainAxisAlignment: MainAxisAlignment.center,
                                               crossAxisAlignment: CrossAxisAlignment.center,
                                               children: [
-                                                Text(value.materialName,style: TextStyle(fontFamily: 'RR',fontSize: 16,color: Colors.white,letterSpacing: 0.1),),
+                                                Container(
+                                                    height: 15,
+                                                    width: SizeConfig.screenWidth*0.35,
+                                                    child: FittedBox(child: Text("$i",style: TextStyle(fontFamily: 'RR',fontSize: 14,color: Colors.white),))),
                                                 SizedBox(height: 5,),
-                                                RichText(
-                                                  text: TextSpan(
-                                                    text: '${value.totalQuantity}',
-                                                    style: TextStyle(fontFamily: 'RM',fontSize: 20,color: AppTheme.yellowColor),
-                                                    children: <TextSpan>[
-                                                      // TextSpan(text: '${value.unitName}', style: TextStyle(fontFamily: 'RR',fontSize: 11,color: AppTheme.addNewTextFieldBorder)),
-                                                    ],
+                                                Container(
+                                                  height: 25,
+                                                  width: SizeConfig.screenWidth*0.35,
+                                                  child: FittedBox(
+
+                                                    child:Text("$value",style: TextStyle(fontFamily: 'RM',fontSize: 16,color: AppTheme.yellowColor,letterSpacing: 0.1),),
                                                   ),
-                                                ),
+                                                )
                                               ],
                                             ),
-                                            Padding(
-                                              padding: EdgeInsets.only(bottom: SizeConfig.height18),
-                                              child: Text(' ${value.unitName}',
-                                                  style: TextStyle(fontFamily: 'RR',fontSize: 10,color: AppTheme.addNewTextFieldBorder)
-                                              ),
-                                            )
+
                                           ],
 
                                         ),
@@ -188,7 +189,7 @@ class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
                                   )
                                   ).values.toList()
                               ),
-                            )*/
+                            )
                         ),
 
 
@@ -200,14 +201,6 @@ class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
                             decoration: BoxDecoration(
                                 color:AppTheme.gridbodyBgColor,
                                 borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10))
-                              /*  boxShadow: [
-                          BoxShadow(
-                            color: AppTheme.addNewTextFieldText.withOpacity(0.9),
-                            spreadRadius: 2,
-                            blurRadius: 15,
-                            offset: Offset(30, 0), // changes position of shadow
-                          )
-                        ]*/
                             ),
                             child: Stack(
                               children: [
@@ -220,7 +213,7 @@ class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
                                     children: [
                                       Container(
                                         height: 50,
-                                        width: SizeConfig.screenWidth-150,
+                                        width: SizeConfig.screenWidth-149,
                                         color: showShadow? AppTheme.bgColor.withOpacity(0.8):AppTheme.bgColor,
                                         child: SingleChildScrollView(
                                           controller: header,
@@ -241,7 +234,7 @@ class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
                                       ),
                                       Container(
                                         height: SizeConfig.screenHeight-260,
-                                        width: SizeConfig.screenWidth-150,
+                                        width: SizeConfig.screenWidth-149,
                                         alignment: Alignment.topCenter,
                                         color: AppTheme.gridbodyBgColor,
                                         child: SingleChildScrollView(
@@ -276,18 +269,8 @@ class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
 
                                                       decoration: BoxDecoration(
                                                         color: selectedIndex==i?AppTheme.yellowColor:AppTheme.gridbodyBgColor,
-                                                        /*    boxShadow:[
-                                                  selectedIndex==i? BoxShadow(
-                                                    color: AppTheme.yellowColor.withOpacity(0.4),
-                                                    spreadRadius: 1,
-                                                    blurRadius: 5,
-                                                    offset: Offset(1, 8), // changes position of shadow
-                                                  ):BoxShadow(
-                                                      color: Colors.white
-                                                  ),
-                                                ],*/
                                                       ),
-                                                      height: 60,
+                                                      height: 50,
                                                       // padding: EdgeInsets.only(top: 20,bottom: 20),
                                                       child: Row(
                                                         children: [
@@ -423,18 +406,8 @@ class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
                                                     decoration: BoxDecoration(
                                                       color: selectedIndex==i?AppTheme.yellowColor:AppTheme.gridbodyBgColor,
 
-                                                      boxShadow:[
-                                                        /*    selectedIndex==i? BoxShadow(
-                                                  color: AppTheme.yellowColor.withOpacity(0.4),
-                                                  spreadRadius: 2,
-                                                  blurRadius: 5,
-                                                  offset: Offset(1, 8), // changes position of shadow
-                                                ):BoxShadow(
-                                                    color: Colors.white
-                                                ),*/
-                                                      ],
                                                     ),
-                                                    height: 60,
+                                                    height: 50,
                                                     //  padding: EdgeInsets.only(left: 20,right: 20,bottom: 20,top: 20),
                                                     width: 150,
                                                     child: Text("${value.billNumber}",
@@ -472,14 +445,16 @@ class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
                     Stack(
                       children: [
                         Container(
-                          height: 60,
+                          height: 50,
                           padding: EdgeInsets.only(bottom: 10),
                           width: SizeConfig.screenWidth,
                           color: AppTheme.yellowColor,
                           child: Row(
                             children: [
-                              IconButton(icon: Icon(Icons.menu), onPressed: widget.drawerCallback),
-                              /*SizedBox(width: SizeConfig.width10,),*/
+                              GestureDetector(
+                                onTap: widget.drawerCallback,
+                                child: NavBarIcon(),
+                              ),
                               Text("Diesel Management",
                                 style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize:16),
                               ),
@@ -501,11 +476,67 @@ class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
                             ],
                           ),
                         ),
+                        Container(
+                            margin: EdgeInsets.only(top: 50),
+                            padding: EdgeInsets.only(left:5),
+                            color: AppTheme.yellowColor,
+                            height: 110,
+                            alignment: Alignment.topCenter,
+
+                            child:SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: dn.dieselIssueGridOverAllHeader.
+                                  map((i, value) => MapEntry(i,
+                                      Container(
+                                        height: 80,
+                                        width: SizeConfig.screenWidth*0.35,
+                                        margin: EdgeInsets.only(right: SizeConfig.width10),
+                                        //padding: EdgeInsets.only(right: SizeConfig.width10),
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(5),
+                                            color: AppTheme.bgColor
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          crossAxisAlignment: CrossAxisAlignment.end,
+                                          children: [
+                                            Column(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              crossAxisAlignment: CrossAxisAlignment.center,
+                                              children: [
+                                                Container(
+                                                    height: 15,
+                                                    width: SizeConfig.screenWidth*0.35,
+                                                    child: FittedBox(child: Text("$i",style: TextStyle(fontFamily: 'RR',fontSize: 14,color: Colors.white),))),
+                                                SizedBox(height: 5,),
+                                                Container(
+                                                  height: 25,
+                                                  width: SizeConfig.screenWidth*0.35,
+                                                  child: FittedBox(
+
+                                                    child:Text("$value",style: TextStyle(fontFamily: 'RM',fontSize: 16,color: AppTheme.yellowColor,letterSpacing: 0.1),),
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+
+                                          ],
+
+                                        ),
+                                      )
+                                  )
+                                  ).values.toList()
+                              ),
+                            )
+                        ),
 
                         Container(
-                            height: SizeConfig.screenHeight-50,
+                            height: SizeConfig.screenHeight-140,
                             width: SizeConfig.screenWidth,
-                            margin: EdgeInsets.only(top: 50),
+                            margin: EdgeInsets.only(top: 140),
                             clipBehavior: Clip.antiAlias,
                             decoration: BoxDecoration(
                                 color:AppTheme.gridbodyBgColor,
@@ -516,13 +547,13 @@ class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
 
                                 //Scrollable
                                 Positioned(
-                                  left:150,
+                                  left:149,
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Container(
                                         height: 50,
-                                        width: SizeConfig.screenWidth-150,
+                                        width: SizeConfig.screenWidth-149,
                                         color: showShadow? AppTheme.bgColor.withOpacity(0.8):AppTheme.bgColor,
                                         child: SingleChildScrollView(
                                           controller: header,
@@ -542,7 +573,7 @@ class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
 
                                       ),
                                       Container(
-                                        height: SizeConfig.screenHeight-160,
+                                        height: SizeConfig.screenHeight-260,
                                         width: SizeConfig.screenWidth-150,
                                         alignment: Alignment.topCenter,
                                         color: AppTheme.gridbodyBgColor,
@@ -550,7 +581,7 @@ class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
                                           controller: body,
                                           scrollDirection: Axis.horizontal,
                                           child: Container(
-                                            height: SizeConfig.screenHeight-160,
+                                            height: SizeConfig.screenHeight-260,
                                             alignment: Alignment.topCenter,
                                             color:AppTheme.gridbodyBgColor,
                                             child: SingleChildScrollView(
@@ -589,7 +620,7 @@ class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
                                                   ),
                                                 ],*/
                                                       ),
-                                                      height: 60,
+                                                      height: 50,
                                                       // padding: EdgeInsets.only(top: 20,bottom: 20),
                                                       child: Row(
                                                         children: [
@@ -661,7 +692,7 @@ class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
 
                                       ),
                                       Container(
-                                        height: SizeConfig.screenHeight-160,
+                                        height: SizeConfig.screenHeight-60,
                                         alignment: Alignment.topCenter,
                                         decoration: BoxDecoration(
                                             color: AppTheme.gridbodyBgColor,
@@ -715,7 +746,7 @@ class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
                                                 ),*/
                                                       ],
                                                     ),
-                                                    height: 60,
+                                                    height: 50,
                                                     //  padding: EdgeInsets.only(left: 20,right: 20,bottom: 20,top: 20),
                                                     width: 150,
                                                     child: Text("${DateFormat.yMMMd().format(value.issuedDate)}",

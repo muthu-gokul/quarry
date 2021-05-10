@@ -106,12 +106,9 @@ class ProductionGridState extends State<ProductionGrid> with TickerProviderState
                         onTap: widget.drawerCallback,
                         child: NavBarIcon(),
                       ),
-
                       Text("Production",
                         style: TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize:16),
                       ),
-
-
                     ],
                   ),
                 ),
@@ -123,19 +120,16 @@ class ProductionGridState extends State<ProductionGrid> with TickerProviderState
                     color: AppTheme.yellowColor,
                     height: 110,
                     alignment: Alignment.centerLeft,
-
                     child:SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Row(
-
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: pn.gridOverAllHeader.asMap().
                           map((i, value) => MapEntry(i,
                             Container(
-                              height: SizeConfig.height80,
+                              height: 85,
                              width: SizeConfig.screenWidth*0.33,
                               margin: EdgeInsets.only(right: SizeConfig.width10),
-
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(5),
                                   color: AppTheme.bgColor
@@ -149,37 +143,23 @@ class ProductionGridState extends State<ProductionGrid> with TickerProviderState
                                   Container(
                                     alignment: Alignment.center,
                                     height: 30,
-
                                     padding: EdgeInsets.fromLTRB(10,0,10,0),
-                                  //  width: SizeConfig.screenWidth*0.3,
                                     child: Stack(
-                                      /*mainAxisAlignment: ,
-                                      crossAxisAlignment: CrossAxisAlignment.end,*/
                                       children: [
-                                        //Spacer(),
                                         Align(
                                             alignment: Alignment.center,
-                                            child: FittedBox(child: Text( '${value.totalQuantity}',style: TextStyle(fontFamily: 'RR',fontSize: 20,color: AppTheme.yellowColor),))),
-
+                                            child: FittedBox(child: Text( '${value.totalQuantity}',style: TextStyle(fontFamily: 'RR',fontSize: 20,color: AppTheme.yellowColor),))
+                                        ),
                                        Align(
                                            alignment: Alignment.bottomRight,
                                            child: Padding(
                                              padding:  EdgeInsets.only(bottom: 5),
                                              child: Text(' ${value.unitName}', style: TextStyle(fontFamily: 'RR',fontSize: 10,color: AppTheme.addNewTextFieldBorder)),
-                                           )),
-                                       // Spacer(),
+                                           )
+                                       ),
                                       ],
                                     ),
                                   ),
-                                  /*RichText(
-                                    text: TextSpan(
-                                      text: '${value.totalQuantity}',
-                                      style: TextStyle(fontFamily: 'RM',fontSize: 20,color: AppTheme.yellowColor),
-                                      children: <TextSpan>[
-                                       // TextSpan(text: '${value.unitName}', style: TextStyle(fontFamily: 'RR',fontSize: 11,color: AppTheme.addNewTextFieldBorder)),
-                                      ],
-                                    ),
-                                  ),*/
                                 ],
                               ),
                             )

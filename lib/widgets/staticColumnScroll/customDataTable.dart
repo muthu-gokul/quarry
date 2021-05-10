@@ -75,6 +75,7 @@ class _CustomDataTableState extends State<CustomDataTable> {
     super.initState();
   }
 
+  double _width=150;
 
   @override
   Widget build(BuildContext context) {
@@ -155,7 +156,17 @@ class _CustomDataTableState extends State<CustomDataTable> {
                                   height: 50,
                                    margin: EdgeInsets.only(bottom:i==widget.gridData.length-1?70: 0),
                                   child: Row(
-                                    children: gridDataRowList.asMap().map((j, v) => MapEntry(j,
+                                    children: gridDataRowList.asMap().map((j, v) {
+
+
+                                    /*  if(v.length>6){
+                                        setState(() {
+                                          _width=v.length*10.0;
+                                        });
+                                      }
+                                      print("_width$_width");*/
+
+                                     return MapEntry(j,
                                       j==0?Container():Container(
                                         width: 160,
                                         height: 50,
@@ -171,7 +182,9 @@ class _CustomDataTableState extends State<CustomDataTable> {
                                           ),
                                         ),
                                       ),
-                                    )).values.toList()
+                                    );
+}
+                                    ).values.toList()
                                   ),
                                 ),
                               )

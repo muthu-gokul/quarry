@@ -902,10 +902,10 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
                                                         color: Colors.white,
                                                         boxShadow: [
                                                           showShadow?  BoxShadow(
-                                                            color: AppTheme.addNewTextFieldText.withOpacity(0.3),
+                                                            color: AppTheme.addNewTextFieldText.withOpacity(0.1),
                                                             spreadRadius: 0,
                                                             blurRadius: 15,
-                                                            offset: Offset(10, -8), // changes position of shadow
+                                                            offset: Offset(0, -8), // changes position of shadow
                                                           ):BoxShadow(color: Colors.transparent)
                                                         ]
                                                     ),
@@ -1087,6 +1087,19 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
                       Text(pn.isInvoiceEdit?" / Edit":" / Add New",
                         style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize:16),
                       ),
+                      Spacer(),
+                      pn.isInvoiceEdit && pn.InvoiceEditNumber!=null?Container(
+                        height: 25,
+                        padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(50),
+                            color: pn.isInvoiceReceivable?Colors.green:AppTheme.red
+                        ),
+                        child: Center(
+                          child: Text("${pn.InvoiceEditNumber??""}",style: TextStyle(fontFamily: 'RR',fontSize: 14,color:Colors.white),),
+                        ),
+                      ):Container(),
+                      SizedBox(width: SizeConfig.width10,),
                     ],
                   ),
                 ),

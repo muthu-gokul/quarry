@@ -36,6 +36,7 @@ class InvoiceNotifier extends ChangeNotifier{
 
 
   int InvoiceEditId=null;
+  String InvoiceEditNumber=null;
 
 
 
@@ -491,9 +492,10 @@ class InvoiceNotifier extends ChangeNotifier{
 
 
 
-  List<String> invoiceGridCol=["Invoice Number","Invoice Type","Date","Party Name","Net Amount"];
+  List<String> invoiceGridCol=["Invoice Number","Date","Party Name","Net Amount"];
 
   List<InvoiceGridModel> invoiceGridList=[];
+  List<InvoiceGridModel> filterInvoiceGridList=[];
 
 
   GetInvoiceDbHit(BuildContext context,int InvoiceId)  async{
@@ -538,6 +540,8 @@ class InvoiceNotifier extends ChangeNotifier{
 
             InvoiceEditId=t[0]['InvoiceId'];
 
+            InvoiceEditNumber=t[0]['InvoiceNumber'];
+
             PlantId=t[0]['PlantId'];
             PlantName=t[0]['PlantName'];
 
@@ -574,6 +578,13 @@ class InvoiceNotifier extends ChangeNotifier{
           }
           else{
             invoiceGridList=t.map((e) => InvoiceGridModel.fromJson(e)).toList();
+            filterInvoiceGridList=t.map((e) => InvoiceGridModel.fromJson(e)).toList();
+            if(isInvoiceReceivable){
+              filterInvoiceGridList=invoiceGridList.where((element) => element.invoiceType=="Receivable").toList();
+            }
+            else{
+              filterInvoiceGridList=invoiceGridList.where((element) => element.invoiceType=="Payable").toList();
+            }
           }
         }
 
@@ -622,6 +633,22 @@ class InvoiceNotifier extends ChangeNotifier{
     invoiceOtherChargesMappingList.clear();
   }
 
+
+  filterGridValues(){
+    if(isInvoiceReceivable){
+      filterInvoiceGridList=invoiceGridList.where((element) => element.invoiceType=="Receivable").toList();
+    }
+    else{
+      filterInvoiceGridList=invoiceGridList.where((element) => element.invoiceType=="Payable").toList();
+    }
+    notifyListeners();
+  }
+
+  bool isInvoiceReceivable=true;
+  updateInvoiceReceivable(bool value){
+    isInvoiceReceivable=value;
+    notifyListeners();
+  }
 
 
 bool isInvoiceEdit=false;
