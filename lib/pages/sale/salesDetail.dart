@@ -1942,6 +1942,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                       isTransportModeOpen=false;
                       qn.SS_selectedVehicleTypeId=qn.filterVehicleTypeList[index].VehicleTypeId;
                       qn.SS_selectedVehicleTypeName=qn.filterVehicleTypeList[index].VehicleTypeName;
+                      qn.filterVehicleTypeList=qn.vehicleList;
 
                     });
                     transportTypeSearchController.clear();
@@ -2098,7 +2099,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
 
                 PopUpStatic(
                   title: "Select Material",
-
+                  isAlwaysShown: true,
                   isOpen: isMaterialTypeOpen,
                   dataList: qn.sale_materialList,
                   propertyKeyName:"MaterialName",
@@ -2173,6 +2174,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                       isCustomerDetaislOpen=false;
                       qn.SS_selectCustomerId=qn.filterSale_customerList[index].customerId;
                       qn.SS_selectedCustomerName=qn.filterSale_customerList[index].customerName;
+                      qn.filterSale_customerList=qn.sale_customerList;
                     });
                     customerSearchController.clear();
                   },

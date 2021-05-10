@@ -11,5 +11,15 @@ class UnitDetailModel{
       UnitName: json['UnitName'],
     );
   }
-
+  Map<String, dynamic> toJson() => {
+    "UnitId": UnitId,
+    "UnitName": UnitName,
+  };
+  dynamic get(String propertyName) {
+    var _mapRep = toJson();
+    if (_mapRep.containsKey(propertyName)) {
+      return _mapRep[propertyName];
+    }
+    throw ArgumentError('property not found');
+  }
 }

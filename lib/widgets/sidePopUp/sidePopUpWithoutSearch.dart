@@ -7,6 +7,7 @@ class PopUpStatic extends StatefulWidget {
   String title;
 
   bool isOpen;
+  bool isAlwaysShown;
 
 
   List<dynamic> dataList;
@@ -18,7 +19,7 @@ class PopUpStatic extends StatefulWidget {
   VoidCallback closeOnTap;
 
 
-  PopUpStatic({this.isOpen,this.itemOnTap,this.dataList,
+  PopUpStatic({this.isOpen,this.itemOnTap,this.dataList,this.isAlwaysShown=false,
     this.propertyKeyName,this.propertyKeyId,this.selectedId,this.closeOnTap,this.title});
 
   @override
@@ -85,7 +86,7 @@ class _PopUpStaticState extends State<PopUpStatic> {
                     width: SizeConfig.screenWidth-SizeConfig.width60,
                     color: Colors.white,
                     child: RawScrollbar(
-                      isAlwaysShown: true,
+                      isAlwaysShown: widget.isAlwaysShown,
                       thumbColor: AppTheme.srollBarColor,
                       radius: Radius.circular(AppTheme.scrollBarRadius),
                       thickness: AppTheme.scrollBarThickness,

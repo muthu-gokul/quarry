@@ -31,6 +31,7 @@ class VehicleNotifier extends ChangeNotifier{
   int editVehicleId=null;
 
   List<VehicleTypeModel> vehicleTypeList=[];
+  List<VehicleTypeModel> filterVehicleTypeList=[];
 
   final call=ApiManager();
 
@@ -67,6 +68,7 @@ class VehicleNotifier extends ChangeNotifier{
         var t=parsed['Table'] as List;
 
         vehicleTypeList=t.map((e) => VehicleTypeModel.fromJson(e)).toList();
+        filterVehicleTypeList=t.map((e) => VehicleTypeModel.fromJson(e)).toList();
 
         updatevehicleLoader(false);
       });
@@ -77,7 +79,75 @@ class VehicleNotifier extends ChangeNotifier{
     }
   }
 
+  InsertVehicleTypeDbhit(BuildContext context,String vehicleTypeName) async {
+    updatevehicleLoader(true);
+    var body={
+      "Fields": [
+        {
+          "Key": "SpName",
+          "Type": "String",
+          "Value": "${Sp.insertVehicleType}"
+        },
+        {
+          "Key": "LoginUserId",
+          "Type": "int",
+          "Value": Provider.of<QuarryNotifier>(context,listen: false).UserId
+        },
+        {
+          "Key": "VehicleTypeName",
+          "Type": "String",
+          "Value": vehicleTypeName
+        },
+        {
+          "Key": "CompanyId",
+          "Type": "int",
+          "Value": 1
+        },
 
+        {
+          "Key": "database",
+          "Type": "String",
+          "Value": Provider.of<QuarryNotifier>(context,listen: false).DataBaseName
+        }
+      ]
+    };
+
+    try{
+      await call.ApiCallGetInvoke(body,context).then((value) {
+
+        if(value!=null){
+          var parsed=json.decode(value);
+
+          print(parsed);
+          var t=parsed['Table'] as List;
+          selectedVehicleTypeId=t[0]['VehicleTypeId'];
+          selectedVehicleTypeName=t[0]['VehicleTypeName'];
+          vehicleTypeList.add(VehicleTypeModel(
+              VehicleTypeId: selectedVehicleTypeId,
+              VehicleTypeName: selectedVehicleTypeName
+          ));
+          filterVehicleTypeList=vehicleTypeList;
+        }
+        updatevehicleLoader(false);
+
+      });
+    }
+    catch(e){
+      updatevehicleLoader(false);
+      CustomAlert().commonErrorAlert(context, "${Sp.insertVehicleType}" , e.toString());
+    }
+  }
+
+
+  searchVehicleType(String value){
+    if(value.isEmpty){
+      filterVehicleTypeList=vehicleTypeList;
+    }
+    else{
+      filterVehicleTypeList=vehicleTypeList.where((element) => element.VehicleTypeName.toLowerCase().contains(value.toLowerCase())).toList();
+    }
+    notifyListeners();
+  }
 
 
   InsertVehicleDbHit(BuildContext context)  async{

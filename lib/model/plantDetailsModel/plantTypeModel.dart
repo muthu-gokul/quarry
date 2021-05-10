@@ -9,5 +9,15 @@ class PlantTypeModel{
     PlantTypeName: json["PlantTypeName"],
 
   );
-
+  Map<String, dynamic> toJson() => {
+    "PlantTypeId": PlantTypeId,
+    "PlantTypeName": PlantTypeName,
+  };
+  dynamic get(String propertyName) {
+    var _mapRep = toJson();
+    if (_mapRep.containsKey(propertyName)) {
+      return _mapRep[propertyName];
+    }
+    throw ArgumentError('property not found');
+  }
 }

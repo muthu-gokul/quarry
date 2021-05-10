@@ -16,6 +16,7 @@ import 'package:quarry/styles/constants.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/customTextField.dart';
+import 'package:quarry/widgets/sidePopUp/sidePopUpWithoutSearch.dart';
 
 
 class SupplierDetailAddNew extends StatefulWidget {
@@ -509,6 +510,7 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                           decoration: BoxDecoration(
                                               borderRadius: BorderRadius.circular(3),
                                               border: Border.all(color: AppTheme.addNewTextFieldBorder),
+                                            color: qn.supplierMaterialName==null?AppTheme.disableColor:Colors.white
                                           ),
                                           child: Row(
                                             children: [
@@ -803,187 +805,55 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
 
 
 ///////////////////////////////////////      SUPPLIER CATEGORY ////////////////////////////////
-                Align(
-                  alignment: Alignment.center,
-                  child: AnimatedContainer(
-                      duration: Duration(milliseconds: 300),
-                      curve: Curves.easeIn,
-                      width: SizeConfig.screenWidth,
-                      height: SizeConfig.height430,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.white,
-                      ),
-                      clipBehavior: Clip.antiAlias,
-                      margin: EdgeInsets.only(left: SizeConfig.width30,right: SizeConfig.width30),
-                      transform: Matrix4.translationValues(supplierCategoryOpen?0:SizeConfig.screenWidth, 0, 0),
+                PopUpStatic(
+                  title: "Select Supplier Category",
 
-                      child:Container(
-                        height: SizeConfig.height430,
-                        width: SizeConfig.screenWidth,
-                        color: Colors.white,
-                        //  padding: EdgeInsets.only(left: SizeConfig.width20,right: SizeConfig.width20,bottom: SizeConfig.height10),
-                        child:Column (
-                          // crossAxisAlignment: CrossAxisAlignment.center,
-                          // mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                height: SizeConfig.height50,
-                                child: Stack(
-                                  children: [
-                                    Align(
-                                      alignment: Alignment.topRight,
-                                      child: IconButton(icon: Icon(Icons.cancel), onPressed: (){
-                                        setState(() {
-                                          supplierCategoryOpen=false;
-                                        });
-                                      }),
-                                    ),
-                                    Align(
-                                        alignment: Alignment.center,
-                                        child: Text('Select Supplier Category',style:TextStyle(color:Colors.black,fontFamily: 'RR',fontSize:16),)),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(height: SizeConfig.height10,),
-                              Container(
-                                height: SizeConfig.screenHeight*(300/720),
-                                /*color: Colors.red,*/
-                                margin: EdgeInsets.only(left: SizeConfig.width30,right: SizeConfig.width30),
-                                child: ListView.builder(
-                                  itemCount: qn.supplierCategoryList.length,
-                                  itemBuilder: (context,index){
-                                    return GestureDetector(
-                                      onTap: (){
-                                        setState(() {
-                                          qn.supplierCategoryId=qn.supplierCategoryList[index].supplierCategoryId;
-                                          qn.supplierCategoryName=qn.supplierCategoryList[index].supplierCategoryName;
-                                          supplierCategoryOpen=false;
-                                        });
-
-                                      },
-                                      child: Container(
-                                        margin: EdgeInsets.only(bottom: 20),
-                                        alignment: Alignment.center,
-                                        decoration:BoxDecoration(
-                                            borderRadius:BorderRadius.circular(8),
-                                            border: Border.all(color: qn.supplierCategoryId==null? AppTheme.addNewTextFieldBorder:qn.supplierCategoryId==qn.supplierCategoryList[index].supplierCategoryId?Colors.transparent: AppTheme.addNewTextFieldBorder),
-                                            color: qn.supplierCategoryId==null? Colors.white: qn.supplierCategoryId==qn.supplierCategoryList[index].supplierCategoryId?AppTheme.popUpSelectedColor:Colors.white
-                                        ),
-                                        width:300,
-                                        height:50,
-                                        child: Text("${qn.supplierCategoryList[index].supplierCategoryName}",
-                                          style: TextStyle(color:qn.supplierCategoryId==null? AppTheme.grey:qn.supplierCategoryId==qn.supplierCategoryList[index].supplierCategoryId?Colors.white:AppTheme.grey,
-                                              fontSize:18,fontFamily: 'RR'),
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ),
-
-
-
-
-                            ]
-
-
-                        ),
-                      )
-                  ),
+                  isOpen: supplierCategoryOpen,
+                  dataList: qn.supplierCategoryList,
+                  propertyKeyName:"SupplierCategoryName",
+                  propertyKeyId: "SupplierCategoryId",
+                  selectedId: qn.supplierCategoryId,
+                  itemOnTap: (index){
+                    setState(() {
+                      supplierCategoryOpen=false;
+                      qn.supplierCategoryId=qn.supplierCategoryList[index].supplierCategoryId;
+                      qn.supplierCategoryName=qn.supplierCategoryList[index].supplierCategoryName;
+                    });
+                  },
+                  closeOnTap: (){
+                    setState(() {
+                      supplierCategoryOpen=false;
+                    });
+                  },
                 ),
+
 
 ///////////////////////////////////////      SUPPLIER MATERIAL ////////////////////////////////
-                Align(
-                  alignment: Alignment.center,
-                  child: AnimatedContainer(
-                      duration: Duration(milliseconds: 300),
-                      curve: Curves.easeIn,
-                      width: SizeConfig.screenWidth,
-                      height: SizeConfig.height430,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.white,
-                      ),
-                      clipBehavior: Clip.antiAlias,
-                      margin: EdgeInsets.only(left: SizeConfig.width30,right: SizeConfig.width30),
-                      transform: Matrix4.translationValues(supplierMaterialOpen?0:SizeConfig.screenWidth, 0, 0),
-
-                      child:Container(
-                        height: SizeConfig.height430,
-                        width: SizeConfig.screenWidth,
-                        color: Colors.white,
-                        //  padding: EdgeInsets.only(left: SizeConfig.width20,right: SizeConfig.width20,bottom: SizeConfig.height10),
-                        child:Column (
-                          // crossAxisAlignment: CrossAxisAlignment.center,
-                          // mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                height: SizeConfig.height50,
-                                child: Stack(
-                                  children: [
-                                    Align(
-                                      alignment: Alignment.topRight,
-                                      child: IconButton(icon: Icon(Icons.cancel), onPressed: (){
-                                        setState(() {
-                                          supplierMaterialOpen=false;
-                                        });
-                                      }),
-                                    ),
-                                    Align(
-                                        alignment: Alignment.center,
-                                        child: Text('Select Material',style:TextStyle(color:Colors.black,fontFamily: 'RR',fontSize:16),)),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(height: SizeConfig.height10,),
-                              Container(
-                                height: SizeConfig.screenHeight*(300/720),
-                                /*color: Colors.red,*/
-                                margin: EdgeInsets.only(left: SizeConfig.width30,right: SizeConfig.width30),
-                                child: ListView.builder(
-                                  itemCount: qn.supplierMaterialList.length,
-                                  itemBuilder: (context,index){
-                                    return GestureDetector(
-                                      onTap: (){
-                                        setState(() {
-                                          qn.supplierMaterialId=qn.supplierMaterialList[index].materialId;
-                                          qn.supplierMaterialName=qn.supplierMaterialList[index].materialName;
-                                          qn.supplierMaterialUnitName=qn.supplierMaterialList[index].UnitName;
-                                          supplierMaterialOpen=false;
-                                        });
-
-                                      },
-                                      child: Container(
-                                        margin: EdgeInsets.only(bottom: 20),
-                                        alignment: Alignment.center,
-                                        decoration:BoxDecoration(
-                                            borderRadius:BorderRadius.circular(8),
-                                            border: Border.all(color: qn.supplierMaterialId==null? AppTheme.addNewTextFieldBorder:qn.supplierMaterialId==qn.supplierMaterialList[index].materialId?Colors.transparent: AppTheme.addNewTextFieldBorder),
-                                            color: qn.supplierMaterialId==null? Colors.white: qn.supplierMaterialId==qn.supplierMaterialList[index].materialId?AppTheme.popUpSelectedColor:Colors.white
-                                        ),
-                                        width:300,
-                                        height:50,
-                                        child: Text("${qn.supplierMaterialList[index].materialName}",
-                                          style: TextStyle(color:qn.supplierMaterialId==null? AppTheme.grey:qn.supplierMaterialId==qn.supplierMaterialList[index].materialId?Colors.white:AppTheme.grey,
-                                              fontSize:18,fontFamily: 'RR'),
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ),
+                PopUpStatic(
+                  title: "Select Material",
+                  isAlwaysShown: true,
+                  isOpen: supplierMaterialOpen,
+                  dataList: qn.supplierMaterialList,
+                  propertyKeyName:"MaterialName",
+                  propertyKeyId: "MaterialId",
+                  selectedId: qn.supplierMaterialId,
+                  itemOnTap: (index){
+                    setState(() {
+                      supplierMaterialOpen=false;
+                      qn.supplierMaterialId=qn.supplierMaterialList[index].materialId;
+                      qn.supplierMaterialName=qn.supplierMaterialList[index].materialName;
+                      qn.supplierMaterialUnitName=qn.supplierMaterialList[index].UnitName;
+                    });
+                  },
+                  closeOnTap: (){
+                    setState(() {
+                      supplierMaterialOpen=false;
+                    });
+                  },
 
 
-
-
-                            ]
-
-
-                        ),
-                      )
-                  ),
                 ),
+
 
 
               ],

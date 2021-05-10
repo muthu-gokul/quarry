@@ -10,6 +10,7 @@ import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/customTextField.dart';
+import 'package:quarry/widgets/sidePopUp/sidePopUpWithoutSearch.dart';
 
 
 class MaterialDetailAddNew extends StatefulWidget {
@@ -461,216 +462,60 @@ class MaterialDetailAddNewState extends State<MaterialDetailAddNew> with TickerP
 
 
 ///////////////////////////////////////      MATERIAL CATEGORY ////////////////////////////////
-                Align(
-                  alignment: Alignment.center,
-                  child: AnimatedContainer(
-                      duration: Duration(milliseconds: 300),
-                      curve: Curves.easeIn,
-                      width: SizeConfig.screenWidth,
-                      height: SizeConfig.height430,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.white,
-                      ),
-                      clipBehavior: Clip.antiAlias,
-                      margin: EdgeInsets.only(left: SizeConfig.width30,right: SizeConfig.width30),
-                      transform: Matrix4.translationValues(materialCategoryOpen?0:SizeConfig.screenWidth, 0, 0),
 
-                      child:Container(
-                        height: SizeConfig.height430,
-                        width: SizeConfig.screenWidth,
-                        color: Colors.white,
-                        //  padding: EdgeInsets.only(left: SizeConfig.width20,right: SizeConfig.width20,bottom: SizeConfig.height10),
-                        child:Column (
-                          // crossAxisAlignment: CrossAxisAlignment.center,
-                          // mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                               Container(
-                                 height: SizeConfig.height50,
-                                 child: Stack(
-                                   children: [
-                                     Align(
-                                       alignment: Alignment.topRight,
-                                       child: IconButton(icon: Icon(Icons.cancel), onPressed: (){
-                                         setState(() {
-                                           materialCategoryOpen=false;
-                                         });
-                                       }),
-                                     ),
-                                     Align(
-                                         alignment: Alignment.center,
-                                         child: Text('Select Material Category',style:TextStyle(color:Colors.black,fontFamily: 'RR',fontSize:16),)),
-                                   ],
-                                 ),
-                               ),
-                              SizedBox(height: SizeConfig.height10,),
-                              Container(
-                                height: SizeConfig.screenHeight*(300/720),
-                                /*color: Colors.red,*/
-                                margin: EdgeInsets.only(left: SizeConfig.width30,right: SizeConfig.width30),
-                                child: ListView.builder(
-                                  itemCount: qn.materialCategoryList.length,
-                                  itemBuilder: (context,index){
-                                    return GestureDetector(
-                                      onTap: (){
-                                        setState(() {
-                                          qn.selectedMatCategoryId=qn.materialCategoryList[index].MaterialCategoryId;
-                                          qn.selectedMatCategoryName=qn.materialCategoryList[index].MaterialCategoryName;
-                                          materialCategoryOpen=false;
-                                        });
+                PopUpStatic(
+                  title: "Select Material Category",
 
-                                      },
-                                      child: Container(
-                                        margin: EdgeInsets.only(bottom: 20),
-                                        alignment: Alignment.center,
-                                        decoration:BoxDecoration(
-                                            borderRadius:BorderRadius.circular(8),
-                                            border: Border.all(color: qn.selectedMatCategoryId==null? AppTheme.addNewTextFieldBorder:qn.selectedMatCategoryId==qn.materialCategoryList[index].MaterialCategoryId?Colors.transparent: AppTheme.addNewTextFieldBorder),
-                                            color: qn.selectedMatCategoryId==null? Colors.white: qn.selectedMatCategoryId==qn.materialCategoryList[index].MaterialCategoryId?AppTheme.popUpSelectedColor:Colors.white
-                                        ),
-                                        width:300,
-                                        height:50,
-                                        child: Text("${qn.materialCategoryList[index].MaterialCategoryName}",
-                                          style: TextStyle(color:qn.selectedMatCategoryId==null? AppTheme.grey:qn.selectedMatCategoryId==qn.materialCategoryList[index].MaterialCategoryId?Colors.white:AppTheme.grey,
-                                              fontSize:18,fontFamily: 'RR'),
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ),
-
-
-
-
-                            ]
-
-
-                        ),
-                      )
-                  ),
+                  isOpen: materialCategoryOpen,
+                  dataList: qn.materialCategoryList,
+                  propertyKeyName:"MaterialCategoryName",
+                  propertyKeyId: "MaterialCategoryId",
+                  selectedId: qn.selectedMatCategoryId,
+                  itemOnTap: (index){
+                    setState(() {
+                      materialCategoryOpen=false;
+                      qn.selectedMatCategoryId=qn.materialCategoryList[index].MaterialCategoryId;
+                      qn.selectedMatCategoryName=qn.materialCategoryList[index].MaterialCategoryName;
+                    });
+                  },
+                  closeOnTap: (){
+                    setState(() {
+                      materialCategoryOpen=false;
+                    });
+                  },
                 ),
+
+
+
 
 
 
 ///////////////////////////////////////      MATERIAL UNIT  ////////////////////////////////
-                Align(
-                  alignment: Alignment.center,
-                  child: AnimatedContainer(
-                      duration: Duration(milliseconds: 300),
-                      curve: Curves.easeIn,
-                      width: SizeConfig.screenWidth,
-                      height: SizeConfig.height430,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.white,
-                      ),
-                      clipBehavior: Clip.antiAlias,
-                      margin: EdgeInsets.only(left: SizeConfig.width30,right: SizeConfig.width30),
-                      transform: Matrix4.translationValues(materialUnitOpen?0:SizeConfig.screenWidth, 0, 0),
 
-                      child:Container(
-                        height: SizeConfig.height430,
-                        width: SizeConfig.screenWidth,
-                        color: Colors.white,
-                        //  padding: EdgeInsets.only(left: SizeConfig.width20,right: SizeConfig.width20,bottom: SizeConfig.height10),
-                        child:Column (
-                          // crossAxisAlignment: CrossAxisAlignment.center,
-                          // mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                height: SizeConfig.height50,
-                                child: Stack(
-                                  children: [
-                                    Align(
-                                      alignment: Alignment.topRight,
-                                      child: IconButton(icon: Icon(Icons.cancel), onPressed: (){
-                                        setState(() {
-                                          materialUnitOpen=false;
-                                        });
-                                      }),
-                                    ),
-                                    Align(
-                                        alignment: Alignment.center,
-                                        child: Text('Select Unit',style:TextStyle(color:Colors.black,fontFamily: 'RR',fontSize:16),)),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(height: SizeConfig.height10,),
+                PopUpStatic(
+                  title: "Select Unit",
 
-
-
-
-                              Container(
-                                height: SizeConfig.screenHeight*(300/720),
-                                /*color: Colors.red,*/
-                                margin: EdgeInsets.only(left: SizeConfig.width30,right: SizeConfig.width30),
-                                child: ListView.builder(
-                                  itemCount: qn.materialUnits.length,
-                                  itemBuilder: (context,index){
-                                    return GestureDetector(
-                                      onTap: (){
-                                        setState(() {
-                                          qn.selectedUnitId=qn.materialUnits[index].UnitId;
-                                          qn.selectedUnitName=qn.materialUnits[index].UnitName;
-                                          materialUnitOpen=false;
-                                        });
-
-                                      },
-                                      child: Container(
-                                        margin: EdgeInsets.only(bottom: 20),
-                                        alignment: Alignment.center,
-                                        decoration:BoxDecoration(
-                                            borderRadius:BorderRadius.circular(8),
-                                            border: Border.all(color: qn.selectedUnitId==null? AppTheme.addNewTextFieldBorder:
-                                            qn.selectedUnitId==qn.materialUnits[index].UnitId?Colors.transparent:
-                                            AppTheme.addNewTextFieldBorder
-                                            ),
-                                            color: qn.selectedUnitId==null? Colors.white: qn.selectedUnitId==qn.materialUnits[index].UnitId?AppTheme.popUpSelectedColor:Colors.white
-                                        ),
-                                        width:300,
-                                        height:50,
-                                        child: Text("${qn.materialUnits[index].UnitName}",
-                                          style: TextStyle(color:qn.selectedUnitId==null? AppTheme.grey:qn.selectedUnitId==qn.materialUnits[index].UnitId?Colors.white:AppTheme.grey,
-                                              fontSize:18,fontFamily: 'RR'),
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ),
-
-
-
-
-
-
-
-                              /*Container(
-                                width:150,
-                                height:50,
-                                margin: EdgeInsets.only(top: SizeConfig.height10),
-
-                                child: Card(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(25.0),
-                                    ),
-                                    color: AppTheme.yellowColor,
-                                    elevation: 5,
-                                    shadowColor: AppTheme.yellowColor,
-                                    child: Center(child: Text("+ Add New",style: TextStyle(color:Colors.black,fontSize:18,),))
-
-                                ),
-
-                              )*/
-
-                            ]
-
-
-                        ),
-                      )
-                  ),
+                  isOpen: materialUnitOpen,
+                  dataList: qn.materialUnits,
+                  propertyKeyName:"UnitName",
+                  propertyKeyId: "UnitId",
+                  selectedId: qn.selectedUnitId,
+                  itemOnTap: (index){
+                    setState(() {
+                      materialUnitOpen=false;
+                      qn.selectedUnitId=qn.materialUnits[index].UnitId;
+                      qn.selectedUnitName=qn.materialUnits[index].UnitName;
+                    });
+                  },
+                  closeOnTap: (){
+                    setState(() {
+                      materialUnitOpen=false;
+                    });
+                  },
                 ),
+
+
+
 
 
 

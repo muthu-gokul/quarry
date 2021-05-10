@@ -16,6 +16,7 @@ import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/customTextField.dart';
 import 'package:quarry/widgets/dateRangePicker.dart' as DateRagePicker;
+import 'package:quarry/widgets/sidePopUp/sidePopUpWithoutSearch.dart';
 
 
 
@@ -872,120 +873,29 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
               ),
 
               ///////////////////////////////////////      PLANT TYPE  ////////////////////////////////
-              Align(
-                alignment: Alignment.center,
-                child: AnimatedContainer(
-                    duration: Duration(milliseconds: 300),
-                    curve: Curves.easeIn,
-                    width: SizeConfig.screenWidth,
-                    height: SizeConfig.height430,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Colors.white,
-                    ),
-                    clipBehavior: Clip.antiAlias,
-                    margin: EdgeInsets.only(left: SizeConfig.width30,right: SizeConfig.width30),
-                    transform: Matrix4.translationValues(plantTypeOpen?0:SizeConfig.screenWidth, 0, 0),
 
-                    child:Container(
-                      height: SizeConfig.height430,
-                      width: SizeConfig.screenWidth,
-                      color: Colors.white,
-                      //  padding: EdgeInsets.only(left: SizeConfig.width20,right: SizeConfig.width20,bottom: SizeConfig.height10),
-                      child:Column (
-                        // crossAxisAlignment: CrossAxisAlignment.center,
-                        // mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              height: SizeConfig.height50,
-                              child: Stack(
-                                children: [
-                                  Align(
-                                    alignment: Alignment.topRight,
-                                    child: IconButton(icon: Icon(Icons.cancel), onPressed: (){
-                                      setState(() {
-                                        plantTypeOpen=false;
-                                      });
-                                    }),
-                                  ),
-                                  Align(
-                                      alignment: Alignment.center,
-                                      child: Text('Select Plant Type',style:TextStyle(color:Colors.black,fontFamily: 'RR',fontSize:16),)),
-                                ],
-                              ),
-                            ),
-                            SizedBox(height: SizeConfig.height10,),
+              PopUpStatic(
+                title: "Select Plant Type",
 
-
-
-
-                            Container(
-                              height: SizeConfig.screenHeight*(300/720),
-                              /*color: Colors.red,*/
-                              margin: EdgeInsets.only(left: SizeConfig.width30,right: SizeConfig.width30),
-                              child: ListView.builder(
-                                itemCount: qn.plantTypeList.length,
-                                itemBuilder: (context,index){
-                                  return GestureDetector(
-                                    onTap: (){
-                                      setState(() {
-                                        qn.PD_plantTypeId=qn.plantTypeList[index].PlantTypeId;
-                                        qn.PD_plantTypeName=qn.plantTypeList[index].PlantTypeName;
-                                        plantTypeOpen=false;
-                                      });
-
-                                    },
-                                    child: Container(
-                                      margin: EdgeInsets.only(bottom: 20),
-                                      alignment: Alignment.center,
-                                      decoration:BoxDecoration(
-                                          borderRadius:BorderRadius.circular(8),
-                                          border: Border.all(color: qn.PD_plantTypeId==null? AppTheme.addNewTextFieldBorder:qn.PD_plantTypeId==qn.plantTypeList[index].PlantTypeId?Colors.transparent: AppTheme.addNewTextFieldBorder),
-                                          color: qn.PD_plantTypeId==null? Colors.white: qn.PD_plantTypeId==qn.plantTypeList[index].PlantTypeId?AppTheme.popUpSelectedColor:Colors.white
-                                      ),
-                                      width:300,
-                                      height:50,
-                                      child: Text("${qn.plantTypeList[index].PlantTypeName}",
-                                        style: TextStyle(color:qn.PD_plantTypeId==null? AppTheme.grey:qn.PD_plantTypeId==qn.plantTypeList[index].PlantTypeId?Colors.white:AppTheme.grey,
-                                            fontSize:18,fontFamily: 'RR'),
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-
-
-
-
-
-
-
-                            /*Container(
-                                width:150,
-                                height:50,
-                                margin: EdgeInsets.only(top: SizeConfig.height10),
-
-                                child: Card(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(25.0),
-                                    ),
-                                    color: AppTheme.yellowColor,
-                                    elevation: 5,
-                                    shadowColor: AppTheme.yellowColor,
-                                    child: Center(child: Text("+ Add New",style: TextStyle(color:Colors.black,fontSize:18,),))
-
-                                ),
-
-                              )*/
-
-                          ]
-
-
-                      ),
-                    )
-                ),
+                isOpen: plantTypeOpen,
+                dataList: qn.plantTypeList,
+                propertyKeyName:"PlantTypeName",
+                propertyKeyId: "PlantTypeId",
+                selectedId: qn.PD_plantTypeId,
+                itemOnTap: (index){
+                  setState(() {
+                    plantTypeOpen=false;
+                    qn.PD_plantTypeId=qn.plantTypeList[index].PlantTypeId;
+                    qn.PD_plantTypeName=qn.plantTypeList[index].PlantTypeName;
+                  });
+                },
+                closeOnTap: (){
+                  setState(() {
+                    plantTypeOpen=false;
+                  });
+                },
               ),
+
 
 
               Container(

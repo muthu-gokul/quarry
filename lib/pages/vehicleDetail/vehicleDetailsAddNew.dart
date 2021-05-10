@@ -11,6 +11,7 @@ import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/customTextField.dart';
+import 'package:quarry/widgets/sidePopUp/sidePopUpWithSearch.dart';
 
 
 class VehicleDetailAddNew extends StatefulWidget {
@@ -27,8 +28,11 @@ class VehicleDetailAddNewState extends State<VehicleDetailAddNew> with TickerPro
   ScrollController listViewController;
 
   bool isVehicleTypeOpen=false;
+  bool isAddTransportOpen=false;
   //bool _keyboardVisible = false;
   //bool isListScroll=false;
+  TextEditingController transportTypeSearchController =new TextEditingController();
+  TextEditingController addTransportTypeController =new TextEditingController();
 
   @override
   void initState() {
@@ -336,141 +340,174 @@ class VehicleDetailAddNewState extends State<VehicleDetailAddNew> with TickerPro
 
 
                 Container(
-                  height: isVehicleTypeOpen ? SizeConfig.screenHeight:0,
-                  width: isVehicleTypeOpen ? SizeConfig.screenWidth:0,
+                  height: isVehicleTypeOpen || isAddTransportOpen? SizeConfig.screenHeight:0,
+                  width: isVehicleTypeOpen || isAddTransportOpen? SizeConfig.screenWidth:0,
                   color: Colors.black.withOpacity(0.5),
                 ),
 
 
 ///////////////////////////////////////    VEHICLE TYPE    ////////////////////////////////
+                PopUpSearch(
+                  isOpen: isVehicleTypeOpen,
+                  searchController: transportTypeSearchController,
+                  searchHintText: "Search Vehicle Type",
+
+                  dataList: qn.filterVehicleTypeList,
+                  propertyKeyId: "VehicleTypeId",
+                  propertyKeyName: "VehicleTypeName",
+                  selectedId: qn.selectedVehicleTypeId,
+
+                  searchOnchange: (v){
+                   qn.searchVehicleType(v);
+                  },
+                  itemOnTap: (index){
+                    node.unfocus();
+                    setState(() {
+                      isVehicleTypeOpen=false;
+                      qn.selectedVehicleTypeId=qn.filterVehicleTypeList[index].VehicleTypeId;
+                      qn.selectedVehicleTypeName=qn.filterVehicleTypeList[index].VehicleTypeName;
+                      qn.filterVehicleTypeList=qn.vehicleTypeList;
+
+                    });
+                    transportTypeSearchController.clear();
+                  },
+                  closeOnTap: (){
+                    node.unfocus();
+                    setState(() {
+                      isVehicleTypeOpen=false;
+                    });
+                    transportTypeSearchController.clear();
+                  },
+                  addNewOnTap: (){
+                    setState(() {
+                      isVehicleTypeOpen=false;
+                      isAddTransportOpen=true;
+                    });
+                  },
+                ),
+
+
+
+
+/////////////////// add new transport Type //////
                 Align(
                   alignment: Alignment.center,
                   child: AnimatedContainer(
                       duration: Duration(milliseconds: 300),
                       curve: Curves.easeIn,
                       width: SizeConfig.screenWidth,
-                      height: SizeConfig.height430,
+                      height: 250,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
                         color: Colors.white,
                       ),
                       clipBehavior: Clip.antiAlias,
                       margin: EdgeInsets.only(left: SizeConfig.width30,right: SizeConfig.width30),
-                      transform: Matrix4.translationValues(isVehicleTypeOpen?0:SizeConfig.screenWidth, 0, 0),
+                      transform: Matrix4.translationValues(isAddTransportOpen?0:SizeConfig.screenWidth, 0, 0),
 
                       child:Container(
-                        height: SizeConfig.height430,
+                        height:250,
                         width: SizeConfig.screenWidth,
                         color: Colors.white,
-                        //  padding: EdgeInsets.only(left: SizeConfig.width20,right: SizeConfig.width20,bottom: SizeConfig.height10),
                         child:Column (
-                          // crossAxisAlignment: CrossAxisAlignment.center,
-                          // mainAxisAlignment: MainAxisAlignment.center,
                             children: [
+                              SizedBox(height: 40,),
                               Container(
-                                height: SizeConfig.height50,
+                                height: 50,
                                 child: Stack(
                                   children: [
                                     Align(
-                                      alignment: Alignment.topRight,
-                                      child: IconButton(icon: Icon(Icons.cancel), onPressed: (){
-                                        setState(() {
-                                          isVehicleTypeOpen=false;
-                                        });
-                                      }),
-                                    ),
-                                    Align(
-                                        alignment: Alignment.center,
-                                        child: Text('Select Vehicle Type',style:TextStyle(color:Colors.black,fontFamily: 'RR',fontSize:16),)),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(height: SizeConfig.height10,),
-
-
-
-
-                              Container(
-                                height: SizeConfig.screenHeight*(300/720),
-
-                                margin: EdgeInsets.only(left: SizeConfig.width30,right: SizeConfig.width30),
-                                child: ListView.builder(
-                                  itemCount: qn.vehicleTypeList.length,
-                                  itemBuilder: (context,index){
-                                    return GestureDetector(
-                                      onTap: (){
-                                        setState(() {
-                                          qn.selectedVehicleTypeId=qn.vehicleTypeList[index].VehicleTypeId;
-                                          qn.selectedVehicleTypeName=qn.vehicleTypeList[index].VehicleTypeName;
-                                          isVehicleTypeOpen=false;
-                                        });
-
-                                      },
-                                      child: Container(
-                                        margin: EdgeInsets.only(bottom: 20),
-                                        alignment: Alignment.center,
-                                        decoration:BoxDecoration(
-                                            borderRadius:BorderRadius.circular(8),
-                                            border: Border.all(color: qn.selectedVehicleTypeId==null? AppTheme.addNewTextFieldBorder:qn.selectedVehicleTypeId==qn.vehicleTypeList[index].VehicleTypeId?Colors.transparent: AppTheme.addNewTextFieldBorder),
-                                            color: qn.selectedVehicleTypeId==null? Colors.white: qn.selectedVehicleTypeId==qn.vehicleTypeList[index].VehicleTypeId?AppTheme.popUpSelectedColor:Colors.white
+                                      alignment: Alignment.center,
+                                      child:Container(
+                                        height: 50,
+                                        width: SizeConfig.screenWidth,
+                                        margin: EdgeInsets.only(left: SizeConfig.width20,right: SizeConfig.width20),
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(25),
+                                            /*      border: Border.all(color: AppTheme.addNewTextFieldBorder),*/
+                                            color: Colors.white,
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: AppTheme.addNewTextFieldText.withOpacity(0.2),
+                                                spreadRadius: 2,
+                                                blurRadius: 15,
+                                                offset: Offset(0, 0), // changes position of shadow
+                                              )
+                                            ]
                                         ),
-                                        width:300,
-                                        height:50,
-                                        child: Text("${qn.vehicleTypeList[index].VehicleTypeName}",
-                                          style: TextStyle(color:qn.selectedVehicleTypeId==null? AppTheme.grey:qn.selectedVehicleTypeId==qn.vehicleTypeList[index].VehicleTypeId?Colors.white:AppTheme.grey,
-                                              fontSize:18,fontFamily: 'RR'),
+                                        child:Container(
+                                          padding: EdgeInsets.only(left: 20),
+                                          width: SizeConfig.screenWidth*0.52,
+                                          child: TextField(
+                                            controller: addTransportTypeController,
+                                            scrollPadding: EdgeInsets.only(bottom: 500),
+                                            style:  TextStyle(fontFamily: 'RR',fontSize: 15,color:AppTheme.addNewTextFieldText,letterSpacing: 0.2),
+                                            decoration: InputDecoration(
+
+                                                border: InputBorder.none,
+                                                focusedBorder: InputBorder.none,
+                                                errorBorder: InputBorder.none,
+                                                focusedErrorBorder: InputBorder.none,
+                                                enabledBorder: InputBorder.none,
+                                                hintText: "Vehicle Type Name",
+                                                hintStyle: AppTheme.hintText
+                                            ),
+                                            inputFormatters: [
+                                              FilteringTextInputFormatter.allow(RegExp('[A-Za-z]')),
+                                            ],
+                                            // keyboardType: otherChargesTextFieldOpen?TextInputType.number:TextInputType.text,
+                                          ),
                                         ),
                                       ),
-                                    );
-                                  },
+                                    ),
+
+                                  ],
+                                ),
+                              ),
+                              SizedBox(height: 40,),
+                              GestureDetector(
+                                onTap: (){
+                                  node.unfocus();
+                                  qn.InsertVehicleTypeDbhit(context, addTransportTypeController.text);
+                                  setState(() {
+                                    isAddTransportOpen=false;
+                                  });
+                                  addTransportTypeController.clear();
+
+                                },
+                                child: Container(
+                                  height: 40,
+                                  width: 120,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(25),
+                                      color: AppTheme.yellowColor
+                                  ),
+                                  child: Center(
+                                    child: Text("Add",style:TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 18),),
+                                  ),
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: (){
+                                  node.unfocus();
+                                  setState(() {
+                                    isAddTransportOpen=false;
+                                  });
+                                  addTransportTypeController.clear();
+
+
+                                },
+                                child: Container(
+                                  height: 50,
+                                  width: 150,
+                                  child: Center(
+                                    child: Text("Cancel",style: TextStyle(fontFamily: 'RL',fontSize: 18,color: Color(0xFFA1A1A1))),
+                                  ),
                                 ),
                               ),
 
-                              Container(
-
-                                width:150,
-                                height:SizeConfig.height50,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(25.0),
-                                  color: AppTheme.yellowColor,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: AppTheme.yellowColor.withOpacity(0.4),
-                                      spreadRadius: 1,
-                                      blurRadius: 5,
-                                      offset: Offset(1, 8), // changes position of shadow
-                                    ),
-                                  ],
-                                ),
-                                child: Center(
-                                    child: Text("+ Add New",style: TextStyle(color:Colors.black,fontSize:18,),
-                                    )
-                                ),
 
 
-                              )
-
-
-
-
-
-                              /*Container(
-                                width:150,
-                                height:50,
-                                margin: EdgeInsets.only(top: SizeConfig.height10),
-
-                                child: Card(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(25.0),
-                                    ),
-                                    color: AppTheme.yellowColor,
-                                    elevation: 5,
-                                    shadowColor: AppTheme.yellowColor,
-                                    child: Center(child: Text("+ Add New",style: TextStyle(color:Colors.black,fontSize:18,),))
-
-                                ),
-
-                              )*/
 
                             ]
 
@@ -479,8 +516,6 @@ class VehicleDetailAddNewState extends State<VehicleDetailAddNew> with TickerPro
                       )
                   ),
                 ),
-
-
 
 
 
