@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 class SaleReportGridModel {
   SaleReportGridModel({
     this.saleId,
@@ -67,4 +69,25 @@ class SaleReportGridModel {
     "CustomerId": customerId,
     "CustomerName": customerName,
   };
+
+  Map<String, dynamic> toGridJson() => {
+    "Sale Number": saleNumber,
+    "Date":createdDate!=null? DateFormat("dd-MM-yyyy").format(createdDate):" ",
+    "Material Name": materialName,
+    "Quantity": outputMaterialQty,
+    "Amount": outputQtyAmount,
+    "Customer Name": customerName,
+    "Plant Name": plantName,
+  };
+
+  dynamic get(String propertyName) {
+    var _mapRep = toGridJson();
+    if (_mapRep.containsKey(propertyName)) {
+      return _mapRep[propertyName];
+    }
+    throw ArgumentError('property not found');
+  }
+
+
+
 }

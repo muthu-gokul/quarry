@@ -24,7 +24,7 @@ class MaterialModel {
     if (_mapRep.containsKey(propertyName)) {
       return _mapRep[propertyName];
     }
-    throw ArgumentError('propery not found');
+    throw ArgumentError('property not found');
   }
 
 }

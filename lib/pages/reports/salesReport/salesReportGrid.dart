@@ -17,6 +17,8 @@ import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/dateRangePicker.dart' as DateRagePicker;
+import 'package:quarry/widgets/navigationBarIcon.dart';
+import 'package:quarry/widgets/staticColumnScroll/reportDataTable.dart';
 
 
 class SalesReportGrid extends StatefulWidget {
@@ -31,51 +33,8 @@ class SalesReportGridState extends State<SalesReportGrid> with TickerProviderSta
   bool showEdit=false;
   int selectedIndex;
 
-
-  ScrollController header=new ScrollController();
-  ScrollController body=new ScrollController();
-  ScrollController verticalLeft=new ScrollController();
-  ScrollController verticalRight=new ScrollController();
-
-  bool showShadow=false;
-
   @override
   void initState() {
-    header.addListener(() {
-      if(body.offset!=header.offset){
-        body.jumpTo(header.offset);
-      }
-      if(header.offset==0){
-        setState(() {
-          showShadow=false;
-        });
-      }
-      else{
-        if(!showShadow){
-          setState(() {
-            showShadow=true;
-          });
-        }
-      }
-    });
-
-    body.addListener(() {
-      if(header.offset!=body.offset){
-        header.jumpTo(body.offset);
-      }
-    });
-
-    verticalLeft.addListener(() {
-      if(verticalRight.offset!=verticalLeft.offset){
-        verticalRight.jumpTo(verticalLeft.offset);
-      }
-    });
-
-    verticalRight.addListener(() {
-      if(verticalLeft.offset!=verticalRight.offset){
-        verticalLeft.jumpTo(verticalRight.offset);
-      }
-    });
     super.initState();
   }
 
@@ -96,11 +55,43 @@ class SalesReportGridState extends State<SalesReportGrid> with TickerProviderSta
                   color: AppTheme.yellowColor,
                   child: Row(
                     children: [
-                      IconButton(icon: Icon(Icons.menu), onPressed: widget.drawerCallback),
-                      SizedBox(width: SizeConfig.width20,),
-                      Text("Sales Report",
-                        style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize:16),
+                      GestureDetector(
+                        onTap: widget.drawerCallback,
+                        child: NavBarIcon(),
                       ),
+                      Container(
+                        height: 24,
+                        width: SizeConfig.screenWidth*0.38,
+                        child: FittedBox(
+                          child: Text("${rn.reportHeader}",
+                            style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize:16),
+                          ),
+                        ),
+                      ),
+
+                      Spacer(),
+
+
+
+                      Container(
+                        //height: 30,
+                        padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(50),
+                     //     color: Colors.white
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(Icons.calendar_today_rounded,color: AppTheme.bgColor,size: 14,),
+                            SizedBox(width: 5,),
+                            rn.picked.isNotEmpty?Text("${DateFormat('dd-MM-yyyy').format(rn.picked[0])} - ${DateFormat('dd-MM-yyyy').format(rn.picked[1])}",
+                              style: TextStyle(fontFamily: 'RR',fontSize: 12,color: AppTheme.bgColor),
+                            ):Container(),
+                          ],
+                        ),
+                      ),
+
+                      SizedBox(width: SizeConfig.width10,),
 
 
                     ],
@@ -120,271 +111,47 @@ class SalesReportGridState extends State<SalesReportGrid> with TickerProviderSta
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
 
-
                         ReportHeader(
-                          title: 'Total Sale',
-                          value:rn.totalSale,
+                          title: '${rn.totalReportTitle}',
+                          value:rn.totalReport,
+                        ),
+                        ReportHeader(
+                          title: '${rn.totalReportQtyTitle}',
+                          value:rn.totalReportQty,
 
                         ),
                         ReportHeader(
-                          title: 'Sale Quantity',
-                          value:rn.totalSaleQty,
-
+                          title: '${rn.totalReportAmountTitle}',
+                          value: rn.totalReportAmount,
                         ),
-                        ReportHeader(
-                          title: 'Sale Amount',
-                          value: rn.totalSaleAmount,
-
-                        ),
-
-
-
                       ],
                     )
                 ),
 
-                Container(
-                    height: SizeConfig.screenHeight-140,
-                    width: SizeConfig.screenWidth,
-                    margin: EdgeInsets.only(top: 140),
-                    clipBehavior: Clip.antiAlias,
-                    decoration: BoxDecoration(
-                        color: AppTheme.gridbodyBgColor,
-                        borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10))
-                    ),
-                    child: Stack(
-                      children: [
 
-                        //Scrollable
-                        Positioned(
-                          left:149,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Container(
-                                height: 50,
-                                width: SizeConfig.screenWidth-150,
-                                color: showShadow? AppTheme.bgColor.withOpacity(0.8):AppTheme.bgColor,
-                                child: SingleChildScrollView(
-                                  controller: header,
-                                  scrollDirection: Axis.horizontal,
-                                  child: Row(
-                                      children: rn.salesReportGridCol.asMap().
-                                      map((i, value) => MapEntry(i, i==0?Container():
-                                      value.isActive?Container(
-                                          alignment: Alignment.center,
-                                          width: 150,
-                                          child: Text(value.columnName,style: AppTheme.TSWhite166,)
-                                      ):Container()
-                                      )).values.toList()
-                                  ),
-                                ),
+                //dataTable
+                ReportDataTable(
+                  topMargin: 140,
+                  gridBodyReduceHeight: 260,
+                  selectedIndex: selectedIndex,
+                  gridData: rn.reportsGridDataList,
+                  gridDataRowList: rn.reportsGridColumnList,
+                  func: (index){
+                    if(selectedIndex==index){
+                      setState(() {
+                        selectedIndex=-1;
+                        showEdit=false;
+                      });
 
-                              ),
-                              Container(
-                                height: SizeConfig.screenHeight-260,
-                                width: SizeConfig.screenWidth-150,
-                                alignment: Alignment.topCenter,
-                                color: AppTheme.gridbodyBgColor,
-                                child: SingleChildScrollView(
-                                  controller: body,
-                                  scrollDirection: Axis.horizontal,
-                                  child: Container(
-                                    height: SizeConfig.screenHeight-260,
-                                    alignment: Alignment.topCenter,
-                                    color: AppTheme.gridbodyBgColor,
-                                    child: SingleChildScrollView(
-                                      controller: verticalRight,
-                                      scrollDirection: Axis.vertical,
-                                      child: Column(
-                                          children:rn.filterSalesReportGridList.asMap().
-                                          map((i, value) => MapEntry(
-                                              i,InkWell(
-                                            onTap: (){
-                                              setState(() {
-
-                                                if(selectedIndex==i){
-                                                  selectedIndex=-1;
-                                                  showEdit=false;
-                                                } else{
-                                                  selectedIndex=i;
-                                                  showEdit=true;
-                                                }
-
-
-                                              });
-                                            },
-                                            child: Container(
-
-                                              decoration: BoxDecoration(
-                                                color: selectedIndex==i?AppTheme.yellowColor:AppTheme.gridbodyBgColor,
-                                              ),
-                                              height: 60,
-                                              child: Row(
-                                                children: [
-
-
-                                                  rn.salesReportGridCol[1].isActive?Container(
-                                                    alignment: Alignment.center,
-                                                    // padding: EdgeInsets.only(left: 20,right: 20),
-                                                    width: 150,
-                                                    child: Text("${DateFormat("dd-MM-yyyy").format(value.createdDate)}",
-                                                      style:selectedIndex==i?AppTheme.bgColorTS:AppTheme.gridTextColorTS,
-                                                    ),
-
-                                                  ):Container(),
-                                                  rn.salesReportGridCol[2].isActive?Container(
-                                                    alignment: Alignment.center,
-                                                    width: 150,
-                                                    child: Text("${value.materialName}",
-                                                      style:selectedIndex==i?AppTheme.bgColorTS:AppTheme.gridTextColorTS,
-                                                    ),
-                                                  ):Container(),
-
-                                                  rn.salesReportGridCol[3].isActive?Container(
-                                                    width: 150,
-                                                    alignment: Alignment.center,
-                                                    child: Text("${value.outputMaterialQty}",
-                                                      style:selectedIndex==i?AppTheme.bgColorTS:AppTheme.gridTextColorTS,
-                                                    ),
-                                                  ):Container(),
-                                                  rn.salesReportGridCol[4].isActive?Container(
-                                                    width: 150,
-                                                    alignment: Alignment.center,
-                                                    child: Text("${value.outputQtyAmount??0.0}",
-                                                      style:selectedIndex==i?AppTheme.bgColorTS:AppTheme.gridTextColorTS,
-                                                    ),
-                                                  ):Container(),
-                                                  rn.salesReportGridCol[5].isActive?Container(
-                                                    width: 150,
-                                                    alignment: Alignment.center,
-                                                    child: Text("${value.customerName}",
-                                                      style:selectedIndex==i?AppTheme.bgColorTS:AppTheme.gridTextColorTS,
-                                                    ),
-                                                  ):Container(),
-                                                  rn.salesReportGridCol[6].isActive?Container(
-                                                    width: 150,
-                                                    alignment: Alignment.center,
-                                                    child: FittedBox(
-                                                      child: Text("${value.plantName}",
-                                                        style:selectedIndex==i?AppTheme.bgColorTS:AppTheme.gridTextColorTS,
-                                                      ),
-                                                    ),
-                                                  ):Container(),
-
-
-                                                ],
-                                              ),
-                                            ),
-                                          )
-                                          )
-                                          ).values.toList()
-                                      ),
-                                    ),
-
-
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-
-
-                        //not Scrollable
-                        Positioned(
-                          left: 0,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Container(
-                                height: 50,
-                                width: 150,
-                                color: AppTheme.bgColor,
-                                alignment: Alignment.center,
-                                child: Text("${rn.salesReportGridCol[0].columnName}",style: AppTheme.TSWhite166,),
-
-                              ),
-                              Container(
-                                height: SizeConfig.screenHeight-260,
-                                alignment: Alignment.topCenter,
-                                decoration: BoxDecoration(
-                                    color:AppTheme.gridbodyBgColor,
-                                    boxShadow: [
-                                      showShadow?  BoxShadow(
-                                        color: AppTheme.addNewTextFieldText.withOpacity(0.3),
-                                        spreadRadius: 0,
-                                        blurRadius: 15,
-                                        offset: Offset(-3, -8), // changes position of shadow
-                                      ):BoxShadow(color: Colors.transparent)
-                                    ]
-                                ),
-                                child: Container(
-                                  height: SizeConfig.screenHeight-260,
-                                  alignment: Alignment.topCenter,
-
-                                  child: SingleChildScrollView(
-                                    controller: verticalLeft,
-                                    scrollDirection: Axis.vertical,
-                                    child: Column(
-                                        children: rn.filterSalesReportGridList.asMap().
-                                        map((i, value) => MapEntry(
-                                            i,InkWell(
-                                          onTap: (){
-                                            setState(() {
-
-                                              if(selectedIndex==i){
-                                                selectedIndex=-1;
-                                                showEdit=false;
-                                              } else{
-                                                selectedIndex=i;
-                                                showEdit=true;
-                                              }
-
-
-                                            });
-                                          },
-                                          child:  Container(
-                                            alignment: Alignment.center,
-                                            decoration: BoxDecoration(
-                                              color: selectedIndex==i?AppTheme.yellowColor:AppTheme.gridbodyBgColor,
-
-                                            ),
-                                            height: 60,
-                                            //  padding: EdgeInsets.only(left: 20,right: 20,bottom: 20,top: 20),
-                                            width: 150,
-                                            child: Text("${value.saleNumber}",
-                                              style:selectedIndex==i?AppTheme.bgColorTS:AppTheme.gridTextColorTS,
-                                            ),
-                                          ),
-                                        )
-                                        )
-                                        ).values.toList()
-
-
-                                    ),
-                                  ),
-
-
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-
-
-
-
-                      ],
-                    )
-
-
-
-
+                    }
+                    else{
+                      setState(() {
+                        selectedIndex=index;
+                        showEdit=true;
+                      });
+                    }
+                  },
                 ),
-
-
-
 
 
                 //bottomNav
@@ -471,13 +238,13 @@ class SalesReportGridState extends State<SalesReportGrid> with TickerProviderSta
                           if (picked1 != null && picked1.length == 2) {
                                  setState(() {
                                  rn.picked=picked1;
-                                  rn.ReportsDbHit(context, "SaleReport");
+                                  rn.ReportsDbHit(context, rn.TypeName);
                         });
                       }
                       else if(picked1!=null && picked1.length ==1){
                         setState(() {
                           rn.picked=picked1;
-                          rn.ReportsDbHit(context, "SaleReport");
+                          rn.ReportsDbHit(context, rn.TypeName);
                           // rn.reportDbHit(widget.UserId.toString(), widget.OutletId, DateFormat("dd-MM-yyyy").format( picked[0]).toString(), DateFormat("dd-MM-yyyy").format( picked[0]).toString(),"Itemwise Report", context);
                         });
                       }
@@ -580,8 +347,9 @@ class ReportHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: SizeConfig.height80,
+      height: 85,
       width: SizeConfig.screenWidth*0.31,
+      padding: EdgeInsets.only(left: 5,right: 5),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
           color: AppTheme.bgColor
@@ -590,11 +358,11 @@ class ReportHeader extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text("$title",style: TextStyle(fontFamily: 'RR',fontSize: 12,color: Colors.white,letterSpacing: 0.1),),
+          FittedBox(child: Text("$title",style: TextStyle(fontFamily: 'RR',fontSize: 14,color: Colors.white,letterSpacing: 0.1),)),
           SizedBox(height: 5,),
           FittedBox(
               fit: BoxFit.contain,
-              child: Text("$value",style:TextStyle(fontFamily: 'RM',fontSize: 20,color: Colors.yellow),)),
+              child: Text("$value",style:TextStyle(fontFamily: 'RM',fontSize: 18,color: Colors.yellow),)),
 
         ],
       ),

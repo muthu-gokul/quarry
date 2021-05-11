@@ -82,8 +82,6 @@ class SaleReportSettingsState extends State<SaleReportSettings> with TickerProvi
 
                         ),
                       ),
-
-
                     ],
                   ),
                 ),
@@ -180,24 +178,18 @@ class SaleReportSettingsState extends State<SaleReportSettings> with TickerProvi
 
                                     ReportSettingsColumnFilter(
                                       title: "Column Filter",
-                                      list: rn.salesReportGridCol,
+                                      list: rn.reportsGridColumnList,
                                       instanceName: 'ColumnName',
                                     ),
-                                    SalesSettingsHeader(
-                                      title: "Plant Filter",
-                                      list: rn.plantList,
-                                      instanceName: 'PlantName',
+
+                                    for(int i=0;i<rn.filtersList.length ;i++)
+
+                                    ReportSettingsHeader(
+                                      title: rn.filtersList[i].title,
+                                      list: rn.filtersList[i].list,
+                                      instanceName: rn.filtersList[i].instanceName,
                                     ),
-                                    SalesSettingsHeader(
-                                      title: "Material Filter",
-                                      list: rn.materialList,
-                                      instanceName: 'MaterialName',
-                                    ),
-                                    SalesSettingsHeader(
-                                      title: "Customer Filter",
-                                      list: rn.customerList,
-                                      instanceName: 'CustomerName',
-                                    ),
+
 
 
                                     SizedBox(height: 80,),
@@ -218,16 +210,11 @@ class SaleReportSettingsState extends State<SaleReportSettings> with TickerProvi
                   child: Row(
                     children: [
                       IconButton(icon: Icon(Icons.arrow_back), onPressed: () {
-                        setState(() {
-                          rn.salesReportGridCol=List.from(rn.tempSalesCol);
-                        });
                         Navigator.pop(context);
                       }),
                       SizedBox(width: SizeConfig.width5,),
-                      Text("${rn.settingsHeader} Settings",
-                        style: TextStyle(fontFamily: 'RR',
-                            color: Colors.black,
-                            fontSize: SizeConfig.width16),
+                      Text("${rn.reportHeader} Settings",
+                        style: TextStyle(fontFamily: 'RR', color: Colors.black, fontSize: 16),
                       ),
 
                     ],
@@ -269,9 +256,29 @@ class SaleReportSettingsState extends State<SaleReportSettings> with TickerProvi
                             behavior: HitTestBehavior.translucent,
                             onTap: (){
                               setState(() {
-                                rn.tempSalesCol=List.from(rn.salesReportGridCol);
+                              //  rn.tempSalesCol=List.from(rn.salesReportGridCol);
                               });
-                              rn.filterSales();
+
+
+                              if(rn.TypeName=="SaleReport"){
+                                rn.filterSales();
+                              }
+                              else if(rn.TypeName=="PurchaseReport"){
+                                rn.filterPurchase();
+                              }
+                              else if(rn.TypeName=="CustomerSaleReport"){
+                                rn.filterCustomerSale();
+                              }
+                              else if(rn.TypeName=="ProductionReport"){
+                                rn.filterProduction();
+                              }
+                              else if(rn.TypeName=="SupplierPurchaseReport"){
+                                rn.filterSupplierPurchase();
+                              }
+                              else if(rn.TypeName=="InvoiceReport"){
+                                rn.filterInvoice();
+                              }
+
                               Navigator.pop(context);
                             },
                             child: Container(
@@ -342,20 +349,20 @@ class SaleReportSettingsState extends State<SaleReportSettings> with TickerProvi
 
 
 
-class SalesSettingsHeader extends StatefulWidget {
+class ReportSettingsHeader extends StatefulWidget {
 
 
   String title;
   List<dynamic> list=[];
   String instanceName;
 
-  SalesSettingsHeader({  this.title,this.list,this.instanceName});
+  ReportSettingsHeader({  this.title,this.list,this.instanceName});
 
   @override
-  _SalesSettingsHeaderState createState() => _SalesSettingsHeaderState();
+  _ReportSettingsHeaderState createState() => _ReportSettingsHeaderState();
 }
 
-class _SalesSettingsHeaderState extends State<SalesSettingsHeader> with TickerProviderStateMixin{
+class _ReportSettingsHeaderState extends State<ReportSettingsHeader> with TickerProviderStateMixin{
   Animation arrowAnimation;
   AnimationController arrowAnimationController;
   bool open=false;

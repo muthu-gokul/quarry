@@ -98,7 +98,14 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
             child: Drawer(
 
               child:Container(
-                color:Color(0xff3B3B3D),
+                decoration: BoxDecoration(
+                    color:Color(0xff3B3B3D),
+                  image: DecorationImage(
+                    image: AssetImage("assets/svg/drawer/sidemenuBg.jpg"),
+                    fit: BoxFit.cover
+                  )
+                ),
+
 
                 child: Column(
                   children: [
@@ -106,6 +113,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                       builder: (context,pn,child)=> Container(
                         width: double.infinity,
                         height: 210,
+                     //   margin: EdgeInsets.only(bottom: 20),
                         child: Column(
                           children: [
                             Align(
@@ -115,18 +123,27 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                     scaffoldkey.currentState.openEndDrawer();
                                   }),
                             ),
-                            Container(
-                              height: 100,
-                              width: 100,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: AppTheme.yellowColor,
+                            GestureDetector(
+                              onTap: (){
+                                setState(() {
+                                  drawer.menuSelected=10;
+                                  scaffoldkey.currentState.openEndDrawer();
+                                });
+                                Provider.of<ProfileNotifier>(context, listen: false).GetUserDetailDbHit(context,Provider.of<QuarryNotifier>(context,listen: false).UserId);
+                              },
+                              child: Container(
+                                height: 100,
+                                width: 100,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: AppTheme.yellowColor,
+
+                                ),
+                                child: Center(
+                                  child: Image.asset("assets/svg/drawer/avatar.png"),
+                                ),
 
                               ),
-                              child: Center(
-                                child: Icon(Icons.person_outline,size: 50,color: AppTheme.bgColor.withOpacity(0.5),),
-                              ),
-
                             ),
                             SizedBox(height: 10,),
                             Text("${pn.selectedSalutation}.${pn.firstName.text}${pn.lastName.text}",
@@ -171,19 +188,16 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                             height: (SizeConfig.screenHeight-255),
                             child: ListView(
                               children: [
+                                SizedBox(height: 20,),
                                 DrawerContent(
                                   delay: 0.1,
                                   height: 50,
-                                  image: "assets/svg/drawer/myprofile.svg",
-                                  title: 'My Profile',
-                                  tag: 'MyProfile',
+                                  image: "assets/svg/drawer/dashboard.svg",
+                                  title: 'Dashboard',
+                                  tag: 'Dashboard',
                                   titleColor: AppTheme.yellowColor,
                                   callback: (){
-                                    setState(() {
-                                      drawer.menuSelected=10;
-                                      scaffoldkey.currentState.openEndDrawer();
-                                    });
-                                    Provider.of<ProfileNotifier>(context, listen: false).GetUserDetailDbHit(context,Provider.of<QuarryNotifier>(context,listen: false).UserId);
+
                                   },
                                 ),
                                 DrawerContent(
@@ -274,7 +288,30 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
 
                                   },
                                 ),
+                                DrawerContent(
+                                  delay: 3.5,
+                                  height: 50,
+                                  image:  "assets/svg/drawer/employee/employeeDetail.svg",
+                                  title: 'Employee Details',
+                                  tag: "EmployeeDetails",
+                                  titleColor: AppTheme.yellowColor,
+                                  callback: (){
+                                    Navigator.push(context, MaterialPageRoute(builder: (context)=>EmployeeDetails(voidCallback: (){
+                                      scaffoldkey.currentState.openEndDrawer();
+                                   },)));
+                                  },
+                                ),
+                                DrawerContent(
+                                  delay: 3.5,
+                                  height: 50,
+                                  image:  "assets/svg/drawer/machineManagement.svg",
+                                  title: 'Machine Management',
+                                  tag: "MachineManagement",
+                                  titleColor: AppTheme.yellowColor,
+                                  callback: (){
 
+                                  },
+                                ),
 
                                 DrawerContent(
                                   delay: 3.5,
@@ -331,12 +368,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                             child: Container(
                               height: 80,
                               width: 80,
-                              padding: EdgeInsets.only(bottom: 40),
+                              padding: EdgeInsets.only(bottom: 45,top: 5),
                               decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   color: AppTheme.yellowColor
                               ),
-                              child: Icon(Icons.power_settings_new_outlined,color: AppTheme.bgColor,),
+                              child: SvgPicture.asset("assets/svg/drawer/logout.svg",width: 20,height: 20,),
                             ),
                           )
 
@@ -443,7 +480,8 @@ class DrawerContent extends StatelessWidget {
         width: SizeConfig.screenWidth,
         alignment: Alignment.center,
         child: Container(
-          width: 210,
+          margin: EdgeInsets.only(left: 20),
+          width: 230,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -452,7 +490,14 @@ class DrawerContent extends StatelessWidget {
                   tag: tag,
                   child: SvgPicture.asset(image,width: 30,)),
               SizedBox(width: 10,),
-              Text(title, style: TextStyle(fontSize: 16,color:titleColor, fontFamily:'RR'),),
+              Container(
+                height: 20,
+                width: 190,
+                alignment: Alignment.centerLeft,
+                child: FittedBox(
+                    fit: BoxFit.contain,
+                    child: Text(title, style: TextStyle(fontSize: 16,color:titleColor, fontFamily:'RR'),)),
+              ),
 
             ],
           ),
@@ -472,17 +517,15 @@ class DrawerNotifier extends ChangeNotifier{
   }
 }
 
-
-class SettingsPage extends StatefulWidget {
+class EmployeeDetails extends StatefulWidget {
 
   VoidCallback voidCallback;
-  SettingsPage({this.voidCallback});
+  EmployeeDetails({this.voidCallback});
 
   @override
-  SettingsPageState createState() => SettingsPageState();
+  EmployeeDetailsState createState() => EmployeeDetailsState();
 }
-
-class SettingsPageState extends State<SettingsPage> with TickerProviderStateMixin{
+class EmployeeDetailsState extends State<EmployeeDetails> with TickerProviderStateMixin{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -490,184 +533,19 @@ class SettingsPageState extends State<SettingsPage> with TickerProviderStateMixi
       body: Container(
         height: SizeConfig.screenHeight,
         width: SizeConfig.screenWidth,
-        color: AppTheme.bgColor,
-        alignment: Alignment.center,
-        child:  Column(
-          children: [
-
-            Container(
-              height: SizeConfig.screenHeight-45,
-              width: SizeConfig.screenWidth,
-
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: IconButton(icon: Icon(Icons.clear_outlined,size: 25,color: AppTheme.yellowColor,),
-                        onPressed: (){
-                          Navigator.pop(context);
-                        }),
-                  ),
-
-                  Hero(
-                    transitionOnUserGestures: true,
-                    tag: "Settings",
-                    child:SvgPicture.asset("assets/svg/drawer/settings-icon.svg",width: 100,height: 100,),
-                  ),
-
-                  DrawerContent(
-                    delay: 0.1,
-                    height: 50,
-                    image: "assets/drawerImages/dashboard.png",
-                    title: 'Company Detail',
-                    tag: 'Company',
-                    titleColor: AppTheme.yellowColor,
-                    callback: (){
-                      Navigator.pop(context);
-                      widget.voidCallback();
-
-                      Provider.of<DrawerNotifier>(context,listen: false).changeMenu(1);
-                      Provider.of<QuarryNotifier>(context,listen: false).GetQuarryDetailDbhit(context);
-                      Provider.of<QuarryNotifier>(context,listen: false).GetplantDetailDbhit(context,null);
-                    },
-                  ),
-
-
-                  DrawerContent(
-                    delay: 1.5,
-                    height: 50,
-                    image: "assets/drawerImages/dashboard.png",
-                    title: 'Customer Detail',
-                    tag: 'CustomeDetail',
-                    titleColor: AppTheme.yellowColor,
-                    callback: (){
-                      Navigator.pop(context);
-                      widget.voidCallback();
-                      Provider.of<DrawerNotifier>(context,listen: false).changeMenu(5);
-
-                      Provider.of<CustomerNotifier>(context,listen: false).GetCustomerDetailDbhit(context,null);
-
-                    },
-                  ),
-
-                  DrawerContent(
-                    delay: 2,
-                    height: 50,
-                    image: "assets/drawerImages/dashboard.png",
-                    title: 'Material Detail',
-                    tag: 'Material',
-                    titleColor: AppTheme.yellowColor,
-                    callback: (){
-                      Navigator.pop(context);
-                      widget.voidCallback();
-                      Provider.of<DrawerNotifier>(context,listen: false).changeMenu(2);
-
-                      Provider.of<MaterialNotifier>(context,listen: false).GetMaterialDbHit(context,null);
-                    },
-                  ),
-                  DrawerContent(
-                    delay: 2.5,
-                    height: 50,
-                    image: "assets/drawerImages/dashboard.png",
-                    title: 'Machine Detail',
-                    tag: 'Machine',
-                    titleColor: AppTheme.yellowColor,
-                    callback: (){
-                      Navigator.pop(context);
-                      widget.voidCallback();
-                      Provider.of<DrawerNotifier>(context,listen: false).changeMenu(6);
-
-                      Provider.of<MachineNotifier>(context,listen: false).GetMachineDbHit(context,null);
-
-                    },
-                  ),
-                  DrawerContent(
-                    delay: 3,
-                    height: 50,
-                    image: "assets/drawerImages/dashboard.png",
-                    title: 'Vehicle Detail',
-                    tag: 'Vehicle',
-                    titleColor: AppTheme.yellowColor,
-                    callback: (){
-                      Navigator.pop(context);
-                      widget.voidCallback();
-                      Provider.of<DrawerNotifier>(context,listen: false).changeMenu(7);
-
-                      Provider.of<VehicleNotifier>(context, listen: false).GetVehicleDbHit(context,null);
-
-                    },
-                  ),
-                  DrawerContent(
-                    delay: 3.5,
-                    height: 50,
-                    image: "assets/drawerImages/dashboard.png",
-                    title: 'Supplier Detail',
-                    tag: 'Supplier',
-                    titleColor: AppTheme.yellowColor,
-                    callback: (){
-                      Navigator.pop(context);
-                      widget.voidCallback();
-                      Provider.of<DrawerNotifier>(context,listen: false).changeMenu(8);
-
-                      Provider.of<SupplierNotifier>(context, listen: false).GetSupplierDbHit(context,null,this);
-                    },
-                  ),
-                ],
-              ),
-            ),
-
-
-
-
-            GestureDetector(
-              onTap: (){
-                Navigator.pop(context);
-              },
-              child: Container(
-                height: 80,
-                width: 80,
-                padding: EdgeInsets.only(bottom: 35),
-                decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: AppTheme.yellowColor
-                ),
-                child: Icon(Icons.arrow_back,color: AppTheme.bgColor,),
-              ),
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage("assets/svg/drawer/sidemenuBg.jpg"),
+                fit: BoxFit.cover
             )
-          ],
         ),
-      ),
-
-
-    );
-  }
-}
-
-class ReportsPage extends StatefulWidget {
-
-  VoidCallback voidCallback;
-  ReportsPage({this.voidCallback});
-
-  @override
-  ReportsPageState createState() => ReportsPageState();
-}
-
-class ReportsPageState extends State<ReportsPage> with TickerProviderStateMixin{
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-
-      body: Container(
-        height: SizeConfig.screenHeight,
-        width: SizeConfig.screenWidth,
-        color: AppTheme.bgColor,
         child:  Column(
           children: [
 
             Container(
               height: SizeConfig.screenHeight-45,
               width: SizeConfig.screenWidth,
+
 
               child: Column(
                 children: [
@@ -681,38 +559,38 @@ class ReportsPageState extends State<ReportsPage> with TickerProviderStateMixin{
 
                   Hero(
                     transitionOnUserGestures: true,
-                    tag: "Reports",
-                    child:SvgPicture.asset("assets/svg/drawer/reports.svg",width: 100,height: 100,),
+                    tag: "EmployeeDetails",
+                    child:SvgPicture.asset("assets/svg/drawer/employee/employeeDetail.svg",width: 100,height: 100,),
                   ),
+
+                  SizedBox(height: 20,),
 
                   DrawerContent(
                     delay: 0.1,
                     height: 50,
-                    image: "assets/svg/drawer/reports/salesReport.svg",
-                    title: 'Sales Report',
-                    tag: 'SalesReport',
+                    image: "assets/svg/drawer/myprofile.svg",
+                    title: 'Employee Master',
+                    tag: 'EmployeeMaster',
                     titleColor: AppTheme.yellowColor,
                     callback: (){
                       Navigator.pop(context);
                       widget.voidCallback();
 
-                      Provider.of<DrawerNotifier>(context,listen: false).changeMenu(16);
-
-                      Provider.of<ReportsNotifier>(context,listen: false).ReportsDropDownValues(context,"SaleReport");
-                      //Provider.of<QuarryNotifier>(context,listen: false).GetplantDetailDbhit(context,null);
                     },
                   ),
 
                   DrawerContent(
                     delay:1,
                     height: 50,
-                    image: "assets/drawerImages/dashboard.png",
-                    title: 'Purchase Report',
-                    tag: 'PurchaseReport',
+                    image: "assets/svg/drawer/employee/employeeAttendance.svg",
+                    title: 'Employee Attendance',
+                    tag: 'EmployeeAttendance',
                     titleColor: AppTheme.yellowColor,
                     callback: (){
                       Navigator.pop(context);
                       widget.voidCallback();
+
+
 
                     },
                   ),
@@ -720,14 +598,32 @@ class ReportsPageState extends State<ReportsPage> with TickerProviderStateMixin{
                   DrawerContent(
                     delay: 1.5,
                     height: 50,
-                    image: "assets/drawerImages/dashboard.png",
-                    title: 'Customer Sales Report',
-                    tag: 'CustomerSalesReport',
+                    image: "assets/svg/drawer/employee/employeeAdvance.svg",
+                    title: 'Employee Advance',
+                    tag: 'EmployeeAdvance',
                     titleColor: AppTheme.yellowColor,
                     callback: (){
                       Navigator.pop(context);
                       widget.voidCallback();
 
+
+                    },
+                  ),
+                  DrawerContent(
+                    delay: 2,
+                    height: 50,
+                    image: "assets/svg/drawer/employee/employeeSalary.svg",
+                    title: 'Employee Salary',
+                    tag: 'EmployeeSalary',
+                    titleColor: AppTheme.yellowColor,
+                    callback: (){
+                      Navigator.pop(context);
+                      widget.voidCallback();
+
+                      ////  Provider.of<DrawerNotifier>(context,listen: false).changeMenu(16);
+
+                      ///  Provider.of<ReportsNotifier>(context,listen: false).ReportsDropDownValues(context,"CustomerSaleReport");
+                      ///  Provider.of<ReportsNotifier>(context,listen: false).ReportsDbHit(context,"CustomerSaleReport");
 
                     },
                   ),
@@ -745,14 +641,14 @@ class ReportsPageState extends State<ReportsPage> with TickerProviderStateMixin{
                 Navigator.pop(context);
               },
               child: Container(
-                height: 80,
-                width: 80,
-                padding: EdgeInsets.only(bottom: 35),
-                decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: AppTheme.yellowColor
-                ),
-                child: Icon(Icons.arrow_back,color: AppTheme.bgColor,),
+                  height: 80,
+                  width: 80,
+                  padding: EdgeInsets.only(bottom: 45,top: 10),
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: AppTheme.yellowColor
+                  ),
+                  child:SvgPicture.asset("assets/svg/drawer/back-icon.svg",color: Colors.black,width: 20,height: 20,)
               ),
             )
           ],
@@ -763,7 +659,6 @@ class ReportsPageState extends State<ReportsPage> with TickerProviderStateMixin{
     );
   }
 }
-
 
 class AccountsPage extends StatefulWidget {
 
@@ -773,7 +668,6 @@ class AccountsPage extends StatefulWidget {
   @override
   AccountsPageState createState() => AccountsPageState();
 }
-
 class AccountsPageState extends State<AccountsPage> with TickerProviderStateMixin{
   @override
   Widget build(BuildContext context) {
@@ -782,7 +676,12 @@ class AccountsPageState extends State<AccountsPage> with TickerProviderStateMixi
       body: Container(
         height: SizeConfig.screenHeight,
         width: SizeConfig.screenWidth,
-        color: AppTheme.bgColor,
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage("assets/svg/drawer/sidemenuBg.jpg"),
+                fit: BoxFit.cover
+            )
+        ),
         child:  Column(
           children: [
 
@@ -806,11 +705,11 @@ class AccountsPageState extends State<AccountsPage> with TickerProviderStateMixi
                     child:SvgPicture.asset("assets/svg/drawer/accounts.svg",width: 100,height: 100,),
                   ),
 
-
+                  SizedBox(height: 20,),
                   DrawerContent(
                     delay: 1,
                     height: 50,
-                    image: "assets/drawerImages/dashboard.png",
+                    image: "assets/svg/drawer/invoice.svg",
                     title: 'Invoice',
                     tag: 'Invoice',
                     titleColor: AppTheme.yellowColor,
@@ -826,7 +725,7 @@ class AccountsPageState extends State<AccountsPage> with TickerProviderStateMixi
                   DrawerContent(
                     delay: 1.5,
                     height: 50,
-                    image: "assets/drawerImages/dashboard.png",
+                    image: "assets/svg/drawer/payment.svg",
                     title: 'Payment',
                     tag: 'Payment',
                     titleColor: AppTheme.yellowColor,
@@ -855,14 +754,14 @@ class AccountsPageState extends State<AccountsPage> with TickerProviderStateMixi
                 Navigator.pop(context);
               },
               child: Container(
-                height: 80,
-                width: 80,
-                padding: EdgeInsets.only(bottom: 35),
-                decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: AppTheme.yellowColor
-                ),
-                child: Icon(Icons.arrow_back,color: AppTheme.bgColor,),
+                  height: 80,
+                  width: 80,
+                  padding: EdgeInsets.only(bottom: 45,top: 10),
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: AppTheme.yellowColor
+                  ),
+                  child:SvgPicture.asset("assets/svg/drawer/back-icon.svg",color: Colors.black,width: 20,height: 20,)
               ),
             )
           ],
@@ -873,6 +772,557 @@ class AccountsPageState extends State<AccountsPage> with TickerProviderStateMixi
     );
   }
 }
+
+class ReportsPage extends StatefulWidget {
+
+  VoidCallback voidCallback;
+  ReportsPage({this.voidCallback});
+
+  @override
+  ReportsPageState createState() => ReportsPageState();
+}
+class ReportsPageState extends State<ReportsPage> with TickerProviderStateMixin{
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+
+      body: Container(
+        height: SizeConfig.screenHeight,
+        width: SizeConfig.screenWidth,
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage("assets/svg/drawer/sidemenuBg.jpg"),
+                fit: BoxFit.cover
+            )
+        ),
+        child:  Column(
+          children: [
+
+
+
+            Container(
+              height: SizeConfig.screenHeight-45,
+              width: SizeConfig.screenWidth,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: IconButton(icon: Icon(Icons.clear_outlined,size: 25,color: AppTheme.yellowColor,),
+                          onPressed: (){
+                            Navigator.pop(context);
+                          }),
+                    ),
+
+                    Hero(
+                      transitionOnUserGestures: true,
+                      tag: "Reports",
+                      child:SvgPicture.asset("assets/svg/drawer/reports.svg",width: 100,height: 100,),
+                    ),
+
+                    SizedBox(height: 20,),
+
+                    DrawerContent(
+                      delay: 0.1,
+                      height: 50,
+                      image: "assets/svg/drawer/sales-form.svg",
+                      title: 'Sales Report',
+                      tag: 'SalesReport',
+                      titleColor: AppTheme.yellowColor,
+                      callback: (){
+                        Navigator.pop(context);
+                        widget.voidCallback();
+
+                        Provider.of<DrawerNotifier>(context,listen: false).changeMenu(16);
+
+                        Provider.of<ReportsNotifier>(context,listen: false).ReportsDropDownValues(context,"SaleReport");
+                        Provider.of<ReportsNotifier>(context,listen: false).ReportsDbHit(context,"SaleReport");
+                        //Provider.of<QuarryNotifier>(context,listen: false).GetplantDetailDbhit(context,null);
+                      },
+                    ),
+
+                    DrawerContent(
+                      delay:1,
+                      height: 50,
+                      image: "assets/svg/drawer/purchase.svg",
+                      title: 'Purchase Report',
+                      tag: 'PurchaseReport',
+                      titleColor: AppTheme.yellowColor,
+                      callback: (){
+                        Navigator.pop(context);
+                        widget.voidCallback();
+
+                        Provider.of<DrawerNotifier>(context,listen: false).changeMenu(16);
+
+                        Provider.of<ReportsNotifier>(context,listen: false).ReportsDropDownValues(context,"PurchaseReport");
+                        Provider.of<ReportsNotifier>(context,listen: false).ReportsDbHit(context,"PurchaseReport");
+
+                      },
+                    ),
+
+                    DrawerContent(
+                      delay: 1.5,
+                      height: 50,
+                      image: "assets/svg/drawer/settings/customer.svg",
+                      title: 'Customer Sale Report',
+                      tag: 'CustomerSalesReport',
+                      titleColor: AppTheme.yellowColor,
+                      callback: (){
+                        Navigator.pop(context);
+                        widget.voidCallback();
+
+                        Provider.of<DrawerNotifier>(context,listen: false).changeMenu(16);
+
+                        Provider.of<ReportsNotifier>(context,listen: false).ReportsDropDownValues(context,"CustomerSaleReport");
+                        Provider.of<ReportsNotifier>(context,listen: false).ReportsDbHit(context,"CustomerSaleReport");
+
+                      },
+                    ),
+                    DrawerContent(
+                      delay: 1.5,
+                      height: 50,
+                      image: "assets/svg/drawer/settings/supplier.svg",
+                      title: 'Supplier Purchase Report',
+                      tag: 'SupplierPurchaseReport',
+                      titleColor: AppTheme.yellowColor,
+                      callback: (){
+                        Navigator.pop(context);
+                        widget.voidCallback();
+
+                        Provider.of<DrawerNotifier>(context,listen: false).changeMenu(16);
+
+                        Provider.of<ReportsNotifier>(context,listen: false).ReportsDropDownValues(context,"SupplierPurchaseReport");
+                        Provider.of<ReportsNotifier>(context,listen: false).ReportsDbHit(context,"SupplierPurchaseReport");
+
+                      },
+                    ),
+                    DrawerContent(
+                      delay: 2,
+                      height: 50,
+                      image: "assets/svg/drawer/production.svg",
+                      title: 'Production Report',
+                      tag: 'ProductionReport',
+                      titleColor: AppTheme.yellowColor,
+                      callback: (){
+                        Navigator.pop(context);
+                        widget.voidCallback();
+
+                        Provider.of<DrawerNotifier>(context,listen: false).changeMenu(16);
+
+                        Provider.of<ReportsNotifier>(context,listen: false).ReportsDropDownValues(context,"ProductionReport");
+                        Provider.of<ReportsNotifier>(context,listen: false).ReportsDbHit(context,"ProductionReport");
+
+                      },
+                    ),
+                    DrawerContent(
+                      delay: 2,
+                      height: 50,
+                      image: "assets/svg/drawer/invoice.svg",
+                      title: 'Invoice Report',
+                      tag: 'InvoiceReport',
+                      titleColor: AppTheme.yellowColor,
+                      callback: (){
+                        Navigator.pop(context);
+                        widget.voidCallback();
+
+                           Provider.of<DrawerNotifier>(context,listen: false).changeMenu(16);
+
+                          Provider.of<ReportsNotifier>(context,listen: false).ReportsDropDownValues(context,"InvoiceReport");
+                          Provider.of<ReportsNotifier>(context,listen: false).ReportsDbHit(context,"InvoiceReport");
+
+                      },
+                    ),
+                    DrawerContent(
+                      delay: 2,
+                      height: 50,
+                      image: "assets/svg/drawer/reports/receivablePayment.svg",
+                      title: 'Receivable Payment Report',
+                      tag: 'ReceivablePaymentReport',
+                      titleColor: AppTheme.yellowColor,
+                      callback: (){
+                        Navigator.pop(context);
+                        widget.voidCallback();
+
+                        ////  Provider.of<DrawerNotifier>(context,listen: false).changeMenu(16);
+
+                        ///  Provider.of<ReportsNotifier>(context,listen: false).ReportsDropDownValues(context,"CustomerSaleReport");
+                        ///  Provider.of<ReportsNotifier>(context,listen: false).ReportsDbHit(context,"CustomerSaleReport");
+
+                      },
+                    ),
+                    DrawerContent(
+                      delay: 2,
+                      height: 50,
+                      image: "assets/svg/drawer/reports/payablePayment.svg",
+                      title: 'Payable Payment Report',
+                      tag: 'PayablePaymentReport',
+                      titleColor: AppTheme.yellowColor,
+                      callback: (){
+                        Navigator.pop(context);
+                        widget.voidCallback();
+
+                        ////  Provider.of<DrawerNotifier>(context,listen: false).changeMenu(16);
+
+                        ///  Provider.of<ReportsNotifier>(context,listen: false).ReportsDropDownValues(context,"CustomerSaleReport");
+                        ///  Provider.of<ReportsNotifier>(context,listen: false).ReportsDbHit(context,"CustomerSaleReport");
+
+                      },
+                    ),
+                    DrawerContent(
+                      delay: 2,
+                      height: 50,
+                      image: "assets/svg/drawer/employee/employeeDetail.svg",
+                      title: 'Employee Report',
+                      tag: 'EmployeeReport',
+                      titleColor: AppTheme.yellowColor,
+                      callback: (){
+                        Navigator.pop(context);
+                        widget.voidCallback();
+
+                        ////  Provider.of<DrawerNotifier>(context,listen: false).changeMenu(16);
+
+                        ///  Provider.of<ReportsNotifier>(context,listen: false).ReportsDropDownValues(context,"CustomerSaleReport");
+                        ///  Provider.of<ReportsNotifier>(context,listen: false).ReportsDbHit(context,"CustomerSaleReport");
+
+                      },
+                    ),
+                    DrawerContent(
+                      delay: 2,
+                      height: 50,
+                      image: "assets/svg/drawer/employee/employeeAttendance.svg",
+                      title: 'Attendance Report',
+                      tag: 'AttendanceReport',
+                      titleColor: AppTheme.yellowColor,
+                      callback: (){
+                        Navigator.pop(context);
+                        widget.voidCallback();
+
+                        ////  Provider.of<DrawerNotifier>(context,listen: false).changeMenu(16);
+
+                        ///  Provider.of<ReportsNotifier>(context,listen: false).ReportsDropDownValues(context,"CustomerSaleReport");
+                        ///  Provider.of<ReportsNotifier>(context,listen: false).ReportsDbHit(context,"CustomerSaleReport");
+
+                      },
+                    ),
+                    DrawerContent(
+                      delay: 2,
+                      height: 50,
+                      image: "assets/svg/drawer/reports/dieselIn.svg",
+                      title: 'Diesel In Report',
+                      tag: 'DieselInReport',
+                      titleColor: AppTheme.yellowColor,
+                      callback: (){
+                        Navigator.pop(context);
+                        widget.voidCallback();
+
+                        ////  Provider.of<DrawerNotifier>(context,listen: false).changeMenu(16);
+
+                        ///  Provider.of<ReportsNotifier>(context,listen: false).ReportsDropDownValues(context,"CustomerSaleReport");
+                        ///  Provider.of<ReportsNotifier>(context,listen: false).ReportsDbHit(context,"CustomerSaleReport");
+
+                      },
+                    ),
+                    DrawerContent(
+                      delay: 2,
+                      height: 50,
+                      image: "assets/svg/drawer/reports/dieselOut.svg",
+                      title: 'Diesel Out Report',
+                      tag: 'DieselOutReport',
+                      titleColor: AppTheme.yellowColor,
+                      callback: (){
+                        Navigator.pop(context);
+                        widget.voidCallback();
+
+                        ////  Provider.of<DrawerNotifier>(context,listen: false).changeMenu(16);
+
+                        ///  Provider.of<ReportsNotifier>(context,listen: false).ReportsDropDownValues(context,"CustomerSaleReport");
+                        ///  Provider.of<ReportsNotifier>(context,listen: false).ReportsDbHit(context,"CustomerSaleReport");
+
+                      },
+                    ),
+                    DrawerContent(
+                      delay: 2,
+                      height: 50,
+                      image: "assets/svg/drawer/reports/vehicleMonitoring.svg",
+                      title: 'Vehicle Monitoring Report',
+                      tag: 'VehicleMonitoringReport',
+                      titleColor: AppTheme.yellowColor,
+                      callback: (){
+                        Navigator.pop(context);
+                        widget.voidCallback();
+
+                        ////  Provider.of<DrawerNotifier>(context,listen: false).changeMenu(16);
+
+                        ///  Provider.of<ReportsNotifier>(context,listen: false).ReportsDropDownValues(context,"CustomerSaleReport");
+                        ///  Provider.of<ReportsNotifier>(context,listen: false).ReportsDbHit(context,"CustomerSaleReport");
+
+                      },
+                    ),
+                    DrawerContent(
+                      delay: 2,
+                      height: 50,
+                      image: "assets/svg/drawer/machineManagement.svg",
+                      title: 'Machine Maintenance Report',
+                      tag: 'MachineMaintenanceReport',
+                      titleColor: AppTheme.yellowColor,
+                      callback: (){
+                        Navigator.pop(context);
+                        widget.voidCallback();
+
+                        ////  Provider.of<DrawerNotifier>(context,listen: false).changeMenu(16);
+
+                        ///  Provider.of<ReportsNotifier>(context,listen: false).ReportsDropDownValues(context,"CustomerSaleReport");
+                        ///  Provider.of<ReportsNotifier>(context,listen: false).ReportsDbHit(context,"CustomerSaleReport");
+
+                      },
+                    ),
+                    DrawerContent(
+                      delay: 2,
+                      height: 50,
+                      image: "assets/svg/drawer/reports/saleAudit.svg",
+                      title: 'Sales Audit Report',
+                      tag: 'SalesAuditReport',
+                      titleColor: AppTheme.yellowColor,
+                      callback: (){
+                        Navigator.pop(context);
+                        widget.voidCallback();
+
+                        ////  Provider.of<DrawerNotifier>(context,listen: false).changeMenu(16);
+
+                        ///  Provider.of<ReportsNotifier>(context,listen: false).ReportsDropDownValues(context,"CustomerSaleReport");
+                        ///  Provider.of<ReportsNotifier>(context,listen: false).ReportsDbHit(context,"CustomerSaleReport");
+
+                      },
+                    ),
+                    DrawerContent(
+                      delay: 2,
+                      height: 50,
+                      image: "assets/svg/drawer/reports/purchaseAudit.svg",
+                      title: 'Purchase Audit Report',
+                      tag: 'PurchaseAuditReport',
+                      titleColor: AppTheme.yellowColor,
+                      callback: (){
+                        Navigator.pop(context);
+                        widget.voidCallback();
+
+                        ////  Provider.of<DrawerNotifier>(context,listen: false).changeMenu(16);
+
+                        ///  Provider.of<ReportsNotifier>(context,listen: false).ReportsDropDownValues(context,"CustomerSaleReport");
+                        ///  Provider.of<ReportsNotifier>(context,listen: false).ReportsDbHit(context,"CustomerSaleReport");
+
+                      },
+                    ),
+
+
+                  ],
+                ),
+              ),
+            ),
+
+
+            GestureDetector(
+              onTap: (){
+                Navigator.pop(context);
+              },
+              child: Container(
+                height: 80,
+                width: 80,
+               padding: EdgeInsets.only(bottom: 45,top: 10),
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: AppTheme.yellowColor
+                ),
+                child:SvgPicture.asset("assets/svg/drawer/back-icon.svg",color: Colors.black,width: 20,height: 20,)
+              ),
+            )
+          ],
+        ),
+      ),
+
+
+    );
+  }
+}
+
+class SettingsPage extends StatefulWidget {
+
+  VoidCallback voidCallback;
+  SettingsPage({this.voidCallback});
+
+  @override
+  SettingsPageState createState() => SettingsPageState();
+}
+class SettingsPageState extends State<SettingsPage> with TickerProviderStateMixin{
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+
+      body: Container(
+        height: SizeConfig.screenHeight,
+        width: SizeConfig.screenWidth,
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage("assets/svg/drawer/sidemenuBg.jpg"),
+                fit: BoxFit.cover
+            )
+        ),
+        alignment: Alignment.center,
+        child:  Column(
+          children: [
+
+            Container(
+              height: SizeConfig.screenHeight-45,
+              width: SizeConfig.screenWidth,
+
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: IconButton(icon: Icon(Icons.clear_outlined,size: 25,color: AppTheme.yellowColor,),
+                        onPressed: (){
+                          Navigator.pop(context);
+                        }),
+                  ),
+
+                  Hero(
+                    transitionOnUserGestures: true,
+                    tag: "Settings",
+                    child:SvgPicture.asset("assets/svg/drawer/settings-icon.svg",width: 100,height: 100,),
+                  ),
+                  SizedBox(height: 20,),
+                  DrawerContent(
+                    delay: 0.1,
+                    height: 50,
+                    image: "assets/svg/drawer/settings/company.svg",
+                    title: 'Company Detail',
+                    tag: 'Company',
+                    titleColor: AppTheme.yellowColor,
+                    callback: (){
+                      Navigator.pop(context);
+                      widget.voidCallback();
+
+                      Provider.of<DrawerNotifier>(context,listen: false).changeMenu(1);
+                      Provider.of<QuarryNotifier>(context,listen: false).GetQuarryDetailDbhit(context);
+                      Provider.of<QuarryNotifier>(context,listen: false).GetplantDetailDbhit(context,null);
+                    },
+                  ),
+
+
+                  DrawerContent(
+                    delay: 1.5,
+                    height: 50,
+                    image: "assets/svg/drawer/settings/customer.svg",
+                    title: 'Customer Detail',
+                    tag: 'CustomeDetail',
+                    titleColor: AppTheme.yellowColor,
+                    callback: (){
+                      Navigator.pop(context);
+                      widget.voidCallback();
+                      Provider.of<DrawerNotifier>(context,listen: false).changeMenu(5);
+
+                      Provider.of<CustomerNotifier>(context,listen: false).GetCustomerDetailDbhit(context,null);
+
+                    },
+                  ),
+
+                  DrawerContent(
+                    delay: 2,
+                    height: 50,
+                    image: "assets/svg/drawer/settings/material.svg",
+                    title: 'Material Detail',
+                    tag: 'Material',
+                    titleColor: AppTheme.yellowColor,
+                    callback: (){
+                      Navigator.pop(context);
+                      widget.voidCallback();
+                      Provider.of<DrawerNotifier>(context,listen: false).changeMenu(2);
+
+                      Provider.of<MaterialNotifier>(context,listen: false).GetMaterialDbHit(context,null);
+                    },
+                  ),
+                  DrawerContent(
+                    delay: 2.5,
+                    height: 50,
+                    image: "assets/svg/drawer/machineManagement.svg",
+                    title: 'Machine Detail',
+                    tag: 'Machine',
+                    titleColor: AppTheme.yellowColor,
+                    callback: (){
+                      Navigator.pop(context);
+                      widget.voidCallback();
+                      Provider.of<DrawerNotifier>(context,listen: false).changeMenu(6);
+
+                      Provider.of<MachineNotifier>(context,listen: false).GetMachineDbHit(context,null);
+
+                    },
+                  ),
+                  DrawerContent(
+                    delay: 3,
+                    height: 50,
+                    image: "assets/svg/drawer/settings/vehicle.svg",
+                    title: 'Vehicle Detail',
+                    tag: 'Vehicle',
+                    titleColor: AppTheme.yellowColor,
+                    callback: (){
+                      Navigator.pop(context);
+                      widget.voidCallback();
+                      Provider.of<DrawerNotifier>(context,listen: false).changeMenu(7);
+
+                      Provider.of<VehicleNotifier>(context, listen: false).GetVehicleDbHit(context,null);
+
+                    },
+                  ),
+                  DrawerContent(
+                    delay: 3.5,
+                    height: 50,
+                    image: "assets/svg/drawer/settings/supplier.svg",
+                    title: 'Supplier Detail',
+                    tag: 'Supplier',
+                    titleColor: AppTheme.yellowColor,
+                    callback: (){
+                      Navigator.pop(context);
+                      widget.voidCallback();
+                      Provider.of<DrawerNotifier>(context,listen: false).changeMenu(8);
+
+                      Provider.of<SupplierNotifier>(context, listen: false).GetSupplierDbHit(context,null,this);
+                    },
+                  ),
+                ],
+              ),
+            ),
+
+
+
+
+            GestureDetector(
+              onTap: (){
+                Navigator.pop(context);
+              },
+              child: Container(
+                  height: 80,
+                  width: 80,
+                  padding: EdgeInsets.only(bottom: 45,top: 10),
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: AppTheme.yellowColor
+                  ),
+                  child:SvgPicture.asset("assets/svg/drawer/back-icon.svg",color: Colors.black,width: 20,height: 20,)
+              ),
+            )
+          ],
+        ),
+      ),
+
+
+    );
+  }
+}
+
+
+
+
+
 
 
 

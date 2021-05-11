@@ -151,14 +151,12 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
       body: Container(
       height: _height,
       width: _width,
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage("assets/images/login-bg.jpg"),
-          fit: BoxFit.fill
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage("assets/svg/drawer/sidemenuBg.jpg"),
+                fit: BoxFit.cover
+            )
         ),
-
-
-      ),
 
       child: Stack(
 
