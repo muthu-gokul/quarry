@@ -90,8 +90,13 @@ class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
     GridStyleModel(columnName: "Diesel Rate"),
     GridStyleModel(columnName: "Amount"),
     GridStyleModel(columnName: "Date"),
-
-
+  ];
+  List<GridStyleModel> gridDataRowListDieselIssue=[
+    GridStyleModel(columnName: "Date"),
+    GridStyleModel(columnName: "Machine Name"),
+    GridStyleModel(columnName: "Fuel Reading"),
+    GridStyleModel(columnName: "Issued By"),
+    GridStyleModel(columnName: "Diesel Quantity"),
   ];
 
   @override
@@ -185,12 +190,14 @@ class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
                                               crossAxisAlignment: CrossAxisAlignment.center,
                                               children: [
                                                 Container(
+                                                    padding: EdgeInsets.only(left: 5,right: 5),
                                                     height: 15,
                                                     width: SizeConfig.screenWidth*0.35,
                                                     child: FittedBox(child: Text("$i",style: TextStyle(fontFamily: 'RR',fontSize: 14,color: Colors.white),))),
                                                 SizedBox(height: 5,),
                                                 Container(
                                                   height: 25,
+                                                  padding: EdgeInsets.only(left: 5,right: 5),
                                                   width: SizeConfig.screenWidth*0.35,
                                                   child: FittedBox(
 
@@ -234,254 +241,6 @@ class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
                           },
                         ),
 
-
-
-                       /* Container(
-                            height: SizeConfig.screenHeight-140,
-                            width: SizeConfig.screenWidth,
-                            margin: EdgeInsets.only(top: 140),
-                            clipBehavior: Clip.antiAlias,
-                            decoration: BoxDecoration(
-                                color:AppTheme.gridbodyBgColor,
-                                borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10))
-                            ),
-                            child: Stack(
-                              children: [
-
-                                //Scrollable
-                                Positioned(
-                                  left:149,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        height: 50,
-                                        width: SizeConfig.screenWidth-149,
-                                        color: showShadow? AppTheme.bgColor.withOpacity(0.8):AppTheme.bgColor,
-                                        child: SingleChildScrollView(
-                                          controller: header,
-                                          scrollDirection: Axis.horizontal,
-                                          child: Row(
-                                              children: dn.dieselPurchaseGridCol.asMap().
-                                              map((i, value) => MapEntry(i, i==0?Container():
-                                              Container(
-                                                  alignment: Alignment.center,
-                                                  //  padding: EdgeInsets.only(left: 20,right: 20),
-                                                  width: 150,
-                                                  child: Text(value,style: AppTheme.TSWhite166,)
-                                              )
-                                              )).values.toList()
-                                          ),
-                                        ),
-
-                                      ),
-                                      Container(
-                                        height: SizeConfig.screenHeight-260,
-                                        width: SizeConfig.screenWidth-149,
-                                        alignment: Alignment.topCenter,
-                                        color: AppTheme.gridbodyBgColor,
-                                        child: SingleChildScrollView(
-                                          controller: body,
-                                          scrollDirection: Axis.horizontal,
-                                          child: Container(
-                                            height: SizeConfig.screenHeight-260,
-                                            alignment: Alignment.topCenter,
-                                            color:AppTheme.gridbodyBgColor,
-                                            child: SingleChildScrollView(
-                                              controller: verticalRight,
-                                              scrollDirection: Axis.vertical,
-                                              child: Column(
-                                                  children:dn.dieselPurchaseGridList.asMap().
-                                                  map((i, value) => MapEntry(
-                                                      i,InkWell(
-                                                    onTap: (){
-                                                      setState(() {
-
-                                                        if(selectedIndex==i){
-                                                          selectedIndex=-1;
-                                                          showEdit=false;
-                                                        } else{
-                                                          selectedIndex=i;
-                                                          showEdit=true;
-                                                        }
-
-
-                                                      });
-                                                    },
-                                                    child: Container(
-
-                                                      decoration: BoxDecoration(
-                                                        color: selectedIndex==i?AppTheme.yellowColor:AppTheme.gridbodyBgColor,
-                                                      ),
-                                                      height: 50,
-                                                      // padding: EdgeInsets.only(top: 20,bottom: 20),
-                                                      child: Row(
-                                                        children: [
-
-
-                                                          Container(
-                                                            alignment: Alignment.center,
-                                                            // padding: EdgeInsets.only(left: 20,right: 20),
-                                                            width: 150,
-                                                            child: Text("${value.purchaserName}",
-                                                              style:selectedIndex==i?AppTheme.bgColorTS:AppTheme.gridTextColorTS,
-                                                            ),
-
-                                                          ),
-                                                          Container(
-                                                            alignment: Alignment.center,
-                                                            width: 150,
-                                                            child: Text("${value.dieselBunkLocation}",
-                                                              style:selectedIndex==i?AppTheme.bgColorTS:AppTheme.gridTextColorTS,
-                                                            ),
-                                                          ),
-
-                                                          Container(
-                                                            width: 150,
-                                                            alignment: Alignment.center,
-                                                            child: Text("${value.dieselBunkContactNumber}",
-                                                              style:selectedIndex==i?AppTheme.bgColorTS:AppTheme.gridTextColorTS,
-                                                            ),
-                                                          ),
-                                                          Container(
-                                                            width: 150,
-                                                            alignment: Alignment.center,
-                                                            child: Text("${value.dieselQuantity}",
-                                                              style:selectedIndex==i?AppTheme.bgColorTS:AppTheme.gridTextColorTS,
-                                                            ),
-                                                          ),
-                                                          Container(
-                                                            width: 150,
-                                                            alignment: Alignment.center,
-                                                            child: Text("${value.dieselRate}",
-                                                              style:selectedIndex==i?AppTheme.bgColorTS:AppTheme.gridTextColorTS,
-                                                            ),
-                                                          ),
-                                                          Container(
-                                                            width: 150,
-                                                            alignment: Alignment.center,
-                                                            child: Text("${value.totalAmount}",
-                                                              style:selectedIndex==i?AppTheme.bgColorTS:AppTheme.gridTextColorTS,
-                                                            ),
-                                                          ),
-                                                          Container(
-                                                            width: 150,
-                                                            alignment: Alignment.center,
-                                                            child: Text("${DateFormat.yMMMd().format(value.billDate)}",
-                                                              style:selectedIndex==i?AppTheme.bgColorTS:AppTheme.gridTextColorTS,
-                                                            ),
-                                                          ),
-
-
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  )
-                                                  )
-                                                  ).values.toList()
-                                              ),
-                                            ),
-
-
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-
-
-                                //not Scrollable
-                                Positioned(
-                                  left: 0,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        height: 50,
-                                        width: 150,
-                                        color: AppTheme.bgColor,
-                                        alignment: Alignment.center,
-                                        child: Text("${dn.dieselPurchaseGridCol[0]}",style: AppTheme.TSWhite166,),
-
-                                      ),
-                                      Container(
-                                        height: SizeConfig.screenHeight-260,
-                                        alignment: Alignment.topCenter,
-                                        decoration: BoxDecoration(
-                                            color: AppTheme.gridbodyBgColor,
-                                            boxShadow: [
-                                              showShadow?  BoxShadow(
-                                                color: AppTheme.addNewTextFieldText.withOpacity(0.3),
-                                                spreadRadius: 0,
-                                                blurRadius: 15,
-                                                offset: Offset(10, -8), // changes position of shadow
-                                              ):BoxShadow(color: Colors.transparent)
-                                            ]
-                                        ),
-                                        child: Container(
-                                          height: SizeConfig.screenHeight-260,
-                                          alignment: Alignment.topCenter,
-
-                                          child: SingleChildScrollView(
-                                            controller: verticalLeft,
-                                            scrollDirection: Axis.vertical,
-                                            child: Column(
-                                                children: dn.dieselPurchaseGridList.asMap().
-                                                map((i, value) => MapEntry(
-                                                    i,InkWell(
-                                                  onTap: (){
-                                                    setState(() {
-
-                                                      if(selectedIndex==i){
-                                                        selectedIndex=-1;
-                                                        showEdit=false;
-                                                      } else{
-                                                        selectedIndex=i;
-                                                        showEdit=true;
-                                                      }
-
-
-                                                    });
-                                                  },
-                                                  child:  Container(
-                                                    alignment: Alignment.center,
-                                                    decoration: BoxDecoration(
-                                                      color: selectedIndex==i?AppTheme.yellowColor:AppTheme.gridbodyBgColor,
-
-                                                    ),
-                                                    height: 50,
-                                                    //  padding: EdgeInsets.only(left: 20,right: 20,bottom: 20,top: 20),
-                                                    width: 150,
-                                                    child: Text("${value.billNumber}",
-                                                      style:selectedIndex==i?AppTheme.bgColorTS:AppTheme.gridTextColorTS,
-                                                    ),
-                                                  ),
-                                                )
-                                                )
-                                                ).values.toList()
-
-
-                                            ),
-                                          ),
-
-
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-
-
-
-
-                              ],
-                            )
-
-
-
-
-                        ),*/
                       ],
                     ),
 
@@ -553,11 +312,13 @@ class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
                                               children: [
                                                 Container(
                                                     height: 15,
+                                                    padding: EdgeInsets.only(left: 5,right: 5),
                                                     width: SizeConfig.screenWidth*0.35,
                                                     child: FittedBox(child: Text("$i",style: TextStyle(fontFamily: 'RR',fontSize: 14,color: Colors.white),))),
                                                 SizedBox(height: 5,),
                                                 Container(
                                                   height: 25,
+                                                  padding: EdgeInsets.only(left: 5,right: 5),
                                                   width: SizeConfig.screenWidth*0.35,
                                                   child: FittedBox(
 
@@ -577,251 +338,31 @@ class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
                             )
                         ),
 
-                        Container(
-                            height: SizeConfig.screenHeight-140,
-                            width: SizeConfig.screenWidth,
-                            margin: EdgeInsets.only(top: 140),
-                            clipBehavior: Clip.antiAlias,
-                            decoration: BoxDecoration(
-                                color:AppTheme.gridbodyBgColor,
-                                borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10))
-                            ),
-                            child: Stack(
-                              children: [
+                        CustomDataTable2(
+                          topMargin: 140,
+                          gridBodyReduceHeight: 260,
+                          selectedIndex: selectedIndex,
 
-                                //Scrollable
-                                Positioned(
-                                  left:149,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        height: 50,
-                                        width: SizeConfig.screenWidth-149,
-                                        color: showShadow? AppTheme.bgColor.withOpacity(0.8):AppTheme.bgColor,
-                                        child: SingleChildScrollView(
-                                          controller: header,
-                                          scrollDirection: Axis.horizontal,
-                                          child: Row(
-                                              children: dn.dieselIssueGridCol.asMap().
-                                              map((i, value) => MapEntry(i, i==0?Container():
-                                              Container(
-                                                  alignment: Alignment.center,
-                                                  //  padding: EdgeInsets.only(left: 20,right: 20),
-                                                  width: 150,
-                                                  child: Text(value,style: AppTheme.TSWhite166,)
-                                              )
-                                              )).values.toList()
-                                          ),
-                                        ),
+                          gridData: dn.dieselIssueGridList,
+                          gridDataRowList: gridDataRowListDieselIssue,
+                          func: (index){
+                            if(selectedIndex==index){
+                              setState(() {
+                                selectedIndex=-1;
+                                showEdit=false;
+                              });
 
-                                      ),
-                                      Container(
-                                        height: SizeConfig.screenHeight-260,
-                                        width: SizeConfig.screenWidth-150,
-                                        alignment: Alignment.topCenter,
-                                        color: AppTheme.gridbodyBgColor,
-                                        child: SingleChildScrollView(
-                                          controller: body,
-                                          scrollDirection: Axis.horizontal,
-                                          child: Container(
-                                            height: SizeConfig.screenHeight-260,
-                                            alignment: Alignment.topCenter,
-                                            color:AppTheme.gridbodyBgColor,
-                                            child: SingleChildScrollView(
-                                              controller: verticalRight,
-                                              scrollDirection: Axis.vertical,
-                                              child: Column(
-                                                  children:dn.dieselIssueGridList.asMap().
-                                                  map((i, value) => MapEntry(
-                                                      i,InkWell(
-                                                    onTap: (){
-                                                      setState(() {
-
-                                                        if(selectedIndex==i){
-                                                          selectedIndex=-1;
-                                                          showEdit=false;
-                                                        } else{
-                                                          selectedIndex=i;
-                                                          showEdit=true;
-                                                        }
-
-
-                                                      });
-                                                    },
-                                                    child: Container(
-
-                                                      decoration: BoxDecoration(
-                                                        color: selectedIndex==i?AppTheme.yellowColor:AppTheme.gridbodyBgColor,
-                                                        /*    boxShadow:[
-                                                  selectedIndex==i? BoxShadow(
-                                                    color: AppTheme.yellowColor.withOpacity(0.4),
-                                                    spreadRadius: 1,
-                                                    blurRadius: 5,
-                                                    offset: Offset(1, 8), // changes position of shadow
-                                                  ):BoxShadow(
-                                                      color: Colors.white
-                                                  ),
-                                                ],*/
-                                                      ),
-                                                      height: 50,
-                                                      // padding: EdgeInsets.only(top: 20,bottom: 20),
-                                                      child: Row(
-                                                        children: [
-
-
-
-                                                          Container(
-                                                            alignment: Alignment.center,
-                                                            width: 150,
-                                                            child: Text("${value.machineName}",
-                                                              style:selectedIndex==i?AppTheme.bgColorTS:AppTheme.gridTextColorTS,
-                                                            ),
-                                                          ),
-
-                                                          Container(
-                                                            width: 150,
-                                                            alignment: Alignment.center,
-                                                            child: Text("${value.machineFuelReadingQuantity}",
-                                                              style:selectedIndex==i?AppTheme.bgColorTS:AppTheme.gridTextColorTS,
-                                                            ),
-                                                          ),
-                                                          Container(
-                                                            width: 150,
-                                                            alignment: Alignment.center,
-                                                            child: Text("${value.issuedName}",
-                                                              style:selectedIndex==i?AppTheme.bgColorTS:AppTheme.gridTextColorTS,
-                                                            ),
-                                                          ),
-                                                          Container(
-                                                            width: 150,
-                                                            alignment: Alignment.center,
-                                                            child: Text("${value.dieselIssuedQuantity}",
-                                                              style:selectedIndex==i?AppTheme.bgColorTS:AppTheme.gridTextColorTS,
-                                                            ),
-                                                          ),
-
-
-
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  )
-                                                  )
-                                                  ).values.toList()
-                                              ),
-                                            ),
-
-
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-
-
-                                //not Scrollable
-                                Positioned(
-                                  left: 0,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        height: 50,
-                                        width: 150,
-                                        color: AppTheme.bgColor,
-                                        alignment: Alignment.center,
-                                        child: Text("${dn.dieselIssueGridCol[0]}",style: AppTheme.TSWhite166,),
-
-                                      ),
-                                      Container(
-                                        height: SizeConfig.screenHeight-60,
-                                        alignment: Alignment.topCenter,
-                                        decoration: BoxDecoration(
-                                            color: AppTheme.gridbodyBgColor,
-                                            boxShadow: [
-                                              showShadow?  BoxShadow(
-                                                color: AppTheme.addNewTextFieldText.withOpacity(0.3),
-                                                spreadRadius: 0,
-                                                blurRadius: 15,
-                                                offset: Offset(10, -8), // changes position of shadow
-                                              ):BoxShadow(color: Colors.transparent)
-                                            ]
-                                        ),
-                                        child: Container(
-                                          height: SizeConfig.screenHeight-160,
-                                          alignment: Alignment.topCenter,
-
-                                          child: SingleChildScrollView(
-                                            controller: verticalLeft,
-                                            scrollDirection: Axis.vertical,
-                                            child: Column(
-                                                children: dn.dieselIssueGridList.asMap().
-                                                map((i, value) => MapEntry(
-                                                    i,InkWell(
-                                                  onTap: (){
-                                                    setState(() {
-
-                                                      if(selectedIndex==i){
-                                                        selectedIndex=-1;
-                                                        showEdit=false;
-                                                      } else{
-                                                        selectedIndex=i;
-                                                        showEdit=true;
-                                                      }
-
-
-                                                    });
-                                                  },
-                                                  child:  Container(
-                                                    alignment: Alignment.center,
-                                                    decoration: BoxDecoration(
-                                                      color: selectedIndex==i?AppTheme.yellowColor:AppTheme.gridbodyBgColor,
-
-                                                      boxShadow:[
-                                                        /*    selectedIndex==i? BoxShadow(
-                                                  color: AppTheme.yellowColor.withOpacity(0.4),
-                                                  spreadRadius: 2,
-                                                  blurRadius: 5,
-                                                  offset: Offset(1, 8), // changes position of shadow
-                                                ):BoxShadow(
-                                                    color: Colors.white
-                                                ),*/
-                                                      ],
-                                                    ),
-                                                    height: 50,
-                                                    //  padding: EdgeInsets.only(left: 20,right: 20,bottom: 20,top: 20),
-                                                    width: 150,
-                                                    child: Text("${DateFormat.yMMMd().format(value.issuedDate)}",
-                                                      style:selectedIndex==i?AppTheme.bgColorTS:AppTheme.gridTextColorTS,
-                                                    ),
-                                                  ),
-                                                )
-                                                )
-                                                ).values.toList()
-
-
-                                            ),
-                                          ),
-
-
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-
-
-
-
-                              ],
-                            )
-
-
-
-
+                            }
+                            else{
+                              setState(() {
+                                selectedIndex=index;
+                                showEdit=true;
+                              });
+                            }
+                          },
                         ),
+
+
 
                       ],
                     ),

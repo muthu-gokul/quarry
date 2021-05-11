@@ -125,6 +125,10 @@ class _CustomDataTable2State extends State<CustomDataTable2> {
                               alignment: value.alignment,
                               padding: value.edgeInsets,
                               width: value.width,
+                              constraints: BoxConstraints(
+                                  minWidth: 150,
+                                  maxWidth: 200
+                              ),
                               child: FittedBox(child: Text(value.columnName,style: AppTheme.TSWhite166,))
                           )
                           )).values.toList()
@@ -180,14 +184,16 @@ class _CustomDataTable2State extends State<CustomDataTable2> {
                                             height: 50,
                                             alignment: v.alignment,
                                             padding: v.edgeInsets,
+                                            constraints: BoxConstraints(
+                                              minWidth: 150,
+                                              maxWidth: 200
+                                            ),
                                             decoration: BoxDecoration(
 
                                             ),
 
-                                            child: FittedBox(
-                                              child: Text("${value.get(v.columnName).toString().isNotEmpty?value.get(v.columnName):" "}",
-                                                style:widget.selectedIndex==i?AppTheme.bgColorTS14:AppTheme.gridTextColor14,
-                                              ),
+                                            child: Text("${value.get(v.columnName).toString().isNotEmpty?value.get(v.columnName)??" ":" "}",
+                                              style:widget.selectedIndex==i?AppTheme.bgColorTS14:AppTheme.gridTextColor14,
                                             ),
                                           ),
                                         );
@@ -218,7 +224,7 @@ class _CustomDataTable2State extends State<CustomDataTable2> {
                 children: [
                   Container(
                     height: 50,
-                    width: widget.gridDataRowList[0].width,
+                    width: 150,
                     color: AppTheme.bgColor,
                     padding: widget.gridDataRowList[0].edgeInsets,
                     alignment: widget.gridDataRowList[0].alignment,
@@ -261,12 +267,15 @@ class _CustomDataTable2State extends State<CustomDataTable2> {
                                 decoration: BoxDecoration(
                                   border: AppTheme.gridBottomborder,
                                   color: widget.selectedIndex==i?AppTheme.yellowColor:AppTheme.gridbodyBgColor,
+
                                 ),
                                 height: 50,
-                                width: gridDataRowList[0].width,
+                                width: 150,
+                                constraints: BoxConstraints(
+                                  maxWidth: 150
+                                ),
                                 child: Container(
                                   decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(50),
                                     //color:value.invoiceType=='Receivable'? Colors.green:AppTheme.red,
                                   ),
                                   child: FittedBox(
