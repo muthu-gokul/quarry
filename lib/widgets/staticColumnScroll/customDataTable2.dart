@@ -3,9 +3,18 @@ import 'package:flutter/material.dart';
 import '../../styles/app_theme.dart';
 import '../../styles/size.dart';
 
-class CustomDataTable extends StatefulWidget {
-  List<String> gridCol=[];
-  List<String> gridDataRowList=[];
+class GridStyleModel{
+  String columnName;
+  double width;
+  Alignment alignment;
+  EdgeInsets edgeInsets;
+  GridStyleModel({this.columnName,this.width=150,this.alignment=Alignment.centerLeft,
+    this.edgeInsets=const EdgeInsets.only(left: 10)});
+}
+
+class CustomDataTable2 extends StatefulWidget {
+
+  List<GridStyleModel> gridDataRowList=[];
   List<dynamic> gridData=[];
 
   int selectedIndex;
@@ -14,12 +23,12 @@ class CustomDataTable extends StatefulWidget {
   double topMargin;//70 || 50
   double gridBodyReduceHeight;// 260  // 140
 
-  CustomDataTable({this.gridCol,this.gridDataRowList,this.gridData,this.selectedIndex,this.voidCallback,this.func,this.topMargin,this.gridBodyReduceHeight});
+  CustomDataTable2({this.gridDataRowList,this.gridData,this.selectedIndex,this.voidCallback,this.func,this.topMargin,this.gridBodyReduceHeight});
   @override
-  _CustomDataTableState createState() => _CustomDataTableState(gridCol: gridCol,gridDataRowList: gridDataRowList,voidCallback: voidCallback);
+  _CustomDataTable2State createState() => _CustomDataTable2State(gridDataRowList: gridDataRowList,voidCallback: voidCallback);
 }
 
-class _CustomDataTableState extends State<CustomDataTable> {
+class _CustomDataTable2State extends State<CustomDataTable2> {
 
 
   ScrollController header=new ScrollController();
@@ -28,12 +37,12 @@ class _CustomDataTableState extends State<CustomDataTable> {
   ScrollController verticalRight=new ScrollController();
 
   bool showShadow=false;
-  List<String> gridCol=[];
-  List<String> gridDataRowList=[];
+
+  List<GridStyleModel> gridDataRowList=[];
 
   VoidCallback voidCallback;
 
-  _CustomDataTableState({this.gridCol,this.gridDataRowList,this.voidCallback});
+  _CustomDataTable2State({this.gridDataRowList,this.voidCallback});
 
   @override
   void initState() {
@@ -75,7 +84,7 @@ class _CustomDataTableState extends State<CustomDataTable> {
     super.initState();
   }
 
-  double _width=150;
+
 
   @override
   Widget build(BuildContext context) {
@@ -110,13 +119,13 @@ class _CustomDataTableState extends State<CustomDataTable> {
                       controller: header,
                       scrollDirection: Axis.horizontal,
                       child: Row(
-                          children: gridCol.asMap().
+                          children: widget.gridDataRowList.asMap().
                           map((i, value) => MapEntry(i, i==0?Container():
                           Container(
-                              alignment: Alignment.centerLeft,
-                                padding: EdgeInsets.only(left: 10),
-                              width: 160,
-                              child: FittedBox(child: Text(value,style: AppTheme.TSWhite166,))
+                              alignment: value.alignment,
+                              padding: value.edgeInsets,
+                              width: value.width,
+                              child: FittedBox(child: Text(value.columnName,style: AppTheme.TSWhite166,))
                           )
                           )).values.toList()
                       ),
@@ -142,7 +151,7 @@ class _CustomDataTableState extends State<CustomDataTable> {
                               children:widget.gridData.asMap().
                               map((i, value) => MapEntry(
                                   i,InkWell(
-                             //   onTap: widget.voidCallback,
+                                //   onTap: widget.voidCallback,
                                 onTap: (){
                                   widget.func(i);
                                   //setState(() {});
@@ -154,37 +163,36 @@ class _CustomDataTableState extends State<CustomDataTable> {
                                     color: widget.selectedIndex==i?AppTheme.yellowColor:AppTheme.gridbodyBgColor,
                                   ),
                                   height: 50,
-                                   margin: EdgeInsets.only(bottom:i==widget.gridData.length-1?70: 0),
+                                  margin: EdgeInsets.only(bottom:i==widget.gridData.length-1?70: 0),
                                   child: Row(
-                                    children: gridDataRowList.asMap().map((j, v) {
+                                      children: gridDataRowList.asMap().map((j, v) {
 
 
-                                    /*  if(v.length>6){
-                                        setState(() {
-                                          _width=v.length*10.0;
-                                        });
-                                      }
-                                      print("_width$_width");*/
+                                          if((7.0*value.get(v.columnName).toString().length)>v.width){
+                                          setState(() {
+                                            v.width=7.0*value.get(v.columnName).toString().length;
+                                          });
+                                          }
 
-                                     return MapEntry(j,
-                                      j==0?Container():Container(
-                                        width: 160,
-                                        height: 50,
-                                        alignment: Alignment.centerLeft,
-                                         padding: EdgeInsets.only(left: 10),
-                                         decoration: BoxDecoration(
+                                        return MapEntry(j,
+                                          j==0?Container():Container(
+                                            width: v.width,
+                                            height: 50,
+                                            alignment: v.alignment,
+                                            padding: v.edgeInsets,
+                                            decoration: BoxDecoration(
 
-                                         ),
+                                            ),
 
-                                        child: FittedBox(
-                                          child: Text("${value.get(v).toString().isNotEmpty?value.get(v):" "}",
-                                            style:widget.selectedIndex==i?AppTheme.bgColorTS14:AppTheme.gridTextColor14,
+                                            child: FittedBox(
+                                              child: Text("${value.get(v.columnName).toString().isNotEmpty?value.get(v.columnName):" "}",
+                                                style:widget.selectedIndex==i?AppTheme.bgColorTS14:AppTheme.gridTextColor14,
+                                              ),
+                                            ),
                                           ),
-                                        ),
-                                      ),
-                                    );
-}
-                                    ).values.toList()
+                                        );
+                                      }
+                                      ).values.toList()
                                   ),
                                 ),
                               )
@@ -210,11 +218,11 @@ class _CustomDataTableState extends State<CustomDataTable> {
                 children: [
                   Container(
                     height: 50,
-                    width: 150,
+                    width: widget.gridDataRowList[0].width,
                     color: AppTheme.bgColor,
-                    padding: EdgeInsets.only(left: 10),
-                    alignment: Alignment.centerLeft,
-                    child: Text("${gridCol[0]}",style: AppTheme.TSWhite166,),
+                    padding: widget.gridDataRowList[0].edgeInsets,
+                    alignment: widget.gridDataRowList[0].alignment,
+                    child: Text("${widget.gridDataRowList[0].columnName}",style: AppTheme.TSWhite166,),
 
                   ),
                   Container(
@@ -247,24 +255,23 @@ class _CustomDataTableState extends State<CustomDataTable> {
                                 //setState(() {});
                               },
                               child:  Container(
-                                alignment: Alignment.centerLeft,
-                                padding: EdgeInsets.only(left: 10),
+                                alignment:gridDataRowList[0].alignment,
+                                padding: gridDataRowList[0].edgeInsets,
                                 margin: EdgeInsets.only(bottom:i==widget.gridData.length-1?70: 0),
                                 decoration: BoxDecoration(
                                   border: AppTheme.gridBottomborder,
                                   color: widget.selectedIndex==i?AppTheme.yellowColor:AppTheme.gridbodyBgColor,
                                 ),
                                 height: 50,
-                                width: 150,
+                                width: gridDataRowList[0].width,
                                 child: Container(
-                               //   padding: EdgeInsets.only(left: 10,right: 10,top: 3,bottom: 3),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(50),
                                     //color:value.invoiceType=='Receivable'? Colors.green:AppTheme.red,
                                   ),
                                   child: FittedBox(
                                     fit: BoxFit.contain,
-                                    child: Text("${value.get(gridDataRowList[0])}",
+                                    child: Text("${value.get(gridDataRowList[0].columnName)}",
                                       style:widget.selectedIndex==i?AppTheme.bgColorTS14:AppTheme.gridTextColor14,
                                     ),
                                   ),
@@ -286,13 +293,8 @@ class _CustomDataTableState extends State<CustomDataTable> {
             ),
 
 
-
-
           ],
         )
-
-
-
 
     );
   }

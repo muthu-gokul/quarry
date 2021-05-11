@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 class DieselPurchaseGridModel {
   DieselPurchaseGridModel({
     this.dieselPurchaseId,
@@ -33,7 +35,7 @@ class DieselPurchaseGridModel {
     dieselQuantity: json["DieselQuantity"],
     dieselRate: json["DieselRate"],
     totalAmount: json["TotalAmount"],
-    billDate: DateTime.parse(json["BillDate"]),
+    billDate:json["BillDate"]!=null? DateTime.parse(json["BillDate"]):null,
   );
 
   Map<String, dynamic> toJson() => {
@@ -48,4 +50,28 @@ class DieselPurchaseGridModel {
     "TotalAmount": totalAmount,
     "BillDate": billDate.toIso8601String(),
   };
+
+  Map<String, dynamic> toGridJson() => {
+    "DieselPurchaseId": dieselPurchaseId,
+    "Bill Number": billNumber,
+    "EmployeeId": employeeId,
+    "Purchaser Name": purchaserName,
+    "Location": dieselBunkLocation,
+    "Contact Number": dieselBunkContactNumber,
+    "Diesel Quantity": dieselQuantity,
+    "Diesel Rate": dieselRate,
+    "Amount": totalAmount,
+    "Date": billDate!=null?DateFormat.yMMMd().format(billDate):" ",
+  };
+
+  dynamic get(String propertyName) {
+
+    var _mapRep = toGridJson();
+
+    if (_mapRep.containsKey(propertyName)) {
+      return _mapRep[propertyName];
+    }
+    throw ArgumentError('property not found');
+  }
+
 }

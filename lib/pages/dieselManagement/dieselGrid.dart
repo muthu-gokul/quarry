@@ -12,6 +12,7 @@ import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/navigationBarIcon.dart';
+import 'package:quarry/widgets/staticColumnScroll/customDataTable2.dart';
 
 import 'dieselPurchaseAddNew.dart';
 
@@ -80,6 +81,19 @@ class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
     super.initState();
   }
 
+  List<GridStyleModel> gridDataRowList=[
+    GridStyleModel(columnName: "Bill Number"),
+    GridStyleModel(columnName: "Purchaser Name"),
+    GridStyleModel(columnName: "Location",width: 200),
+    GridStyleModel(columnName: "Contact Number"),
+    GridStyleModel(columnName: "Diesel Quantity"),
+    GridStyleModel(columnName: "Diesel Rate"),
+    GridStyleModel(columnName: "Amount"),
+    GridStyleModel(columnName: "Date"),
+
+
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -101,8 +115,12 @@ class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
                     });
                   },
                   children: [
+                    //Diesel Purchase
                     Stack(
                       children: [
+
+
+
                         Container(
                           height: 50,
                           width: SizeConfig.screenWidth,
@@ -192,8 +210,33 @@ class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
                             )
                         ),
 
+                        CustomDataTable2(
+                          topMargin: 140,
+                          gridBodyReduceHeight: 260,
+                          selectedIndex: selectedIndex,
 
-                        Container(
+                          gridData: dn.dieselPurchaseGridList,
+                          gridDataRowList: gridDataRowList,
+                          func: (index){
+                            if(selectedIndex==index){
+                              setState(() {
+                                selectedIndex=-1;
+                                showEdit=false;
+                              });
+
+                            }
+                            else{
+                              setState(() {
+                                selectedIndex=index;
+                                showEdit=true;
+                              });
+                            }
+                          },
+                        ),
+
+
+
+                       /* Container(
                             height: SizeConfig.screenHeight-140,
                             width: SizeConfig.screenWidth,
                             margin: EdgeInsets.only(top: 140),
@@ -438,10 +481,11 @@ class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
 
 
 
-                        ),
+                        ),*/
                       ],
                     ),
 
+                    //Diesel Management
                     Stack(
                       children: [
                         Container(
