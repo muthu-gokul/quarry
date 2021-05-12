@@ -13,8 +13,16 @@ class EmployeePaymentTypeModel {
 
   );
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toGridJson() => {
     "EmployeeSalaryModeId": employeePaymentTypeId,
     "EmployeeSalaryMode": employeePaymentTypeName,
   };
+  dynamic get(String propertyName) {
+    var _mapRep = toGridJson();
+    if (_mapRep.containsKey(propertyName)) {
+      return _mapRep[propertyName];
+    }
+    throw ArgumentError('property not found');
+  }
+
 }

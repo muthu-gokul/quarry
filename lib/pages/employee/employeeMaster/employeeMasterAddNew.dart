@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/pages/sale/salesDetail.dart';
+import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/notifier/employeeNotifier.dart';
@@ -32,6 +33,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
   bool isShiftOpen=false;
   bool isBloodGroupOpen=false;
   bool isMaritalOpen=false;
+  bool isPaymentTypeOpen=false;
 
 
   Animation contactArrowAnimation;
@@ -42,15 +44,32 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
   AnimationController otherDetailsArrowAnimationController;
   bool otherDetailsOpen=false;
 
+  Animation BankDetailsArrowAnimation;
+  AnimationController BankDetailsArrowAnimationController;
+  bool BankDetailsOpen=false;
+
+
+  //validations
+  bool firstName=false;
+  bool designation=false;
+  bool employeeType=false;
+  bool salary=false;
+  bool phoneNo=false;
+  bool address=false;
+  bool aadhaar=false;
 
   @override
   void initState() {
     scrollController = new ScrollController();
     listViewController = new ScrollController();
+
     contactArrowAnimationController = AnimationController(vsync: this, duration: Duration(milliseconds: 300));
     otherDetailsArrowAnimationController = AnimationController(vsync: this, duration: Duration(milliseconds: 300));
+    BankDetailsArrowAnimationController = AnimationController(vsync: this, duration: Duration(milliseconds: 300));
+
     contactArrowAnimation = Tween(begin: 0.0, end:-3.14).animate(contactArrowAnimationController);
     otherDetailsArrowAnimation = Tween(begin: 0.0, end:-3.14).animate(otherDetailsArrowAnimationController);
+    BankDetailsArrowAnimation = Tween(begin: 0.0, end:-3.14).animate(BankDetailsArrowAnimationController);
     setState(() {
 
     });
@@ -756,7 +775,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                             });
                                             if(otherDetailsOpen){
                                               Timer(Duration(milliseconds: 300), (){
-                                                listViewController.animateTo(listViewController.offset+ 350, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+                                                listViewController.animateTo(listViewController.offset+ 450, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
 
                                               });
                                             }
@@ -805,7 +824,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                           duration: Duration(milliseconds: 300),
                                           curve: Curves.easeIn,
                                           width: SizeConfig.screenWidth,
-                                          height: otherDetailsOpen? (320+80.0):0,
+                                          height: otherDetailsOpen? (450+80.0):0,
                                           //  margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20),
                                           child: Column(
                                             children: [
@@ -880,11 +899,9 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                               ),
 
                                               AddNewLabelTextField(
-                                                labelText: 'Phone Number',
-                                                textInputType: TextInputType.number,
-                                                textLength: 10,
-                                                textEditingController: en.employeePhoneNumber,
-                                                scrollPadding: 500,
+                                                labelText: 'Referred By',
+                                                textEditingController: en.employeeReferredBy,
+                                                scrollPadding: 600,
                                                 ontap: () {
                                                   setState(() {
                                                     _keyboardVisible=true;
@@ -902,30 +919,8 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                                 },
                                               ),
                                               AddNewLabelTextField(
-                                                labelText: 'Email Id',
-                                                textInputType: TextInputType.emailAddress,
-                                                textEditingController: en.employeeEmail,
-                                                scrollPadding: 500,
-                                                ontap: () {
-                                                  setState(() {
-                                                    _keyboardVisible=true;
-                                                  });
-                                                  scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
-                                                },
-
-                                                onEditComplete: () {
-                                                  node.unfocus();
-                                                  Timer(Duration(milliseconds: 100), (){
-                                                    setState(() {
-                                                      _keyboardVisible=false;
-                                                    });
-                                                  });
-                                                },
-                                              ),
-                                              AddNewLabelTextField(
-                                                labelText: 'Address',
-                                               maxlines: null,
-                                                textEditingController: en.employeeAddress,
+                                                labelText: 'Remarks',
+                                                textEditingController: en.employeeRemarks,
                                                 scrollPadding: 700,
                                                 ontap: () {
                                                   setState(() {
@@ -944,10 +939,31 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                                 },
                                               ),
                                               AddNewLabelTextField(
-                                                labelText: 'City',
+                                                labelText: 'Aadhaar Number',
+                                                textLength: 12,
+                                                textInputType: TextInputType.number,
+                                                textEditingController: en.employeeAadhaarNo,
+                                                scrollPadding: 700,
+                                                ontap: () {
+                                                  setState(() {
+                                                    _keyboardVisible=true;
+                                                  });
+                                                  scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                                },
 
+                                                onEditComplete: () {
+                                                  node.unfocus();
+                                                  Timer(Duration(milliseconds: 100), (){
+                                                    setState(() {
+                                                      _keyboardVisible=false;
+                                                    });
+                                                  });
+                                                },
+                                              ),
+                                              AddNewLabelTextField(
+                                                labelText: 'Pan No',
+                                                textEditingController: en.employeePanNo,
                                                 textLength: 10,
-                                                textEditingController: en.employeeCity,
                                                 scrollPadding: 750,
                                                 ontap: () {
                                                   setState(() {
@@ -965,53 +981,198 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                                   });
                                                 },
                                               ),
-                                              AddNewLabelTextField(
-                                                labelText: 'State',
-                                                textInputType: TextInputType.emailAddress,
-                                                textEditingController: en.employeeState,
-                                                scrollPadding: 800,
-                                                ontap: () {
-                                                  setState(() {
-                                                    _keyboardVisible=true;
-                                                  });
-                                                  scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
-                                                },
+                                              GestureDetector(
 
-                                                onEditComplete: () {
+                                                onTap: () {
                                                   node.unfocus();
-                                                  Timer(Duration(milliseconds: 100), (){
-                                                    setState(() {
-                                                      _keyboardVisible=false;
-                                                    });
-                                                  });
-                                                },
-                                              ),
-                                              AddNewLabelTextField(
-                                                labelText: 'Zipcode',
-                                                textInputType: TextInputType.number,
-                                                textEditingController: en.employeeZipcode,
-                                                scrollPadding: 850,
-                                                textLength: 6,
-                                                ontap: () {
                                                   setState(() {
-                                                    _keyboardVisible=true;
+                                                    _keyboardVisible=false;
+                                                    isPaymentTypeOpen = true;
                                                   });
-                                                  scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
-                                                },
 
-                                                onEditComplete: () {
-                                                  node.unfocus();
-                                                  Timer(Duration(milliseconds: 100), (){
-                                                    setState(() {
-                                                      _keyboardVisible=false;
-                                                    });
-                                                  });
                                                 },
+                                                child: SidePopUpParent(
+                                                  text: en.selectPaymentMethodName == null ? "Select Payment Type" : en.selectPaymentMethodName,
+                                                  textColor: en.selectPaymentMethodName == null ? AppTheme.addNewTextFieldText.withOpacity(0.5) : AppTheme.addNewTextFieldText,
+                                                  iconColor: en.selectPaymentMethodName == null ? AppTheme.addNewTextFieldText : AppTheme.yellowColor,
+                                                  bgColor: en.selectPaymentMethodName== null ? AppTheme.disableColor : Colors.white,
+                                                ),
                                               ),
                                             ],
                                           ),
                                         ),
 
+
+                                        //Bank details
+                                        GestureDetector(
+                                          onTap: (){
+                                            BankDetailsArrowAnimationController.isCompleted
+                                                ? BankDetailsArrowAnimationController.reverse()
+                                                : BankDetailsArrowAnimationController.forward();
+
+                                            setState(() {
+                                              BankDetailsOpen=!BankDetailsOpen;
+                                            });
+                                            if(BankDetailsOpen){
+                                              Timer(Duration(milliseconds: 300), (){
+                                                listViewController.animateTo(listViewController.offset+ 350, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+
+                                              });
+                                            }
+                                          },
+                                          child:Align(
+                                            alignment: Alignment.centerRight,
+                                            child: Container(
+                                              height: 40,
+                                              width: SizeConfig.screenWidth*0.37,
+                                              margin: EdgeInsets.only(left: SizeConfig.width20,right: SizeConfig.width20,top: 20),
+                                              padding: EdgeInsets.only(left: SizeConfig.width10,right: SizeConfig.width10),
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(25),
+                                                color: AppTheme.yellowColor,
+                                              ),
+                                              child: Row(
+                                                children: [
+                                                  Text("Bank Details",style:TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 14)),
+                                                  Spacer(),
+                                                  Container(
+                                                    height: 25,
+                                                    width: 25,
+                                                    decoration: BoxDecoration(
+                                                        shape: BoxShape.circle,
+                                                        color: AppTheme.bgColor
+                                                    ),
+                                                    child:  AnimatedBuilder(
+                                                      animation: BankDetailsArrowAnimationController,
+                                                      builder: (context, child) =>
+                                                          Transform.rotate(
+                                                            angle: BankDetailsArrowAnimation.value,
+                                                            child: Icon(
+                                                              Icons.keyboard_arrow_up_rounded,
+                                                              size: 25.0,
+                                                              color: Colors.white,
+                                                            ),
+                                                          ),
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        AnimatedContainer(
+                                          duration: Duration(milliseconds: 300),
+                                          curve: Curves.easeIn,
+                                          width: SizeConfig.screenWidth,
+                                          height: BankDetailsOpen? (320+80.0):0,
+                                          //  margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20),
+                                          child: Column(
+                                            children: [
+                                              AddNewLabelTextField(
+                                                labelText: 'Account Holder Name',
+                                                textEditingController: en.employeeHolderName,
+                                                scrollPadding: 700,
+                                                ontap: () {
+                                                  setState(() {
+                                                    _keyboardVisible=true;
+                                                  });
+                                                  scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                                },
+
+                                                onEditComplete: () {
+                                                  node.unfocus();
+                                                  Timer(Duration(milliseconds: 100), (){
+                                                    setState(() {
+                                                      _keyboardVisible=false;
+                                                    });
+                                                  });
+                                                },
+                                              ),
+                                              AddNewLabelTextField(
+                                                labelText: 'Bank Name',
+                                                textEditingController: en.employeeBankName,
+                                                scrollPadding: 500,
+                                                ontap: () {
+                                                  setState(() {
+                                                    _keyboardVisible=true;
+                                                  });
+                                                  scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                                },
+
+                                                onEditComplete: () {
+                                                  node.unfocus();
+                                                  Timer(Duration(milliseconds: 100), (){
+                                                    setState(() {
+                                                      _keyboardVisible=false;
+                                                    });
+                                                  });
+                                                },
+                                              ),
+                                              AddNewLabelTextField(
+                                                labelText: 'Account Number',
+                                                textInputType: TextInputType.number,
+                                                textEditingController: en.employeeAccNo,
+                                                scrollPadding: 600,
+                                                ontap: () {
+                                                  setState(() {
+                                                    _keyboardVisible=true;
+                                                  });
+                                                  scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                                },
+
+                                                onEditComplete: () {
+                                                  node.unfocus();
+                                                  Timer(Duration(milliseconds: 100), (){
+                                                    setState(() {
+                                                      _keyboardVisible=false;
+                                                    });
+                                                  });
+                                                },
+                                              ),
+                                              AddNewLabelTextField(
+                                                labelText: 'Branch Name',
+                                                textEditingController: en.employeeBranchName,
+                                                scrollPadding: 700,
+                                                ontap: () {
+                                                  setState(() {
+                                                    _keyboardVisible=true;
+                                                  });
+                                                  scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                                },
+
+                                                onEditComplete: () {
+                                                  node.unfocus();
+                                                  Timer(Duration(milliseconds: 100), (){
+                                                    setState(() {
+                                                      _keyboardVisible=false;
+                                                    });
+                                                  });
+                                                },
+                                              ),
+                                              AddNewLabelTextField(
+                                                labelText: 'IFSC Code',
+                                                textEditingController: en.employeeIFSC,
+                                                scrollPadding: 750,
+                                                ontap: () {
+                                                  setState(() {
+                                                    _keyboardVisible=true;
+                                                  });
+                                                  scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                                },
+
+                                                onEditComplete: () {
+                                                  node.unfocus();
+                                                  Timer(Duration(milliseconds: 100), (){
+                                                    setState(() {
+                                                      _keyboardVisible=false;
+                                                    });
+                                                  });
+                                                },
+                                              ),
+
+                                            ],
+                                          ),
+                                        ),
 
                                         SizedBox(height: _keyboardVisible? SizeConfig.screenHeight*0.6:200,)
                                       ],
@@ -1087,11 +1248,91 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                 ),
 
 
+                //bottomNav
+                Positioned(
+                  bottom: 0,
+                  child: Container(
+                    width: SizeConfig.screenWidth,
+                    // height:_keyboardVisible?0:  70,
+                    height: 65,
+
+                    decoration: BoxDecoration(
+                        color: AppTheme.gridbodyBgColor,
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppTheme.gridbodyBgColor,
+                            spreadRadius: 2,
+                            blurRadius: 15,
+                            offset: Offset(0, -20), // changes position of shadow
+                          )
+                        ]
+                    ),
+                    child: Stack(
+
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+
+                          ),
+                          margin:EdgeInsets.only(top: 0),
+                          child: CustomPaint(
+                            size: Size( SizeConfig.screenWidth, 65),
+                            painter: RPSCustomPainter3(),
+                          ),
+                        ),
+
+                        Container(
+                          width:  SizeConfig.screenWidth,
+                          height: 80,
+                          child: Stack(
+
+                            children: [
+
+
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                //addButton
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: GestureDetector(
+                    onTap: (){
+                      node.unfocus();
+
+                    },
+                    child: Container(
+
+                      height: 65,
+                      width: 65,
+                      margin: EdgeInsets.only(bottom: 20),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: AppTheme.yellowColor,
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppTheme.yellowColor.withOpacity(0.4),
+                            spreadRadius: 1,
+                            blurRadius: 5,
+                            offset: Offset(1, 8), // changes position of shadow
+                          ),
+                        ],
+                      ),
+                      child: Center(
+                        child: Icon(Icons.done,size: SizeConfig.height30,color: AppTheme.bgColor,),
+                      ),
+                    ),
+                  ),
+                ),
+
                 //blur
                 Container(
 
-                  height: isDesignationOpen || isEmployeeTypeOpen || isShiftOpen || isBloodGroupOpen || isMaritalOpen? SizeConfig.screenHeight:0,
-                  width: isDesignationOpen || isEmployeeTypeOpen || isShiftOpen || isBloodGroupOpen || isMaritalOpen? SizeConfig.screenWidth:0,
+                  height: isDesignationOpen || isEmployeeTypeOpen || isShiftOpen || isBloodGroupOpen || isMaritalOpen || isPaymentTypeOpen? SizeConfig.screenHeight:0,
+                  width: isDesignationOpen || isEmployeeTypeOpen || isShiftOpen || isBloodGroupOpen || isMaritalOpen || isPaymentTypeOpen? SizeConfig.screenWidth:0,
                   color: Colors.black.withOpacity(0.5),
 
                 ),
@@ -1229,6 +1470,29 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                   closeOnTap: (){
                     setState(() {
                       isMaritalOpen=false;
+                    });
+                  },
+                ),
+
+                //////////////////// Payment Type  /////////////
+                PopUpStatic(
+                  title: "Select Payment Type",
+
+                  isOpen: isPaymentTypeOpen,
+                  dataList: en.employeePaymentTypeList,
+                  propertyKeyName:"EmployeeSalaryMode",
+                  propertyKeyId: "EmployeeSalaryModeId",
+                  selectedId: en.selectPaymentMethodId,
+                  itemOnTap: (index){
+                    setState(() {
+                      isPaymentTypeOpen=false;
+                      en.selectPaymentMethodId=en.employeePaymentTypeList[index].employeePaymentTypeId;
+                      en.selectPaymentMethodName=en.employeePaymentTypeList[index].employeePaymentTypeName;
+                    });
+                  },
+                  closeOnTap: (){
+                    setState(() {
+                      isPaymentTypeOpen=false;
                     });
                   },
                 ),

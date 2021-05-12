@@ -215,6 +215,18 @@ class EmployeeNotifier extends ChangeNotifier{
   TextEditingController employeeZipcode=new TextEditingController();
 
 
+  TextEditingController employeeReferredBy=new TextEditingController();
+  TextEditingController employeeRemarks=new TextEditingController();
+  TextEditingController employeeAadhaarNo=new TextEditingController();
+  TextEditingController employeePanNo=new TextEditingController();
+
+  TextEditingController employeeHolderName=new TextEditingController();
+  TextEditingController employeeBankName=new TextEditingController();
+  TextEditingController employeeAccNo=new TextEditingController();
+  TextEditingController employeeBranchName=new TextEditingController();
+  TextEditingController employeeIFSC=new TextEditingController();
+
+
 
   DateTime joiningDate;
   DateTime dob;
@@ -305,27 +317,27 @@ class EmployeeNotifier extends ChangeNotifier{
         {
           "Key": "EmployeeContactNumber",
           "Type": "String",
-          "Value": employeePhoneNumber
+          "Value": employeePhoneNumber.text
         },
         {
           "Key": "EmployeeEmail",
           "Type": "String",
-          "Value": employeeEmail
+          "Value": employeeEmail.text
         },
         {
           "Key": "EmployeeAddress",
           "Type": "String",
-          "Value": employeeAddress
+          "Value": employeeAddress.text
         },
         {
           "Key": "EmployeeCity",
           "Type": "String",
-          "Value": employeeCity
+          "Value": employeeCity.text
         },
         {
           "Key": "EmployeeState",
           "Type": "String",
-          "Value": employeeState
+          "Value": employeeState.text
         },
         {
           "Key": "EmployeeCountry",
@@ -335,7 +347,78 @@ class EmployeeNotifier extends ChangeNotifier{
         {
           "Key": "EmployeeZipcode",
           "Type": "String",
-          "Value": employeeZipcode
+          "Value": employeeZipcode.text
+        },
+
+        {
+          "Key": "EmployeeDateOfBirth",
+          "Type": "String",
+          "Value": dob!=null?DateFormat("yyyy-MM-dd").format(dob):null
+        },
+        {
+          "Key": "EmployeeBloodGroupId",
+          "Type": "int",
+          "Value": selectBloodGroupId
+        },
+        {
+          "Key": "EmployeeMaritalStatusId",
+          "Type": "int",
+          "Value": selectMartialStatusId
+        },
+        {
+          "Key": "EmployeeReferredBy",
+          "Type": "String",
+          "Value": employeeReferredBy.text
+        },
+        {
+          "Key": "EmployeeRemarks",
+          "Type": "String",
+          "Value": employeeRemarks.text
+        },
+        {
+          "Key": "EmployeeAdharNumber",
+          "Type": "String",
+          "Value": employeeAadhaarNo.text
+        },
+        {
+          "Key": "EmployeePanNumber",
+          "Type": "String",
+          "Value": employeePanNo.text
+        },
+        {
+          "Key": "EmployeeSalaryModeId",
+          "Type": "int",
+          "Value": selectPaymentMethodId
+        },
+        {
+          "Key": "BankAccountHolderName",
+          "Type": "String",
+          "Value": employeeHolderName.text
+        },
+        {
+          "Key": "BankName",
+          "Type": "String",
+          "Value": employeeBankName.text
+        },
+        {
+          "Key": "BankAccountNumber",
+          "Type": "String",
+          "Value": employeeAccNo.text
+        },
+        {
+          "Key": "BankIFSCCode",
+          "Type": "String",
+          "Value": employeeIFSC.text
+        },
+        {
+          "Key": "BankBranchName",
+          "Type": "String",
+          "Value": employeeBranchName.text
+        },
+        {
+          "Key": "EmployeeImageFileName",
+          "Type": "String",
+          "Value": ""
         },
 
 
