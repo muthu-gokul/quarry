@@ -314,10 +314,15 @@ class _EmployeeAttendanceLoginLogoutState extends State<EmployeeAttendanceLoginL
 
                               child: Row(
                                 children: [
+                                  SizedBox(width: 20,),
                                   GestureDetector(
-                                    onTap: widget.drawerCallback,
-                                    child: NavBarIcon(),
+                                    onTap: (){
+                                      ean.clearinsertForm();
+                                      Navigator.pop(context);
+                                    },
+                                    child: Icon(Icons.arrow_back),
                                   ),
+                                  SizedBox(width: 20,),
                                   Text("Logout",
                                       style: AppTheme.appBarTS
                                   ),

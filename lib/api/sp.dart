@@ -111,5 +111,8 @@ class Sp{
   static String getEmployeeAttendanceDetail="USP_GetEmployeeAttendanceDetail";
   static String deleteEmployeeAttendanceDetail="USP_InsertEmployeeAttendanceDetail";
 
+  static String insertEmployeeAdvanceLoanDetail="USP_InsertEmployeeAdvanceLoanDetail";
+  static String updateEmployeeAdvanceLoanDetail="USP_UpdateEmployeeAdvanceLoanDetail";
+
 }
 
