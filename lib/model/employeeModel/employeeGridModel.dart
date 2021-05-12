@@ -6,10 +6,14 @@ class EmployeeGridModel {
     this.employeeDesignationName,
     this.phoneNumber,
     this.email,
+    this.employeePrefix,
+    this.employeeCode,
   });
 
   int employeeId;
   String employeeName;
+  String employeePrefix;
+  String employeeCode;
   int employeeDesignationId;
   String employeeDesignationName;
   String phoneNumber;
@@ -18,6 +22,9 @@ class EmployeeGridModel {
   factory EmployeeGridModel.fromJson(Map<String, dynamic> json) => EmployeeGridModel(
     employeeId: json["EmployeeId"],
     employeeName: json["EmployeeName"],
+    employeePrefix: json["EmployeePrefix"],
+    employeeCode: json["EmployeeCode"],
+
     employeeDesignationId: json["EmployeeDesignationId"],
     employeeDesignationName: json["EmployeeDesignationName"],
     phoneNumber: json["PhoneNumber"],
@@ -25,10 +32,10 @@ class EmployeeGridModel {
   );
 
   Map<String, dynamic> toGridJson() => {
-    "Employee Id": employeeId,
-    "Employee Name": employeeName,
+    "Employee Code": employeePrefix+employeeCode,
+    "Name": employeeName,
     "EmployeeDesignationId": employeeDesignationId,
-    "Employee Designation": employeeDesignationName,
+    "Designation": employeeDesignationName,
     "Phone Number": phoneNumber,
     "Email": email,
   };
@@ -37,7 +44,7 @@ class EmployeeGridModel {
     if (_mapRep.containsKey(propertyName)) {
       return _mapRep[propertyName];
     }
-    throw ArgumentError('property not found');
+    throw ArgumentError('property not found $propertyName');
   }
 
 }

@@ -106,5 +106,10 @@ class Sp{
   static String getEmployeeDetail="USP_GetEmployeeDetail";
   static String deleteEmployeeDetail="USP_DeleteEmployeeDetail";
 
+  static String insertEmployeeAttendanceDetail="USP_InsertEmployeeAttendanceDetail";
+  static String updateEmployeeAttendanceDetail="USP_UpdateEmployeeAttendanceDetail";
+  static String getEmployeeAttendanceDetail="USP_GetEmployeeAttendanceDetail";
+  static String deleteEmployeeAttendanceDetail="USP_InsertEmployeeAttendanceDetail";
+
 }
 

@@ -237,16 +237,54 @@ class EmployeeNotifier extends ChangeNotifier{
   }*/
 
 
+  int editEmployeeId;
+
   clearInsertForm(){
+    editEmployeeId=null;
     selectedSalutation="Mr";
     employeeFirstName.clear();
     employeeLastName.clear();
     joiningDate=null;
     dob=null;
+    employeeAddress.clear();
+    employeeAadhaarNo.clear();
+    employeePhoneNumber.clear();
+    employeeSalary.clear();
+    employeeIFSC.clear();
+    employeeBranchName.clear();
+    employeeAccNo.clear();
+    employeeBranchName.clear();
+    employeePanNo.clear();
+    employeeRemarks.clear();
+    employeeReferredBy.clear();
+    employeeZipcode.clear();
+    employeeState.clear();
+    employeeCity.clear();
+     selectEmployeeDesignationId = null;
+     selectEmployeeDesignationName = null;
+
+     selectEmployeeTypeId = null;
+     selectEmployeeTypeName = null;
+
+     selectShiftId = null;
+     selectShiftName = null;
+
+     selectBloodGroupId = null;
+     selectBloodGroupName = null;
+
+     selectMartialStatusId = null;
+     selectMartialStatusName = null;
+
+     selectPaymentMethodId = null;
+     selectPaymentMethodName = null;
+
+     selectSalaryTypeId = null;
+     selectSalaryTypeName = null;
   }
 
   InsertEmployeeDbHit(BuildContext context)  async{
     updateEmployeeLoader(true);
+
     var body={
       "Fields": [
         {
@@ -258,6 +296,11 @@ class EmployeeNotifier extends ChangeNotifier{
           "Key": "LoginUserId",
           "Type": "int",
           "Value": Provider.of<QuarryNotifier>(context,listen: false).UserId
+        },
+        {
+          "Key": "EmployeeId",
+          "Type": "int",
+          "Value": editEmployeeId
         },
         {
           "Key": "EmployeeCode",
@@ -376,7 +419,7 @@ class EmployeeNotifier extends ChangeNotifier{
           "Value": employeeRemarks.text
         },
         {
-          "Key": "EmployeeAdharNumber",
+          "Key": "EmployeeAadhaarNumber",
           "Type": "String",
           "Value": employeeAadhaarNo.text
         },
@@ -420,6 +463,11 @@ class EmployeeNotifier extends ChangeNotifier{
           "Type": "String",
           "Value": ""
         },
+        {
+          "Key": "EmployeeImageFolderName",
+          "Type": "String",
+          "Value": ""
+        },
 
 
 
@@ -436,6 +484,7 @@ class EmployeeNotifier extends ChangeNotifier{
 
         if(value!=null){
           var parsed=json.decode(value);
+
 
           Navigator.pop(context);
           GetEmployeeIssueDbHit(context, null);
@@ -492,6 +541,46 @@ class EmployeeNotifier extends ChangeNotifier{
           var parsed=json.decode(value);
           var t=parsed['Table'] as List;
           if(EmployeeId!=null ){
+            editEmployeeId=t[0]['EmployeeId'];
+            EmployeePrefix=t[0]['EmployeePrefix'];
+            EmployeeCode=t[0]['EmployeeCode'];
+            selectedSalutation=t[0]['EmployeeSalutation'];
+            employeeFirstName.text=t[0]['EmployeeFirstName'];
+            employeeLastName.text=t[0]['EmployeeLastName'];
+            selectEmployeeDesignationId=t[0]['EmployeeDesignationId'];
+            selectEmployeeDesignationName=t[0]['EmployeeDesignationName'];
+            selectEmployeeTypeId=t[0]['EmployeeTypeId'];
+            selectEmployeeTypeName=t[0]['EmployeeTypeName'];
+            selectShiftId=t[0]['EmployeeShiftId'];
+            selectShiftName=t[0]['EmployeeShiftName'];
+            joiningDate=t[0]['EmployeeDateOfJoin']!=null?DateTime.parse(t[0]['EmployeeDateOfJoin']):null;
+            dob=t[0]['EmployeeDateOfBirth']!=null?DateTime.parse(t[0]['EmployeeDateOfBirth']):null;
+            employeeSalary.text=t[0]['EmployeeSalary'].toString();
+            selectSalaryTypeId=t[0]['EmployeeSalaryTypeId'];
+            selectSalaryTypeName=t[0]['EmployeeSalaryTypeName'];
+            employeePhoneNumber.text=t[0]['EmployeeContactNumber'];
+            employeeEmail.text=t[0]['EmployeeEmail'];
+            employeeAddress.text=t[0]['EmployeeAddress'];
+            employeeCity.text=t[0]['EmployeeCity'];
+            employeeState.text=t[0]['EmployeeState'];
+            employeeZipcode.text=t[0]['EmployeeZipcode'];
+            selectBloodGroupId=t[0]['EmployeeBloodGroupId'];
+            selectBloodGroupName=t[0]['EmployeeBloodGroup'];
+            selectMartialStatusId=t[0]['EmployeeMaritalStatusId'];
+            selectMartialStatusName=t[0]['EmployeeMaritalStatus'];
+            selectPaymentMethodId=t[0]['EmployeeSalaryModeId'];
+            selectPaymentMethodName=t[0]['EmployeeSalaryMode'];
+            selectSalaryTypeId=t[0]['EmployeeSalaryTypeId'];
+            selectSalaryTypeName=t[0]['EmployeeSalaryTypeName'];
+            employeeReferredBy.text=t[0]['EmployeeReferredBy'];
+            employeeRemarks.text=t[0]['EmployeeRemarks'];
+            employeeAadhaarNo.text=t[0]['EmployeeAadhaarNumber'];
+            employeePanNo.text=t[0]['EmployeePanNumber'];
+            employeeBankName.text=t[0]['BankName'];
+            employeeHolderName.text=t[0]['BankAccountHolderName'];
+            employeeBranchName.text=t[0]['BankBranchName'];
+            employeeAccNo.text=t[0]['BankAccountNumber'];
+            employeeIFSC.text=t[0]['BankIFSCCode'];
 
           }
           else{

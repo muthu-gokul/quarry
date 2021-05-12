@@ -1396,7 +1396,8 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
 
                                                             // borderRadius: BorderRadius.circular(3),
                                                               border: Border(left: BorderSide(color: AppTheme.addNewTextFieldBorder),
-                                                                  right: BorderSide(color: AppTheme.addNewTextFieldBorder),bottom: BorderSide(color: AppTheme.addNewTextFieldBorder))
+                                                                  right: BorderSide(color: AppTheme.addNewTextFieldBorder),bottom: BorderSide(color: AppTheme.addNewTextFieldBorder)
+                                                              )
 
                                                           ),
                                                           child: Row(

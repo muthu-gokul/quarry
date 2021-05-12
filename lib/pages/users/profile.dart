@@ -196,7 +196,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           width: SizeConfig.screenWidth,
                                           child: Column(
                                             children: [
-                                              Text("${pn.selectedSalutation}.${pn.firstName.text}${pn.lastName.text}",
+                                              Text("${pn.selectedSalutation}.${pn.firstName.text} ${pn.lastName.text}",
                                               style: AppTheme.userNameTS,
                                               ),
                                               SizedBox(height: 3,),

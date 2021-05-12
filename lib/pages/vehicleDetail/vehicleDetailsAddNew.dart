@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/notifier/materialNotifier.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
@@ -71,17 +72,21 @@ class VehicleDetailAddNewState extends State<VehicleDetailAddNew> with TickerPro
                   child: Column(
                     children: [
                       Container(
-                        width: double.maxFinite,
-                        height: SizeConfig.height200,
+                        width: SizeConfig.screenWidth,
+                        height: 205,
+                        alignment: Alignment.centerLeft,
 
                         decoration: BoxDecoration(
-                            image: DecorationImage(
-                                image: AssetImage("assets/images/saleFormheader.jpg",),
-                                fit: BoxFit.cover
-                            )
+                          color: AppTheme.yellowColor,
+                          /* image: DecorationImage(
+                                     image: AssetImage("assets/svg/gridHeader/companyDetailsHeader.jpg",),
+                                   fit: BoxFit.cover
+                                 )*/
 
                         ),
-                      )
+                        child: SvgPicture.asset("assets/svg/gridHeader/vehicleAddNew.svg",width: SizeConfig.screenWidth,),
+
+                      ),
                     ],
                   ),
                 ),
@@ -223,10 +228,10 @@ class VehicleDetailAddNewState extends State<VehicleDetailAddNew> with TickerPro
                       }),
                       SizedBox(width: SizeConfig.width5,),
                       Text("Vehicle Master ",
-                        style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize:16),
+                        style: TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize:16),
                       ),
                       Text(qn.isVehicleEdit?" / Edit":"/ Add New",
-                        style: TextStyle(fontFamily: 'RR',color: Color(0xFF367BF5),fontSize: 16),
+                        style: TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 16),
                       ),
                       Spacer(),
 

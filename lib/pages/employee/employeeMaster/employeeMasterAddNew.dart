@@ -12,6 +12,7 @@ import 'package:quarry/styles/size.dart';
 import 'package:quarry/notifier/employeeNotifier.dart';
 import 'package:quarry/widgets/customTextField.dart';
 import 'package:quarry/widgets/sidePopUp/sidePopUpWithoutSearch.dart';
+import 'package:quarry/widgets/validationErrorText.dart';
 
 class EmployeeMasterAddNew extends StatefulWidget {
   const EmployeeMasterAddNew({Key key}) : super(key: key);
@@ -327,6 +328,9 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                             ],
                                           ),
                                         ),
+                                        firstName?ValidationErrorText(title:"* Enter First Name" ,):Container(),
+
+
 
 
                                         AddNewLabelTextField(
@@ -368,6 +372,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                             bgColor: en.selectEmployeeDesignationName== null ? AppTheme.disableColor : Colors.white,
                                           ),
                                         ),
+                                        designation?ValidationErrorText(title:"* Select Employee Designation" ,):Container(),
                                         GestureDetector(
 
                                           onTap: () {
@@ -385,6 +390,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                             bgColor: en.selectEmployeeTypeName== null ? AppTheme.disableColor : Colors.white,
                                           ),
                                         ),
+                                        employeeType?ValidationErrorText(title:"* Select Employee Type" ,):Container(),
                                         GestureDetector(
 
                                           onTap: () {
@@ -529,9 +535,11 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                             ],
                                           ),
                                         ),
+                                        salary?ValidationErrorText(title:"* Enter Salary" ,):Container(),
 
                                         GestureDetector(
                                           onTap: () async{
+                                            node.unfocus();
                                             final DateTime picked = await showDatePicker(
                                               context: context,
                                               initialDate: en.joiningDate==null?DateTime.now():en.joiningDate, // Refer step 1
@@ -626,7 +634,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                           duration: Duration(milliseconds: 300),
                                           curve: Curves.easeIn,
                                           width: SizeConfig.screenWidth,
-                                          height: contactOpen? (320+80.0):0,
+                                          height: contactOpen? (340+80.0):0,
                                           //  margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20),
                                           child: Column(
                                             children: [
@@ -652,6 +660,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                                   });
                                                 },
                                               ),
+                                              phoneNo?ValidationErrorText(title:"* Enter Phone Number" ,):Container(),
                                               AddNewLabelTextField(
                                                 labelText: 'Email Id',
                                                 textInputType: TextInputType.emailAddress,
@@ -694,6 +703,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                                   });
                                                 },
                                               ),
+                                              address?ValidationErrorText(title:"* Enter Address" ,):Container(),
                                               AddNewLabelTextField(
                                                 labelText: 'City',
 
@@ -824,7 +834,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                           duration: Duration(milliseconds: 300),
                                           curve: Curves.easeIn,
                                           width: SizeConfig.screenWidth,
-                                          height: otherDetailsOpen? (450+80.0):0,
+                                          height: otherDetailsOpen? (470+80.0):0,
                                           //  margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20),
                                           child: Column(
                                             children: [
@@ -960,6 +970,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                                   });
                                                 },
                                               ),
+                                              aadhaar?ValidationErrorText(title:"* Enter Aadhaar Number" ,):Container(),
                                               AddNewLabelTextField(
                                                 labelText: 'Pan No',
                                                 textEditingController: en.employeePanNo,
@@ -1219,7 +1230,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                   child: Row(
                     children: [
                       IconButton(icon: Icon(Icons.arrow_back), onPressed: (){
-
+                        en.clearInsertForm();
                         Navigator.pop(context);
                       }),
                       SizedBox(width: SizeConfig.width5,),
@@ -1302,6 +1313,30 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                   child: GestureDetector(
                     onTap: (){
                       node.unfocus();
+                      if(en.employeeFirstName.text.isEmpty){setState(() {firstName=true;});}
+                      else{setState(() {firstName=false;});}
+
+                       if(en.selectEmployeeDesignationId==null){setState(() {designation=true;});}
+                       else{setState(() {designation=false;});}
+
+                       if(en.selectEmployeeTypeId==null){setState(() {employeeType=true;});}
+                       else{setState(() {employeeType=false;});}
+
+                       if(en.employeeSalary.text.isEmpty){setState(() {salary=true;});}
+                       else{setState(() {salary=false;});}
+
+                       if(en.employeePhoneNumber.text.isEmpty){setState(() {phoneNo=true;contactOpen=true;contactArrowAnimationController.forward();});}
+                       else{setState(() {phoneNo=false;});}
+
+                      if(en.employeeAddress.text.isEmpty){setState(() {address=true;contactOpen=true;contactArrowAnimationController.forward();});}
+                      else{setState(() {address=false;});}
+
+                       if(en.employeeAadhaarNo.text.isEmpty){setState(() {aadhaar=true;otherDetailsOpen=true;otherDetailsArrowAnimationController.forward();});}
+                       else{setState(() {aadhaar=false;});}
+
+                       if(!firstName && !designation && !employeeType && !salary && !phoneNo && !address && !aadhaar){
+                         en.InsertEmployeeDbHit(context);
+                       }
 
                     },
                     child: Container(

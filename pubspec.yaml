@@ -39,6 +39,7 @@ dependencies:
   intl:
   rational:
   shared_preferences:
+  date_format:
 
 dev_dependencies:
   flutter_test:
@@ -100,6 +101,8 @@ flutter:
     - assets/svg/drawer/reports/
     - assets/svg/drawer/reports/receivablePayment.svg
     - assets/svg/gridHeader/
+    - assets/svg/gridHeader/materialMasterHeader.svg
+    - assets/svg/
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

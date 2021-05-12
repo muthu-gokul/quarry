@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/notifier/employeeNotifier.dart';
+import 'package:quarry/pages/employee/employeeMaster/employeeView.dart';
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
@@ -23,9 +24,9 @@ class _EmployeeMasterGridState extends State<EmployeeMasterGrid> {
   bool showEdit=false;
   int selectedIndex;
   List<GridStyleModel> gridDataRowListEmployee=[
-    GridStyleModel(columnName: "Employee Id"),
-    GridStyleModel(columnName: "Employee Name"),
-    GridStyleModel(columnName: "Employee Designation"),
+    GridStyleModel(columnName: "Employee Code"),
+    GridStyleModel(columnName: "Name"),
+    GridStyleModel(columnName: "Designation"),
     GridStyleModel(columnName: "Phone Number"),
     GridStyleModel(columnName: "Email"),
   ];
@@ -64,7 +65,14 @@ class _EmployeeMasterGridState extends State<EmployeeMasterGrid> {
             gridData: en.employeeGridList,
             gridDataRowList: gridDataRowListEmployee,
             func: (index){
-              if(selectedIndex==index){
+
+              en.updateEmployeeEdit(true);
+              en.EmployeeDropDownValues(context);
+              en.GetEmployeeIssueDbHit(context, en.employeeGridList[index].employeeId);
+              Navigator.push(context, _createRouteView());
+
+
+              /*if(selectedIndex==index){
                 setState(() {
                   selectedIndex=-1;
                   showEdit=false;
@@ -76,7 +84,7 @@ class _EmployeeMasterGridState extends State<EmployeeMasterGrid> {
                   selectedIndex=index;
                   showEdit=true;
                 });
-              }
+              }*/
             },
           ),
 
@@ -165,7 +173,6 @@ class _EmployeeMasterGridState extends State<EmployeeMasterGrid> {
                                   SizedBox(width: SizeConfig.width20,),
                                   GestureDetector(
                                     onTap: (){
-
 
                                     },
                                     child: Container(
@@ -288,6 +295,19 @@ class _EmployeeMasterGridState extends State<EmployeeMasterGrid> {
   Route _createRoute() {
     return PageRouteBuilder(
       pageBuilder: (context, animation, secondaryAnimation) => EmployeeMasterAddNew(),
+
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+
+        return FadeTransition(
+          opacity: Tween(begin: 0.0, end: 1.0).animate(animation),
+          child: child,
+        );
+      },
+    );
+  }
+  Route _createRouteView() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => EmployeeMasterView(),
 
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
 

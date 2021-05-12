@@ -11,6 +11,7 @@ import 'package:quarry/login.dart';
 import 'package:quarry/model/goodsReceivedModel/goodsReceivedGridModel.dart';
 import 'package:quarry/notifier/customerNotifier.dart';
 import 'package:quarry/notifier/dieselNotifier.dart';
+import 'package:quarry/notifier/employeeAttendanceNotifier.dart';
 import 'package:quarry/notifier/employeeNotifier.dart';
 import 'package:quarry/notifier/goodsReceivedNotifier.dart';
 import 'package:quarry/notifier/invoiceNotifier.dart';
@@ -24,6 +25,7 @@ import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/notifier/reportsNotifier.dart';
 import 'package:quarry/notifier/supplierNotifier.dart';
 import 'package:quarry/notifier/vehicleNotifier.dart';
+import 'package:quarry/pages/employee/employeeAttendance/employeeAttendanceGrid.dart';
 import 'package:quarry/pages/goodsReceived/goodsReceivedGrid.dart';
 import 'package:quarry/pages/invoice/invoiceGrid.dart';
 import 'package:quarry/pages/invoicePayment/paymentGrid.dart';
@@ -438,11 +440,13 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
           drawer.menuSelected==15?PaymentGrid(drawerCallback: (){
             scaffoldkey.currentState.openDrawer();
           },):
-
           drawer.menuSelected==16?SalesReportGrid(drawerCallback: (){
             scaffoldkey.currentState.openDrawer();
           },):
           drawer.menuSelected==17?EmployeeMasterGrid(drawerCallback: (){
+            scaffoldkey.currentState.openDrawer();
+          },):
+          drawer.menuSelected==18?EmployeeAttendanceGrid(drawerCallback: (){
             scaffoldkey.currentState.openDrawer();
           },):
           Container()
@@ -596,6 +600,8 @@ class EmployeeDetailsState extends State<EmployeeDetails> with TickerProviderSta
                       Navigator.pop(context);
                       widget.voidCallback();
 
+                      Provider.of<DrawerNotifier>(context,listen: false).changeMenu(18);
+                      Provider.of<EmployeeAttendanceNotifier>(context, listen: false).GetEmployeeAttendanceIssueDbHit(context,null);
 
 
                     },

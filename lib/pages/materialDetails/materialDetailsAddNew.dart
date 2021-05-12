@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/notifier/materialNotifier.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
@@ -85,25 +86,23 @@ class MaterialDetailAddNewState extends State<MaterialDetailAddNew> with TickerP
                   child: Column(
                     children: [
                       Container(
-                        width: double.maxFinite,
-                        height: SizeConfig.height200,
-
+                        width: SizeConfig.screenWidth,
+                        height: 205,
                         decoration: BoxDecoration(
-                            image: DecorationImage(
-                                image: AssetImage("assets/images/saleFormheader.jpg",),
-                                fit: BoxFit.cover
-                            )
+                          color: AppTheme.yellowColor,
+                          /* image: DecorationImage(
+                                     image: AssetImage("assets/svg/gridHeader/companyDetailsHeader.jpg",),
+                                   fit: BoxFit.cover
+                                 )*/
 
                         ),
+                        child: SvgPicture.asset("assets/svg/gridHeader/materialMasterHeader.svg"),
+
                       ),
-
-
-
-
-
                     ],
                   ),
                 ),
+
 
                 //FORM
                 Container(
@@ -160,6 +159,7 @@ class MaterialDetailAddNewState extends State<MaterialDetailAddNew> with TickerP
                                 scrollDirection: Axis.vertical,
 
                                 children: [
+                                  SizedBox(height:15,),
                                   AddNewLabelTextField(
                                     labelText: 'Material Name',
                                     textEditingController: qn.materialName,

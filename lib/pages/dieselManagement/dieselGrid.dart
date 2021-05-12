@@ -124,8 +124,6 @@ class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
                     Stack(
                       children: [
 
-
-
                         Container(
                           height: 50,
                           width: SizeConfig.screenWidth,
@@ -216,7 +214,6 @@ class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
                               ),
                             )
                         ),
-
                         CustomDataTable2(
                           topMargin: 140,
                           gridBodyReduceHeight: 260,

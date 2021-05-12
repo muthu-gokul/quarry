@@ -134,8 +134,6 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                            Container(
                              width: SizeConfig.screenWidth,
                              height: 205,
-                          // alignment: Alignment.topRight,
-                          //  padding: EdgeInsets.only(bottom: 25),
                              decoration: BoxDecoration(
                                color: AppTheme.yellowColor,
                                 /* image: DecorationImage(
@@ -145,34 +143,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
 
                              ),
                            child: SvgPicture.asset("assets/svg/gridHeader/companyDetailsHeader.svg"),
-                           /*  child:
-                             Column(
-                               mainAxisAlignment: MainAxisAlignment.start,
-                               children: [
-                                 Row(
-                                   children: [
-                                     IconButton(icon: Icon(Icons.menu), onPressed: widget.drawerCallback),
-                                     SizedBox(width: SizeConfig.width5,),
-                                     Text("Company Detail",
-                                       style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: SizeConfig.width16),
-                                     ),
-                                     Spacer(),
 
-                                   ],
-                                 ),
-                                 Spacer(),
-                                 // Image.asset("assets/images/saleFormheader.jpg",height: 100,),
-                                 // Container(
-                                 //   height: SizeConfig.height50,
-                                 //   color: Color(0xFF753F03),
-                                 //
-                                 // ) // Container(
-                                 //   height: SizeConfig.height50,
-                                 //   color: Color(0xFF753F03),
-                                 //
-                                 // )
-                               ],
-                             ),*/
                            ),
                          ],
                        ),
