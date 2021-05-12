@@ -11,6 +11,7 @@ import 'package:quarry/login.dart';
 import 'package:quarry/model/goodsReceivedModel/goodsReceivedGridModel.dart';
 import 'package:quarry/notifier/customerNotifier.dart';
 import 'package:quarry/notifier/dieselNotifier.dart';
+import 'package:quarry/notifier/employeeNotifier.dart';
 import 'package:quarry/notifier/goodsReceivedNotifier.dart';
 import 'package:quarry/notifier/invoiceNotifier.dart';
 import 'package:quarry/notifier/machineNotifier.dart';
@@ -42,6 +43,7 @@ import 'package:quarry/widgets/reportpdf.dart';
 import '../styles/size.dart';
 import 'customerDetails/customerGrid.dart';
 import 'dieselManagement/dieselGrid.dart';
+import 'employee/employeeMaster/employeeMasterGrid.dart';
 import 'machineDetails/machineDetailsAddNew.dart';
 import 'machineDetails/machineDetailsGrid.dart';
 import 'material/MaterialMasterGrid.dart';
@@ -440,6 +442,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
           drawer.menuSelected==16?SalesReportGrid(drawerCallback: (){
             scaffoldkey.currentState.openDrawer();
           },):
+          drawer.menuSelected==17?EmployeeMasterGrid(drawerCallback: (){
+            scaffoldkey.currentState.openDrawer();
+          },):
           Container()
       ),
     );
@@ -575,7 +580,8 @@ class EmployeeDetailsState extends State<EmployeeDetails> with TickerProviderSta
                     callback: (){
                       Navigator.pop(context);
                       widget.voidCallback();
-
+                      Provider.of<DrawerNotifier>(context,listen: false).changeMenu(17);
+                      Provider.of<EmployeeNotifier>(context, listen: false).GetEmployeeIssueDbHit(context,null);
                     },
                   ),
 

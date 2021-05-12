@@ -29,7 +29,7 @@ class AddNewLabelTextField extends StatelessWidget {
     SizeConfig().init(context);
     return  maxlines!=null? Container(
 
-      margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,top:SizeConfig.height20,),
+      margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,top:15,),
       height: 50,
 
       decoration: BoxDecoration(
@@ -87,7 +87,7 @@ class AddNewLabelTextField extends StatelessWidget {
     ):
     Container(
 
-      margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,top:SizeConfig.height20,),
+      margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,top:15,),
   //    height: 50,
 
       decoration: BoxDecoration(

@@ -10,7 +10,7 @@ class ExpectedDateContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,top:SizeConfig.height20,),
+      margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,top:15,),
       padding: EdgeInsets.only(left:SizeConfig.width10,right:SizeConfig.width10),
       height:50,
       width: double.maxFinite,

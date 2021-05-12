@@ -100,7 +100,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                         decoration: BoxDecoration(
                             image: DecorationImage(
-                                image: AssetImage("assets/images/saleFormheader.jpg",),
+                               image: AssetImage("assets/images/saleFormheader.jpg",),
+                                //image: AssetImage("assets/svg/gridHeader/companyDetailsHeader.jpg",),
                                 fit: BoxFit.cover
                             )
 
@@ -207,7 +208,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           )
                                       ),
 
-                                      Container(
+                                      AnimatedContainer(
+                                        duration: Duration(milliseconds: 300),
+                                        curve: Curves.easeIn,
                                         height: salutationOpen? 100:50,
                                         width: SizeConfig.screenWidth,
                                         alignment: Alignment.topCenter,
@@ -501,7 +504,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   ),
                                 ]
                             ),
-
+                            child: Center(
+                              child: Image.asset("assets/svg/drawer/avatar.png"),
+                            ),
                           ),
                         ),
 

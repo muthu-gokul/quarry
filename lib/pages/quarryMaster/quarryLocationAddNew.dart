@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/pages/quarryMaster/plantDetailsGrid.dart';
@@ -131,16 +132,19 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                        child: Column(
                          children: [
                            Container(
-                             width: double.maxFinite,
-                             height: SizeConfig.height200,
-
+                             width: SizeConfig.screenWidth,
+                             height: 205,
+                          // alignment: Alignment.topRight,
+                          //  padding: EdgeInsets.only(bottom: 25),
                              decoration: BoxDecoration(
-                                 image: DecorationImage(
-                                     image: AssetImage("assets/images/saleFormheader.jpg",),
-                                     fit: BoxFit.cover
-                                 )
+                               color: AppTheme.yellowColor,
+                                /* image: DecorationImage(
+                                     image: AssetImage("assets/svg/gridHeader/companyDetailsHeader.jpg",),
+                                   fit: BoxFit.cover
+                                 )*/
 
                              ),
+                           child: SvgPicture.asset("assets/svg/gridHeader/companyDetailsHeader.svg"),
                            /*  child:
                              Column(
                                mainAxisAlignment: MainAxisAlignment.start,
@@ -170,15 +174,9 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                ],
                              ),*/
                            ),
-
-
-
-
-
                          ],
                        ),
                      ),
-
 
                      Container(
                        height: SizeConfig.screenHeight,
@@ -215,20 +213,20 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                },
 
 
-                              /* onVerticalDragDown: (v){
+                               onVerticalDragDown: (v){
 
-                                   if(scrollController.offset==0 && listViewController.offset==0){
-                                      scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
-                                     }
+                                 if(scrollController.offset==0 && listViewController.offset==0){
+                                   scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                 }
 
-                               },*/
+                               },
                                child: Container(
                                  height: SizeConfig.screenHeight-60,
                                  width: SizeConfig.screenWidth,
                                  alignment: Alignment.topCenter,
                                  decoration: BoxDecoration(
                                      color: AppTheme.gridbodyBgColor,
-                                   borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10))
+                                     borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10))
                                  ),
                                  child: NotificationListener<ScrollNotification>(
                                    onNotification: (s){
@@ -262,6 +260,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                      physics: isListScroll?AlwaysScrollableScrollPhysics():NeverScrollableScrollPhysics(),
 
                                      children: [
+                                       SizedBox(height:15,),
                                        AddNewLabelTextField(
                                          ontap: (){
                                            scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
@@ -508,8 +507,8 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                          height: SizeConfig.height70,
                                          width: SizeConfig.height70,
                                          decoration: BoxDecoration(
-                                           shape: BoxShape.circle,
-                                           border: Border.all(color: AppTheme.uploadColor,width: 2)
+                                             shape: BoxShape.circle,
+                                             border: Border.all(color: AppTheme.uploadColor,width: 2)
                                          ),
                                          child: Center(
                                            child: Icon(Icons.upload_rounded,color: AppTheme.yellowColor,),
@@ -520,14 +519,14 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                        Align(
                                          alignment: Alignment.center,
                                          child: Text("Upload Your Company Logo",
-                                         style: TextStyle(fontFamily: 'RR',fontSize: 14,color: AppTheme.gridTextColor),
+                                           style: TextStyle(fontFamily: 'RR',fontSize: 14,color: AppTheme.gridTextColor),
                                          ),
                                        ),
                                        SizedBox(height: SizeConfig.height10,),
 
                                        Container(
 
-                                        margin: EdgeInsets.only(left: SizeConfig.width90,right:  SizeConfig.width90,),
+                                         margin: EdgeInsets.only(left: SizeConfig.width90,right:  SizeConfig.width90,),
                                          height:45,
                                          decoration: BoxDecoration(
                                            borderRadius: BorderRadius.circular(25.0),
@@ -617,8 +616,10 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                          ),
                        ),
                      ),
+
+
                      Container(
-                       height: SizeConfig.height60,
+                       height: 60,
                        width: SizeConfig.screenWidth,
                        child: Row(
                          children: [

@@ -101,5 +101,10 @@ class Sp{
 
   static String insertVehicleType="USP_InsertVehicleTypeDetail";
 
+  static String insertEmployeeDetail="USP_InsertEmployeeDetail";
+  static String updateEmployeeDetail="USP_UpdateEmployeeDetail";
+  static String getEmployeeDetail="USP_GetEmployeeDetail";
+  static String deleteEmployeeDetail="USP_DeleteEmployeeDetail";
+
 }
 
