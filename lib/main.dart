@@ -25,6 +25,7 @@ import 'notifier/goodsReceivedNotifier.dart';
 import 'notifier/machineManagementNotifier.dart';
 import 'notifier/manageUsersNotifier.dart';
 import 'notifier/paymentNotifier.dart';
+import 'notifier/reportNotifier.dart';
 import 'references/bottomNavi.dart';
 import 'testing.dart';
 
@@ -55,6 +56,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<InvoiceNotifier>(create:(_)=>InvoiceNotifier()),
         ChangeNotifierProvider<PaymentNotifier>(create:(_)=>PaymentNotifier()),
         ChangeNotifierProvider<ReportsNotifier>(create:(_)=>ReportsNotifier()),
+        ChangeNotifierProvider<ReportNotifier>(create:(_)=>ReportNotifier()),
         ChangeNotifierProvider<EmployeeNotifier>(create:(_)=>EmployeeNotifier()),
         ChangeNotifierProvider<EmployeeAttendanceNotifier>(create:(_)=>EmployeeAttendanceNotifier()),
         ChangeNotifierProvider<EmployeeAdvanceLoanNotifier>(create:(_)=>EmployeeAdvanceLoanNotifier()),

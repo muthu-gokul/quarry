@@ -21,6 +21,7 @@ import 'package:quarry/notifier/productionNotifier.dart';
 import 'package:quarry/notifier/profileNotifier.dart';
 import 'package:quarry/notifier/purchaseNotifier.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
+import 'package:quarry/notifier/reportNotifier.dart';
 import 'package:quarry/notifier/reportsNotifier.dart';
 import 'package:quarry/notifier/supplierNotifier.dart';
 import 'package:quarry/notifier/vehicleNotifier.dart';
@@ -47,6 +48,7 @@ import 'machineDetails/machineDetailsGrid.dart';
 import 'machineManagement/machineManagementGrid.dart';
 import 'materialDetails/materialDetailsGrid.dart';
 import 'quarryMaster/quarryLocationAddNew.dart';
+import 'reports/reportGrid.dart';
 import 'reports/salesReport/salesReportGrid.dart';
 import 'sale/saleGrid.dart';
 
@@ -433,7 +435,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
           drawer.menuSelected==15?PaymentGrid(drawerCallback: (){
             scaffoldkey.currentState.openDrawer();
           },):
-          drawer.menuSelected==16?SalesReportGrid(drawerCallback: (){
+          drawer.menuSelected==16?ReportGrid(drawerCallback: (){
             scaffoldkey.currentState.openDrawer();
           },):
           drawer.menuSelected==17?EmployeeMasterGrid(drawerCallback: (){
@@ -851,9 +853,11 @@ class ReportsPageState extends State<ReportsPage> with TickerProviderStateMixin{
                         widget.voidCallback();
 
                         Provider.of<DrawerNotifier>(context,listen: false).changeMenu(16);
+                        Provider.of<ReportNotifier>(context,listen: false).ReportsDropDownValues(context,"SaleReport");
+                        Provider.of<ReportNotifier>(context,listen: false).ReportsDbHit(context,"SaleReport");
 
-                        Provider.of<ReportsNotifier>(context,listen: false).ReportsDropDownValues(context,"SaleReport");
-                        Provider.of<ReportsNotifier>(context,listen: false).ReportsDbHit(context,"SaleReport");
+                        /*Provider.of<ReportsNotifier>(context,listen: false).ReportsDropDownValues(context,"SaleReport");
+                        Provider.of<ReportsNotifier>(context,listen: false).ReportsDbHit(context,"SaleReport");*/
                         //Provider.of<QuarryNotifier>(context,listen: false).GetplantDetailDbhit(context,null);
                       },
                     ),
