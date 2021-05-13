@@ -13,6 +13,9 @@ class Calculation {
   mul(dynamic n1,dynamic n2){
     return double.parse((Decimal.parse(n1.toString())*Decimal.parse(n2.toString())).toString());
   }
+  div(dynamic n1,dynamic n2){
+    return double.parse((Decimal.parse(n1.toString())/Decimal.parse(n2.toString())).toString());
+  }
 
 
   taxAmount({dynamic taxValue, dynamic amount, dynamic discountAmount}){

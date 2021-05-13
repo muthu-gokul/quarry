@@ -441,7 +441,7 @@ class DropDownFieldState extends FormFieldState<String> {
       dense: true,
       title: Text(
         text,
-        style: TextStyle(fontSize: 20,fontFamily: 'RR',color: AppTheme.addNewTextFieldText),
+        style: TextStyle(fontSize: 14,fontFamily: 'RR',color: AppTheme.addNewTextFieldText),
       ),
       onTap: () {
         // node.unfocus();

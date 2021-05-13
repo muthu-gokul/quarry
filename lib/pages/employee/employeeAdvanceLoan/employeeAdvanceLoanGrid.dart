@@ -1,0 +1,670 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
+import 'package:quarry/notifier/employeeNotifier.dart';
+import 'package:quarry/notifier/enployeeAdvanceLoanNotifier.dart';
+import 'package:quarry/pages/employee/employeeAdvanceLoan/employeeAdvanceLoanAddNew.dart';
+import 'package:quarry/pages/employee/employeeMaster/employeeView.dart';
+import 'package:quarry/references/bottomNavi.dart';
+import 'package:quarry/styles/app_theme.dart';
+import 'package:quarry/styles/size.dart';
+import 'package:quarry/widgets/navigationBarIcon.dart';
+import 'package:quarry/widgets/staticColumnScroll/customDataTable2.dart';
+import 'package:quarry/widgets/staticColumnScroll/customDataTableWithoutModel.dart';
+
+
+class EmployeeAdvanceLoanGrid extends StatefulWidget {
+  VoidCallback drawerCallback;
+  EmployeeAdvanceLoanGrid({this.drawerCallback});
+
+
+  @override
+  _EmployeeAdvanceLoanGridState createState() => _EmployeeAdvanceLoanGridState();
+}
+
+class _EmployeeAdvanceLoanGridState extends State<EmployeeAdvanceLoanGrid> {
+  bool showEdit=false;
+  int selectedIndex;
+
+  ScrollController header=new ScrollController();
+  ScrollController body=new ScrollController();
+  ScrollController verticalLeft=new ScrollController();
+  ScrollController verticalRight=new ScrollController();
+
+  double topMargin=50;//70 || 50
+  double gridBodyReduceHeight=140;// 260  // 140
+
+  bool showShadow=false;
+
+  @override
+  void initState() {
+    header.addListener(() {
+      if(body.offset!=header.offset){
+        body.jumpTo(header.offset);
+      }
+      if(header.offset==0){
+        setState(() {
+          showShadow=false;
+        });
+      }
+      else{
+        if(!showShadow){
+          setState(() {
+            showShadow=true;
+          });
+        }
+      }
+    });
+
+    body.addListener(() {
+      if(header.offset!=body.offset){
+        header.jumpTo(body.offset);
+      }
+    });
+
+    verticalLeft.addListener(() {
+      if(verticalRight.offset!=verticalLeft.offset){
+        verticalRight.jumpTo(verticalLeft.offset);
+      }
+    });
+
+    verticalRight.addListener(() {
+      if(verticalLeft.offset!=verticalRight.offset){
+        verticalLeft.jumpTo(verticalRight.offset);
+      }
+    });
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Consumer<EmployeeAdvanceLoanNotifier>(
+          builder: (context,eal,child)=> Stack(
+            children: [
+              Container(
+                height: 70,
+                width: SizeConfig.screenWidth,
+                color: AppTheme.yellowColor,
+                padding: AppTheme.gridAppBarPadding,
+                child: Row(
+                  children: [
+                    GestureDetector(
+                      onTap: widget.drawerCallback,
+                      child: NavBarIcon(),
+                    ),
+                    /*SizedBox(width: SizeConfig.width10,),*/
+                    Text("Employee Advance/Loan Detail",
+                      style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize:16),
+                    ),
+                  ],
+                ),
+              ),
+
+              Container(
+            height: SizeConfig.screenHeight-topMargin,
+            width: SizeConfig.screenWidth,
+            margin: EdgeInsets.only(top: topMargin),
+            clipBehavior: Clip.antiAlias,
+            decoration: BoxDecoration(
+                color:AppTheme.gridbodyBgColor,
+                borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10))
+            ),
+            child: Stack(
+              children: [
+
+                //Scrollable
+                Positioned(
+                  left:149,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Container(
+                        height: 50,
+                        width: SizeConfig.screenWidth-149,
+                        color: showShadow? AppTheme.bgColor.withOpacity(0.8):AppTheme.bgColor,
+                        child: SingleChildScrollView(
+                          controller: header,
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                              children: eal.gridDataRowList.asMap().
+                              map((i, value) => MapEntry(i, i==0?Container():
+                              Container(
+                                  alignment: value.alignment,
+                                  padding: value.edgeInsets,
+                                  width: value.width,
+                                  constraints: BoxConstraints(
+                                      minWidth: 150,
+                                      maxWidth: 200
+                                  ),
+                                  child: FittedBox(child: Text(value.columnName,style: AppTheme.TSWhite166,))
+                              )
+                              )).values.toList()
+                          ),
+                        ),
+
+                      ),
+                      Container(
+                        height: SizeConfig.screenHeight-gridBodyReduceHeight,
+                        width: SizeConfig.screenWidth-149,
+                        alignment: Alignment.topCenter,
+                        color: AppTheme.gridbodyBgColor,
+                        child: SingleChildScrollView(
+                          controller: body,
+                          scrollDirection: Axis.horizontal,
+                          child: Container(
+                            height: SizeConfig.screenHeight-gridBodyReduceHeight,
+                            alignment: Alignment.topCenter,
+                            color:AppTheme.gridbodyBgColor,
+                            child: SingleChildScrollView(
+                              controller: verticalRight,
+                              scrollDirection: Axis.vertical,
+                              child: Column(
+                                  children:eal.gridData.asMap().
+                                  map((i, value) => MapEntry(
+                                      i,InkWell(
+                                    //   onTap: widget.voidCallback,
+                                    onTap: (){
+                                      if(selectedIndex==i){
+                                        setState(() {
+                                          selectedIndex=-1;
+                                          showEdit=false;
+                                        });
+
+                                      }
+                                      else{
+                                        setState(() {
+                                          selectedIndex=i;
+                                          showEdit=true;
+                                        });
+                                      }
+                                      //setState(() {});
+                                    },
+                                    child: Container(
+
+                                      decoration: BoxDecoration(
+                                        border: AppTheme.gridBottomborder,
+                                        color: selectedIndex==i?AppTheme.yellowColor:AppTheme.gridbodyBgColor,
+                                      ),
+                                      height: 50,
+                                      margin: EdgeInsets.only(bottom:i==eal.gridData.length-1?70: 0),
+                                      child: Row(
+                                          children: eal.gridDataRowList.asMap().map((j, v) {
+
+
+                                            if((7.0*value[v.columnName].toString().length)>v.width){
+                                              setState(() {
+                                                v.width=7.0*value[v.columnName].toString().length;
+                                              });
+                                            }
+
+                                            return MapEntry(j,
+                                              j==0?Container():v.columnName!='Amount'?Container(
+                                                width: v.width,
+                                                height: 50,
+                                                alignment: v.alignment,
+                                                padding: v.edgeInsets,
+                                                constraints: BoxConstraints(
+                                                    minWidth: 150,
+                                                    maxWidth: 200
+                                                ),
+                                                decoration: BoxDecoration(
+
+                                                ),
+
+                                                child: Text("${value[v.columnName].toString().isNotEmpty?value[v.columnName]??" ":" "}",
+                                                  style:selectedIndex==i?AppTheme.bgColorTS14:AppTheme.gridTextColor14,
+                                                ),
+                                              ):Container(
+                                                width: v.width,
+                                                height: 50,
+                                                alignment: v.alignment,
+                                                padding: v.edgeInsets,
+                                                constraints: BoxConstraints(
+                                                    minWidth: 150,
+                                                    maxWidth: 200
+                                                ),
+                                                decoration: BoxDecoration(
+
+                                                ),
+
+                                                child: Row(
+                                                  mainAxisAlignment: MainAxisAlignment.start,
+                                                  children: [
+
+                                                   value['AmountType']=="Loan" ?SizedBox(
+                                                     width:25,
+                                                     child: IconButton(icon: Icon(Icons.info), onPressed: (){
+                                                       showDialog(context: context, builder: (ctx)=> Dialog(
+                                                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                                                         clipBehavior: Clip.antiAlias,
+                                                         child: Container(
+                                                           height: 100,
+                                                           width: SizeConfig.screenWidth*0.7,
+                                                           color: Colors.white,
+                                                           padding: EdgeInsets.only(left: 5),
+                                                           child: Column(
+                                                             mainAxisAlignment:MainAxisAlignment.center,
+                                                             crossAxisAlignment: CrossAxisAlignment.start,
+                                                             children: [
+                                                               RichText(
+                                                                 text: TextSpan(
+                                                                   text: 'Loan Amount: ',
+                                                                   style: TextStyle(fontFamily: 'RM',fontSize: 16,color: AppTheme.bgColor),
+                                                                   children: <TextSpan>[
+                                                                     TextSpan(text: '${value['LoanAmount']}',
+                                                                       style: TextStyle(fontFamily: 'RR',fontSize: 16,color: AppTheme.bgColor),
+                                                                     ),
+                                                                   ],
+                                                                 ),
+                                                               ),
+                                                               SizedBox(height: 5,),
+                                                               RichText(
+                                                                 text: TextSpan(
+                                                                   text: 'Due Month: ',
+                                                                   style: TextStyle(fontFamily: 'RM',fontSize: 16,color: AppTheme.bgColor),
+                                                                   children: <TextSpan>[
+                                                                     TextSpan(text: '${value['DueMonth']}',
+                                                                       style: TextStyle(fontFamily: 'RR',fontSize: 16,color: AppTheme.bgColor),
+                                                                     ),
+                                                                   ],
+                                                                 ),
+                                                               ),
+                                                               SizedBox(height: 5,),
+                                                               RichText(
+                                                                 text: TextSpan(
+                                                                   text: 'LoanEMI/Month: ',
+                                                                   style: TextStyle(fontFamily: 'RM',fontSize: 16,color: AppTheme.bgColor),
+                                                                   children: <TextSpan>[
+                                                                     TextSpan(text: '${value['LoanEMI/Month']}',
+                                                                       style: TextStyle(fontFamily: 'RR',fontSize: 16,color: AppTheme.bgColor),
+                                                                     ),
+                                                                   ],
+                                                                 ),
+                                                               ),
+                                                             ],
+                                                           ),
+                                                         ),
+
+                                                       ));
+                                                      }),
+                                                   ):Container(),
+                                                    SizedBox(width: 10),
+
+                                                    value['AmountType']=="Loan" ? Container(
+                                                      height:20,
+                                                      width:120,
+                                                      child: FittedBox(
+                                                        child: Text("${value['LoanEMI/Month'].toString().isNotEmpty? "${value['LoanEMI/Month']??" "} EMI/Month" :" "}",
+                                                          style:selectedIndex==i?AppTheme.bgColorTS14:AppTheme.gridTextColor14),
+                                                      ),
+                                                    ):
+                                                            Text("${value[v.columnName].toString().isNotEmpty?value[v.columnName]??" ":" "}",
+                                                      style:selectedIndex==i?AppTheme.bgColorTS14:AppTheme.gridTextColor14,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            );
+                                          }
+                                          ).values.toList()
+                                      ),
+                                    ),
+                                  )
+                                  )
+                                  ).values.toList()
+                              ),
+                            ),
+
+
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+
+                //not Scrollable
+                Positioned(
+                  left: 0,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Container(
+                        height: 50,
+                        width: 150,
+                        color: AppTheme.bgColor,
+                        padding: eal.gridDataRowList[0].edgeInsets,
+                        alignment: eal.gridDataRowList[0].alignment,
+                        child: Text("${eal.gridDataRowList[0].columnName}",style: AppTheme.TSWhite166,),
+
+                      ),
+                      Container(
+                        height: SizeConfig.screenHeight-gridBodyReduceHeight,
+                        alignment: Alignment.topCenter,
+                        decoration: BoxDecoration(
+                            color:showShadow? AppTheme.gridbodyBgColor:Colors.transparent,
+                            boxShadow: [
+                              showShadow?  BoxShadow(
+                                color: AppTheme.addNewTextFieldText.withOpacity(0.1),
+                                spreadRadius: 0,
+                                blurRadius: 15,
+                                offset: Offset(0, -8), // changes position of shadow
+                              ):BoxShadow(color: Colors.transparent)
+                            ]
+                        ),
+                        child: Container(
+                          height: SizeConfig.screenHeight-gridBodyReduceHeight,
+                          alignment: Alignment.topCenter,
+
+                          child: SingleChildScrollView(
+                            controller: verticalLeft,
+                            scrollDirection: Axis.vertical,
+                            child: Column(
+                                children: eal.gridData.asMap().
+                                map((i, value) => MapEntry(
+                                    i,InkWell(
+                                  onTap: (){
+                                    if(selectedIndex==i){
+                                      setState(() {
+                                        selectedIndex=-1;
+                                        showEdit=false;
+                                      });
+
+                                    }
+                                    else{
+                                      setState(() {
+                                        selectedIndex=i;
+                                        showEdit=true;
+                                      });
+                                    }
+                                    //setState(() {});
+                                  },
+                                  child:  Container(
+                                    alignment:eal.gridDataRowList[0].alignment,
+                                    padding: eal.gridDataRowList[0].edgeInsets,
+                                    margin: EdgeInsets.only(bottom:i==eal.gridData.length-1?70: 0),
+                                    decoration: BoxDecoration(
+                                      border: AppTheme.gridBottomborder,
+                                      color: selectedIndex==i?AppTheme.yellowColor:AppTheme.gridbodyBgColor,
+
+                                    ),
+                                    height: 50,
+                                    width: 150,
+                                    constraints: BoxConstraints(
+                                        maxWidth: 150
+                                    ),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        //color:value.invoiceType=='Receivable'? Colors.green:AppTheme.red,
+                                      ),
+                                      child: FittedBox(
+                                        fit: BoxFit.contain,
+                                        child: Text("${value[eal.gridDataRowList[0].columnName]}",
+                                          style:selectedIndex==i?AppTheme.bgColorTS14:AppTheme.gridTextColor14,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                )
+                                )
+                                ).values.toList()
+
+
+                            ),
+                          ),
+
+
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+
+              ],
+            )
+
+        ),
+              
+
+
+
+              //bottomNav
+              Positioned(
+                bottom: 0,
+                child: Container(
+                  width: SizeConfig.screenWidth,
+                  height: 65,
+
+                  decoration: BoxDecoration(
+                      color: AppTheme.gridbodyBgColor,
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppTheme.gridbodyBgColor,
+                          spreadRadius: 2,
+                          blurRadius: 15,
+                          offset: Offset(0, -20), // changes position of shadow
+                        )
+                      ]
+                  ),
+                  child: Stack(
+
+                    children: [
+                      Container(
+                        margin:EdgeInsets.only(top: 0),
+                        child: CustomPaint(
+                          size: Size( SizeConfig.screenWidth, 65),
+                          painter: RPSCustomPainter3(),
+                        ),
+                      ),
+
+                      Container(
+                        width:  SizeConfig.screenWidth,
+                        height: 80,
+
+                        child: Stack(
+
+                          children: [
+
+                            /*AnimatedPositioned(
+                          bottom:showEdit?-60:0,
+                          duration: Duration(milliseconds: 300,),
+                          curve: Curves.bounceInOut,
+                          child: Container(
+                            height: 70,
+                            width: SizeConfig.screenWidth,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                IconButton(icon: Icon(Icons.picture_as_pdf,color: Colors.grey,), onPressed: (){
+
+                                }),
+                                IconButton(icon: Icon(Icons.exit_to_app,color: Colors.grey,), onPressed: (){
+
+                                }),
+                                SizedBox(width: SizeConfig.width50,),
+                                IconButton(icon: Icon(Icons.add_comment_sharp,color: Colors.grey,), onPressed: (){
+
+                                }),
+                                GestureDetector(
+                                  onTap: (){
+
+                                  },
+                                  child: IconButton(icon: Icon(Icons.share,color: Colors.grey,), onPressed: (){
+
+                                  }),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),*/
+
+                            AnimatedPositioned(
+                              bottom:showEdit?15:-60,
+                              duration: Duration(milliseconds: 300,),
+                              curve: Curves.bounceInOut,
+                              child: Container(
+
+                                  width: SizeConfig.screenWidth,
+                                  child: Row(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      SizedBox(width: SizeConfig.width20,),
+                                      GestureDetector(
+                                        onTap: (){
+                                          eal.updateisEdit(true);
+                                          eal.EmployeeAdvanceDropDownValues(context);
+                                          eal.GetEmployeeAttendanceLoanDbHit(context, eal.gridData[selectedIndex]['EmployeeId']);
+                                          Navigator.push(context, _createRoute());
+                                          setState(() {
+                                            showEdit=false;
+                                            selectedIndex=-1;
+                                          });
+                                        },
+                                        child: Container(
+                                          width: 70,
+                                          decoration: BoxDecoration(
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: AppTheme.yellowColor.withOpacity(0.7),
+                                                  spreadRadius: -3,
+                                                  blurRadius: 15,
+                                                  offset: Offset(0, 7), // changes position of shadow
+                                                )
+                                              ]
+                                          ),
+                                          child:FittedBox(
+                                            child: Row(
+                                              children: [
+                                                SvgPicture.asset("assets/svg/edit.svg",height: 20,width: 20,color: AppTheme.yellowColor,),
+                                                SizedBox(width: SizeConfig.width10,),
+                                                Text("Edit",style: TextStyle(fontSize: 20,fontFamily: 'RR',color:Color(0xFFFF9D10)),),
+
+
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Spacer(),
+                                      Container(
+                                        width: 90,
+                                        decoration: BoxDecoration(
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: AppTheme.red.withOpacity(0.5),
+                                                spreadRadius: -3,
+                                                blurRadius: 25,
+                                                offset: Offset(0, 7), // changes position of shadow
+                                              )
+                                            ]
+                                        ),
+                                        child:FittedBox(
+                                          child: Row(
+                                            children: [
+                                              Text("Delete",style: TextStyle(fontSize: 18,fontFamily: 'RR',color:Colors.red),),
+                                              SizedBox(width: SizeConfig.width10,),
+                                              SvgPicture.asset("assets/svg/delete.svg",height: 20,width: 20,color: AppTheme.red,),
+
+
+
+
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(width: SizeConfig.width10,),
+                                    ],
+                                  )
+                              ),
+                            )
+
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              //addButton
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: GestureDetector(
+                  onTap: (){
+
+                    eal.updateisEdit(false);
+                    eal.EmployeeAdvanceDropDownValues(context);
+                    Navigator.push(context, _createRoute());
+                  },
+                  child: Container(
+
+                    height: 65,
+                    width: 65,
+                    margin: EdgeInsets.only(bottom: 20),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: AppTheme.yellowColor,
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppTheme.yellowColor.withOpacity(0.4),
+                          spreadRadius: 1,
+                          blurRadius: 5,
+                          offset: Offset(1, 8), // changes position of shadow
+                        ),
+                      ],
+                    ),
+                    child: Center(
+                      child: Icon(Icons.add,size: SizeConfig.height30,color: AppTheme.bgColor,),
+                    ),
+                  ),
+                ),
+              ),
+
+
+
+
+              Container(
+
+                height: eal.EmployeeAttendanceLoader? SizeConfig.screenHeight:0,
+                width: eal.EmployeeAttendanceLoader? SizeConfig.screenWidth:0,
+                color: Colors.black.withOpacity(0.5),
+                child: Center(
+                  child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(AppTheme.yellowColor),),
+                ),
+              )
+
+            ],
+          )
+      ),
+    );
+  }
+  Route _createRoute() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => EmployeeAdvanceAddNew(),
+
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+
+        return FadeTransition(
+          opacity: Tween(begin: 0.0, end: 1.0).animate(animation),
+          child: child,
+        );
+      },
+    );
+  }
+  Route _createRouteView() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => EmployeeMasterView(),
+
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+
+        return FadeTransition(
+          opacity: Tween(begin: 0.0, end: 1.0).animate(animation),
+          child: child,
+        );
+      },
+    );
+  }
+}

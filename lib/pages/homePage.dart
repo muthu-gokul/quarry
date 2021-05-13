@@ -13,6 +13,7 @@ import 'package:quarry/notifier/customerNotifier.dart';
 import 'package:quarry/notifier/dieselNotifier.dart';
 import 'package:quarry/notifier/employeeAttendanceNotifier.dart';
 import 'package:quarry/notifier/employeeNotifier.dart';
+import 'package:quarry/notifier/enployeeAdvanceLoanNotifier.dart';
 import 'package:quarry/notifier/goodsReceivedNotifier.dart';
 import 'package:quarry/notifier/invoiceNotifier.dart';
 import 'package:quarry/notifier/machineNotifier.dart';
@@ -45,6 +46,8 @@ import 'package:quarry/widgets/reportpdf.dart';
 import '../styles/size.dart';
 import 'customerDetails/customerGrid.dart';
 import 'dieselManagement/dieselGrid.dart';
+import 'employee/employeeAdvanceLoan/employeeAdvanceLoanAddNew.dart';
+import 'employee/employeeAdvanceLoan/employeeAdvanceLoanGrid.dart';
 import 'employee/employeeMaster/employeeMasterGrid.dart';
 import 'machineDetails/machineDetailsAddNew.dart';
 import 'machineDetails/machineDetailsGrid.dart';
@@ -449,6 +452,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
           drawer.menuSelected==18?EmployeeAttendanceGrid(drawerCallback: (){
             scaffoldkey.currentState.openDrawer();
           },):
+          drawer.menuSelected==19?EmployeeAdvanceLoanGrid(drawerCallback: (){
+            scaffoldkey.currentState.openDrawer();
+          },):
           Container()
       ),
     );
@@ -615,8 +621,11 @@ class EmployeeDetailsState extends State<EmployeeDetails> with TickerProviderSta
                     tag: 'EmployeeAdvance',
                     titleColor: AppTheme.yellowColor,
                     callback: (){
+
                       Navigator.pop(context);
                       widget.voidCallback();
+                      Provider.of<DrawerNotifier>(context,listen: false).changeMenu(19);
+                      Provider.of<EmployeeAdvanceLoanNotifier>(context, listen: false).GetEmployeeAttendanceLoanDbHit(context,null);
 
 
                     },

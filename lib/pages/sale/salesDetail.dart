@@ -159,7 +159,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                         children: [
                                           Container(
                                             width: double.maxFinite,
-                                            height: SizeConfig.height200,
+                                            height: 200,
 
                                             decoration: BoxDecoration(
                                                 image: DecorationImage(
@@ -169,9 +169,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                 )
 
                                             ),
-                                          ),
-
-
+                                          )
                                         ],
                                       ),
                                     ),
@@ -1808,8 +1806,8 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                 },*/
                                 child: Container(
 
-                                  height: SizeConfig.width50,
-                                  width: SizeConfig.width50,
+                                  height: 65,
+                                  width: 65,
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
                                     color: AppTheme.yellowColor,

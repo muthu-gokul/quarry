@@ -12,6 +12,8 @@ import 'package:quarry/model/employeeModel/empAdvanceLoan/empLoanEmployeeModel.d
 import 'package:quarry/model/employeeModel/employeeAttendance/employeeAttendanceGridModel.dart';
 import 'package:quarry/model/plantModel/plantUserModel.dart';
 import 'package:quarry/widgets/alertDialog.dart';
+import 'package:quarry/widgets/calculation.dart';
+import 'package:quarry/widgets/staticColumnScroll/customDataTableWithoutModel.dart';
 
 import 'quarryNotifier.dart';
 
@@ -95,8 +97,8 @@ class EmployeeAdvanceLoanNotifier extends ChangeNotifier{
   List<String> searchEmpList=[];
   List<EmpLoanAmountTypeModel> empAmountType=[];
 
-
-  EmployeeDropDownValues(BuildContext context) async {
+  List<dynamic> amountTypeList=[];
+  EmployeeAdvanceDropDownValues(BuildContext context) async {
     updateEmployeeAttendanceLoader(true);
     var body = {
       "Fields": [
@@ -127,17 +129,26 @@ class EmployeeAdvanceLoanNotifier extends ChangeNotifier{
     try {
       await call.ApiCallGetInvoke(body, context).then((value) {
         var parsed = json.decode(value);
-        print(parsed);
+
         var t = parsed['Table'] as List;
 
         var t1= parsed['Table1'] as List;
+
+
+        t1.forEach((element) {
+          element["isActive"]=true;
+        });
+        print(t1);
+        
+        amountTypeList=t1;
 
 
 
 
         empList=t.map((e) => EmpLoanEmployeeModel.fromJson(e)).toList();
         empList.forEach((element) {
-          searchEmpList.add(element.employeePrefix+element.employeeId);
+          searchEmpList.add("${element.employeeName}  -  ${element.employeePrefix+element.employeeCode}");
+
         });
 
 
@@ -155,11 +166,46 @@ class EmployeeAdvanceLoanNotifier extends ChangeNotifier{
   /* insert Form */
   var selectedEmployeeCode;
   TextEditingController employeeCodeController=new TextEditingController();
+  TextEditingController advanceAmountController=new TextEditingController();
+  TextEditingController advanceReasonController=new TextEditingController();
+
+  TextEditingController loanReasonController=new TextEditingController();
+  TextEditingController loanAmountController=new TextEditingController();
+  int selectedMonthDue=null;
+  double emiAmount=0.0;
+
+  List<dynamic> monthList=[{"Due":2},{"Due":3},{"Due":4},{"Due":5},{"Due":6},{"Due":7},{"Due":8},{"Due":9},{"Due":10},{"Due":11},{"Due":12}];
+
+  clearAmount(){
+    advanceAmountController.clear();
+    advanceReasonController.clear();
+    loanReasonController.clear();
+    loanAmountController.clear();
+    selectedMonthDue=null;
+    emiAmount=0.0;
+  }
+
+  emiCalc(){
+    if(loanAmountController.text.isEmpty){
+      emiAmount=0.0;
+    }
+    else{
+      if(selectedMonthDue==null){
+        emiAmount=double.parse(loanAmountController.text);
+      }else{
+        emiAmount=Calculation().div(loanAmountController.text, selectedMonthDue);
+      }
+    }
+    notifyListeners();
+  }
 
 
   String showEmpName="";
   String showEmpDesg="";
   String showEmpLoginInTime="";
+  String showEmpWorkingDays="";
+  String showEmpLeaveDays="";
+  double showEmpNetPay=0.0;
   int showEmpId;
 
   DateTime selectedDate;
@@ -169,16 +215,22 @@ class EmployeeAdvanceLoanNotifier extends ChangeNotifier{
 
   int logoutAttendanceId=null;
 
+  String selectedAmountType=null;
 
   clearinsertForm(){
     selectedEmployeeCode=null;
-    employeeCode.clear();
     showEmpName="";
     showEmpDesg="";
     showEmpLoginInTime="";
+     showEmpWorkingDays="";
+     showEmpLeaveDays="";
+     showEmpNetPay=0.0;
     employeeCodeController.clear();
+    selectedAmountType=null;
+    showEmpId=null;
 
     logoutAttendanceId=null;
+    notifyListeners();
   }
 
   insertForm(){
@@ -190,7 +242,7 @@ class EmployeeAdvanceLoanNotifier extends ChangeNotifier{
   }
 
 
-  InsertEmployeeAttendanceDbHit(BuildContext context)  async{
+  InsertEmployeeLoanAttendanceDbHit(BuildContext context)  async{
     updateEmployeeAttendanceLoader(true);
 
     var body={
@@ -198,7 +250,7 @@ class EmployeeAdvanceLoanNotifier extends ChangeNotifier{
         {
           "Key": "SpName",
           "Type": "String",
-          "Value": isEmployeeLogin?"${Sp.insertEmployeeAttendanceDetail}": "${Sp.updateEmployeeAttendanceDetail}"
+          "Value": !isEdit?"${Sp.insertEmployeeAdvanceLoanDetail}": "${Sp.updateEmployeeAdvanceLoanDetail}"
         },
         {
           "Key": "LoginUserId",
@@ -211,26 +263,45 @@ class EmployeeAdvanceLoanNotifier extends ChangeNotifier{
           "Value": showEmpId
         },
         {
-          "Key": "EmployeeAttendanceDate",
+          "Key": "AmountType",
           "Type": "String",
-          "Value": DateFormat('yyyy-MM-dd').format(selectedDate)
+          "Value": selectedAmountType
         },
         {
-          "Key": "EmployeeInTime",
-          "Type": "String",
-          "Value": "${selectedTime.hour}:${selectedTime.minute}"
-        },
-        {
-          "Key": "EmployeeOutTime",
-          "Type": "String",
-          "Value": "${selectedTime.hour}:${selectedTime.minute}"
-        },
-
-
-        {
-          "Key": "EmployeeAttendanceId",
+          "Key": "IsAdvance",
           "Type": "int",
-          "Value": logoutAttendanceId
+          "Value": selectedAmountType=="Advance"?1:0
+        },
+        {
+          "Key": "AdvanceAmount",
+          "Type": "String",
+          "Value": advanceAmountController.text.isNotEmpty?double.parse(advanceAmountController.text):0.0
+        },
+        {
+          "Key": "IsLoan",
+          "Type": "int",
+          "Value": selectedAmountType=="Loan"?1:0
+        },
+        {
+          "Key": "LoanAmount",
+          "Type": "String",
+          "Value": loanAmountController.text.isNotEmpty?double.parse(loanAmountController.text):0.0
+        },
+        {
+          "Key": "LoanDueMonth",
+          "Type": "String",
+          "Value": selectedMonthDue
+        },
+        {
+          "Key": "LoanEMIAmount",
+          "Type": "String",
+          "Value": emiAmount
+        },
+
+        {
+          "Key": "Reason",
+          "Type": "String",
+          "Value": selectedAmountType=="Advance"?advanceReasonController.text:loanReasonController.text
         },
 
 
@@ -249,10 +320,12 @@ class EmployeeAdvanceLoanNotifier extends ChangeNotifier{
         if(value!=null){
           var parsed=json.decode(value);
 
-
-          Navigator.pop(context);
-          GetEmployeeAttendanceIssueDbHit(context, null);
           clearinsertForm();
+          clearAmount();
+          GetEmployeeAttendanceLoanDbHit(context, null);
+          Navigator.pop(context);
+
+
 
           //
         }
@@ -275,11 +348,20 @@ class EmployeeAdvanceLoanNotifier extends ChangeNotifier{
   int totalAbsent=0;
 
   List<EmployeeAttendanceGridModel> EmployeeAttendanceGridList=[];
-  List<String> employeeCode=[];
 
 
-  GetEmployeeAttendanceIssueDbHit(BuildContext context,int EmployeeAttendanceId)  async{
-    employeeCode.clear();
+  List<GridStyleModel3> gridDataRowList=[
+    GridStyleModel3(columnName: "Date"),
+    GridStyleModel3(columnName: "Employee Code"),
+    GridStyleModel3(columnName: "Name"),
+    GridStyleModel3(columnName: "Designation"),
+    GridStyleModel3(columnName: "AmountType"),
+    GridStyleModel3(columnName: "Amount",edgeInsets: EdgeInsets.only(left: 0),width: 180),
+  ];
+  List<dynamic> gridData=[];
+
+  GetEmployeeAttendanceLoanDbHit(BuildContext context,int EmployeeId)  async{
+
     updateEmployeeAttendanceLoader(true);
 
     var body={
@@ -287,23 +369,17 @@ class EmployeeAdvanceLoanNotifier extends ChangeNotifier{
         {
           "Key": "SpName",
           "Type": "String",
-          "Value": "${Sp.getEmployeeAttendanceDetail}"
+          "Value": "${Sp.getEmployeeAdvanceLoanDetail}"
         },
         {
-          "Key": "LoginEmployeeId",
+          "Key": "LoginUserId",
           "Type": "int",
           "Value": Provider.of<QuarryNotifier>(context,listen: false).UserId
         },
         {
           "Key": "EmployeeId",
           "Type": "int",
-          "Value": EmployeeAttendanceId
-        },
-        {
-          "Key": "Date",
-          "Type": "String",
-          "Value": reportDate==null?DateFormat("yyyy-MM-dd").format(DateTime.now()).toString():
-          DateFormat("yyyy-MM-dd").format(reportDate).toString()
+          "Value": EmployeeId
         },
 
         {
@@ -319,17 +395,30 @@ class EmployeeAdvanceLoanNotifier extends ChangeNotifier{
         if(value!=null){
           var parsed=json.decode(value);
           var t=parsed['Table'] as List;
-          if(EmployeeAttendanceId!=null ){
+
+          if(EmployeeId!=null ){
+            showEmpId=t[0]['EmployeeId'];
+            selectedEmployeeCode="${t[0]['Name']} - ${t[0]['Employee Code']}";
+            employeeCodeController.text=selectedEmployeeCode;
+            showEmpDesg=t[0]['Designation'];
+            selectedAmountType=t[0]['AmountType'];
+            if(t[0]['IsAdvance']==1){
+              advanceReasonController.text=t[0]['Reason'];
+              advanceAmountController.text=t[0]['Amount'].toString();
+            }
+            if(t[0]['IsLoan']==1){
+              loanReasonController.text=t[0]['Reason'];
+              loanAmountController.text=t[0]['LoanAmount'].toString();
+              selectedMonthDue=t[0]['DueMonth'];
+              emiAmount=t[0]['LoanEMI/Month'];
+            }
+
+
+
 
           }
           else{
-            EmployeeAttendanceGridList=t.map((e) => EmployeeAttendanceGridModel.fromJson(e)).toList();
-            totalEmployee=EmployeeAttendanceGridList.length;
-            totalPresent=EmployeeAttendanceGridList.where((element) => element.status=='Present').toList().length;
-            totalAbsent=EmployeeAttendanceGridList.where((element) => element.status=='Absent').toList().length;
-            EmployeeAttendanceGridList.forEach((element) {
-              employeeCode.add(element.employeePrefix+element.employeeCode);
-            });
+            gridData=t;
           }
         }
 
@@ -337,7 +426,7 @@ class EmployeeAdvanceLoanNotifier extends ChangeNotifier{
       });
     }catch(e){
       updateEmployeeAttendanceLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.getEmployeeAttendanceDetail}" , e.toString());
+      CustomAlert().commonErrorAlert(context, "${Sp.getEmployeeAdvanceLoanDetail}" , e.toString());
     }
 
 
@@ -351,9 +440,9 @@ class EmployeeAdvanceLoanNotifier extends ChangeNotifier{
 
 
 
-  bool isEmployeeLogin=true;
-  updateisEmployeeLogin(bool value){
-    isEmployeeLogin=value;
+  bool isEdit=false;
+  updateisEdit(bool value){
+    isEdit=value;
     notifyListeners();
   }
 

@@ -265,7 +265,7 @@ class EmployeeAttendanceNotifier extends ChangeNotifier{
             totalPresent=EmployeeAttendanceGridList.where((element) => element.status=='Present').toList().length;
             totalAbsent=EmployeeAttendanceGridList.where((element) => element.status=='Absent').toList().length;
             EmployeeAttendanceGridList.forEach((element) {
-              employeeCode.add(element.employeePrefix+element.employeeCode);
+              employeeCode.add("${element.employeeName}  -  ${element.employeePrefix+element.employeeCode}");
             });
           }
         }

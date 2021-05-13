@@ -247,7 +247,7 @@ class _EmployeeAttendanceLoginLogoutState extends State<EmployeeAttendanceLoginL
                                       setState(() {
                                         ean.selectedEmployeeCode=v;
                                         int index;
-                                        index=ean.EmployeeAttendanceGridList.indexWhere((element) => element.employeePrefix+element.employeeCode==v.toString()).toInt();
+                                        index=ean.EmployeeAttendanceGridList.indexWhere((element) =>  "${element.employeeName}  -  ${element.employeePrefix+element.employeeCode}"==v.toString()).toInt();
                                         ean.showEmpName=ean.EmployeeAttendanceGridList[index].employeeName;
                                         ean.showEmpDesg=ean.EmployeeAttendanceGridList[index].employeeDesignationName;
                                         ean.showEmpId=ean.EmployeeAttendanceGridList[index].employeeId;
@@ -466,7 +466,7 @@ class _EmployeeAttendanceLoginLogoutState extends State<EmployeeAttendanceLoginL
                                       setState(() {
                                         ean.selectedEmployeeCode=v;
                                         int index;
-                                        index=ean.EmployeeAttendanceGridList.indexWhere((element) => element.employeePrefix+element.employeeCode==v.toString()).toInt();
+                                        index=ean.EmployeeAttendanceGridList.indexWhere((element) =>  "${element.employeeName}  -  ${element.employeePrefix+element.employeeCode}"==v.toString()).toInt();
                                         ean.showEmpName=ean.EmployeeAttendanceGridList[index].employeeName;
                                         ean.showEmpDesg=ean.EmployeeAttendanceGridList[index].employeeDesignationName;
                                         ean.showEmpId=ean.EmployeeAttendanceGridList[index].employeeId;

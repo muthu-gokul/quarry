@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quarry/styles/size.dart';
 
 
 class AppTheme {
@@ -43,6 +44,9 @@ class AppTheme {
 
   static TextStyle userNameTS=TextStyle(fontFamily: 'RM',color: AppTheme.bgColor,fontSize: 16);
   static TextStyle userGroupTS=TextStyle(fontFamily: 'RL',color: AppTheme.gridTextColor,fontSize: 14);
+  static TextStyle userDesgTS=TextStyle(fontFamily: 'RR',color:AppTheme.grey.withOpacity(0.5),fontSize: 12);
+
+
 
   static TextStyle bgColorTS=TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 16);
   static TextStyle bgColorTS14=TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 14);
@@ -74,6 +78,7 @@ static BoxShadow yellowShadow=  BoxShadow(
   ]*/
 
  static EdgeInsets gridAppBarPadding=EdgeInsets.only(bottom: 15);
+ static EdgeInsets leftRightMargin20=EdgeInsets.only(left: SizeConfig.width20,right: SizeConfig.width20);
  static BorderRadius gridTopBorder=BorderRadius.only(topLeft: Radius.circular(15),topRight: Radius.circular(15));
 
 
