@@ -41,14 +41,19 @@ class _EmployeeAdvanceAddNewState extends State<EmployeeAdvanceAddNew> {
   void initState() {
     scrollController = new ScrollController();
     listViewController = new ScrollController();
+    setState(() {
+
+    });
     super.initState();
   }
 
 
   @override
   Widget build(BuildContext context) {
+
     final node=FocusScope.of(context);
     SizeConfig().init(context);
+    //node.unfocus();
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Consumer<EmployeeAdvanceLoanNotifier>(
@@ -177,7 +182,7 @@ class _EmployeeAdvanceAddNewState extends State<EmployeeAdvanceAddNew> {
                                         });
                                         scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                       },
-                                      value: eal.selectedEmployeeCode,
+                                      value: eal.employeeCodeController.text,
                                       controller: eal.employeeCodeController,
                                       reduceWidth: SizeConfig.width40,
                                       required: false,

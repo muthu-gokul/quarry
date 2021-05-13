@@ -516,13 +516,15 @@ class _EmployeeAdvanceLoanGridState extends State<EmployeeAdvanceLoanGrid> {
                                       GestureDetector(
                                         onTap: (){
                                           eal.updateisEdit(true);
-                                          eal.EmployeeAdvanceDropDownValues(context);
-                                          eal.GetEmployeeAttendanceLoanDbHit(context, eal.gridData[selectedIndex]['EmployeeId']);
-                                          Navigator.push(context, _createRoute());
-                                          setState(() {
-                                            showEdit=false;
-                                            selectedIndex=-1;
+                                          eal.EmployeeAdvanceDropDownValues(context).then((value) {
+                                            eal.GetEmployeeAttendanceLoanDbHit(context, eal.gridData[selectedIndex]['EmployeeId']);
+                                            Navigator.push(context, _createRoute());
+                                            setState(() {
+                                              showEdit=false;
+                                              selectedIndex=-1;
+                                            });
                                           });
+
                                         },
                                         child: Container(
                                           width: 70,

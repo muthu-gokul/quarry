@@ -1,18 +1,15 @@
-import 'dart:async';
-import 'dart:io';
-import 'dart:math';
-import 'package:circular_reveal_animation/circular_reveal_animation.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/login.dart';
-import 'package:quarry/model/goodsReceivedModel/goodsReceivedGridModel.dart';
 import 'package:quarry/notifier/customerNotifier.dart';
 import 'package:quarry/notifier/dieselNotifier.dart';
 import 'package:quarry/notifier/employeeAttendanceNotifier.dart';
 import 'package:quarry/notifier/employeeNotifier.dart';
+import 'package:quarry/notifier/employeeSalaryNotifier.dart';
 import 'package:quarry/notifier/enployeeAdvanceLoanNotifier.dart';
 import 'package:quarry/notifier/goodsReceivedNotifier.dart';
 import 'package:quarry/notifier/invoiceNotifier.dart';
@@ -32,38 +29,25 @@ import 'package:quarry/pages/invoice/invoiceGrid.dart';
 import 'package:quarry/pages/invoicePayment/paymentGrid.dart';
 import 'package:quarry/pages/productionDetails/productionDetailsGrid.dart';
 import 'package:quarry/pages/purchaseDetails/purchaseGrid.dart';
-import 'package:quarry/pages/quarryMaster/quarryMaster.dart';
-import 'package:quarry/pages/sale/salesDetail.dart';
 import 'package:quarry/pages/supplierDetail/supplierGrid.dart';
 import 'package:quarry/pages/users/profile.dart';
 import 'package:quarry/pages/vehicleDetail/vehicleDetailsGrid.dart';
 import 'package:quarry/pages/vendor/vendorMaster.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:quarry/widgets/animation/fadeanimation.dart';
-import 'package:quarry/widgets/reportpdf.dart';
 import '../styles/size.dart';
 import 'customerDetails/customerGrid.dart';
 import 'dieselManagement/dieselGrid.dart';
-import 'employee/employeeAdvanceLoan/employeeAdvanceLoanAddNew.dart';
 import 'employee/employeeAdvanceLoan/employeeAdvanceLoanGrid.dart';
 import 'employee/employeeMaster/employeeMasterGrid.dart';
-import 'machineDetails/machineDetailsAddNew.dart';
+import 'employee/employeeSalary/employeeSalaryGrid.dart';
 import 'machineDetails/machineDetailsGrid.dart';
-import 'material/MaterialMasterGrid.dart';
-import 'material/processAddNew.dart';
-import 'material/processMaterialsList.dart';
-import 'material/processStoneList.dart';
 import 'materialDetails/materialDetailsGrid.dart';
-import 'productionDetails/productionDetailsAddNew.dart';
-import 'qLocMaterials.dart';
-import 'qLocPAyment.dart';
 import 'quarryMaster/quarryLocationAddNew.dart';
 import 'reports/salesReport/salesReportGrid.dart';
-import 'sale/saleAddNew.dart';
 import 'sale/saleGrid.dart';
-import 'vendor/vendorLocAddNew.dart';
+
 
 
 
@@ -455,6 +439,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
           drawer.menuSelected==19?EmployeeAdvanceLoanGrid(drawerCallback: (){
             scaffoldkey.currentState.openDrawer();
           },):
+          drawer.menuSelected==20?EmployeeSalaryGrid(drawerCallback: (){
+            scaffoldkey.currentState.openDrawer();
+          },):
           Container()
       ),
     );
@@ -641,9 +628,9 @@ class EmployeeDetailsState extends State<EmployeeDetails> with TickerProviderSta
                       Navigator.pop(context);
                       widget.voidCallback();
 
-                      ////  Provider.of<DrawerNotifier>(context,listen: false).changeMenu(16);
+                      Provider.of<DrawerNotifier>(context,listen: false).changeMenu(20);
 
-                      ///  Provider.of<ReportsNotifier>(context,listen: false).ReportsDropDownValues(context,"CustomerSaleReport");
+                        Provider.of<EmployeeSalaryNotifier>(context,listen: false).GetEmployeeSalaryDbHit(context,null);
                       ///  Provider.of<ReportsNotifier>(context,listen: false).ReportsDbHit(context,"CustomerSaleReport");
 
                     },

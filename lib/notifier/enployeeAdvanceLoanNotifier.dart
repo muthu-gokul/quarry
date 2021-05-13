@@ -98,7 +98,7 @@ class EmployeeAdvanceLoanNotifier extends ChangeNotifier{
   List<EmpLoanAmountTypeModel> empAmountType=[];
 
   List<dynamic> amountTypeList=[];
-  EmployeeAdvanceDropDownValues(BuildContext context) async {
+  Future<dynamic> EmployeeAdvanceDropDownValues(BuildContext context) async {
     updateEmployeeAttendanceLoader(true);
     var body = {
       "Fields": [
@@ -148,7 +148,6 @@ class EmployeeAdvanceLoanNotifier extends ChangeNotifier{
         empList=t.map((e) => EmpLoanEmployeeModel.fromJson(e)).toList();
         empList.forEach((element) {
           searchEmpList.add("${element.employeeName}  -  ${element.employeePrefix+element.employeeCode}");
-
         });
 
 
@@ -399,7 +398,7 @@ class EmployeeAdvanceLoanNotifier extends ChangeNotifier{
           if(EmployeeId!=null ){
             showEmpId=t[0]['EmployeeId'];
             selectedEmployeeCode="${t[0]['Name']} - ${t[0]['Employee Code']}";
-            employeeCodeController.text=selectedEmployeeCode;
+            employeeCodeController.text="${t[0]['Name']} - ${t[0]['Employee Code']}";
             showEmpDesg=t[0]['Designation'];
             selectedAmountType=t[0]['AmountType'];
             if(t[0]['IsAdvance']==1){
@@ -412,6 +411,7 @@ class EmployeeAdvanceLoanNotifier extends ChangeNotifier{
               selectedMonthDue=t[0]['DueMonth'];
               emiAmount=t[0]['LoanEMI/Month'];
             }
+
 
 
 

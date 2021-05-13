@@ -69,6 +69,7 @@ class DropDownField extends FormField<String> {
   final TextEditingController controller;
   final TextEditingController qtycontroller;
 
+
   DropDownField(
       {Key key,
         this.controller,
@@ -354,6 +355,7 @@ class DropDownFieldState extends FormFieldState<String> {
     });
   }
 
+
   @override
   void didUpdateWidget(DropDownField oldWidget) {
      // node=FocusScope.of(context);
@@ -383,6 +385,8 @@ class DropDownFieldState extends FormFieldState<String> {
     super.initState();
     // node=FocusScope.of(context);
     _isSearching = false;
+    _showdropdown=false;
+    noitems=true;
     if (widget.controller == null) {
       _controller = TextEditingController(text: widget.initialValue);
     }
@@ -428,8 +432,8 @@ class DropDownFieldState extends FormFieldState<String> {
     // print(childItems.length);
     if(childItems.length==0){
       setState(() {
-        // _showdropdown=false;
-        //  _isSearching=false;
+         _showdropdown=false;
+          _isSearching=false;
          noitems=true;
       });
     }
@@ -477,8 +481,9 @@ class DropDownFieldState extends FormFieldState<String> {
       setState(() {
         _isSearching = true;
         _searchText = _effectiveController.text;
-        _showdropdown = true;
+       _showdropdown = true;
       });
+
     }
   }
 }
