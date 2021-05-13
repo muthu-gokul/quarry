@@ -118,5 +118,9 @@ class Sp{
 
   static String getEmployeeSalaryLoanDetail="USP_GetEmployeeSalaryDetail";
 
+  static String insertMachineManagementDetail="USP_InsertMachineManagementDetail";
+  static String updateMachineManagementDetail="USP_UpdateMachineManagementDetail";
+  static String getMachineManagementDetail="USP_GetMachineManagementDetail";
+
 }
 

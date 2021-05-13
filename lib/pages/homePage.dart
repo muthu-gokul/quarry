@@ -13,6 +13,7 @@ import 'package:quarry/notifier/employeeSalaryNotifier.dart';
 import 'package:quarry/notifier/enployeeAdvanceLoanNotifier.dart';
 import 'package:quarry/notifier/goodsReceivedNotifier.dart';
 import 'package:quarry/notifier/invoiceNotifier.dart';
+import 'package:quarry/notifier/machineManagementNotifier.dart';
 import 'package:quarry/notifier/machineNotifier.dart';
 import 'package:quarry/notifier/materialNotifier.dart';
 import 'package:quarry/notifier/paymentNotifier.dart';
@@ -43,6 +44,7 @@ import 'employee/employeeAdvanceLoan/employeeAdvanceLoanGrid.dart';
 import 'employee/employeeMaster/employeeMasterGrid.dart';
 import 'employee/employeeSalary/employeeSalaryGrid.dart';
 import 'machineDetails/machineDetailsGrid.dart';
+import 'machineManagement/machineManagementGrid.dart';
 import 'materialDetails/materialDetailsGrid.dart';
 import 'quarryMaster/quarryLocationAddNew.dart';
 import 'reports/salesReport/salesReportGrid.dart';
@@ -300,7 +302,11 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                   tag: "MachineManagement",
                                   titleColor: AppTheme.yellowColor,
                                   callback: (){
-
+                                    setState(() {
+                                      drawer.menuSelected=21;
+                                      scaffoldkey.currentState.openEndDrawer();
+                                    });
+                                    Provider.of<MachineManagementNotifier>(context, listen: false).GetMachineManagementDbHit(context,null,null);
                                   },
                                 ),
 
@@ -440,6 +446,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
             scaffoldkey.currentState.openDrawer();
           },):
           drawer.menuSelected==20?EmployeeSalaryGrid(drawerCallback: (){
+            scaffoldkey.currentState.openDrawer();
+          },):
+          drawer.menuSelected==21?MachineManagementGrid(drawerCallback: (){
             scaffoldkey.currentState.openDrawer();
           },):
           Container()

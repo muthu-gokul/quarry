@@ -602,6 +602,8 @@ class _EmployeeAdvanceAddNewState extends State<EmployeeAdvanceAddNew> {
                   ),
 
                 ),
+
+
                 ///////////Amount Type Open
                 PopUpStatic2(
                   title: "Select Amount Type",
@@ -626,8 +628,6 @@ class _EmployeeAdvanceAddNewState extends State<EmployeeAdvanceAddNew> {
                       isAmountTypeOpen=false;
                     });
                   },
-
-
                 ),
 
                 ////// Month Due
