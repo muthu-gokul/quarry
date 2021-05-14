@@ -190,6 +190,22 @@ class ReportNotifier extends ChangeNotifier{
       totalReportAmountTitle=" ";
       reportsGridColumnList=machineManagementReportGridCol;
     }
+    else if(typeName=="SaleAuditReport"){
+
+      reportHeader="Sale Audit Report";
+      totalReportTitle="Total Sales";
+      totalReportQtyTitle="Total Amount";
+      totalReportAmountTitle="Discount Amount";
+      reportsGridColumnList=saleAuditReportGridCol;
+    }
+    else if(typeName=="PurchaseAuditReport"){
+
+      reportHeader="Purchase Audit Report";
+      totalReportTitle="Total Purchase";
+      totalReportQtyTitle="Total Amount";
+      totalReportAmountTitle="Discount Amount";
+      reportsGridColumnList=purchaseAuditReportGridCol;
+    }
 
 
 
@@ -392,6 +408,33 @@ class ReportNotifier extends ChangeNotifier{
             filtersList.add(FilterDetailsModel(title:  "Machine Filter", list: machineList, instanceName: 'MachineName'));
             filtersList.add(FilterDetailsModel(title:  "Employee Filter", list: employeeList, instanceName: 'EmployeeName'));
           }
+          else if(typeName=="SaleAuditReport"){
+
+            var t=parsed["Table"] as List;
+            var t1=parsed["Table1"] as List;
+
+
+            plantList=t;
+            customerList =t1;
+
+
+            filtersList.add(FilterDetailsModel(title:  "Plant Filter", list: plantList, instanceName: 'PlantName'),);
+            filtersList.add(FilterDetailsModel(title:  "Customer Filter", list: customerList, instanceName: 'CustomerName'));
+
+          }
+          else if(typeName=="PurchaseAuditReport"){
+
+            var t=parsed["Table"] as List;
+            var t1=parsed["Table1"] as List;
+
+
+            plantList=t;
+            supplierList=t1;
+
+
+            filtersList.add(FilterDetailsModel(title:  "Plant Filter", list: plantList, instanceName: 'PlantName'),);
+            filtersList.add(FilterDetailsModel(title:  "Supplier  Filter", list: customerList, instanceName: 'SupplierName'));
+          }
 
 
         }
@@ -519,6 +562,16 @@ class ReportNotifier extends ChangeNotifier{
             var t=parsed["Table"] as List;
             machineManagementReportGridList=t;
             filterMachineManagementReport();
+          }
+          else if(typeName=="SaleAuditReport"){
+            var t=parsed["Table"] as List;
+            saleAuditReportGridList=t;
+            filterSaleAuditReport();
+          }
+          else if(typeName=="PurchaseAuditReport"){
+            var t=parsed["Table"] as List;
+            purchaseAuditReportGridList=t;
+            filterPurchaseAuditReport();
           }
         }
         updateReportLoader(false);
@@ -1319,6 +1372,133 @@ class ReportNotifier extends ChangeNotifier{
     totalReportQty=machinesTotal.length;
 
     reportsGridDataList=filterMachineManagementReportGridList;
+    notifyListeners();
+  }
+
+
+  /*  SaleAuditReport Report */
+  List<ReportGridStyleModel2> saleAuditReportGridCol=[ReportGridStyleModel2(columnName: "SaleNumber",edgeInsets: EdgeInsets.only(left: 10,right: 10)),
+    ReportGridStyleModel2(columnName: "CustomerGSTNumber"),ReportGridStyleModel2(columnName: "CustomerName"),ReportGridStyleModel2(columnName:"CGST"),
+    ReportGridStyleModel2(columnName: "SGST"),ReportGridStyleModel2(columnName: "DiscountAmount"),ReportGridStyleModel2(columnName: "GrossAmount"),
+    ReportGridStyleModel2(columnName: "PlantName"),
+
+  ];
+
+
+
+  List<dynamic> saleAuditReportGridList=[];
+  List<dynamic> filterSaleAuditReportGridList=[];
+
+  List<dynamic> tempSaleAuditReportPlantFilter=[];
+
+
+  filterSaleAuditReport() async{
+
+    filterSaleAuditReportGridList.clear();
+    reportsGridDataList.clear();
+
+    tempSaleAuditReportPlantFilter.clear();
+
+
+
+
+    totalReport=0;
+    totalReportQty=0.0;
+    totalReportAmount=0.0;
+
+    plantList.forEach((element) {
+      if(element['IsActive']==1){
+        tempSaleAuditReportPlantFilter=tempSaleAuditReportPlantFilter+saleAuditReportGridList.where((ele) => ele['PlantId']==element['PlantId']).toList();
+      }
+    });
+
+
+
+    customerList.forEach((element) {
+      if(element['IsActive']==1){
+        filterSaleAuditReportGridList=filterSaleAuditReportGridList+tempSaleAuditReportPlantFilter.where((ele) => ele['CustomerId']==element['CustomerId']).toList();
+      }
+    });
+
+
+
+
+
+    totalReport=filterSaleAuditReportGridList.length;
+    Map<int,dynamic> machinesTotal={};
+
+    filterSaleAuditReportGridList.forEach((element) {
+      totalReportQty=Calculation().add(totalReportQty, element['GrossAmount']??0.0);
+      totalReportAmount=Calculation().add(totalReportAmount, element['DiscountAmount']??0.0);
+
+    });
+
+
+
+    reportsGridDataList=filterSaleAuditReportGridList;
+    notifyListeners();
+  }
+
+  /*  PurchaseAuditReport Report */
+  List<ReportGridStyleModel2> purchaseAuditReportGridCol=[ReportGridStyleModel2(columnName: "PurchaseOrderNumber",edgeInsets: EdgeInsets.only(left: 10,right: 10)),
+    ReportGridStyleModel2(columnName: "SupplierGSTNumber"),ReportGridStyleModel2(columnName: "SupplierName"),ReportGridStyleModel2(columnName:"CGST"),
+    ReportGridStyleModel2(columnName: "SGST"),ReportGridStyleModel2(columnName: "DiscountAmount"),ReportGridStyleModel2(columnName: "GrandTotalAmount"),
+    ReportGridStyleModel2(columnName: "PlantName"),
+
+  ];
+
+
+
+  List<dynamic> purchaseAuditReportGridList=[];
+  List<dynamic> filterPurchaseAuditReportGridList=[];
+
+  List<dynamic> tempPurchaseAuditReportPlantFilter=[];
+
+
+  filterPurchaseAuditReport() async{
+
+    filterPurchaseAuditReportGridList.clear();
+    reportsGridDataList.clear();
+
+    tempPurchaseAuditReportPlantFilter.clear();
+
+
+
+
+    totalReport=0;
+    totalReportQty=0.0;
+    totalReportAmount=0.0;
+
+    plantList.forEach((element) {
+      if(element['IsActive']==1){
+        tempPurchaseAuditReportPlantFilter=tempPurchaseAuditReportPlantFilter+purchaseAuditReportGridList.where((ele) => ele['PlantId']==element['PlantId']).toList();
+      }
+    });
+
+
+
+    supplierList.forEach((element) {
+      if(element['IsActive']==1){
+        filterPurchaseAuditReportGridList=filterPurchaseAuditReportGridList+tempPurchaseAuditReportPlantFilter.where((ele) => ele['SupplierId']==element['SupplierId']).toList();
+      }
+    });
+
+
+
+
+
+    totalReport=filterPurchaseAuditReportGridList.length;
+    Map<int,dynamic> machinesTotal={};
+
+    filterPurchaseAuditReportGridList.forEach((element) {
+      totalReportQty=Calculation().add(totalReportQty, element['GrandTotalAmount']??0.0);
+      totalReportAmount=Calculation().add(totalReportAmount, element['DiscountAmount']??0.0);
+
+    });
+
+
+
+    reportsGridDataList=filterPurchaseAuditReportGridList;
     notifyListeners();
   }
 
