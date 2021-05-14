@@ -93,7 +93,8 @@ class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
   ];
   List<GridStyleModel> gridDataRowListDieselIssue=[
     GridStyleModel(columnName: "Date"),
-    GridStyleModel(columnName: "Machine Name"),
+    GridStyleModel(columnName: "Type"),
+    GridStyleModel(columnName: "Machine/Vehicle"),
     GridStyleModel(columnName: "Fuel Reading"),
     GridStyleModel(columnName: "Issued By"),
     GridStyleModel(columnName: "Diesel Quantity"),
@@ -423,30 +424,7 @@ class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
                               Navigator.push(context, _createRouteDieselIssue());
                             }
 
-                            /*  if(qn.tabController.index==0){
-                                if(qn.SS_vehicleNo.text.isEmpty){
-                                  CustomAlert().commonErrorAlert(context, "Enter Vehicle Number", "");
-                                }
-                                else if(qn.SS_emptyVehicleWeight.text.isEmpty){
-                                  CustomAlert().commonErrorAlert(context, "Enter Vehicle Weight", "");
-                                }
-                                else if(qn.SS_customerNeedWeight.text.isEmpty && qn.SS_customerNeedWeight.text!="0"){
-                                  CustomAlert().commonErrorAlert(context, "Enter Customer Need Weight", "");
-                                }
-                                else{
-                                  qn.InsertSaleDetailDbhit(context);
-                                }
-                              }
-                              else if(qn.tabController.index==1){
-                                if(qn.searchVehicleNo.text.isEmpty){
-                                  CustomAlert().commonErrorAlert(context, "Enter Vehicle Number", "");
-                                }
-                                else if(qn.SS_DifferWeightController.text.isEmpty){
-                                  CustomAlert().commonErrorAlert(context, "Enter Vehicle Weight", "");
-                                }else{
-                                  qn.UpdateSaleDetailDbhit(context);
-                                }
-                              }*/
+
 
 
 
@@ -604,29 +582,40 @@ class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
                                           ),
                                         ),
                                         Spacer(),
-                                        Container(
-                                          width: 90,
-                                          decoration: BoxDecoration(
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  color: AppTheme.red.withOpacity(0.5),
-                                                  spreadRadius: -3,
-                                                  blurRadius: 25,
-                                                  offset: Offset(0, 7), // changes position of shadow
-                                                )
-                                              ]
-                                          ),
-                                          child:FittedBox(
-                                            child: Row(
-                                              children: [
-                                                Text("Delete",style: TextStyle(fontSize: 18,fontFamily: 'RR',color:Colors.red),),
-                                                SizedBox(width: SizeConfig.width10,),
-                                                SvgPicture.asset("assets/svg/delete.svg",height: 20,width: 20,color: AppTheme.red,),
+                                        GestureDetector(
+                                          onTap: (){
+                                            if(pageIndex==1){
+                                              dn.DeleteDieselIssueDbHit(context, dn.dieselIssueGridList[selectedIndex].dieselIssueId);
+                                              setState(() {
+                                                showEdit=false;
+                                                selectedIndex=-1;
+                                              });
+                                            }
+                                          },
+                                          child: Container(
+                                            width: 90,
+                                            decoration: BoxDecoration(
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: AppTheme.red.withOpacity(0.5),
+                                                    spreadRadius: -3,
+                                                    blurRadius: 25,
+                                                    offset: Offset(0, 7), // changes position of shadow
+                                                  )
+                                                ]
+                                            ),
+                                            child:FittedBox(
+                                              child: Row(
+                                                children: [
+                                                  Text("Delete",style: TextStyle(fontSize: 18,fontFamily: 'RR',color:Colors.red),),
+                                                  SizedBox(width: SizeConfig.width10,),
+                                                  SvgPicture.asset("assets/svg/delete.svg",height: 20,width: 20,color: AppTheme.red,),
 
 
 
 
-                                              ],
+                                                ],
+                                              ),
                                             ),
                                           ),
                                         ),

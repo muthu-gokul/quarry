@@ -11,13 +11,15 @@ class DieselIssueGridModel {
     this.machineFuelReadingQuantity,
     this.issuedBy,
     this.issuedName,
-    this.dieselIssueId
+    this.dieselIssueId,
+    this.Type,
   });
 
   DateTime issuedDate;
   int plantId;
   int dieselIssueId;
   String plantName;
+  String Type;
   int machineId;
   String machineName;
   double dieselIssuedQuantity;
@@ -30,8 +32,9 @@ class DieselIssueGridModel {
     plantId: json["PlantId"],
     dieselIssueId: json["DieselIssueId"],
     plantName: json["PlantName"],
+    Type: json["Type"],
     machineId: json["MachineId"],
-    machineName: json["MachineName"],
+    machineName: json["Machine/Vehicle"],
     dieselIssuedQuantity: json["DieselIssuedQuantity"],
     machineFuelReadingQuantity: json["MachineFuelReadingQuantity"],
     issuedBy: json["IssuedBy"],
@@ -52,7 +55,8 @@ class DieselIssueGridModel {
 
   Map<String, dynamic> toGridJson() => {
     "Date": issuedDate!=null?DateFormat.yMMMd().format(issuedDate):" ",
-    "Machine Name": machineName,
+    "Machine/Vehicle": machineName,
+    "Type": Type,
     "Diesel Quantity": dieselIssuedQuantity,
     "Fuel Reading": machineFuelReadingQuantity,
     "Issued By": issuedName,
@@ -63,7 +67,7 @@ class DieselIssueGridModel {
     if (_mapRep.containsKey(propertyName)) {
       return _mapRep[propertyName];
     }
-    throw ArgumentError('property not found');
+    throw ArgumentError('property not found $propertyName}');
   }
 
 }

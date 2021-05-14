@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
 
-class PopUpSearchOnly extends StatefulWidget {
+class PopUpSearchOnly2 extends StatefulWidget {
 
   bool isOpen;
   TextEditingController searchController;
@@ -19,14 +19,14 @@ class PopUpSearchOnly extends StatefulWidget {
   VoidCallback closeOnTap;
   //VoidCallback addNewOnTap;
 
-  PopUpSearchOnly({this.isOpen,this.searchController,this.searchOnchange,this.itemOnTap,this.dataList,
+  PopUpSearchOnly2({this.isOpen,this.searchController,this.searchOnchange,this.itemOnTap,this.dataList,
     this.propertyKeyName,this.propertyKeyId,this.selectedId,this.closeOnTap,this.searchHintText});
 
   @override
-  _PopUpSearchOnlyState createState() => _PopUpSearchOnlyState();
+  _PopUpSearchOnly2State createState() => _PopUpSearchOnly2State();
 }
 
-class _PopUpSearchOnlyState extends State<PopUpSearchOnly> {
+class _PopUpSearchOnly2State extends State<PopUpSearchOnly2> {
   ScrollController listController=new ScrollController();
 
   @override
@@ -139,13 +139,13 @@ class _PopUpSearchOnlyState extends State<PopUpSearchOnly> {
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(5),
                                     border: Border.all(color: AppTheme.addNewTextFieldBorder),
-                                    color: widget.selectedId==null ?Color(0xFFf8f8f8):widget.selectedId==widget.dataList[index].get(widget.propertyKeyId)?AppTheme.bgColor:Colors.white
+                                    color: widget.selectedId==null ?Color(0xFFf8f8f8):widget.selectedId==widget.dataList[index][widget.propertyKeyId]?AppTheme.bgColor:Colors.white
                                 ),
                                 child: Center(
                                   child: FittedBox(
                                     fit: BoxFit.contain,
-                                    child: Text("${widget.dataList[index].get(widget.propertyKeyName)}",style: TextStyle(fontFamily: 'RR',fontSize: 16,
-                                        color: widget.selectedId==null ?AppTheme.bgColor:widget.selectedId==widget.dataList[index].get(widget.propertyKeyId)?Colors.white:AppTheme.bgColor
+                                    child: Text("${widget.dataList[index][widget.propertyKeyName]}",style: TextStyle(fontFamily: 'RR',fontSize: 16,
+                                        color: widget.selectedId==null ?AppTheme.bgColor:widget.selectedId==widget.dataList[index][widget.propertyKeyId]?Colors.white:AppTheme.bgColor
 
                                     ),),
                                   ),

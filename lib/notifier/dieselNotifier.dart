@@ -105,11 +105,21 @@ class DieselNotifier extends ChangeNotifier{
 
   List<FuelSupplierModel> fuelSupplierList=[];
   List<FuelPurchaserModel> fuelPurchaserList=[];
-  List<DieselVehicleModel> vehicleList=[];
-  List<DieselVehicleModel> filterVehicleList=[];
+ // List<DieselVehicleModel> vehicleList=[];
+ // List<DieselVehicleModel> filterVehicleList=[];
 
-  List<FuelPurchaserModel> issuedByList=[];
-  List<DieselMachineModel> machineList=[];
+  List<dynamic> issuedByList=[];
+  List<dynamic> filterIssuedByList=[];
+  //List<DieselMachineModel> machineList=[];
+
+  List<dynamic> machineTypeList=[];
+
+  List<dynamic> vehicleList=[];
+  List<dynamic> filterVehicleList=[];
+
+  List<dynamic> machineList=[];
+  List<dynamic> filterMachineList=[];
+
   DieselDropDownValues(BuildContext context) async {
     updateDieselLoader(true);
     var body={
@@ -147,14 +157,21 @@ class DieselNotifier extends ChangeNotifier{
 
           var t3=parsed['Table3'] as List;
           var t4=parsed['Table4'] as List;
+          var t5=parsed['Table5'] as List;
 
           fuelSupplierList=t.map((e) => FuelSupplierModel.fromJson(e)).toList();
           fuelPurchaserList=t1.map((e) => FuelPurchaserModel.fromJson(e)).toList();
-          vehicleList=t2.map((e) => DieselVehicleModel.fromJson(e)).toList();
-          filterVehicleList=t2.map((e) => DieselVehicleModel.fromJson(e)).toList();
 
-          machineList=t3.map((e) => DieselMachineModel.fromJson(e)).toList();
-          issuedByList=t4.map((e) => FuelPurchaserModel.fromJson(e)).toList();
+          vehicleList=t2;
+          filterVehicleList=t2;
+
+          machineList=t3;
+          filterMachineList=t3;
+
+          issuedByList=t4;
+          filterIssuedByList=t4;
+
+          machineTypeList=t5;
 
         }
 
@@ -175,7 +192,29 @@ class DieselNotifier extends ChangeNotifier{
       filterVehicleList=vehicleList;
     }
     else{
-      filterVehicleList=vehicleList.where((element) => element.vehicleNumber.toLowerCase().contains(value.toLowerCase())).toList();
+      filterVehicleList=vehicleList.where((element) => element['VehicleNumber'].toLowerCase().contains(value.toLowerCase())).toList();
+    }
+    notifyListeners();
+  }
+
+
+  searchMachine(String value){
+    if(value.isEmpty){
+      filterMachineList=machineList;
+    }
+    else{
+      filterMachineList=machineList.where((element) => element['MachineName'].toLowerCase().contains(value.toLowerCase())).toList();
+    }
+    notifyListeners();
+  }
+
+
+  searchIssuedBy(String value){
+    if(value.isEmpty){
+      filterIssuedByList=issuedByList;
+    }
+    else{
+      filterIssuedByList=issuedByList.where((element) => element['EmployeeName'].toLowerCase().contains(value.toLowerCase())).toList();
     }
     notifyListeners();
   }
@@ -474,6 +513,10 @@ double totalAmount=0.0;
   TextEditingController DI_machineRunningMeter=new TextEditingController();
   TextEditingController DI_dieselQty=new TextEditingController();
 
+  String DI_MachinType=null;
+  bool isVehicle=false;
+  bool isMachine=false;
+
 
   int EditDieselIssueId=null;
 
@@ -497,9 +540,24 @@ double totalAmount=0.0;
           "Value": DI_plantID
         },
         {
+          "Key": "IsMachine",
+          "Type": "int",
+          "Value": isMachine?1:0
+        },
+        {
+          "Key": "IsVehicle",
+          "Type": "int",
+          "Value": isVehicle?1:0
+        },
+        {
           "Key": "MachineId",
           "Type": "int",
-          "Value": DI_machineID
+          "Value":isMachine? DI_machineID:null
+        },
+        {
+          "Key": "VehicleId",
+          "Type": "int",
+          "Value":isVehicle? DI_machineID:null
         },
 
         {
@@ -568,6 +626,9 @@ double totalAmount=0.0;
     DI_dieselQty.clear();
     DI_issueID=null;
     DI_issueName=null;
+     DI_MachinType=null;
+     isVehicle=false;
+     isMachine=false;
   }
 
   insertDI_form(){
@@ -576,7 +637,7 @@ double totalAmount=0.0;
 
 
   List<DieselIssueGridModel> dieselIssueGridList=[];
-  List<String> dieselIssueGridCol=["Date","Machine Name","Fuel Reading","Issued By","Diesel Quantity"];
+  List<String> dieselIssueGridCol=["Date","Type","Machine/Vehicle","Fuel Reading","Issued By","Diesel Quantity"];
   var dieselIssueGridOverAllHeader={};
 
 
@@ -615,16 +676,29 @@ double totalAmount=0.0;
         if(value!=null){
           var parsed=json.decode(value);
           var t=parsed['Table'] as List;
+          print(t);
           if(dieselIssueId!=null ){
             EditDieselIssueId=t[0]['DieselIssueId'];
             DI_plantID=t[0]['PlantId'];
             DI_plantName=t[0]['PlantName'];
-            DI_machineID=t[0]['MachineId'];
-            DI_machineName=t[0]['MachineName'];
+            DI_MachinType=t[0]['Type'];
+
             DI_machineRunningMeter.text=t[0]['MachineFuelReadingQuantity'].toString();
             DI_dieselQty.text=t[0]['DieselIssuedQuantity'].toString();
             DI_issueID=t[0]['IssuedBy'];
             DI_issueName=t[0]['IssuedName'];
+            isMachine=t[0]['IsMachine'];
+            isVehicle=t[0]['IsVehicle'];
+            if(isMachine){
+              DI_machineID=t[0]['MachineId'];
+              DI_machineName=t[0]['MachineName'];
+            }
+            else if(isVehicle){
+              DI_machineID=t[0]['VehicleId'];
+              DI_machineName=t[0]['VehicleNumber'];
+            }
+
+
           }
           else{
             dieselIssueGridOverAllHeader=parsed['Table1'][0];
@@ -637,6 +711,58 @@ double totalAmount=0.0;
     }catch(e){
       updateDieselLoader(false);
       CustomAlert().commonErrorAlert(context, "${Sp.getDieselIssueDetail}" , e.toString());
+    }
+
+
+  }
+
+  DeleteDieselIssueDbHit(BuildContext context,int DieselIssueId)  async{
+    updateDieselLoader(true);
+    var body={
+      "Fields": [
+        {
+          "Key": "SpName",
+          "Type": "String",
+          "Value":  "${Sp.deleteDieselIssueDetail}"
+        },
+        {
+          "Key": "LoginUserId",
+          "Type": "int",
+          "Value": Provider.of<QuarryNotifier>(context,listen: false).UserId
+        },
+
+
+        {
+          "Key": "DieselIssueId",
+          "Type": "int",
+          "Value": DieselIssueId
+        },
+
+
+        {
+          "Key": "database",
+          "Type": "String",
+          "Value": Provider.of<QuarryNotifier>(context,listen: false).DataBaseName
+        }
+      ]
+    };
+
+    try{
+      await call.ApiCallGetInvoke(body,context).then((value) {
+
+        if(value!=null){
+          var parsed=json.decode(value);
+
+
+          GetDieselIssueDbHit(context, null);
+
+        }
+
+        updateDieselLoader(false);
+      });
+    }catch(e){
+      updateDieselLoader(false);
+      CustomAlert().commonErrorAlert(context, "${Sp.deleteDieselIssueDetail}" , e.toString());
     }
 
 

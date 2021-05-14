@@ -13,11 +13,15 @@ import 'package:quarry/pages/sale/salesDetail.dart';
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
+import 'package:quarry/widgets/alertDialog.dart';
 
 import 'package:quarry/widgets/currentDateContainer.dart';
 import 'package:quarry/widgets/customTextField.dart';
 import 'package:quarry/widgets/expectedDateContainer.dart';
+import 'package:quarry/widgets/sidePopUp/noModel/sidePopUpSearchNoModel.dart';
 import 'package:quarry/widgets/sidePopUp/sidePopUpWithoutSearch.dart';
+import 'package:quarry/widgets/sidePopUp/sidePopupWithoutModelList.dart';
+import 'package:quarry/widgets/validationErrorText.dart';
 
 
 
@@ -38,11 +42,24 @@ class DieselIssueFormState extends State<DieselIssueForm> with TickerProviderSta
   ScrollController listViewController;
 
   bool _keyboardVisible=false;
+  bool isListScroll=false;
+
   bool isMachineOpen=false;
+  bool isMachineTypeOpen=false;
   bool isIssueOpen=false;
   bool isSupplierOpen=false;
   bool isVehicleOpen=false;
   bool isPlantOpen=false;
+
+  TextEditingController searchController=new TextEditingController();
+
+  //validations
+  bool plant=false;
+  bool type=false;
+  bool machine=false;
+  bool machineReading=false;
+  bool issuedBy=false;
+  bool qty=false;
 
 
   @override
@@ -56,37 +73,8 @@ class DieselIssueFormState extends State<DieselIssueForm> with TickerProviderSta
       setState(() {
 
       });
-      listViewController.addListener(() {
-        if(listViewController.position.userScrollDirection == ScrollDirection.forward){
-          /*print("Down");*/
-        } else
-        if(listViewController.position.userScrollDirection == ScrollDirection.reverse){
-          /*print("Up");*/
-          scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
-        }
-        print("LISt-${listViewController.offset}");
-        if(listViewController.offset>20){
-
-          scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
 
 
-        }
-        else if(listViewController.offset==0){
-          scrollController.animateTo(0, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
-        }
-      });
-
-/*      listViewController.addListener(() {
-        if(listViewController.offset>10){
-          if(scrollController.offset==0){
-            scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
-          }
-
-        }
-        else if(listViewController.offset==0){
-          scrollController.animateTo(0, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
-        }
-      });*/
 
     });
     super.initState();
@@ -152,13 +140,26 @@ class DieselIssueFormState extends State<DieselIssueForm> with TickerProviderSta
                         alignment: Alignment.topCenter,
                         child: GestureDetector(
                           onVerticalDragUpdate: (details){
-                            int sensitivity = 5;
 
+                            int sensitivity = 5;
                             if (details.delta.dy > sensitivity) {
-                              scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+                              scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
+                                if(isListScroll){
+                                  setState(() {
+                                    isListScroll=false;
+                                  });
+                                }
+                              });
 
                             } else if(details.delta.dy < -sensitivity){
-                              scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+                              scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
+
+                                if(!isListScroll){
+                                  setState(() {
+                                    isListScroll=true;
+                                  });
+                                }
+                              });
                             }
                           },
                           child: Container(
@@ -174,15 +175,32 @@ class DieselIssueFormState extends State<DieselIssueForm> with TickerProviderSta
                               onNotification: (s){
                                 if(s is ScrollStartNotification){
 
-                                  print("Scroll Start");
-                                  // if(scrollController.offset==100){
-                                  //   scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
-                                  // }
+                                  if(listViewController.offset==0 && isListScroll && scrollController.offset==100 && listViewController.position.userScrollDirection==ScrollDirection.idle){
+
+                                    Timer(Duration(milliseconds: 100), (){
+                                      if(listViewController.position.userScrollDirection!=ScrollDirection.reverse){
+
+                                        //if(scrollController.position.pixels == scrollController.position.maxScrollExtent){
+                                        if(listViewController.offset==0){
+
+                                          scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value) {
+                                            if(isListScroll){
+                                              setState(() {
+                                                isListScroll=false;
+                                              });
+                                            }
+                                          });
+                                        }
+
+                                      }
+                                    });
+                                  }
                                 }
                               },
                               child: ListView(
                                 controller: listViewController,
                                 scrollDirection: Axis.vertical,
+                                physics: isListScroll?AlwaysScrollableScrollPhysics():NeverScrollableScrollPhysics(),
 
                                 children: [
 
@@ -215,6 +233,7 @@ class DieselIssueFormState extends State<DieselIssueForm> with TickerProviderSta
 
                                     ),
                                   ),
+                                  plant?ValidationErrorText(title: "* Select Plant",):Container(),
 
                                   GestureDetector(
                                     onTap: (){
@@ -228,8 +247,45 @@ class DieselIssueFormState extends State<DieselIssueForm> with TickerProviderSta
                                           });
                                         });
                                         setState(() {
-                                          isMachineOpen=true;
+                                          isMachineTypeOpen=true;
+                                          dn.DI_machineID=null;
+                                          dn.DI_machineName=null;
                                         });
+
+
+
+                                    },
+                                    child: SidePopUpParent(
+                                      text: dn.DI_MachinType==null? "Select Type":dn.DI_MachinType,
+                                      textColor: dn.DI_MachinType==null? AppTheme.addNewTextFieldText.withOpacity(0.5):AppTheme.addNewTextFieldText,
+                                      iconColor: dn.DI_MachinType==null? AppTheme.addNewTextFieldText:AppTheme.yellowColor,
+                                      bgColor: dn.DI_MachinType==null? AppTheme.disableColor:Colors.white,
+
+                                    ),
+                                  ),
+                                  type?ValidationErrorText(title: "* Select Type",):Container(),
+
+                                  GestureDetector(
+                                    onTap: (){
+
+
+                                        node.unfocus();
+
+                                        Timer(Duration(milliseconds: 50), (){
+                                          setState(() {
+                                            _keyboardVisible=false;
+                                          });
+                                        });
+                                        if(dn.DI_MachinType!=null){
+                                          setState(() {
+                                            isMachineOpen=true;
+
+                                          });
+                                        }
+                                        else{
+                                          CustomAlert().commonErrorAlert(context, "Select Type", "");
+                                        }
+
 
 
 
@@ -242,6 +298,7 @@ class DieselIssueFormState extends State<DieselIssueForm> with TickerProviderSta
 
                                     ),
                                   ),
+                                  machine?ValidationErrorText(title: "* Select ${dn.isMachine?"Machine":"Vehicle"}",):Container(),
 
                                   AddNewLabelTextField(
                                     textEditingController: dn.DI_machineRunningMeter,
@@ -251,6 +308,7 @@ class DieselIssueFormState extends State<DieselIssueForm> with TickerProviderSta
                                       scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                       setState(() {
                                         _keyboardVisible=true;
+                                        isListScroll=true;
                                       });
                                     },
                                     onEditComplete: (){
@@ -263,7 +321,7 @@ class DieselIssueFormState extends State<DieselIssueForm> with TickerProviderSta
                                     },
 
                                   ),
-
+                                  machineReading?ValidationErrorText(title: "* Enter Reading",):Container(),
 
                                   GestureDetector(
                                     onTap: (){
@@ -291,16 +349,17 @@ class DieselIssueFormState extends State<DieselIssueForm> with TickerProviderSta
 
                                     ),
                                   ),
+                                  issuedBy?ValidationErrorText(title: "* Select IssuedBy",):Container(),
                                   AddNewLabelTextField(
                                     textEditingController: dn.DI_dieselQty,
                                     labelText: "Diesel Quantity",
                                     textInputType: TextInputType.number,
-                                    scrollPadding: 100,
+                                    scrollPadding: 400,
                                     ontap: (){
-                                      //scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
-                                      scrollController.jumpTo(100);
+                                      scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                       setState(() {
                                         _keyboardVisible=true;
+                                        isListScroll=true;
                                       });
                                     },
                                     onEditComplete: (){
@@ -312,6 +371,7 @@ class DieselIssueFormState extends State<DieselIssueForm> with TickerProviderSta
                                       });
                                     },
                                   ),
+                                  qty?ValidationErrorText(title: "* Enter Diesel Quantity",):Container(),
 
                                   SizedBox(height: _keyboardVisible? SizeConfig.screenHeight*0.5:200,)
                                 ],
@@ -355,15 +415,7 @@ class DieselIssueFormState extends State<DieselIssueForm> with TickerProviderSta
                         size: Size( SizeConfig.screenWidth, 65),
                         painter: RPSCustomPainter3(),
                       ),
-                      Center(
-                        heightFactor: 0.5,
-                        child: FloatingActionButton(backgroundColor: AppTheme.yellowColor, child: Icon(Icons.done,color: AppTheme.bgColor,size: 30,), elevation: 0.1, onPressed: () {
 
-                          dn.InsertDieselIssueDbHit(context);
-
-
-                        }),
-                      ),
                       Container(
                         width:  SizeConfig.screenWidth,
                         height: 80,
@@ -376,6 +428,61 @@ class DieselIssueFormState extends State<DieselIssueForm> with TickerProviderSta
                         ),
                       )
                     ],
+                  ),
+                ),
+              ),
+
+              //addButton
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: GestureDetector(
+                  onTap: (){
+
+                    if(dn.DI_plantID==null) {setState(() {plant = true;});}
+                    else{setState(() {plant=false;});}
+
+                    if(dn.DI_MachinType==null) {setState(() {type = true;});}
+                    else{setState(() {type=false;});}
+
+                    if(dn.DI_machineID==null) {setState(() {machine = true;});}
+                    else{setState(() {machine=false;});}
+
+                    if(dn.DI_machineRunningMeter.text.isEmpty) {setState(() {machineReading = true;});}
+                    else{setState(() {machineReading=false;});}
+
+                    if(dn.DI_issueID==null) {setState(() {issuedBy = true;});}
+                    else{setState(() {issuedBy=false;});}
+
+                    if(dn.DI_dieselQty.text.isEmpty) {setState(() {qty = true;});}
+                    else{setState(() {qty=false;});}
+
+
+                    if(!plant&& !type&& !machine&& !machineReading&& !issuedBy&& !qty){
+                      dn.InsertDieselIssueDbHit(context);
+                    }
+
+
+                  },
+                  child: Container(
+
+                    height:_keyboardVisible? 0:65,
+                    width: 65,
+                    margin: EdgeInsets.only(bottom: 20),
+                    decoration:BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: AppTheme.yellowColor,
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppTheme.yellowColor.withOpacity(0.4),
+                          spreadRadius: 1,
+                          blurRadius: 5,
+                          offset: Offset(1, 8), // changes position of shadow
+                        ),
+                      ],
+                    ),
+                    child: Center(
+                      child: Icon( Icons.done,size:_keyboardVisible? 0:40,color: AppTheme.bgColor,),
+                    ),
                   ),
                 ),
               ),
@@ -426,14 +533,14 @@ class DieselIssueFormState extends State<DieselIssueForm> with TickerProviderSta
 
 
               Container(
-                height: isMachineOpen  || isIssueOpen || isPlantOpen  ? SizeConfig.screenHeight:0,
-                width: isMachineOpen  || isIssueOpen|| isPlantOpen ? SizeConfig.screenWidth:0,
+                height: isMachineOpen  || isIssueOpen || isPlantOpen  || isMachineTypeOpen  ? SizeConfig.screenHeight:0,
+                width: isMachineOpen  || isIssueOpen|| isPlantOpen|| isMachineTypeOpen ? SizeConfig.screenWidth:0,
                 color: Colors.black.withOpacity(0.5),
               ),
 
 
-              ///////////////////////////////////////   Machine List    ////////////////////////////////
-              PopUpStatic(
+
+             /* PopUpStatic(
                 title: "Select Machine",
                 isAlwaysShown: true,
                 isOpen: isMachineOpen,
@@ -453,34 +560,121 @@ class DieselIssueFormState extends State<DieselIssueForm> with TickerProviderSta
                     isMachineOpen=false;
                   });
                 },
-              ),
+              ),*/
 
-
-
-
-              ///////////////////////////////////////   Issued By List    ////////////////////////////////
-              PopUpStatic(
-                title: "Select Issued By",
-                isAlwaysShown: true,
-                isOpen: isIssueOpen,
-                dataList: dn.issuedByList,
-                propertyKeyName:"EmployeeName",
-                propertyKeyId: "EmployeeId",
-                selectedId: dn.DI_issueID,
+              ///////////////////////////////////////  TYPE LIST  ////////////////////////////////
+              PopUpStatic2(
+                title: "Select Type",
+                isOpen: isMachineTypeOpen,
+                dataList: dn.machineTypeList,
+                propertyKeyName:"MachineType",
+                propertyKeyId: "MachineType",
+                selectedId: dn.DI_MachinType,
                 itemOnTap: (index){
                   setState(() {
-                    dn.DI_issueID=dn.issuedByList[index].employeeId;
-                    dn.DI_issueName=dn.issuedByList[index].employeeName;
-                    isIssueOpen=false;
+                    dn.DI_MachinType=dn.machineTypeList[index]['MachineType'];
+                    if(dn.DI_MachinType=='Machine'){
+                      dn.isVehicle=false;
+                      dn.isMachine=true;
+                    }
+                    else if(dn.DI_MachinType=='Vehicle'){
+                      dn.isVehicle=true;
+                      dn.isMachine=false;
+                    }
+
+                    isMachineTypeOpen=false;
                   });
                 },
                 closeOnTap: (){
                   setState(() {
-                    isIssueOpen=false;
+                    isMachineTypeOpen=false;
                   });
                 },
               ),
+              ///////////////////////////////////////   Machine List    ////////////////////////////////
+              PopUpSearchOnly2(
+                isOpen: isMachineOpen,
+                searchController: searchController,
 
+                searchHintText:dn.isVehicle? "Search Vehicle Number":"Search Machine",
+
+                dataList:dn.isVehicle? dn.filterVehicleList:dn.filterMachineList,
+                propertyKeyId: dn.isVehicle? "VehicleId":"MachineId",
+                propertyKeyName: dn.isVehicle? "VehicleNumber":"MachineName",
+                selectedId: dn.DI_machineID,
+
+                searchOnchange: (v){
+                  dn.isVehicle?  dn.searchVehicle(v):dn.searchMachine(v);
+                },
+                itemOnTap: (index){
+                  node.unfocus();
+                  setState(() {
+
+                    if(dn.isVehicle){
+                      dn.DI_machineID=dn.filterVehicleList[index]['VehicleId'];
+                      dn.DI_machineName=dn.filterVehicleList[index]['VehicleNumber'];
+                      isMachineOpen=false;
+                      dn.filterVehicleList=dn.vehicleList;
+                    }
+                    else{
+                      dn.DI_machineID=dn.filterMachineList[index]['MachineId'];
+                      dn.DI_machineName=dn.filterMachineList[index]['MachineName'];
+                      isMachineOpen=false;
+                      dn.filterMachineList=dn.machineList;
+                    }
+                  });
+                  searchController.clear();
+                },
+                closeOnTap: (){
+                  node.unfocus();
+                  setState(() {
+                    isMachineOpen=false;
+                    dn.filterVehicleList=dn.vehicleList;
+                    dn.filterMachineList=dn.machineList;
+                  });
+                  searchController.clear();
+                },
+              ),
+
+
+              ///////////////////////////////////////   Issued By List    ////////////////////////////////
+
+              PopUpSearchOnly2(
+                isOpen: isIssueOpen,
+                searchController: searchController,
+
+                searchHintText:"Search IssuedBy",
+
+                dataList:dn.filterIssuedByList,
+                propertyKeyId:"EmployeeId",
+                propertyKeyName: "EmployeeName",
+                selectedId: dn.DI_issueID,
+
+                searchOnchange: (v){
+                   dn.searchIssuedBy(v);
+                },
+                itemOnTap: (index){
+                  node.unfocus();
+                  setState(() {
+
+
+                      dn.DI_issueID=dn.filterIssuedByList[index]['EmployeeId'];
+                      dn.DI_issueName=dn.filterIssuedByList[index]['EmployeeName'];
+                      isIssueOpen=false;
+                      dn.filterIssuedByList=dn.issuedByList;
+
+                  });
+                  searchController.clear();
+                },
+                closeOnTap: (){
+                  node.unfocus();
+                  setState(() {
+                    isIssueOpen=false;
+                    dn.filterIssuedByList=dn.issuedByList;
+                  });
+                  searchController.clear();
+                },
+              ),
 
 
 

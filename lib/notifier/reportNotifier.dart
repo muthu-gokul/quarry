@@ -182,6 +182,14 @@ class ReportNotifier extends ChangeNotifier{
       totalReportAmountTitle="Total Amount";
       reportsGridColumnList=dieselPurchaseReportGridCol;
     }
+    else if(typeName=="DieselIssueReport"){
+
+      reportHeader="Diesel Issue Report";
+      totalReportTitle="Total Issue";
+      totalReportQtyTitle="Total Quantity";
+      totalReportAmountTitle=" ";
+      reportsGridColumnList=dieselIssueReportGridCol;
+    }
     else if(typeName=="MachineManagementReport"){
 
       reportHeader="Machine Management Report";
@@ -392,6 +400,22 @@ class ReportNotifier extends ChangeNotifier{
             filtersList.add(FilterDetailsModel(title:  "Bunk Location Filter", list: locationList, instanceName: 'DieselBunkLocation'));
             filtersList.add(FilterDetailsModel(title:  "Diesel Price Filter", list: dieselRateList, instanceName: 'DieselRate'));
           }
+          else if(typeName=="DieselIssueReport"){
+
+            var t=parsed["Table"] as List;
+            var t1=parsed["Table1"] as List;
+            var t2=parsed["Table2"] as List;
+
+
+            plantList=t;
+            machineList=t1;
+            employeeList=t2;
+
+
+            filtersList.add(FilterDetailsModel(title:  "Plant Filter", list: plantList, instanceName: 'PlantName'),);
+            filtersList.add(FilterDetailsModel(title:  "Type Filter", list: machineList, instanceName: 'MachineType'));
+            filtersList.add(FilterDetailsModel(title:  "IssuedBy Filter", list: employeeList, instanceName: 'EmployeeName'));
+          }
           else if(typeName=="MachineManagementReport"){
 
             var t=parsed["Table"] as List;
@@ -449,6 +473,7 @@ class ReportNotifier extends ChangeNotifier{
 
 
   Future<dynamic> ReportsDbHit(BuildContext context,String typeName) async {
+    print("ENTERDD");
     String fromDate,toDate;
 
     if(picked.isEmpty){
@@ -465,6 +490,9 @@ class ReportNotifier extends ChangeNotifier{
       fromDate=DateFormat("yyyy-MM-dd").format(picked[0]).toString();
       toDate=DateFormat("yyyy-MM-dd").format(picked[1]).toString();
     }
+    print(fromDate);
+    print(toDate);
+    print(typeName);
 
     updateReportLoader(true);
     var body={
@@ -505,6 +533,7 @@ class ReportNotifier extends ChangeNotifier{
 
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
+        print(value);
         if(value!=null){
           var parsed=json.decode(value);
 
@@ -557,6 +586,11 @@ class ReportNotifier extends ChangeNotifier{
             var t=parsed["Table"] as List;
             dieselPurchaseReportGridList=t;
             filterDieselPurchaseReport();
+          }
+          else if(typeName=="DieselIssueReport"){
+            var t=parsed["Table"] as List;
+            dieselIssueReportGridList=t;
+            filterDieselIssueReport();
           }
           else if(typeName=="MachineManagementReport"){
             var t=parsed["Table"] as List;
@@ -1295,6 +1329,76 @@ class ReportNotifier extends ChangeNotifier{
     });
 
     reportsGridDataList=filterDieselPurchaseReportGridList;
+    notifyListeners();
+  }
+
+
+
+
+  /*  DieselIssueReport Report */
+  List<ReportGridStyleModel2> dieselIssueReportGridCol=[ReportGridStyleModel2(columnName: "IssuedDate",edgeInsets: EdgeInsets.only(left: 10,right: 10),isDate: true),
+    ReportGridStyleModel2(columnName: "Type"),ReportGridStyleModel2(columnName: "Machine/Vehicle"),ReportGridStyleModel2(columnName:"DieselIssuedQuantity"),
+    ReportGridStyleModel2(columnName: "MachineFuelReadingQuantity"),ReportGridStyleModel2(columnName: "IssuedName"),
+   ReportGridStyleModel2(columnName: "PlantName"),
+
+  ];
+
+
+
+  List<dynamic> dieselIssueReportGridList=[];
+  List<dynamic> filterDieselIssueReportGridList=[];
+
+  List<dynamic> tempDieselIssueReportPlantFilter=[];
+  List<dynamic> tempDieselIssueReportMachineTypeFilter=[];
+
+
+
+  filterDieselIssueReport() async{
+
+    filterDieselIssueReportGridList.clear();
+    reportsGridDataList.clear();
+
+    tempDieselIssueReportPlantFilter.clear();
+    tempDieselIssueReportMachineTypeFilter.clear();
+
+
+    totalReport=0;
+    totalReportQty=0.0;
+    totalReportAmount=null;
+
+    plantList.forEach((element) {
+      if(element['IsActive']==1){
+        tempDieselIssueReportPlantFilter=tempDieselIssueReportPlantFilter+dieselIssueReportGridList.where((ele) => ele['PlantId']==element['PlantId']).toList();
+      }
+    });
+
+    machineList.forEach((element) {
+      if(element['IsActive']==1){
+        tempDieselIssueReportMachineTypeFilter=tempDieselIssueReportMachineTypeFilter+tempDieselIssueReportPlantFilter.where((ele) => ele['Type']==element['MachineType']).toList();
+      }
+    });
+
+    employeeList.forEach((element) {
+      if(element['IsActive']==1){
+        filterDieselIssueReportGridList=filterDieselIssueReportGridList+tempDieselIssueReportMachineTypeFilter.where((ele) => ele['IssuedBy']==element['EmployeeId']).toList();
+      }
+    });
+
+
+
+
+
+
+
+    totalReport=filterDieselIssueReportGridList.length;
+
+    filterDieselIssueReportGridList.forEach((element) {
+      totalReportQty=Calculation().add(totalReportQty, element['DieselIssuedQuantity']);
+     // totalReportAmount=Calculation().add(totalReportAmount, element['TotalAmount']);
+
+    });
+
+    reportsGridDataList=filterDieselIssueReportGridList;
     notifyListeners();
   }
 
