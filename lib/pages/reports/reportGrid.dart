@@ -11,6 +11,7 @@ import 'package:quarry/notifier/reportsNotifier.dart';
 import 'package:quarry/notifier/supplierNotifier.dart';
 import 'package:quarry/pages/productionDetails/productionDetailsAddNew.dart';
 import 'package:quarry/pages/purchaseDetails/purchaseAddNew.dart';
+import 'package:quarry/pages/reports/salesReport/checkPDF.dart';
 import 'package:quarry/pages/reports/salesReport/salesSettings.dart';
 import 'package:quarry/pages/sale/saleGrid.dart';
 import 'package:quarry/pages/supplierDetail/supplierAddNew.dart';
@@ -227,7 +228,7 @@ class ReportGridState extends State<ReportGrid> with TickerProviderStateMixin{
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 IconButton(icon: Icon(Icons.picture_as_pdf,color: Colors.grey,), onPressed: (){
-
+                                  checkpdf(context);
                                 }),
                                 GestureDetector(
                                   onTap: () async {
