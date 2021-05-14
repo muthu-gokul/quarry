@@ -323,7 +323,10 @@ class _ReportDataTable2State extends State<ReportDataTable2> {
                                   ),
                                   child: FittedBox(
                                     fit: BoxFit.contain,
-                                    child: Text("${value[widget.gridDataRowList[0].columnName]}",
+                                    child: !widget.gridDataRowList[0].isDate? Text("${value[widget.gridDataRowList[0].columnName]}",
+                                      style:widget.selectedIndex==i?AppTheme.bgColorTS14:AppTheme.gridTextColor14,
+                                    ):
+                                    Text("${widget.gridDataRowList[0].columnName.toString().isNotEmpty?DateFormat('dd-MM-yyyy').format(DateTime.parse(value[widget.gridDataRowList[0].columnName])):" "}",
                                       style:widget.selectedIndex==i?AppTheme.bgColorTS14:AppTheme.gridTextColor14,
                                     ),
                                   ),
@@ -332,6 +335,7 @@ class _ReportDataTable2State extends State<ReportDataTable2> {
                             )
                             )
                             ).values.toList()
+
 
 
                         ),

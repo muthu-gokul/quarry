@@ -265,21 +265,33 @@ class ReportSettingsState extends State<ReportSettings> with TickerProviderState
                               if(rn.TypeName=="SaleReport"){
                                 rn.filterSales();
                               }
-                              /*  else if(rn.TypeName=="PurchaseReport"){
+                                else if(rn.TypeName=="PurchaseReport"){
                                 rn.filterPurchase();
                               }
-                              else if(rn.TypeName=="CustomerSaleReport"){
+                             else if(rn.TypeName=="CustomerSaleReport"){
                                 rn.filterCustomerSale();
-                              }
-                              else if(rn.TypeName=="ProductionReport"){
-                                rn.filterProduction();
                               }
                               else if(rn.TypeName=="SupplierPurchaseReport"){
                                 rn.filterSupplierPurchase();
                               }
-                              else if(rn.TypeName=="InvoiceReport"){
+                             else if(rn.TypeName=="ProductionReport"){
+                                rn.filterProduction();
+                              }
+                             else if(rn.TypeName=="InvoiceReport"){
                                 rn.filterInvoice();
-                              }*/
+                              }
+                             else if(rn.TypeName=="ReceivablePaymentReport"){
+                                rn.filterReceivablePaymentReport();
+                              }
+                             else if(rn.TypeName=="PayablePaymentReport"){
+                                rn.filterPayablePaymentReport();
+                              }
+                             else if(rn.TypeName=="DieselPurchaseReport"){
+                                rn.filterDieselPurchaseReport();
+                              }
+                             else if(rn.TypeName=="MachineManagementReport"){
+                                rn.filterMachineManagementReport();
+                              }
 
                               Navigator.pop(context);
                             },
@@ -442,7 +454,10 @@ class _ReportSettingsHeaderState extends State<ReportSettingsHeader> with Ticker
                 height: 50,
                 child: Row(
                   children: [
-                    Text("${widget.list[index][widget.instanceName]}",style:TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 14),),
+                    Container(
+                      width:SizeConfig.screenWidth*0.6,
+                        child: Text("${widget.list[index][widget.instanceName]}",style:TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 14),)
+                    ),
                     Spacer(),
                     GestureDetector(
                       onTap: (){

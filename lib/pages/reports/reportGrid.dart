@@ -248,6 +248,7 @@ class ReportGridState extends State<ReportGrid> with TickerProviderStateMixin{
                                     else if(picked1!=null && picked1.length ==1){
                                       setState(() {
                                         rn.picked=picked1;
+                                        rn.picked.add(picked1[0]);
                                         rn.ReportsDbHit(context, rn.TypeName);
                                         // rn.reportDbHit(widget.UserId.toString(), widget.OutletId, DateFormat("dd-MM-yyyy").format( picked[0]).toString(), DateFormat("dd-MM-yyyy").format( picked[0]).toString(),"Itemwise Report", context);
                                       });
@@ -362,11 +363,11 @@ class ReportHeader extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          FittedBox(child: Text("$title",style: TextStyle(fontFamily: 'RR',fontSize: 14,color: Colors.white,letterSpacing: 0.1),)),
+          FittedBox(child: Text(title??" ",style: TextStyle(fontFamily: 'RR',fontSize: 14,color: Colors.white,letterSpacing: 0.1),)),
           SizedBox(height: 5,),
           FittedBox(
               fit: BoxFit.contain,
-              child: Text("$value",style:TextStyle(fontFamily: 'RM',fontSize: 18,color: Colors.yellow),)),
+              child: Text("${value??" "}",style:TextStyle(fontFamily: 'RM',fontSize: 18,color: Colors.yellow),)),
 
         ],
       ),
