@@ -853,12 +853,10 @@ class ReportsPageState extends State<ReportsPage> with TickerProviderStateMixin{
                         widget.voidCallback();
 
                         Provider.of<DrawerNotifier>(context,listen: false).changeMenu(16);
-                        Provider.of<ReportNotifier>(context,listen: false).ReportsDropDownValues(context,"SaleReport");
-                        Provider.of<ReportNotifier>(context,listen: false).ReportsDbHit(context,"SaleReport");
+                        Provider.of<ReportNotifier>(context,listen: false).ReportsDropDownValues(context,"SaleReport").then((value) {
+                          Provider.of<ReportNotifier>(context,listen: false).ReportsDbHit(context,"SaleReport");
+                        });
 
-                        /*Provider.of<ReportsNotifier>(context,listen: false).ReportsDropDownValues(context,"SaleReport");
-                        Provider.of<ReportsNotifier>(context,listen: false).ReportsDbHit(context,"SaleReport");*/
-                        //Provider.of<QuarryNotifier>(context,listen: false).GetplantDetailDbhit(context,null);
                       },
                     ),
 
@@ -875,8 +873,10 @@ class ReportsPageState extends State<ReportsPage> with TickerProviderStateMixin{
 
                         Provider.of<DrawerNotifier>(context,listen: false).changeMenu(16);
 
-                        Provider.of<ReportNotifier>(context,listen: false).ReportsDropDownValues(context,"PurchaseReport");
-                        Provider.of<ReportNotifier>(context,listen: false).ReportsDbHit(context,"PurchaseReport");
+                        Provider.of<ReportNotifier>(context,listen: false).ReportsDropDownValues(context,"PurchaseReport").then((value) {
+                          Provider.of<ReportNotifier>(context,listen: false).ReportsDbHit(context,"PurchaseReport");
+                        });
+
 
                       },
                     ),
@@ -894,8 +894,10 @@ class ReportsPageState extends State<ReportsPage> with TickerProviderStateMixin{
 
                         Provider.of<DrawerNotifier>(context,listen: false).changeMenu(16);
 
-                        Provider.of<ReportNotifier>(context,listen: false).ReportsDropDownValues(context,"CustomerSaleReport");
-                        Provider.of<ReportNotifier>(context,listen: false).ReportsDbHit(context,"CustomerSaleReport");
+                        Provider.of<ReportNotifier>(context,listen: false).ReportsDropDownValues(context,"CustomerSaleReport").then((value) {
+                          Provider.of<ReportNotifier>(context,listen: false).ReportsDbHit(context,"CustomerSaleReport");
+                        });
+
 
                       },
                     ),
@@ -912,8 +914,9 @@ class ReportsPageState extends State<ReportsPage> with TickerProviderStateMixin{
 
                         Provider.of<DrawerNotifier>(context,listen: false).changeMenu(16);
 
-                        Provider.of<ReportNotifier>(context,listen: false).ReportsDropDownValues(context,"SupplierPurchaseReport");
-                        Provider.of<ReportNotifier>(context,listen: false).ReportsDbHit(context,"SupplierPurchaseReport");
+                        Provider.of<ReportNotifier>(context,listen: false).ReportsDropDownValues(context,"SupplierPurchaseReport").then((value) {
+                          Provider.of<ReportNotifier>(context,listen: false).ReportsDbHit(context,"SupplierPurchaseReport");
+                        });
 
                       },
                     ),
@@ -930,8 +933,10 @@ class ReportsPageState extends State<ReportsPage> with TickerProviderStateMixin{
 
                         Provider.of<DrawerNotifier>(context,listen: false).changeMenu(16);
 
-                        Provider.of<ReportNotifier>(context,listen: false).ReportsDropDownValues(context,"ProductionReport");
-                        Provider.of<ReportNotifier>(context,listen: false).ReportsDbHit(context,"ProductionReport");
+                        Provider.of<ReportNotifier>(context,listen: false).ReportsDropDownValues(context,"ProductionReport").then((value) {
+                          Provider.of<ReportNotifier>(context,listen: false).ReportsDbHit(context,"ProductionReport");
+                        });
+
 
                       },
                     ),
@@ -948,8 +953,10 @@ class ReportsPageState extends State<ReportsPage> with TickerProviderStateMixin{
 
                            Provider.of<DrawerNotifier>(context,listen: false).changeMenu(16);
 
-                          Provider.of<ReportNotifier>(context,listen: false).ReportsDropDownValues(context,"InvoiceReport");
-                          Provider.of<ReportNotifier>(context,listen: false).ReportsDbHit(context,"InvoiceReport");
+                          Provider.of<ReportNotifier>(context,listen: false).ReportsDropDownValues(context,"InvoiceReport").then((value) {
+                            Provider.of<ReportNotifier>(context,listen: false).ReportsDbHit(context,"InvoiceReport");
+                          });
+
 
                       },
                     ),
@@ -966,8 +973,9 @@ class ReportsPageState extends State<ReportsPage> with TickerProviderStateMixin{
 
                        Provider.of<DrawerNotifier>(context,listen: false).changeMenu(16);
 
-                       Provider.of<ReportNotifier>(context,listen: false).ReportsDropDownValues(context,"ReceivablePaymentReport");
-                       Provider.of<ReportNotifier>(context,listen: false).ReportsDbHit(context,"ReceivablePaymentReport");
+                       Provider.of<ReportNotifier>(context,listen: false).ReportsDropDownValues(context,"ReceivablePaymentReport").then((value) {
+                         Provider.of<ReportNotifier>(context,listen: false).ReportsDbHit(context,"ReceivablePaymentReport");
+                       });
 
                       },
                     ),
@@ -983,8 +991,9 @@ class ReportsPageState extends State<ReportsPage> with TickerProviderStateMixin{
                         widget.voidCallback();
 
                       Provider.of<DrawerNotifier>(context,listen: false).changeMenu(16);
-                         Provider.of<ReportNotifier>(context,listen: false).ReportsDropDownValues(context,"PayablePaymentReport");
-                        Provider.of<ReportNotifier>(context,listen: false).ReportsDbHit(context,"PayablePaymentReport");
+                         Provider.of<ReportNotifier>(context,listen: false).ReportsDropDownValues(context,"PayablePaymentReport").then((value){
+                           Provider.of<ReportNotifier>(context,listen: false).ReportsDbHit(context,"PayablePaymentReport");
+                         });
 
                       },
                     ),
@@ -1037,8 +1046,10 @@ class ReportsPageState extends State<ReportsPage> with TickerProviderStateMixin{
 
                         Provider.of<DrawerNotifier>(context,listen: false).changeMenu(16);
 
-                         Provider.of<ReportNotifier>(context,listen: false).ReportsDropDownValues(context,"DieselPurchaseReport");
-                         Provider.of<ReportNotifier>(context,listen: false).ReportsDbHit(context,"DieselPurchaseReport");
+                         Provider.of<ReportNotifier>(context,listen: false).ReportsDropDownValues(context,"DieselPurchaseReport").then((value) {
+                           Provider.of<ReportNotifier>(context,listen: false).ReportsDbHit(context,"DieselPurchaseReport");
+
+                         });
 
                       },
                     ),
@@ -1055,8 +1066,10 @@ class ReportsPageState extends State<ReportsPage> with TickerProviderStateMixin{
 
                         Provider.of<DrawerNotifier>(context,listen: false).changeMenu(16);
 
-                        Provider.of<ReportNotifier>(context,listen: false).ReportsDropDownValues(context,"DieselIssueReport");
-                       Provider.of<ReportNotifier>(context,listen: false).ReportsDbHit(context,"DieselIssueReport");
+                        Provider.of<ReportNotifier>(context,listen: false).ReportsDropDownValues(context,"DieselIssueReport").then((value) {
+                          Provider.of<ReportNotifier>(context,listen: false).ReportsDbHit(context,"DieselIssueReport");
+
+                        });
 
                       },
                     ),
@@ -1071,10 +1084,12 @@ class ReportsPageState extends State<ReportsPage> with TickerProviderStateMixin{
                         Navigator.pop(context);
                         widget.voidCallback();
 
-                        ////  Provider.of<DrawerNotifier>(context,listen: false).changeMenu(16);
+                        Provider.of<DrawerNotifier>(context,listen: false).changeMenu(16);
 
-                        ///  Provider.of<ReportsNotifier>(context,listen: false).ReportsDropDownValues(context,"CustomerSaleReport");
-                        ///  Provider.of<ReportsNotifier>(context,listen: false).ReportsDbHit(context,"CustomerSaleReport");
+                        Provider.of<ReportNotifier>(context,listen: false).ReportsDropDownValues(context,"VehicleMonitoringReport").then((value) {
+                          Provider.of<ReportNotifier>(context,listen: false).ReportsDbHit(context,"VehicleMonitoringReport");
+
+                        });
 
                       },
                     ),
@@ -1091,8 +1106,10 @@ class ReportsPageState extends State<ReportsPage> with TickerProviderStateMixin{
 
                         Provider.of<DrawerNotifier>(context,listen: false).changeMenu(16);
 
-                         Provider.of<ReportNotifier>(context,listen: false).ReportsDropDownValues(context,"MachineManagementReport");
-                        Provider.of<ReportNotifier>(context,listen: false).ReportsDbHit(context,"MachineManagementReport");
+                         Provider.of<ReportNotifier>(context,listen: false).ReportsDropDownValues(context,"MachineManagementReport").then((value){
+                           Provider.of<ReportNotifier>(context,listen: false).ReportsDbHit(context,"MachineManagementReport");
+                         });
+
 
                       },
                     ),
@@ -1109,8 +1126,10 @@ class ReportsPageState extends State<ReportsPage> with TickerProviderStateMixin{
 
                         Provider.of<DrawerNotifier>(context,listen: false).changeMenu(16);
 
-                         Provider.of<ReportNotifier>(context,listen: false).ReportsDropDownValues(context,"SaleAuditReport");
-                         Provider.of<ReportNotifier>(context,listen: false).ReportsDbHit(context,"SaleAuditReport");
+                         Provider.of<ReportNotifier>(context,listen: false).ReportsDropDownValues(context,"SaleAuditReport").then((value) {
+                           Provider.of<ReportNotifier>(context,listen: false).ReportsDbHit(context,"SaleAuditReport");
+
+                         });
 
                       },
                     ),
@@ -1127,8 +1146,10 @@ class ReportsPageState extends State<ReportsPage> with TickerProviderStateMixin{
 
                        Provider.of<DrawerNotifier>(context,listen: false).changeMenu(16);
 
-                      Provider.of<ReportNotifier>(context,listen: false).ReportsDropDownValues(context,"PurchaseAuditReport");
-                         Provider.of<ReportNotifier>(context,listen: false).ReportsDbHit(context,"PurchaseAuditReport");
+                      Provider.of<ReportNotifier>(context,listen: false).ReportsDropDownValues(context,"PurchaseAuditReport").then((value){
+                        Provider.of<ReportNotifier>(context,listen: false).ReportsDbHit(context,"PurchaseAuditReport");
+
+                      });
 
                       },
                     ),

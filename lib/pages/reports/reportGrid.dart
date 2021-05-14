@@ -228,7 +228,7 @@ class ReportGridState extends State<ReportGrid> with TickerProviderStateMixin{
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 IconButton(icon: Icon(Icons.picture_as_pdf,color: Colors.grey,), onPressed: (){
-                                  checkpdf(context);
+                                  checkpdf(context,rn.reportHeader,DateFormat('dd-MM-yyyy').format(rn.picked[0]),DateFormat('dd-MM-yyyy').format(rn.picked[1]),rn.reportsGridColumnList,rn.reportsGridDataList);
                                 }),
                                 GestureDetector(
                                   onTap: () async {

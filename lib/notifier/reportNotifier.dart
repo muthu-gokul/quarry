@@ -94,7 +94,11 @@ class ReportNotifier extends ChangeNotifier{
  List<dynamic>  dieselRateList=[];/*{
             "DieselRate": 0.00
         }*/
-
+List<dynamic> vehicleTypeList=[];/* {
+            "VehicleTypeId": 1,
+            "VehicleTypeName": "Cargo",
+            "IsActive": 1
+        }*/
 
   Future<dynamic> ReportsDropDownValues(BuildContext context,String typeName) async {
     TypeName=typeName;
@@ -213,6 +217,14 @@ class ReportNotifier extends ChangeNotifier{
       totalReportQtyTitle="Total Amount";
       totalReportAmountTitle="Discount Amount";
       reportsGridColumnList=purchaseAuditReportGridCol;
+    }
+    else if(typeName=="VehicleMonitoringReport"){
+
+      reportHeader="Vehicle Monitoring Report";
+      totalReportTitle="Total Vehicle";
+      totalReportQtyTitle="Total Amount";
+      totalReportAmountTitle=" ";
+      reportsGridColumnList=vehicleMonitoringReportGridCol;
     }
 
 
@@ -451,13 +463,25 @@ class ReportNotifier extends ChangeNotifier{
             var t=parsed["Table"] as List;
             var t1=parsed["Table1"] as List;
 
-
             plantList=t;
             supplierList=t1;
 
-
             filtersList.add(FilterDetailsModel(title:  "Plant Filter", list: plantList, instanceName: 'PlantName'),);
             filtersList.add(FilterDetailsModel(title:  "Supplier  Filter", list: customerList, instanceName: 'SupplierName'));
+          }
+          else if(typeName=="VehicleMonitoringReport"){
+
+            var t=parsed["Table"] as List;
+            var t1=parsed["Table1"] as List;
+            var t2=parsed["Table2"] as List;
+
+            plantList=t;
+            vehicleTypeList=t1;
+            materialList=t2;
+
+            filtersList.add(FilterDetailsModel(title:  "Plant Filter", list: plantList, instanceName: 'PlantName'),);
+            filtersList.add(FilterDetailsModel(title:  "Vehicle Type  Filter", list: vehicleTypeList, instanceName: 'VehicleTypeName'));
+            filtersList.add(FilterDetailsModel(title:  "Material Filter", list: materialList, instanceName: 'MaterialName'));
           }
 
 
@@ -473,7 +497,7 @@ class ReportNotifier extends ChangeNotifier{
 
 
   Future<dynamic> ReportsDbHit(BuildContext context,String typeName) async {
-    print("ENTERDD");
+
     String fromDate,toDate;
 
     if(picked.isEmpty){
@@ -490,9 +514,7 @@ class ReportNotifier extends ChangeNotifier{
       fromDate=DateFormat("yyyy-MM-dd").format(picked[0]).toString();
       toDate=DateFormat("yyyy-MM-dd").format(picked[1]).toString();
     }
-    print(fromDate);
-    print(toDate);
-    print(typeName);
+
 
     updateReportLoader(true);
     var body={
@@ -533,7 +555,6 @@ class ReportNotifier extends ChangeNotifier{
 
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
-        print(value);
         if(value!=null){
           var parsed=json.decode(value);
 
@@ -606,6 +627,11 @@ class ReportNotifier extends ChangeNotifier{
             var t=parsed["Table"] as List;
             purchaseAuditReportGridList=t;
             filterPurchaseAuditReport();
+          }
+          else if(typeName=="VehicleMonitoringReport"){
+            var t=parsed["Table"] as List;
+            vehicleMonitoringReportGridList=t;
+            filterVehicleMonitoringReport();
           }
         }
         updateReportLoader(false);
@@ -1605,6 +1631,82 @@ class ReportNotifier extends ChangeNotifier{
     reportsGridDataList=filterPurchaseAuditReportGridList;
     notifyListeners();
   }
+
+
+
+
+  /*  SaleAuditReport Report */
+  List<ReportGridStyleModel2> vehicleMonitoringReportGridCol=[ReportGridStyleModel2(columnName: "Date",edgeInsets: EdgeInsets.only(left: 10,right: 10)),
+    ReportGridStyleModel2(columnName: "VehicleTypeName"),ReportGridStyleModel2(columnName: "VehicleNumber"),ReportGridStyleModel2(columnName:"InTime"),
+    ReportGridStyleModel2(columnName: "OutTime"),ReportGridStyleModel2(columnName: "MaterialName"),ReportGridStyleModel2(columnName: "Qty"),
+    ReportGridStyleModel2(columnName: "Amount"),
+
+  ];
+
+
+
+  List<dynamic> vehicleMonitoringReportGridList=[];
+  List<dynamic> filterVehicleMonitoringReportGridList=[];
+
+  List<dynamic> tempVehicleMonitoringReportPlantFilter=[];
+  List<dynamic> tempVehicleMonitoringReportVehicleTypeFilter=[];
+
+
+  filterVehicleMonitoringReport() async{
+
+    filterVehicleMonitoringReportGridList.clear();
+    reportsGridDataList.clear();
+
+    tempVehicleMonitoringReportPlantFilter.clear();
+    tempVehicleMonitoringReportVehicleTypeFilter.clear();
+
+
+
+
+    totalReport=0;
+    totalReportQty=0.0;
+    totalReportAmount=null;
+
+    plantList.forEach((element) {
+      if(element['IsActive']==1){
+        tempVehicleMonitoringReportPlantFilter=tempVehicleMonitoringReportPlantFilter+vehicleMonitoringReportGridList.where((ele) => ele['PlantId']==element['PlantId']).toList();
+      }
+    });
+
+
+
+    vehicleTypeList.forEach((element) {
+      if(element['IsActive']==1){
+        tempVehicleMonitoringReportVehicleTypeFilter=tempVehicleMonitoringReportVehicleTypeFilter+tempVehicleMonitoringReportPlantFilter.where((ele) => ele['VehicleTypeId']==element['VehicleTypeId']).toList();
+      }
+    });
+
+
+    materialList.forEach((element) {
+      if(element['IsActive']==1){
+        filterVehicleMonitoringReportGridList=filterVehicleMonitoringReportGridList+tempVehicleMonitoringReportVehicleTypeFilter.where((ele) => ele['MaterialId']==element['MaterialId']).toList();
+      }
+    });
+
+
+
+
+
+    totalReport=filterVehicleMonitoringReportGridList.length;
+    Map<int,dynamic> machinesTotal={};
+
+    filterVehicleMonitoringReportGridList.forEach((element) {
+      totalReportQty=Calculation().add(totalReportQty, element['Amount']??0.0);
+     // totalReportAmount=Calculation().add(totalReportAmount, element['DiscountAmount']??0.0);
+
+    });
+
+
+
+    reportsGridDataList=filterVehicleMonitoringReportGridList;
+    notifyListeners();
+  }
+
 
 
   
