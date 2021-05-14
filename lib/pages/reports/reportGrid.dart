@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:excel/excel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -18,6 +21,7 @@ import 'package:quarry/pages/supplierDetail/supplierAddNew.dart';
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
+import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/dateRangePicker.dart' as DateRagePicker;
 import 'package:quarry/widgets/navigationBarIcon.dart';
 import 'package:quarry/widgets/staticColumnScroll/reportDataTable.dart';
@@ -278,14 +282,66 @@ class ReportGridState extends State<ReportGrid> with TickerProviderStateMixin{
                                 IconButton(icon: Icon(Icons.settings,color: Colors.grey,), onPressed: (){
                                   Navigator.push(context, _createRouteReportSettings());
                                 }),
-                                GestureDetector(
-                                  onTap: (){
+                                GestureDetector(onTap: ()async{
+                                  var excel = Excel.createExcel();
+                                  Sheet sheetObject = excel['${rn.reportHeader}'];
 
-                                  },
-                                  child: IconButton(icon: Icon(Icons.share,color: Colors.grey,), onPressed: (){
+                                  List<String> dataList = ["${DateFormat('dd-MM-yyyy').format(rn.picked[0])} to ${DateFormat('dd-MM-yyyy').format(rn.picked[1])}",];
 
-                                  }),
+                                  sheetObject.insertRowIterables(dataList, 0,);
+                                  /* CellStyle cellStyle = CellStyle(backgroundColorHex: "#1AFF1A", fontFamily : getFontFamily(FontFamily.Calibri));
+
+                                 cellStyle.underline = Underline.Single; // or Underline.Double
+
+
+                                 var cell = sheetObject.cell(CellIndex.indexByString("A1"));
+                                 cell.value = 8; // dynamic values support provided;
+                                 cell.cellStyle = cellStyle;*/
+                                  List<String> header=[];
+                                  rn.reportsGridColumnList.forEach((element) {
+                                    if(element.isActive){
+                                      header.add(element.columnName);
+                                    }
+                                  });
+                                  sheetObject.insertRowIterables(header, 1,);
+
+                                  List<String> body=[];
+                                  for(int i=0;i<rn.reportsGridDataList.length;i++){
+                                    body.clear();
+                                    rn.reportsGridColumnList.forEach((element) {
+                                      if(element.isActive){
+                                        if(element.isDate){
+                                          body.add(DateFormat('dd-MM-yyyy').format(DateTime.parse(rn.reportsGridDataList[i][element.columnName])));
+                                        }
+                                        else{
+                                          body.add(rn.reportsGridDataList[i][element.columnName].toString());
+                                        }
+                                      }
+                                    });
+                                    sheetObject.insertRowIterables(body, i+2,);
+                                  }
+
+
+
+                                  final String dirr ='/storage/emulated/0/quarry/reports';
+
+                                  String filename="${rn.reportHeader}";
+                                  await Directory('/storage/emulated/0/quarry/reports').create(recursive: true);
+                                  final String path = '$dirr/$filename.xlsx';
+
+
+                                  final File file = File(path);
+
+                                  await file.writeAsBytes(await excel.encode()).then((value) async {
+                                    CustomAlert().billSuccessAlert(context, "", "Successfully Downloaded @ \n\n Internal Storage/quarry/reports/$filename.xlsx", "", "");
+
+                                  });
+                                },
+                                  child: SvgPicture.asset("assets/svg/excel.svg",width: 30,height: 30,),
+
                                 ),
+
+
                               ],
                             ),
                           )

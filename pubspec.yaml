@@ -104,6 +104,7 @@ flutter:
     - assets/svg/gridHeader/
     - assets/svg/gridHeader/materialMasterHeader.svg
     - assets/svg/
+    - assets/svg/excel.svg
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
