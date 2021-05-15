@@ -154,7 +154,7 @@ class MachineNotifier extends ChangeNotifier{
             MachineType.text=t[0]['MachineType'];
             MachineModel.text=t[0]['MachineModel'];
             Capacity.text=t[0]['Capacity'].toString();
-            MoterPower.text=t[0]['MoterPower'].toString();
+            MoterPower.text=t[0]['MotorPower'].toString();
             MachineSpecification.text=t[0]['MachineSpecification'].toString();
 
           }

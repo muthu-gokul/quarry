@@ -12,6 +12,7 @@ import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/alertDialog.dart';
+import 'package:quarry/widgets/bottomBarAddButton.dart';
 import 'package:quarry/widgets/navigationBarIcon.dart';
 import 'package:quarry/widgets/staticColumnScroll/customDataTable.dart';
 
@@ -133,39 +134,7 @@ class MaterialDetailsGridState extends State<MaterialDetailsGrid> {
 
                             children: [
 
-                              AnimatedPositioned(
-                                bottom:showEdit?-60:0,
-                                duration: Duration(milliseconds: 300,),
-                                curve: Curves.bounceInOut,
-                                child: Container(
-                                  height: 70,
-                                  width: SizeConfig.screenWidth,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      IconButton(icon: Icon(Icons.picture_as_pdf,color: Colors.grey,), onPressed: (){
 
-                                      }),
-                                      IconButton(icon: Icon(Icons.exit_to_app,color: Colors.grey,), onPressed: (){
-
-                                      }),
-                                      SizedBox(width: SizeConfig.width50,),
-                                      IconButton(icon: Icon(Icons.add_comment_sharp,color: Colors.grey,), onPressed: (){
-
-                                      }),
-                                      GestureDetector(
-                                        onTap: (){
-
-                                        },
-                                        child: IconButton(icon: Icon(Icons.share,color: Colors.grey,), onPressed: (){
-
-                                        }),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
 
                               AnimatedPositioned(
                                 bottom:showEdit?15:-60,
@@ -181,6 +150,7 @@ class MaterialDetailsGridState extends State<MaterialDetailsGrid> {
                                         GestureDetector(
                                           onTap: (){
                                             mn.updateMaterialEdit(true);
+                                           mn.materialDropDownValues(context);
                                             mn.GetMaterialDbHit(context, mn.materialGridList[selectedIndex].materialId);
                                             setState(() {
                                               showEdit=false;
@@ -256,35 +226,16 @@ class MaterialDetailsGridState extends State<MaterialDetailsGrid> {
                 //addButton
                 Align(
                   alignment: Alignment.bottomCenter,
-                  child: GestureDetector(
-                    onTap: (){
+                  child: AddButton(
+                    ontap: (){
                       mn.updateMaterialEdit(false);
                       mn.materialDropDownValues(context);
                       Navigator.of(context).push(_createRoute());
                     },
-                    child: Container(
-
-                      height: 65,
-                      width: 65,
-                      margin: EdgeInsets.only(bottom: 20),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: AppTheme.yellowColor,
-                        boxShadow: [
-                          BoxShadow(
-                            color: AppTheme.yellowColor.withOpacity(0.4),
-                            spreadRadius: 1,
-                            blurRadius: 5,
-                            offset: Offset(1, 8), // changes position of shadow
-                          ),
-                        ],
-                      ),
-                      child: Center(
-                        child: Icon(Icons.add,size: SizeConfig.height30,color: AppTheme.bgColor,),
-                      ),
-                    ),
+                    image: "assets/svg/plusIcon.svg",
                   ),
                 ),
+
 
 
 

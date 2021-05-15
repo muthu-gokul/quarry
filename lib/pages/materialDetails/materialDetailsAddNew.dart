@@ -10,8 +10,10 @@ import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/alertDialog.dart';
+import 'package:quarry/widgets/bottomBarAddButton.dart';
 import 'package:quarry/widgets/customTextField.dart';
 import 'package:quarry/widgets/sidePopUp/sidePopUpWithoutSearch.dart';
+import 'package:quarry/widgets/validationErrorText.dart';
 
 
 class MaterialDetailAddNew extends StatefulWidget {
@@ -31,6 +33,12 @@ class MaterialDetailAddNewState extends State<MaterialDetailAddNew> with TickerP
 
   bool materialCategoryOpen = false;
   bool materialUnitOpen = false;
+
+  bool materialName=false;
+  bool materialCategory=false;
+  bool materialUnit=false;
+  bool materialPrice=false;
+  bool materialGst=false;
 
 
 
@@ -162,6 +170,7 @@ class MaterialDetailAddNewState extends State<MaterialDetailAddNew> with TickerP
                                   SizedBox(height:15,),
                                   AddNewLabelTextField(
                                     labelText: 'Material Name',
+                                    regExp: '[A-Za-z  ]',
                                     textEditingController: qn.materialName,
                                     onEditComplete: (){
                                       node.unfocus();
@@ -170,6 +179,7 @@ class MaterialDetailAddNewState extends State<MaterialDetailAddNew> with TickerP
                                       scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                     },
                                   ),
+                                  !materialName?Container():ValidationErrorText(title: "* Enter Material Name",),
                                   GestureDetector(
 
                                     onTap: (){
@@ -186,9 +196,11 @@ class MaterialDetailAddNewState extends State<MaterialDetailAddNew> with TickerP
                                       iconColor: qn.selectedMatCategoryName==null? AppTheme.addNewTextFieldText:AppTheme.yellowColor,
                                     ),
                                   ),
+                                  !materialCategory?Container():ValidationErrorText(title: "* Select Material Category",),
 
                                   AddNewLabelTextField(
                                     labelText: 'Description',
+                                    regExp: '[A-Za-z.  ]',
                                     textEditingController: qn.materialDescription,
                                     ontap: (){
                                       scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
@@ -199,6 +211,7 @@ class MaterialDetailAddNewState extends State<MaterialDetailAddNew> with TickerP
                                   ),
                                   AddNewLabelTextField(
                                     labelText: 'Material Code',
+                                    regExp: '[A-Za-z0-9 ]',
                                     textEditingController: qn.materialCode,
                                     ontap: (){
                                       scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
@@ -209,6 +222,7 @@ class MaterialDetailAddNewState extends State<MaterialDetailAddNew> with TickerP
                                   ),
                                   AddNewLabelTextField(
                                     labelText: 'HSN Code',
+                                    regExp: '[A-Za-z0-9 ]',
                                     textEditingController: qn.materialHSNcode,
                                     scrollPadding: 100,
                                     ontap: (){
@@ -232,8 +246,10 @@ class MaterialDetailAddNewState extends State<MaterialDetailAddNew> with TickerP
                                       iconColor: qn.selectedUnitName==null? AppTheme.addNewTextFieldText:AppTheme.yellowColor,
                                     ),
                                   ),
+                                  !materialUnit?Container():ValidationErrorText(title: "* Select Material Unit",),
                                   AddNewLabelTextField(
                                     labelText: 'Price',
+                                    regExp: '[0-9.]',
                                     textEditingController: qn.materialPrice,
                                     textInputType: TextInputType.number,
                                     scrollPadding: 300,
@@ -256,8 +272,10 @@ class MaterialDetailAddNewState extends State<MaterialDetailAddNew> with TickerP
                                       ),
                                     ),
                                   ),
+                                  !materialPrice?Container():ValidationErrorText(title: "* Enter Material Price",),
                                   AddNewLabelTextField(
                                     labelText: 'GST',
+                                    regExp: '[0-9.]',
                                     textEditingController: qn.materialGst,
                                     textInputType: TextInputType.number,
                                     scrollPadding: 300,
@@ -280,6 +298,7 @@ class MaterialDetailAddNewState extends State<MaterialDetailAddNew> with TickerP
                                       ),
                                     ),
                                   ),
+                                  !materialGst?Container():ValidationErrorText(title: "* Enter Material GST",),
 
                                   SizedBox(height:_keyboardVisible?SizeConfig.screenHeight*0.5 : SizeConfig.height50,)
                                 ],
@@ -299,11 +318,14 @@ class MaterialDetailAddNewState extends State<MaterialDetailAddNew> with TickerP
                   width: SizeConfig.screenWidth,
                   child: Row(
                     children: [
-                      IconButton(icon: Icon(Icons.arrow_back), onPressed: (){
-                        Navigator.pop(context);
-                        qn.clearForm();
-                      }),
-                      SizedBox(width: SizeConfig.width5,),
+                      CancelButton(
+                        ontap: (){
+                          Navigator.pop(context);
+                          qn.clearForm();
+                        },
+                      ),
+
+
                       Text("Material Detail",
                         style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: 16),
                       ),
@@ -323,7 +345,7 @@ class MaterialDetailAddNewState extends State<MaterialDetailAddNew> with TickerP
                   child: Container(
                     width: SizeConfig.screenWidth,
                     // height:_keyboardVisible?0:  70,
-                    height:70,
+                    height:65,
 
                     decoration: BoxDecoration(
                         color: AppTheme.gridbodyBgColor,
@@ -349,36 +371,7 @@ class MaterialDetailAddNewState extends State<MaterialDetailAddNew> with TickerP
                             painter: RPSCustomPainter3(),
                           ),
                         ),
-                        Center(
-                          heightFactor: 0.5,
-                          child: FloatingActionButton(backgroundColor: AppTheme.yellowColor, child: Icon(Icons.save), elevation: 0.1, onPressed: () {
-                            node.unfocus();
-                            if(qn.materialName.text.isEmpty)
-                            {
-                              CustomAlert().commonErrorAlert(context, "Enter Material Name", "");
-                            }
-                            else  if(qn.selectedMatCategoryName==null){
-                              CustomAlert().commonErrorAlert(context, "Select Material Type", "");
-                            }
-                            else if(qn.selectedUnitName==null)
-                            {
-                              CustomAlert().commonErrorAlert(context, "Select Unit", "");
-                            }
-                            else if(qn.materialPrice.text.isEmpty)
-                            {
-                              CustomAlert().commonErrorAlert(context, "Enter Material Price", "");
-                            }
-                            else if(qn.materialGst.text.isEmpty)
-                            {
-                              CustomAlert().commonErrorAlert(context, "Enter Material GST", "");
-                            }
-                            else {
-                              qn.InsertMaterialDbHit(context);
-                            }
 
-
-                          }),
-                        ),
                         Container(
                           width:  SizeConfig.screenWidth,
                           height: 80,
@@ -394,54 +387,38 @@ class MaterialDetailAddNewState extends State<MaterialDetailAddNew> with TickerP
                     ),
                   ),
                 ),
+              //Add Button
+               Align(
+                   alignment: Alignment.bottomCenter,
+                 child: AddButton(
+                   ontap: (){
+                     node.unfocus();
+                     if(qn.materialName.text.isEmpty) {setState(() {materialName=true;});}
+                     else{setState(() {materialName=false;});}
 
-              /*  //Save Button
-                Positioned(
-                  bottom: 0,
-                  child: Container(
-                    height:_keyboardVisible?0: SizeConfig.height70,
-                    width: SizeConfig.screenWidth,
-                    color: AppTheme.grey,
-                    child: Center(
-                      child: GestureDetector(
-                        onTap: (){
-                          node.unfocus();
-                          if(qn.selectedMatCategoryName==null){
-                            CustomAlert().commonErrorAlert(context, "Select Material Type", "");
-                          }
-                          else if(qn.materialName.text.isEmpty)
-                          {
-                            CustomAlert().commonErrorAlert(context, "Enter Material Name", "");
-                          }
-                          else if(qn.materialCode.text.isEmpty)
-                          {
-                            CustomAlert().commonErrorAlert(context, "Enter Material Code", "");
-                          }
-                          else if(qn.selectedUnitName==null)
-                          {
-                            CustomAlert().commonErrorAlert(context, "Select Unit", "");
-                          }
-                          else {
-                            qn.InsertMaterialDbHit(context);
-                          }
+                     if(qn.selectedMatCategoryName==null) {setState(() {materialCategory=true;});}
+                     else{setState(() {materialCategory=false;});}
+
+                     if(qn.selectedUnitName==null) {setState(() {materialUnit=true;});}
+                     else{setState(() {materialUnit=false;});}
+
+                     if(qn.materialPrice.text.isEmpty) {setState(() {materialPrice=true;});}
+                     else{setState(() {materialPrice=false;});}
+
+                     if(qn.materialGst.text.isEmpty) {setState(() {materialGst=true;});}
+                     else{setState(() {materialGst=false;});}
 
 
-                        },
-                        child: Container(
-                          height: SizeConfig.height50,
-                          width: SizeConfig.width120,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(SizeConfig.height25),
-                              color: AppTheme.bgColor
-                          ),
-                          child: Center(
-                            child: Text(qn.isMaterialEdit?"Update":"Save",style: AppTheme.TSWhite20,),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),*/
+                     if(!materialName && !materialCategory && !materialUnit && !materialPrice && !materialGst){
+                       qn.InsertMaterialDbHit(context);
+                     }
+
+
+                   },
+                 ),
+               ),
+
+
 
                 Container(
                   height: qn.materialLoader? SizeConfig.screenHeight:0,

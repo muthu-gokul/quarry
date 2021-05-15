@@ -2700,7 +2700,7 @@ class QuarryNotifier extends ChangeNotifier{
 
   List<PlantGridModel> plantGridList=[];
 
-  GetplantDetailDbhit(BuildContext context,int plantId) async {
+  GetplantDetailDbhit(BuildContext context,int plantId,TickerProviderStateMixin tickerProviderStateMixin) async {
     updateInsertCompanyLoader(true);
     var body={
       "Fields": [
@@ -2755,7 +2755,7 @@ class QuarryNotifier extends ChangeNotifier{
             PD_ContactPersonName.text=t[0]['PlantContactPersonName'];
             PD_Designation.text=t[0]['PlantContactPersonDesignation'];
 
-            PO_PlantLicenseList=t1.map((e) => PlantLicenseModel.fromJson(e)).toList();
+            PO_PlantLicenseList=t1.map((e) => PlantLicenseModel.fromJson(e,tickerProviderStateMixin)).toList();
             updatePlantDetailEdit(true);
           }
           else{
@@ -2803,7 +2803,7 @@ class QuarryNotifier extends ChangeNotifier{
   List<PlantLicenseModel> PO_PlantLicenseList=[];
 
 
-  InsertPlantDetailDbhit(BuildContext context) async {
+  InsertPlantDetailDbhit(BuildContext context,TickerProviderStateMixin tickerProviderStateMixin) async {
     updateInsertCompanyLoader(true);
     List js=[];
     js=PO_PlantLicenseList.map((e) => e.toJson()).toList();
@@ -2907,7 +2907,7 @@ class QuarryNotifier extends ChangeNotifier{
 
           clearPlantForm();
           Navigator.pop(context);
-          GetplantDetailDbhit(context, null);
+          GetplantDetailDbhit(context, null,tickerProviderStateMixin);
         }
 
         updateInsertCompanyLoader(false);

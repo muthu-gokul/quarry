@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class PlantLicenseModel{
@@ -10,6 +11,9 @@ class PlantLicenseModel{
     this.toDate,
     this.documentFileName,
     this.documentFolderName,
+    this.scaleController,
+    this.isEdit,
+    this.isDelete
   });
 
   int plantId;
@@ -20,8 +24,11 @@ class PlantLicenseModel{
   DateTime toDate;
   String documentFileName;
   String documentFolderName;
+  AnimationController scaleController;
+  bool isEdit;
+  bool isDelete;
 
-  factory PlantLicenseModel.fromJson(Map<String, dynamic> json) => PlantLicenseModel(
+  factory PlantLicenseModel.fromJson(Map<String, dynamic> json,TickerProviderStateMixin tickerProviderStateMixin) => PlantLicenseModel(
     plantId: json["PlantId"],
     plantLicenseId: json["PlantLicenseId"],
     licenseNumber: json["LicenseNumber"],
@@ -30,6 +37,9 @@ class PlantLicenseModel{
     toDate: json["ToDate"]!=null?DateFormat("yyyy-MM-dd").parse(json["ToDate"]):null,
     documentFileName: json["DocumentFileName"],
     documentFolderName: json["DocumentFolderName"],
+      scaleController: AnimationController(duration: Duration(milliseconds: 300,),vsync: tickerProviderStateMixin),
+      isEdit: true,
+      isDelete: false
   );
 
   Map<String, dynamic> toJson() => {

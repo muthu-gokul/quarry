@@ -14,7 +14,9 @@ import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/alertDialog.dart';
+import 'package:quarry/widgets/bottomBarAddButton.dart';
 import 'package:quarry/widgets/customTextField.dart';
+import 'package:quarry/widgets/validationErrorText.dart';
 
 
 class CustomerDetailAddNew extends StatefulWidget {
@@ -37,6 +39,10 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
   bool materialUnitOpen = false;
 
   bool isListScroll=false;
+  bool emailValid=true;
+  bool name=false;
+  bool phoneNo=false;
+
 
   @override
   void initState() {
@@ -144,7 +150,7 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                 width: SizeConfig.screenWidth,
                                 alignment: Alignment.topCenter,
                                 decoration: BoxDecoration(
-                                    color: Colors.white,
+                                    color: AppTheme.gridbodyBgColor,
                                     borderRadius: BorderRadius.only(
                                         topLeft: Radius.circular(10),
                                         topRight: Radius.circular(10))
@@ -181,7 +187,8 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                     physics: isListScroll?AlwaysScrollableScrollPhysics():NeverScrollableScrollPhysics(),
                                     children: [
                                       AddNewLabelTextField(
-                                        labelText: 'Enter Customer Name',
+                                        labelText: 'Customer Name',
+                                        regExp: '[A-Za-z  ]',
                                         textEditingController: qn.customerName,
                                         onEditComplete: (){
                                           node.unfocus();
@@ -197,6 +204,7 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                           });
                                         },
                                       ),
+                                      !name?Container():ValidationErrorText(title: "* Enter Name",),
 
                                       AddNewLabelTextField(
                                         labelText: 'Address',
@@ -218,6 +226,7 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                       ),
                                       AddNewLabelTextField(
                                         labelText: 'City',
+                                        regExp: '[A-Za-z  ]',
                                         textEditingController: qn.customerCity,
                                         onEditComplete: (){
                                           node.unfocus();
@@ -235,6 +244,7 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                       ),
                                       AddNewLabelTextField(
                                         labelText: 'State',
+                                        regExp: '[A-Za-z  ]',
                                         textEditingController: qn.customerState,
                                         onEditComplete: (){
                                           node.unfocus();
@@ -253,6 +263,7 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                       ),
                                       AddNewLabelTextField(
                                         labelText: 'Country',
+                                        regExp: '[A-Za-z  ]',
                                         textEditingController: qn.customerCountry,
                                         scrollPadding: 400,
                                         onEditComplete: (){
@@ -271,6 +282,9 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                       ),
                                       AddNewLabelTextField(
                                         labelText: 'ZipCode',
+                                        regExp: '[0-9]',
+                                        textLength: 6,
+                                        textInputType: TextInputType.number,
                                         textEditingController: qn.customerZipcode,
                                         scrollPadding: 400,
                                         onEditComplete: (){
@@ -288,7 +302,10 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                         },
                                       ),
                                       AddNewLabelTextField(
-                                        labelText: 'Enter Contact Number',
+                                        labelText: 'Contact Number',
+                                        regExp: '[0-9]',
+                                        textLength: 10,
+                                        textInputType: TextInputType.number,
                                         textEditingController: qn.customerContactNumber,
                                         scrollPadding: 400,
                                         onEditComplete: (){
@@ -305,9 +322,11 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                           });
                                         },
                                       ),
+                                      !phoneNo?Container():ValidationErrorText(title: "* Enter Contact Number",),
                                       AddNewLabelTextField(
-                                        labelText: 'Enter EmailId ',
+                                        labelText: 'EmailId ',
                                         textEditingController: qn.customerEmail,
+                                        textInputType: TextInputType.emailAddress,
                                         scrollPadding: 600,
                                         onEditComplete: (){
                                           node.unfocus();
@@ -323,8 +342,9 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                           });
                                         },
                                       ),
+                                      emailValid?Container():ValidationErrorText(title: "* Invalid Email Address",),
                                       AddNewLabelTextField(
-                                        labelText: 'Enter GST No ',
+                                        labelText: 'GST No ',
                                         textEditingController: qn.customerGstNumber,
                                         scrollPadding: 400,
                                         onEditComplete: (){
@@ -374,13 +394,14 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                       AnimatedContainer(
                                         duration: Duration(milliseconds: 300),
                                         curve: Curves.easeIn,
-                                        height: qn.isCreditCustomer?SizeConfig.height50:0,
+                                        height: qn.isCreditCustomer?50:0,
                                         width: SizeConfig.screenWidth,
                                         margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,top:SizeConfig.height20,),
-                                        padding: EdgeInsets.only(left:SizeConfig.width10,),
+
                                         decoration: BoxDecoration(
                                           border: Border.all(color: AppTheme.addNewTextFieldBorder),
                                           borderRadius: BorderRadius.circular(3),
+                                          color: Colors.white
                                         ),
                                         child:qn.isCreditCustomer? TextField(
                                           scrollPadding: EdgeInsets.only(bottom: 400),
@@ -400,16 +421,65 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                           style:  TextStyle(fontFamily: 'RR',fontSize: 15,color:AppTheme.addNewTextFieldText,letterSpacing: 0.2),
                                           controller: qn.customerCreditLimit,
                                           decoration: InputDecoration(
+                                            fillColor: Colors.white,
                                             hintText: 'Customer Credit Limit',
                                             hintStyle: TextStyle(fontFamily: 'RL',fontSize: 15,color: AppTheme.addNewTextFieldText.withOpacity(0.9)),
                                             border: InputBorder.none,
                                             focusedBorder: InputBorder.none,
                                             errorBorder: InputBorder.none,
                                             enabledBorder: InputBorder.none,
-
+                                            contentPadding: new EdgeInsets.symmetric(vertical: 10.0, horizontal: 8.0),
                                           ),
+
                                           keyboardType: TextInputType.number,
+                                          inputFormatters: [
+                                            FilteringTextInputFormatter.allow(RegExp('[0-9.]')),
+                                          ],
                                         ):Container(),
+                                      ),
+
+                                      SizedBox(height: 20,),
+                                      Container(
+                                        height: SizeConfig.height70,
+                                        width: SizeConfig.height70,
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            border: Border.all(color: AppTheme.uploadColor,width: 2)
+                                        ),
+                                        child: Center(
+                                          child: Icon(Icons.upload_rounded,color: AppTheme.yellowColor,),
+                                        ),
+                                      ),
+                                      SizedBox(height: 20,),
+                                      Align(
+                                        alignment: Alignment.center,
+                                        child: Text("Upload Customer Logo",
+                                          style: TextStyle(fontFamily: 'RR',fontSize: 14,color: AppTheme.gridTextColor),
+                                        ),
+                                      ),
+                                      SizedBox(height: 10,),
+                                      Container(
+
+                                        margin: EdgeInsets.only(left: SizeConfig.width90,right:  SizeConfig.width90,),
+                                        height:45,
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(25.0),
+                                          color: AppTheme.yellowColor,
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: AppTheme.yellowColor.withOpacity(0.4),
+                                              spreadRadius: 1,
+                                              blurRadius: 5,
+                                              offset: Offset(1, 8), // changes position of shadow
+                                            ),
+                                          ],
+                                        ),
+                                        child: Center(
+                                            child: Text("Choose File",style: TextStyle(color:AppTheme.bgColor,fontSize:16,fontFamily: 'RM'),
+                                            )
+                                        ),
+
+
                                       ),
 
                                       SizedBox(height: _keyboardVisible? SizeConfig.screenHeight*0.5:200,)
@@ -424,7 +494,6 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                     ),
 
 
-                    //Circle Image
 
 
                     //HEADER
@@ -433,12 +502,13 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                       width: SizeConfig.screenWidth,
                       child: Row(
                         children: [
-                          IconButton(
-                              icon: Icon(Icons.arrow_back), onPressed: () {
-                            Navigator.pop(context);
-                            qn.clearCustomerDetails();
-                          }),
-                          SizedBox(width: SizeConfig.width5,),
+                          CancelButton(
+                            ontap: (){
+                              Navigator.pop(context);
+                              qn.clearCustomerDetails();
+                            },
+                          ),
+
                           Text("Customer Detail",
                             style: TextStyle(fontFamily: 'RR',
                                 color: Colors.black,
@@ -507,42 +577,32 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                     //addButton
                     Align(
                       alignment: Alignment.bottomCenter,
-                      child: GestureDetector(
-                        onTap: (){
+                      child: AddButton(
+                        ontap: (){
                           node.unfocus();
-                          if(qn.customerName.text.isEmpty){
-                            CustomAlert().commonErrorAlert(context, "Enter Name", "");
+
+                          if(qn.customerEmail.text.isNotEmpty){
+                            setState(() {
+                              emailValid=EmailValidation().validateEmail(qn.customerEmail.text);
+                            });
                           }
-                          else if(qn.customerAddress.text.isEmpty){
-                            CustomAlert().commonErrorAlert(context, "Enter Address", "");
-                          }
-                          else{
+
+                          if(qn.customerName.text.isEmpty){setState(() {name=true;});}
+                          else{setState(() {name=false;});}
+
+                          if(qn.customerContactNumber.text.isEmpty){setState(() {phoneNo=true;});}
+                          else{setState(() {phoneNo=false;});}
+
+                          if(emailValid && !name && !phoneNo){
                             qn.InsertCustomerDbHit(context,widget.fromSalePage);
                           }
-                        },
-                        child: Container(
 
-                          height: 65,
-                          width: 65,
-                          margin: EdgeInsets.only(bottom: 20),
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: AppTheme.yellowColor,
-                            boxShadow: [
-                              BoxShadow(
-                                color: AppTheme.yellowColor.withOpacity(0.4),
-                                spreadRadius: 1,
-                                blurRadius: 5,
-                                offset: Offset(1, 8), // changes position of shadow
-                              ),
-                            ],
-                          ),
-                          child: Center(
-                            child: Icon(Icons.done,size: SizeConfig.height30,color: AppTheme.bgColor,),
-                          ),
-                        ),
+
+
+                        },
                       ),
                     ),
+
 
 
                     Container(

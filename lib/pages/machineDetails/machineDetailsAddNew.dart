@@ -8,7 +8,9 @@ import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/alertDialog.dart';
+import 'package:quarry/widgets/bottomBarAddButton.dart';
 import 'package:quarry/widgets/customTextField.dart';
+import 'package:quarry/widgets/validationErrorText.dart';
 
 
 class MachineDetailAddNew extends StatefulWidget {
@@ -25,6 +27,7 @@ class _MachineDetailAddNewState extends State<MachineDetailAddNew> with TickerPr
   ScrollController listViewController;
   bool _keyboardVisible = false;
 
+  bool machineName=false;
 
   @override
   void initState() {
@@ -86,16 +89,16 @@ class _MachineDetailAddNewState extends State<MachineDetailAddNew> with TickerPr
                  children: [
                    Container(
                      width: SizeConfig.screenWidth,
-                     height: 205,
+                     height: 180,
                      decoration: BoxDecoration(
                        color: AppTheme.yellowColor,
-                       /* image: DecorationImage(
-                                     image: AssetImage("assets/svg/gridHeader/companyDetailsHeader.jpg",),
+                        image: DecorationImage(
+                                     image: AssetImage("assets/svg/gridHeader/machineHeader.jpg",),
                                    fit: BoxFit.cover
-                                 )*/
+                                 )
 
                      ),
-                     child: SvgPicture.asset("assets/svg/gridHeader/machineHeader.svg"),
+                    // child: SvgPicture.asset("assets/svg/gridHeader/machineHeader.svg"),
 
                    ),
                  ],
@@ -168,6 +171,7 @@ class _MachineDetailAddNewState extends State<MachineDetailAddNew> with TickerPr
                              children: [
                                AddNewLabelTextField(
                                  labelText: 'Machine Name',
+                                 regExp: '[A-Za-z0-9  ]',
                                  textEditingController: qn.MachineName,
                                  onEditComplete: (){
                                    node.unfocus();
@@ -176,8 +180,10 @@ class _MachineDetailAddNewState extends State<MachineDetailAddNew> with TickerPr
                                    scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                  },
                                ),
+                               !machineName?Container():ValidationErrorText(title: "* Enter Machine Name",),
                                AddNewLabelTextField(
                                  labelText: 'Machine Type',
+                                 regExp: '[A-Za-z0-9  ]',
                                  textEditingController: qn.MachineType,
                                  ontap: (){
                                    scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
@@ -188,6 +194,7 @@ class _MachineDetailAddNewState extends State<MachineDetailAddNew> with TickerPr
                                ),
                                AddNewLabelTextField(
                                  labelText: 'Machine Model',
+                                 regExp: '[A-Za-z0-9  ]',
                                  textEditingController: qn.MachineModel,
                                  ontap: (){
                                    scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
@@ -199,7 +206,9 @@ class _MachineDetailAddNewState extends State<MachineDetailAddNew> with TickerPr
 
                                AddNewLabelTextField(
                                  labelText: 'Capacity',
+                                 regExp: '[0-9.  ]',
                                  textEditingController: qn.Capacity,
+                                 textInputType: TextInputType.number,
                                  scrollPadding: 100,
                                  ontap: (){
                                    scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
@@ -210,6 +219,7 @@ class _MachineDetailAddNewState extends State<MachineDetailAddNew> with TickerPr
                                ),
                                AddNewLabelTextField(
                                   labelText: 'Motor Power',
+                                 regExp: '[A-Za-z0-9  ]',
                                   textEditingController: qn.MoterPower,
                                  scrollPadding: 400,
                                  ontap: (){
@@ -228,6 +238,7 @@ class _MachineDetailAddNewState extends State<MachineDetailAddNew> with TickerPr
                                AddNewLabelTextField(
                                  labelText: 'Machine Specification',
                                  textEditingController: qn.MachineSpecification,
+                                 regExp: '[A-Za-z0-9  ]',
                                  scrollPadding: 450,
                                  ontap: (){
                                    scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
@@ -264,11 +275,13 @@ class _MachineDetailAddNewState extends State<MachineDetailAddNew> with TickerPr
                width: SizeConfig.screenWidth,
                child: Row(
                  children: [
-                   IconButton(icon: Icon(Icons.arrow_back), onPressed: (){
-                     qn.clearMachineDetailForm();
-                     Navigator.pop(context);
-                   }),
-                   SizedBox(width: SizeConfig.width5,),
+                   CancelButton(
+                     ontap: (){
+                       qn.clearMachineDetailForm();
+                       Navigator.pop(context);
+                     },
+                   ),
+
                    Text("Machine Detail",
                      style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: SizeConfig.width16),
                    ),
@@ -313,24 +326,7 @@ class _MachineDetailAddNewState extends State<MachineDetailAddNew> with TickerPr
                          painter: RPSCustomPainter3(),
                        ),
                      ),
-                     Center(
-                       heightFactor: 0.5,
-                       child: FloatingActionButton(backgroundColor: AppTheme.yellowColor, child: Icon(Icons.save), elevation: 0.1, onPressed: () {
-                         node.unfocus();
-                         if(qn.MachineName.text.isEmpty)
-                         {
-                           CustomAlert().commonErrorAlert(context, "Enter Machine Name", "");
 
-                         }
-
-                         else{
-                           qn.InsertVehicleDbHit(context);
-
-                         }
-
-
-                       }),
-                     ),
                      Container(
                        width:  SizeConfig.screenWidth,
                        height: 80,
@@ -344,6 +340,22 @@ class _MachineDetailAddNewState extends State<MachineDetailAddNew> with TickerPr
                      )
                    ],
                  ),
+               ),
+             ),
+             Align(
+               alignment: Alignment.bottomCenter,
+               child: AddButton(
+                 ontap: (){
+                   node.unfocus();
+                   if(qn.MachineName.text.isEmpty) {setState(() {machineName=true;});}
+                   else{setState(() {machineName=false;});}
+
+                   if(!machineName){
+                     qn.InsertVehicleDbHit(context);
+                   }
+
+
+                 },
                ),
              ),
 

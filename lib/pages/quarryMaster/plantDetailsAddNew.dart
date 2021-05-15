@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/model/plantDetailsModel/plantLicenseModel.dart';
@@ -14,9 +15,11 @@ import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/alertDialog.dart';
+import 'package:quarry/widgets/bottomBarAddButton.dart';
 import 'package:quarry/widgets/customTextField.dart';
 import 'package:quarry/widgets/dateRangePicker.dart' as DateRagePicker;
 import 'package:quarry/widgets/sidePopUp/sidePopUpWithoutSearch.dart';
+import 'package:quarry/widgets/validationErrorText.dart';
 
 
 
@@ -41,6 +44,15 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
   bool plantTypeOpen=false;
   DateTime firstDate=DateTime.parse('1950-01-01');
   DateTime lastDate=DateTime.parse('2121-01-01');
+
+
+  bool emailValid=true;
+  bool plantName=false;
+  bool plantType=false;
+  bool contactNo=false;
+
+
+
   @override
   void initState() {
 
@@ -181,6 +193,7 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
                                 AddNewLabelTextField(
                                   labelText: 'Plant Name',
                                   isEnabled: isEdit,
+                                  regExp: '[A-Za-z  ]',
                                   textEditingController: qn.PD_quarryname,
                                   onEditComplete: (){
                                     node.unfocus();
@@ -194,8 +207,8 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
                                       _keyboardVisible=true;
                                     });
                                   },
-
                                 ),
+                                !plantName?Container():ValidationErrorText(title: "* Enter Plant Name",),
                                 AddNewLabelTextField(
                                   labelText: 'Address',
                                   isEnabled: isEdit,
@@ -220,6 +233,7 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
                                 ),
                                 AddNewLabelTextField(
                                   labelText: 'City',
+                                  regExp: '[A-Za-z  ]',
                                   isEnabled: isEdit,
                                   scrollPadding: 200,
                                   textEditingController: qn.PD_city,
@@ -239,6 +253,7 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
                                 AddNewLabelTextField(
                                   labelText: 'State',
                                   isEnabled: isEdit,
+                                  regExp: '[A-Za-z  ]',
                                   scrollPadding: 200,
                                   textEditingController: qn.PD_state,
                                   onEditComplete: (){
@@ -257,6 +272,7 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
                                 AddNewLabelTextField(
                                   labelText: 'Country',
                                   isEnabled: isEdit,
+                                  regExp: '[A-Za-z  ]',
                                   scrollPadding: 400,
                                   textEditingController: qn.PD_country,
                                   onEditComplete: (){
@@ -276,6 +292,8 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
                                 AddNewLabelTextField(
                                   labelText: 'ZipCode',
                                   isEnabled: isEdit,
+                                  regExp: '[0-9]',
+                                  textLength: 6,
                                   textInputType: TextInputType.number,
                                   scrollPadding: 400,
                                   textEditingController: qn.PD_zipcode,
@@ -296,6 +314,8 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
                                 AddNewLabelTextField(
                                   labelText: 'Contact Number',
                                   isEnabled: isEdit,
+                                  regExp: '[0-9]',
+                                  textLength: 10,
                                   scrollPadding: 400,
                                   textInputType: TextInputType.number,
                                   textEditingController: qn.PD_contactNo,
@@ -313,6 +333,7 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
                                     });
                                   },
                                 ),
+                                !contactNo?Container():ValidationErrorText(title: "* Enter Contact Number",),
                                 AddNewLabelTextField(
                                   labelText: 'Email',
                                   isEnabled: isEdit,
@@ -333,6 +354,7 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
                                     });
                                   },
                                 ),
+                                emailValid?Container():ValidationErrorText(title: "* Invalid Email Address",),
                                 GestureDetector(
                                   onTap: (){
                                     node.unfocus();
@@ -345,11 +367,14 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
                                     text: qn.PD_plantTypeName==null? "Select Plant Type":qn.PD_plantTypeName,
                                     textColor: qn.PD_plantTypeName==null? AppTheme.addNewTextFieldText.withOpacity(0.5):AppTheme.addNewTextFieldText,
                                     iconColor: qn.PD_plantTypeName==null? AppTheme.addNewTextFieldText:AppTheme.yellowColor,
+                                    bgColor: qn.PD_plantTypeName==null? AppTheme.disableColor:Colors.white,
                                   ),
                                 ),
+                                !plantType?Container():ValidationErrorText(title: "* Select Plant Type",),
                                 AddNewLabelTextField(
                                   labelText: 'Contact Person Name',
                                   isEnabled: isEdit,
+                                  regExp: '[A-Za-z  ]',
                                   scrollPadding: 400,
                                   textEditingController: qn.PD_ContactPersonName,
                                   onEditComplete: (){
@@ -387,86 +412,181 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
                                 ),
 
 ////////////////////////////////////  LICENSE LIST ///////////////////////
-                                AnimatedContainer(
-                                  duration: Duration(milliseconds: 300),
-                                  curve: Curves.easeIn,
-                                  height: qn.PO_PlantLicenseList.length==0?0:qn.PO_PlantLicenseList.length*60.0,
-                                  padding: EdgeInsets.fromLTRB(10,5,10,5),
-                                 /* constraints: BoxConstraints(
-                                    minHeight: 60,
-                                    maxHeight: qn.PO_PlantLicenseList.length*70.0
-                                  ),*/
-                                  width: SizeConfig.screenWidth,
-                                  margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,top:SizeConfig.height20,),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(10),
-                                    boxShadow: [
-                                      qn.PO_PlantLicenseList.length==0?BoxShadow():
-                                      BoxShadow(
-                                        color: AppTheme.addNewTextFieldText.withOpacity(0.2),
-                                        spreadRadius: 2,
-                                        blurRadius: 15,
-                                        offset: Offset(0, 0), // changes position of shadow
-                                      )
-                                    ]
+
+                                Container(
+                                  //  duration: Duration(milliseconds: 300),
+                                  // curve: Curves.easeIn,
+                                  height: qn.PO_PlantLicenseList.length == 0 ? 0 :
+                                  ( qn.PO_PlantLicenseList.length * 50.0)+40,
+                                  constraints: BoxConstraints(
+                                      maxHeight: 300
                                   ),
-                                  child: ListView.builder(
-                                    itemCount: qn.PO_PlantLicenseList.length,
-                                    itemBuilder: (context,index){
-                                      return Container(
-                                        padding: EdgeInsets.only(top: 5,bottom: 5),
+                                  //  padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+
+                                  width: SizeConfig.screenWidth,
+
+                                  margin: EdgeInsets.only(
+                                    left: SizeConfig.width20,
+                                    right: SizeConfig.width20,
+                                    top: SizeConfig.height20,),
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(5),
+                                      border: Border.all(color: AppTheme.addNewTextFieldBorder)
+                                    /*  boxShadow: [
+                                            qn.productionMaterialMappingList.length == 0 ? BoxShadow() :
+                                            BoxShadow(
+                                              color: AppTheme.addNewTextFieldText
+                                                  .withOpacity(0.2),
+                                              spreadRadius: 2,
+                                              blurRadius: 15,
+                                              offset: Offset(0, 0), // changes position of shadow
+                                            )
+                                          ]*/
+                                  ),
+                                  child: Column(
+                                    children: [
+
+                                      Container(
+                                        height: 40,
+                                        width: SizeConfig.screenWidth,
+                                        padding: EdgeInsets.only(left: 10,right: 10),
                                         decoration: BoxDecoration(
-                                          border: Border(bottom: BorderSide(color: AppTheme.addNewTextFieldBorder))
+                                          color: Colors.grey[200],
+                                          borderRadius: BorderRadius.only(topLeft: Radius.circular(5),topRight: Radius.circular(5),),
+
+                                          /* border: Border(
+                                                    bottom: BorderSide(color: AppTheme.addNewTextFieldBorder.withOpacity(0.5))
+                                                )*/
                                         ),
                                         child: Row(
-                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Container(
-                                              width: SizeConfig.width80,
-                                              child: Text("${qn.PO_PlantLicenseList[index].licenseNumber}",
-                                                style: TextStyle(fontSize: 14,fontFamily: 'RR',color: AppTheme.gridTextColor,letterSpacing: 0.2),
-                                              ),
-                                            ),
-                                            Container(
-                                              padding: EdgeInsets.only(left: 5),
-                                              alignment: Alignment.centerLeft,
-                                              width: SizeConfig.width80,
-                                              child: Text("${qn.PO_PlantLicenseList[index].licenseDescription}",
-                                                style: TextStyle(fontSize: 14,fontFamily: 'RR',color: AppTheme.gridTextColor,letterSpacing: 0.2),
-                                              ),
-                                            ),
-                                            Container(
-
-                                              alignment: Alignment.centerRight,
-                                              width: SizeConfig.width70+SizeConfig.width5,
-                                              child: Text("${qn.PO_PlantLicenseList[index].fromDate!=null?DateFormat.yMMMd().format(qn.PO_PlantLicenseList[index].fromDate):""} to \n${qn.PO_PlantLicenseList[index].toDate!=null?DateFormat.yMMMd().format(qn.PO_PlantLicenseList[index].toDate):""}",
-                                                style: TextStyle(fontSize: 12,fontFamily: 'RR',color: AppTheme.gridTextColor,letterSpacing: 0.2),
-                                              ),
-                                            ),
-                                            GestureDetector(
-                                              onTap: (){
-                                                if(isEdit){
-                                                  setState(() {
-                                                    qn.PO_PlantLicenseList.removeAt(index);
-                                                  });
-                                                }
-
-                                              },
-                                              child: Container(
-                                                height: 25,
-                                                width: 25,
-                                                child: Icon(Icons.delete,color:isEdit?Colors.red: Colors.red.withOpacity(0.5),)
-                                              ),
-                                            ),
+                                            Container(width: SizeConfig.screenWidthM40*0.30,child: Text("License Number")),
+                                            Container(padding: EdgeInsets.only(left: 10),alignment: Alignment.centerLeft, width: SizeConfig.screenWidthM40*0.29,child: Text("License Name")),
+                                            Container(padding: EdgeInsets.only(left: 10), width: SizeConfig.screenWidthM40*0.25,child: Text("Date")),
 
                                           ],
-                                        ),
 
-                                      );
-                                    },
+                                        ),
+                                      ),
+
+                                      Expanded(
+                                        child: ListView.builder(
+                                          itemCount: qn.PO_PlantLicenseList.length,
+                                          itemBuilder: (context, index) {
+                                            return SlideTransition(
+                                              position: Tween<Offset>(begin: Offset(qn.PO_PlantLicenseList[index].isEdit ? 0.0 :
+                                              qn.PO_PlantLicenseList[index].isDelete ?1.0:0.0,
+                                                  qn.PO_PlantLicenseList[index].isEdit ? 0.0 :qn.PO_PlantLicenseList[index].isDelete ?0.0: 1.0),
+                                                  end:qn.PO_PlantLicenseList[index].isEdit ?Offset(1, 0): Offset.zero)
+                                                  .animate(qn.PO_PlantLicenseList[index].scaleController),
+
+                                              child: FadeTransition(
+                                                opacity: Tween(begin: qn.PO_PlantLicenseList[index].isEdit ? 1.0 : 0.0,
+                                                    end: qn.PO_PlantLicenseList[index].isEdit ? 0.0 : 1.0)
+                                                    .animate(qn.PO_PlantLicenseList[index].scaleController),
+                                                child: Container(
+                                                  padding: EdgeInsets.only(top: 5, bottom: 5,left: 10,right: 10),
+                                                  decoration: BoxDecoration(
+                                                      border: Border(
+                                                          bottom: BorderSide(color: AppTheme.addNewTextFieldBorder.withOpacity(0.5))
+                                                      )
+                                                  ),
+                                                  child: Column(
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: [
+                                                      Row(
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        children: [
+
+                                                          Container(
+                                                            width: SizeConfig.screenWidthM40*0.30,
+                                                            alignment:Alignment.centerLeft,
+
+                                                            child: Text("${qn.PO_PlantLicenseList[index].licenseNumber}",
+                                                              style: TextStyle(fontSize: 14, fontFamily: 'RR', color: AppTheme.gridTextColor, letterSpacing: 0.2),
+                                                            ),
+                                                          ),
+                                                          Container(
+                                                            padding: EdgeInsets.only(left: 10),
+                                                            alignment: Alignment.centerLeft,
+
+                                                            width: SizeConfig.screenWidthM40*0.25,
+                                                            child: Text("${qn.PO_PlantLicenseList[index].licenseDescription}",
+                                                              style: TextStyle(fontSize: 14, fontFamily: 'RR', color: AppTheme.gridTextColor, letterSpacing: 0.2),
+                                                            ),
+                                                          ),
+                                                          Container(
+                                                            alignment: Alignment.centerRight,
+                                                            width:SizeConfig.screenWidthM40*0.26,
+                                                            padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
+
+                                                            child: Text("${qn.PO_PlantLicenseList[index].fromDate!=null?DateFormat('dd-MM-yyyy').format(qn.PO_PlantLicenseList[index].fromDate):""} to \n${qn.PO_PlantLicenseList[index].toDate!=null?DateFormat('dd-MM-yyyy').format(qn.PO_PlantLicenseList[index].toDate):""}",
+                                                              style: TextStyle(fontSize: 10, fontFamily: 'RR', color: AppTheme.gridTextColor,letterSpacing: 0.2),
+                                                            ),
+                                                          ),
+                                                          Spacer(),
+                                                          GestureDetector(
+                                                            onTap: () {
+
+                                                              if(isEdit){
+                                                                if (qn.PO_PlantLicenseList[index].isEdit) {
+                                                                  qn.PO_PlantLicenseList[index].scaleController.forward().whenComplete(() {
+                                                                    print("EIT");
+                                                                    if (this.mounted) {
+                                                                      setState(() {
+                                                                        qn.PO_PlantLicenseList.removeAt(index);
+                                                                      });
+                                                                    }
+                                                                  });
+
+                                                                }
+                                                                else {
+                                                                  setState(() {
+                                                                    qn.PO_PlantLicenseList[index].isDelete=true;
+                                                                  });
+                                                                  qn.PO_PlantLicenseList[index].scaleController.reverse().whenComplete(() {
+                                                                    if (this.mounted) {
+
+                                                                      setState(() {
+                                                                        qn.PO_PlantLicenseList.removeAt(index);
+                                                                      });
+                                                                    }
+                                                                  });
+                                                                }
+                                                              }
+
+
+
+
+                                                            },
+                                                            child: Container(
+                                                                height: 20,
+                                                                width: 20,
+                                                                child: SvgPicture.asset("assets/svg/delete.svg",color:isEdit? AppTheme.red:AppTheme.red.withOpacity(0.5),)
+                                                            ),
+                                                          ),
+
+                                                        ],
+                                                      ),
+
+
+                                                    ],
+                                                  ),
+
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
+
+
+
 
 
                                 Container(
@@ -480,7 +600,7 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       Container(
-                                        width: SizeConfig.width130,
+                                        width: SizeConfig.screenWidth*0.42,
                                         child: TextFormField(
                                           enabled: isEdit,
                                           scrollPadding: EdgeInsets.only(bottom: 400),
@@ -490,7 +610,7 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
                                           decoration: InputDecoration(
                                               fillColor:isEdit?Colors.white: Color(0xFFF2F2F2),
                                               filled: true,
-                                              hintStyle: TextStyle(fontFamily: 'RL',fontSize: 15,color: AppTheme.addNewTextFieldText.withOpacity(0.9)),
+                                              hintStyle: TextStyle(fontFamily: 'RL',fontSize: 14,color: AppTheme.addNewTextFieldText.withOpacity(0.9)),
                                               border:  OutlineInputBorder(
                                                   borderSide: BorderSide(color: AppTheme.addNewTextFieldBorder)
                                               ),
@@ -517,7 +637,7 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
                                         ),
                                       ),
                                       Container(
-                                        width: SizeConfig.width130,
+                                        width:SizeConfig.screenWidth*0.42,
                                         child: TextFormField(
                                           enabled: isEdit,
                                           scrollPadding: EdgeInsets.only(bottom: 100),
@@ -526,7 +646,7 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
                                           decoration: InputDecoration(
                                               fillColor:isEdit?Colors.white: Color(0xFFF2F2F2),
                                               filled: true,
-                                              hintStyle: TextStyle(fontFamily: 'RL',fontSize: 15,color: AppTheme.addNewTextFieldText.withOpacity(0.9)),
+                                              hintStyle: TextStyle(fontFamily: 'RL',fontSize: 14,color: AppTheme.addNewTextFieldText.withOpacity(0.9)),
                                               border:  OutlineInputBorder(
                                                   borderSide: BorderSide(color: AppTheme.addNewTextFieldBorder)
                                               ),
@@ -536,7 +656,7 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
                                               focusedBorder: OutlineInputBorder(
                                                   borderSide: BorderSide(color:AppTheme.addNewTextFieldFocusBorder)
                                               ),
-                                              hintText: "Description",
+                                              hintText: "License Name",
                                               contentPadding: new EdgeInsets.symmetric(vertical: 10.0, horizontal: 8.0),
                                             suffixIcon:  GestureDetector(
                                               onTap: () async {
@@ -564,8 +684,8 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
                                                 }
                                               },
                                               child: Container(
-                                                height: SizeConfig.height50,
-                                                width: SizeConfig.height50,
+                                                height:40,
+                                                width:40,
 
                                                 decoration: BoxDecoration(
                                                   shape: BoxShape.circle,
@@ -625,21 +745,39 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
 
                                 GestureDetector(
                                   onTap: (){
-                                    setState(() {
-                                      qn.PO_PlantLicenseList.add(
-                                        PlantLicenseModel(
-                                          plantId: null,
-                                          plantLicenseId: null,
-                                          licenseNumber: qn.PD_LicenseNo.text,
-                                          licenseDescription: qn.PD_LicenseDesc.text,
-                                          fromDate: qn.PD_fromDate,
-                                          toDate: qn.PD_toDate,
-                                          documentFileName: "",
-                                          documentFolderName: ""
-                                        )
-                                      );
-                                    });
-                                    qn.clearPlantLicenseForm();
+                                    if(isEdit){
+
+                                      if(qn.PD_LicenseNo.text.isEmpty){
+                                        CustomAlert().commonErrorAlert(context, "Enter License Number", "");
+                                      }
+                                      else if(qn.PD_LicenseDesc.text.isEmpty){
+                                        CustomAlert().commonErrorAlert(context, "Enter License Name", "");
+                                      }
+                                      else{
+                                        setState(() {
+                                          qn.PO_PlantLicenseList.add(
+                                              PlantLicenseModel(
+                                                  plantId: null,
+                                                  plantLicenseId: null,
+                                                  licenseNumber: qn.PD_LicenseNo.text,
+                                                  licenseDescription: qn.PD_LicenseDesc.text,
+                                                  fromDate: qn.PD_fromDate,
+                                                  toDate: qn.PD_toDate,
+                                                  documentFileName: "",
+                                                  documentFolderName: "",
+                                                  scaleController: AnimationController(duration: Duration(milliseconds: 300), vsync: this),
+                                                  isEdit: false,
+                                                  isDelete: false
+                                              )
+                                          );
+                                        });
+                                        qn.clearPlantLicenseForm();
+                                        qn.PO_PlantLicenseList[qn.PO_PlantLicenseList.length-1].scaleController.forward();
+                                      }
+
+
+                                    }
+
                                   },
                                   child: Container(
                                     margin: EdgeInsets.only(left: SizeConfig.width90,right:  SizeConfig.width90,),
@@ -657,7 +795,8 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
                                       ],
                                     ),
                                     child: Center(
-                                        child: Text("Choose File",style: TextStyle(color:AppTheme.bgColor,fontSize:16,fontFamily: 'RM'),
+                                       // child: Text("Choose File",style: TextStyle(color:AppTheme.bgColor,fontSize:16,fontFamily: 'RM'),
+                                        child: Text("Add",style: TextStyle(color:AppTheme.bgColor,fontSize:16,fontFamily: 'RM'),
                                         )
                                     ),
 
@@ -731,12 +870,33 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
                   onTap: (){
                     node.unfocus();
                     if(qn.isPlantDetailsEdit){
+
                       if(isEdit){
+
                         setState(() {
-                          isEdit=false;
+                          emailValid=EmailValidation().validateEmail(qn.PD_email.text);
                         });
 
-                        qn.InsertPlantDetailDbhit(context);
+                        if(qn.PD_quarryname.text.isEmpty){setState(() {plantName=true;});}
+                        else{setState(() {plantName=false;});}
+
+                        if(qn.PD_contactNo.text.isEmpty){setState(() {contactNo=true;});}
+                        else{setState(() {contactNo=false;});}
+
+                        if(qn.PD_plantTypeName==null){setState(() {plantType=true;});}
+                        else{setState(() {plantType=false;});}
+
+
+
+
+                        if(emailValid && !plantName && !contactNo && !plantType){
+                          setState(() {
+                            isEdit=false;
+                          });
+
+                          qn.InsertPlantDetailDbhit(context,this);
+                        }
+
                       }
                       else{
                         setState(() {
@@ -745,12 +905,27 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
                       }
                     }
                     else{
-                      if(qn.PD_quarryname.text.isEmpty){
-                        CustomAlert().commonErrorAlert(context, "Enter Plant Name", "");
+
+                      setState(() {
+                        emailValid=EmailValidation().validateEmail(qn.PD_email.text);
+                      });
+
+                      if(qn.PD_quarryname.text.isEmpty){setState(() {plantName=true;});}
+                      else{setState(() {plantName=false;});}
+
+                      if(qn.PD_contactNo.text.isEmpty){setState(() {contactNo=true;});}
+                      else{setState(() {contactNo=false;});}
+
+                      if(qn.PD_plantTypeName==null){setState(() {plantType=true;});}
+                      else{setState(() {plantType=false;});}
+
+
+
+
+                      if(emailValid && !plantName && !contactNo && !plantType){
+                        qn.InsertPlantDetailDbhit(context,this);
                       }
-                      else{
-                        qn.InsertPlantDetailDbhit(context);
-                      }
+
 
                     }
                   },
@@ -772,7 +947,9 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
                       ],
                     ),
                     child: Center(
-                      child: Icon(Icons.done,size: SizeConfig.height30,color: AppTheme.bgColor,),
+                      child: isEdit?Icon(Icons.done,size: SizeConfig.height30,color: AppTheme.bgColor,):
+                      SvgPicture.asset("assets/svg/edit.svg",width: 20,height: 20,),
+
                     ),
                   ),
                 ),
@@ -848,11 +1025,13 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
                 width: SizeConfig.screenWidth,
                 child: Row(
                   children: [
-                    IconButton(icon: Icon(Icons.clear,color: Colors.white,), onPressed: (){
-                      Navigator.pop(context);
-                      qn.clearPlantForm();
-                    }),
-                    SizedBox(width: SizeConfig.width5,),
+                    CancelButton(
+                      ontap: (){
+                        Navigator.pop(context);
+                        qn.clearPlantForm();
+                      },
+                    ),
+
                     Text("Plant Details",
                       style: TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 16),
                     ),

@@ -1245,7 +1245,7 @@ class SettingsPageState extends State<SettingsPage> with TickerProviderStateMixi
 
                       Provider.of<DrawerNotifier>(context,listen: false).changeMenu(1);
                       Provider.of<QuarryNotifier>(context,listen: false).GetQuarryDetailDbhit(context);
-                      Provider.of<QuarryNotifier>(context,listen: false).GetplantDetailDbhit(context,null);
+                      Provider.of<QuarryNotifier>(context,listen: false).GetplantDetailDbhit(context,null,this);
                     },
                   ),
 

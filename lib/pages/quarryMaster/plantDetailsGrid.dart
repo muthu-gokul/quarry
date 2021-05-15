@@ -2,11 +2,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/pages/quarryMaster/plantDetailsAddNew.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
+import 'package:quarry/widgets/bottomBarAddButton.dart';
 
 
 
@@ -185,7 +187,7 @@ class PlantDetailsGridState extends State<PlantDetailsGrid> with TickerProviderS
                                             ]
                                           ),
                                           child: Center(
-                                            child: Icon(Icons.add,color: Colors.white,size: 40,),
+                                            child: SvgPicture.asset("assets/svg/plusIcon.svg",height: 35,width: 35,color: AppTheme.addNewTextFieldFocusBorder,),
                                           ),
                                         ),
                                       ),
@@ -193,8 +195,9 @@ class PlantDetailsGridState extends State<PlantDetailsGrid> with TickerProviderS
                                   ),
                                   qn.plantGridList.isNotEmpty? GestureDetector(
                                     onTap: (){
+                                      qn.updatePlantDetailEdit(true);
                                       Navigator.push(context, _createRoute());
-                                      qn.GetplantDetailDbhit(context, qn.plantGridList[0].plantId);
+                                      qn.GetplantDetailDbhit(context, qn.plantGridList[0].plantId,PlantDetailsAddNewState());
 
                                     },
                                     child: Container(
@@ -214,6 +217,9 @@ class PlantDetailsGridState extends State<PlantDetailsGrid> with TickerProviderS
                                             decoration: BoxDecoration(
                                                 shape: BoxShape.circle,
                                                 border: Border.all(color: AppTheme.uploadColor,width: 2)
+                                            ),
+                                            child: Center(
+                                              child: SvgPicture.asset("assets/svg/Planticon.svg",height: 40,width: 40,),
                                             ),
                                           ),
 
@@ -245,8 +251,9 @@ class PlantDetailsGridState extends State<PlantDetailsGrid> with TickerProviderS
                                       .map((i, value) => MapEntry(i,    i==0?Container():
                                   GestureDetector(
                                     onTap: (){
+                                      qn.updatePlantDetailEdit(true);
                                       Navigator.push(context, _createRoute());
-                                      qn.GetplantDetailDbhit(context, qn.plantGridList[i].plantId);
+                                      qn.GetplantDetailDbhit(context, qn.plantGridList[i].plantId,PlantDetailsAddNewState());
 
                                     },
                                     child: Container(
@@ -259,7 +266,8 @@ class PlantDetailsGridState extends State<PlantDetailsGrid> with TickerProviderS
                                           SizedBox(height: 50,),
                                           GestureDetector(
                                             onTap: (){
-                                              qn.GetplantDetailDbhit(context, qn.plantGridList[i].plantId);
+                                              qn.updatePlantDetailEdit(true);
+                                              qn.GetplantDetailDbhit(context, qn.plantGridList[i].plantId,PlantDetailsAddNewState());
                                               Navigator.push(context, _createRoute());
                                             },
                                             child: Container(
@@ -268,6 +276,9 @@ class PlantDetailsGridState extends State<PlantDetailsGrid> with TickerProviderS
                                               decoration: BoxDecoration(
                                                   shape: BoxShape.circle,
                                                   border: Border.all(color: AppTheme.uploadColor,width: 2)
+                                              ),
+                                              child: Center(
+                                                child: SvgPicture.asset("assets/svg/Planticon.svg",height: 40,width: 40,),
                                               ),
                                             ),
                                           ),
@@ -303,9 +314,11 @@ class PlantDetailsGridState extends State<PlantDetailsGrid> with TickerProviderS
                 width: SizeConfig.screenWidth,
                 child: Row(
                   children: [
-                    IconButton(icon: Icon(Icons.clear,color: Colors.white,), onPressed: (){
-                      Navigator.pop(context);
-                    }),
+                    CancelButton(
+                      ontap: (){
+                        Navigator.pop(context);
+                      },
+                    ),
                     SizedBox(width: SizeConfig.width5,),
                     Text("Our Plants",
                       style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: SizeConfig.width16),

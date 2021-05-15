@@ -11,6 +11,7 @@ import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/alertDialog.dart';
+import 'package:quarry/widgets/bottomBarAddButton.dart';
 import 'package:quarry/widgets/navigationBarIcon.dart';
 import 'package:quarry/widgets/staticColumnScroll/customDataTable.dart';
 
@@ -123,7 +124,7 @@ class _CustomerMasterState extends State<CustomerMaster> {
 
                             children: [
 
-                              AnimatedPositioned(
+                              /*AnimatedPositioned(
                                 bottom:showEdit?-60:0,
                                 duration: Duration(milliseconds: 300,),
                                 curve: Curves.bounceInOut,
@@ -155,7 +156,7 @@ class _CustomerMasterState extends State<CustomerMaster> {
                                     ],
                                   ),
                                 ),
-                              ),
+                              ),*/
 
                               AnimatedPositioned(
                                 bottom:showEdit?15:-60,
@@ -246,34 +247,15 @@ class _CustomerMasterState extends State<CustomerMaster> {
                 //addButton
                 Align(
                   alignment: Alignment.bottomCenter,
-                  child: GestureDetector(
-                    onTap: (){
+                  child: AddButton(
+                    ontap: (){
                       qn.updateCustomerEdit(false);
                       Navigator.of(context).push(_createRoute());
                     },
-                    child: Container(
-
-                      height: 65,
-                      width: 65,
-                      margin: EdgeInsets.only(bottom: 20),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: AppTheme.yellowColor,
-                        boxShadow: [
-                          BoxShadow(
-                            color: AppTheme.yellowColor.withOpacity(0.4),
-                            spreadRadius: 1,
-                            blurRadius: 5,
-                            offset: Offset(1, 8), // changes position of shadow
-                          ),
-                        ],
-                      ),
-                      child: Center(
-                        child: Icon(Icons.add,size: SizeConfig.height30,color: AppTheme.bgColor,),
-                      ),
-                    ),
+                    image: "assets/svg/plusIcon.svg",
                   ),
                 ),
+
 
 
 

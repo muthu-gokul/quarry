@@ -236,6 +236,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                        AddNewLabelTextField(
                                          labelText: 'City',
                                          isEnabled: isEdit,
+                                         regExp: '[A-Za-z  ]',
                                          scrollPadding: 200,
                                          textEditingController: qn.CD_city,
                                          ontap: (){
@@ -256,6 +257,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                        AddNewLabelTextField(
                                          labelText: 'State',
                                          isEnabled: isEdit,
+                                         regExp: '[A-Za-z  ]',
                                          scrollPadding: 200,
                                          textEditingController: qn.CD_state,
                                          ontap: (){
@@ -415,6 +417,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                        AddNewLabelTextField(
                                          labelText: 'CIN No',
                                          isEnabled: isEdit,
+                                         regExp: '[A-Za-z0-9]',
                                          scrollPadding: 500,
                                          textEditingController: qn.CD_Cinno,
                                          ontap: (){
@@ -446,16 +449,14 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                            child: Icon(Icons.upload_rounded,color: AppTheme.yellowColor,),
                                          ),
                                        ),
-                                       SizedBox(height: SizeConfig.height20,),
-
+                                       SizedBox(height: 20,),
                                        Align(
                                          alignment: Alignment.center,
                                          child: Text("Upload Your Company Logo",
                                            style: TextStyle(fontFamily: 'RR',fontSize: 14,color: AppTheme.gridTextColor),
                                          ),
                                        ),
-                                       SizedBox(height: SizeConfig.height10,),
-
+                                       SizedBox(height: 10,),
                                        Container(
 
                                          margin: EdgeInsets.only(left: SizeConfig.width90,right:  SizeConfig.width90,),
@@ -491,7 +492,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                              border: Border.all(color: AppTheme.uploadColor,width: 2)
                                          ),
                                          child: Center(
-                                           child: Icon(Icons.upload_rounded,color: AppTheme.yellowColor,),
+                                           child: SvgPicture.asset("assets/svg/Planticon.svg",height: 40,width: 40,),
                                          ),
                                        ),
                                        SizedBox(height: SizeConfig.height20,),
@@ -636,7 +637,10 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                                  if(qn.CD_contactNo.text.isEmpty){setState(() {contactNo=true;});}
                                                  else{setState(() {contactNo=false;});}
 
-                                                 if(emailValid && !companyName && !address && !contactNo){
+                                                 if(qn.CD_gstno.text.isEmpty){setState(() {gstNo=true;});}
+                                                 else{setState(() {gstNo=false;});}
+
+                                                 if(emailValid && !companyName && !address && !contactNo && !gstNo){
                                                    node.unfocus();
 
                                                    setState(() {
@@ -662,7 +666,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                                  child:FittedBox(
                                                    child: Row(
                                                      children: [
-                                                       SvgPicture.asset("assets/svg/edit.svg",height: 20,width: 20,color: AppTheme.yellowColor,),
+                                                       SvgPicture.asset("assets/svg/tick.svg",height: 20,width: 20,color: AppTheme.yellowColor,),
                                                        SizedBox(width: SizeConfig.width10,),
                                                        Text("Update",style: TextStyle(fontSize: 20,fontFamily: 'RR',color:Color(0xFFFF9D10)),),
 
@@ -677,6 +681,11 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                                onTap: (){
                                                  setState(() {
                                                    isEdit=false;
+                                                    emailValid=true;
+                                                    companyName=false;
+                                                    address=false;
+                                                    contactNo=false;
+                                                    gstNo=false;
                                                  });
                                                  qn.GetQuarryDetailDbhit(context);
                                                },
@@ -747,7 +756,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                              ],
                            ),
                            child: Center(
-                             child:_keyboardVisible?Container(): Icon(Icons.edit_outlined,size: SizeConfig.height30,color: AppTheme.bgColor,),
+                             child:_keyboardVisible?Container(): SvgPicture.asset("assets/svg/edit.svg",color: AppTheme.bgColor,height: 30,width: 30,),
                            ),
                          ),
                        ),

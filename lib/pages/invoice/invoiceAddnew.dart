@@ -139,7 +139,7 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
                     children: [
                       Container(
                         width: double.maxFinite,
-                        height: 160,
+                        height: 180,
 
                         decoration: BoxDecoration(
                             image: DecorationImage(
