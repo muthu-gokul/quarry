@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/notifier/machineNotifier.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
@@ -77,32 +78,29 @@ class _MachineDetailAddNewState extends State<MachineDetailAddNew> with TickerPr
 
 
 
+             //IMAGE
              Container(
                height: SizeConfig.screenHeight,
                width: SizeConfig.screenWidth,
                child: Column(
                  children: [
                    Container(
-                     width: double.maxFinite,
-                     height: SizeConfig.height200,
-
+                     width: SizeConfig.screenWidth,
+                     height: 205,
                      decoration: BoxDecoration(
-                         image: DecorationImage(
-                             image: AssetImage("assets/images/saleFormheader.jpg",),
-                             fit: BoxFit.cover
-                         )
+                       color: AppTheme.yellowColor,
+                       /* image: DecorationImage(
+                                     image: AssetImage("assets/svg/gridHeader/companyDetailsHeader.jpg",),
+                                   fit: BoxFit.cover
+                                 )*/
 
                      ),
+                     child: SvgPicture.asset("assets/svg/gridHeader/machineHeader.svg"),
+
                    ),
-
-
-
-
-
                  ],
                ),
              ),
-
 
              Container(
                height: SizeConfig.screenHeight,

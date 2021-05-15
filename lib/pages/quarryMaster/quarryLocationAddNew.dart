@@ -15,6 +15,7 @@ import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/autocompleteText.dart';
 import 'package:quarry/widgets/customTextField.dart';
 import 'package:quarry/widgets/navigationBarIcon.dart';
+import 'package:quarry/widgets/validationErrorText.dart';
 
 import '../qLocMaterials.dart';
 import '../qLocPAyment.dart';
@@ -44,6 +45,12 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
   bool _keyboardVisible=false;
   bool isListScroll=false;
 
+  bool emailValid=true;
+  bool companyName=false;
+  bool address=false;
+  bool contactNo=false;
+  bool gstNo=false;
+
   @override
   void initState() {
     isEdit=false;
@@ -55,58 +62,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
       setState(() {
         silverBodyTopMargin=0;
       });
-    /*  silverController.addListener(() {
-        if(silverController.offset>100){
-          setState(() {
-            silverBodyTopMargin=60-(-(silverController.offset-200));
-            if(silverBodyTopMargin<0){
-              silverBodyTopMargin=0;
-            }
-          });
-        }
-        else if(silverController.offset<130){
-          setState(() {
-            silverBodyTopMargin=0;
-          });
-        }
-      });*/
-/*
-      scrollController.addListener(() {
 
-        if(scrollController.offset==100){
-          setState(() {
-            isListScroll=true;
-          });
-        }
-        else{
-          if(isListScroll){
-            setState(() {
-              isListScroll=false;
-            });
-          }
-
-        }
-*/
-/*        print("isListScroll$isListScroll");*//*
-
-      });
-
-      listViewController.addListener(() {
-         // print("List SCROLL--${listViewController.offset}");
- */
-/*       if(listViewController.offset>20){
-
-            scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
-
-
-        }*//*
-
-        //else
-          if(listViewController.offset==0){
-          scrollController.animateTo(0, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
-        }
-      });
-*/
 
     });
     super.initState();
@@ -241,6 +197,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                          },
                                          labelText: 'Company Name',
                                          isEnabled: isEdit,
+                                         regExp: '[A-Za-z  ]',
                                          textEditingController: qn.CD_quarryname,
                                          maxlines: null,
                                          onEditComplete: (){
@@ -251,11 +208,8 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                              });
                                            });
                                          },
-
-                                         // maxLines: 2,
-
-
                                        ),
+                                       !companyName?Container():ValidationErrorText(title: "* Enter Company Name",),
                                        AddNewLabelTextField(
                                          labelText: 'Address',
                                          isEnabled: isEdit,
@@ -278,6 +232,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                            });
                                          },
                                        ),
+                                       !address?Container():ValidationErrorText(title: "* Enter Address",),
                                        AddNewLabelTextField(
                                          labelText: 'City',
                                          isEnabled: isEdit,
@@ -322,6 +277,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                        AddNewLabelTextField(
                                          labelText: 'ZipCode',
                                          textLength: 6,
+                                         regExp: '[0-9]',
                                          isEnabled: isEdit,
                                          textInputType: TextInputType.number,
                                          scrollPadding: 400,
@@ -346,6 +302,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                          scrollPadding: 500,
                                          textLength: 10,
                                          labelText: 'Contact Number',
+                                         regExp: '[0-9]',
                                          isEnabled: isEdit,
                                          textInputType: TextInputType.number,
                                          textEditingController: qn.CD_contactNo,
@@ -366,6 +323,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                            });
                                          },
                                        ),
+                                       !contactNo?Container():ValidationErrorText(title: "* Enter Contact Number",),
                                        AddNewLabelTextField(
                                          labelText: 'Email',
                                          isEnabled: isEdit,
@@ -388,6 +346,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                            });
                                          },
                                        ),
+                                       emailValid?Container():ValidationErrorText(title: "* Invalid Email Address",),
                                        AddNewLabelTextField(
                                          labelText: 'Website',
                                          isEnabled: isEdit,
@@ -414,6 +373,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                        AddNewLabelTextField(
                                          labelText: 'GST No',
                                          isEnabled: isEdit,
+                                         regExp: '[A-Za-z0-9]',
                                          scrollPadding: 500,
                                          textEditingController: qn.CD_gstno,
                                          ontap: (){
@@ -431,6 +391,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                            });
                                          },
                                        ),
+                                       !gstNo?Container():ValidationErrorText(title: "* Enter GST Number",),
                                        AddNewLabelTextField(
                                          labelText: 'PAN No',
                                          isEnabled: isEdit,
@@ -661,10 +622,30 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                              SizedBox(width: SizeConfig.width20,),
                                              GestureDetector(
                                                onTap: (){
+
                                                  setState(() {
-                                                   isEdit=false;
+                                                   emailValid=EmailValidation().validateEmail(qn.CD_email.text);
                                                  });
-                                                 qn.UpdateQuarryDetailDbhit(context);
+
+                                                 if(qn.CD_quarryname.text.isEmpty){setState(() {companyName=true;});}
+                                                 else{setState(() {companyName=false;});}
+
+                                                 if(qn.CD_address.text.isEmpty){setState(() {address=true;});}
+                                                 else{setState(() {address=false;});}
+
+                                                 if(qn.CD_contactNo.text.isEmpty){setState(() {contactNo=true;});}
+                                                 else{setState(() {contactNo=false;});}
+
+                                                 if(emailValid && !companyName && !address && !contactNo){
+                                                   node.unfocus();
+
+                                                   setState(() {
+                                                     isEdit=false;
+                                                   });
+                                                   qn.UpdateQuarryDetailDbhit(context);
+
+                                                 }
+
                                                },
                                                child: Container(
                                                  width: 90,
@@ -697,6 +678,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                                  setState(() {
                                                    isEdit=false;
                                                  });
+                                                 qn.GetQuarryDetailDbhit(context);
                                                },
                                                child: Container(
                                                  width: 90,

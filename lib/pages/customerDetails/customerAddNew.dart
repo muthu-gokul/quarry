@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/notifier/customerNotifier.dart';
 import 'package:quarry/notifier/materialNotifier.dart';
@@ -84,20 +85,19 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                       child: Column(
                         children: [
                           Container(
-                            width: double.maxFinite,
-                            height: SizeConfig.height200,
-
+                            width: SizeConfig.screenWidth,
+                            height: 205,
                             decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    image: AssetImage(
-                                      "assets/images/saleFormheader.jpg",),
-                                    fit: BoxFit.cover
-                                )
+                              color: AppTheme.yellowColor,
+                              /* image: DecorationImage(
+                                     image: AssetImage("assets/svg/gridHeader/companyDetailsHeader.jpg",),
+                                   fit: BoxFit.cover
+                                 )*/
 
                             ),
+                            child: SvgPicture.asset("assets/svg/gridHeader/customerHeader.svg"),
+
                           ),
-
-
                         ],
                       ),
                     ),

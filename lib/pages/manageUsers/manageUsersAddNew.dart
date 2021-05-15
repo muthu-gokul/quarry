@@ -2,16 +2,23 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/model/manageUsersModel/manageUsersPlantModel.dart';
 import 'package:quarry/notifier/machineNotifier.dart';
 import 'package:quarry/notifier/manageUsersNotifier.dart';
 import 'package:quarry/notifier/profileNotifier.dart';
 import 'package:quarry/pages/manageUsers/manageUsersGrid.dart';
+import 'package:quarry/pages/sale/salesDetail.dart';
+import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/alertDialog.dart';
+import 'package:quarry/widgets/bottomBarAddButton.dart';
 import 'package:quarry/widgets/customTextField.dart';
+import 'package:quarry/widgets/sidePopUp/sidePopupWithoutModelList.dart';
+import 'package:quarry/widgets/validationErrorText.dart';
 
 class ManageUsersAddNew extends StatefulWidget {
   VoidCallback drawerCallback;
@@ -33,6 +40,11 @@ class ManageUsersAddNewState extends State<ManageUsersAddNew> {
   bool plantAccessOpen=false;
 
 
+  bool emailValid=true;
+  bool firstName=false;
+  bool password=false;
+  bool userGroup=false;
+  bool plantAccess=false;
 
   @override
   void initState() {
@@ -47,22 +59,8 @@ class ManageUsersAddNewState extends State<ManageUsersAddNew> {
       });
 
 
-      /* scrollController.addListener(() {
-        if(scrollController.offset>20){
-          scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
-
-        }
-      });*/
-
       listViewController.addListener(() {
 
-        /* if(listViewController.position.userScrollDirection == ScrollDirection.forward){
-          print("Down");
-        } else
-        if(listViewController.position.userScrollDirection == ScrollDirection.reverse){
-          print("Up");
-          scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
-        }*/
         if(listViewController.offset>20){
 
           scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
@@ -86,6 +84,7 @@ class ManageUsersAddNewState extends State<ManageUsersAddNew> {
     // _keyboardVisible = MediaQuery.of(context).viewInsets.bottom != 0;
     return Scaffold(
         key: scaffoldkey,
+        resizeToAvoidBottomInset: false,
         body: Consumer<ManageUsersNotifier>(
             builder: (context,mun,child)=> Stack(
               children: [
@@ -99,8 +98,7 @@ class ManageUsersAddNewState extends State<ManageUsersAddNew> {
                     children: [
                       Container(
                         width: double.maxFinite,
-                        height: SizeConfig.height200,
-
+                        height: 200,
                         decoration: BoxDecoration(
                             image: DecorationImage(
                                 image: AssetImage("assets/images/saleFormheader.jpg",),
@@ -109,12 +107,7 @@ class ManageUsersAddNewState extends State<ManageUsersAddNew> {
 
                         ),
                       ),
-
-
-
-
-
-                    ],
+                    ]
                   ),
                 ),
 
@@ -147,22 +140,12 @@ class ManageUsersAddNewState extends State<ManageUsersAddNew> {
                                     scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
 
                                   } else if(details.delta.dy < -sensitivity){
-                                    print("UP");
                                     scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
                                   }
                                 },
-                                /* onVerticalDragDown: (v){
-                                  if(scrollController.offset==100 && listViewController.offset==0){
-                                    scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
-                                  }
-                                  else if(scrollController.offset==0 && listViewController.offset==0){
-                                    scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
-
-                                  }*/
-
-                                // },
                                 child: Container(
-                                  height:_keyboardVisible?SizeConfig.screenHeight*0.5 :SizeConfig.screenHeight-100,
+                                  //height:_keyboardVisible?SizeConfig.screenHeight*0.5 :SizeConfig.screenHeight-100,
+                                  height:SizeConfig.screenHeight-100,
                                   width: SizeConfig.screenWidth,
 
                                   decoration: BoxDecoration(
@@ -172,9 +155,6 @@ class ManageUsersAddNewState extends State<ManageUsersAddNew> {
                                   child: ListView(
                                     controller: listViewController,
                                     scrollDirection: Axis.vertical,
-
-                                   /* physics: NeverScrollableScrollPhysics(),*/
-
                                     children: [
                                      mun.isManageUsersEdit? Align(
                                         alignment:Alignment.centerRight,
@@ -193,7 +173,8 @@ class ManageUsersAddNewState extends State<ManageUsersAddNew> {
                                                 color: AppTheme.yellowColor
                                             ),
                                             child: Center(
-                                              child:  Icon(mun.isEdit?Icons.clear:Icons.edit_outlined,color: AppTheme.bgColor,),
+                                              child:  mun.isEdit?Icon(Icons.clear,color: AppTheme.bgColor,):
+                                              SvgPicture.asset("assets/svg/edit.svg",width: 20,height: 20,),
                                             ),
                                           ),
                                         ),
@@ -202,24 +183,12 @@ class ManageUsersAddNewState extends State<ManageUsersAddNew> {
                                        height: 40,
                                        width: 40,
                                      ),
-                                     /* Container(
-                                          width: SizeConfig.screenWidth,
-                                          child: Column(
-                                            children: [
-                                              Text("${pn.selectedSalutation}.${pn.firstName.text}${pn.lastName.text}",
-                                                style: AppTheme.userNameTS,
-                                              ),
-                                              SizedBox(height: 3,),
-                                              Text("${pn.UserGroupName}",
-                                                style: AppTheme.userGroupTS,
-                                              ),
-                                              SizedBox(height: 20,),
-                                            ],
-                                          )
-                                      ),*/
 
-                                      Container(
-                                        height: salutationOpen? 100:50,
+
+                                      AnimatedContainer(
+                                        duration: Duration(milliseconds: 300),
+                                        curve: Curves.easeIn,
+                                        height: salutationOpen? 120:50,
                                         width: SizeConfig.screenWidth,
                                         alignment: Alignment.topCenter,
                                         child: Stack(
@@ -233,7 +202,7 @@ class ManageUsersAddNewState extends State<ManageUsersAddNew> {
                                                 decoration: BoxDecoration(
                                                   borderRadius: BorderRadius.circular(3),
                                                   border: Border.all(color: AppTheme.addNewTextFieldBorder),
-                                                  color: mun.isEdit?Colors.white: Color(0xFFF2F2F2),
+                                                  color: mun.isEdit?Colors.white: Color(0xFFe8e8e8),
                                                 ),
                                                 width: SizeConfig.screenWidth,
                                                 height: 50,
@@ -251,7 +220,7 @@ class ManageUsersAddNewState extends State<ManageUsersAddNew> {
 
                                                   style:  TextStyle(fontFamily: 'RR',fontSize: 15,color:AppTheme.addNewTextFieldText,letterSpacing: 0.2),
                                                   decoration: InputDecoration(
-                                                    fillColor:mun.isEdit?Colors.white: Color(0xFFF2F2F2),
+                                                    fillColor:mun.isEdit?Colors.white: Color(0xFFe8e8e8),
                                                     filled: true,
                                                     hintStyle: TextStyle(fontFamily: 'RL',fontSize: 15,color: AppTheme.addNewTextFieldText.withOpacity(0.9)),
                                                     border:  InputBorder.none,
@@ -263,7 +232,9 @@ class ManageUsersAddNewState extends State<ManageUsersAddNew> {
                                                   ),
                                                   maxLines: null,
                                                   textInputAction: TextInputAction.done,
-
+                                                  inputFormatters: [
+                                                    FilteringTextInputFormatter.allow(RegExp('[A-Za-z ]')),
+                                                  ],
                                                   onEditingComplete: (){
                                                     node.unfocus();
                                                     Timer(Duration(milliseconds: 50), (){
@@ -279,7 +250,7 @@ class ManageUsersAddNewState extends State<ManageUsersAddNew> {
                                             Align(
                                               alignment: Alignment.centerLeft,
                                               child: AnimatedContainer(
-                                                height:salutationOpen? 100:30,
+                                                height:salutationOpen? 120:30,
                                                 width: 60,
                                                 duration: Duration(milliseconds: 300),
                                                 curve: Curves.easeIn,
@@ -318,6 +289,15 @@ class ManageUsersAddNewState extends State<ManageUsersAddNew> {
                                                         },
                                                         child: Text("Ms",style: TextStyle(fontFamily: 'RR',fontSize: 16,color: AppTheme.bgColor),)
                                                     ),
+                                                    InkWell(
+                                                        onTap: (){
+                                                          setState(() {
+                                                            salutationOpen=false;
+                                                            mun.selectedSalutation="Mx";
+                                                          });
+                                                        },
+                                                        child: Text("Mx",style: TextStyle(fontFamily: 'RR',fontSize: 16,color: AppTheme.bgColor),)
+                                                    ),
 
                                                   ],
                                                 )
@@ -339,9 +319,11 @@ class ManageUsersAddNewState extends State<ManageUsersAddNew> {
                                           ],
                                         ),
                                       ),
+                                      !firstName?Container():ValidationErrorText(title: "* Enter First Name",),
                                       AddNewLabelTextField(
                                         labelText: 'Last Name',
                                         isEnabled: mun.isEdit,
+                                        regExp: '[A-Za-z ]',
                                         textEditingController: mun.lastName,
                                         ontap: (){
                                           scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
@@ -362,6 +344,8 @@ class ManageUsersAddNewState extends State<ManageUsersAddNew> {
                                       AddNewLabelTextField(
                                         labelText: 'Contact Number',
                                         isEnabled: mun.isEdit,
+                                        regExp: '[0-9]',
+                                        textLength: 10,
                                         textEditingController: mun.contactNumber,
                                         textInputType: TextInputType.number,
                                         onEditComplete: (){
@@ -403,11 +387,12 @@ class ManageUsersAddNewState extends State<ManageUsersAddNew> {
 
                                         },
                                       ),
+                                      emailValid?Container():ValidationErrorText(title: "* Invalid Email Address",),
                                       AddNewLabelTextField(
                                         labelText: 'Password',
                                         isEnabled: mun.isEdit,
                                         textEditingController: mun.password,
-                                        scrollPadding: 100,
+                                        scrollPadding: 400,
                                         isObscure: passwordvisible,
                                         maxlines: 1,
                                         onEditComplete: (){
@@ -432,6 +417,8 @@ class ManageUsersAddNewState extends State<ManageUsersAddNew> {
                                               });
                                             }),
                                       ),
+                                      !password?Container():ValidationErrorText(title: "* Enter Password",),
+
                                       GestureDetector(
                                         onTap: (){
                                           node.unfocus();
@@ -442,39 +429,16 @@ class ManageUsersAddNewState extends State<ManageUsersAddNew> {
                                             });
                                           }
 
-
                                         },
-                                        child:Container(
-                                          margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width10,top:SizeConfig.height20,),
-                                          padding: EdgeInsets.only(left:SizeConfig.width5,right:SizeConfig.width5),
-                                          height: SizeConfig.height50,
-                                          width: SizeConfig.width140,
-                                          alignment: Alignment.centerLeft,
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(3),
-                                            border: Border.all(color: AppTheme.addNewTextFieldBorder),
-                                            color: mun.isEdit?Colors.white:AppTheme.editDisableColor
-                                          ),
-                                          child: Row(
-                                            children: [
-                                              Text(mun.userGroupName==null? "Select User Group":mun.userGroupName,
-                                                style: TextStyle(fontFamily: 'RR',fontSize: 16,
-                                                  color: mun.userGroupName==null? AppTheme.addNewTextFieldText.withOpacity(0.5):AppTheme.addNewTextFieldText,),
-                                              ),
-                                              Spacer(),
-                                              Container(
-                                                  height: SizeConfig.height25,
-                                                  width: SizeConfig.height25,
-                                                  decoration: BoxDecoration(
-                                                    shape: BoxShape.circle,
-                                                    color: mun.userGroupName==null? AppTheme.addNewTextFieldText:AppTheme.yellowColor,
-                                                  ),
+                                        child: SidePopUpParent(
+                                          text:mun.userGroupName==null? "Select User Group":mun.userGroupName,
+                                          textColor:mun.userGroupName==null? AppTheme.addNewTextFieldText.withOpacity(0.5):AppTheme.addNewTextFieldText,
+                                          iconColor:mun.userGroupName==null? AppTheme.addNewTextFieldText:AppTheme.yellowColor,
+                                          bgColor:mun.userGroupName==null? AppTheme.disableColor:mun.isEdit?Colors.white:AppTheme.disableColor,
 
-                                                  child: Center(child: Icon(Icons.arrow_forward_ios_outlined,color:Colors.white ,size: 14,)))
-                                            ],
-                                          ),
                                         ),
                                       ),
+                                      !userGroup?Container():ValidationErrorText(title: "* Select User Group",),
                                       GestureDetector(
                                         onTap: (){
                                           node.unfocus();
@@ -485,44 +449,22 @@ class ManageUsersAddNewState extends State<ManageUsersAddNew> {
                                             });
                                           }
 
-
                                         },
-                                        child:Container(
-                                          margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width10,top:SizeConfig.height20,),
-                                          padding: EdgeInsets.only(left:SizeConfig.width5,right:SizeConfig.width5),
-                                          height: SizeConfig.height50,
-                                          width: SizeConfig.width140,
-                                          alignment: Alignment.centerLeft,
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(3),
-                                            border: Border.all(color: AppTheme.addNewTextFieldBorder),
-                                              color: mun.isEdit?Colors.white:AppTheme.editDisableColor
-                                          ),
-                                          child: Row(
-                                            children: [
-                                              Text("Select Plant Access",
-                                                style: TextStyle(fontFamily: 'RR',fontSize: 16,
-                                                  color:  AppTheme.addNewTextFieldText.withOpacity(0.5),
-                                                  //color: mun.userGroupName==null? AppTheme.addNewTextFieldText.withOpacity(0.5):AppTheme.addNewTextFieldText,
-                                                ),
-                                              ),
-                                              Spacer(),
-                                              Container(
-                                                  height: SizeConfig.height25,
-                                                  width: SizeConfig.height25,
-                                                  decoration: BoxDecoration(
-                                                    shape: BoxShape.circle,
-                                                    color: mun.plantMappingList.isEmpty? AppTheme.addNewTextFieldText:AppTheme.yellowColor,
-                                                  ),
+                                        child: SidePopUpParent(
+                                          text:mun.plantMappingList.isEmpty? "Select Plant Access":mun.plantMappingList.length.toString(),
+                                          textColor:mun.plantMappingList.isEmpty? AppTheme.addNewTextFieldText.withOpacity(0.5):AppTheme.addNewTextFieldText,
+                                          iconColor:mun.plantMappingList.isEmpty? AppTheme.addNewTextFieldText:AppTheme.yellowColor,
+                                          bgColor:mun.plantMappingList.isEmpty? AppTheme.disableColor:mun.isEdit?Colors.white:AppTheme.disableColor,
 
-                                                  child: Center(child: Icon(Icons.arrow_forward_ios_outlined,color:Colors.white ,size: 14,)))
-                                            ],
-                                          ),
                                         ),
                                       ),
+                                      !plantAccess?Container():ValidationErrorText(title: "* Select Plant Access",),
+                                      
 
 
-                                      SizedBox(height: SizeConfig.height150,),
+
+
+                                      SizedBox(height: _keyboardVisible?SizeConfig.screenHeight*0.5: SizeConfig.height150,),
                                     ],
                                   ),
                                 ),
@@ -548,7 +490,9 @@ class ManageUsersAddNewState extends State<ManageUsersAddNew> {
                                   ),
                                 ]
                             ),
-
+                            child: Center(
+                              child: Image.asset("assets/svg/drawer/avatar.png"),
+                            ),
                           ),
                         ),
 
@@ -561,11 +505,13 @@ class ManageUsersAddNewState extends State<ManageUsersAddNew> {
                   width: SizeConfig.screenWidth,
                   child: Row(
                     children: [
-                      IconButton(icon: Icon(Icons.clear,color: Colors.white,), onPressed: (){
-                        mun.clearForm();
-                        Navigator.pop(context);
-                      }),
-                      SizedBox(width: SizeConfig.width5,),
+                      CancelButton(
+                        ontap: (){
+                          mun.clearForm();
+                          Navigator.pop(context);
+                        },
+                      ),
+
                       Text("Add New Users",
                         style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: 16),
                       ),
@@ -578,7 +524,101 @@ class ManageUsersAddNewState extends State<ManageUsersAddNew> {
                   ),
                 ),
 
-                AnimatedPositioned(
+                //bottomNav
+                Positioned(
+                  bottom: 0,
+                  child: Container(
+                    width: SizeConfig.screenWidth,
+                    // height:_keyboardVisible?0:  70,
+                    height: 65,
+
+                    decoration: BoxDecoration(
+                        color: AppTheme.gridbodyBgColor,
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppTheme.gridbodyBgColor,
+                            spreadRadius: 2,
+                            blurRadius: 15,
+                            offset: Offset(0, -20), // changes position of shadow
+                          )
+                        ]
+                    ),
+                    child: Stack(
+
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+
+                          ),
+                          margin:EdgeInsets.only(top: 0),
+                          child: CustomPaint(
+                            size: Size( SizeConfig.screenWidth, 65),
+                            painter: RPSCustomPainter3(),
+                          ),
+                        ),
+
+                        Container(
+                          width:  SizeConfig.screenWidth,
+                          height: 80,
+                          child: Stack(
+
+                            children: [
+
+
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                //Add Button
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: AddButton(
+                    ontap: (){
+
+
+                      setState(() {
+                        emailValid=EmailValidation().validateEmail(mun.email.text);
+                      });
+
+                      if(mun.firstName.text.isEmpty){setState(() {firstName=true;});}
+                      else{setState(() {firstName=false;});}
+
+                      if(mun.password.text.isEmpty){setState(() {password=true;});}
+                      else{setState(() {password=false;});}
+
+                      if(mun.userGroupName==null){setState(() {userGroup=true;});}
+                      else{setState(() {userGroup=false;});}
+
+
+                      if(mun.plantMappingList.isEmpty){setState(() {plantAccess=true;});}
+                      else{setState(() {plantAccess=false;});}
+
+                      if(emailValid && !firstName && !password && !userGroup && !plantAccess){
+                        node.unfocus();
+                        if(mun.isManageUsersEdit){
+                          if(mun.isEdit){
+                            setState(() {
+                              mun.isEdit=false;
+                            });
+                            mun.InsertUserDetailDbHit(context);
+                          }
+                        }
+                        else{
+                          mun.InsertUserDetailDbHit(context);
+                        }
+                      }
+
+
+
+
+                    },
+                  )
+                ),
+
+                /*AnimatedPositioned(
                   duration: Duration(milliseconds: 300),
                   curve: Curves.easeIn,
                   bottom:mun.isEdit? 0:-80,
@@ -621,7 +661,7 @@ class ManageUsersAddNewState extends State<ManageUsersAddNew> {
                       ),
                     ),
                   ),
-                ),
+                ),*/
 
                 Container(
 
@@ -645,156 +685,84 @@ class ManageUsersAddNewState extends State<ManageUsersAddNew> {
 
 
                 ///////////////////////////////////////   USER  GROUP ////////////////////////////////
-                Align(
-                  alignment: Alignment.center,
-                  child: AnimatedContainer(
-                      duration: Duration(milliseconds: 300),
-                      curve: Curves.easeIn,
-                      width: SizeConfig.screenWidth,
-                      height: SizeConfig.height430,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.white,
-                      ),
-                      clipBehavior: Clip.antiAlias,
-                      margin: EdgeInsets.only(left: SizeConfig.width30,right: SizeConfig.width30),
-                      transform: Matrix4.translationValues(userGroupOpen?0:SizeConfig.screenWidth, 0, 0),
+                PopUpStatic2(
+                  title: "Select User Group",
+                  isOpen: userGroupOpen,
+                  dataList: mun.userGroupList,
+                  propertyKeyName:"UserGroupName",
+                  propertyKeyId: "UserGroupId",
+                  selectedId: mun.userGroupId,
+                  itemOnTap: (index){
+                    setState(() {
+                      mun.userGroupId=mun.userGroupList[index]['UserGroupId'];
+                      mun.userGroupName=mun.userGroupList[index]['UserGroupName'];
 
-                      child:Container(
-                        height: SizeConfig.height430,
-                        width: SizeConfig.screenWidth,
-                        color: Colors.white,
-                        //  padding: EdgeInsets.only(left: SizeConfig.width20,right: SizeConfig.width20,bottom: SizeConfig.height10),
-                        child:Column (
-                          // crossAxisAlignment: CrossAxisAlignment.center,
-                          // mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                height: SizeConfig.height50,
-                                child: Stack(
-                                  children: [
-                                    Align(
-                                      alignment: Alignment.topRight,
-                                      child: IconButton(icon: Icon(Icons.cancel), onPressed: (){
-                                        setState(() {
-                                          userGroupOpen=false;
-                                        });
-                                      }),
-                                    ),
-                                    Align(
-                                        alignment: Alignment.center,
-                                        child: Text('Select User Group',style:AppTheme.bgColorTS,)),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(height: SizeConfig.height10,),
-                              Container(
-                                height: SizeConfig.screenHeight*(300/720),
-                                /*color: Colors.red,*/
-                                margin: EdgeInsets.only(left: SizeConfig.width30,right: SizeConfig.width30),
-                                child: ListView.builder(
-                                  itemCount: mun.userGroupList.length,
-                                  itemBuilder: (context,index){
-                                    return GestureDetector(
-                                      onTap: (){
-                                        setState(() {
-                                          mun.userGroupId=mun.userGroupList[index].userGroupId;
-                                          mun.userGroupName=mun.userGroupList[index].userGroupName;
-
-                                          userGroupOpen=false;
-                                        });
-
-                                      },
-                                      child: Container(
-                                        margin: EdgeInsets.only(bottom: 20),
-                                        alignment: Alignment.center,
-                                        decoration:BoxDecoration(
-                                            borderRadius:BorderRadius.circular(8),
-                                            border: Border.all(color: mun.userGroupId==null? AppTheme.addNewTextFieldBorder:mun.userGroupId==mun.userGroupList[index].userGroupId?Colors.transparent: AppTheme.addNewTextFieldBorder),
-                                            color: mun.userGroupId==null? Colors.white: mun.userGroupId==mun.userGroupList[index].userGroupId?AppTheme.popUpSelectedColor:Colors.white
-                                        ),
-                                        width:300,
-                                        height:50,
-                                        child: Text("${mun.userGroupList[index].userGroupName}",
-                                          style: TextStyle(color:mun.userGroupId==null? AppTheme.grey:mun.userGroupId==mun.userGroupList[index].userGroupId?Colors.white:AppTheme.grey,
-                                              fontSize:18,fontFamily: 'RR'),
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ),
-
-
-
-
-                            ]
-
-
-                        ),
-                      )
-                  ),
+                      userGroupOpen=false;
+                    });
+                  },
+                  closeOnTap: (){
+                    setState(() {
+                      userGroupOpen=false;
+                    });
+                  },
                 ),
+
                 ///////////////////////////////////////   PLANT LIST ////////////////////////////////
                 Align(
                   alignment: Alignment.center,
                   child: AnimatedContainer(
-                      duration: Duration(milliseconds: 300),
-                      curve: Curves.easeIn,
-                      width: SizeConfig.screenWidth,
-                      height: SizeConfig.height430,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.white,
-                      ),
-                      clipBehavior: Clip.antiAlias,
-                      margin: EdgeInsets.only(left: SizeConfig.width30,right: SizeConfig.width30),
-                      transform: Matrix4.translationValues(plantAccessOpen?0:SizeConfig.screenWidth, 0, 0),
+                    duration: Duration(milliseconds: 300),
+                    curve: Curves.easeIn,
+                    width: SizeConfig.screenWidth,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: Colors.transparent,
+                    ),
+                    clipBehavior: Clip.antiAlias,
+                    padding: EdgeInsets.only(top: 20,bottom: 20,),
+                    margin: EdgeInsets.only(left: SizeConfig.width25,right: SizeConfig.width25),
+                    transform: Matrix4.translationValues(plantAccessOpen?0:SizeConfig.screenWidth, 0, 0),
+                    child: Stack(
+                      children: [
 
-                      child:Container(
-                        height: SizeConfig.height430,
-                        width: SizeConfig.screenWidth,
-                        color: Colors.white,
-                        //  padding: EdgeInsets.only(left: SizeConfig.width20,right: SizeConfig.width20,bottom: SizeConfig.height10),
-                        child:Column (
-                          // crossAxisAlignment: CrossAxisAlignment.center,
-                          // mainAxisAlignment: MainAxisAlignment.center,
+                        Container(
+
+                          /// height: SizeConfig.screenHeight*0.63,
+                          height: (mun.plantList.length*60.0)+150,
+                          constraints: BoxConstraints(
+                              minHeight: 60,
+                              maxHeight: SizeConfig.screenHeight*0.63
+                          ),
+                          width: SizeConfig.screenWidth,
+                          margin: EdgeInsets.only(left: SizeConfig.width16,right: SizeConfig.width16,top: 10),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.white
+                          ),
+                          clipBehavior: Clip.antiAlias,
+                          child: Stack(
                             children: [
                               Container(
-                                height: SizeConfig.height50,
-                                child: Stack(
-                                  children: [
-                                    Align(
-                                      alignment: Alignment.topRight,
-                                      child: IconButton(icon: Icon(Icons.cancel), onPressed: (){
-                                        print("fdf");
-                                        setState(() {
-                                          plantAccessOpen=false;
-                                        });
-                                      }),
-                                    ),
-                                    Align(
-                                        alignment: Alignment.center,
-                                        child: Text('Select Plant Access',style:AppTheme.bgColorTS,)),
-                                  ],
+                                padding: EdgeInsets.only(right: 5,left: 5),
+                                margin: EdgeInsets.only(top: 50),
+                                height:mun.plantList.length*60.0,
+                                constraints: BoxConstraints(
+                                    minHeight: 60,
+                                    maxHeight: SizeConfig.screenHeight*0.63-70
                                 ),
-                              ),
-                              SizedBox(height: SizeConfig.height10,),
-                              Container(
-                                height: SizeConfig.screenHeight*(280/720),
-                                /*color: Colors.red,*/
-                                margin: EdgeInsets.only(left: SizeConfig.width30,right: SizeConfig.width30,bottom: 10),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                ),
+                                width: SizeConfig.screenWidth-SizeConfig.width60,
 
-                                child: RawScrollbar(
-                                  radius: Radius.circular(4),
-                                  thickness: 4,
-                                  isAlwaysShown: true,
-                                  thumbColor: AppTheme.addNewTextFieldBorder,
-                                  child: ListView.builder(
+                                child: ListView.builder(
                                     itemCount: mun.plantList.length,
+                                    physics: BouncingScrollPhysics(),
+
                                     itemBuilder: (context,index){
                                       return GestureDetector(
                                         onTap: (){
+
                                           setState(() {
 
                                             if(mun.plantMappingList.any((element) => element.plantId==mun.plantList[index].plantId)){
@@ -809,71 +777,121 @@ class ManageUsersAddNewState extends State<ManageUsersAddNew> {
                                               )
                                               );
                                             }
-
-
-
-
-
                                           });
+
 
                                         },
                                         child: Container(
-                                          margin: EdgeInsets.only(bottom: 20,right: 10,),
-                                          alignment: Alignment.center,
-                                          decoration:BoxDecoration(
-                                              borderRadius:BorderRadius.circular(8),
-                                              border: Border.all(color: mun.plantMappingList.any((element) => element.plantId==mun.plantList[index].plantId)?Colors.transparent: AppTheme.addNewTextFieldBorder),
-                                              color: mun.plantMappingList.any((element) => element.plantId==mun.plantList[index].plantId)?AppTheme.popUpSelectedColor:Colors.white
+                                          margin: EdgeInsets.only(left: SizeConfig.width40,right:  SizeConfig.width40,top: 20),
+                                          padding: EdgeInsets.only(left:5,right:5),
+
+                                          height: 40,
+                                          width: double.maxFinite,
+                                          decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(5),
+                                              border: Border.all(color: AppTheme.addNewTextFieldBorder),
+                                              color: mun.plantMappingList.any((element) => element.plantId==mun.plantList[index].plantId)?AppTheme.bgColor:Colors.white
                                           ),
-                                          width:300,
-                                          height:50,
-                                          child: Text("${mun.plantList[index].plantName}",
-                                            style: TextStyle(color:mun.plantMappingList.any((element) => element.plantId==mun.plantList[index].plantId)?Colors.white:AppTheme.grey,
-                                                fontSize:18,fontFamily: 'RR'),
+                                          child: Center(
+                                            child: FittedBox(
+                                              fit: BoxFit.contain,
+                                              child: Text("${mun.plantList[index].plantName}",style: TextStyle(fontFamily: 'RR',fontSize: 14,
+                                                  color:mun.plantMappingList.any((element) => element.plantId==mun.plantList[index].plantId)?Colors.white:AppTheme.bgColor
+
+                                              ),),
+                                            ),
                                           ),
                                         ),
                                       );
-                                    },
-                                  ),
-                                ),
+                                    }),
                               ),
-                              GestureDetector(
-                                onTap: (){
-                                  setState(() {
-                                    plantAccessOpen=false;
-                                  });
-                                },
-                                child: Container(
-                                  width:SizeConfig.screenWidth*0.4,
-                                  height:SizeConfig.height50,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(25.0),
+
+                              Container(
+                                height: 50,
+                                width: SizeConfig.screenWidth,
+                                //  margin: EdgeInsets.only(left: SizeConfig.width20,right: SizeConfig.width20),
+                                decoration: BoxDecoration(
                                     color: AppTheme.yellowColor,
                                     boxShadow: [
                                       BoxShadow(
-                                        color: AppTheme.yellowColor.withOpacity(0.4),
-                                        spreadRadius: 1,
-                                        blurRadius: 5,
-                                        offset: Offset(1, 8), // changes position of shadow
-                                      ),
-                                    ],
-                                  ),
-                                  child: Center(
-                                      child: Text("Done",style: AppTheme.bgColorTS,
+                                        color: AppTheme.gridbodyBgColor,
+                                        spreadRadius: 2,
+                                        blurRadius: 15,
+                                        offset: Offset(0, 20), // changes position of shadow
                                       )
+                                    ]
+                                ),
+                                child: Center(
+                                  child: Text('Select Plant Access',style: TextStyle(fontFamily: 'RM',fontSize: 16,color: AppTheme.bgColor),),
+                                ),
+                              ),
+
+                              Align(
+                                alignment: Alignment.bottomCenter,
+                                child: GestureDetector(
+                                  onTap: (){
+                                    setState(() {
+                                      plantAccessOpen=false;
+                                    });
+                                  },
+                                  child: Container(
+                                    width:120,
+                                    height:50,
+                                    margin: EdgeInsets.only(bottom: 20),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(25.0),
+                                      color: AppTheme.yellowColor,
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: AppTheme.yellowColor.withOpacity(0.4),
+                                          spreadRadius: 1,
+                                          blurRadius: 5,
+                                          offset: Offset(1, 8), // changes position of shadow
+                                        ),
+                                      ],
+                                    ),
+                                    child: Center(
+                                        child: Text("Done",style: AppTheme.bgColorTS,
+                                        )
+                                    ),
                                   ),
                                 ),
                               ),
 
 
 
-                            ]
-
+                            ],
+                          ),
 
                         ),
-                      )
+                        Positioned(
+                          right: 8,
+                          child: GestureDetector(
+                            onTap: (){
+                              setState(() {
+                                plantAccessOpen=false;
+                              });
+
+                            },
+                            child: Container(
+                              height: 30,
+                              width: 30,
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: AppTheme.bgColor
+                              ),
+                              child: Center(
+                                child: Icon(Icons.clear,color: AppTheme.yellowColor,size: 18,),
+                              ),
+                            ),
+                          ),
+                        ),
+
+                      ],
+                    ),
                   ),
                 ),
+
 
               ],
             )

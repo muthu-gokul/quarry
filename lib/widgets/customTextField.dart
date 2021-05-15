@@ -19,10 +19,11 @@ class AddNewLabelTextField extends StatelessWidget {
   bool isObscure;
   int maxlines;
   int textLength;
+  String regExp;
 
   AddNewLabelTextField({this.textEditingController,this.labelText,this.scrollPadding=0.0,this.textInputType:TextInputType.text,
     this.prefixIcon,this.ontap,this.onChange,this.textInputFormatter,this.isEnabled=true,this.suffixIcon,this.onEditComplete,
-    this.isObscure=false,this.maxlines=1,this.textLength=null});
+    this.isObscure=false,this.maxlines=1,this.textLength=null,this.regExp='[A-Za-z0-9@.,]'});
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +46,7 @@ class AddNewLabelTextField extends StatelessWidget {
         style:  TextStyle(fontFamily: 'RR',fontSize: 15,color:AppTheme.addNewTextFieldText,letterSpacing: 0.2),
         controller: textEditingController,
         decoration: InputDecoration(
-          fillColor:isEnabled?Colors.white: Color(0xFFe8e8e8),
+          fillColor:isEnabled?Colors.white:AppTheme.disableColor,
           filled: true,
           labelStyle: TextStyle(fontFamily: 'RL',fontSize: 15,color: AppTheme.addNewTextFieldText.withOpacity(0.9)),
           border:  OutlineInputBorder(
@@ -75,6 +76,7 @@ class AddNewLabelTextField extends StatelessWidget {
 
         inputFormatters: [
           LengthLimitingTextInputFormatter(textLength),
+          FilteringTextInputFormatter.allow(RegExp(regExp)),
         ],
         onChanged: (v){
            onChange(v);
@@ -126,14 +128,7 @@ class AddNewLabelTextField extends StatelessWidget {
         maxLines: maxlines,
         keyboardType: textInputType,
         textInputAction: TextInputAction.done,
-        // inputFormatters:  <TextInputFormatter>[
-        //
-        //   //textInputFormatter
-        // ],
 
-        // inputFormatters: <TextInputFormatter>[
-        //   FilteringTextInputFormatter.digitsOnly
-        // ],
         onChanged: (v){
           onChange(v);
         },

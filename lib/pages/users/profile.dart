@@ -2,15 +2,22 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:quarry/login.dart';
 import 'package:quarry/notifier/machineNotifier.dart';
 import 'package:quarry/notifier/manageUsersNotifier.dart';
 import 'package:quarry/notifier/profileNotifier.dart';
 import 'package:quarry/pages/manageUsers/manageUsersGrid.dart';
+import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/alertDialog.dart';
+import 'package:quarry/widgets/bottomBarAddButton.dart';
 import 'package:quarry/widgets/customTextField.dart';
+import 'package:quarry/widgets/navigationBarIcon.dart';
+import 'package:quarry/widgets/validationErrorText.dart';
 
 class ProfileScreen extends StatefulWidget {
   VoidCallback drawerCallback;
@@ -31,6 +38,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   bool isEdit=false;
 
+  bool emailValid=true;
+  bool firstName=false;
+  bool password=false;
+
   @override
   void initState() {
 
@@ -44,22 +55,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       });
 
 
-      /* scrollController.addListener(() {
-        if(scrollController.offset>20){
-          scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
-
-        }
-      });*/
-
       listViewController.addListener(() {
-
-       /* if(listViewController.position.userScrollDirection == ScrollDirection.forward){
-          print("Down");
-        } else
-        if(listViewController.position.userScrollDirection == ScrollDirection.reverse){
-          print("Up");
-          scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
-        }*/
         if(listViewController.offset>20){
 
           scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
@@ -83,6 +79,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
    // _keyboardVisible = MediaQuery.of(context).viewInsets.bottom != 0;
     return Scaffold(
         key: scaffoldkey,
+        resizeToAvoidBottomInset: false,
+
         body: Consumer<ProfileNotifier>(
             builder: (context,pn,child)=> Stack(
               children: [
@@ -119,6 +117,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                 Container(
                   height: SizeConfig.screenHeight,
+
                   // color: Colors.transparent,
                   child: SingleChildScrollView(
                     physics: NeverScrollableScrollPhysics(),
@@ -133,7 +132,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               width: SizeConfig.screenWidth,
                               alignment: Alignment.topCenter,
                               decoration: BoxDecoration(
-                                  color: Colors.white,
+                                  color: AppTheme.gridbodyBgColor,
                                   borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10))
                               ),
                               child: GestureDetector(
@@ -147,22 +146,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
                                   }
                                 },
-                               /* onVerticalDragDown: (v){
-                                  if(scrollController.offset==100 && listViewController.offset==0){
-                                    scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
-                                  }
-                                  else if(scrollController.offset==0 && listViewController.offset==0){
-                                    scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
 
-                                  }*/
-
-                               // },
                                 child: Container(
-                                  height:_keyboardVisible?SizeConfig.screenHeight*0.5 :SizeConfig.screenHeight-100,
+                                  height:SizeConfig.screenHeight-100,
                                   width: SizeConfig.screenWidth,
 
                                   decoration: BoxDecoration(
-                                      color: Colors.white,
+                                      color: AppTheme.gridbodyBgColor,
                                       borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10))
                                   ),
                                   child: ListView(
@@ -187,7 +177,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                               color: AppTheme.yellowColor
                                             ),
                                             child: Center(
-                                              child:  Icon(isEdit?Icons.clear:Icons.edit_outlined,color: AppTheme.bgColor,),
+                                              child:  isEdit?Icon(Icons.clear,color: AppTheme.bgColor,):
+                                              SvgPicture.asset("assets/svg/edit.svg",width: 20,height: 20,),
                                             ),
                                           ),
                                         ),
@@ -225,7 +216,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                 decoration: BoxDecoration(
                                                     borderRadius: BorderRadius.circular(3),
                                                     border: Border.all(color: AppTheme.addNewTextFieldBorder),
-                                                    color: isEdit?Colors.white: Color(0xFFF2F2F2),
+                                                    color: isEdit?Colors.white: AppTheme.disableColor,
                                                 ),
                                                 width: SizeConfig.screenWidth,
                                                 height: 50,
@@ -243,7 +234,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                                                   style:  TextStyle(fontFamily: 'RR',fontSize: 15,color:AppTheme.addNewTextFieldText,letterSpacing: 0.2),
                                                   decoration: InputDecoration(
-                                                   fillColor:isEdit?Colors.white: Color(0xFFF2F2F2),
+                                                   fillColor:isEdit?Colors.white: AppTheme.disableColor,
                                                       filled: true,
                                                       hintStyle: TextStyle(fontFamily: 'RL',fontSize: 15,color: AppTheme.addNewTextFieldText.withOpacity(0.9)),
                                                       border:  InputBorder.none,
@@ -255,6 +246,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                   ),
                                                   maxLines: null,
                                                   textInputAction: TextInputAction.done,
+                                                  inputFormatters: [
+                                                    FilteringTextInputFormatter.allow(RegExp('[A-Za-z ]')),
+                                                  ],
 
                                                   onEditingComplete: (){
                                                     node.unfocus();
@@ -271,7 +265,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             Align(
                                               alignment: Alignment.centerLeft,
                                               child: AnimatedContainer(
-                                                height:salutationOpen? 100:30,
+                                                height:salutationOpen? 110:30,
                                                 width: 60,
                                                 duration: Duration(milliseconds: 300),
                                                 curve: Curves.easeIn,
@@ -311,6 +305,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                         child: Text("Ms",style: TextStyle(fontFamily: 'RR',fontSize: 16,color: AppTheme.bgColor),)
                                                     ),
 
+                                                    InkWell(
+                                                        onTap: (){
+                                                          setState(() {
+                                                            salutationOpen=false;
+                                                            pn.selectedSalutation="Mx";
+                                                          });
+                                                        },
+                                                        child: Text("Mx",style: TextStyle(fontFamily: 'RR',fontSize: 16,color: AppTheme.bgColor),)
+                                                    ),
                                                   ],
                                                 )
                                                     :Center(
@@ -331,9 +334,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           ],
                                         ),
                                       ),
+                                      !firstName?Container():ValidationErrorText(title: "* Enter First Name",),
+
                                       AddNewLabelTextField(
                                         labelText: 'Last Name',
                                         isEnabled: isEdit,
+                                        regExp: '[A-Za-z ]',
                                         textEditingController: pn.lastName,
                                         ontap: (){
                                           scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
@@ -353,7 +359,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       ),
                                       AddNewLabelTextField(
                                         labelText: 'Contact Number',
+                                        regExp: '[0-9]',
                                         isEnabled: isEdit,
+                                        textLength: 10,
                                         textEditingController: pn.contactNumber,
                                         textInputType: TextInputType.number,
                                         onEditComplete: (){
@@ -378,7 +386,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         isEnabled: isEdit,
                                         textEditingController: pn.email,
                                         textInputType: TextInputType.emailAddress,
-                                        scrollPadding: 100,
+                                        scrollPadding:400,
                                         onEditComplete: (){
                                           node.unfocus();
                                           Timer(Duration(milliseconds: 50), (){
@@ -395,11 +403,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                                         },
                                       ),
+                                      emailValid?Container():ValidationErrorText(title: "* Invalid Email Address",),
+
                                       AddNewLabelTextField(
                                         labelText: 'Password',
                                         isEnabled: isEdit,
                                         textEditingController: pn.password,
-                                        scrollPadding: 100,
+                                        scrollPadding: 400,
                                         isObscure: passwordvisible,
                                         maxlines: 1,
                                         onEditComplete: (){
@@ -422,8 +432,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       setState(() {
                                         passwordvisible=!passwordvisible;
                                       });
-                                    }),
+                                       }),
                                       ),
+                                      !password?Container():ValidationErrorText(title: "* Enter Password",),
                                       SizedBox(height: SizeConfig.height20,),
                                       Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -435,7 +446,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             },
                                             child: Container(
                                               width:SizeConfig.screenWidth*0.4,
-                                              height:SizeConfig.height50,
+                                              height:50,
                                               decoration: BoxDecoration(
                                                 borderRadius: BorderRadius.circular(25.0),
                                                 color: AppTheme.yellowColor,
@@ -456,7 +467,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           ),
                                           Container(
                                             width:SizeConfig.screenWidth*0.4,
-                                            height:SizeConfig.height50,
+                                            height:50,
                                             decoration: BoxDecoration(
                                               borderRadius: BorderRadius.circular(25.0),
                                               color: AppTheme.yellowColor,
@@ -478,7 +489,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       ),
 
 
-                                      SizedBox(height: SizeConfig.height100,),
+                                    SizedBox(height:_keyboardVisible?SizeConfig.screenHeight*0.5 : SizeConfig.height100,),
                                     ],
                                   ),
                                 ),
@@ -519,8 +530,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   width: SizeConfig.screenWidth,
                   child: Row(
                     children: [
-                      IconButton(icon: Icon(Icons.menu), onPressed: widget.drawerCallback),
-                      SizedBox(width: SizeConfig.width5,),
+                      GestureDetector(
+                        onTap:widget.drawerCallback,
+                        child: NavBarIcon(),
+                      ),
                       Text("My Profile",
                         style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: 16),
                       ),
@@ -528,56 +541,91 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: 16),
                       ),*/
 
-
                     ],
                   ),
                 ),
+
+
+
+                //bottomNav
                 AnimatedPositioned(
-                  duration: Duration(milliseconds: 300),
+                  duration: Duration(milliseconds: 200),
                   curve: Curves.easeIn,
                   bottom:isEdit? 0:-80,
+
                   child: Container(
-                    height:_keyboardVisible?0: SizeConfig.height70,
                     width: SizeConfig.screenWidth,
-                    color: AppTheme.grey,
-                    child: Center(
-                      child: GestureDetector(
-                        onTap: (){
-                          node.unfocus();
-                          if(isEdit){
-                            pn.UpdateUserProfileDetailDbHit(context);
-                            setState(() {
-                              isEdit=false;
-                            });
-                          }
+                    height:_keyboardVisible?0: 65,
+                    decoration: BoxDecoration(
+                        color: AppTheme.gridbodyBgColor,
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppTheme.gridbodyBgColor,
+                            spreadRadius: 2,
+                            blurRadius: 15,
+                            offset: Offset(0, -20), // changes position of shadow
+                          )
+                        ]
+                    ),
+                    child: Stack(
 
-                       /*   if(qn.MachineName.text.isEmpty)
-                          {
-                            CustomAlert().commonErrorAlert(context, "Enter Machine Name", "");
-
-                          }
-
-                          else{
-                            qn.InsertVehicleDbHit(context);
-
-                          }*/
-
-                        },
-                        child: Container(
-                          height: SizeConfig.height50,
-                          width: SizeConfig.width120,
+                      children: [
+                        Container(
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(SizeConfig.height25),
-                              color: AppTheme.bgColor
                           ),
-                          child: Center(
-                            child: Text(pn.isProfileEdit?"Update":"Save",style: AppTheme.TSWhite20,),
+                          margin:EdgeInsets.only(top: 0),
+                          child: CustomPaint(
+                            size: Size( SizeConfig.screenWidth, 65),
+                            //  painter: RPSCustomPainter(),
+                            painter: RPSCustomPainter3(),
                           ),
                         ),
-                      ),
+
+                        Container(
+                          width:  SizeConfig.screenWidth,
+                          height: 80,
+                          padding: EdgeInsets.only(bottom: 10),
+
+                        )
+                      ],
                     ),
                   ),
                 ),
+                //Add Button
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: isEdit?_keyboardVisible?Container():AddButton(
+                    ontap: (){
+
+
+                      setState(() {
+                        emailValid=EmailValidation().validateEmail(pn.email.text);
+                      });
+
+                      if(pn.firstName.text.isEmpty){setState(() {firstName=true;});}
+                      else{setState(() {firstName=false;});}
+
+                      if(pn.password.text.isEmpty){setState(() {password=true;});}
+                      else{setState(() {password=false;});}
+
+                      if(emailValid && !firstName && !password){
+                          node.unfocus();
+                          if(isEdit){
+                             pn.UpdateUserProfileDetailDbHit(context);
+                             setState(() {
+                               isEdit=false;
+                               });
+                         }
+                      }
+
+
+
+
+                    },
+                  ):Container(),
+                ),
+
+
 
                 Container(
 

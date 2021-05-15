@@ -105,6 +105,16 @@ flutter:
     - assets/svg/gridHeader/materialMasterHeader.svg
     - assets/svg/
     - assets/svg/excel.svg
+    - assets/svg/gridHeader/customerHeader.svg
+    - assets/svg/gridHeader/supplierHeader.svg
+    - assets/svg/gridHeader/machineHeader.svg
+    - assets/svg/gridHeader/goodsHeader.svg
+    - assets/svg/gridHeader/goodsHeader.jpg
+    - assets/svg/plusIcon.svg
+    - assets/svg/gridHeader/vehicleHeader.jpg
+    - assets/svg/gridHeader/supplierHeader.jpg
+    - assets/svg/tick.svg
+    - assets/svg/gridHeader/invoiceHeader.jpg
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

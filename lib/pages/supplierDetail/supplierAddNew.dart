@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/model/supplierDetailModel/SupplierMaterialMappingListModel.dart';
 import 'package:quarry/notifier/machineNotifier.dart';
@@ -90,22 +91,25 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
 
 
 
+                //IMAGE
                 Container(
                   height: SizeConfig.screenHeight,
                   width: SizeConfig.screenWidth,
                   child: Column(
                     children: [
                       Container(
-                        width: double.maxFinite,
-                        height: SizeConfig.height200,
-
+                        width: SizeConfig.screenWidth,
+                        height: 200,
                         decoration: BoxDecoration(
-                            image: DecorationImage(
-                                image: AssetImage("assets/images/saleFormheader.jpg",),
-                                fit: BoxFit.cover
-                            )
+                          color: AppTheme.yellowColor,
+                           image: DecorationImage(
+                                     image: AssetImage("assets/svg/gridHeader/supplierHeader.jpg",),
+                                   fit: BoxFit.cover
+                                 )
 
                         ),
+                       // child: SvgPicture.asset("assets/svg/gridHeader/supplierHeader.svg"),
+
                       ),
                     ],
                   ),

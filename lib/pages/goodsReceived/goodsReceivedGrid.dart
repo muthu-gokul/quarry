@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/notifier/goodsReceivedNotifier.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
@@ -15,6 +16,7 @@ import 'package:quarry/pages/quarryMaster/plantDetailsAddNew.dart';
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
+import 'package:quarry/widgets/bottomBarAddButton.dart';
 import 'package:quarry/widgets/navigationBarIcon.dart';
 
 import '../../styles/size.dart';
@@ -110,28 +112,26 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
 
 
 
+              //IMAGE
               Container(
                 height: SizeConfig.screenHeight,
                 width: SizeConfig.screenWidth,
                 child: Column(
                   children: [
                     Container(
-                      width: double.maxFinite,
-                      height: SizeConfig.height200,
-
+                      width: SizeConfig.screenWidth,
+                      height: 190,
                       decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image: AssetImage("assets/images/saleFormheader.jpg",),
-                              fit: BoxFit.cover
-                          )
+                        color: AppTheme.yellowColor,
+                         image: DecorationImage(
+                                     image: AssetImage("assets/svg/gridHeader/goodsHeader.jpg",),
+                                   fit: BoxFit.cover
+                                 )
 
                       ),
+                  //    child: SvgPicture.asset("assets/svg/gridHeader/goodsHeader.svg"),
+
                     ),
-
-
-
-
-
                   ],
                 ),
               ),
@@ -421,35 +421,7 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
                           painter: RPSCustomPainter3(),
                         ),
                       ),
-                      Center(
-                        heightFactor: 0.5,
-                        child: GestureDetector(
-                          behavior: HitTestBehavior.translucent,
-                          onTap: (){
 
-                          },
-                          child: Container(
-
-                            height: SizeConfig.width50,
-                            width: SizeConfig.width50,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: AppTheme.yellowColor,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: AppTheme.yellowColor.withOpacity(0.4),
-                                  spreadRadius: 1,
-                                  blurRadius: 5,
-                                  offset: Offset(1, 8), // changes position of shadow
-                                ),
-                              ],
-                            ),
-                            child: Center(
-                              child: Icon(Icons.add,size: SizeConfig.height30,color: AppTheme.bgColor,),
-                            ),
-                          ),
-                        ),
-                      ),
                       Container(
                         width:  SizeConfig.screenWidth,
                         height: 80,
@@ -576,6 +548,15 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
                   ),
                 ),
               ),
+
+              //Add Button
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: AddButton(
+                  image: "assets/svg/plusIcon.svg",
+                ),
+              ),
+
 
 
 

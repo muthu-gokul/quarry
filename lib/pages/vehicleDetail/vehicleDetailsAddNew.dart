@@ -73,18 +73,18 @@ class VehicleDetailAddNewState extends State<VehicleDetailAddNew> with TickerPro
                     children: [
                       Container(
                         width: SizeConfig.screenWidth,
-                        height: 205,
+                        height: 190,
                         alignment: Alignment.centerLeft,
 
                         decoration: BoxDecoration(
                           color: AppTheme.yellowColor,
-                          /* image: DecorationImage(
-                                     image: AssetImage("assets/svg/gridHeader/companyDetailsHeader.jpg",),
+                           image: DecorationImage(
+                                     image: AssetImage("assets/svg/gridHeader/vehicleHeader.jpg",),
                                    fit: BoxFit.cover
-                                 )*/
+                                 )
 
                         ),
-                        child: SvgPicture.asset("assets/svg/gridHeader/vehicleAddNew.svg",width: SizeConfig.screenWidth,),
+                      //  child: SvgPicture.asset("assets/svg/gridHeader/vehicleAddNew.svg",width: SizeConfig.screenWidth,),
 
                       ),
                     ],
