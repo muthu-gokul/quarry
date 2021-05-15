@@ -6,6 +6,7 @@ import 'package:quarry/pages/employee/employeeMaster/employeeView.dart';
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
+import 'package:quarry/widgets/bottomBarAddButton.dart';
 import 'package:quarry/widgets/navigationBarIcon.dart';
 import 'package:quarry/widgets/staticColumnScroll/customDataTable2.dart';
 
@@ -241,38 +242,19 @@ class _EmployeeMasterGridState extends State<EmployeeMasterGrid> {
             ),
           ),
           //addButton
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: GestureDetector(
-              onTap: (){
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: AddButton(
+                  ontap: (){
 
-                en.updateEmployeeEdit(false);
-                en.EmployeeDropDownValues(context);
-                Navigator.push(context, _createRoute());
-              },
-              child: Container(
-
-                height: 65,
-                width: 65,
-                margin: EdgeInsets.only(bottom: 20),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: AppTheme.yellowColor,
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppTheme.yellowColor.withOpacity(0.4),
-                      spreadRadius: 1,
-                      blurRadius: 5,
-                      offset: Offset(1, 8), // changes position of shadow
-                    ),
-                  ],
-                ),
-                child: Center(
-                  child: Icon(Icons.add,size: SizeConfig.height30,color: AppTheme.bgColor,),
+                    en.updateEmployeeEdit(false);
+                    en.EmployeeDropDownValues(context);
+                    Navigator.push(context, _createRoute());
+                  },
+                  image: "assets/svg/plusIcon.svg",
                 ),
               ),
-            ),
-          ),
+
 
 
 

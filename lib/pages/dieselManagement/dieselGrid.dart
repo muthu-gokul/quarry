@@ -11,6 +11,7 @@ import 'package:quarry/pages/productionDetails/productionDetailsAddNew.dart';
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
+import 'package:quarry/widgets/bottomBarAddButton.dart';
 import 'package:quarry/widgets/navigationBarIcon.dart';
 import 'package:quarry/widgets/staticColumnScroll/customDataTable2.dart';
 
@@ -404,53 +405,7 @@ class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
                             painter: RPSCustomPainter3(),
                           ),
                         ),
-                        Center(
-                          heightFactor: 0.5,
-                          child: GestureDetector(
-                            behavior: HitTestBehavior.translucent,
-                            onTap: (){
-                            if(pageIndex==0){
-                              dn.updateDieselEdit(false);
-                              dn.PlantUserDropDownValues(context);
-                              dn.DieselDropDownValues(context);
-                              dn.insertDP_Form();
-                              Navigator.push(context, _createRoute());
-                            }
-                            else if(pageIndex==1){
-                              dn.updateDieselIssueEdit(false);
-                              dn.PlantUserDropDownValues(context);
-                              dn.DieselDropDownValues(context);
-                              dn.insertDI_form();
-                              Navigator.push(context, _createRouteDieselIssue());
-                            }
 
-
-
-
-
-                            },
-                            child: Container(
-
-                              height: SizeConfig.width50,
-                              width: SizeConfig.width50,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: AppTheme.yellowColor,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: AppTheme.yellowColor.withOpacity(0.4),
-                                    spreadRadius: 1,
-                                    blurRadius: 5,
-                                    offset: Offset(1, 8), // changes position of shadow
-                                  ),
-                                ],
-                              ),
-                              child: Center(
-                                child: Icon(Icons.add,size: SizeConfig.height30,color: AppTheme.bgColor,),
-                              ),
-                            ),
-                          ),
-                        ),
                         Container(
                           width:  SizeConfig.screenWidth,
                           height: 80,
@@ -633,7 +588,29 @@ class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
                   ),
                 ),
 
-
+                //addButton
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: AddButton(
+                    ontap: (){
+                      if(pageIndex==0){
+                        dn.updateDieselEdit(false);
+                        dn.PlantUserDropDownValues(context);
+                        dn.DieselDropDownValues(context);
+                        dn.insertDP_Form();
+                        Navigator.push(context, _createRoute());
+                      }
+                      else if(pageIndex==1){
+                        dn.updateDieselIssueEdit(false);
+                        dn.PlantUserDropDownValues(context);
+                        dn.DieselDropDownValues(context);
+                        dn.insertDI_form();
+                        Navigator.push(context, _createRouteDieselIssue());
+                      }
+                    },
+                    image: "assets/svg/plusIcon.svg",
+                  ),
+                ),
 
 
                 Container(

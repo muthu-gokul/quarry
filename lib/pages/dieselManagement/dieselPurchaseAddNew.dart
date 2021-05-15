@@ -17,6 +17,7 @@ import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/alertDialog.dart';
+import 'package:quarry/widgets/bottomBarAddButton.dart';
 import 'package:quarry/widgets/currentDateContainer.dart';
 import 'package:quarry/widgets/customTextField.dart';
 import 'package:quarry/widgets/expectedDateContainer.dart';
@@ -530,36 +531,20 @@ class DieselPurchaseFormState extends State<DieselPurchaseForm> with TickerProvi
                 ),
               ),
               //addButton
+              //add button
               Align(
                 alignment: Alignment.bottomCenter,
-                child: GestureDetector(
-                  onTap: (){
+                child: AddButton(
+                  ontap: (){
                     node.unfocus();
-                    dn.InsertDieselPurchaseDbHit(context);
-                  },
-                  child: Container(
 
-                    height: 65,
-                    width: 65,
-                    margin: EdgeInsets.only(bottom: 20),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: AppTheme.yellowColor,
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppTheme.yellowColor.withOpacity(0.4),
-                          spreadRadius: 1,
-                          blurRadius: 5,
-                          offset: Offset(1, 8), // changes position of shadow
-                        ),
-                      ],
-                    ),
-                    child: Center(
-                      child: Icon(Icons.done,size: SizeConfig.height30,color: AppTheme.bgColor,),
-                    ),
-                  ),
+                    dn.InsertDieselPurchaseDbHit(context);
+
+
+                  },
                 ),
               ),
+
 
 
 
@@ -571,12 +556,13 @@ class DieselPurchaseFormState extends State<DieselPurchaseForm> with TickerProvi
                 width: SizeConfig.screenWidth,
                 child: Row(
                   children: [
-                    IconButton(icon: Icon(Icons.clear,color:AppTheme.bgColor,), onPressed:(){
-                      Navigator.pop(context);
-                      dn.clearDP_Form();
+                    CancelButton(
+                      ontap: (){
+                        Navigator.pop(context);
+                        dn.clearDP_Form();
+                      },
+                    ),
 
-                    }),
-                    SizedBox(width: SizeConfig.width5,),
                     Text("Diesel Purchase",
                       style: TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 16),
                     ),

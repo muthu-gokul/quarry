@@ -14,6 +14,7 @@ import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/alertDialog.dart';
+import 'package:quarry/widgets/bottomBarAddButton.dart';
 import 'package:quarry/widgets/customTextField.dart';
 import 'package:quarry/widgets/decimal.dart';
 import 'package:quarry/widgets/searchdropdownSingleSelect.dart';
@@ -1138,11 +1139,12 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                       width: SizeConfig.screenWidth,
                                       child: Row(
                                         children: [
-                                          IconButton(icon: Icon(Icons.arrow_back), onPressed: (){
+                                          CancelButton(ontap: (){
                                             qn.clearEmptyForm();
+
                                             Navigator.pop(context);
-                                          }),
-                                          SizedBox(width: SizeConfig.width5,),
+                                          },),
+
                                           Text("Sales",
                                             style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: 16),
                                           ),
@@ -1697,12 +1699,12 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                       width: SizeConfig.screenWidth,
                                       child: Row(
                                         children: [
-                                          IconButton(icon: Icon(Icons.arrow_back), onPressed: (){
+                                          CancelButton(ontap: (){
                                             qn.clearEmptyForm();
                                             qn.clearLoaderForm();
                                             Navigator.pop(context);
-                                          }),
-                                          SizedBox(width: SizeConfig.width5,),
+                                          },),
+
                                           Text("Sales",
                                             style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: 16),
                                           ),
@@ -1889,6 +1891,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                           ],
                         ),
                       ),
+
 
                     ],
                   ),

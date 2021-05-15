@@ -14,9 +14,11 @@ import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/alertDialog.dart';
+import 'package:quarry/widgets/bottomBarAddButton.dart';
 import 'package:quarry/widgets/currentDateContainer.dart';
 import 'package:quarry/widgets/customTextField.dart';
 import 'package:quarry/widgets/sidePopUp/sidePopUpWithoutSearch.dart';
+import 'package:quarry/widgets/validationErrorText.dart';
 
 class PaymentAddNewForm extends StatefulWidget {
   @override
@@ -37,6 +39,11 @@ class PaymentAddNewFormState extends State<PaymentAddNewForm> with TickerProvide
   bool paymentCategoryOpen=false;
   bool suppliersListOpen=false;
   bool isPlantOpen=false;
+
+  bool plant=false;
+  bool material=false;
+  bool amount=false;
+  bool party=false;
 
   @override
   void initState() {
@@ -188,6 +195,7 @@ class PaymentAddNewFormState extends State<PaymentAddNewForm> with TickerProvide
 
                                     AddNewLabelTextField(
                                       labelText: 'Material Name',
+                                      regExp: '[A-Za-z  ]',
                                       textEditingController: qn.materialName,
                                       ontap: (){
                                         setState(() {
@@ -205,6 +213,7 @@ class PaymentAddNewFormState extends State<PaymentAddNewForm> with TickerProvide
                                         });
                                       },
                                     ),
+                                    !material?Container():ValidationErrorText(title: "* Enter Material",),
 
                                     GestureDetector(
                                       onTap: (){
@@ -232,6 +241,7 @@ class PaymentAddNewFormState extends State<PaymentAddNewForm> with TickerProvide
 
                                       ),
                                     ),
+                                   !plant?Container():ValidationErrorText(title: "* Select Plant"),
 
                                     GestureDetector(
                                       onTap: (){
@@ -253,9 +263,11 @@ class PaymentAddNewFormState extends State<PaymentAddNewForm> with TickerProvide
 
                                       ),
                                     ),
+                                    !party?Container():ValidationErrorText(title: "* Select Party Name"),
 
                                     AddNewLabelTextField(
                                       labelText: 'Amount',
+                                      regExp: '[0-9.]',
                                       scrollPadding: 100,
                                       textEditingController: qn.amount,
                                       textInputType: TextInputType.number,
@@ -288,6 +300,7 @@ class PaymentAddNewFormState extends State<PaymentAddNewForm> with TickerProvide
                                       },
 
                                     ),
+                                    !amount?Container():ValidationErrorText(title: "* Enter Amount",),
 
                                     GestureDetector(
                                       onTap: (){
@@ -334,11 +347,13 @@ class PaymentAddNewFormState extends State<PaymentAddNewForm> with TickerProvide
                   width: SizeConfig.screenWidth,
                   child: Row(
                     children: [
-                      IconButton(icon: Icon(Icons.arrow_back), onPressed: () {
-                        qn.clearInsertForm();
-                        Navigator.pop(context);
-                      }),
-                      SizedBox(width: SizeConfig.width5,),
+                      CancelButton(
+                        ontap: (){
+                          qn.clearInsertForm();
+                          Navigator.pop(context);
+                        },
+                      ),
+
                       Text(qn.isPaymentReceivable?"Add New Receivable":"Add New Payable",
                         style: TextStyle(fontFamily: 'RR',
                             color: Colors.black,
@@ -378,43 +393,7 @@ class PaymentAddNewFormState extends State<PaymentAddNewForm> with TickerProvide
                             painter: RPSCustomPainter3(),
                           ),
                         ),
-                        Center(
-                          heightFactor: 0.5,
-                          child: GestureDetector(
-                            behavior: HitTestBehavior.translucent,
-                            onTap: (){
 
-                              if(qn.amount.text.isEmpty){
-                                CustomAlert().commonErrorAlert(context, "Add Amount", "");
-                              }
-
-                              else{
-                                qn.UpdatePaymentDbHit(context,this);
-                              }
-
-                            },
-                            child: Container(
-
-                              height: SizeConfig.width50,
-                              width: SizeConfig.width50,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: AppTheme.yellowColor,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: AppTheme.yellowColor.withOpacity(0.4),
-                                    spreadRadius: 1,
-                                    blurRadius: 5,
-                                    offset: Offset(1, 8), // changes position of shadow
-                                  ),
-                                ],
-                              ),
-                              child: Center(
-                                child: Icon(Icons.done,size: SizeConfig.height30,color: AppTheme.bgColor,),
-                              ),
-                            ),
-                          ),
-                        ),
                         Container(
                           width:  SizeConfig.screenWidth,
                           height: 80,
@@ -431,7 +410,31 @@ class PaymentAddNewFormState extends State<PaymentAddNewForm> with TickerProvide
                     ),
                   ),
                 ),
+                //add button
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: AddButton(
+                    ontap: (){
+                      node.unfocus();
+                      if(qn.amount.text.isEmpty){setState(() {amount=true;});}
+                      else{setState(() {amount=false;});}
 
+                      if(qn.materialName.text.isEmpty){setState(() {material=true;});}
+                      else{setState(() {material=false;});}
+
+                      if(qn.PlantId==null){setState(() {plant=true;});}
+                      else{setState(() {plant=false;});}
+
+                      if(qn.selectedPartyId==null){setState(() {party=true;});}
+                      else{setState(() {party=false;});}
+
+                      if(!amount && !material && !plant && !party){
+                        qn.UpdatePaymentDbHit(context,this);
+                      }
+
+                    },
+                  ),
+                ),
 
                 Container(
                   height:  paymentCategoryOpen || isPlantOpen|| suppliersListOpen? SizeConfig.screenHeight : 0,

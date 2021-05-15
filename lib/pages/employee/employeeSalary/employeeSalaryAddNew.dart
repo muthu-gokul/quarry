@@ -8,6 +8,7 @@ import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/alertDialog.dart';
+import 'package:quarry/widgets/bottomBarAddButton.dart';
 import 'package:quarry/widgets/searchdropdownSingleSelect.dart';
 
 
@@ -364,11 +365,13 @@ class _EmployeeSalaryAddNewState extends State<EmployeeSalaryAddNew> {
                   width: SizeConfig.screenWidth,
                   child: Row(
                     children: [
-                      IconButton(icon: Icon(Icons.arrow_back), onPressed: (){
-                        esn.clearInsertForm();
-                        Navigator.pop(context);
-                      }),
-                      SizedBox(width: SizeConfig.width5,),
+                      CancelButton(
+                        ontap: (){
+                          esn.clearInsertForm();
+                          Navigator.pop(context);
+                        },
+                      ),
+
                       Text("Add Employee Salary",
                         style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: 16),
                       ),
@@ -429,8 +432,9 @@ class _EmployeeSalaryAddNewState extends State<EmployeeSalaryAddNew> {
                 //addButton
                 Align(
                   alignment: Alignment.bottomCenter,
-                  child: GestureDetector(
-                    onTap: (){
+                  child: AddButton(
+                    ontap: (){
+                      node.unfocus();
                       if(esn.IsPaid!=null){
                         if(esn.IsPaid==0){
                           esn.InsertEmployeeSalaryDbHit(context);
@@ -439,30 +443,12 @@ class _EmployeeSalaryAddNewState extends State<EmployeeSalaryAddNew> {
                           CustomAlert().commonErrorAlert(context, "Already Paid", "");
                         }
                       }
-                    },
-                    child: Container(
 
-                      height:_keyboardVisible? 0:65,
-                      width: 65,
-                      margin: EdgeInsets.only(bottom: 20),
-                      decoration:BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: AppTheme.yellowColor,
-                        boxShadow: [
-                          BoxShadow(
-                            color: AppTheme.yellowColor.withOpacity(0.4),
-                            spreadRadius: 1,
-                            blurRadius: 5,
-                            offset: Offset(1, 8), // changes position of shadow
-                          ),
-                        ],
-                      ),
-                      child: Center(
-                        child: Icon( Icons.done,size:_keyboardVisible? 0:40,color: AppTheme.bgColor,),
-                      ),
-                    ),
+
+                    },
                   ),
                 ),
+
 
 
                 Container(

@@ -14,7 +14,9 @@ import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/alertDialog.dart';
+import 'package:quarry/widgets/bottomBarAddButton.dart';
 import 'package:quarry/widgets/sidePopUp/sidePopUpWithoutSearch.dart';
+import 'package:quarry/widgets/validationErrorText.dart';
 
 
 
@@ -52,6 +54,10 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
 
   bool deleteOpen=false;
   int selectedMaterialIndex=-1;
+
+  bool plant=false;
+  bool invoiceType=false;
+  bool party=false;
 
 
 /*  For DataTable   */
@@ -278,6 +284,7 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
 
                                       ),
                                     ),
+                                   !plant?Container():ValidationErrorText(title: "* Select Plant"),
 
 
                                     GestureDetector(
@@ -295,6 +302,7 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
                                         bgColor: pn.selectedInvoiceType==null? AppTheme.disableColor:Colors.white,
                                       ),
                                     ),
+                                    !invoiceType?Container():ValidationErrorText(title: "* Select Invoice Type"),
                                     GestureDetector(
                                       onTap: (){
                                         node.unfocus();
@@ -317,6 +325,7 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
 
                                       ),
                                     ),
+                                    !party?Container():ValidationErrorText(title: "* Select Party Name"),
 
                                     SizedBox(height: SizeConfig.height20,),
 
@@ -1076,11 +1085,13 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
                   width: SizeConfig.screenWidth,
                   child: Row(
                     children: [
-                      IconButton(icon: Icon(Icons.arrow_back), onPressed: (){
-                        pn.clearForm();
-                        Navigator.pop(context);
-                      }),
-                      SizedBox(width: SizeConfig.width5,),
+                      CancelButton(
+                        ontap: (){
+                          pn.clearForm();
+                          Navigator.pop(context);
+                        },
+                      ),
+
                       Text("Invoice",
                         style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: 16),
                       ),
@@ -1138,28 +1149,7 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
                             painter: RPSCustomPainter3(),
                           ),
                         ),
-                        Center(
-                          heightFactor: 0.5,
-                          child: FloatingActionButton(backgroundColor: AppTheme.yellowColor, child: Icon(Icons.save), elevation: 0.1, onPressed: () {
-                            if(pn.PlantId==null){
-                              CustomAlert().commonErrorAlert(context, "Select Plant", "");
-                            }
-                            else if(pn.selectedInvoiceType==null){
-                              CustomAlert().commonErrorAlert(context, "Select Invoice Type", "");
-                            }
-                            else if(pn.selectedPartyId==null){
-                              CustomAlert().commonErrorAlert(context, "Select Party Name", "");
-                            }
-                            else if(pn.invoiceMaterialMappingList.isEmpty){
-                              CustomAlert().commonErrorAlert(context, "Add Material", "Add materials to make purchase.");
-                            }
-                            else{
-                              pn.InsertInvoiceDbHit(context);
-                            }
 
-
-                          }),
-                        ),
                         Container(
                           width:  SizeConfig.screenWidth,
                           height: 80,
@@ -1272,6 +1262,33 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
                         )
                       ],
                     ),
+                  ),
+                ),
+                //add button
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: AddButton(
+                    ontap: (){
+                      node.unfocus();
+                      if(pn.PlantId==null){setState(() {plant=true;});}
+                      else{setState(() {plant=false;});}
+
+                      if(pn.selectedInvoiceType==null){setState(() {invoiceType=true;});}
+                      else{setState(() {invoiceType=false;});}
+
+                      if(pn.selectedPartyId==null){setState(() {party=true;});}
+                      else{setState(() {party=false;});}
+
+
+                      if(pn.invoiceMaterialMappingList.isEmpty){
+                        CustomAlert().commonErrorAlert(context, "Add Material", "Add materials to make purchase.");
+                      }
+                      if(!plant && !invoiceType && !party && pn.invoiceMaterialMappingList.isNotEmpty){
+                        pn.InsertInvoiceDbHit(context);
+                      }
+
+
+                    },
                   ),
                 ),
 

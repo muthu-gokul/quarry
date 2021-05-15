@@ -14,6 +14,7 @@ import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/alertDialog.dart';
+import 'package:quarry/widgets/bottomBarAddButton.dart';
 
 import 'package:quarry/widgets/currentDateContainer.dart';
 import 'package:quarry/widgets/customTextField.dart';
@@ -433,11 +434,12 @@ class DieselIssueFormState extends State<DieselIssueForm> with TickerProviderSta
               ),
 
               //addButton
+              //add button
               Align(
                 alignment: Alignment.bottomCenter,
-                child: GestureDetector(
-                  onTap: (){
-
+                child: AddButton(
+                  ontap: (){
+                    node.unfocus();
                     if(dn.DI_plantID==null) {setState(() {plant = true;});}
                     else{setState(() {plant=false;});}
 
@@ -463,29 +465,9 @@ class DieselIssueFormState extends State<DieselIssueForm> with TickerProviderSta
 
 
                   },
-                  child: Container(
-
-                    height:_keyboardVisible? 0:65,
-                    width: 65,
-                    margin: EdgeInsets.only(bottom: 20),
-                    decoration:BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: AppTheme.yellowColor,
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppTheme.yellowColor.withOpacity(0.4),
-                          spreadRadius: 1,
-                          blurRadius: 5,
-                          offset: Offset(1, 8), // changes position of shadow
-                        ),
-                      ],
-                    ),
-                    child: Center(
-                      child: Icon( Icons.done,size:_keyboardVisible? 0:40,color: AppTheme.bgColor,),
-                    ),
-                  ),
                 ),
               ),
+
 
 
               Container(
@@ -493,12 +475,11 @@ class DieselIssueFormState extends State<DieselIssueForm> with TickerProviderSta
                 width: SizeConfig.screenWidth,
                 child: Row(
                   children: [
-                    IconButton(icon: Icon(Icons.clear,color:AppTheme.bgColor,), onPressed:(){
+                    CancelButton(ontap: (){
                       Navigator.pop(context);
                       dn.clearDI_form();
+                    },),
 
-                    }),
-                    SizedBox(width: SizeConfig.width5,),
                     Text("Diesel Issue",
                       style: TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 16),
                     ),

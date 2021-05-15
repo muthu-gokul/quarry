@@ -11,8 +11,10 @@ import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/alertDialog.dart';
+import 'package:quarry/widgets/bottomBarAddButton.dart';
 import 'package:quarry/widgets/customTextField.dart';
 import 'package:quarry/widgets/sidePopUp/sidePopUpWithSearch.dart';
+import 'package:quarry/widgets/validationErrorText.dart';
 
 
 class VehicleDetailAddNew extends StatefulWidget {
@@ -34,6 +36,9 @@ class VehicleDetailAddNewState extends State<VehicleDetailAddNew> with TickerPro
   //bool isListScroll=false;
   TextEditingController transportTypeSearchController =new TextEditingController();
   TextEditingController addTransportTypeController =new TextEditingController();
+
+  bool vehicleName=false;
+  bool vehicleType=false;
 
   @override
   void initState() {
@@ -139,6 +144,7 @@ class VehicleDetailAddNewState extends State<VehicleDetailAddNew> with TickerPro
                               children: [
                                 AddNewLabelTextField(
                                   labelText: 'Enter Vehicle Number',
+                                  regExp: '[A-Za-z0-9  ]',
                                   textEditingController: qn.VehicleNo,
                                   onEditComplete: (){
                                     node.unfocus();
@@ -147,7 +153,9 @@ class VehicleDetailAddNewState extends State<VehicleDetailAddNew> with TickerPro
                                     scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                   },
                                 ),
+                                !vehicleName?Container():ValidationErrorText(title: "* Enter Vehicle Number ",),
                                 AddNewLabelTextField(
+                                  regExp: '[A-Za-z0-9.,  ]',
                                   labelText: 'VehicleDescription',
                                   textEditingController: qn.VehicleDescript,
                                   onEditComplete: (){
@@ -174,6 +182,7 @@ class VehicleDetailAddNewState extends State<VehicleDetailAddNew> with TickerPro
                                     bgColor: qn.selectedVehicleTypeName==null? AppTheme.disableColor:Colors.white,
                                   ),
                                 ),
+                                !vehicleType?Container():ValidationErrorText(title: "* Select Vehicle Type",),
 
 
 
@@ -182,6 +191,7 @@ class VehicleDetailAddNewState extends State<VehicleDetailAddNew> with TickerPro
                                 AddNewLabelTextField(
                                   labelText: 'Model',
                                   scrollPadding: 100,
+                                  regExp: '[A-Za-z0-9  ]',
                                   textEditingController: qn.VehicleModel,
                                   ontap: (){
                                     scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
@@ -193,6 +203,7 @@ class VehicleDetailAddNewState extends State<VehicleDetailAddNew> with TickerPro
 
                                 AddNewLabelTextField(
                                   labelText: 'EmptyWeight',
+                                  regExp: '[0-9.]',
                                   textInputType: TextInputType.number,
                                   scrollPadding: 100,
                                   textEditingController: qn.VehicleWeight,
@@ -202,6 +213,18 @@ class VehicleDetailAddNewState extends State<VehicleDetailAddNew> with TickerPro
                                   onEditComplete: (){
                                     node.unfocus();
                                   },
+                                  suffixIcon: Container(
+                                    height: 40,
+                                    width: 50,
+                                    margin: EdgeInsets.all(10),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      color: AppTheme.yellowColor
+                                    ),
+                                    child: Center(
+                                      child: Text("Ton",style: AppTheme.TSWhite166,),
+                                    ),
+                                  ),
                                 ),
 
                                 SizedBox(height: SizeConfig.height200,)
@@ -221,12 +244,13 @@ class VehicleDetailAddNewState extends State<VehicleDetailAddNew> with TickerPro
                   width: SizeConfig.screenWidth,
                   child: Row(
                     children: [
-                      IconButton(icon: Icon(Icons.arrow_back), onPressed: (){
+                      CancelButton(
+                        ontap: (){
+                          Navigator.pop(context);
+                          qn.clearVehicleDetailForm();
+                        },
+                      ),
 
-                        Navigator.pop(context);
-                        qn.clearVehicleDetailForm();
-                      }),
-                      SizedBox(width: SizeConfig.width5,),
                       Text("Vehicle Master ",
                         style: TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize:16),
                       ),
@@ -291,42 +315,27 @@ class VehicleDetailAddNewState extends State<VehicleDetailAddNew> with TickerPro
                 //addButton
                 Align(
                   alignment: Alignment.bottomCenter,
-                  child: GestureDetector(
-                    onTap: (){
+                  child: AddButton(
+                    ontap: (){
                       node.unfocus();
-                      if(qn.VehicleNo.text.isEmpty){
-                        CustomAlert().commonErrorAlert(context, "Enter Vehicle Number", "");
-                      }
-                      else if(qn.selectedVehicleTypeId==null){
-                        CustomAlert().commonErrorAlert(context, "Select VehicleType", "");
-                      }
-                      else{
+
+                      if(qn.VehicleNo.text.isEmpty){setState(() {vehicleName=true;});}
+                      else{setState(() {vehicleName=false;});}
+
+                      if(qn.selectedVehicleTypeId==null){setState(() {vehicleType=true;});}
+                      else{setState(() {vehicleType=false;});}
+
+
+
+                      if(!vehicleType && !vehicleName){
                         qn.InsertVehicleDbHit(context);
                       }
-                    },
-                    child: Container(
 
-                      height: 65,
-                      width: 65,
-                      margin: EdgeInsets.only(bottom: 20),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: AppTheme.yellowColor,
-                        boxShadow: [
-                          BoxShadow(
-                            color: AppTheme.yellowColor.withOpacity(0.4),
-                            spreadRadius: 1,
-                            blurRadius: 5,
-                            offset: Offset(1, 8), // changes position of shadow
-                          ),
-                        ],
-                      ),
-                      child: Center(
-                        child: Icon(Icons.done,size: SizeConfig.height30,color: AppTheme.bgColor,),
-                      ),
-                    ),
+
+                    },
                   ),
                 ),
+
 
 
 

@@ -17,6 +17,7 @@ import 'package:quarry/pages/supplierDetail/supplierAddNew.dart';
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
+import 'package:quarry/widgets/navigationBarIcon.dart';
 
 
 
@@ -98,8 +99,9 @@ class PaymentGridState extends State<PaymentGrid> with TickerProviderStateMixin{
                   color: AppTheme.yellowColor,
                   child: Row(
                     children: [
-                      IconButton(icon: Icon(Icons.menu), onPressed: widget.drawerCallback),
-                      SizedBox(width: SizeConfig.width20,),
+                      GestureDetector(
+                          onTap: widget.drawerCallback,
+                          child: NavBarIcon()),
                       Text("Payment",
                         style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize:16),
                       ),

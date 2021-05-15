@@ -11,8 +11,10 @@ import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/alertDialog.dart';
+import 'package:quarry/widgets/bottomBarAddButton.dart';
 import 'package:quarry/widgets/customTextField.dart';
 import 'package:quarry/widgets/sidePopUp/sidePopUpWithoutSearch.dart';
+import 'package:quarry/widgets/validationErrorText.dart';
 
 
 class ProductionDetailAddNew extends StatefulWidget {
@@ -33,6 +35,10 @@ class ProductionDetailAddNewState extends State<ProductionDetailAddNew> with Tic
   bool machineCategoryOpen = false;
   bool inputMaterialOpen = false;
   bool productionMaterailOpen=false;
+
+  bool machine=false;
+  bool inputMaterial=false;
+  bool qty=false;
 
 
   @override
@@ -88,6 +94,7 @@ class ProductionDetailAddNewState extends State<ProductionDetailAddNew> with Tic
 
     return Scaffold(
       key: scaffoldkey,
+      resizeToAvoidBottomInset: false,
       body: Consumer<ProductionNotifier>(
         builder: (context, qn, child) =>
             Stack(
@@ -182,6 +189,7 @@ class ProductionDetailAddNewState extends State<ProductionDetailAddNew> with Tic
                                           : AppTheme.yellowColor,
                                     ),
                                   ),
+                                  !machine?Container():ValidationErrorText(title: "* Select Machine ",),
                                   GestureDetector(
                                     onTap: () {
                                       node.unfocus();
@@ -199,6 +207,7 @@ class ProductionDetailAddNewState extends State<ProductionDetailAddNew> with Tic
                                           : AppTheme.yellowColor,
                                     ),
                                   ),
+                                  !inputMaterial?Container():ValidationErrorText(title: "* Select Input Material ",),
                                   AddNewLabelTextField(
                                     labelText: 'Input Material Quantity',
                                     textEditingController: qn.materialQuantity,
@@ -237,6 +246,8 @@ class ProductionDetailAddNewState extends State<ProductionDetailAddNew> with Tic
                                       ),
                                     ),
                                   ),
+                                  !qty?Container():ValidationErrorText(title: "* Enter Input Material Qty",),
+
 
                                   ///////////// Material Name/////////////////
                                   Container(
@@ -651,11 +662,13 @@ class ProductionDetailAddNewState extends State<ProductionDetailAddNew> with Tic
                   width: SizeConfig.screenWidth,
                   child: Row(
                     children: [
-                      IconButton(icon: Icon(Icons.arrow_back), onPressed: () {
-                        qn.clearForm();
-                        Navigator.pop(context);
-                      }),
-                      SizedBox(width: SizeConfig.width5,),
+                      CancelButton(
+                        ontap: (){
+                          qn.clearForm();
+                          Navigator.pop(context);
+                        },
+                      ),
+
                       Text("Production Detail",
                         style: TextStyle(fontFamily: 'RR',
                             color: AppTheme.bgColor,
@@ -698,50 +711,7 @@ class ProductionDetailAddNewState extends State<ProductionDetailAddNew> with Tic
                             painter: RPSCustomPainter(),
                           ),
                         ),
-                        Center(
-                          heightFactor: 0.5,
-                          child: GestureDetector(
-                            behavior: HitTestBehavior.translucent,
-                            onTap: (){
-                              if(qn.selectMachineId==null){
-                                CustomAlert().commonErrorAlert(context, "Select Machine", "");
-                              }
-                              else if(qn.selectInputTypeId==null){
-                                CustomAlert().commonErrorAlert(context, "Select Input Material", "");
-                              }
-                              else if(qn.materialQuantity.text.isEmpty){
-                                CustomAlert().commonErrorAlert(context, "Enter Input Material Weight", "");
-                              }
-                              else if(qn.productionMaterialMappingList.isEmpty){
-                                CustomAlert().commonErrorAlert(context, "Add Output Materials", "");
-                              }
-                              else{
-                                qn.InsertProductionDbHit(context, this);
-                              }
 
-                            },
-                            child: Container(
-
-                              height: SizeConfig.width50,
-                              width: SizeConfig.width50,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: AppTheme.yellowColor,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: AppTheme.yellowColor.withOpacity(0.4),
-                                    spreadRadius: 1,
-                                    blurRadius: 5,
-                                    offset: Offset(1, 8), // changes position of shadow
-                                  ),
-                                ],
-                              ),
-                              child: Center(
-                                child: Icon(Icons.done,size: SizeConfig.height30,color: AppTheme.bgColor,),
-                              ),
-                            ),
-                          ),
-                        ),
                         Container(
                           width:  SizeConfig.screenWidth,
                           height: 80,
@@ -756,6 +726,34 @@ class ProductionDetailAddNewState extends State<ProductionDetailAddNew> with Tic
                         )
                       ],
                     ),
+                  ),
+                ),
+                //add button
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: AddButton(
+                    ontap: (){
+                      node.unfocus();
+                      if(qn.selectMachineId==null){setState(() {machine=true;});}
+                      else{setState(() {machine=false;});}
+
+                      if(qn.selectInputTypeId==null){setState(() {inputMaterial=true;});}
+                      else{setState(() {inputMaterial=false;});}
+
+                      if(qn.materialQuantity.text.isEmpty){setState(() {qty=true;});}
+                      else{setState(() {qty=false;});}
+
+
+
+                       if(qn.productionMaterialMappingList.isEmpty){
+                        CustomAlert().commonErrorAlert(context, "Add Output Materials", "");
+                      }
+                      if(!machine && !inputMaterial && !qty && qn.productionMaterialMappingList.isNotEmpty){
+                        qn.InsertProductionDbHit(context, this);
+                      }
+
+
+                    },
                   ),
                 ),
 

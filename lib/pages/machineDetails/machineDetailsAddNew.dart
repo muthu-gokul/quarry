@@ -342,6 +342,7 @@ class _MachineDetailAddNewState extends State<MachineDetailAddNew> with TickerPr
                  ),
                ),
              ),
+             //add button
              Align(
                alignment: Alignment.bottomCenter,
                child: AddButton(

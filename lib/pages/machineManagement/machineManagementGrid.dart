@@ -10,6 +10,7 @@ import 'package:quarry/pages/reports/salesReport/salesReportGrid.dart';
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
+import 'package:quarry/widgets/bottomBarAddButton.dart';
 import 'package:quarry/widgets/navigationBarIcon.dart';
 import 'package:quarry/widgets/staticColumnScroll/customDataTable2.dart';
 import 'package:quarry/widgets/dateRangePicker.dart' as DateRagePicker;
@@ -298,37 +299,18 @@ class _MachineManagementGridState extends State<MachineManagementGrid> {
                     //addButton
                     Align(
                       alignment: Alignment.bottomCenter,
-                      child: GestureDetector(
-                        onTap: (){
+                      child: AddButton(
+                        ontap: (){
                           mmn.updateMachineManagementEdit(false);
                           mmn.PlantUserDropDownValues(context);
                           mmn.MachineManagementDropDownValues(context);
                           Navigator.push(context, _createRoute());
 
                         },
-                        child: Container(
-
-                          height: 65,
-                          width: 65,
-                          margin: EdgeInsets.only(bottom: 20),
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: AppTheme.yellowColor,
-                            boxShadow: [
-                              BoxShadow(
-                                color: AppTheme.yellowColor.withOpacity(0.4),
-                                spreadRadius: 1,
-                                blurRadius: 5,
-                                offset: Offset(1, 8), // changes position of shadow
-                              ),
-                            ],
-                          ),
-                          child: Center(
-                            child: Icon(Icons.add,size: SizeConfig.height30,color: AppTheme.bgColor,),
-                          ),
-                        ),
+                        image: "assets/svg/plusIcon.svg",
                       ),
                     ),
+
                   ],
                 ),
               )

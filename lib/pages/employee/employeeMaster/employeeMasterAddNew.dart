@@ -10,6 +10,7 @@ import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/notifier/employeeNotifier.dart';
+import 'package:quarry/widgets/bottomBarAddButton.dart';
 import 'package:quarry/widgets/customTextField.dart';
 import 'package:quarry/widgets/sidePopUp/sidePopUpWithoutSearch.dart';
 import 'package:quarry/widgets/validationErrorText.dart';
@@ -594,7 +595,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                             alignment: Alignment.centerRight,
                                             child: Container(
                                               height: 40,
-                                              width: SizeConfig.screenWidth*0.37,
+                                              width: SizeConfig.screenWidth*0.40,
                                               margin: EdgeInsets.only(left: SizeConfig.width20,right: SizeConfig.width20,top: 20),
                                               padding: EdgeInsets.only(left: SizeConfig.width10,right: SizeConfig.width10),
                                               decoration: BoxDecoration(
@@ -1229,11 +1230,13 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                   width: SizeConfig.screenWidth,
                   child: Row(
                     children: [
-                      IconButton(icon: Icon(Icons.arrow_back), onPressed: (){
-                        en.clearInsertForm();
-                        Navigator.pop(context);
-                      }),
-                      SizedBox(width: SizeConfig.width5,),
+                      CancelButton(
+                        ontap: (){
+                          en.clearInsertForm();
+                          Navigator.pop(context);
+                        },
+                      ),
+
                       Text("Employee",
                         style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: 16),
                       ),
@@ -1310,58 +1313,41 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                 //addButton
                 Align(
                   alignment: Alignment.bottomCenter,
-                  child: GestureDetector(
-                    onTap: (){
+                  child: AddButton(
+                    ontap: (){
                       node.unfocus();
+
                       if(en.employeeFirstName.text.isEmpty){setState(() {firstName=true;});}
                       else{setState(() {firstName=false;});}
 
-                       if(en.selectEmployeeDesignationId==null){setState(() {designation=true;});}
-                       else{setState(() {designation=false;});}
+                      if(en.selectEmployeeDesignationId==null){setState(() {designation=true;});}
+                      else{setState(() {designation=false;});}
 
-                       if(en.selectEmployeeTypeId==null){setState(() {employeeType=true;});}
-                       else{setState(() {employeeType=false;});}
+                      if(en.selectEmployeeTypeId==null){setState(() {employeeType=true;});}
+                      else{setState(() {employeeType=false;});}
 
-                       if(en.employeeSalary.text.isEmpty){setState(() {salary=true;});}
-                       else{setState(() {salary=false;});}
+                      if(en.employeeSalary.text.isEmpty){setState(() {salary=true;});}
+                      else{setState(() {salary=false;});}
 
-                       if(en.employeePhoneNumber.text.isEmpty){setState(() {phoneNo=true;contactOpen=true;contactArrowAnimationController.forward();});}
-                       else{setState(() {phoneNo=false;});}
+                      if(en.employeePhoneNumber.text.isEmpty){setState(() {phoneNo=true;contactOpen=true;contactArrowAnimationController.forward();});}
+                      else{setState(() {phoneNo=false;});}
 
                       if(en.employeeAddress.text.isEmpty){setState(() {address=true;contactOpen=true;contactArrowAnimationController.forward();});}
                       else{setState(() {address=false;});}
 
-                       if(en.employeeAadhaarNo.text.isEmpty){setState(() {aadhaar=true;otherDetailsOpen=true;otherDetailsArrowAnimationController.forward();});}
-                       else{setState(() {aadhaar=false;});}
+                      if(en.employeeAadhaarNo.text.isEmpty){setState(() {aadhaar=true;otherDetailsOpen=true;otherDetailsArrowAnimationController.forward();});}
+                      else{setState(() {aadhaar=false;});}
 
-                       if(!firstName && !designation && !employeeType && !salary && !phoneNo && !address && !aadhaar){
-                         en.InsertEmployeeDbHit(context);
-                       }
+                      if(!firstName && !designation && !employeeType && !salary && !phoneNo && !address && !aadhaar){
+                        en.InsertEmployeeDbHit(context);
+                      }
+
+
 
                     },
-                    child: Container(
-
-                      height: 65,
-                      width: 65,
-                      margin: EdgeInsets.only(bottom: 20),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: AppTheme.yellowColor,
-                        boxShadow: [
-                          BoxShadow(
-                            color: AppTheme.yellowColor.withOpacity(0.4),
-                            spreadRadius: 1,
-                            blurRadius: 5,
-                            offset: Offset(1, 8), // changes position of shadow
-                          ),
-                        ],
-                      ),
-                      child: Center(
-                        child: Icon(Icons.done,size: SizeConfig.height30,color: AppTheme.bgColor,),
-                      ),
-                    ),
                   ),
                 ),
+
 
                 //blur
                 Container(

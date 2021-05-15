@@ -9,6 +9,7 @@ import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/alertDialog.dart';
+import 'package:quarry/widgets/bottomBarAddButton.dart';
 import 'package:quarry/widgets/navigationBarIcon.dart';
 import 'package:quarry/widgets/searchdropdownSingleSelect.dart';
 import 'package:quarry/widgets/staticColumnScroll/customDataTable2.dart';
@@ -95,15 +96,13 @@ class _EmployeeAttendanceLoginLogoutState extends State<EmployeeAttendanceLoginL
 
                               child: Row(
                                 children: [
-                                  SizedBox(width: 20,),
-                                  GestureDetector(
-                                    onTap: (){
+                                  CancelButton(
+                                    ontap: (){
                                       ean.clearinsertForm();
                                       Navigator.pop(context);
                                     },
-                                    child: Icon(Icons.arrow_back),
                                   ),
-                                  SizedBox(width: 20,),
+
                                   Text("Login",
                                       style: AppTheme.appBarTS
                                   ),
@@ -314,15 +313,13 @@ class _EmployeeAttendanceLoginLogoutState extends State<EmployeeAttendanceLoginL
 
                               child: Row(
                                 children: [
-                                  SizedBox(width: 20,),
-                                  GestureDetector(
-                                    onTap: (){
+                                  CancelButton(
+                                    ontap: (){
                                       ean.clearinsertForm();
                                       Navigator.pop(context);
                                     },
-                                    child: Icon(Icons.arrow_back),
                                   ),
-                                  SizedBox(width: 20,),
+
                                   Text("Logout",
                                       style: AppTheme.appBarTS
                                   ),

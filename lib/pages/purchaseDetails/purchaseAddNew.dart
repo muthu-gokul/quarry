@@ -18,9 +18,11 @@ import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/alertDialog.dart';
+import 'package:quarry/widgets/bottomBarAddButton.dart';
 import 'package:quarry/widgets/customTextField.dart';
 import 'package:quarry/widgets/expectedDateContainer.dart';
 import 'package:quarry/widgets/sidePopUp/sidePopUpWithoutSearch.dart';
+import 'package:quarry/widgets/validationErrorText.dart';
 
 
 class PurchaseOrdersAddNew extends StatefulWidget {
@@ -39,6 +41,9 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
   bool supplierTypeOpen=false;
   bool suppliersListOpen=false;
   bool materialsListOpen=false;
+
+  bool supplierType=false;
+  bool supplierId=false;
 
   //for keyboard
   int reorderLevelIndex=-1;
@@ -296,6 +301,7 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                                         bgColor: pn.supplierType==null? AppTheme.disableColor:Colors.white,
                                       ),
                                     ),
+                                    !supplierType?Container():ValidationErrorText(title: "* Select Supplier Type",),
                                     GestureDetector(
                                       onTap: (){
                                         node.unfocus();
@@ -317,6 +323,7 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                                         bgColor: pn.supplierName==null? AppTheme.disableColor:Colors.white,
                                       ),
                                     ),
+                                    !supplierId?Container():ValidationErrorText(title: "* Select Supplier",),
                                     GestureDetector(
                                       onTap: () async{
                                         final DateTime picked = await showDatePicker(
@@ -1087,11 +1094,13 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                   width: SizeConfig.screenWidth,
                   child: Row(
                     children: [
-                      IconButton(icon: Icon(Icons.arrow_back), onPressed: (){
-                        pn.clearForm();
-                        Navigator.pop(context);
-                      }),
-                      SizedBox(width: SizeConfig.width5,),
+                      CancelButton(
+                        ontap: (){
+                          pn.clearForm();
+                          Navigator.pop(context);
+                        },
+                      ),
+
                       Text("Purchase Orders",
                         style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: SizeConfig.width16),
                       ),
@@ -1130,25 +1139,7 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                           size: Size( SizeConfig.screenWidth, 65),
                           painter: RPSCustomPainter3(),
                         ),
-                        Center(
-                          heightFactor: 0.5,
-                          child: FloatingActionButton(backgroundColor: AppTheme.yellowColor, child: Icon(Icons.save), elevation: 0.1, onPressed: () {
-                            if(pn.supplierType==null){
-                              CustomAlert().commonErrorAlert(context, "Select Supplier Type", "");
-                            }
-                            else if(pn.supplierId==null){
-                              CustomAlert().commonErrorAlert(context, "Select Supplier", "");
-                            }
-                            else if(pn.purchaseOrdersMappingList.isEmpty){
-                              CustomAlert().commonErrorAlert(context, "Add Material", "Add materials to make purchase.");
-                            }
-                            else{
-                              pn.InsertPurchaseDbHit(context);
-                            }
 
-
-                          }),
-                        ),
                         Container(
                           width:  SizeConfig.screenWidth,
                           height: 80,
@@ -1264,6 +1255,30 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                     ),
                   ),
                 ),
+                //add button
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: AddButton(
+                    ontap: (){
+                      node.unfocus();
+                      if(pn.supplierType==null){setState(() {supplierType=true;});}
+                      else{setState(() {supplierType=false;});}
+
+                      if(pn.supplierId==null){setState(() {supplierId=true;});}
+                      else{setState(() {supplierId=false;});}
+
+                       if(pn.purchaseOrdersMappingList.isEmpty){
+                        CustomAlert().commonErrorAlert(context, "Add Material", "Add materials to make purchase.");
+                      }
+                      if(!supplierId && !supplierType && pn.purchaseOrdersMappingList.isNotEmpty){
+                        pn.InsertPurchaseDbHit(context);
+                      }
+
+
+                    },
+                  ),
+                ),
+
 
 
 

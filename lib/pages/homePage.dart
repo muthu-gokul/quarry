@@ -290,6 +290,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                   title: 'Employee Details',
                                   tag: "EmployeeDetails",
                                   titleColor: AppTheme.yellowColor,
+                                  isRightArrow: true,
                                   callback: (){
                                     Navigator.push(context, MaterialPageRoute(builder: (context)=>EmployeeDetails(voidCallback: (){
                                       scaffoldkey.currentState.openEndDrawer();
@@ -318,6 +319,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                   image:  "assets/svg/drawer/accounts.svg",
                                   title: 'Accounts',
                                   tag: "Accounts",
+                                  isRightArrow: true,
                                   titleColor: AppTheme.yellowColor,
                                   callback: (){
                                     Navigator.push(context, MaterialPageRoute(builder: (context)=>AccountsPage(voidCallback: (){
@@ -331,6 +333,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                   image:  "assets/svg/drawer/reports.svg",
                                   title: 'Reports',
                                   tag: "Reports",
+                                  isRightArrow: true,
                                   titleColor: AppTheme.yellowColor,
                                   callback: (){
                                     Navigator.push(context, MaterialPageRoute(builder: (context)=>ReportsPage(voidCallback: (){
@@ -345,6 +348,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                   image: "assets/svg/drawer/settings-icon.svg",
                                   title: 'Settings',
                                   tag: "Settings",
+                                  isRightArrow: true,
                                   titleColor: AppTheme.yellowColor,
                                   callback: (){
                                     Navigator.push(context, MaterialPageRoute(builder: (context)=>SettingsPage(voidCallback: (){
@@ -480,8 +484,9 @@ class DrawerContent extends StatelessWidget {
   double height;
   Color titleColor;
   double delay;
+  bool isRightArrow;
 
-  DrawerContent({this.callback,this.title,this.image,this.height,this.titleColor,this.delay,this.tag});
+  DrawerContent({this.callback,this.title,this.image,this.height,this.titleColor,this.delay,this.tag,this.isRightArrow=false});
 
   @override
   Widget build(BuildContext context) {
@@ -507,10 +512,18 @@ class DrawerContent extends StatelessWidget {
                 height: 20,
                 width: 190,
                 alignment: Alignment.centerLeft,
-                child: FittedBox(
-                    fit: BoxFit.contain,
-                    child: Text(title, style: TextStyle(fontSize: 16,color:titleColor, fontFamily:'RR'),)),
+                child: Row(
+                  children: [
+                    FittedBox(
+                        fit: BoxFit.contain,
+                        child: Text(title, style: TextStyle(fontSize: 16,color:titleColor, fontFamily:'RR'),)
+                    ),
+                    SizedBox(width: isRightArrow? 5:0,),
+                    isRightArrow?Icon(Icons.arrow_forward_ios_rounded,color: AppTheme.yellowColor,size: 15,):Container()
+                  ],
+                ),
               ),
+
 
             ],
           ),

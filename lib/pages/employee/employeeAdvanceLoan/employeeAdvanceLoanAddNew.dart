@@ -8,6 +8,7 @@ import 'package:quarry/pages/sale/salesDetail.dart';
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
+import 'package:quarry/widgets/bottomBarAddButton.dart';
 import 'package:quarry/widgets/customTextField.dart';
 import 'package:quarry/widgets/searchdropdownSingleSelect.dart';
 import 'package:quarry/widgets/sidePopUp/sidePopupWithoutModelList.dart';
@@ -463,12 +464,14 @@ class _EmployeeAdvanceAddNewState extends State<EmployeeAdvanceAddNew> {
                   width: SizeConfig.screenWidth,
                   child: Row(
                     children: [
-                      IconButton(icon: Icon(Icons.arrow_back), onPressed: (){
-                        eal.clearinsertForm();
-                        eal.clearAmount();
-                        Navigator.pop(context);
-                      }),
-                      SizedBox(width: SizeConfig.width5,),
+                      CancelButton(
+                        ontap: (){
+                          eal.clearinsertForm();
+                          eal.clearAmount();
+                          Navigator.pop(context);
+                        },
+                      ),
+
                       Text("Add Advance Salary/Loan Entry",
                         style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: 16),
                       ),
@@ -527,58 +530,40 @@ class _EmployeeAdvanceAddNewState extends State<EmployeeAdvanceAddNew> {
                 ),
 
                 //addButton
+                //add button
                 Align(
                   alignment: Alignment.bottomCenter,
-                  child: GestureDetector(
-                    onTap: (){
-                       if(eal.showEmpId==null){setState(() {employeeId=true;});}
-                       else{setState(() {employeeId=false;});}
+                  child: AddButton(
+                    ontap: (){
+                      node.unfocus();
+                      if(eal.showEmpId==null){setState(() {employeeId=true;});}
+                      else{setState(() {employeeId=false;});}
 
-                       if(eal.selectedAmountType==null){setState(() {amountType=true;});}
-                       else{setState(() {amountType=false;});}
+                      if(eal.selectedAmountType==null){setState(() {amountType=true;});}
+                      else{setState(() {amountType=false;});}
 
-                       if(eal.selectedAmountType=="Advance"){
-                         if(eal.advanceAmountController.text.isEmpty){setState(() {advanceAmount=true;});}
-                         else{setState(() {advanceAmount=false;});}
+                      if(eal.selectedAmountType=="Advance"){
+                        if(eal.advanceAmountController.text.isEmpty){setState(() {advanceAmount=true;});}
+                        else{setState(() {advanceAmount=false;});}
 
-                         if(!employeeId && !amountType && !advanceAmount){
-                           eal.InsertEmployeeLoanAttendanceDbHit(context);
-                         }
-                       }
-                       else if(eal.selectedAmountType=="Loan"){
-                         if(eal.loanAmountController.text.isEmpty){setState(() {loanAmount=true;});}
-                         else{setState(() {loanAmount=false;});}
+                        if(!employeeId && !amountType && !advanceAmount){
+                          eal.InsertEmployeeLoanAttendanceDbHit(context);
+                        }
+                      }
+                      else if(eal.selectedAmountType=="Loan"){
+                        if(eal.loanAmountController.text.isEmpty){setState(() {loanAmount=true;});}
+                        else{setState(() {loanAmount=false;});}
 
-                         if(!employeeId && !amountType && !loanAmount){
-                           eal.InsertEmployeeLoanAttendanceDbHit(context);
-                         }
-                       }
+                        if(!employeeId && !amountType && !loanAmount){
+                          eal.InsertEmployeeLoanAttendanceDbHit(context);
+                        }
+                      }
 
 
-                       },
-                    child: Container(
-
-                      height:_keyboardVisible? 0:65,
-                      width: 65,
-                      margin: EdgeInsets.only(bottom: 20),
-                      decoration:BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: AppTheme.yellowColor,
-                        boxShadow: [
-                          BoxShadow(
-                            color: AppTheme.yellowColor.withOpacity(0.4),
-                            spreadRadius: 1,
-                            blurRadius: 5,
-                            offset: Offset(1, 8), // changes position of shadow
-                          ),
-                        ],
-                      ),
-                      child: Center(
-                        child: Icon( Icons.done,size:_keyboardVisible? 0:40,color: AppTheme.bgColor,),
-                      ),
-                    ),
+                    },
                   ),
                 ),
+
 
 
                 Container(
