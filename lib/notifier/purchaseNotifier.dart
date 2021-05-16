@@ -34,9 +34,11 @@ class PurchaseNotifier extends ChangeNotifier{
   List<PurchaseSupplierType> supplierTypeList=[];
   List<PurchaseSupplierList> suppliersList=[];
   List<PurchaseSupplierList> filterSuppliersList=[];
+  List<PurchaseSupplierList> searchFilterSuppliersList=[];
 
   List<PurchaseMaterialsListModel> materialsList=[];
   List<PurchaseMaterialsListModel> filterMaterialsList=[];
+  List<PurchaseMaterialsListModel> searchFilterMaterialsList=[];
 
 
   int PlantId=null;
@@ -142,11 +144,13 @@ class PurchaseNotifier extends ChangeNotifier{
 
           materialsList=t1.map((e) => PurchaseMaterialsListModel.fromJson(e)).toList();
           filterMaterialsList=materialsList;
+          searchFilterMaterialsList=materialsList;
 
           supplierTypeList=t2.map((e) => PurchaseSupplierType.fromJson(e)).toList();
 
           suppliersList =t3.map((e) => PurchaseSupplierList.fromJson(e)).toList();
           filterSuppliersList=suppliersList;
+          searchFilterSuppliersList=suppliersList;
 
         }
         updatePurchaseLoader(false);
@@ -163,10 +167,23 @@ class PurchaseNotifier extends ChangeNotifier{
 
  searchMaterial(String value){
    if(value.isEmpty){
-     filterMaterialsList=materialsList;
+   //  filterMaterialsList=materialsList;
+     searchFilterMaterialsList=filterMaterialsList;
    }
    else{
-     filterMaterialsList=materialsList.where((element) => element.materialName.toLowerCase().contains(value.toLowerCase())).toList();
+    // filterMaterialsList=materialsList.where((element) => element.materialName.toLowerCase().contains(value.toLowerCase())).toList();
+     searchFilterMaterialsList=filterMaterialsList.where((element) => element.materialName.toLowerCase().contains(value.toLowerCase())).toList();
+   }
+   notifyListeners();
+ }
+
+ searchSupplier(String value){
+   if(value.isEmpty){
+
+     searchFilterSuppliersList=filterSuppliersList;
+   }
+   else{
+     searchFilterSuppliersList=filterSuppliersList.where((element) => element.supplierName.toLowerCase().contains(value.toLowerCase())).toList();
    }
    notifyListeners();
  }
@@ -353,7 +370,7 @@ class PurchaseNotifier extends ChangeNotifier{
         {
           "Key": "ExpectedDate",
           "Type": "String",
-          "Value": DateFormat("yyyy-MM-dd").format(ExpectedPurchaseDate).toString()
+          "Value":ExpectedPurchaseDate!=null? DateFormat("yyyy-MM-dd").format(ExpectedPurchaseDate).toString():null
         },
         {
           "Key": "SupplierType",
@@ -492,18 +509,21 @@ class PurchaseNotifier extends ChangeNotifier{
             supplierName=t[0]['SupplierName'];
 
             filterSuppliersList=suppliersList.where((element) => element.supplierType.toLowerCase()==supplierType.toLowerCase()).toList();
+            searchFilterSuppliersList=filterSuppliersList;
 
             if(supplierType=='External'){
               filterMaterialsList=materialsList.where((element) => element.supplierId==supplierId && element.SupplierType=='External' ).toList();
+              searchFilterMaterialsList=filterMaterialsList;
 
             }
             else{
               filterMaterialsList=materialsList.where((element) => element.SupplierType=='Internal').toList();
+              searchFilterMaterialsList=filterMaterialsList;
             }
 
 
             ExpectedPurchaseDate=t[0]['ExpectedDate']!=null?DateTime.parse(t[0]['ExpectedDate']):DateTime.now();
-            print(ExpectedPurchaseDate);
+
             subtotal=t[0]['Subtotal'];
             taxAmount=t[0]['GST'];
             grandTotal=t[0]['Total'];
@@ -511,7 +531,9 @@ class PurchaseNotifier extends ChangeNotifier{
 
             purchaseOrdersMappingList=t1.map((e) => PurchaseOrderMaterialMappingListModel.fromJson(e)).toList();
             purchaseOrdersOtherChargesMappingList=t2.map((e) => PurchaseOrderOtherChargesMappingList.fromJson(e)).toList();
-
+            purchaseOrdersOtherChargesMappingList.forEach((element) {
+              otherCharges=double.parse((Decimal.parse(otherCharges.toString()) + Decimal.parse(element.OtherChargesAmount.toString())).toString());
+            });
 
             notifyListeners();
           }
@@ -540,7 +562,7 @@ class PurchaseNotifier extends ChangeNotifier{
 
   insertForm(){
     PurchaseDate=DateTime.now();
-    ExpectedPurchaseDate=DateTime.now();
+    ExpectedPurchaseDate=null;
     notifyListeners();
   }
 

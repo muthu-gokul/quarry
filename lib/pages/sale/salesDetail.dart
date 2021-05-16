@@ -12,6 +12,7 @@ import 'package:quarry/pages/sale/salesMaterialLoadConfirmation.dart';
 import 'package:quarry/pages/vendor/vendorLocAddNew.dart';
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
+import 'package:quarry/styles/constants.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/bottomBarAddButton.dart';
@@ -160,7 +161,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                         children: [
                                           Container(
                                             width: double.maxFinite,
-                                            height: 200,
+                                            height: 170,
 
                                             decoration: BoxDecoration(
                                                 image: DecorationImage(
@@ -218,16 +219,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                     });
                                                   }
                                                 },
-                                               /* onVerticalDragUpdate: (details){
-                                                  int sensitivity = 5;
 
-                                                  if (details.delta.dy > sensitivity) {
-                                                    scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
-
-                                                  } else if(details.delta.dy < -sensitivity){
-                                                    scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
-                                                  }
-                                                },*/
                                                 child: Container(
                                                  // height: _keyboardVisible ? SizeConfig.screenHeight * 0.5 : SizeConfig.screenHeight,
                                                   height:  SizeConfig.screenHeight ,
@@ -265,34 +257,6 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                             });
                                                           }
                                                         }
-                                                    /*  if(s is ScrollStartNotification){
-                                                        if(listViewController.offset==0 && isListScroll && scrollController.offset==100 && listViewController.position.userScrollDirection==ScrollDirection.idle){
-                                                          Timer(Duration(milliseconds: 100), (){
-                                                            if(listViewController.position.userScrollDirection!=ScrollDirection.reverse){
-                                                              if(scrollController.position.pixels == scrollController.position.maxScrollExtent){
-                                                                scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value) {
-                                                                  if(isListScroll){
-                                                                    setState(() {
-                                                                      isListScroll=false;
-                                                                    });
-                                                                  }
-                                                                });
-                                                              }
-
-                                                            }
-                                                          });
-                                                        }
-                                                      }*/
-
-                                                  /*    if(isListScroll && listViewController.offset==0  && scrollController.offset==100){
-                                                        scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value) {
-                                                          if(isListScroll){
-                                                            setState(() {
-                                                              isListScroll=false;
-                                                            });
-                                                          }
-                                                        });
-                                                      }*/
                                                     },
                                                     child: ListView(
                                                       controller: listViewController,
@@ -326,7 +290,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                           // ),
 
                                                           hintText: 'Search Vehicle',
-                                                          textStyle: TextStyle(fontFamily: 'RR',fontSize: 20,color: AppTheme.addNewTextFieldText),
+                                                          textStyle: TextStyle(fontFamily: 'RR',fontSize: 16,color: AppTheme.addNewTextFieldText),
                                                           items: qn.filtersales_vehiclesList,
                                                           strict: false,
                                                           setter: (dynamic newValue) {
@@ -369,6 +333,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
 
                                                         AddNewLabelTextField(
                                                           labelText: 'Empty Vehicle Weight',
+                                                          regExp: decimalReg,
                                                           textEditingController: qn.SS_emptyVehicleWeight,
                                                           textInputType: TextInputType.number,
                                                           ontap: () {
@@ -387,21 +352,17 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                             });
                                                           },
                                                           suffixIcon: Container(
-                                                              height: SizeConfig.height50,
-                                                              width: 100,
-
+                                                              height:30,
+                                                              width: 50,
+                                                              margin: EdgeInsets.all(13),
+                                                              decoration: BoxDecoration(
+                                                                  borderRadius: BorderRadius.circular(SizeConfig.height25),
+                                                                  color: AppTheme.yellowColor
+                                                              ),
                                                               child: Center(
-                                                                  child: Container(
-                                                                      padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
-                                                                      decoration: BoxDecoration(
-                                                                          borderRadius: BorderRadius.circular(SizeConfig.height25),
-                                                                          color: AppTheme.yellowColor
-                                                                      ),
-                                                                      child: Text("Ton",
-                                                                        style: TextStyle(fontFamily: 'RR',fontSize: 14,color: Colors.white),)
-                                                                  )
+                                                                  child: Text("Ton",
+                                                                    style: TextStyle(fontFamily: 'RR',fontSize: 14,color: Colors.white),)
                                                               )
-
                                                           ),
                                                         ),
 
@@ -440,6 +401,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                                   onChanged: (v){
                                                                     setState(() {
                                                                       qn.isCustomPrice=v;
+                                                                      qn.customPriceController.clear();
                                                                       _keyboardVisible=false;
                                                                     });
                                                                     qn.weightToAmount();
@@ -451,6 +413,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                                   onTap: (){
                                                                     setState(() {
                                                                       qn.isCustomPrice=!qn.isCustomPrice;
+                                                                      qn.customPriceController.clear();
                                                                       _keyboardVisible=false;
                                                                     });
                                                                   },
@@ -494,7 +457,12 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                               errorBorder: InputBorder.none,
                                                               enabledBorder: InputBorder.none,
 
+
                                                             ),
+                                                              inputFormatters: [
+                                                                FilteringTextInputFormatter.allow(RegExp(decimalReg)),
+                                                              ],
+
                                                             onChanged: (v){
                                                               qn.weightToAmount();
                                                             },
@@ -511,6 +479,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                           },
                                                           child: AddNewLabelTextField(
                                                             labelText: 'Required Quantity',
+                                                            regExp: decimalReg,
                                                             textEditingController: qn.SS_customerNeedWeight,
                                                             textInputType: TextInputType.number,
                                                             isEnabled:qn.SS_selectedMaterialTypeId==null?false: true,
@@ -535,22 +504,28 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                               });
                                                             },
                                                             suffixIcon:qn.SS_Empty_ReqQtyUnit.isEmpty?Container(
-                                                              height: SizeConfig.height50,
-                                                              width: 100,
-                                                            ): Container(
-                                                                height: SizeConfig.height50,
-                                                                width: 100,
-
+                                                                height:30,
+                                                                width: 50,
+                                                                margin: EdgeInsets.all(13),
+                                                                decoration: BoxDecoration(
+                                                                    borderRadius: BorderRadius.circular(SizeConfig.height25),
+                                                                    color: AppTheme.yellowColor
+                                                                ),
                                                                 child: Center(
-                                                                    child: Container(
-                                                                        padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
-                                                                        decoration: BoxDecoration(
-                                                                            borderRadius: BorderRadius.circular(SizeConfig.height25),
-                                                                            color: AppTheme.yellowColor
-                                                                        ),
-                                                                        child: Text("${qn.SS_Empty_ReqQtyUnit}",
-                                                                          style: TextStyle(fontFamily: 'RR',fontSize: 14,color: Colors.white),)
-                                                                    )
+                                                                    child: Text("Ton",
+                                                                      style: TextStyle(fontFamily: 'RR',fontSize: 14,color: Colors.white),)
+                                                                )
+                                                            ): Container(
+                                                                height:50,
+                                                                width: 50,
+                                                                margin: EdgeInsets.all(13),
+                                                                decoration: BoxDecoration(
+                                                                    borderRadius: BorderRadius.circular(SizeConfig.height25),
+                                                                    color: AppTheme.yellowColor
+                                                                ),
+                                                                child: Center(
+                                                                    child: Text("${qn.SS_Empty_ReqQtyUnit}",
+                                                                      style: TextStyle(fontFamily: 'RR',fontSize: 14,color: Colors.white),)
                                                                 )
 
                                                             ),
@@ -564,6 +539,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                           },
                                                           child: AddNewLabelTextField(
                                                             labelText: 'Amount',
+                                                            regExp: decimalReg,
                                                             textEditingController: qn.SS_amount,
                                                             textInputType: TextInputType.number,
                                                             scrollPadding: 400,
@@ -1054,6 +1030,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                             children: [
                                                               AddNewLabelTextField(
                                                                 labelText: 'Driver Name',
+                                                                regExp: '[A-Za-z ]',
                                                                 textEditingController: qn.driverName,
                                                                 scrollPadding: 400,
                                                                 ontap: () {
@@ -1074,6 +1051,8 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                               ),
                                                               AddNewLabelTextField(
                                                                 labelText: 'Driver Contact Number',
+                                                                regExp: '[0-9]',
+                                                                textLength: phoneNoLength,
                                                                 textInputType: TextInputType.number,
                                                                 textEditingController: qn.driverContactNumber,
                                                                 scrollPadding: 400,
@@ -1095,6 +1074,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                               ),
                                                               AddNewLabelTextField(
                                                                 labelText: 'Driver Beta',
+                                                                regExp: decimalReg,
                                                                 textInputType: TextInputType.number,
                                                                 textEditingController: qn.driverBeta,
                                                                 scrollPadding: 400,
@@ -1174,7 +1154,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                         children: [
                                           Container(
                                             width: double.maxFinite,
-                                            height: SizeConfig.height200,
+                                            height: 170,
 
                                             decoration: BoxDecoration(
                                                 image: DecorationImage(
@@ -1184,7 +1164,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                 )
 
                                             ),
-                                          ),
+                                          )
 
 
                                         ],
@@ -1628,6 +1608,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                         AddNewLabelTextField(
                                                           labelText: 'Outward Weight',
                                                           scrollPadding: 500,
+                                                          regExp: decimalReg,
                                                           textInputType: TextInputType.number,
                                                           textEditingController: qn.SS_DifferWeightController,
                                                           suffixIcon: Container(
@@ -1794,18 +1775,11 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                       qn.UpdateSaleDetailDbhit(context,null,"");
                                     }
                                   }
-
-
-
-
-
-
-
                                 },
-                                /*  onLongPress: (){
+                                  onLongPress: (){
                                   qn.GetSaleDetailDbhit(context);
                                   Navigator.push(context, _createRoute());
-                                },*/
+                                },
                                 child: Container(
 
                                   height: 65,
@@ -1847,6 +1821,11 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                               qn.tabController.animateTo(0,duration: Duration(milliseconds: 300),curve: Curves.easeIn);
                                               qn.clearEmptyForm();
                                               qn.clearLoaderForm();
+                                              setState(() {
+                                                isListScroll=false;
+                                                _keyboardVisible=false;
+                                              });
+                                              scrollController.jumpTo(0);
                                             },
                                             child: Container(
                                               width: 70,
@@ -1866,6 +1845,11 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                               qn.tabController.animateTo(1,duration: Duration(milliseconds: 300),curve: Curves.easeIn);
                                               qn.clearEmptyForm();
                                               qn.clearLoaderForm();
+                                              setState(() {
+                                                isListScroll=false;
+                                                _keyboardVisible=false;
+                                              });
+                                              scrollController.jumpTo(0);
                                             },
                                             child: Container(
                                               width: 90,
@@ -2030,7 +2014,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                 hintStyle: AppTheme.hintText
                                             ),
                                             inputFormatters: [
-                                                FilteringTextInputFormatter.allow(RegExp('[A-Za-z]')),
+                                                FilteringTextInputFormatter.allow(RegExp('[A-Za-z0-9 ]')),
                                             ],
                                             // keyboardType: otherChargesTextFieldOpen?TextInputType.number:TextInputType.text,
                                           ),
@@ -2114,6 +2098,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                       qn.SS_selectedMaterialTypeName=qn.sale_materialList[index].MaterialName;
                       qn.SS_Empty_ReqQtyUnit=qn.sale_materialList[index].MaterialUnitName;
                     });
+                    qn.weightToAmount();
                   },
                   closeOnTap: (){
                     setState(() {

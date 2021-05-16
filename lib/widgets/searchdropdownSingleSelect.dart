@@ -85,7 +85,7 @@ class DropDownField extends FormField<String> {
         this.inputFormatters,
         this.items,
         this.textStyle: const TextStyle(
-            fontWeight: FontWeight.bold, color: Colors.black, fontSize: 14.0),
+            fontFamily: 'RR', color: Color(0xFF787878), fontSize: 16.0),
         this.setter,
         this.onValueChanged,
         this.itemsVisibleInDropdown: 3,

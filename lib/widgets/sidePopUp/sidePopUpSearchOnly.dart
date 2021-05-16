@@ -19,7 +19,7 @@ class PopUpSearchOnly extends StatefulWidget {
   VoidCallback closeOnTap;
   //VoidCallback addNewOnTap;
 
-  PopUpSearchOnly({this.isOpen,this.searchController,this.searchOnchange,this.itemOnTap,this.dataList,
+  PopUpSearchOnly({this.isOpen,@required this.searchController,@required this.searchOnchange,this.itemOnTap,this.dataList,
     this.propertyKeyName,this.propertyKeyId,this.selectedId,this.closeOnTap,this.searchHintText});
 
   @override
@@ -113,7 +113,7 @@ class _PopUpSearchOnlyState extends State<PopUpSearchOnly> {
                     color: Colors.white,
                     padding: EdgeInsets.only(right: 5,left: 5),
                     child: RawScrollbar(
-                      isAlwaysShown: true,
+                      isAlwaysShown: false,
                       thumbColor: AppTheme.srollBarColor,
                       radius: Radius.circular(AppTheme.scrollBarRadius),
                       thickness: AppTheme.scrollBarThickness,

@@ -534,7 +534,7 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                     ),
                                   ),
 
-                                  qn.supplierCategoryName!='Fuel'? Stack(
+                                  qn.supplierCategoryName!='Fuel' && qn.supplierCategoryName!=null? Stack(
                                     children: [
                                       GestureDetector(
                                         onTap: (){

@@ -21,6 +21,7 @@ import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/bottomBarAddButton.dart';
 import 'package:quarry/widgets/customTextField.dart';
 import 'package:quarry/widgets/expectedDateContainer.dart';
+import 'package:quarry/widgets/sidePopUp/sidePopUpSearchOnly.dart';
 import 'package:quarry/widgets/sidePopUp/sidePopUpWithoutSearch.dart';
 import 'package:quarry/widgets/validationErrorText.dart';
 
@@ -63,6 +64,7 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
   bool deleteOpen=false;
   int selectedMaterialIndex=-1;
 
+  TextEditingController searchController=new TextEditingController();
 
   /*  For DataTable   */
   ScrollController header=new ScrollController();
@@ -328,19 +330,18 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                                       onTap: () async{
                                         final DateTime picked = await showDatePicker(
                                           context: context,
-                                          initialDate:  pn.ExpectedPurchaseDate, // Refer step 1
-                                          firstDate: DateTime(2000),
+                                          initialDate:  pn.ExpectedPurchaseDate==null?DateTime.now():pn.ExpectedPurchaseDate, // Refer step 1
+                                          firstDate: DateTime(1990),
                                           lastDate: DateTime(2100),
                                         );
                                         if (picked != null)
                                           setState(() {
                                             pn.ExpectedPurchaseDate = picked;
-                                            print(pn.ExpectedPurchaseDate);
                                           });
                                       },
                                       child: ExpectedDateContainer(
-                                        text: DateFormat("yyyy-MM-dd").format(pn.ExpectedPurchaseDate)==DateFormat("yyyy-MM-dd").format(DateTime.now())?"Expected Date":"${DateFormat.yMMMd().format(pn.ExpectedPurchaseDate)}",
-                                        textColor:DateFormat("yyyy-MM-dd").format(pn.ExpectedPurchaseDate)==DateFormat("yyyy-MM-dd").format(DateTime.now())? AppTheme.addNewTextFieldText.withOpacity(0.5):AppTheme.addNewTextFieldText,
+                                        text: pn.ExpectedPurchaseDate==null?"Expected Date":"${DateFormat.yMMMd().format(pn.ExpectedPurchaseDate)}",
+                                        textColor: pn.ExpectedPurchaseDate==null? AppTheme.addNewTextFieldText.withOpacity(0.5):AppTheme.addNewTextFieldText,
                                       ),
                                     ),
                                     SizedBox(height: SizeConfig.height20,),
@@ -491,37 +492,7 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                                                                   child: Row(
                                                                     children: [
 
-                                                                      /*Container(
-                                                                        alignment: Alignment.center,
 
-                                                                        width: valueContainerWidth,
-                                                                        child:  Container(
-                                                                          height: 30,
-                                                                          width: 65,
-
-                                                                          decoration: BoxDecoration(
-                                                                              border: Border.all(color: AppTheme.addNewTextFieldBorder),
-                                                                              borderRadius: BorderRadius.circular(15)
-                                                                          ),
-                                                                          child: TextField(
-                                                                            style: selectedMaterialIndex==index?AppTheme.TSWhite166:AppTheme.gridTextColorTS,
-                                                                            controller: value.purchaseQty,
-                                                                            decoration: InputDecoration(
-                                                                                hintText: "0",
-                                                                                hintStyle: AppTheme.hintText,
-                                                                                border: InputBorder.none,
-                                                                                focusedBorder: InputBorder.none,
-                                                                                enabledBorder: InputBorder.none,
-                                                                                errorBorder: InputBorder.none,
-                                                                                contentPadding: EdgeInsets.only(left: 10,bottom: 12)
-                                                                            ),
-                                                                            keyboardType: TextInputType.number,
-                                                                            onChanged: (v){
-                                                                              pn.purchaseOrdersCalc(index, v);
-                                                                            },
-                                                                          ),
-                                                                        ),
-                                                                      ),*/
 
                                                                       Container(
                                                                         alignment: Alignment.center,
@@ -863,8 +834,17 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                                                                       Container(
                                                                         alignment: Alignment.center,
                                                                         width: valueContainerWidth,
-                                                                        child: Text("${value.Amount}",
-                                                                          style:AppTheme.ML_bgCT,
+                                                                        child: Column(
+                                                                          mainAxisAlignment: MainAxisAlignment.center,
+                                                                          children: [
+                                                                            Text("${value.Amount}",
+                                                                              style:AppTheme.ML_bgCT,
+                                                                            ),
+                                                                            value.IsDiscount==1?SizedBox(height: 3,):Container(),
+                                                                            value.IsDiscount==1?Text("${value.DiscountValue} ${value.IsPercentage==1?"%":"Rs"}",
+                                                                              style:TextStyle(fontFamily: 'RR',fontSize: 12,color: AppTheme.addNewTextFieldText),
+                                                                            ):Container(),
+                                                                          ],
                                                                         ),
                                                                       ),
 
@@ -924,10 +904,10 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                                                         color: Colors.white,
                                                         boxShadow: [
                                                           showShadow?  BoxShadow(
-                                                            color: AppTheme.addNewTextFieldText.withOpacity(0.3),
+                                                            color: AppTheme.addNewTextFieldText.withOpacity(0.2),
                                                             spreadRadius: 0,
                                                             blurRadius: 15,
-                                                            offset: Offset(10, -8), // changes position of shadow
+                                                            offset: Offset(0, -8), // changes position of shadow
                                                           ):BoxShadow(color: Colors.transparent)
                                                         ]
                                                     ),
@@ -1050,10 +1030,10 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                                                             height:25,
                                                             width: SizeConfig.screenWidth*0.6,
                                                             alignment: Alignment.centerRight,
-                                                            child: Text("Total: ",style: AppTheme.bgColorTS,)
+                                                            child: Text("Total: ",style: TextStyle(fontFamily: 'RR',fontSize: 20,color: Colors.green),)
                                                         ),
                                                         Spacer(),
-                                                        Text("${pn.grandTotal}  ",style: AppTheme.bgColorTS,)
+                                                        Text("${pn.grandTotal}  ",style: TextStyle(fontFamily: 'RR',fontSize: 20,color: Colors.green),)
                                                       ],
                                                     ),
                                                   ],
@@ -1322,6 +1302,7 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                     setState(() {
                       pn.supplierType= pn.supplierTypeList[index].supplierType;
                       pn.filterSuppliersList=pn.suppliersList.where((element) => element.supplierType.toLowerCase()==pn.supplierType.toLowerCase()).toList();
+                      pn.searchFilterSuppliersList=pn.filterSuppliersList;
                       if(pn.supplierId!=null){
                         pn.supplierId=null;
                         pn.supplierName=null;
@@ -1339,15 +1320,22 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
 
 
 ///////////////////////////////////////      SUPPLIER LIST ////////////////////////////////
-                PopUpStatic(
-                  title: "Select Supplier",
+                PopUpSearchOnly(
+
+                  searchController: searchController,
+                searchHintText: "Search Supplier",
+                //  title: "Select Supplier",
                   isOpen: suppliersListOpen,
-                  isAlwaysShown: true,
-                  dataList: pn.filterSuppliersList,
+                //  isAlwaysShown: true,
+                  dataList: pn.searchFilterSuppliersList,
                   propertyKeyName:"SupplierName",
                   propertyKeyId: "SupplierId",
                   selectedId: pn.supplierId,
+                  searchOnchange: (v){
+                    pn.searchSupplier(v);
+                  },
                   itemOnTap: (index){
+                    node.unfocus();
                     setState(() {
                       pn.supplierId=pn.filterSuppliersList[index].supplierId;
                       pn.supplierName=pn.filterSuppliersList[index].supplierName;
@@ -1355,17 +1343,24 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                         pn.filterMaterialsList=pn.materialsList.where((element) => element.supplierId==pn.filterSuppliersList[index].supplierId
                             && element.SupplierType=='External'
                         ).toList();
+                        pn.searchFilterMaterialsList=pn.filterMaterialsList;
                       }
                       else{
                         pn.filterMaterialsList=pn.materialsList.where((element) => element.SupplierType=='Internal').toList();
+                        pn.searchFilterMaterialsList=pn.filterMaterialsList;
                       }
                       suppliersListOpen=false;
+                      searchController.clear();
+                      pn.searchFilterSuppliersList=pn.filterSuppliersList;
                     });
                   },
                   closeOnTap: (){
+                    node.unfocus();
                     setState(() {
                       suppliersListOpen=false;
+                      searchController.clear();
                     });
+                    pn.searchFilterSuppliersList=pn.filterSuppliersList;
                   },
                 ),
 
@@ -1453,7 +1448,8 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                                      border: Border.all(color: AppTheme.addNewTextFieldBorder)
                                    ),
                                    child: ListView.builder(
-                                     itemCount: pn.filterMaterialsList.length,
+                                    // itemCount: pn.filterMaterialsList.length,
+                                     itemCount: pn.searchFilterMaterialsList.length,
                                      itemBuilder: (context,index){
                                        return GestureDetector(
                                          onTap: (){
@@ -1471,22 +1467,22 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                                                    PurchaseOrderMaterialMappingListModel(
                                                        PurchaseOrderMaterialMappingId:null,
                                                        PurchaseOrderId:null,
-                                                       MaterialId:pn.filterMaterialsList[index].materialId,
-                                                       materialName:pn.filterMaterialsList[index].materialName,
-                                                       MaterialPrice:pn.filterMaterialsList[index].materialPrice,
+                                                       MaterialId:pn.searchFilterMaterialsList[index].materialId,
+                                                       materialName:pn.searchFilterMaterialsList[index].materialName,
+                                                       MaterialPrice:pn.searchFilterMaterialsList[index].materialPrice,
                                                        PurchaseQuantity:0,
-                                                       Amount:pn.filterMaterialsList[index].materialPrice,
+                                                       Amount:pn.searchFilterMaterialsList[index].materialPrice,
                                                        IsDiscount:0,
                                                        IsPercentage:0,
                                                        IsAmount:0,
                                                        DiscountValue:0.0,
                                                        DiscountAmount:0.0,
-                                                       TaxValue:pn.filterMaterialsList[index].taxValue,
+                                                       TaxValue:pn.searchFilterMaterialsList[index].taxValue,
                                                        TaxAmount:0.0,
                                                        TotalAmount:0.0,
                                                        IsActive:1,
-                                                       materialUnitId:pn.filterMaterialsList[index].materialUnitId,
-                                                       unitName:pn.filterMaterialsList[index].unitName,
+                                                       materialUnitId:pn.searchFilterMaterialsList[index].materialUnitId,
+                                                       unitName:pn.searchFilterMaterialsList[index].unitName,
                                                        purchaseQty: TextEditingController()..text=""
                                                    )
                                                );
@@ -1521,7 +1517,7 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                                                                  Row(
                                                                    mainAxisAlignment: MainAxisAlignment.center,
                                                                    children: [
-                                                                     Text("${indentQty.isEmpty?"0":indentQty} ${pn.filterMaterialsList[pn.filterMaterialsList.length-1].unitName??""}",
+                                                                     Text("${indentQty.isEmpty?"0":indentQty} ${pn.searchFilterMaterialsList[pn.searchFilterMaterialsList.length-1].unitName??""}",
                                                                        style: TextStyle(fontFamily: 'RL',fontSize: 16,color: AppTheme.gridTextColor),textAlign: TextAlign.center,),
                                                                      SizedBox(width: 20,),
 
@@ -1805,7 +1801,7 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                                            decoration: BoxDecoration(
                                              border: Border(bottom: BorderSide(color: AppTheme.addNewTextFieldBorder))
                                            ),
-                                           child: Text("${pn.filterMaterialsList[index].materialName}",
+                                           child: Text("${pn.searchFilterMaterialsList[index].materialName}",
                                            style: TextStyle(fontFamily: 'RR',fontSize: 16,color: AppTheme.addNewTextFieldText.withOpacity(0.5)),
                                            ),
                                          ),

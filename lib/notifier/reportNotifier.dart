@@ -227,6 +227,15 @@ List<dynamic> vehicleTypeList=[];/* {
       reportsGridColumnList=vehicleMonitoringReportGridCol;
     }
 
+    else if(typeName=="StockReport"){
+
+      reportHeader="Stock Report";
+      totalReportTitle="Total Materials";
+      totalReportQtyTitle="Total Input Stock";
+      totalReportAmountTitle="Total Output Stock";
+      reportsGridColumnList=stockReportGridCol;
+    }
+
 
 
     var body={
@@ -480,8 +489,22 @@ List<dynamic> vehicleTypeList=[];/* {
             materialList=t2;
 
             filtersList.add(FilterDetailsModel(title:  "Plant Filter", list: plantList, instanceName: 'PlantName'),);
-            filtersList.add(FilterDetailsModel(title:  "Vehicle Type  Filter", list: vehicleTypeList, instanceName: 'VehicleTypeName'));
+            filtersList.add(FilterDetailsModel(title:  "Vehicle Type Filter", list: vehicleTypeList, instanceName: 'VehicleTypeName'));
             filtersList.add(FilterDetailsModel(title:  "Material Filter", list: materialList, instanceName: 'MaterialName'));
+          }
+          else if(typeName=="StockReport"){
+
+            var t=parsed["Table"] as List;
+            var t1=parsed["Table1"] as List;
+            var t2=parsed["Table2"] as List;
+
+            plantList=t;
+            materialList=t1;
+            inputMaterialList=t2;
+
+            filtersList.add(FilterDetailsModel(title:  "Plant Filter", list: plantList, instanceName: 'PlantName'),);
+            filtersList.add(FilterDetailsModel(title:  "Material Filter", list: materialList, instanceName: 'MaterialName'));
+            filtersList.add(FilterDetailsModel(title:  "Material Type Filter", list: inputMaterialList, instanceName: 'MaterialCategoryName'));
           }
 
 
@@ -632,6 +655,11 @@ List<dynamic> vehicleTypeList=[];/* {
             var t=parsed["Table"] as List;
             vehicleMonitoringReportGridList=t;
             filterVehicleMonitoringReport();
+          }
+          else if(typeName=="StockReport"){
+            var t=parsed["Table"] as List;
+            stockReportGridList=t;
+            filterStockReport();
           }
         }
         updateReportLoader(false);
@@ -1709,7 +1737,85 @@ List<dynamic> vehicleTypeList=[];/* {
 
 
 
-  
+
+  /*  StockReport Report */
+  List<ReportGridStyleModel2> stockReportGridCol=[ReportGridStyleModel2(columnName: "MaterialName",edgeInsets: EdgeInsets.only(left: 10,right: 10)),
+    ReportGridStyleModel2(columnName: "Stock"),ReportGridStyleModel2(columnName: "Type"),ReportGridStyleModel2(columnName:"PlantName"),
+
+
+  ];
+
+
+
+  List<dynamic> stockReportGridList=[];
+  List<dynamic> filterStockReportGridList=[];
+
+  List<dynamic> tempStockReportPlantFilter=[];
+  List<dynamic> tempStockReportMaterialFilter=[];
+
+
+  filterStockReport() async{
+
+    filterStockReportGridList.clear();
+    reportsGridDataList.clear();
+
+    tempStockReportPlantFilter.clear();
+    tempStockReportMaterialFilter.clear();
+
+
+
+
+    totalReport=0;
+    totalReportQty=0.0;
+    totalReportAmount=0.0;
+
+    plantList.forEach((element) {
+      if(element['IsActive']==1){
+        tempStockReportPlantFilter=tempStockReportPlantFilter+stockReportGridList.where((ele) => ele['PlantId']==element['PlantId']).toList();
+      }
+    });
+    materialList.forEach((element) {
+      if(element['IsActive']==1){
+        tempStockReportMaterialFilter=tempStockReportMaterialFilter+tempStockReportPlantFilter.where((ele) => ele['MaterialId']==element['MaterialId']).toList();
+      }
+    });
+
+
+
+    inputMaterialList.forEach((element) {
+      if(element['IsActive']==1){
+        filterStockReportGridList=filterStockReportGridList+tempStockReportMaterialFilter.where((ele) => ele['Type']==element['MaterialCategoryName']).toList();
+      }
+    });
+
+
+
+
+
+    totalReport=filterStockReportGridList.length;
+
+
+    filterStockReportGridList.forEach((element) {
+
+      if(element['Type']=='InPut'){
+        totalReportQty=Calculation().add(totalReportQty, element['Stock']??0.0);
+
+      }
+      else if(element['Type']=='OutPut'){
+        totalReportAmount=Calculation().add(totalReportAmount, element['Stock']??0.0);
+      }
+
+    });
+  //  print(totalReportQty);
+
+
+
+    reportsGridDataList=filterStockReportGridList;
+    notifyListeners();
+  }
+
+
+
   bool ReportLoader=false;
   updateReportLoader(bool value){
     ReportLoader=value;

@@ -95,7 +95,8 @@ class ReportGridState extends State<ReportGrid> with TickerProviderStateMixin{
                         child: NavBarIcon(),
                       ),
                       Container(
-                        height: 24,
+                        alignment: Alignment.centerLeft,
+                        height: 20,
                         width: SizeConfig.screenWidth*0.38,
                         child: FittedBox(
                           child: Text("${rn.reportHeader}",

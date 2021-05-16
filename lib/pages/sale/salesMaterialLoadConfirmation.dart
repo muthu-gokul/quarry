@@ -12,6 +12,7 @@ import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/alertDialog.dart';
+import 'package:quarry/widgets/bottomBarAddButton.dart';
 import 'package:quarry/widgets/customTextField.dart';
 import 'package:quarry/widgets/decimal.dart';
 import 'package:quarry/widgets/searchdropdownSingleSelect.dart';
@@ -115,17 +116,17 @@ class SalesMaterialLoadConfirmationState extends State<SalesMaterialLoadConfirma
                               children: [
                                 Container(
                                   width: double.maxFinite,
-                                  height: SizeConfig.height200,
+                                  height: 190,
 
                                   decoration: BoxDecoration(
                                       image: DecorationImage(
                                           image: AssetImage(
-                                            "assets/images/saleFormheader.jpg",),
+                                            "assets/svg/gridHeader/saleHeader.jpg",),
                                           fit: BoxFit.cover
                                       )
 
                                   ),
-                                ),
+                                )
 
 
                               ],
@@ -569,12 +570,12 @@ class SalesMaterialLoadConfirmationState extends State<SalesMaterialLoadConfirma
                             width: SizeConfig.screenWidth,
                             child: Row(
                               children: [
-                                IconButton(icon: Icon(Icons.arrow_back), onPressed: (){
+                                CancelButton(ontap: (){
                                   qn.clearEmptyForm();
                                   qn.clearLoaderForm();
                                   Navigator.pop(context);
-                                }),
-                                SizedBox(width: SizeConfig.width5,),
+                                },),
+
                                 Text("Material Load Confirmation",
                                   style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: 16),
                                 ),

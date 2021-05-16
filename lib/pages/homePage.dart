@@ -874,6 +874,25 @@ class ReportsPageState extends State<ReportsPage> with TickerProviderStateMixin{
                     ),
 
                     DrawerContent(
+                      delay: 0.1,
+                      height: 50,
+                      image: "assets/svg/drawer/sales-form.svg",
+                      title: 'Stock Report',
+                      tag: 'StockReport',
+                      titleColor: AppTheme.yellowColor,
+                      callback: (){
+                        Navigator.pop(context);
+                        widget.voidCallback();
+
+                        Provider.of<DrawerNotifier>(context,listen: false).changeMenu(16);
+                        Provider.of<ReportNotifier>(context,listen: false).ReportsDropDownValues(context,"StockReport").then((value) {
+                          Provider.of<ReportNotifier>(context,listen: false).ReportsDbHit(context,"StockReport");
+                        });
+
+                      },
+                    ),
+
+                    DrawerContent(
                       delay:1,
                       height: 50,
                       image: "assets/svg/drawer/purchase.svg",

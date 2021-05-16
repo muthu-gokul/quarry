@@ -100,10 +100,26 @@ class _SaleGridState extends State<SaleGrid> {
           child: Consumer<QuarryNotifier>(
             builder: (context,qn,child)=>  Stack(
               children: [
+                Opacity(
+                  opacity: 0.8,
+                  child: Container(
+                    height: 160,
+                    width: SizeConfig.screenWidth,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage(
+                            "assets/svg/gridHeader/reportsHeader.jpg",),
+                          fit: BoxFit.cover
+                      ),
+                    ),
+                  ),
+                ),
+
                 Container(
                   height: 160,
                   width: SizeConfig.screenWidth,
-                   color: AppTheme.yellowColor,
+                  // color: AppTheme.yellowColor,
+
 
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,

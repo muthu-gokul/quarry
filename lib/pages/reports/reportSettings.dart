@@ -301,6 +301,12 @@ class ReportSettingsState extends State<ReportSettings> with TickerProviderState
                              else if(rn.TypeName=="PurchaseAuditReport"){
                                 rn.filterPurchaseAuditReport();
                               }
+                             else if(rn.TypeName=="VehicleMonitoringReport"){
+                                rn.filterVehicleMonitoringReport();
+                              }
+                             else if(rn.TypeName=="StockReport"){
+                                rn.filterStockReport();
+                              }
 
                               Navigator.pop(context);
                             },
