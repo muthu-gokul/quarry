@@ -97,12 +97,12 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                     children: [
                       Container(
                         width: double.maxFinite,
-                        height: SizeConfig.height200,
+                        height: 180,
 
                         decoration: BoxDecoration(
                             image: DecorationImage(
                                 image: AssetImage(
-                                  "assets/images/saleFormheader.jpg",),
+                                  "assets/svg/gridHeader/Employeemaster.jpg",),
                                 fit: BoxFit.cover
                             )
 
@@ -206,7 +206,19 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
 
 
                                         SizedBox(height: 70,),
-
+                                         Align(
+                                           alignment: Alignment.center,
+                                           child: Text("${en.EmployeePrefix}${en.EmployeeCode}",
+                                              style: AppTheme.userNameTS,
+                                            ),
+                                         ),
+                                         Align(
+                                           alignment: Alignment.center,
+                                           child: Text("Employee Code",
+                                             style: AppTheme.userGroupTS,
+                                            ),
+                                         ),
+                                        SizedBox(height: 20,),
 
                                         AnimatedContainer(
                                           duration: Duration(milliseconds: 300),
@@ -1245,16 +1257,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                       ),
                       Spacer(),
 
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(50),
-                          color: Colors.white
-                        ),
-                        padding: EdgeInsets.fromLTRB(10, 2, 10, 2),
-                        child: Text("${en.EmployeePrefix}${en.EmployeeCode}",
-                        style: TextStyle(fontFamily: 'RR',fontSize: 14,color: AppTheme.bgColor),
-                        ),
-                      ),
+
 
                       SizedBox(width: SizeConfig.width10,)
                     ],

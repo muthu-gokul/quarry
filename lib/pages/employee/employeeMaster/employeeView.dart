@@ -99,12 +99,12 @@ class _EmployeeMasterViewState extends State<EmployeeMasterView> with TickerProv
                   children: [
                     Container(
                       width: double.maxFinite,
-                      height: SizeConfig.height200,
+                      height: 180,
 
                       decoration: BoxDecoration(
                           image: DecorationImage(
                               image: AssetImage(
-                                "assets/images/saleFormheader.jpg",),
+                                "assets/svg/gridHeader/Employeemaster.jpg",),
                               fit: BoxFit.cover
                           )
 
@@ -255,6 +255,48 @@ class _EmployeeMasterViewState extends State<EmployeeMasterView> with TickerProv
                                           color: tableColor,
                                             borderRadius: BorderRadius.only(topLeft: Radius.circular(3),topRight: Radius.circular(3)),
                                             border: Border.all(color: AppTheme.addNewTextFieldBorder)
+
+                                        ),
+                                        child:Row(
+                                          children: [
+                                            Container(
+                                                padding: EdgeInsets.only(left: SizeConfig.width10),
+                                                width: (SizeConfig.screenWidthM40*0.5)-2,
+                                                child: Text("Employee Code",style: tableTextStyle,)
+                                            ),
+
+                                            Container(
+                                                height: 50,
+                                                width: 1,
+                                                color: AppTheme.addNewTextFieldBorder
+                                            ),
+
+                                            Container(
+                                                padding: EdgeInsets.only(left: SizeConfig.width10),
+                                                height: 16,
+                                                alignment: Alignment.centerLeft,
+                                                width: (SizeConfig.screenWidthM40*0.5)-1,
+                                                child: FittedBox(child: Text("${en.EmployeePrefix}${en.EmployeeCode}",
+
+                                                style:tableTextStyle,
+                                                ),
+
+                                                ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Container(
+                                        margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,),
+                                        height:40,
+                                        width: SizeConfig.screenWidthM40,
+                                        decoration: BoxDecoration(
+                                          color: tableColor,
+                                            border: Border(left: BorderSide(color: AppTheme.addNewTextFieldBorder),
+                                              right: BorderSide(color: AppTheme.addNewTextFieldBorder),bottom: BorderSide(color: AppTheme.addNewTextFieldBorder),
+
+                                            )
+
 
                                         ),
                                         child:Row(
@@ -677,16 +719,7 @@ class _EmployeeMasterViewState extends State<EmployeeMasterView> with TickerProv
 
                     Spacer(),
 
-                    Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(50),
-                          color: Colors.white
-                      ),
-                      padding: EdgeInsets.fromLTRB(10, 2, 10, 2),
-                      child: Text("${en.EmployeePrefix}${en.EmployeeCode}",
-                        style: TextStyle(fontFamily: 'RR',fontSize: 14,color: AppTheme.bgColor),
-                      ),
-                    ),
+
 
                     SizedBox(width: SizeConfig.width10,)
                   ],
@@ -955,8 +988,9 @@ class _EmployeeMasterViewState extends State<EmployeeMasterView> with TickerProv
     );
   }
 
-  TextStyle tableTextStyle=TextStyle(fontFamily: 'RR',color: AppTheme.bgColor);
-  Color tableColor=AppTheme.disableColor.withOpacity(0.5);
+  TextStyle tableTextStyle=TextStyle(fontFamily: 'RR',color: AppTheme.gridTextColor);
+ // Color tableColor=AppTheme.disableColor.withOpacity(0.5);
+  Color tableColor=Colors.white;
 
   Route _createRoute() {
     return PageRouteBuilder(

@@ -117,6 +117,10 @@ flutter:
     - assets/svg/gridHeader/invoiceHeader.jpg
     - assets/svg/Planticon.svg
     - assets/svg/gridHeader/machineHeader.jpg
+    - assets/svg/gridHeader/salary.jpg
+    - assets/svg/gridHeader/reportsHeader.jpg
+    - assets/svg/gridHeader/paymentHeader.jpg
+    - assets/svg/gridHeader/Employeemaster.jpg
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

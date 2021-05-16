@@ -69,12 +69,12 @@ class _EmployeeSalaryAddNewState extends State<EmployeeSalaryAddNew> {
                     children: [
                       Container(
                         width: double.maxFinite,
-                        height: 200,
+                        height: 170,
 
                         decoration: BoxDecoration(
                             image: DecorationImage(
                                 image: AssetImage(
-                                  "assets/images/saleFormheader.jpg",),
+                                  "assets/svg/gridHeader/salary.jpg",),
                                 fit: BoxFit.cover
                             )
 

@@ -58,10 +58,36 @@ class ReportGridState extends State<ReportGrid> with TickerProviderStateMixin{
           child: Consumer<ReportNotifier>(
             builder: (context,rn,child)=>  Stack(
               children: [
+                //Image
+                Container(
+                  height: SizeConfig.screenHeight,
+                  width: SizeConfig.screenWidth,
+                  child: Column(
+                    children: [
+                      Opacity(
+                        opacity:0.8,
+                        child: Container(
+                          width: double.maxFinite,
+                          height: 170,
+
+
+                          decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  image: AssetImage(
+                                    "assets/svg/gridHeader/reportsHeader.jpg",),
+                                  fit: BoxFit.cover
+                              ),
+
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
                 Container(
                   height: 50,
                   width: SizeConfig.screenWidth,
-                  color: AppTheme.yellowColor,
+                //  color: AppTheme.yellowColor,
                   child: Row(
                     children: [
                       GestureDetector(
@@ -111,7 +137,7 @@ class ReportGridState extends State<ReportGrid> with TickerProviderStateMixin{
                 Container(
                     margin: EdgeInsets.only(top: 50),
                     padding: EdgeInsets.only(left:5,bottom:25,right: 5),
-                    color: AppTheme.yellowColor,
+                   // color: AppTheme.yellowColor,
                     height: 110,
                     alignment: Alignment.topCenter,
 

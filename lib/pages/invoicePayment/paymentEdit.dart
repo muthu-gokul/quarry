@@ -71,12 +71,12 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
                     children: [
                       Container(
                         width: double.maxFinite,
-                        height: SizeConfig.height200,
+                        height:180,
 
                         decoration: BoxDecoration(
                             image: DecorationImage(
                                 image: AssetImage(
-                                  "assets/images/saleFormheader.jpg",),
+                                    "assets/svg/gridHeader/paymentHeader.jpg",),
                                 fit: BoxFit.cover
                             )
 
