@@ -84,21 +84,24 @@ class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
 
   List<GridStyleModel> gridDataRowList=[
     GridStyleModel(columnName: "Bill Number"),
+    GridStyleModel(columnName: "Date"),
+    GridStyleModel(columnName: "Supplier Name"),
     GridStyleModel(columnName: "Purchaser Name"),
     GridStyleModel(columnName: "Location",width: 200),
-    GridStyleModel(columnName: "Contact Number"),
-    GridStyleModel(columnName: "Diesel Quantity"),
-    GridStyleModel(columnName: "Diesel Rate"),
-    GridStyleModel(columnName: "Amount"),
-    GridStyleModel(columnName: "Date"),
+    GridStyleModel(columnName: "Quantity"),
+    GridStyleModel(columnName: "Diesel Price"),
+    GridStyleModel(columnName: "Total Price"),
+
   ];
   List<GridStyleModel> gridDataRowListDieselIssue=[
     GridStyleModel(columnName: "Date"),
     GridStyleModel(columnName: "Type"),
     GridStyleModel(columnName: "Machine/Vehicle"),
-    GridStyleModel(columnName: "Fuel Reading"),
-    GridStyleModel(columnName: "Issued By"),
     GridStyleModel(columnName: "Diesel Quantity"),
+    GridStyleModel(columnName: "Issued By"),
+    GridStyleModel(columnName: "Fuel Reading"),
+
+
   ];
 
   @override

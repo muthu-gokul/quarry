@@ -12,12 +12,14 @@ class DieselPurchaseGridModel {
     this.dieselRate,
     this.totalAmount,
     this.billDate,
+    this.supplierName
   });
 
   int dieselPurchaseId;
   String billNumber;
   int employeeId;
   String purchaserName;
+  String supplierName;
   String dieselBunkLocation;
   String dieselBunkContactNumber;
   double dieselQuantity;
@@ -30,6 +32,7 @@ class DieselPurchaseGridModel {
     billNumber: json["BillNumber"],
     employeeId: json["EmployeeId"],
     purchaserName: json["PurchaserName"],
+    supplierName: json["SupplierName"],
     dieselBunkLocation: json["DieselBunkLocation"],
     dieselBunkContactNumber: json["DieselBunkContactNumber"],
     dieselQuantity: json["DieselQuantity"],
@@ -56,11 +59,12 @@ class DieselPurchaseGridModel {
     "Bill Number": billNumber,
     "EmployeeId": employeeId,
     "Purchaser Name": purchaserName,
+    "Supplier Name": supplierName,
     "Location": dieselBunkLocation,
     "Contact Number": dieselBunkContactNumber,
-    "Diesel Quantity": dieselQuantity,
-    "Diesel Rate": dieselRate,
-    "Amount": totalAmount,
+    "Quantity": dieselQuantity,
+    "Diesel Price": dieselRate,
+    "Total Price": totalAmount,
     "Date": billDate!=null?DateFormat.yMMMd().format(billDate):" ",
   };
 
@@ -71,7 +75,7 @@ class DieselPurchaseGridModel {
     if (_mapRep.containsKey(propertyName)) {
       return _mapRep[propertyName];
     }
-    throw ArgumentError('property not found');
+    throw ArgumentError('property not found $propertyName');
   }
 
 }

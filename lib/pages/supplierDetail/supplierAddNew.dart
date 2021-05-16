@@ -19,6 +19,7 @@ import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/bottomBarAddButton.dart';
 import 'package:quarry/widgets/customTextField.dart';
 import 'package:quarry/widgets/sidePopUp/sidePopUpWithoutSearch.dart';
+import 'package:quarry/widgets/validationErrorText.dart';
 
 
 class SupplierDetailAddNew extends StatefulWidget {
@@ -37,6 +38,14 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
   bool supplierMaterialOpen=false;
 
   bool isListScroll=false;
+
+  bool supplierName=false;
+  bool supplierCategory=false;
+  bool supplierAddress=false;
+  bool supplierPhoneNum=false;
+  bool supplierGst=false;
+  bool emailValid=true;
+
   @override
   void initState() {
 
@@ -48,32 +57,6 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
       setState(() {
 
       });
-
-
-       scrollController.addListener(() {
-/*         print("scrollController-${scrollController.offset}");*/
-      });
-
-/*      listViewController.addListener(() {
-        if(listViewController.position.userScrollDirection == ScrollDirection.forward){
-          print("Down");
-        } else
-        if(listViewController.position.userScrollDirection == ScrollDirection.reverse){
-          print("Up");
-          scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
-        }
-         print("LISt-${listViewController.offset}");
-        if(listViewController.offset>20){
-
-          scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
-
-
-        }
-        else if(listViewController.offset==0){
-          scrollController.animateTo(0, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
-        }
-      });*/
-
     });
     super.initState();
   }
@@ -193,6 +176,7 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
 
                                   AddNewLabelTextField(
                                     labelText: 'Supplier Name',
+                                    regExp: '[A-Za-z  ]',
                                     textEditingController: qn.supplierName,
                                     onEditComplete: (){
                                       node.unfocus();
@@ -207,6 +191,7 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                       });
                                     },
                                   ),
+                                  !supplierName?Container():ValidationErrorText(title: "* Enter Supplier Name",),
                                   GestureDetector(
                                     onTap: (){
                                       node.unfocus();
@@ -225,6 +210,7 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                       bgColor:  qn.supplierCategoryName==null? AppTheme.disableColor:Colors.white,
                                     ),
                                   ),
+                                  !supplierCategory?Container():ValidationErrorText(title: "* Select Category"),
                                   AddNewLabelTextField(
                                     ontap: (){
                                       scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
@@ -242,6 +228,7 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                       });
                                     },
                                   ),
+                                  !supplierAddress?Container():ValidationErrorText(title: "* Enter Address",),
                                   AddNewLabelTextField(
                                     ontap: (){
                                       scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
@@ -251,6 +238,7 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                       });
                                     },
                                     labelText: 'City',
+                                    regExp: '[A-Za-z  ]',
                                     textEditingController: qn.supplierCity,
                                     onEditComplete: (){
                                       node.unfocus();
@@ -269,6 +257,7 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                       });
                                     },
                                     labelText: 'State',
+                                    regExp: '[A-Za-z  ]',
                                     textEditingController: qn.supplierState,
                                     scrollPadding: 400,
                                     onEditComplete: (){
@@ -287,6 +276,7 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                       });
                                     },
                                     labelText: 'Country',
+                                    regExp: '[A-Za-z  ]',
                                     textEditingController: qn.supplierCountry,
                                     scrollPadding: 400,
                                     onEditComplete: (){
@@ -305,6 +295,7 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                       });
                                     },
                                     labelText: 'Zipcode',
+                                    regExp: '[0-9]',
                                     textLength: zipcodeLength,
                                     textEditingController: qn.supplierZipcode,
                                     scrollPadding: 400,
@@ -320,6 +311,7 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                     labelText: 'Contact Number',
                                     textEditingController: qn.supplierContactNumber,
                                     textLength: phoneNoLength,
+                                    regExp: '[0-9]',
                                     scrollPadding: 400,
                                     textInputType: TextInputType.number,
                                     onEditComplete: (){
@@ -336,9 +328,11 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                       });
                                     },
                                   ),
+                                  !supplierPhoneNum?Container():ValidationErrorText(title: "* Enter Contact Number",),
                                   AddNewLabelTextField(
                                     labelText: 'Email',
                                     textEditingController: qn.supplierEmail,
+                                    textInputType: TextInputType.emailAddress,
                                     scrollPadding: 400,
                                     onEditComplete: (){
                                       node.unfocus();
@@ -354,10 +348,12 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                       });
                                     },
                                   ),
+                                  emailValid?Container():ValidationErrorText(title: "* Invalid Email Address",),
                                   AddNewLabelTextField(
                                     labelText: 'GST Number',
                                     textEditingController: qn.supplierGstNo,
                                     scrollPadding: 400,
+                                    regExp: '[A-Za-z0-9  ]',
                                     onEditComplete: (){
                                       node.unfocus();
                                       setState(() {
@@ -372,131 +368,173 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                       });
                                     },
                                   ),
+                                  !supplierGst?Container():ValidationErrorText(title: "* Enter GST Number",),
 
 
 
                                   ////////////////////////////////////  MATERIALS LIST ///////////////////////
 
                                   Container(
-                                   /* duration: Duration(milliseconds: 300),
-                                    curve: Curves.easeIn,*/
-                                    height: qn.supplierMaterialMappingList.length==0?0:qn.supplierMaterialMappingList.length*50.0,
-                                    padding: EdgeInsets.fromLTRB(10,5,10,5),
+                                    //  duration: Duration(milliseconds: 300),
+                                    // curve: Curves.easeIn,
+                                    height: qn.supplierMaterialMappingList.length == 0 ? 0 :
+                                    ( qn.supplierMaterialMappingList.length * 40.0)+40,
+                                    constraints: BoxConstraints(
+                                        maxHeight: 300
+                                    ),
+                                    //  padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
 
                                     width: SizeConfig.screenWidth,
-                                    margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,top:SizeConfig.height20,),
+
+                                    margin: EdgeInsets.only(
+                                      left: SizeConfig.width20,
+                                      right: SizeConfig.width20,
+                                      top: SizeConfig.height20,),
                                     decoration: BoxDecoration(
                                         color: Colors.white,
-                                        borderRadius: BorderRadius.circular(10),
-                                        boxShadow: [
-                                          qn.supplierMaterialMappingList.length==0?BoxShadow():
-                                          BoxShadow(
-                                            color: AppTheme.addNewTextFieldText.withOpacity(0.2),
-                                            spreadRadius: 2,
-                                            blurRadius: 15,
-                                            offset: Offset(0, 0), // changes position of shadow
-                                          )
-                                        ]
+                                        borderRadius: BorderRadius.circular(5),
+                                        border: Border.all(color: AppTheme.addNewTextFieldBorder)
                                     ),
-                                    child: ListView.builder(
-                                      itemCount: qn.supplierMaterialMappingList.length,
-                                      itemBuilder: (context,index){
-                                        return SlideTransition(
-                                          position: Tween<Offset>(begin: Offset(qn.supplierMaterialMappingList[index].isEdit?0.0: 0.0, qn.supplierMaterialMappingList[index].isEdit?0.0: 1.0), end: Offset.zero)
-                                              .animate(qn.supplierMaterialMappingList[index].scaleController),
-                                          // scale: Tween(begin:qn.isSupplierEdit?1.0: 0.0, end:qn.isSupplierEdit?0.0: 1.0)
-                                          //     .animate(qn.supplierMaterialMappingList[index].scaleController),
-                                          child: FadeTransition(
-                                            opacity: Tween(begin: qn.supplierMaterialMappingList[index].isEdit?1.0: 0.0,
-                                                end: qn.supplierMaterialMappingList[index].isEdit?0.0: 1.0)
-                                                .animate(qn.supplierMaterialMappingList[index].scaleController),
-                                            child: Container(
-                                              padding: EdgeInsets.only(top: 5,bottom: 5),
-                                              decoration: BoxDecoration(
-                                                  border: Border(bottom: BorderSide(color: AppTheme.addNewTextFieldBorder.withOpacity(0.5)))
-                                              ),
-                                              child: Row(
-                                                crossAxisAlignment: CrossAxisAlignment.center,
-                                                children: [
-                                                  Container(
-                                                    width: SizeConfig.width80,
-                                                    child: Text("${qn.supplierMaterialMappingList[index].MaterialName}",
-                                                      style: TextStyle(fontSize: 14,fontFamily: 'RR',color: AppTheme.gridTextColor,letterSpacing: 0.2),
-                                                    ),
-                                                  ),
-                                                  Container(
-                                                    padding: EdgeInsets.only(left: 5),
-                                                    alignment: Alignment.centerLeft,
-                                                    width: SizeConfig.width80,
-                                                    child: Text("${qn.supplierMaterialMappingList[index].MaterialPrice}",
-                                                      style: TextStyle(fontSize: 14,fontFamily: 'RR',color: AppTheme.gridTextColor,letterSpacing: 0.2),
-                                                    ),
-                                                  ),
-                                                  Container(
+                                    child: Column(
+                                      children: [
 
-                                                    alignment: Alignment.centerRight,
-                                                    width: SizeConfig.width70+SizeConfig.width5,
-                                                    child: Text("${qn.supplierMaterialMappingList[index].UnitName}",
-                                                      style: TextStyle(fontSize: 14,fontFamily: 'RR',color: AppTheme.gridTextColor,letterSpacing: 0.2),
-                                                    ),
-                                                  ),
-                                                  GestureDetector(
-                                                    onTap: (){
-
-                                                      print("Dffds");
-                                                      print(qn.isSupplierEdit);
-
-                                                        if(qn.supplierMaterialMappingList[index].isEdit){
-                                                          qn.supplierMaterialMappingList[index].scaleController.forward().whenComplete(() {
-                                                            if (this.mounted) {
-                                                              setState(() {
-                                                                qn.supplierMaterialMappingList.removeAt(index);
-                                                              });
-                                                            }
-
-                                                           /* setState(() {
-                                                              qn.supplierMaterialMappingList.removeAt(index);
-                                                            });*/
-                                                          });
-                                                        }
-                                                        else{
-                                                          qn.supplierMaterialMappingList[index].scaleController.reverse().whenComplete(() {
-                                                            if (this.mounted) {
-                                                              setState(() {
-                                                                qn.supplierMaterialMappingList.removeAt(index);
-                                                              });
-                                                            }
-                                                            /*setState(() {
-                                                              qn.supplierMaterialMappingList.removeAt(index);
-                                                            });*/
-                                                          });
-                                                        }
-
-
-
-
-                                                    },
-                                                    child: Container(
-                                                        height: 25,
-                                                        width: 25,
-                                                        child: Icon(Icons.delete,color:Colors.red)
-                                                    ),
-                                                  ),
-
-                                                ],
-                                              ),
-
-                                            ),
+                                        Container(
+                                          height: 40,
+                                          width: SizeConfig.screenWidth,
+                                          padding: EdgeInsets.only(left: 10,right: 10),
+                                          decoration: BoxDecoration(
+                                            color: Colors.grey[200],
+                                            borderRadius: BorderRadius.only(topLeft: Radius.circular(5),topRight: Radius.circular(5),),
                                           ),
-                                        );
-                                      },
+                                          child: Row(
+                                            //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Container(width: SizeConfig.screenWidthM40*0.35,child: Text("Material Name")),
+                                              Container(padding: EdgeInsets.only(left: 10),alignment: Alignment.centerLeft, width: SizeConfig.screenWidthM40*0.25,child: Text("Price")),
+                                              Container(padding: EdgeInsets.only(left: 10), width: SizeConfig.screenWidthM40*0.25,child: Text("Unit")),
+
+                                            ],
+
+                                          ),
+                                        ),
+
+                                        Expanded(
+                                          child: ListView.builder(
+                                            itemCount: qn.supplierMaterialMappingList.length,
+                                            itemBuilder: (context, index) {
+                                              return SlideTransition(
+                                                position: Tween<Offset>(begin: Offset(qn.supplierMaterialMappingList[index].isEdit ? 0.0 :
+                                                qn.supplierMaterialMappingList[index].isDelete ?1.0:0.0,
+                                                    qn.supplierMaterialMappingList[index].isEdit ? 0.0 :qn.supplierMaterialMappingList[index].isDelete ?0.0: 1.0),
+                                                    end:qn.supplierMaterialMappingList[index].isEdit ?Offset(1, 0): Offset.zero)
+                                                    .animate(qn.supplierMaterialMappingList[index].scaleController),
+
+                                                child: FadeTransition(
+                                                  opacity: Tween(begin: qn.supplierMaterialMappingList[index].isEdit ? 1.0 : 0.0,
+                                                      end: qn.supplierMaterialMappingList[index].isEdit ? 0.0 : 1.0)
+                                                      .animate(qn.supplierMaterialMappingList[index].scaleController),
+                                                  child: Container(
+                                                    height: 40,
+                                                    padding: EdgeInsets.only(top: 10, bottom: 0,left: 10,right: 10),
+                                                    decoration: BoxDecoration(
+                                                        border: Border(
+                                                            bottom: BorderSide(color: AppTheme.addNewTextFieldBorder.withOpacity(0.5))
+                                                        )
+                                                    ),
+                                                    child: Column(
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      children: [
+                                                        Row(
+                                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                                          children: [
+
+                                                            Container(
+                                                              width: SizeConfig.screenWidthM40*0.35,
+                                                              alignment:Alignment.centerLeft,
+
+                                                              child: Text("${qn.supplierMaterialMappingList[index].MaterialName}",
+                                                                style: TextStyle(fontSize: 14, fontFamily: 'RR', color: AppTheme.gridTextColor, letterSpacing: 0.2),
+                                                              ),
+                                                            ),
+                                                            Container(
+                                                              padding: EdgeInsets.only(left: 10),
+                                                              alignment: Alignment.centerLeft,
+
+                                                              width: SizeConfig.screenWidthM40*0.25,
+                                                              child: Text("${qn.supplierMaterialMappingList[index].MaterialPrice}",
+                                                                style: TextStyle(fontSize: 14, fontFamily: 'RR', color: AppTheme.gridTextColor, letterSpacing: 0.2),
+                                                              ),
+                                                            ),
+                                                            Container(
+                                                              alignment: Alignment.centerLeft,
+                                                              width:SizeConfig.screenWidthM40*0.25,
+                                                              padding: EdgeInsets.only(left: 10),
+
+
+                                                              child: Text("${qn.supplierMaterialMappingList[index].UnitName}",
+                                                                style: TextStyle(fontSize: 14, fontFamily: 'RR', color: AppTheme.gridTextColor,letterSpacing: 0.2),
+                                                              ),
+                                                            ),
+                                                            Spacer(),
+                                                            GestureDetector(
+                                                              onTap: () {
+
+
+                                                                  if (qn.supplierMaterialMappingList[index].isEdit) {
+                                                                    qn.supplierMaterialMappingList[index].scaleController.forward().whenComplete(() {
+
+                                                                      if (this.mounted) {
+                                                                        setState(() {
+                                                                          qn.supplierMaterialMappingList.removeAt(index);
+                                                                        });
+                                                                      }
+                                                                    });
+
+                                                                  }
+                                                                  else {
+                                                                    setState(() {
+                                                                      qn.supplierMaterialMappingList[index].isDelete=true;
+                                                                    });
+                                                                    qn.supplierMaterialMappingList[index].scaleController.reverse().whenComplete(() {
+                                                                      if (this.mounted) {
+
+                                                                        setState(() {
+                                                                          qn.supplierMaterialMappingList.removeAt(index);
+                                                                        });
+                                                                      }
+                                                                    });
+                                                                  }
+
+
+
+
+
+                                                              },
+                                                              child: Container(
+                                                                  height: 20,
+                                                                  width: 20,
+                                                                  child: SvgPicture.asset("assets/svg/delete.svg",color: AppTheme.red)
+                                                              ),
+                                                            ),
+
+                                                          ],
+                                                        ),
+
+
+                                                      ],
+                                                    ),
+
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
 
-
-
-
-                                  Stack(
+                                  qn.supplierCategoryName!='Fuel'? Stack(
                                     children: [
                                       GestureDetector(
                                         onTap: (){
@@ -596,8 +634,9 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                         child: GestureDetector(
                                           onTap: () async {
                                             node.unfocus();
-                                            Timer(Duration(milliseconds: 300), (){
+
                                               setState(() {
+                                                _keyboardVisible=false;
                                                 qn.supplierMaterialMappingList.add(
                                                     SupplierMaterialMappingListModel(
                                                         MaterialId: qn.supplierMaterialId,
@@ -608,18 +647,18 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                                         SupplierMaterialMappingId: null,
                                                         IsActive: 1,
                                                         scaleController: AnimationController(duration: Duration(milliseconds: 300), vsync: this),
-                                                        isEdit: false
+                                                        isEdit: false,
+                                                        isDelete: false
                                                     )
                                                 );
                                               });
+                                              qn.clearMappingList();
+                                            qn.supplierMaterialMappingList[qn.supplierMaterialMappingList.length-1].scaleController.forward().then((value){
 
-                                              listViewController.animateTo(listViewController.position.maxScrollExtent, duration: Duration(milliseconds: 200), curve: Curves.easeIn).then((value) {
-                                                qn.supplierMaterialMappingList[qn.supplierMaterialMappingList.length-1].scaleController.forward().then((value){
-                                                  // listViewController.animateTo(listViewController.position.maxScrollExtent, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
-                                                  qn.clearMappingList();
-                                                });
-                                              });
                                             });
+                                             /* listViewController.animateTo(listViewController.position.maxScrollExtent, duration: Duration(milliseconds: 200), curve: Curves.easeIn).then((value) {
+
+                                              });*/
 
                                           },
                                           child: Container(
@@ -640,6 +679,51 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
 
 
                                     ],
+                                  ):Container(),
+
+                                  //Logo
+                                  SizedBox(height: 50,),
+                                  Container(
+                                    height: SizeConfig.height70,
+                                    width: SizeConfig.height70,
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        border: Border.all(color: AppTheme.uploadColor,width: 2)
+                                    ),
+                                    child: Center(
+                                      child: Icon(Icons.upload_rounded,color: AppTheme.yellowColor,),
+                                    ),
+                                  ),
+                                  SizedBox(height: 20,),
+                                  Align(
+                                    alignment: Alignment.center,
+                                    child: Text("Upload Supplier Logo",
+                                      style: TextStyle(fontFamily: 'RR',fontSize: 14,color: AppTheme.gridTextColor),
+                                    ),
+                                  ),
+                                  SizedBox(height: 10,),
+                                  Container(
+
+                                    margin: EdgeInsets.only(left: SizeConfig.width90,right:  SizeConfig.width90,),
+                                    height:45,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(25.0),
+                                      color: AppTheme.yellowColor,
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: AppTheme.yellowColor.withOpacity(0.4),
+                                          spreadRadius: 1,
+                                          blurRadius: 5,
+                                          offset: Offset(1, 8), // changes position of shadow
+                                        ),
+                                      ],
+                                    ),
+                                    child: Center(
+                                        child: Text("Choose File",style: TextStyle(color:AppTheme.bgColor,fontSize:16,fontFamily: 'RM'),
+                                        )
+                                    ),
+
+
                                   ),
 
 
@@ -659,11 +743,12 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                   width: SizeConfig.screenWidth,
                   child: Row(
                     children: [
-                      IconButton(icon: Icon(Icons.arrow_back), onPressed: (){
-                         qn.clearForm();
-                        Navigator.pop(context);
-                      }),
-                      SizedBox(width: SizeConfig.width5,),
+                      CancelButton(
+                        ontap: (){
+                          qn.clearForm();
+                          Navigator.pop(context);
+                        },
+                      ),
                       Text("Supplier Detail",
                         style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize:16),
                       ),
@@ -729,31 +814,48 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                   child: AddButton(
                     ontap: (){
                       node.unfocus();
-                      if(qn.supplierName.text.isEmpty)
-                      {
-                        CustomAlert().commonErrorAlert(context, "Enter Supplier Name", "");
-                      }
-                      else if(qn.supplierCategoryId==null)
-                      {
-                        CustomAlert().commonErrorAlert(context, "Select Supplier Category", "");
-                      }
-                      else if(qn.supplierAddress.text.isEmpty)
-                      {
-                        CustomAlert().commonErrorAlert(context, "Enter Supplier Address", "");
-                      }
-                      else if(qn.supplierContactNumber.text.isEmpty)
-                      {
-                        CustomAlert().commonErrorAlert(context, "Enter Supplier Contact Number", "");
-                      }
-                      else if(qn.supplierGstNo.text.isEmpty)
-                      {
-                        CustomAlert().commonErrorAlert(context, "Enter Supplier GST Number", "");
-                      }
-                      else
-                      {
-                        qn.InsertSupplierDbHit(context,this);
 
+                      if(qn.supplierEmail.text.isNotEmpty){
+                        setState(() {
+                          emailValid=EmailValidation().validateEmail(qn.supplierEmail.text);
+                        });
                       }
+
+
+
+                      if(qn.supplierName.text.isEmpty) {setState(() {supplierName=true;});}
+                      else{setState(() {supplierName=false;});}
+
+                      if(qn.supplierCategoryId==null) {setState(() {supplierCategory=true;});}
+                      else{setState(() {supplierCategory=false;});}
+
+                      if(qn.supplierAddress.text.isEmpty) {setState(() {supplierAddress=true;});}
+                      else{setState(() {supplierAddress=false;});}
+
+                      if(qn.supplierContactNumber.text.isEmpty) {setState(() {supplierPhoneNum=true;});}
+                      else{setState(() {supplierPhoneNum=false;});}
+
+                      if(qn.supplierGstNo.text.isEmpty) {setState(() {supplierGst=true;});}
+                      else{setState(() {supplierGst=false;});}
+
+
+                      if(qn.supplierCategoryName!='Fuel'){
+                        if(qn.supplierMaterialMappingList.isEmpty){
+                          CustomAlert().commonErrorAlert(context, "Select Materials", "");
+                        }
+                        else{
+                          if(emailValid && !supplierName && !supplierCategory && !supplierAddress && !supplierPhoneNum && !supplierGst) {
+                            qn.InsertSupplierDbHit(context,this);
+                          }
+                        }
+                      }
+                      else{
+                        if(emailValid && !supplierName && !supplierCategory && !supplierAddress && !supplierPhoneNum && !supplierGst) {
+                          qn.InsertSupplierDbHit(context,this);
+                        }
+                      }
+
+
 
                     },
                   ),

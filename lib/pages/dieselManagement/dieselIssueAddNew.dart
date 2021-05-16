@@ -292,7 +292,7 @@ class DieselIssueFormState extends State<DieselIssueForm> with TickerProviderSta
 
                                     },
                                     child: SidePopUpParent(
-                                      text: dn.DI_machineName==null? "Select Machine":dn.DI_machineName,
+                                      text: dn.DI_machineName==null? "Select ${dn.DI_MachinType??"Machine"}":dn.DI_machineName,
                                       textColor: dn.DI_machineName==null? AppTheme.addNewTextFieldText.withOpacity(0.5):AppTheme.addNewTextFieldText,
                                       iconColor: dn.DI_machineName==null? AppTheme.addNewTextFieldText:AppTheme.yellowColor,
                                       bgColor: dn.DI_machineName==null? AppTheme.disableColor:Colors.white,
@@ -371,6 +371,18 @@ class DieselIssueFormState extends State<DieselIssueForm> with TickerProviderSta
                                         });
                                       });
                                     },
+                                    suffixIcon: Container(
+                                      height: 30,
+                                      width: 45,
+                                      margin: EdgeInsets.all(12),
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(20),
+                                          color: AppTheme.yellowColor
+                                      ),
+                                      child: Center(
+                                        child: Text("Ltr",style: AppTheme.TSWhite166,),
+                                      ),
+                                    ),
                                   ),
                                   qty?ValidationErrorText(title: "* Enter Diesel Quantity",):Container(),
 

@@ -103,8 +103,11 @@ class DieselNotifier extends ChangeNotifier{
   }
 
 
-  List<FuelSupplierModel> fuelSupplierList=[];
-  List<FuelPurchaserModel> fuelPurchaserList=[];
+  List<dynamic> fuelSupplierList=[];
+  List<dynamic> filterFuelSupplierList=[];
+
+  List<dynamic> fuelPurchaserList=[];
+  List<dynamic> filterFuelPurchaserList=[];
  // List<DieselVehicleModel> vehicleList=[];
  // List<DieselVehicleModel> filterVehicleList=[];
 
@@ -151,6 +154,7 @@ class DieselNotifier extends ChangeNotifier{
         if(value!=null){
           var parsed=json.decode(value);
 
+
           var t=parsed['Table'] as List;
           var t1=parsed['Table1'] as List;
           var t2=parsed['Table2'] as List;
@@ -158,9 +162,14 @@ class DieselNotifier extends ChangeNotifier{
           var t3=parsed['Table3'] as List;
           var t4=parsed['Table4'] as List;
           var t5=parsed['Table5'] as List;
+          print("t_$t");
+          print("t1_$t1");
+          print("t2_$t2");
 
-          fuelSupplierList=t.map((e) => FuelSupplierModel.fromJson(e)).toList();
-          fuelPurchaserList=t1.map((e) => FuelPurchaserModel.fromJson(e)).toList();
+          fuelSupplierList=t;
+          filterFuelSupplierList=t;
+          fuelPurchaserList=t1;
+          filterFuelPurchaserList=t1;
 
           vehicleList=t2;
           filterVehicleList=t2;
@@ -215,6 +224,27 @@ class DieselNotifier extends ChangeNotifier{
     }
     else{
       filterIssuedByList=issuedByList.where((element) => element['EmployeeName'].toLowerCase().contains(value.toLowerCase())).toList();
+    }
+    notifyListeners();
+  }
+
+  //diesel purchase search fields
+  searchFuelPurchaser(String value){
+    if(value.isEmpty){
+      filterFuelPurchaserList=fuelPurchaserList;
+    }
+    else{
+      filterFuelPurchaserList=fuelPurchaserList.where((element) => element['EmployeeName'].toLowerCase().contains(value.toLowerCase())).toList();
+    }
+    notifyListeners();
+  }
+
+  searchFuelSupplier(String value){
+    if(value.isEmpty){
+      filterFuelSupplierList=fuelSupplierList;
+    }
+    else{
+      filterFuelSupplierList=fuelSupplierList.where((element) => element['SupplierName'].toLowerCase().contains(value.toLowerCase())).toList();
     }
     notifyListeners();
   }
@@ -391,7 +421,7 @@ double totalAmount=0.0;
   clearDP_Form(){
     DP_supplierId=null;
     DP_supplierName=null;
-    DP_purchaserName=null;
+    DP_purchaserId=null;
     DP_purchaserName=null;
     DP_vehicleId=null;
     DP_vehicleName=null;
@@ -407,7 +437,7 @@ double totalAmount=0.0;
 
   insertDP_Form(){
     DP_currentTime=DateTime.now();
-    DP_billDate=DateTime.now();
+    DP_billDate=null;
     notifyListeners();
   }
 
@@ -479,6 +509,7 @@ double totalAmount=0.0;
             totalAmount=t[0]['TotalAmount'];
           }
           else{
+            print(t);
 
             dieselPurchaseGridOverAllHeader=parsed['Table1'][0];
             dieselPurchaseGridList=t.map((e) => DieselPurchaseGridModel.fromJson(e)).toList();

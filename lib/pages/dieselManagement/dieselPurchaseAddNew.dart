@@ -15,14 +15,17 @@ import 'package:quarry/pages/quarryMaster/plantDetailsAddNew.dart';
 import 'package:quarry/pages/sale/salesDetail.dart';
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
+import 'package:quarry/styles/constants.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/bottomBarAddButton.dart';
 import 'package:quarry/widgets/currentDateContainer.dart';
 import 'package:quarry/widgets/customTextField.dart';
 import 'package:quarry/widgets/expectedDateContainer.dart';
+import 'package:quarry/widgets/sidePopUp/noModel/sidePopUpSearchNoModel.dart';
 import 'package:quarry/widgets/sidePopUp/sidePopUpSearchOnly.dart';
 import 'package:quarry/widgets/sidePopUp/sidePopUpWithoutSearch.dart';
+import 'package:quarry/widgets/validationErrorText.dart';
 
 
 
@@ -51,7 +54,17 @@ class DieselPurchaseFormState extends State<DieselPurchaseForm> with TickerProvi
   bool _keyboardVisible=false;
   bool isListScroll=false;
 
+  bool plant=false;
+  bool billNo=false;
+  bool date=false;
+  bool purchaser=false;
+  bool supplier=false;
+  bool vehicle=false;
+  bool qty=false;
+  bool price=false;
+
   TextEditingController vehicleSearchController = new TextEditingController();
+  TextEditingController searchController=new TextEditingController();
 
   @override
   void initState() {
@@ -224,10 +237,12 @@ class DieselPurchaseFormState extends State<DieselPurchaseForm> with TickerProvi
 
                                     ),
                                   ),
+                                  !plant?Container():ValidationErrorText(title: "* Select Plant"),
 
                                   AddNewLabelTextField(
                                     textEditingController: dn.DP_billno,
                                     labelText: "Bill Number",
+                                    regExp: '[A-Za-z0-9  ]',
                                     ontap: (){
                                       scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                       setState(() {
@@ -244,27 +259,29 @@ class DieselPurchaseFormState extends State<DieselPurchaseForm> with TickerProvi
                                     },
 
                                   ),
+                                  !billNo?Container():ValidationErrorText(title: "* Enter Bill Number",),
                                   GestureDetector(
                                     onTap: () async{
                                       final DateTime picked = await showDatePicker(
                                         context: context,
-                                        initialDate:  dn.DP_billDate, // Refer step 1
+                                        initialDate:  dn.DP_billDate==null?DateTime.now():dn.DP_billDate, // Refer step 1
                                         firstDate: DateTime(2000),
                                         lastDate: DateTime(2100),
                                       );
                                       if (picked != null)
                                         setState(() {
                                           dn.DP_billDate = picked;
-                                          print(dn.DP_billDate);
+
                                         });
                                     },
                                     child: ExpectedDateContainer(
                                     //  text: DateFormat("yyyy-MM-dd").format(dn.DP_billDate)==DateFormat("yyyy-MM-dd").format(DateTime.now())?"Select Bill Date":"${DateFormat.yMMMd().format(dn.DP_billDate)}",
-                                      text: "${DateFormat.yMMMd().format(dn.DP_billDate)}",
+                                      text:dn.DP_billDate==null?"Select Bill Date": "${DateFormat.yMMMd().format(dn.DP_billDate)}",
                                       textColor:AppTheme.addNewTextFieldText,
                                      // textColor:DateFormat("yyyy-MM-dd").format(dn.DP_billDate)==DateFormat("yyyy-MM-dd").format(DateTime.now())? AppTheme.addNewTextFieldText.withOpacity(0.5):AppTheme.addNewTextFieldText,
                                     ),
                                   ),
+                                  !date?Container():ValidationErrorText(title: "* Select Bill Date"),
                                   GestureDetector(
                                     onTap: (){
 
@@ -291,6 +308,7 @@ class DieselPurchaseFormState extends State<DieselPurchaseForm> with TickerProvi
 
                                     ),
                                   ),
+                                  !purchaser?Container():ValidationErrorText(title: "* Select Purchaser"),
                                   GestureDetector(
                                     onTap: (){
 
@@ -317,6 +335,8 @@ class DieselPurchaseFormState extends State<DieselPurchaseForm> with TickerProvi
 
                                     ),
                                   ),
+                                  !supplier?Container():ValidationErrorText(title: "* Select Supplier"),
+
                                   AddNewLabelTextField(
                                     textEditingController: dn.DP_location,
                                     labelText: "Location",
@@ -341,6 +361,8 @@ class DieselPurchaseFormState extends State<DieselPurchaseForm> with TickerProvi
                                   AddNewLabelTextField(
                                     textEditingController: dn.DP_contactNo,
                                     labelText: "Contact Number",
+                                    regExp: '[0-9]',
+                                    textLength: phoneNoLength,
                                     textInputType: TextInputType.number,
                                     scrollPadding: 500,
                                     ontap: (){
@@ -375,6 +397,7 @@ class DieselPurchaseFormState extends State<DieselPurchaseForm> with TickerProvi
                                               dn.DP_isVehicle=!dn.DP_isVehicle;
                                               dn.DP_vehicleId=null;
                                               dn.DP_vehicleName=null;
+                                              vehicle=false;;
 
                                             });
                                           }),
@@ -409,11 +432,12 @@ class DieselPurchaseFormState extends State<DieselPurchaseForm> with TickerProvi
                                       )
                                     ),
                                   ),
-
+                                  !vehicle?Container():ValidationErrorText(title: "* Select Vehicle",),
 
                                   AddNewLabelTextField(
                                     textEditingController: dn.DP_dieselQTY,
                                     labelText: "Diesel Quantity",
+                                    regExp: '[0-9.]',
                                     textInputType: TextInputType.number,
                                     scrollPadding: 550,
                                     ontap: (){
@@ -434,10 +458,24 @@ class DieselPurchaseFormState extends State<DieselPurchaseForm> with TickerProvi
                                     onChange: (v){
                                       dn.dieselCalc();
                                     },
+                                    suffixIcon: Container(
+                                      height: 30,
+                                      width: 45,
+                                      margin: EdgeInsets.all(12),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(20),
+                                        color: AppTheme.yellowColor
+                                      ),
+                                      child: Center(
+                                        child: Text("Ltr",style: AppTheme.TSWhite166,),
+                                      ),
+                                    ),
                                   ),
+                                  !qty?Container():ValidationErrorText(title: "* Enter Quantity",),
                                   AddNewLabelTextField(
                                     textEditingController: dn.DP_dieselPrice,
                                     labelText: "Diesel Price",
+                                    regExp: '[0-9.]',
                                     textInputType: TextInputType.number,
                                     scrollPadding: 550,
                                     ontap: (){
@@ -460,6 +498,7 @@ class DieselPurchaseFormState extends State<DieselPurchaseForm> with TickerProvi
                                     },
 
                                   ),
+                                  !price?Container():ValidationErrorText(title: "* Enter Price",),
 
                                   SizedBox(height: 20,),
                                   Text("Total Amount",style: TextStyle(fontSize: 14,fontFamily: 'RR',color: AppTheme.hintColor),
@@ -537,8 +576,47 @@ class DieselPurchaseFormState extends State<DieselPurchaseForm> with TickerProvi
                 child: AddButton(
                   ontap: (){
                     node.unfocus();
+                    if(dn.DP_PlantId==null){setState(() {plant=true;});}
+                    else{setState(() {plant=false;});}
 
-                    dn.InsertDieselPurchaseDbHit(context);
+                    if(dn.DP_billno.text.isEmpty){setState(() {billNo=true;});}
+                    else{setState(() {billNo=false;});}
+
+                    if(dn.DP_billDate==null){setState(() {date=true;});}
+                    else{setState(() {date=false;});}
+
+                    if(dn.DP_purchaserId==null){setState(() {purchaser=true;});}
+                    else{setState(() {purchaser=false;});}
+
+                    if(dn.DP_supplierId==null){setState(() {supplier=true;});}
+                    else{setState(() {supplier=false;});}
+
+                    if(dn.DP_dieselQTY.text.isEmpty){setState(() {qty=true;});}
+                    else{setState(() {qty=false;});}
+
+                    if(dn.DP_dieselPrice.text.isEmpty){setState(() {price=true;});}
+                    else{setState(() {price=false;});}
+
+
+                    if(dn.DP_isVehicle){
+                      if(dn.DP_vehicleId==null){setState(() {vehicle=true;});}
+                      else{setState(() {vehicle=false;});}
+
+                      if(!plant && !billNo && !date && !purchaser && !supplier && !qty && !price && !vehicle){
+                        dn.InsertDieselPurchaseDbHit(context);
+                      }
+                    }
+                    else{
+                      if(!plant && !billNo && !date && !purchaser && !supplier && !qty && !price){
+                        dn.InsertDieselPurchaseDbHit(context);
+                      }
+                    }
+
+
+
+
+
+
 
 
                   },
@@ -626,167 +704,111 @@ class DieselPurchaseFormState extends State<DieselPurchaseForm> with TickerProvi
                 },
               ),
 
-             /* Align(
-                alignment: Alignment.center,
-                child: AnimatedContainer(
-                    duration: Duration(milliseconds: 300),
-                    curve: Curves.easeIn,
-                    width: SizeConfig.screenWidth,
-                    height: 400,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Colors.white,
-                    ),
-                    clipBehavior: Clip.antiAlias,
-                    margin: EdgeInsets.only(left: SizeConfig.width30,right: SizeConfig.width30),
-                    transform: Matrix4.translationValues(isPlantOpen?0:SizeConfig.screenWidth, 0, 0),
 
-                    child:Container(
-                      height: 400,
-                      width: SizeConfig.screenWidth,
-                      color: Colors.white,
-                      //  padding: EdgeInsets.only(left: SizeConfig.width20,right: SizeConfig.width20,bottom: SizeConfig.height10),
-                      child:Column (
-                        // crossAxisAlignment: CrossAxisAlignment.center,
-                        // mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              height: SizeConfig.height50,
-                              child: Stack(
-                                children: [
-                                  Align(
-                                    alignment: Alignment.topRight,
-                                    child: IconButton(icon: Icon(Icons.cancel), onPressed: (){
-                                      setState(() {
-                                        isPlantOpen=false;
-                                      });
-                                    }),
-                                  ),
-                                  Align(
-                                      alignment: Alignment.center,
-                                      child: Text('Select Plant',style:TextStyle(color:Colors.black,fontFamily: 'RR',fontSize:16),)),
-                                ],
-                              ),
-                            ),
-                            SizedBox(height: SizeConfig.height10,),
-
-
-
-
-                            Container(
-                              height: SizeConfig.screenHeight*(300/720),
-
-                              margin: EdgeInsets.only(left: SizeConfig.width30,right: SizeConfig.width30),
-                              child: ListView.builder(
-                                itemCount: dn.plantList.length,
-                                itemBuilder: (context,index){
-                                  return GestureDetector(
-                                    onTap: (){
-                                      setState(() {
-                                        dn.DP_PlantId=dn.plantList[index].plantId;
-                                        dn.DP_PlantName=dn.plantList[index].plantName;
-                                        isPlantOpen=false;
-                                      });
-
-                                    },
-                                    child: Container(
-                                      margin: EdgeInsets.only(bottom: 20),
-                                      alignment: Alignment.center,
-                                      decoration:BoxDecoration(
-                                          borderRadius:BorderRadius.circular(8),
-                                          border: Border.all(color: dn.DP_PlantId==null? AppTheme.addNewTextFieldBorder:dn.DP_PlantId==dn.plantList[index].plantId?Colors.transparent: AppTheme.addNewTextFieldBorder),
-                                          color: dn.DP_PlantId==null? Colors.white: dn.DP_PlantId==dn.plantList[index].plantId?AppTheme.popUpSelectedColor:Colors.white
-                                      ),
-                                      width:300,
-                                      height:50,
-                                      child: Text("${dn.plantList[index].plantName}",
-                                        style: TextStyle(color:dn.DP_PlantId==null? AppTheme.grey:dn.DP_PlantId==dn.plantList[index].plantId?Colors.white:AppTheme.grey,
-                                            fontSize:18,fontFamily: 'RR'),
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-
-
-
-                          ]
-
-
-                      ),
-                    )
-                ),
-              ),*/
 
               ///////////////////////////////////////   Purchaser List    ////////////////////////////////
-              PopUpStatic(
-                title: "Select Purchaser",
-                isAlwaysShown: true,
+
+              PopUpSearchOnly2(
                 isOpen: isPurchaserOpen,
-                dataList: dn.fuelPurchaserList,
-                propertyKeyName:"EmployeeName",
-                propertyKeyId: "EmployeeId",
+                searchController: searchController,
+
+                searchHintText:"Search Purchaser",
+
+                dataList:dn.filterFuelPurchaserList,
+                propertyKeyId:"EmployeeId",
+                propertyKeyName: "EmployeeName",
                 selectedId: dn.DP_purchaserId,
+
+                searchOnchange: (v){
+                  dn.searchFuelPurchaser(v);
+                },
                 itemOnTap: (index){
+                  node.unfocus();
                   setState(() {
-                    dn.DP_purchaserId=dn.fuelPurchaserList[index].employeeId;
-                    dn.DP_purchaserName=dn.fuelPurchaserList[index].employeeName;
+
+
+                    dn.DP_purchaserId=dn.filterFuelPurchaserList[index]['EmployeeId'];
+                    dn.DP_purchaserName=dn.filterFuelPurchaserList[index]['EmployeeName'];
                     isPurchaserOpen=false;
+                    dn.filterFuelPurchaserList=dn.fuelPurchaserList;
+
                   });
+                  searchController.clear();
                 },
                 closeOnTap: (){
+                  node.unfocus();
                   setState(() {
                     isPurchaserOpen=false;
+                    dn.filterFuelPurchaserList=dn.fuelPurchaserList;
                   });
+                  searchController.clear();
                 },
               ),
 
 
               ///////////////////////////////////////   Supplier List    ////////////////////////////////
-              PopUpStatic(
-                title: "Select Supplier",
-                isAlwaysShown: true,
+
+              PopUpSearchOnly2(
                 isOpen: isSupplierOpen,
-                dataList: dn.fuelSupplierList,
-                propertyKeyName:"SupplierName",
-                propertyKeyId: "SupplierId",
+                searchController: searchController,
+
+                searchHintText:"Search Supplier",
+
+                dataList:dn.filterFuelSupplierList,
+                propertyKeyId:"SupplierId",
+                propertyKeyName: "SupplierName",
                 selectedId: dn.DP_supplierId,
+
+                searchOnchange: (v){
+                  dn.searchFuelSupplier(v);
+                },
                 itemOnTap: (index){
+                  node.unfocus();
                   setState(() {
-                    dn.DP_supplierId=dn.fuelSupplierList[index].supplierId;
-                    dn.DP_supplierName=dn.fuelSupplierList[index].supplierName;
+
+
+                    dn.DP_supplierId=dn.filterFuelSupplierList[index]['SupplierId'];
+                    dn.DP_supplierName=dn.filterFuelSupplierList[index]['SupplierName'];
                     isSupplierOpen=false;
+                    dn.filterFuelSupplierList=dn.fuelSupplierList;
+
                   });
+                  searchController.clear();
                 },
                 closeOnTap: (){
+                  node.unfocus();
                   setState(() {
                     isSupplierOpen=false;
+                    dn.filterFuelSupplierList=dn.fuelSupplierList;
                   });
+                  searchController.clear();
                 },
               ),
 
 
               ///////////////////////////////////////   Vehicle List    ////////////////////////////////
 
-              PopUpSearchOnly(
+
+
+              PopUpSearchOnly2(
                 isOpen: isVehicleOpen,
                 searchController: vehicleSearchController,
-                searchHintText: "Search Vehicle Number",
 
-                dataList: dn.filterVehicleList,
+                searchHintText:"Search Vehicle Number",
+
+                dataList:dn.filterVehicleList,
                 propertyKeyId: "VehicleId",
-                propertyKeyName: "VehicleNumber",
+                propertyKeyName:  "VehicleNumber",
                 selectedId: dn.DP_vehicleId,
 
                 searchOnchange: (v){
-                  dn.searchVehicle(v);
+                 dn.searchVehicle(v);
                 },
                 itemOnTap: (index){
                   node.unfocus();
                   setState(() {
-                    dn.DP_vehicleId=dn.vehicleList[index].vehicleId;
-                    dn.DP_vehicleName=dn.vehicleList[index].vehicleNumber;
+                    dn.DP_vehicleId=dn.filterVehicleList[index]['VehicleId'];
+                    dn.DP_vehicleName=dn.filterVehicleList[index]['VehicleNumber'];
                     isVehicleOpen=false;
                     dn.filterVehicleList=dn.vehicleList;
                   });
@@ -796,6 +818,8 @@ class DieselPurchaseFormState extends State<DieselPurchaseForm> with TickerProvi
                   node.unfocus();
                   setState(() {
                     isVehicleOpen=false;
+                    dn.filterVehicleList=dn.vehicleList;
+
                   });
                   vehicleSearchController.clear();
                 },
