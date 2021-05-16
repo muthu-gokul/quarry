@@ -65,10 +65,10 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'Quarry Management',
-        theme: ThemeData(
+  /*      theme: ThemeData(
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
-        ),
+        ),*/
         debugShowCheckedModeBanner: false,
         home: LoginScreen(),
         // home: MyHomePage(),

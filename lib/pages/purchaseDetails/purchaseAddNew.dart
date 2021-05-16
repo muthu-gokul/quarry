@@ -23,6 +23,7 @@ import 'package:quarry/widgets/customTextField.dart';
 import 'package:quarry/widgets/expectedDateContainer.dart';
 import 'package:quarry/widgets/sidePopUp/sidePopUpSearchOnly.dart';
 import 'package:quarry/widgets/sidePopUp/sidePopUpWithoutSearch.dart';
+import 'package:quarry/widgets/singleDatePicker.dart';
 import 'package:quarry/widgets/validationErrorText.dart';
 
 
@@ -291,9 +292,30 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                                     GestureDetector(
                                       onTap: (){
                                         node.unfocus();
-                                        setState(() {
-                                          supplierTypeOpen=true;
-                                        });
+                                        if(pn.purchaseOrdersMappingList.isEmpty){
+                                          setState(() {
+                                            supplierTypeOpen=true;
+                                          });
+                                        }
+                                        else{
+                                          CustomAlert(
+                                              callback: (){
+                                                Navigator.pop(context);
+                                                setState(() {
+                                                  pn.purchaseOrdersMappingList.clear();
+                                                  selectedMaterialIndex=-1;
+                                                  supplierTypeOpen=true;
+                                                });
+                                              },
+                                              Cancelcallback: (){
+                                                Navigator.pop(context);
+                                                setState(() {
+                                                  selectedMaterialIndex=-1;
+                                                });
+                                              }
+                                          ).yesOrNoDialog(context, "", "Do you want to delete All Material?");
+                                        }
+
 
                                       },
                                       child: SidePopUpParent(
@@ -311,9 +333,29 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                                           CustomAlert().commonErrorAlert(context, "Select Supplier Type", "");
                                         }
                                         else{
-                                          setState(() {
-                                            suppliersListOpen=true;
-                                          });
+                                          if(pn.purchaseOrdersMappingList.isEmpty){
+                                            setState(() {
+                                              suppliersListOpen=true;
+                                            });
+                                          }
+                                          else{
+                                            CustomAlert(
+                                                callback: (){
+                                                  Navigator.pop(context);
+                                                  setState(() {
+                                                    pn.purchaseOrdersMappingList.clear();
+                                                    selectedMaterialIndex=-1;
+                                                    suppliersListOpen=true;
+                                                  });
+                                                },
+                                                Cancelcallback: (){
+                                                  Navigator.pop(context);
+                                                  setState(() {
+                                                    selectedMaterialIndex=-1;
+                                                  });
+                                                }
+                                            ).yesOrNoDialog(context, "", "Do you want to delete All Material?");
+                                          }
                                         }
 
 
@@ -328,12 +370,28 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                                     !supplierId?Container():ValidationErrorText(title: "* Select Supplier",),
                                     GestureDetector(
                                       onTap: () async{
-                                        final DateTime picked = await showDatePicker(
+                                        final DateTime picked = await showDatePicker2(
                                           context: context,
                                           initialDate:  pn.ExpectedPurchaseDate==null?DateTime.now():pn.ExpectedPurchaseDate, // Refer step 1
-                                          firstDate: DateTime(1990),
+                                          firstDate: DateTime.now(),
                                           lastDate: DateTime(2100),
-                                        );
+                                          builder: (BuildContext context,Widget child){
+                                            return Theme(
+                                              data: Theme.of(context).copyWith(
+                                                colorScheme: ColorScheme.light(
+                                                  primary: AppTheme.yellowColor, // header background color
+                                                  onPrimary: AppTheme.bgColor, // header text color
+                                                  onSurface: AppTheme.addNewTextFieldText, // body text color
+                                                ),
+                                                textButtonTheme: TextButtonThemeData(
+                                                  style: TextButton.styleFrom(
+                                                    primary: Colors.red, // button text color
+                                                  ),
+                                                ),
+                                              ),
+                                              child: child,
+                                            );
+                                          });
                                         if (picked != null)
                                           setState(() {
                                             pn.ExpectedPurchaseDate = picked;
@@ -345,7 +403,39 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                                       ),
                                     ),
                                     SizedBox(height: SizeConfig.height20,),
+                                    Container(
+                                      height: SizeConfig.height30,
+                                      width: SizeConfig.screenWidth,
+                                      padding: EdgeInsets.only(left: SizeConfig.width10,right: SizeConfig.width20),
+                                      child: Row(
+                                        children: [
 
+
+                                          Spacer(),
+                                          Checkbox(
+                                              fillColor: MaterialStateColor.resolveWith((states) => AppTheme.yellowColor),
+                                              value: pn.isTax,
+                                              onChanged: (v){
+                                                setState(() {
+                                                  pn.isTax=v;
+                                                });
+                                                for(int i=0;i<pn.purchaseOrdersMappingList.length;i++)
+                                                  pn.purchaseOrdersCalc(i, pn.purchaseOrdersMappingList[i].purchaseQty.text);
+
+                                              }
+                                          ),
+                                          InkWell(
+                                              onTap: (){
+                                                /*setState(() {
+                                                                  qn.isDiscount=!qn.isDiscount;
+                                                                });*/
+                                              },
+                                              child: Text("Is Tax?", style:  TextStyle(fontFamily: 'RR',fontSize: 16,color:AppTheme.addNewTextFieldText,letterSpacing: 0.2),)
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(height: SizeConfig.height20,),
 
                                     //Material Data Table
                                     pn.purchaseOrdersMappingList.isEmpty? Column(

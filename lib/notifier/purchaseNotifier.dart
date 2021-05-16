@@ -205,6 +205,11 @@ class PurchaseNotifier extends ChangeNotifier{
     notifyListeners();
   }
 
+  bool isTax=false;
+  updateIsTax(bool value){
+    isTax=value;
+    notifyListeners();
+  }
 
   updateIsDiscountFromQtyShowDialog(int index,String discountvalue,String purchaseqty){
 
@@ -253,7 +258,6 @@ class PurchaseNotifier extends ChangeNotifier{
 
 
   purchaseOrdersCalc(int index,String purchaseQty){
-    print("purchaseQty1  $purchaseQty");
 
     if(purchaseQty.isEmpty){
 
@@ -268,7 +272,13 @@ class PurchaseNotifier extends ChangeNotifier{
 
       if( purchaseOrdersMappingList[index].IsDiscount==0){
         purchaseOrdersMappingList[index].Amount=double.parse((Decimal.parse(purchaseQty)*Decimal.parse(purchaseOrdersMappingList[index].MaterialPrice.toString())).toString());
-        purchaseOrdersMappingList[index].TaxAmount=double.parse(((Decimal.parse(purchaseOrdersMappingList[index].TaxValue.toString())*(Decimal.parse(purchaseOrdersMappingList[index].Amount.toString())-Decimal.parse(purchaseOrdersMappingList[index].DiscountAmount.toString())))/Decimal.parse("100")).toString());
+
+        if(isTax){
+          purchaseOrdersMappingList[index].TaxAmount=double.parse(((Decimal.parse(purchaseOrdersMappingList[index].TaxValue.toString())*(Decimal.parse(purchaseOrdersMappingList[index].Amount.toString())-Decimal.parse(purchaseOrdersMappingList[index].DiscountAmount.toString())))/Decimal.parse("100")).toString());
+        }else{
+          purchaseOrdersMappingList[index].TaxAmount=0.0;
+        }
+
         purchaseOrdersMappingList[index].TotalAmount=double.parse((Decimal.parse(purchaseOrdersMappingList[index].Amount.toString())+Decimal.parse(purchaseOrdersMappingList[index].TaxAmount.toString())).toString());
 
       }
@@ -276,8 +286,11 @@ class PurchaseNotifier extends ChangeNotifier{
         if(purchaseOrdersMappingList[index].IsPercentage==1){
           purchaseOrdersMappingList[index].Amount=double.parse((Decimal.parse(purchaseQty)*Decimal.parse(purchaseOrdersMappingList[index].MaterialPrice.toString())).toString());
           purchaseOrdersMappingList[index].DiscountAmount=double.parse(((Decimal.parse(purchaseOrdersMappingList[index].DiscountValue.toString())*Decimal.parse(purchaseOrdersMappingList[index].Amount.toString()))/Decimal.parse("100")).toString());
-
-          purchaseOrdersMappingList[index].TaxAmount=double.parse(((((Decimal.parse(purchaseOrdersMappingList[index].Amount.toString()))-Decimal.parse(purchaseOrdersMappingList[index].DiscountAmount.toString())) * Decimal.parse(purchaseOrdersMappingList[index].TaxValue.toString()) )/Decimal.parse("100")).toString());
+          if(isTax){
+            purchaseOrdersMappingList[index].TaxAmount=double.parse(((((Decimal.parse(purchaseOrdersMappingList[index].Amount.toString()))-Decimal.parse(purchaseOrdersMappingList[index].DiscountAmount.toString())) * Decimal.parse(purchaseOrdersMappingList[index].TaxValue.toString()) )/Decimal.parse("100")).toString());
+          }else{
+            purchaseOrdersMappingList[index].TaxAmount=0.0;
+          }
           purchaseOrdersMappingList[index].TotalAmount=double.parse((Decimal.parse(purchaseOrdersMappingList[index].Amount.toString())+Decimal.parse(purchaseOrdersMappingList[index].TaxAmount.toString())-Decimal.parse(purchaseOrdersMappingList[index].DiscountAmount.toString())).toString());
 
         }
@@ -286,8 +299,11 @@ class PurchaseNotifier extends ChangeNotifier{
           purchaseOrdersMappingList[index].Amount=double.parse((Decimal.parse(purchaseQty)*Decimal.parse(purchaseOrdersMappingList[index].MaterialPrice.toString())).toString());
 
           purchaseOrdersMappingList[index].DiscountAmount=double.parse((Decimal.parse(purchaseOrdersMappingList[index].DiscountValue.toString())).toString());
-
-          purchaseOrdersMappingList[index].TaxAmount=double.parse(((((Decimal.parse(purchaseOrdersMappingList[index].Amount.toString()))-Decimal.parse(purchaseOrdersMappingList[index].DiscountAmount.toString())) * Decimal.parse(purchaseOrdersMappingList[index].TaxValue.toString()) )/Decimal.parse("100")).toString());
+          if(isTax){
+            purchaseOrdersMappingList[index].TaxAmount=double.parse(((((Decimal.parse(purchaseOrdersMappingList[index].Amount.toString()))-Decimal.parse(purchaseOrdersMappingList[index].DiscountAmount.toString())) * Decimal.parse(purchaseOrdersMappingList[index].TaxValue.toString()) )/Decimal.parse("100")).toString());
+          }else{
+            purchaseOrdersMappingList[index].TaxAmount=0.0;
+          }
           purchaseOrdersMappingList[index].TotalAmount=double.parse((Decimal.parse(purchaseOrdersMappingList[index].Amount.toString())+Decimal.parse(purchaseOrdersMappingList[index].TaxAmount.toString())-Decimal.parse(purchaseOrdersMappingList[index].DiscountAmount.toString())).toString());
         }
 
@@ -528,6 +544,7 @@ class PurchaseNotifier extends ChangeNotifier{
             taxAmount=t[0]['GST'];
             grandTotal=t[0]['Total'];
             discountAmount=t[0]['Discount']??0.0;
+            isTax=taxAmount>0?true:false;
 
             purchaseOrdersMappingList=t1.map((e) => PurchaseOrderMaterialMappingListModel.fromJson(e)).toList();
             purchaseOrdersOtherChargesMappingList=t2.map((e) => PurchaseOrderOtherChargesMappingList.fromJson(e)).toList();
@@ -582,6 +599,7 @@ class PurchaseNotifier extends ChangeNotifier{
       discountedSubtotal=0.0;
       grandTotal=0.0;
       otherCharges=0.0;
+      isTax=false;
      purchaseOrdersOtherChargesMappingList.clear();
   }
 
