@@ -266,7 +266,10 @@ class ProductionGridState extends State<ProductionGrid> with TickerProviderState
                                         SizedBox(width: SizeConfig.width20,),
                                         GestureDetector(
                                           onTap: (){
-                                            pn.ProductionDropDownValues(context);
+                                            pn.clearForm();
+                                            pn.ProductionDropDownValues(context);pn.PlantUserDropDownValues(context).then((value) {
+
+
                                             pn.GetProductionDbHit(context, pn.productionGridValues[selectedIndex].productionId, ProductionDetailAddNewState());
                                             pn.updateProductionEdit(true);
                                             Navigator.push(context, _createRoute());
@@ -274,7 +277,7 @@ class ProductionGridState extends State<ProductionGrid> with TickerProviderState
                                               selectedIndex=-1;
                                               showEdit=false;
                                             });
-
+                                            });
                                           },
                                           child: Container(
                                             width: 70,
@@ -349,6 +352,7 @@ class ProductionGridState extends State<ProductionGrid> with TickerProviderState
                     ontap: (){
                       pn.updateProductionEdit(false);
                       pn.ProductionDropDownValues(context);
+                      pn.PlantUserDropDownValues(context);
                       Navigator.of(context).push(_createRoute());
                     },
                     image: "assets/svg/plusIcon.svg",

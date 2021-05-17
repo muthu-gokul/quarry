@@ -90,7 +90,7 @@ class ReportNotifier extends ChangeNotifier{
             "EmployeeName": "Mr Raja R",
             "IsActive": 1
         }*/
-
+  List<dynamic> employeeShift=[];
  List<dynamic>  dieselRateList=[];/*{
             "DieselRate": 0.00
         }*/
@@ -235,6 +235,8 @@ List<dynamic> vehicleTypeList=[];/* {
       totalReportAmountTitle="Total Output Stock";
       reportsGridColumnList=stockReportGridCol;
     }
+
+
 
 
 
@@ -397,11 +399,11 @@ List<dynamic> vehicleTypeList=[];/* {
             var t1=parsed["Table1"] as List;
 
 
-            plantList=t;
-            employeeList=t1;
+            employeeList=t;
+            employeeShift=t1;
 
-            filtersList.add(FilterDetailsModel(title:  "Plant Filter", list: plantList, instanceName: 'PlantName'),);
-            filtersList.add(FilterDetailsModel(title:  "Employee Filter", list: employeeList, instanceName: 'EmployeeName'));
+            filtersList.add(FilterDetailsModel(title:  "Designation Filter", list: employeeList, instanceName: 'EmployeeDesignationName'),);
+            filtersList.add(FilterDetailsModel(title:  "Shift Filter", list: employeeShift, instanceName: 'EmployeeShiftName'));
           }
           else if(typeName=="DieselPurchaseReport"){
 
@@ -952,6 +954,7 @@ List<dynamic> vehicleTypeList=[];/* {
 
 
   filterProduction() async{
+    print(productionReportGridList);
 
     filterProductionReportGridList.clear();
     reportsGridDataList.clear();
@@ -1247,10 +1250,11 @@ List<dynamic> vehicleTypeList=[];/* {
 
   /*  EmployeeReport Report */
 
-  List<ReportGridStyleModel2> employeeReportGridCol=[ReportGridStyleModel2(columnName: "InvoiceNumber",edgeInsets: EdgeInsets.only(left: 10,right: 10)),
-    ReportGridStyleModel2(columnName: "InvoiceDate",isDate: true),ReportGridStyleModel2(columnName: "InvoiceType"),ReportGridStyleModel2(columnName:"PartyName"),
-    ReportGridStyleModel2(columnName: "GrandTotalAmount"),ReportGridStyleModel2(columnName: "PaidAmount"),ReportGridStyleModel2(columnName: "BalanceAmount"),
-    ReportGridStyleModel2(columnName: "PaymentStatus"),ReportGridStyleModel2(columnName: "PaymentCategoryName"),ReportGridStyleModel2(columnName: "PlantName"),
+  List<ReportGridStyleModel2> employeeReportGridCol=[ReportGridStyleModel2(columnName: "EmployeeCode",edgeInsets: EdgeInsets.only(left: 10,right: 10)),
+    ReportGridStyleModel2(columnName: "Name"),ReportGridStyleModel2(columnName: "Designation"),ReportGridStyleModel2(columnName:"Location"),
+    ReportGridStyleModel2(columnName: "EmployeeDateOfBirth",isDate: true),ReportGridStyleModel2(columnName: "EmployeeDateOfJoin",isDate: true),ReportGridStyleModel2(columnName: "Shift"),
+    ReportGridStyleModel2(columnName: "TotalWorkingDays"),ReportGridStyleModel2(columnName: "TotalLeave"),ReportGridStyleModel2(columnName: "MonthlySalary"),
+    ReportGridStyleModel2(columnName: "OT"),ReportGridStyleModel2(columnName: "AdvanceLoan"),ReportGridStyleModel2(columnName: "NetPay"),
 
   ];
 
@@ -1259,8 +1263,8 @@ List<dynamic> vehicleTypeList=[];/* {
   List<dynamic> employeeReportGridList=[];
   List<dynamic> filterEmployeeReportGridList=[];
 
-  List<dynamic> tempEmployeeReportPlantFilter=[];
-  List<dynamic> tempEmployeeReportPartyNameFilter=[];
+  List<dynamic> tempEmployeeReportDesignationFilter=[];
+
 
 
 
@@ -1270,7 +1274,7 @@ List<dynamic> vehicleTypeList=[];/* {
     reportsGridDataList.clear();
 
 
-    tempEmployeeReportPartyNameFilter.clear();
+    tempEmployeeReportDesignationFilter.clear();
 
 
 
@@ -1287,7 +1291,13 @@ List<dynamic> vehicleTypeList=[];/* {
 
     employeeList.forEach((element) {
       if(element['IsActive']==1){
-        filterEmployeeReportGridList=employeeReportGridList.where((ele) => ele['EmployeeId']==element['EmployeeId']).toList();
+        tempEmployeeReportDesignationFilter=tempEmployeeReportDesignationFilter+employeeReportGridList.where((ele) => ele['EmployeeDesignationId']==element['EmployeeDesignationId']).toList();
+      }
+    });
+
+    employeeShift.forEach((element) {
+      if(element['IsActive']==1){
+        filterEmployeeReportGridList=tempEmployeeReportDesignationFilter.where((ele) => ele['EmployeeShiftId']==element['EmployeeShiftId']).toList();
       }
     });
 
@@ -1295,8 +1305,9 @@ List<dynamic> vehicleTypeList=[];/* {
     totalReport=filterEmployeeReportGridList.length;
 
     filterEmployeeReportGridList.forEach((element) {
-      totalReportAmount=Calculation().add(totalReportAmount, element['PaidAmount']);
-      totalReportQty=Calculation().add(totalReportQty, element['BalanceAmount']);
+      totalReportQty=Calculation().add(totalReportQty, element['MonthlySalary']??"0.0");
+      totalReportAmount=Calculation().add(totalReportAmount, element['NetPay']??"0.0");
+
     });
 
 

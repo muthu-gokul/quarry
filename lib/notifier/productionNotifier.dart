@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/api/ApiManager.dart';
 import 'package:quarry/api/sp.dart';
+import 'package:quarry/model/plantModel/plantUserModel.dart';
 import 'package:quarry/model/productionDetailsModel/productionDetailGridModel.dart';
 import 'package:quarry/model/productionDetailsModel/productionGridHeaderModel.dart';
 import 'package:quarry/model/productionDetailsModel/productionInputTypeListModel.dart';
@@ -14,6 +15,81 @@ import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 
 class ProductionNotifier extends ChangeNotifier{
+
+  List<PlantUserModel> plantList=[];
+  int plantCount=0;
+  Future<dynamic>  PlantUserDropDownValues(BuildContext context) async {
+
+    print("USER ID ${Provider.of<QuarryNotifier>(context,listen: false).UserId}");
+    plantCount=0;
+    updateProductionLoader(true);
+    var body={
+      "Fields": [
+        {
+          "Key": "SpName",
+          "Type": "String",
+          "Value": "${Sp.MasterdropDown}"
+        },
+        {
+          "Key": "LoginUserId",
+          "Type": "int",
+          "Value": Provider.of<QuarryNotifier>(context,listen: false).UserId
+        },
+        {
+          "Key": "TypeName",
+          "Type": "String",
+          "Value": "User"
+        },
+        {
+          "Key": "database",
+          "Type": "String",
+          "Value": Provider.of<QuarryNotifier>(context,listen: false).DataBaseName
+        },
+      ]
+    };
+    try{
+      await call.ApiCallGetInvoke(body,context).then((value) {
+        if(value!=null){
+          var parsed=json.decode(value);
+
+          var t=parsed['Table'] as List;
+          var t1=parsed['Table1'] as List;
+          plantList=t1.map((e) => PlantUserModel.fromJson(e)).toList();
+          plantList.forEach((element) {
+            if(element.userId==Provider.of<QuarryNotifier>(context,listen: false).UserId){
+              plantCount=plantCount+1;
+              if(!isProductionEdit){
+                plantId=element.plantId;
+                plantName=element.plantName;
+              }
+
+            }
+          });
+
+          if(!isProductionEdit){
+            if(plantCount!=1){
+              plantId=null;
+              plantName=null;
+              plantList=plantList.where((element) => element.userId==Provider.of<QuarryNotifier>(context,listen: false).UserId).toList();
+            }
+          }
+
+
+        }
+        updateProductionLoader(false);
+      });
+    }
+    catch(e){
+      updateProductionLoader(false);
+      CustomAlert().commonErrorAlert(context, "${Sp.MasterdropDown}" , e.toString());
+    }
+  }
+
+
+
+  int plantId=null;
+  String plantName=null;
+
 
   TextEditingController materialQuantity=new TextEditingController();
   TextEditingController materialWeight=new TextEditingController();
@@ -163,6 +239,11 @@ class ProductionNotifier extends ChangeNotifier{
           "Value": productionIdEdit
         },
         {
+          "Key": "PlantId",
+          "Type": "int",
+          "Value": plantId
+        },
+        {
           "Key": "MachineId",
           "Type": "int",
           "Value": selectMachineId
@@ -283,6 +364,8 @@ class ProductionNotifier extends ChangeNotifier{
 
 
             productionIdEdit=t[0]['ProductionId'];
+            plantId=t[0]['PlantId'];
+            plantName=t[0]['PlantName'];
             selectMachineId=t[0]['MachineId'];
             selectMachineName=t[0]['MachineName'];
             selectInputTypeId=t[0]['InputMaterialId'];
@@ -344,6 +427,8 @@ class ProductionNotifier extends ChangeNotifier{
      wastageQty=0.0;
      dustQty=0.0;
      isWastage=false;
+     plantId=null;
+     plantName=null;
 
     productionMaterialMappingList.clear();
   }

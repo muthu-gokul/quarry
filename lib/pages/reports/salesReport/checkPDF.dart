@@ -141,7 +141,7 @@ checkpdf(context,String title,dynamic fromDate,dynamic toDate,List<dynamic> head
 
                                     ),
                                    margin: pw.EdgeInsets.only(right: 10),
-                                    child: Text("${value[v.columnName].toString().isNotEmpty?DateFormat('dd-MM-yyyy').format(DateTime.parse(value[v.columnName])):" "}",
+                                    child: Text("${value[v.columnName]!=null?DateFormat('dd-MM-yyyy').format(DateTime.parse(value[v.columnName])):" "}",
                                       style:pw.TextStyle(fontSize: 12,color: PdfColor.fromInt(0xFF3b3b3d)),
                                     ),
                                   )

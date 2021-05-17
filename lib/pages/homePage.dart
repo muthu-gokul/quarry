@@ -40,6 +40,7 @@ import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/animation/fadeanimation.dart';
 import '../styles/size.dart';
 import 'customerDetails/customerGrid.dart';
+import 'dashboard/dashboardHome.dart';
 import 'dieselManagement/dieselGrid.dart';
 import 'employee/employeeAdvanceLoan/employeeAdvanceLoanGrid.dart';
 import 'employee/employeeMaster/employeeMasterGrid.dart';
@@ -192,7 +193,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                   tag: 'Dashboard',
                                   titleColor: AppTheme.yellowColor,
                                   callback: (){
-
+                                    setState(() {
+                                      drawer.menuSelected=22;
+                                      scaffoldkey.currentState.openEndDrawer();
+                                    });
                                   },
                                 ),
                                 DrawerContent(
@@ -455,6 +459,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
             scaffoldkey.currentState.openDrawer();
           },):
           drawer.menuSelected==21?MachineManagementGrid(drawerCallback: (){
+            scaffoldkey.currentState.openDrawer();
+          },):
+          drawer.menuSelected==22?DashBoardHome(drawerCallback: (){
             scaffoldkey.currentState.openDrawer();
           },):
           Container()
@@ -1040,10 +1047,11 @@ class ReportsPageState extends State<ReportsPage> with TickerProviderStateMixin{
                         Navigator.pop(context);
                         widget.voidCallback();
 
-                        ////  Provider.of<DrawerNotifier>(context,listen: false).changeMenu(16);
+                        Provider.of<DrawerNotifier>(context,listen: false).changeMenu(16);
+                        Provider.of<ReportNotifier>(context,listen: false).ReportsDropDownValues(context,"EmployeeReport").then((value){
+                          Provider.of<ReportNotifier>(context,listen: false).ReportsDbHit(context,"EmployeeReport");
+                        });
 
-                        ///  Provider.of<ReportsNotifier>(context,listen: false).ReportsDropDownValues(context,"CustomerSaleReport");
-                        ///  Provider.of<ReportsNotifier>(context,listen: false).ReportsDbHit(context,"CustomerSaleReport");
 
                       },
                     ),

@@ -12,6 +12,7 @@ import 'package:quarry/pages/quarryMaster/plantDetailsAddNew.dart';
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
+import 'package:quarry/widgets/bottomBarAddButton.dart';
 
 
 
@@ -356,10 +357,10 @@ class GoodsMaterialTripListState extends State<GoodsMaterialTripList> with Ticke
                                                   color: Colors.white,
                                                   boxShadow: [
                                                     showShadow?  BoxShadow(
-                                                      color: AppTheme.addNewTextFieldText.withOpacity(0.3),
+                                                      color: AppTheme.addNewTextFieldText.withOpacity(0.2),
                                                       spreadRadius: 0,
                                                       blurRadius: 15,
-                                                      offset: Offset(10, -8), // changes position of shadow
+                                                      offset: Offset(0, -8), // changes position of shadow
                                                     ):BoxShadow(color: Colors.transparent)
                                                   ]
                                               ),
@@ -496,12 +497,7 @@ class GoodsMaterialTripListState extends State<GoodsMaterialTripList> with Ticke
                         size: Size( SizeConfig.screenWidth, 55),
                         painter: RPSCustomPainter(),
                       ),
-                      Center(
-                        heightFactor: 0.5,
-                        child: FloatingActionButton(backgroundColor: AppTheme.yellowColor, child: Icon(Icons.arrow_back), elevation: 0.1, onPressed: () {
-                                          Navigator.pop(context);
-                        }),
-                      ),
+
                       Container(
                         width:  SizeConfig.screenWidth,
                         height: 80,
@@ -517,18 +513,29 @@ class GoodsMaterialTripListState extends State<GoodsMaterialTripList> with Ticke
                   ),
                 ),
               ),
+              //add button
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: AddButton(
+                  ontap: (){
+                    Navigator.pop(context);
 
+                  },
+                  image: "assets/svg/drawer/back-icon.svg",
+                ),
+              ),
 
               Container(
                 height: SizeConfig.height60,
                 width: SizeConfig.screenWidth,
                 child: Row(
                   children: [
-                    IconButton(icon: Icon(Icons.clear,color:AppTheme.bgColor,), onPressed:(){
+                    CancelButton(
+                      ontap: (){
+                        Navigator.pop(context);
+                      },
+                    ),
 
-                      Navigator.pop(context);
-                    }),
-                    SizedBox(width: SizeConfig.width5,),
                     Text("${gr.ML_PorderNo}",
                       style: TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 16),
                     ),

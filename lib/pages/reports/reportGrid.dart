@@ -338,7 +338,8 @@ class ReportGridState extends State<ReportGrid> with TickerProviderStateMixin{
                                     rn.reportsGridColumnList.forEach((element) {
                                       if(element.isActive){
                                         if(element.isDate){
-                                          body.add(DateFormat('dd-MM-yyyy').format(DateTime.parse(rn.reportsGridDataList[i][element.columnName])));
+                                          body.add(rn.reportsGridDataList[i][element.columnName]!=null?DateFormat('dd-MM-yyyy').format(DateTime.parse(rn.reportsGridDataList[i][element.columnName]))
+                                          :"");
                                         }
                                         else{
                                           body.add(rn.reportsGridDataList[i][element.columnName].toString());

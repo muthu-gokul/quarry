@@ -234,7 +234,7 @@ class _ReportDataTable2State extends State<ReportDataTable2> {
 
                                             ),
 
-                                            child: Text("${value[v.columnName].toString().isNotEmpty?DateFormat('dd-MM-yyyy').format(DateTime.parse(value[v.columnName])):" "}",
+                                            child: Text("${value[v.columnName]!=null?DateFormat('dd-MM-yyyy').format(DateTime.parse(value[v.columnName])):" "}",
                                               style:widget.selectedIndex==i?AppTheme.bgColorTS14:AppTheme.gridTextColor14,
                                             ),
                                           )

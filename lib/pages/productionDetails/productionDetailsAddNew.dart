@@ -34,11 +34,13 @@ class ProductionDetailAddNewState extends State<ProductionDetailAddNew> with Tic
 
   bool machineCategoryOpen = false;
   bool inputMaterialOpen = false;
+  bool isPlantOpen=false;
   bool productionMaterailOpen=false;
 
   bool machine=false;
   bool inputMaterial=false;
   bool qty=false;
+  bool plant=false;
 
 
   @override
@@ -170,7 +172,33 @@ class ProductionDetailAddNewState extends State<ProductionDetailAddNew> with Tic
                                 scrollDirection: Axis.vertical,
 
                                 children: [
+                                  GestureDetector(
+                                    onTap: (){
 
+                                      if(qn.plantCount!=1){
+                                        node.unfocus();
+
+                                        Timer(Duration(milliseconds: 50), (){
+                                          setState(() {
+                                            _keyboardVisible=false;
+                                          });
+                                        });
+                                        setState(() {
+                                          isPlantOpen=true;
+                                        });
+                                      }
+
+
+                                    },
+                                    child: SidePopUpParent(
+                                      text: qn.plantName==null? "Select Plant":qn.plantName,
+                                      textColor: qn.plantName==null? AppTheme.addNewTextFieldText.withOpacity(0.5):AppTheme.addNewTextFieldText,
+                                      iconColor: qn.plantName==null? AppTheme.addNewTextFieldText:AppTheme.yellowColor,
+                                      bgColor: qn.plantName==null? AppTheme.disableColor:Colors.white,
+
+                                    ),
+                                  ),
+                                  plant?ValidationErrorText(title: "* Select Plant",):Container(),
                                   GestureDetector(
 
                                     onTap: () {
@@ -734,6 +762,9 @@ class ProductionDetailAddNewState extends State<ProductionDetailAddNew> with Tic
                   child: AddButton(
                     ontap: (){
                       node.unfocus();
+                      if( qn.plantId==null) {setState(() {plant = true;});}
+                      else{setState(() {plant=false;});}
+
                       if(qn.selectMachineId==null){setState(() {machine=true;});}
                       else{setState(() {machine=false;});}
 
@@ -748,7 +779,7 @@ class ProductionDetailAddNewState extends State<ProductionDetailAddNew> with Tic
                        if(qn.productionMaterialMappingList.isEmpty){
                         CustomAlert().commonErrorAlert(context, "Add Output Materials", "");
                       }
-                      if(!machine && !inputMaterial && !qty && qn.productionMaterialMappingList.isNotEmpty){
+                      if(!plant && !machine && !inputMaterial && !qty && qn.productionMaterialMappingList.isNotEmpty){
                         qn.InsertProductionDbHit(context, this);
                       }
 
@@ -779,6 +810,28 @@ class ProductionDetailAddNewState extends State<ProductionDetailAddNew> with Tic
                 ),
 
 
+
+                ///////////////////////////////////////   Plant List    ////////////////////////////////
+                PopUpStatic(
+                  title: "Select Plant",
+                  isOpen: isPlantOpen,
+                  dataList: qn.plantList,
+                  propertyKeyName:"PlantName",
+                  propertyKeyId: "PlantId",
+                  selectedId: qn.plantId,
+                  itemOnTap: (index){
+                    setState(() {
+                      qn.plantId=qn.plantList[index].plantId;
+                      qn.plantName=qn.plantList[index].plantName;
+                      isPlantOpen=false;
+                    });
+                  },
+                  closeOnTap: (){
+                    setState(() {
+                      isPlantOpen=false;
+                    });
+                  },
+                ),
 ///////////////////////////////////////      Machine CATEGORY ////////////////////////////////
 
                 PopUpStatic(

@@ -1,6 +1,9 @@
 
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
@@ -24,6 +27,7 @@ class PlantDetailsGrid extends StatefulWidget {
 class PlantDetailsGridState extends State<PlantDetailsGrid> with TickerProviderStateMixin{
 
   bool isEdit=false;
+  bool isListScroll=false;
 
 
   ScrollController scrollController;
@@ -44,18 +48,7 @@ class PlantDetailsGridState extends State<PlantDetailsGrid> with TickerProviderS
       });
 
 
-      listViewController.addListener(() {
-        print("List SCROLL--${listViewController.offset}");
-        if(listViewController.offset>20){
 
-          scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
-
-
-        }
-        else if(listViewController.offset==0){
-          scrollController.animateTo(0, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
-        }
-      });
 
     });
     super.initState();
@@ -78,7 +71,7 @@ class PlantDetailsGridState extends State<PlantDetailsGrid> with TickerProviderS
                   children: [
                     Container(
                       width: double.maxFinite,
-                      height: SizeConfig.height200,
+                      height:200,
 
                       decoration: BoxDecoration(
                           image: DecorationImage(
@@ -87,34 +80,7 @@ class PlantDetailsGridState extends State<PlantDetailsGrid> with TickerProviderS
                           )
 
                       ),
-                      /*  child:
-                             Column(
-                               mainAxisAlignment: MainAxisAlignment.start,
-                               children: [
-                                 Row(
-                                   children: [
-                                     IconButton(icon: Icon(Icons.menu), onPressed: widget.drawerCallback),
-                                     SizedBox(width: SizeConfig.width5,),
-                                     Text("Company Detail",
-                                       style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: SizeConfig.width16),
-                                     ),
-                                     Spacer(),
 
-                                   ],
-                                 ),
-                                 Spacer(),
-                                 // Image.asset("assets/images/saleFormheader.jpg",height: 100,),
-                                 // Container(
-                                 //   height: SizeConfig.height50,
-                                 //   color: Color(0xFF753F03),
-                                 //
-                                 // ) // Container(
-                                 //   height: SizeConfig.height50,
-                                 //   color: Color(0xFF753F03),
-                                 //
-                                 // )
-                               ],
-                             ),*/
                     ),
 
 
@@ -130,179 +96,234 @@ class PlantDetailsGridState extends State<PlantDetailsGrid> with TickerProviderS
                 height: SizeConfig.screenHeight,
                 // color: Colors.transparent,
                 child: SingleChildScrollView(
+                  physics: NeverScrollableScrollPhysics(),
                   controller: scrollController,
                   child: Column(
                     children: [
                       SizedBox(height: 160,),
-                      Container(
-                        height: SizeConfig.screenHeight-60,
-                        width: SizeConfig.screenWidth,
+                      GestureDetector(
+                        onVerticalDragUpdate: (details){
 
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10))
-                        ),
-                        child: ListView(
-                          controller: listViewController,
-                          scrollDirection: Axis.vertical,
+                          int sensitivity = 5;
+                          if (details.delta.dy > sensitivity) {
+                            scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
+                              if(isListScroll){
+                                setState(() {
+                                  isListScroll=false;
+                                });
+                              }
+                            });
 
-                          children: [
-                            Container(
-                              height: 200,
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10))
-                              ),
-                              child: Row(
-                                children: [
-                                  Container(
-                                    height: 200,
-                                    width: SizeConfig.screenWidth*0.5,
-                                    decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.only(topLeft: Radius.circular(10))
-                                    ),
-                                    child: Center(
-                                      child: GestureDetector(
-                                        onTap: (){
-                                          qn.PlantDropDownValues(context);
-                                          qn.clearPlantLicenseForm();
-                                          qn.updatePlantDetailEdit(false);
-                                          Navigator.push(context, _createRoute());
+                          } else if(details.delta.dy < -sensitivity){
+                            scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
 
-                                        },
-                                        child: Container(
-                                          height: 80,
-                                          width: 80,
-                                          decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                              color: AppTheme.yellowColor,
-                                            boxShadow: [
-                                              BoxShadow(
-                                                color: AppTheme.yellowColor.withOpacity(0.4),
-                                                spreadRadius: 1,
-                                                blurRadius: 5,
-                                                offset: Offset(1, 8), // changes position of shadow
-                                              ),
-                                            ]
-                                          ),
-                                          child: Center(
-                                            child: SvgPicture.asset("assets/svg/plusIcon.svg",height: 35,width: 35,color: AppTheme.addNewTextFieldFocusBorder,),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  qn.plantGridList.isNotEmpty? GestureDetector(
-                                    onTap: (){
-                                      qn.updatePlantDetailEdit(true);
-                                      Navigator.push(context, _createRoute());
-                                      qn.GetplantDetailDbhit(context, qn.plantGridList[0].plantId,PlantDetailsAddNewState());
+                              if(!isListScroll){
+                                setState(() {
+                                  isListScroll=true;
+                                });
+                              }
+                            });
+                          }
+                        },
+                        child: Container(
+                          height: SizeConfig.screenHeight-60,
+                          width: SizeConfig.screenWidth,
 
-                                    },
-                                    child: Container(
-                                      height: 200,
-                                      width: SizeConfig.screenWidth*0.5,
-                                      decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius: BorderRadius.only(topRight: Radius.circular(10))
-                                      ),
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          SizedBox(height: 50,),
-                                          Container(
-                                            height: 80,
-                                            width: 80,
-                                            decoration: BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                border: Border.all(color: AppTheme.uploadColor,width: 2)
-                                            ),
-                                            child: Center(
-                                              child: SvgPicture.asset("assets/svg/Planticon.svg",height: 40,width: 40,),
-                                            ),
-                                          ),
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10))
+                          ),
+                          child:  NotificationListener<ScrollNotification>(
+                            onNotification: (s){
+                              //   print(ScrollStartNotification);
+                              if(s is ScrollStartNotification){
 
-                                          SizedBox(height: 20,),
-                                          Text("${qn.plantGridList[0].plantName}  ",
-                                          style: TextStyle(color: AppTheme.bgColor,fontFamily: 'RM',fontSize: 14),
-                                          ),
-                                          SizedBox(height: 3,),
-                                          Text("${qn.plantGridList[0].location}  ",
-                                            style: TextStyle(color: AppTheme.bgColor,fontFamily: 'RR',fontSize: 12),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ):Container(
-                                    height: 200,
-                                    width: SizeConfig.screenWidth*0.5,
-                                    color: Colors.white,
-                                  ),
-                                ],
-                              ),
-                            ),
+                                if(listViewController.offset==0 && isListScroll && scrollController.offset==100 && listViewController.position.userScrollDirection==ScrollDirection.idle){
 
+                                  Timer(Duration(milliseconds: 100), (){
+                                    if(listViewController.position.userScrollDirection!=ScrollDirection.reverse){
 
+                                      //if(scrollController.position.pixels == scrollController.position.maxScrollExtent){
+                                      if(listViewController.offset==0){
 
-                            SingleChildScrollView(
-                              child: Wrap(
-                                  children: qn.plantGridList.asMap()
-                                      .map((i, value) => MapEntry(i,    i==0?Container():
-                                  GestureDetector(
-                                    onTap: (){
-                                      qn.updatePlantDetailEdit(true);
-                                      Navigator.push(context, _createRoute());
-                                      qn.GetplantDetailDbhit(context, qn.plantGridList[i].plantId,PlantDetailsAddNewState());
+                                        scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value) {
+                                          if(isListScroll){
+                                            setState(() {
+                                              isListScroll=false;
+                                            });
+                                          }
+                                        });
+                                      }
 
-                                    },
-                                    child: Container(
-                                      height: 200,
-                                      width: SizeConfig.screenWidth*0.5,
+                                    }
+                                  });
+                                }
+                              }
+                            },
+                            child: ListView(
+                              controller: listViewController,
+                              scrollDirection: Axis.vertical,
+                              physics: isListScroll?AlwaysScrollableScrollPhysics():NeverScrollableScrollPhysics(),
+
+                              children: [
+                                Container(
+                                  height: 200,
+                                  decoration: BoxDecoration(
                                       color: Colors.white,
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          SizedBox(height: 50,),
-                                          GestureDetector(
+                                      borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10))
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        height: 200,
+                                        width: SizeConfig.screenWidth*0.5,
+                                        decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.only(topLeft: Radius.circular(10))
+                                        ),
+                                        child: Center(
+                                          child: GestureDetector(
                                             onTap: (){
-                                              qn.updatePlantDetailEdit(true);
-                                              qn.GetplantDetailDbhit(context, qn.plantGridList[i].plantId,PlantDetailsAddNewState());
+                                              qn.PlantDropDownValues(context);
+                                              qn.clearPlantLicenseForm();
+                                              qn.updatePlantDetailEdit(false);
                                               Navigator.push(context, _createRoute());
+
                                             },
                                             child: Container(
                                               height: 80,
                                               width: 80,
                                               decoration: BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  border: Border.all(color: AppTheme.uploadColor,width: 2)
+                                                shape: BoxShape.circle,
+                                                  color: AppTheme.yellowColor,
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: AppTheme.yellowColor.withOpacity(0.4),
+                                                    spreadRadius: 1,
+                                                    blurRadius: 5,
+                                                    offset: Offset(1, 8), // changes position of shadow
+                                                  ),
+                                                ]
                                               ),
                                               child: Center(
-                                                child: SvgPicture.asset("assets/svg/Planticon.svg",height: 40,width: 40,),
+                                                child: SvgPicture.asset("assets/svg/plusIcon.svg",height: 35,width: 35,color: AppTheme.addNewTextFieldFocusBorder,),
                                               ),
                                             ),
                                           ),
-
-                                          SizedBox(height: 20,),
-                                          Text("${qn.plantGridList[i].plantName}  ",
-                                            style: TextStyle(color: AppTheme.bgColor,fontFamily: 'RM',fontSize: 14),
-                                          ),
-                                          SizedBox(height: 3,),
-                                          Text("${qn.plantGridList[i].location}  ",
-                                            style: TextStyle(color: AppTheme.bgColor,fontFamily: 'RR',fontSize: 12),
-                                          ),
-                                        ],
+                                        ),
                                       ),
-                                    ),
+                                      qn.plantGridList.isNotEmpty? GestureDetector(
+                                        onTap: (){
+                                          qn.updatePlantDetailEdit(true);
+                                          Navigator.push(context, _createRoute());
+                                          qn.GetplantDetailDbhit(context, qn.plantGridList[0].plantId,PlantDetailsAddNewState());
+
+                                        },
+                                        child: Container(
+                                          height: 200,
+                                          width: SizeConfig.screenWidth*0.5,
+                                          decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius: BorderRadius.only(topRight: Radius.circular(10))
+                                          ),
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              SizedBox(height: 50,),
+                                              Container(
+                                                height: 80,
+                                                width: 80,
+                                                decoration: BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    border: Border.all(color: AppTheme.uploadColor,width: 2)
+                                                ),
+                                                child: Center(
+                                                  child: SvgPicture.asset("assets/svg/Planticon.svg",height: 40,width: 40,),
+                                                ),
+                                              ),
+
+                                              SizedBox(height: 20,),
+                                              Text("${qn.plantGridList[0].plantName}  ",
+                                              style: TextStyle(color: AppTheme.bgColor,fontFamily: 'RM',fontSize: 14),
+                                              ),
+                                              SizedBox(height: 3,),
+                                              Text("${qn.plantGridList[0].location}  ",
+                                                style: TextStyle(color: AppTheme.bgColor,fontFamily: 'RR',fontSize: 12),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ):Container(
+                                        height: 200,
+                                        width: SizeConfig.screenWidth*0.5,
+                                        color: Colors.white,
+                                      ),
+                                    ],
                                   ),
-
-                                  )
-                                  ).values.toList()
-                              ),
-                            )
+                                ),
 
 
-                          ],
+
+                                SingleChildScrollView(
+                                  child: Wrap(
+                                      children: qn.plantGridList.asMap()
+                                          .map((i, value) => MapEntry(i,    i==0?Container():
+                                      GestureDetector(
+                                        onTap: (){
+                                          qn.updatePlantDetailEdit(true);
+                                          Navigator.push(context, _createRoute());
+                                          qn.GetplantDetailDbhit(context, qn.plantGridList[i].plantId,PlantDetailsAddNewState());
+
+                                        },
+                                        child: Container(
+                                          height: 200,
+                                          width: SizeConfig.screenWidth*0.5,
+                                          color: Colors.white,
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              SizedBox(height: 50,),
+                                              GestureDetector(
+                                                onTap: (){
+                                                  qn.updatePlantDetailEdit(true);
+                                                  qn.GetplantDetailDbhit(context, qn.plantGridList[i].plantId,PlantDetailsAddNewState());
+                                                  Navigator.push(context, _createRoute());
+                                                },
+                                                child: Container(
+                                                  height: 80,
+                                                  width: 80,
+                                                  decoration: BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      border: Border.all(color: AppTheme.uploadColor,width: 2)
+                                                  ),
+                                                  child: Center(
+                                                    child: SvgPicture.asset("assets/svg/Planticon.svg",height: 40,width: 40,),
+                                                  ),
+                                                ),
+                                              ),
+
+                                              SizedBox(height: 20,),
+                                              Text("${qn.plantGridList[i].plantName}  ",
+                                                style: TextStyle(color: AppTheme.bgColor,fontFamily: 'RM',fontSize: 14),
+                                              ),
+                                              SizedBox(height: 3,),
+                                              Text("${qn.plantGridList[i].location}  ",
+                                                style: TextStyle(color: AppTheme.bgColor,fontFamily: 'RR',fontSize: 12),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+
+                                      )
+                                      ).values.toList()
+                                  ),
+                                )
+
+
+                              ],
+                            ),
+                          ),
                         ),
                       )
                     ],
@@ -319,9 +340,9 @@ class PlantDetailsGridState extends State<PlantDetailsGrid> with TickerProviderS
                         Navigator.pop(context);
                       },
                     ),
-                    SizedBox(width: SizeConfig.width5,),
+
                     Text("Our Plants",
-                      style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: SizeConfig.width16),
+                      style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: 16),
                     ),
 
                   ],
