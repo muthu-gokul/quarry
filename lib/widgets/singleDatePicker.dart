@@ -372,11 +372,11 @@ class _DatePickerDialogState extends State<_DatePickerDialog> {
       //  spacing: 8,
         children: <Widget>[
           TextButton(
-            child: Text(widget.cancelText ?? localizations.cancelButtonLabel),
+            child: Text("CANCEL",style: TextStyle(fontSize: 14,fontFamily: 'RM',color: Colors.grey),),
             onPressed: _handleCancel,
           ),
           TextButton(
-            child: Text(widget.confirmText ?? localizations.okButtonLabel),
+            child: Text("OK",style: TextStyle(fontSize: 14,fontFamily: 'RM',color: Colors.grey),),
             onPressed: _handleOk,
           ),
         ],
@@ -439,7 +439,7 @@ class _DatePickerDialogState extends State<_DatePickerDialog> {
     }
 
     final Widget header = _DatePickerHeader(
-      helpText: widget.helpText ?? localizations.datePickerHelpText,
+      //helpText: widget.helpText ?? localizations.datePickerHelpText,
       titleText: dateText,
       titleStyle: dateStyle,
       orientation: orientation,
@@ -529,7 +529,7 @@ class _DatePickerHeader extends StatelessWidget {
      this.icon,
      this.iconTooltip,
      this.onIconPressed,
-  }) : assert(helpText != null),
+  }) :
         assert(orientation != null),
         assert(isShort != null),
         super(key: key);
@@ -594,12 +594,7 @@ class _DatePickerHeader extends StatelessWidget {
       color: onPrimarySurfaceColor,
     );
 
-    final Text help = Text(
-      helpText,
-      style: helpStyle,
-      maxLines: 1,
-      overflow: TextOverflow.ellipsis,
-    );
+
     final Text title = Text(
       "$titleText",
       semanticsLabel: titleSemanticsLabel ?? titleText,
@@ -618,7 +613,7 @@ class _DatePickerHeader extends StatelessWidget {
     switch (orientation) {
       case Orientation.portrait:
         return SizedBox(
-          height: 80,
+          height: 50,
           child: Material(
             color: primarySurfaceColor,
             child: Padding(
@@ -629,9 +624,7 @@ class _DatePickerHeader extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  const SizedBox(height: 16),
-                  help,
-                  const Flexible(child: SizedBox(height: 38)),
+
                   Row(
                     children: <Widget>[
                       Expanded(child: title),
@@ -652,12 +645,7 @@ class _DatePickerHeader extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 const SizedBox(height: 16),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: _headerPaddingLandscape,
-                  ),
-                  child: help,
-                ),
+
                 SizedBox(height: isShort ? 16 : 56),
                 Expanded(
                   child: Padding(

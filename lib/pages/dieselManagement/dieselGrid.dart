@@ -128,11 +128,25 @@ class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
                     //Diesel Purchase
                     Stack(
                       children: [
+                        Opacity(
+                          opacity: 0.8,
+                          child: Container(
+                            width: double.maxFinite,
+                            height:  200,
 
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image: AssetImage("assets/svg/gridHeader/reportsHeader.jpg",),
+                                    fit: BoxFit.cover
+                                )
+
+                            ),
+                          ),
+                        ),
                         Container(
                           height: 50,
                           width: SizeConfig.screenWidth,
-                          color: AppTheme.yellowColor,
+                         // color: AppTheme.yellowColor,
 
                           child: Row(
                             children: [
@@ -164,7 +178,7 @@ class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
                         Container(
                             margin: EdgeInsets.only(top: 50),
                             padding: EdgeInsets.only(left:5),
-                            color: AppTheme.yellowColor,
+                          //  color: AppTheme.yellowColor,
                             height: 110,
                             alignment: Alignment.topCenter,
 
@@ -249,11 +263,26 @@ class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
                     //Diesel Management
                     Stack(
                       children: [
+                        Opacity(
+                          opacity: 0.8,
+                          child: Container(
+                            width: double.maxFinite,
+                            height:  160,
+
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image: AssetImage("assets/svg/gridHeader/reportsHeader.jpg",),
+                                    fit: BoxFit.cover
+                                )
+
+                            ),
+                          ),
+                        ),
                         Container(
                           height: 50,
                           padding: EdgeInsets.only(bottom: 10),
                           width: SizeConfig.screenWidth,
-                          color: AppTheme.yellowColor,
+                         // color: AppTheme.yellowColor,
                           child: Row(
                             children: [
                               GestureDetector(
@@ -284,7 +313,7 @@ class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
                         Container(
                             margin: EdgeInsets.only(top: 50),
                             padding: EdgeInsets.only(left:5),
-                            color: AppTheme.yellowColor,
+                          //  color: AppTheme.yellowColor,
                             height: 110,
                             alignment: Alignment.topCenter,
 

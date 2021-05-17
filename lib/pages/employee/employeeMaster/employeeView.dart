@@ -11,6 +11,7 @@ import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/notifier/employeeNotifier.dart';
+import 'package:quarry/widgets/bottomBarAddButton.dart';
 import 'package:quarry/widgets/customTextField.dart';
 import 'package:quarry/widgets/sidePopUp/sidePopUpWithoutSearch.dart';
 import 'package:quarry/widgets/validationErrorText.dart';
@@ -708,11 +709,12 @@ class _EmployeeMasterViewState extends State<EmployeeMasterView> with TickerProv
                 width: SizeConfig.screenWidth,
                 child: Row(
                   children: [
-                    IconButton(icon: Icon(Icons.arrow_back), onPressed: (){
-                      en.clearInsertForm();
-                      Navigator.pop(context);
-                    }),
-                    SizedBox(width: SizeConfig.width5,),
+                    CancelButton(
+                      ontap: (){
+                        en.clearInsertForm();
+                        Navigator.pop(context);
+                      },
+                    ),
                     Text("Employee Details",
                       style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: 16),
                     ),

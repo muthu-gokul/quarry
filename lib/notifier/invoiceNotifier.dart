@@ -570,7 +570,10 @@ class InvoiceNotifier extends ChangeNotifier{
 
             invoiceMaterialMappingList=t1.map((e) => InvoiceMaterialMappingListModel.fromJson(e)).toList();
             invoiceOtherChargesMappingList=t2.map((e) => InvoiceOtherChargesMappingList.fromJson(e)).toList();
+            invoiceOtherChargesMappingList.forEach((element) {
 
+              otherCharges=double.parse((Decimal.parse(otherCharges.toString()) + Decimal.parse(element.OtherChargesAmount==null?"0.0":element.OtherChargesAmount.toString())).toString());
+            });
 
 
 

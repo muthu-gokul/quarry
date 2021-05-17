@@ -14,6 +14,7 @@ import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/alertDialog.dart';
+import 'package:quarry/widgets/bottomBarAddButton.dart';
 import 'package:quarry/widgets/customTextField.dart';
 import 'package:quarry/widgets/searchdropdownSingleSelect.dart';
 
@@ -321,23 +322,7 @@ class GoodsOutGateFormState extends State<GoodsOutGateForm> with TickerProviderS
                         size: Size( SizeConfig.screenWidth, 65),
                         painter: RPSCustomPainter3(),
                       ),
-                      Center(
-                        heightFactor: 0.5,
-                        child: FloatingActionButton(backgroundColor: AppTheme.yellowColor, child: Icon(Icons.done,color: AppTheme.bgColor,size: 30,), elevation: 0.1, onPressed: () {
 
-                          if(gr.OGF_vehicleNumberController.text.isEmpty){
-                            CustomAlert().commonErrorAlert(context, "Enter Vehicle Number", "");
-                          }
-                          else if(gr.OGF_emptyWeightofVehicle.text.isEmpty){
-                            CustomAlert().commonErrorAlert(context, "Enter Empty Weight of Vehicle", "");
-                          }
-                          else{
-                            gr.UpdateGoodsDbHit(context,null,GoodsReceivedGridState());
-                          }
-
-
-                        }),
-                      ),
                       Container(
                         width:  SizeConfig.screenWidth,
                         height: 80,
@@ -353,6 +338,26 @@ class GoodsOutGateFormState extends State<GoodsOutGateForm> with TickerProviderS
                   ),
                 ),
               ),
+              //add button
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: AddButton(
+                  ontap: (){
+                    node.unfocus();
+                    if(gr.OGF_vehicleNumberController.text.isEmpty){
+                      CustomAlert().commonErrorAlert(context, "Enter Vehicle Number", "");
+                    }
+                    else if(gr.OGF_emptyWeightofVehicle.text.isEmpty){
+                      CustomAlert().commonErrorAlert(context, "Enter Empty Weight of Vehicle", "");
+                    }
+                    else{
+                      gr.UpdateGoodsDbHit(context,null,GoodsReceivedGridState());
+                    }
+
+
+                  },
+                ),
+              ),
 
 
               Container(
@@ -360,28 +365,17 @@ class GoodsOutGateFormState extends State<GoodsOutGateForm> with TickerProviderS
                 width: SizeConfig.screenWidth,
                 child: Row(
                   children: [
-                    IconButton(icon: Icon(Icons.clear,color:AppTheme.bgColor,), onPressed:(){
-                      Navigator.pop(context);
-                      gr.clearOGFform();
+                    CancelButton(
+                      ontap: (){
+                        Navigator.pop(context);
+                        gr.clearOGFform();
+                      },
+                    ),
 
-                    }),
-                    SizedBox(width: SizeConfig.width5,),
-                    Text("${gr.OGF_index!=null && gr.OGF_index!=-1? gr.outGateFormList[gr.OGF_index].purchaseOrderNumber:""}",
+                    Text("${gr.OGF_index!=null && gr.OGF_index!=-1? gr.outGateFormList[gr.OGF_index].purchaseOrderNumber:""} OutGate Form",
                       style: TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 16),
                     ),
 
-                  /*  Spacer(),
-                    Container(
-                      padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(50)
-                      ),
-                      child: Text("${gr.ML_Date}",
-                        style: TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 16),
-                      ),
-                    ),
-                    SizedBox(width: SizeConfig.width10,),*/
                   ],
                 ),
               ),

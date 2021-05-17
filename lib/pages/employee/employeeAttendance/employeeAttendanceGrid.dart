@@ -148,7 +148,7 @@ class _EmployeeAttendanceGridState extends State<EmployeeAttendanceGrid> {
                  gridData: ean.EmployeeAttendanceGridList,
                  gridDataRowList: gridDataRowList,
                  func: (index){
-                   if(selectedIndex==index){
+                 /*  if(selectedIndex==index){
                      setState(() {
                        selectedIndex=-1;
                        showEdit=false;
@@ -160,7 +160,7 @@ class _EmployeeAttendanceGridState extends State<EmployeeAttendanceGrid> {
                        selectedIndex=index;
                        showEdit=true;
                      });
-                   }
+                   }*/
                  },
                ),
 

@@ -164,6 +164,8 @@ class EmployeeNotifier extends ChangeNotifier{
           selectSalaryTypeName=employeeSalaryTypeList[2].employeeSalaryTypeName;
           EmployeePrefix=t7[0]['EmployeePrefix'];
           EmployeeCode=t7[0]['EmployeeCode'];
+          print("EmployeeCode$EmployeeCode");
+
         }
 
         updateEmployeeLoader(false);
@@ -212,6 +214,7 @@ class EmployeeNotifier extends ChangeNotifier{
   TextEditingController employeeAddress=new TextEditingController();
   TextEditingController employeeCity=new TextEditingController();
   TextEditingController employeeState=new TextEditingController();
+  TextEditingController employeeCountry=new TextEditingController();
   TextEditingController employeeZipcode=new TextEditingController();
 
 
@@ -260,6 +263,10 @@ class EmployeeNotifier extends ChangeNotifier{
     employeeZipcode.clear();
     employeeState.clear();
     employeeCity.clear();
+    employeeEmail.clear();
+    employeeBankName.clear();
+    employeeHolderName.clear();
+
      selectEmployeeDesignationId = null;
      selectEmployeeDesignationName = null;
 
@@ -284,6 +291,7 @@ class EmployeeNotifier extends ChangeNotifier{
 
   InsertEmployeeDbHit(BuildContext context)  async{
     updateEmployeeLoader(true);
+
 
     var body={
       "Fields": [
@@ -385,7 +393,7 @@ class EmployeeNotifier extends ChangeNotifier{
         {
           "Key": "EmployeeCountry",
           "Type": "String",
-          "Value": ""
+          "Value": employeeCountry.text
         },
         {
           "Key": "EmployeeZipcode",
@@ -487,6 +495,7 @@ class EmployeeNotifier extends ChangeNotifier{
 
 
           Navigator.pop(context);
+          clearInsertForm();
           GetEmployeeIssueDbHit(context, null);
 
           //

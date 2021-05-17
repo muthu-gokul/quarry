@@ -14,6 +14,7 @@ import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/alertDialog.dart';
+import 'package:quarry/widgets/bottomBarAddButton.dart';
 import 'package:quarry/widgets/customTextField.dart';
 
 import 'goodsReceivedGrid.dart';
@@ -240,36 +241,7 @@ class GoodsInGateFormState extends State<GoodsInGateForm> with TickerProviderSta
                         size: Size( SizeConfig.screenWidth, 65),
                         painter: RPSCustomPainter3(),
                       ),
-                      Center(
-                        heightFactor: 0.5,
-                        child: FloatingActionButton(backgroundColor: AppTheme.yellowColor, child: Icon(Icons.done,color: AppTheme.bgColor,size: 30,), elevation: 0.1, onPressed: () {
-                          print(gr.ML_GoodsorderId);
-                          if(gr.vehicleNo.text.isEmpty){
-                            CustomAlert().commonErrorAlert(context, "Enter Vehicle Number", "");
-                          }
-                          else if(gr.loadedWeight.text.isEmpty){
-                            CustomAlert().commonErrorAlert(context, "Enter Loaded Weight", "");
-                          }
-                          else{
-                            if(gr.ML_GoodsorderId==0){
-                              gr.InsertGoodsDbHit(context,GoodsReceivedGridState());
-                            }
-                            else{
-                              List js=[];
-                              js=gr.IGF_Materials.map((e) => e.toJsonInWard(gr.selectedVehicleTypeId,
-                                  gr.vehicleNo.text,
-                                  double.parse(gr.loadedWeight.text))
-                              ).toList();
-                              print("Update-$js");
-                              gr.UpdateGoodsDbHit(context,js,GoodsReceivedGridState());
-                            }
 
-
-                          }
-
-
-                        }),
-                      ),
                       Container(
                         width:  SizeConfig.screenWidth,
                         height: 80,
@@ -285,6 +257,37 @@ class GoodsInGateFormState extends State<GoodsInGateForm> with TickerProviderSta
                   ),
                 ),
               ),
+              //add button
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: AddButton(
+                  ontap: (){
+                    node.unfocus();
+                    if(gr.vehicleNo.text.isEmpty){
+                      CustomAlert().commonErrorAlert(context, "Enter Vehicle Number", "");
+                    }
+                    else if(gr.loadedWeight.text.isEmpty){
+                      CustomAlert().commonErrorAlert(context, "Enter Loaded Weight", "");
+                    }
+                    else{
+                      if(gr.ML_GoodsorderId==0){
+                        gr.InsertGoodsDbHit(context,GoodsReceivedGridState());
+                      }
+                      else{
+                        List js=[];
+                        js=gr.IGF_Materials.map((e) => e.toJsonInWard(gr.selectedVehicleTypeId,
+                            gr.vehicleNo.text,
+                            double.parse(gr.loadedWeight.text))
+                        ).toList();
+                        print("Update-$js");
+                        gr.UpdateGoodsDbHit(context,js,GoodsReceivedGridState());
+                      }
+                    }
+
+
+                  },
+                ),
+              ),
 
 
               Container(
@@ -292,14 +295,15 @@ class GoodsInGateFormState extends State<GoodsInGateForm> with TickerProviderSta
                 width: SizeConfig.screenWidth,
                 child: Row(
                   children: [
-                    IconButton(icon: Icon(Icons.clear,color:AppTheme.bgColor,), onPressed:(){
-                      Navigator.pop(context);
-                      gr.IGF_clear();
-                      setState(() {
-                        gr.IGF_Materials.removeLast();
-                      });
-                      print(gr.IGF_Materials.length);
-                    }),
+                    CancelButton(
+                      ontap: (){
+                        Navigator.pop(context);
+                        gr.IGF_clear();
+                        setState(() {
+                          gr.IGF_Materials.removeLast();
+                        });
+                      },
+                    ),
                     SizedBox(width: SizeConfig.width5,),
                     Text("InGate Form",
                       style: TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 16),

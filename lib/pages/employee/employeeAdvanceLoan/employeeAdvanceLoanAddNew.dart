@@ -7,7 +7,9 @@ import 'package:quarry/notifier/enployeeAdvanceLoanNotifier.dart';
 import 'package:quarry/pages/sale/salesDetail.dart';
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
+import 'package:quarry/styles/constants.dart';
 import 'package:quarry/styles/size.dart';
+import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/bottomBarAddButton.dart';
 import 'package:quarry/widgets/customTextField.dart';
 import 'package:quarry/widgets/searchdropdownSingleSelect.dart';
@@ -222,10 +224,16 @@ class _EmployeeAdvanceAddNewState extends State<EmployeeAdvanceAddNew> {
                                     GestureDetector(
                                       onTap: () {
                                         node.unfocus();
-                                        setState(() {
-                                          _keyboardVisible=false;
-                                          isAmountTypeOpen=true;
-                                        });
+                                        if(eal.employeeCodeController.text.isNotEmpty){
+                                          setState(() {
+                                            _keyboardVisible=false;
+                                            isAmountTypeOpen=true;
+                                          });
+                                        }
+                                        else{
+                                          CustomAlert().commonErrorAlert(context, "Enter Employee Code", "");
+                                        }
+
                                       },
                                       child: SidePopUpParent(
                                         text: eal.selectedAmountType == null ? "Select Amount Type" : eal.selectedAmountType,
@@ -314,6 +322,7 @@ class _EmployeeAdvanceAddNewState extends State<EmployeeAdvanceAddNew> {
                                       children: [
                                         AddNewLabelTextField(
                                           labelText: 'Advance Amount',
+                                          regExp: decimalReg,
                                           textInputType: TextInputType.number,
                                           textEditingController: eal.advanceAmountController,
                                           scrollPadding: 400,

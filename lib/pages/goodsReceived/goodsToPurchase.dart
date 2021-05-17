@@ -13,6 +13,7 @@ import 'package:quarry/pages/quarryMaster/plantDetailsAddNew.dart';
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
+import 'package:quarry/widgets/bottomBarAddButton.dart';
 
 
 
@@ -497,15 +498,7 @@ class GoodsToPurchaseState extends State<GoodsToPurchase> with TickerProviderSta
                         size: Size( SizeConfig.screenWidth, 55),
                         painter: RPSCustomPainter(),
                       ),
-                      Center(
-                        heightFactor: 0.5,
-                        child: FloatingActionButton(backgroundColor: AppTheme.yellowColor, child: Icon(Icons.arrow_back,color: AppTheme.bgColor,
-                          size: 30,
-                        ), elevation: 0.1, onPressed: () {
-                          Navigator.pop(context);
-                          gr.GPO_clear();
-                        }),
-                      ),
+
                       Container(
                         width:  SizeConfig.screenWidth,
                         height: 80,
@@ -561,6 +554,19 @@ class GoodsToPurchaseState extends State<GoodsToPurchase> with TickerProviderSta
                   ),
                 ),
               ),
+              //add button
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: AddButton(
+                  ontap: (){
+                    gr.GPO_clear();
+
+                    Navigator.pop(context);
+
+                  },
+                  image: "assets/svg/drawer/back-icon.svg",
+                ),
+              ),
 
 
               Container(
@@ -568,12 +574,13 @@ class GoodsToPurchaseState extends State<GoodsToPurchase> with TickerProviderSta
                 width: SizeConfig.screenWidth,
                 child: Row(
                   children: [
-                    IconButton(icon: Icon(Icons.clear,color:AppTheme.bgColor,), onPressed:(){
-                      gr.GPO_clear();
+                    CancelButton(
+                      ontap: (){
+                        gr.GPO_clear();
 
-                      Navigator.pop(context);
-                    }),
-                    SizedBox(width: SizeConfig.width5,),
+                        Navigator.pop(context);
+                      },
+                    ),
                     Text("Goods to Purchase",
                       style: TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 16),
                     ),

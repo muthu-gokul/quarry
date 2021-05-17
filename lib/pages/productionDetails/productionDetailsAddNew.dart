@@ -109,12 +109,12 @@ class ProductionDetailAddNewState extends State<ProductionDetailAddNew> with Tic
                     children: [
                       Container(
                         width: double.maxFinite,
-                        height: SizeConfig.height200,
+                        height: 180,
 
                         decoration: BoxDecoration(
                             image: DecorationImage(
                                 image: AssetImage(
-                                  "assets/images/saleFormheader.jpg",),
+                                  "assets/svg/gridHeader/productionHeader.jpg",),
                                 fit: BoxFit.cover
                             )
 

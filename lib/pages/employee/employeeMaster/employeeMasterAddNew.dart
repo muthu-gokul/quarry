@@ -8,11 +8,13 @@ import 'package:provider/provider.dart';
 import 'package:quarry/pages/sale/salesDetail.dart';
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
+import 'package:quarry/styles/constants.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/notifier/employeeNotifier.dart';
 import 'package:quarry/widgets/bottomBarAddButton.dart';
 import 'package:quarry/widgets/customTextField.dart';
 import 'package:quarry/widgets/sidePopUp/sidePopUpWithoutSearch.dart';
+import 'package:quarry/widgets/singleDatePicker.dart';
 import 'package:quarry/widgets/validationErrorText.dart';
 
 class EmployeeMasterAddNew extends StatefulWidget {
@@ -56,6 +58,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
   bool designation=false;
   bool employeeType=false;
   bool salary=false;
+  bool dob=false;
   bool phoneNo=false;
   bool address=false;
   bool aadhaar=false;
@@ -223,7 +226,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                         AnimatedContainer(
                                           duration: Duration(milliseconds: 300),
                                           curve: Curves.easeIn,
-                                          height: salutationOpen? 100:50,
+                                          height: salutationOpen? 120:50,
                                           width: SizeConfig.screenWidth,
                                           alignment: Alignment.topCenter,
                                           child: Stack(
@@ -265,6 +268,9 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                                     ),
                                                     maxLines: null,
                                                     textInputAction: TextInputAction.done,
+                                                    inputFormatters: [
+                                                      FilteringTextInputFormatter.allow(RegExp('[A-Za-z ]')),
+                                                    ],
 
                                                     onEditingComplete: (){
                                                       node.unfocus();
@@ -281,7 +287,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                               Align(
                                                 alignment: Alignment.centerLeft,
                                                 child: AnimatedContainer(
-                                                  height:salutationOpen? 100:30,
+                                                  height:salutationOpen? 120:30,
                                                   width: 60,
                                                   duration: Duration(milliseconds: 300),
                                                   curve: Curves.easeIn,
@@ -320,6 +326,15 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                                           },
                                                           child: Text("Ms",style: TextStyle(fontFamily: 'RR',fontSize: 16,color: AppTheme.bgColor),)
                                                       ),
+                                                      InkWell(
+                                                          onTap: (){
+                                                            setState(() {
+                                                              salutationOpen=false;
+                                                              en.selectedSalutation="Mx";
+                                                            });
+                                                          },
+                                                          child: Text("Mx",style: TextStyle(fontFamily: 'RR',fontSize: 16,color: AppTheme.bgColor),)
+                                                      ),
 
                                                     ],
                                                   )
@@ -349,7 +364,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                         AddNewLabelTextField(
                                           labelText: 'Last Name',
                                           textEditingController: en.employeeLastName,
-                                          textInputType: TextInputType.number,
+                                          regExp: '[A-Za-z  ]',
                                           ontap: () {
                                             setState(() {
                                               _keyboardVisible=true;
@@ -453,6 +468,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                                       scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                                       setState(() {
                                                         _keyboardVisible=true;
+                                                        isListScroll=true;
                                                       });
 
                                                     },
@@ -472,7 +488,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                                     textInputAction: TextInputAction.done,
                                                     keyboardType: TextInputType.number,
                                                     inputFormatters: [
-                                                      FilteringTextInputFormatter.allow(RegExp('[0-9.]')),
+                                                      FilteringTextInputFormatter.allow(RegExp(decimalReg)),
                                                     ],
 
                                                     onEditingComplete: (){
@@ -553,16 +569,29 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                         GestureDetector(
                                           onTap: () async{
                                             node.unfocus();
-                                            final DateTime picked = await showDatePicker(
-                                              context: context,
-                                              initialDate: en.joiningDate==null?DateTime.now():en.joiningDate, // Refer step 1
-                                              firstDate: DateTime(2000),
-                                              lastDate: DateTime(2100),
-                                            );
+                                            final DateTime picked = await showDatePicker2(
+                                                context: context,
+                                                initialDate:  en.joiningDate==null?DateTime.now():en.joiningDate, // Refer step 1
+                                                firstDate: DateTime(1950),
+                                                lastDate: DateTime(2100),
+                                                builder: (BuildContext context,Widget child){
+                                                  return Theme(
+                                                    data: Theme.of(context).copyWith(
+                                                      colorScheme: ColorScheme.light(
+                                                        primary: AppTheme.yellowColor, // header background color
+                                                        onPrimary: AppTheme.bgColor, // header text color
+                                                        onSurface: AppTheme.addNewTextFieldText, // body text color
+                                                      ),
+
+                                                    ),
+                                                    child: child,
+                                                  );
+                                                });
                                             if (picked != null)
                                               setState(() {
                                                 en.joiningDate = picked;
                                               });
+
                                           },
                                           child: Container(
                                             margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,top:15,),
@@ -585,6 +614,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                             ),
                                           ),
                                         ),
+
 
                                         //Contact details
                                         GestureDetector(
@@ -647,7 +677,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                           duration: Duration(milliseconds: 300),
                                           curve: Curves.easeIn,
                                           width: SizeConfig.screenWidth,
-                                          height: contactOpen? (340+80.0):0,
+                                          height: contactOpen? (410+80.0):0,
                                           //  margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20),
                                           child: Column(
                                             children: [
@@ -655,6 +685,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                                 labelText: 'Phone Number',
                                                 textInputType: TextInputType.number,
                                                 textLength: 10,
+                                                regExp: '[0-9]',
                                                 textEditingController: en.employeePhoneNumber,
                                                 scrollPadding: 500,
                                                 ontap: () {
@@ -699,7 +730,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                                 labelText: 'Address',
                                                maxlines: null,
                                                 textEditingController: en.employeeAddress,
-                                                scrollPadding: 700,
+                                                scrollPadding: 600,
                                                 ontap: () {
                                                   setState(() {
                                                     _keyboardVisible=true;
@@ -719,10 +750,9 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                               address?ValidationErrorText(title:"* Enter Address" ,):Container(),
                                               AddNewLabelTextField(
                                                 labelText: 'City',
-
-                                                textLength: 10,
+                                                regExp: '[A-Za-z  ]',
                                                 textEditingController: en.employeeCity,
-                                                scrollPadding: 750,
+                                                scrollPadding: 600,
                                                 ontap: () {
                                                   setState(() {
                                                     _keyboardVisible=true;
@@ -741,9 +771,31 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                               ),
                                               AddNewLabelTextField(
                                                 labelText: 'State',
+                                                regExp: '[A-Za-z  ]',
                                                 textInputType: TextInputType.emailAddress,
                                                 textEditingController: en.employeeState,
-                                                scrollPadding: 800,
+                                                scrollPadding: 600,
+                                                ontap: () {
+                                                  setState(() {
+                                                    _keyboardVisible=true;
+                                                  });
+                                                  scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                                },
+
+                                                onEditComplete: () {
+                                                  node.unfocus();
+                                                  Timer(Duration(milliseconds: 100), (){
+                                                    setState(() {
+                                                      _keyboardVisible=false;
+                                                    });
+                                                  });
+                                                },
+                                              ),
+                                              AddNewLabelTextField(
+                                                labelText: 'Country',
+                                                regExp: '[A-Za-z  ]',
+                                                textEditingController: en.employeeCountry,
+                                                scrollPadding: 600,
                                                 ontap: () {
                                                   setState(() {
                                                     _keyboardVisible=true;
@@ -764,8 +816,9 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                                 labelText: 'Zipcode',
                                                 textInputType: TextInputType.number,
                                                 textEditingController: en.employeeZipcode,
-                                                scrollPadding: 850,
+                                                scrollPadding: 600,
                                                 textLength: 6,
+                                                regExp: '[0-9]',
                                                 ontap: () {
                                                   setState(() {
                                                     _keyboardVisible=true;
@@ -847,22 +900,35 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                           duration: Duration(milliseconds: 300),
                                           curve: Curves.easeIn,
                                           width: SizeConfig.screenWidth,
-                                          height: otherDetailsOpen? (470+80.0):0,
+                                          height: otherDetailsOpen? (475+80.0):0,
                                           //  margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20),
                                           child: Column(
                                             children: [
                                               GestureDetector(
                                                 onTap: () async{
-                                                  final DateTime picked = await showDatePicker(
-                                                    context: context,
-                                                    initialDate: en.dob==null?DateTime.now():en.dob, // Refer step 1
-                                                    firstDate: DateTime(2000),
-                                                    lastDate: DateTime(2100),
-                                                  );
+                                                  final DateTime picked = await showDatePicker2(
+                                                      context: context,
+                                                      initialDate: en.dob==null?DateTime.now():en.dob,
+                                                      firstDate: DateTime(1950),
+                                                      lastDate: DateTime(2100),
+                                                      builder: (BuildContext context,Widget child){
+                                                        return Theme(
+                                                          data: Theme.of(context).copyWith(
+                                                            colorScheme: ColorScheme.light(
+                                                              primary: AppTheme.yellowColor, // header background color
+                                                              onPrimary: AppTheme.bgColor, // header text color
+                                                              onSurface: AppTheme.addNewTextFieldText, // body text color
+                                                            ),
+
+                                                          ),
+                                                          child: child,
+                                                        );
+                                                      });
                                                   if (picked != null)
                                                     setState(() {
                                                       en.dob = picked;
                                                     });
+
                                                 },
                                                 child: Container(
                                                   margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,top:15,),
@@ -885,6 +951,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                                   ),
                                                 ),
                                               ),
+                                              dob?ValidationErrorText(title:"* Select Date of Birth" ,):Container(),
 
                                               GestureDetector(
 
@@ -925,6 +992,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                                 labelText: 'Referred By',
                                                 textEditingController: en.employeeReferredBy,
                                                 scrollPadding: 600,
+                                                regExp: '[A-Za-z  ]',
                                                 ontap: () {
                                                   setState(() {
                                                     _keyboardVisible=true;
@@ -944,7 +1012,8 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                               AddNewLabelTextField(
                                                 labelText: 'Remarks',
                                                 textEditingController: en.employeeRemarks,
-                                                scrollPadding: 700,
+                                                regExp: '[A-Za-z  ]',
+                                                scrollPadding: 600,
                                                 ontap: () {
                                                   setState(() {
                                                     _keyboardVisible=true;
@@ -964,9 +1033,10 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                               AddNewLabelTextField(
                                                 labelText: 'Aadhaar Number',
                                                 textLength: 12,
+                                                regExp: '[0-9]',
                                                 textInputType: TextInputType.number,
                                                 textEditingController: en.employeeAadhaarNo,
-                                                scrollPadding: 700,
+                                                scrollPadding: 600,
                                                 ontap: () {
                                                   setState(() {
                                                     _keyboardVisible=true;
@@ -986,6 +1056,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                               aadhaar?ValidationErrorText(title:"* Enter Aadhaar Number" ,):Container(),
                                               AddNewLabelTextField(
                                                 labelText: 'Pan No',
+                                                regExp: '[A-Za-z0-9]',
                                                 textEditingController: en.employeePanNo,
                                                 textLength: 10,
                                                 scrollPadding: 750,
@@ -1028,7 +1099,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
 
 
                                         //Bank details
-                                        GestureDetector(
+                                        en.selectPaymentMethodName=="Bank"?GestureDetector(
                                           onTap: (){
                                             BankDetailsArrowAnimationController.isCompleted
                                                 ? BankDetailsArrowAnimationController.reverse()
@@ -1083,7 +1154,8 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                               ),
                                             ),
                                           ),
-                                        ),
+                                        ):Container(),
+
                                         AnimatedContainer(
                                           duration: Duration(milliseconds: 300),
                                           curve: Curves.easeIn,
@@ -1096,6 +1168,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                                 labelText: 'Account Holder Name',
                                                 textEditingController: en.employeeHolderName,
                                                 scrollPadding: 700,
+                                                regExp: '[A-Za-z  ]',
                                                 ontap: () {
                                                   setState(() {
                                                     _keyboardVisible=true;
@@ -1114,6 +1187,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                               ),
                                               AddNewLabelTextField(
                                                 labelText: 'Bank Name',
+                                                regExp: '[A-Za-z  ]',
                                                 textEditingController: en.employeeBankName,
                                                 scrollPadding: 500,
                                                 ontap: () {
@@ -1134,6 +1208,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                               ),
                                               AddNewLabelTextField(
                                                 labelText: 'Account Number',
+                                                regExp: '[0-9]',
                                                 textInputType: TextInputType.number,
                                                 textEditingController: en.employeeAccNo,
                                                 scrollPadding: 600,
@@ -1155,6 +1230,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                               ),
                                               AddNewLabelTextField(
                                                 labelText: 'Branch Name',
+                                                regExp: '[A-Za-z  ]',
                                                 textEditingController: en.employeeBranchName,
                                                 scrollPadding: 700,
                                                 ontap: () {
@@ -1176,6 +1252,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                               AddNewLabelTextField(
                                                 labelText: 'IFSC Code',
                                                 textEditingController: en.employeeIFSC,
+                                                regExp: '[A-Za-z0-9]',
                                                 scrollPadding: 750,
                                                 ontap: () {
                                                   setState(() {
@@ -1329,6 +1406,9 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                       if(en.selectEmployeeTypeId==null){setState(() {employeeType=true;});}
                       else{setState(() {employeeType=false;});}
 
+                      if(en.dob==null){setState(() {dob=true;});}
+                      else{setState(() {dob=false;});}
+
                       if(en.employeeSalary.text.isEmpty){setState(() {salary=true;});}
                       else{setState(() {salary=false;});}
 
@@ -1341,7 +1421,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                       if(en.employeeAadhaarNo.text.isEmpty){setState(() {aadhaar=true;otherDetailsOpen=true;otherDetailsArrowAnimationController.forward();});}
                       else{setState(() {aadhaar=false;});}
 
-                      if(!firstName && !designation && !employeeType && !salary && !phoneNo && !address && !aadhaar){
+                      if(!firstName && !designation && !employeeType && !salary && !phoneNo && !address && !aadhaar && !dob){
                         en.InsertEmployeeDbHit(context);
                       }
 

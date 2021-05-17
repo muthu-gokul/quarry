@@ -79,12 +79,12 @@ class _MachineManagementAddNewState extends State<MachineManagementAddNew> {
                     children: [
                       Container(
                         width: double.maxFinite,
-                        height: 200,
+                        height: 180,
 
                         decoration: BoxDecoration(
                             image: DecorationImage(
                                 image: AssetImage(
-                                  "assets/images/saleFormheader.jpg",),
+                                  "assets/svg/gridHeader/machineHeader.jpg",),
                                 fit: BoxFit.cover
                             )
 

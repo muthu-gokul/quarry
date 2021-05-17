@@ -383,11 +383,7 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                                                   onPrimary: AppTheme.bgColor, // header text color
                                                   onSurface: AppTheme.addNewTextFieldText, // body text color
                                                 ),
-                                                textButtonTheme: TextButtonThemeData(
-                                                  style: TextButton.styleFrom(
-                                                    primary: Colors.red, // button text color
-                                                  ),
-                                                ),
+
                                               ),
                                               child: child,
                                             );
@@ -1172,10 +1168,10 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                       ),
 
                       Text("Purchase Orders",
-                        style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: SizeConfig.width16),
+                        style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: 16),
                       ),
                       Text(pn.isPurchaseEdit?" / Edit":" / Add New",
-                        style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: SizeConfig.width16),
+                        style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: 16),
                       ),
                     ],
                   ),

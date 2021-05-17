@@ -91,17 +91,32 @@ class InvoiceGridState extends State<InvoiceGrid> with TickerProviderStateMixin{
           child: Consumer<InvoiceNotifier>(
             builder: (context,inv,child)=>  Stack(
               children: [
+                Opacity(
+                  opacity: 0.8,
+                  child: Container(
+                    width: double.maxFinite,
+                    height:  160,
+
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image: AssetImage("assets/svg/gridHeader/reportsHeader.jpg",),
+                            fit: BoxFit.cover
+                        )
+
+                    ),
+                  ),
+                ),
                 Container(
                   height: 50,
                   width: SizeConfig.screenWidth,
-                  color: AppTheme.yellowColor,
+                 // color: AppTheme.yellowColor,
                   child: Row(
                     children: [
                       GestureDetector(
                             onTap: widget.drawerCallback,
                           child: NavBarIcon()),
 
-                      Text("Invoice",
+                      Text(inv.isInvoiceReceivable?"Receivable Invoice":"Payable Invoice",
                         style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize:16),
                       ),
 
@@ -114,7 +129,7 @@ class InvoiceGridState extends State<InvoiceGrid> with TickerProviderStateMixin{
                 Container(
                     margin: EdgeInsets.only(top: 50),
                     padding: EdgeInsets.only(left:5,bottom:25),
-                    color: AppTheme.yellowColor,
+                  //  color: AppTheme.yellowColor,
                     height: 110,
                     alignment: Alignment.topCenter,
 

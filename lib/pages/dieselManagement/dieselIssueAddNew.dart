@@ -102,11 +102,11 @@ class DieselIssueFormState extends State<DieselIssueForm> with TickerProviderSta
                   children: [
                     Container(
                       width: double.maxFinite,
-                      height: SizeConfig.height200,
+                      height: 195,
 
                       decoration: BoxDecoration(
                           image: DecorationImage(
-                              image: AssetImage("assets/images/saleFormheader.jpg",),
+                              image: AssetImage("assets/svg/gridHeader/DieselHeader.jpg",),
                               fit: BoxFit.cover
                           )
 
@@ -461,8 +461,8 @@ class DieselIssueFormState extends State<DieselIssueForm> with TickerProviderSta
                     if(dn.DI_machineID==null) {setState(() {machine = true;});}
                     else{setState(() {machine=false;});}
 
-                    if(dn.DI_machineRunningMeter.text.isEmpty) {setState(() {machineReading = true;});}
-                    else{setState(() {machineReading=false;});}
+                    /*if(dn.DI_machineRunningMeter.text.isEmpty) {setState(() {machineReading = true;});}
+                    else{setState(() {machineReading=false;});}*/
 
                     if(dn.DI_issueID==null) {setState(() {issuedBy = true;});}
                     else{setState(() {issuedBy=false;});}
@@ -471,7 +471,7 @@ class DieselIssueFormState extends State<DieselIssueForm> with TickerProviderSta
                     else{setState(() {qty=false;});}
 
 
-                    if(!plant&& !type&& !machine&& !machineReading&& !issuedBy&& !qty){
+                    if(!plant&& !type&& !machine&& !issuedBy&& !qty){
                       dn.InsertDieselIssueDbHit(context);
                     }
 

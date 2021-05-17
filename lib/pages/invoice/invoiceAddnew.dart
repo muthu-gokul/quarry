@@ -261,18 +261,22 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
                                     GestureDetector(
                                       onTap: (){
 
-                                        if(pn.plantCount!=1){
-                                          node.unfocus();
+                                        if(!pn.isInvoiceEdit){
+                                          if(pn.plantCount!=1){
+                                            node.unfocus();
 
-                                          Timer(Duration(milliseconds: 50), (){
-                                            setState(() {
-                                              _keyboardVisible=false;
+                                            Timer(Duration(milliseconds: 50), (){
+                                              setState(() {
+                                                _keyboardVisible=false;
+                                              });
                                             });
-                                          });
-                                          setState(() {
-                                            isPlantOpen=true;
-                                          });
+                                            setState(() {
+                                              isPlantOpen=true;
+                                            });
+                                          }
+
                                         }
+
 
 
                                       },
@@ -290,9 +294,12 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
                                     GestureDetector(
                                       onTap: (){
                                         node.unfocus();
-                                        setState(() {
-                                          supplierTypeOpen=true;
-                                        });
+                                        if(!pn.isInvoiceEdit){
+                                          setState(() {
+                                            supplierTypeOpen=true;
+                                          });
+                                        }
+
 
                                       },
                                       child: SidePopUpParent(
@@ -306,14 +313,17 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
                                     GestureDetector(
                                       onTap: (){
                                         node.unfocus();
-                                        if(pn.selectedInvoiceType==null){
-                                          CustomAlert().commonErrorAlert(context, "Select Invoice Type", "");
+                                        if(!pn.isInvoiceEdit){
+                                          if(pn.selectedInvoiceType==null){
+                                            CustomAlert().commonErrorAlert(context, "Select Invoice Type", "");
+                                          }
+                                          else{
+                                            setState(() {
+                                              suppliersListOpen=true;
+                                            });
+                                          }
                                         }
-                                        else{
-                                          setState(() {
-                                            suppliersListOpen=true;
-                                          });
-                                        }
+
 
 
                                       },
@@ -1092,7 +1102,7 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
                         },
                       ),
 
-                      Text("Invoice",
+                      Text(pn.isInvoiceReceivable?"Receivable Invoice":"Payable Invoice",
                         style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: 16),
                       ),
                       Text(pn.isInvoiceEdit?" / Edit":" / Add New",

@@ -105,11 +105,11 @@ class DieselPurchaseFormState extends State<DieselPurchaseForm> with TickerProvi
                   children: [
                     Container(
                       width: double.maxFinite,
-                      height: SizeConfig.height200,
+                      height:195,
 
                       decoration: BoxDecoration(
                           image: DecorationImage(
-                              image: AssetImage("assets/images/saleFormheader.jpg",),
+                              image: AssetImage("assets/svg/gridHeader/DieselHeader.jpg",),
                               fit: BoxFit.cover
                           )
 
