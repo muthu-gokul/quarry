@@ -185,7 +185,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                             child: ListView(
                               children: [
                                 SizedBox(height: 20,),
-                                DrawerContent(
+                          /*      DrawerContent(
                                   delay: 0.1,
                                   height: 50,
                                   image: "assets/svg/drawer/dashboard.svg",
@@ -198,7 +198,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                       scaffoldkey.currentState.openEndDrawer();
                                     });
                                   },
-                                ),
+                                ),*/
                                 DrawerContent(
                                   delay:1,
                                   height: 50,

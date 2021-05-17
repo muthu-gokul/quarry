@@ -41,7 +41,6 @@ dependencies:
   shared_preferences:
   date_format:
   excel:
-  fl_chart:
   webview_flutter:
 
 dev_dependencies:
