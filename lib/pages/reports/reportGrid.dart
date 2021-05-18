@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
+import 'package:month_picker_dialog/month_picker_dialog.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/notifier/productionNotifier.dart';
 import 'package:quarry/notifier/purchaseNotifier.dart';
@@ -27,6 +28,7 @@ import 'package:quarry/widgets/navigationBarIcon.dart';
 import 'package:quarry/widgets/staticColumnScroll/reportDataTable.dart';
 import 'package:quarry/widgets/staticColumnScroll/reportDataTableWithoutModel.dart';
 
+import '../homePage.dart';
 import 'reportSettings.dart';
 
 
@@ -41,6 +43,9 @@ class ReportGridState extends State<ReportGrid> with TickerProviderStateMixin{
 
   bool showEdit=false;
   int selectedIndex;
+  DateTime selectedDate;
+
+  bool exportOpen=false;
 
   @override
   void initState() {
@@ -189,6 +194,132 @@ class ReportGridState extends State<ReportGrid> with TickerProviderStateMixin{
                   },
                 ),
 
+                //Export Icons
+                GestureDetector(
+                  onTap: (){
+                    setState(() {
+                      exportOpen=false;
+                    });
+                  },
+                  child: Container(
+
+                    height: exportOpen? SizeConfig.screenHeight:0,
+                    width: exportOpen? SizeConfig.screenWidth:0,
+                    color: Colors.transparent,
+
+
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.bottomLeft,
+                  child: GestureDetector(
+                    onTap: () async{
+                      setState(() {
+                        exportOpen=false;
+                      });
+                      var excel = Excel.createExcel();
+                      Sheet sheetObject = excel['${rn.reportHeader}'];
+                      excel.delete('Sheet1');
+                      List<String> dataList = ["${DateFormat('dd-MM-yyyy').format(rn.picked[0])} to ${DateFormat('dd-MM-yyyy').format(rn.picked[1])}",];
+                      sheetObject.insertRowIterables(dataList, 0,);
+                      List<String> header=[];
+                      rn.reportsGridColumnList.forEach((element) {
+                        if(element.isActive){
+                          header.add(element.columnName);
+                        }
+                      });
+                      sheetObject.insertRowIterables(header, 1,);
+
+                      List<String> body=[];
+                      for(int i=0;i<rn.reportsGridDataList.length;i++){
+                        body.clear();
+                        rn.reportsGridColumnList.forEach((element) {
+                          if(element.isActive){
+                            if(element.isDate){
+                              body.add(rn.reportsGridDataList[i][element.columnName]!=null?DateFormat('dd-MM-yyyy').format(DateTime.parse(rn.reportsGridDataList[i][element.columnName]))
+                                  :"");
+                            }
+                            else{
+                              body.add(rn.reportsGridDataList[i][element.columnName]==null?"":rn.reportsGridDataList[i][element.columnName].toString());
+                            }
+                          }
+                        });
+                        sheetObject.insertRowIterables(body, i+2,);
+                      }
+
+
+
+                      final String dirr ='/storage/emulated/0/quarry/reports';
+
+                      String filename="${rn.reportHeader}";
+                      await Directory('/storage/emulated/0/quarry/reports').create(recursive: true);
+                      final String path = '$dirr/$filename.xlsx';
+
+
+                      final File file = File(path);
+
+                      await file.writeAsBytes(await excel.encode()).then((value) async {
+                        CustomAlert().billSuccessAlert(context, "", "Successfully Downloaded @ \n\n Internal Storage/quarry/reports/$filename.xlsx", "", "");
+                      });
+                    },
+                    child: AnimatedContainer(
+                      duration: Duration(milliseconds: 300),
+                      curve: Curves.easeIn,
+                      height: 50,
+                      width: 50,
+                         margin: EdgeInsets.only(bottom:exportOpen? 140:0,left: 10),
+                      decoration: BoxDecoration(
+                          shape:BoxShape.circle,
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.3),
+                              spreadRadius: 0,
+                              blurRadius: 7,
+                              offset: Offset(0, 10), // changes position of shadow
+                            )
+                          ]
+                      ),
+                      child: Center(
+                        child: SvgPicture.asset("assets/svg/excel.svg",width: 30,height: 30,),
+                      ),
+                    ),
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.bottomLeft,
+                  child: GestureDetector(
+                    onTap: (){
+                      setState(() {
+                        exportOpen=false;
+                      });
+                     checkpdf(context,rn.reportHeader,DateFormat('dd-MM-yyyy').format(rn.picked[0]),DateFormat('dd-MM-yyyy').format(rn.picked[1]),rn.reportsGridColumnList,rn.reportsGridDataList);
+
+                    },
+                    child: AnimatedContainer(
+                      duration: Duration(milliseconds: 300),
+                      curve: Curves.easeIn,
+                      height: 50,
+                      width: 50,
+                      margin: EdgeInsets.only(bottom:exportOpen? 80:0,left: 10),
+                      decoration: BoxDecoration(
+                          shape:BoxShape.circle,
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.3),
+                              spreadRadius: 0,
+                              blurRadius: 7,
+                              offset: Offset(0, 10), // changes position of shadow
+                            )
+                          ]
+                      ),
+                      child: Center(
+                        child: SvgPicture.asset("assets/svg/pdf.svg",width: 30,height: 30,),
+                      ),
+                    ),
+                  ),
+                ),
 
                 //bottomNav
                 Positioned(
@@ -196,7 +327,6 @@ class ReportGridState extends State<ReportGrid> with TickerProviderStateMixin{
                   child: Container(
                     width: SizeConfig.screenWidth,
                     height: 70,
-
                     decoration: BoxDecoration(
                         color: AppTheme.gridbodyBgColor,
                         boxShadow: [
@@ -204,7 +334,7 @@ class ReportGridState extends State<ReportGrid> with TickerProviderStateMixin{
                             color: AppTheme.gridbodyBgColor,
                             spreadRadius: 2,
                             blurRadius: 15,
-                            offset: Offset(0, -20), // changes position of shadow
+                            offset: Offset(0, -5), // changes position of shadow
                           )
                         ]
                     ),
@@ -222,35 +352,7 @@ class ReportGridState extends State<ReportGrid> with TickerProviderStateMixin{
                               painter: RPSCustomPainter3(),
                             ),
                           ),
-                          Center(
-                            heightFactor: 0.5,
-                            child: GestureDetector(
-                              behavior: HitTestBehavior.translucent,
-                              onTap: (){
 
-                              },
-                              child: Container(
-
-                                height: SizeConfig.width50,
-                                width: SizeConfig.width50,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: AppTheme.yellowColor,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: AppTheme.yellowColor.withOpacity(0.4),
-                                      spreadRadius: 1,
-                                      blurRadius: 5,
-                                      offset: Offset(1, 8), // changes position of shadow
-                                    ),
-                                  ],
-                                ),
-                                child: Center(
-                                  child: Icon(Icons.add,size: SizeConfig.height30,color: AppTheme.bgColor,),
-                                ),
-                              ),
-                            ),
-                          ),
                           Container(
                             height: 80,
                             width: SizeConfig.screenWidth,
@@ -258,32 +360,63 @@ class ReportGridState extends State<ReportGrid> with TickerProviderStateMixin{
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                IconButton(icon: Icon(Icons.picture_as_pdf,color: Colors.grey,), onPressed: (){
-                                  checkpdf(context,rn.reportHeader,DateFormat('dd-MM-yyyy').format(rn.picked[0]),DateFormat('dd-MM-yyyy').format(rn.picked[1]),rn.reportsGridColumnList,rn.reportsGridDataList);
+                                IconButton(icon: Icon(Icons.import_export,color: Colors.grey,), onPressed: (){
+                                  setState(() {
+                                    exportOpen=!exportOpen;
+                                  });
+
+                               //   checkpdf(context,rn.reportHeader,DateFormat('dd-MM-yyyy').format(rn.picked[0]),DateFormat('dd-MM-yyyy').format(rn.picked[1]),rn.reportsGridColumnList,rn.reportsGridDataList);
                                 }),
                                 GestureDetector(
                                   onTap: () async {
-
-                                    final List<DateTime>  picked1 = await DateRagePicker.showDatePicker(
+                                    if(rn.TypeName=='AttendanceReport'){
+                                      //Month Picker
+                                      showMonthPicker(
                                         context: context,
-                                        initialFirstDate: new DateTime.now(),
-                                        initialLastDate: (new DateTime.now()),
-                                        firstDate: rn.dateTime,
-                                        lastDate: (new DateTime.now())
-                                    );
-                                    if (picked1 != null && picked1.length == 2) {
-                                      setState(() {
-                                        rn.picked=picked1;
-                                        rn.ReportsDbHit(context, rn.TypeName);
+                                        firstDate: DateTime(DateTime.now().year - 10, 1),
+                                        lastDate: DateTime(DateTime.now().year, DateTime.now().month),
+                                        initialDate: selectedDate ?? DateTime.now(),
+                                        locale: Locale("en"),
+                                      ).then((date) {
+                                        if (date != null) {
+                                          setState(() {
+                                            rn.picked.clear();
+                                            selectedDate = date;
+
+                                            var firstDayThisMonth = new DateTime(date.year, date.month, date.day);
+                                            var firstDayNextMonth = new DateTime(firstDayThisMonth.year, firstDayThisMonth.month + 1, firstDayThisMonth.day);
+
+
+                                            rn.picked.add(selectedDate);
+                                            rn.picked.add( DateTime(date.year, date.month, firstDayNextMonth.difference(firstDayThisMonth).inDays));
+                                            rn.ReportsDbHit(context, rn.TypeName);
+
+                                          });
+                                        }
                                       });
                                     }
-                                    else if(picked1!=null && picked1.length ==1){
-                                      setState(() {
-                                        rn.picked=picked1;
-                                        rn.picked.add(picked1[0]);
-                                        rn.ReportsDbHit(context, rn.TypeName);
-                                        // rn.reportDbHit(widget.UserId.toString(), widget.OutletId, DateFormat("dd-MM-yyyy").format( picked[0]).toString(), DateFormat("dd-MM-yyyy").format( picked[0]).toString(),"Itemwise Report", context);
-                                      });
+                                    else{
+                                      //Date Picker
+                                      final List<DateTime>  picked1 = await DateRagePicker.showDatePicker(
+                                          context: context,
+                                          initialFirstDate: new DateTime.now(),
+                                          initialLastDate: (new DateTime.now()),
+                                          firstDate: rn.dateTime,
+                                          lastDate: (new DateTime.now())
+                                      );
+                                      if (picked1 != null && picked1.length == 2) {
+                                        setState(() {
+                                          rn.picked=picked1;
+                                          rn.ReportsDbHit(context, rn.TypeName);
+                                        });
+                                      }
+                                      else if(picked1!=null && picked1.length ==1){
+                                        setState(() {
+                                          rn.picked=picked1;
+                                          rn.picked.add(picked1[0]);
+                                          rn.ReportsDbHit(context, rn.TypeName);
+                                        });
+                                      }
                                     }
                                   },
                                   child: Container(
@@ -295,7 +428,35 @@ class ReportGridState extends State<ReportGrid> with TickerProviderStateMixin{
                                       // color:Color(0xFF5E5E60),
                                     ),
                                     child: Center(
-                                      child: Icon(Icons.date_range_rounded),
+                                    //  child: Icon(Icons.date_range_outlined),
+                                      child:  SvgPicture.asset(
+                                        'assets/svg/calender.svg',
+                                        height:25,
+                                        width:25,
+                                     //   color: Colors.white,
+                                      )
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(width: SizeConfig.width80,),
+                                IconButton(icon: Icon(Icons.settings,), onPressed: (){
+
+                                  Navigator.push(context, _createRouteReportSettings());
+                                }),
+                                GestureDetector(
+                                  onTap: () async {
+                                    Navigator.push(context, _createRoute());
+                                  },
+                                  child: Container(
+                                    height: SizeConfig.height50,
+                                    width: SizeConfig.height50,
+
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      // color:Color(0xFF5E5E60),
+                                    ),
+                                    child: Center(
+                                      child: Icon(Icons.more_vert_rounded),
                                       // child:  SvgPicture.asset(
                                       //   'assets/reportIcons/${rn.reportIcons[index]}.svg',
                                       //   height:25,
@@ -304,80 +465,64 @@ class ReportGridState extends State<ReportGrid> with TickerProviderStateMixin{
                                       // )
                                     ),
                                   ),
-                                ),
-                                SizedBox(width: SizeConfig.width80,),
-                                IconButton(icon: Icon(Icons.settings,color: Colors.grey,), onPressed: (){
-                                  Navigator.push(context, _createRouteReportSettings());
-                                }),
-                                GestureDetector(onTap: ()async{
-                                  var excel = Excel.createExcel();
-                                  Sheet sheetObject = excel['${rn.reportHeader}'];
-
-                                  List<String> dataList = ["${DateFormat('dd-MM-yyyy').format(rn.picked[0])} to ${DateFormat('dd-MM-yyyy').format(rn.picked[1])}",];
-
-                                  sheetObject.insertRowIterables(dataList, 0,);
-                                  /* CellStyle cellStyle = CellStyle(backgroundColorHex: "#1AFF1A", fontFamily : getFontFamily(FontFamily.Calibri));
-
-                                 cellStyle.underline = Underline.Single; // or Underline.Double
-
-
-                                 var cell = sheetObject.cell(CellIndex.indexByString("A1"));
-                                 cell.value = 8; // dynamic values support provided;
-                                 cell.cellStyle = cellStyle;*/
-                                  List<String> header=[];
-                                  rn.reportsGridColumnList.forEach((element) {
-                                    if(element.isActive){
-                                      header.add(element.columnName);
-                                    }
-                                  });
-                                  sheetObject.insertRowIterables(header, 1,);
-
-                                  List<String> body=[];
-                                  for(int i=0;i<rn.reportsGridDataList.length;i++){
-                                    body.clear();
-                                    rn.reportsGridColumnList.forEach((element) {
-                                      if(element.isActive){
-                                        if(element.isDate){
-                                          body.add(rn.reportsGridDataList[i][element.columnName]!=null?DateFormat('dd-MM-yyyy').format(DateTime.parse(rn.reportsGridDataList[i][element.columnName]))
-                                          :"");
-                                        }
-                                        else{
-                                          body.add(rn.reportsGridDataList[i][element.columnName].toString());
-                                        }
-                                      }
-                                    });
-                                    sheetObject.insertRowIterables(body, i+2,);
-                                  }
-
-
-
-                                  final String dirr ='/storage/emulated/0/quarry/reports';
-
-                                  String filename="${rn.reportHeader}";
-                                  await Directory('/storage/emulated/0/quarry/reports').create(recursive: true);
-                                  final String path = '$dirr/$filename.xlsx';
-
-
-                                  final File file = File(path);
-
-                                  await file.writeAsBytes(await excel.encode()).then((value) async {
-                                    CustomAlert().billSuccessAlert(context, "", "Successfully Downloaded @ \n\n Internal Storage/quarry/reports/$filename.xlsx", "", "");
-
-                                  });
-                                },
-                                  child: SvgPicture.asset("assets/svg/excel.svg",width: 30,height: 30,),
-
-                                ),
+                                )
 
 
                               ],
                             ),
+                          ),
+
+                          GestureDetector(
+                            onTap: (){
+                              setState(() {
+                                exportOpen=false;
+                              });
+                            },
+                            child: Container(
+                              height:exportOpen?70:0,
+                              width:exportOpen? SizeConfig.screenWidth:0,
+                              color: Colors.transparent,
+                            ),
                           )
+
+
                         ]
                     ),
                   ),
                 ),
+                //
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child:GestureDetector(
+                    behavior: HitTestBehavior.translucent,
+                    onTap: () async {
 
+
+
+                    },
+                    child: Container(
+
+                      height:65,
+                      width: 65,
+                      margin: EdgeInsets.only(bottom: 20),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: AppTheme.yellowColor,
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppTheme.yellowColor.withOpacity(0.4),
+                            spreadRadius: 1,
+                            blurRadius: 5,
+                            offset: Offset(1, 8), // changes position of shadow
+                          ),
+                        ],
+                      ),
+                      child: Center(
+                        child: Icon(Icons.search,size: 30,color: AppTheme.bgColor,),
+                      ),
+                    ),
+                  ),
+                ),
 
 
 
@@ -413,7 +558,9 @@ class ReportGridState extends State<ReportGrid> with TickerProviderStateMixin{
   }
   Route _createRoute() {
     return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => ProductionDetailAddNew(),
+      pageBuilder: (context, animation, secondaryAnimation) => ReportsPage(voidCallback: (){
+
+      },),
 
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
 

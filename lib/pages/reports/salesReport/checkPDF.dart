@@ -19,6 +19,12 @@ checkpdf(context,String title,dynamic fromDate,dynamic toDate,List<dynamic> head
   var qn=Provider.of<QuarryNotifier>(context,listen: false);
 
 
+  int count=0;
+  header.forEach((element) {
+    if(element.isActive){
+      count=count+1;
+    }
+  });
 
   final pw.Document pdf = pw.Document();
   pdf.addPage(
@@ -58,11 +64,12 @@ checkpdf(context,String title,dynamic fromDate,dynamic toDate,List<dynamic> head
                                 margin: pw.EdgeInsets.only(right: 10),
                                 //  alignment: value.alignment,
                                 //  padding: value.edgeInsets,
-                                width: value.width,
+                                width:count>7?  value.width:(480/count).toDouble(),
+                               // width: value.width,
                                 //height: 16,
                                 constraints: BoxConstraints(
-                                    minWidth: 50,
-                                    maxWidth: 70
+                                    minWidth:count>7? 50:(480/count).toDouble(),
+                                    maxWidth: count>7? 70:(480/count).toDouble()
                                 ),
                                 child: Text(value.columnName,style: pw.TextStyle(fontSize: 12,color: PdfColor.fromInt(0xFFCDCDCD)))
                             ):Container()
@@ -119,10 +126,11 @@ checkpdf(context,String title,dynamic fromDate,dynamic toDate,List<dynamic> head
 
                                 return MapEntry(j,
                                  v.isActive?!v.isDate?Container(
-                                    width: v.width,
+                                 //   width: v.width,
+                                   width:count>7?  value.width:(480/count).toDouble(),
                                     constraints: BoxConstraints(
-                                        minWidth: 50,
-                                        maxWidth: 70
+                                        minWidth:count>7? 50:(480/count).toDouble(),
+                                        maxWidth: count>7? 70:(480/count).toDouble()
                                     ),
                                     decoration: BoxDecoration(
 
@@ -132,10 +140,11 @@ checkpdf(context,String title,dynamic fromDate,dynamic toDate,List<dynamic> head
                                       style:pw.TextStyle(fontSize: 12,color: PdfColor.fromInt(0xFF3b3b3d)),
                                     ),
                                   ):Container(
-                                    width: v.width,
+                                    //width: v.width,
+                                   width:count>7?  value.width:(480/count).toDouble(),
                                     constraints: BoxConstraints(
-                                        minWidth: 50,
-                                        maxWidth: 70
+                                        minWidth:count>7? 50:(480/count).toDouble(),
+                                        maxWidth: count>7? 70:(480/count).toDouble()
                                     ),
                                     decoration: BoxDecoration(
 

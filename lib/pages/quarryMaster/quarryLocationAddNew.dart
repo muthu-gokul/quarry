@@ -118,6 +118,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                onVerticalDragUpdate: (details){
 
                                  int sensitivity = 5;
+
                                  if (details.delta.dy > sensitivity) {
                                    scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
                                      if(isListScroll){
@@ -140,13 +141,13 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                },
 
 
-                               onVerticalDragDown: (v){
+                             /*  onVerticalDragDown: (v){
 
                                  if(scrollController.offset==0 && listViewController.offset==0){
                                    scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                  }
 
-                               },
+                               },*/
                                child: Container(
                                  height: SizeConfig.screenHeight-60,
                                  width: SizeConfig.screenWidth,

@@ -1065,12 +1065,10 @@ class ReportsPageState extends State<ReportsPage> with TickerProviderStateMixin{
                       callback: (){
                         Navigator.pop(context);
                         widget.voidCallback();
-
-                        ////  Provider.of<DrawerNotifier>(context,listen: false).changeMenu(16);
-
-                        ///  Provider.of<ReportsNotifier>(context,listen: false).ReportsDropDownValues(context,"CustomerSaleReport");
-                        ///  Provider.of<ReportsNotifier>(context,listen: false).ReportsDbHit(context,"CustomerSaleReport");
-
+                        Provider.of<DrawerNotifier>(context,listen: false).changeMenu(16);
+                        Provider.of<ReportNotifier>(context,listen: false).ReportsDropDownValues(context,"AttendanceReport").then((value){
+                          Provider.of<ReportNotifier>(context,listen: false).ReportsDbHit(context,"AttendanceReport");
+                        });
                       },
                     ),
                     DrawerContent(

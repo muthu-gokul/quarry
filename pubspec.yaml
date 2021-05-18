@@ -42,6 +42,7 @@ dependencies:
   date_format:
   excel:
   webview_flutter:
+  month_picker_dialog:
 
 dev_dependencies:
   flutter_test:

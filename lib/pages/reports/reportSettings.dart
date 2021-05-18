@@ -178,11 +178,12 @@ class ReportSettingsState extends State<ReportSettings> with TickerProviderState
 
                                   children: [
 
-                                    ReportSettingsColumnFilter(
+                                   rn.TypeName!="AttendanceReport"? ReportSettingsColumnFilter(
                                       title: "Column Filter",
                                       list: rn.reportsGridColumnList,
                                       instanceName: 'ColumnName',
-                                    ),
+                                      all: rn.columnFilterAll,
+                                    ):Container(),
 
                                     for(int i=0;i<rn.filtersList.length ;i++)
 
@@ -190,6 +191,9 @@ class ReportSettingsState extends State<ReportSettings> with TickerProviderState
                                         title: rn.filtersList[i].title,
                                         list: rn.filtersList[i].list,
                                         instanceName: rn.filtersList[i].instanceName,
+                                        index: i,
+                                        all: rn.filterAll,
+
                                       ),
 
 
@@ -310,6 +314,9 @@ class ReportSettingsState extends State<ReportSettings> with TickerProviderState
                              else if(rn.TypeName=="EmployeeReport"){
                                 rn.filterEmployeeReport();
                               }
+                             else if(rn.TypeName=="AttendanceReport"){
+                                rn.filterAttendanceReport();
+                              }
 
                               Navigator.pop(context);
                             },
@@ -354,6 +361,8 @@ class ReportSettingsState extends State<ReportSettings> with TickerProviderState
 
 
 
+
+
                 Container(
                   height: rn.ReportLoader ? SizeConfig.screenHeight : 0,
                   width: rn.ReportLoader ? SizeConfig.screenWidth : 0,
@@ -387,8 +396,10 @@ class ReportSettingsHeader extends StatefulWidget {
   String title;
   List<dynamic> list=[];
   String instanceName;
+  int index;
+  List<int> all;
 
-  ReportSettingsHeader({  this.title,this.list,this.instanceName});
+  ReportSettingsHeader({  this.title,this.list,this.instanceName,this.index,this.all});
 
   @override
   _ReportSettingsHeaderState createState() => _ReportSettingsHeaderState();
@@ -462,34 +473,34 @@ class _ReportSettingsHeaderState extends State<ReportSettingsHeader> with Ticker
           duration: Duration(milliseconds: 300),
           curve: Curves.easeIn,
           width: SizeConfig.screenWidth,
-          height:!open ?0: widget.list.length*50.0,
+          height:!open ?0: (widget.list.length*50.0)+50,
           margin: EdgeInsets.only(left: SizeConfig.width40,right: SizeConfig.width40),
-          child: ListView.builder(
-            physics: NeverScrollableScrollPhysics(),
-            itemCount: widget.list.length,
-            itemBuilder: (context,index){
-              return  Container(
-                height: 50,
+          child: Column(
+            children: [
+              Container(
+                height:50,
                 child: Row(
                   children: [
-                    Container(
-                      width:SizeConfig.screenWidth*0.6,
-                        child: Text("${widget.list[index][widget.instanceName]}",style:TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 14),)
-                    ),
+                    Text("Select All",style:TextStyle(fontFamily: 'RM',color: AppTheme.bgColor,fontSize: 15),),
                     Spacer(),
                     GestureDetector(
                       onTap: (){
 
                         setState(() {
-                           if(widget.list[index]['IsActive']==1){
-                            widget.list[index]['IsActive']=0;
+                          if(widget.all[widget.index]==1){
+                            widget.all[widget.index]=0;
                           }
-                          else if(widget.list[index]['IsActive']==0){
-                            widget.list[index]['IsActive']=1;
+                          else if(widget.all[widget.index]==0){
+                            widget.all[widget.index]=1;
                           }
 
-                        //  widget.list[index].isActive=!widget.list[index].isActive;
+                          widget.list.forEach((element) {
+                            element['IsActive']=widget.all[widget.index];
+                          });
                         });
+
+
+
 
 
                       },
@@ -500,19 +511,89 @@ class _ReportSettingsHeaderState extends State<ReportSettingsHeader> with Ticker
                         width: 20,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(3),
-                            border: Border.all(color:widget.list[index]['IsActive']==1?Colors.transparent: AppTheme.addNewTextFieldBorder.withOpacity(0.5)),
-                            color:widget.list[index]['IsActive']==1?AppTheme.yellowColor: AppTheme.disableColor
+                           border: Border.all(color:widget.all[widget.index]==1?Colors.transparent: AppTheme.addNewTextFieldBorder.withOpacity(0.5)),
+                            color:widget.all[widget.index]==1?AppTheme.yellowColor: AppTheme.disableColor
                         ),
                         child: Center(
-                          child: Icon(Icons.done,color:widget.list[index]['IsActive']==1?AppTheme.bgColor: AppTheme.addNewTextFieldBorder.withOpacity(0.8),size: 15,),
+                         child: Icon(Icons.done,color:widget.all[widget.index]==1?AppTheme.bgColor: AppTheme.addNewTextFieldBorder.withOpacity(0.8),size: 15,),
                         ),
 
                       ),
                     )
                   ],
                 ),
-              );
-            },
+              ),
+              Expanded(
+                child: ListView.builder(
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: widget.list.length,
+                  itemBuilder: (context,index){
+                    return  Container(
+                      height: 50,
+                      child: Row(
+                        children: [
+                          Container(
+                            width:SizeConfig.screenWidth*0.6,
+                              child: widget.title=="Customer Filter"?Text("${widget.list[index][widget.instanceName]??"Direct Customer"}",
+                                style:TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 14),) :
+                                    Text("${widget.list[index][widget.instanceName]}",
+                                style:TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 14),)
+                          ),
+                          Spacer(),
+                          GestureDetector(
+                            onTap: (){
+
+                              setState(() {
+                                 if(widget.list[index]['IsActive']==1){
+                                  widget.list[index]['IsActive']=0;
+                                }
+                                else if(widget.list[index]['IsActive']==0){
+                                  widget.list[index]['IsActive']=1;
+                                }
+                              });
+
+                              int count=0;
+                              widget.list.forEach((element) {
+                                if(element['IsActive']==1){
+                                  count=count+1;
+                                }
+                              });
+                              if(count==widget.list.length){
+                                setState(() {
+                                  widget.all[widget.index]=1;
+                                });
+                              }
+                              else{
+                                setState(() {
+                                  widget.all[widget.index]=0;
+                                });
+                              }
+
+
+                            },
+                            child: AnimatedContainer(
+                              duration: Duration(milliseconds: 300),
+                              curve: Curves.easeIn,
+                              height: 20,
+                              width: 20,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(3),
+                                  border: Border.all(color:widget.list[index]['IsActive']==1?Colors.transparent: AppTheme.addNewTextFieldBorder.withOpacity(0.5)),
+                                  color:widget.list[index]['IsActive']==1?AppTheme.yellowColor: AppTheme.disableColor
+                              ),
+                              child: Center(
+                                child: Icon(Icons.done,color:widget.list[index]['IsActive']==1?AppTheme.bgColor: AppTheme.addNewTextFieldBorder.withOpacity(0.8),size: 15,),
+                              ),
+
+                            ),
+                          )
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
           ),
         ),
       ],
@@ -527,8 +608,9 @@ class ReportSettingsColumnFilter extends StatefulWidget {
   String title;
   List<dynamic> list=[];
   String instanceName;
+  List<bool> all;
 
-  ReportSettingsColumnFilter({  this.title,this.list,this.instanceName});
+  ReportSettingsColumnFilter({  this.title,this.list,this.instanceName,this.all});
   @override
   _ReportSettingsColumnFilterState createState() => _ReportSettingsColumnFilterState();
 }
@@ -539,6 +621,7 @@ class _ReportSettingsColumnFilterState extends State<ReportSettingsColumnFilter>
   Animation arrowAnimation;
   AnimationController arrowAnimationController;
   bool open=false;
+
 
   @override
   void initState() {
@@ -551,6 +634,7 @@ class _ReportSettingsColumnFilterState extends State<ReportSettingsColumnFilter>
 
   @override
   Widget build(BuildContext context) {
+
     return Column(
       children: [
         GestureDetector(
@@ -600,59 +684,113 @@ class _ReportSettingsColumnFilterState extends State<ReportSettingsColumnFilter>
             ),
           ),
         ),
+
         AnimatedContainer(
           duration: Duration(milliseconds: 300),
           curve: Curves.easeIn,
           width: SizeConfig.screenWidth,
-          height:!open ?0: widget.list.length*50.0,
+          height:!open ?0: (widget.list.length*50.0),
           margin: EdgeInsets.only(left: SizeConfig.width40,right: SizeConfig.width40),
-          child: ListView.builder(
-            physics: NeverScrollableScrollPhysics(),
-            itemCount: widget.list.length,
-            itemBuilder: (context,index){
-              return index==0?Container():  Container(
-                height: 50,
-                child: Row(
-                  children: [
-                    Text("${widget.list[index].get(widget.instanceName)}",style:TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 14),),
-                    Spacer(),
-                    GestureDetector(
-                      onTap: (){
+          child: Column(
+            children: [
+              Container(
+              height:50,
+              child: Row(
+                children: [
+                  Text("Select All",style:TextStyle(fontFamily: 'RM',color: AppTheme.bgColor,fontSize: 15),),
+                  Spacer(),
+                  GestureDetector(
+                    onTap: (){
 
-                        setState(() {
-
-                         /* if(widget.list[index]['IsActive']==1){
-                            widget.list[index]['IsActive']=0;
-                          }
-                          else if(widget.list[index]['IsActive']==0){
-                            widget.list[index]['IsActive']=1;
-                          }*/
-
-                          widget.list[index].isActive=!widget.list[index].isActive;
+                      setState(() {
+                        widget.all[0]=!widget.all[0];
+                        widget.list.forEach((element) {
+                          element.isActive=widget.all[0];
                         });
+                      });
 
 
-                      },
-                      child: AnimatedContainer(
-                        duration: Duration(milliseconds: 300),
-                        curve: Curves.easeIn,
-                        height: 20,
-                        width: 20,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(3),
-                            border: Border.all(color:widget.list[index].isActive?Colors.transparent: AppTheme.addNewTextFieldBorder.withOpacity(0.5)),
-                            color:widget.list[index].isActive?AppTheme.yellowColor: AppTheme.disableColor
-                        ),
-                        child: Center(
-                          child: Icon(Icons.done,color:widget.list[index].isActive?AppTheme.bgColor: AppTheme.addNewTextFieldBorder.withOpacity(0.8),size: 15,),
-                        ),
 
+                    },
+                    child: AnimatedContainer(
+                      duration: Duration(milliseconds: 300),
+                      curve: Curves.easeIn,
+                      height: 20,
+                      width: 20,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(3),
+                         border: Border.all(color:widget.all[0]?Colors.transparent: AppTheme.addNewTextFieldBorder.withOpacity(0.5)),
+                        color:widget.all[0]?AppTheme.yellowColor: AppTheme.disableColor
                       ),
-                    )
-                  ],
+                      child: Center(
+                        child: Icon(Icons.done,color:widget.all[0]?AppTheme.bgColor: AppTheme.addNewTextFieldBorder.withOpacity(0.8),size: 15,),
+                      ),
+
+                    ),
+                  )
+                ],
+              ),
+            ),
+              Expanded(
+                child: ListView.builder(
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: widget.list.length,
+                  itemBuilder: (context,index){
+                    return index==0?Container():  Container(
+                      height: 50,
+                      child: Row(
+                        children: [
+                          Text("${widget.list[index].get(widget.instanceName)}",style:TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 14),),
+                          Spacer(),
+                          GestureDetector(
+                            onTap: (){
+
+                              setState(() {
+                                widget.list[index].isActive=!widget.list[index].isActive;
+                              });
+
+                              int count=0;
+                              widget.list.forEach((element) {
+                                if(element.isActive){
+                                  count=count+1;
+                                }
+                              });
+                              if(count==widget.list.length){
+                                setState(() {
+                                  widget.all[0]=true;
+                                });
+                              }
+                              else{
+                                setState(() {
+                                  widget.all[0]=false;
+                                });
+                              }
+
+
+                            },
+                            child: AnimatedContainer(
+                              duration: Duration(milliseconds: 300),
+                              curve: Curves.easeIn,
+                              height: 20,
+                              width: 20,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(3),
+                                  border: Border.all(color:widget.list[index].isActive?Colors.transparent: AppTheme.addNewTextFieldBorder.withOpacity(0.5)),
+                                  color:widget.list[index].isActive?AppTheme.yellowColor: AppTheme.disableColor
+                              ),
+                              child: Center(
+                                child: Icon(Icons.done,color:widget.list[index].isActive?AppTheme.bgColor: AppTheme.addNewTextFieldBorder.withOpacity(0.8),size: 15,),
+                              ),
+
+                            ),
+                          )
+                        ],
+                      ),
+                    );
+                  },
                 ),
-              );
-            },
+              ),
+            ],
           ),
         ),
       ],
