@@ -214,6 +214,7 @@ class PlantDetailsGridState extends State<PlantDetailsGrid> with TickerProviderS
                                       ),
                                       qn.plantGridList.isNotEmpty? GestureDetector(
                                         onTap: (){
+                                          qn.PlantDropDownValues(context);
                                           qn.updatePlantDetailEdit(true);
                                           Navigator.push(context, _createRoute());
                                           qn.GetplantDetailDbhit(context, qn.plantGridList[0].plantId,PlantDetailsAddNewState());
@@ -270,6 +271,7 @@ class PlantDetailsGridState extends State<PlantDetailsGrid> with TickerProviderS
                                           .map((i, value) => MapEntry(i,    i==0?Container():
                                       GestureDetector(
                                         onTap: (){
+                                          qn.PlantDropDownValues(context);
                                           qn.updatePlantDetailEdit(true);
                                           Navigator.push(context, _createRoute());
                                           qn.GetplantDetailDbhit(context, qn.plantGridList[i].plantId,PlantDetailsAddNewState());
@@ -285,6 +287,7 @@ class PlantDetailsGridState extends State<PlantDetailsGrid> with TickerProviderS
                                               SizedBox(height: 50,),
                                               GestureDetector(
                                                 onTap: (){
+                                                  qn.PlantDropDownValues(context);
                                                   qn.updatePlantDetailEdit(true);
                                                   qn.GetplantDetailDbhit(context, qn.plantGridList[i].plantId,PlantDetailsAddNewState());
                                                   Navigator.push(context, _createRoute());

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:excel/excel.dart';
@@ -36,10 +37,19 @@ class ReportGridState extends State<ReportGrid> with TickerProviderStateMixin{
   DateTime selectedDate;
 
   bool exportOpen=false;
+  bool searchMargin=false;
+  bool searchBody=false;
+  TextEditingController searchController=new TextEditingController();
 
   @override
   void initState() {
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    searchController.clear();
+    super.dispose();
   }
 
   @override
@@ -480,22 +490,33 @@ class ReportGridState extends State<ReportGrid> with TickerProviderStateMixin{
                     ),
                   ),
                 ),
-                //
+
+
+                //search
                 Align(
                   alignment: Alignment.bottomCenter,
                   child:GestureDetector(
                     behavior: HitTestBehavior.translucent,
                     onTap: () async {
-
-
-
+                      setState(() {
+                        searchMargin=true;
+                      });
+                      Timer(Duration(milliseconds: 200), (){
+                        setState(() {
+                          searchBody=true;
+                        });
+                      });
                     },
-                    child: Container(
+                    child: AnimatedContainer(
+                      duration: Duration(milliseconds: 200),
+                      curve: Curves.easeIn,
 
                       height:65,
-                      width: 65,
-                      margin: EdgeInsets.only(bottom: 20),
-                      decoration: BoxDecoration(
+                      width:searchBody?SizeConfig.screenWidth: 65,
+                      margin: EdgeInsets.only(bottom:searchMargin?0: 20),
+                      decoration:searchBody?BoxDecoration(
+                        color: AppTheme.gridbodyBgColor
+                      ): BoxDecoration(
                         shape: BoxShape.circle,
                         color: AppTheme.yellowColor,
                         boxShadow: [
@@ -507,7 +528,73 @@ class ReportGridState extends State<ReportGrid> with TickerProviderStateMixin{
                           ),
                         ],
                       ),
-                      child: Center(
+                      child:searchBody?
+                      Row(
+                        children: [
+                          Container(
+                            width: SizeConfig.screenWidth-60,
+                            height: 50,
+                            padding: EdgeInsets.only(left: 10),
+                            margin: EdgeInsets.only(left: 10),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(3),
+                              border: Border.all(color: AppTheme.addNewTextFieldFocusBorder)
+                            ),
+                            child: TextField(
+                              controller: searchController,
+                              style:  TextStyle(fontFamily: 'RR',fontSize: 15,color:AppTheme.addNewTextFieldText,letterSpacing: 0.2),
+                              decoration: InputDecoration(
+                                hintText: "Search",
+                                hintStyle: AppTheme.hintText,
+                                border: InputBorder.none,
+                                enabledBorder: InputBorder.none,
+                                errorBorder: InputBorder.none,
+                                focusedBorder: InputBorder.none,
+                              ),
+                              onChanged: (v){
+                                if(rn.TypeName=="SaleReport"){
+                                  rn.searchSales(v.toLowerCase());
+                                }
+
+                              },
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: (){
+                               searchController.clear();
+                               rn.searchSales("");
+                                setState(() {
+                                  searchBody=false;
+                                });
+                                Timer(Duration(milliseconds: 200), (){
+                                  setState(() {
+                                    searchMargin=false;
+                                  });
+                                });
+
+
+
+                            },
+                            child: Container(
+                              height: 50,
+                              width: 50,
+                              child: Center(
+                                child: Container(
+                                    height: 30,
+                                    width: 30,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: AppTheme.red,
+                                    ),
+                                    child: Icon(Icons.clear,size: 20,color: Colors.white,)
+                                ),
+                              ),
+                            ),
+                          )
+
+                        ],
+                      ):
+                      Center(
                         child: Icon(Icons.search,size: 30,color: AppTheme.bgColor,),
                       ),
                     ),

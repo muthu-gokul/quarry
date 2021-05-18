@@ -358,16 +358,19 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
                                 GestureDetector(
                                   onTap: (){
                                     node.unfocus();
-                                    setState(() {
-                                      plantTypeOpen=true;
-                                    });
-                                    SystemChannels.textInput.invokeMethod('TextInput.hide');
+                                    if(isEdit){
+                                      setState(() {
+                                        plantTypeOpen=true;
+                                      });
+                                    }
+
+
                                   },
                                   child: SidePopUpParent(
                                     text: qn.PD_plantTypeName==null? "Select Plant Type":qn.PD_plantTypeName,
                                     textColor: qn.PD_plantTypeName==null? AppTheme.addNewTextFieldText.withOpacity(0.5):AppTheme.addNewTextFieldText,
                                     iconColor: qn.PD_plantTypeName==null? AppTheme.addNewTextFieldText:AppTheme.yellowColor,
-                                    bgColor: qn.PD_plantTypeName==null? AppTheme.disableColor:Colors.white,
+                                    bgColor:!isEdit?AppTheme.disableColor: qn.PD_plantTypeName==null? AppTheme.disableColor:Colors.white,
                                   ),
                                 ),
                                 !plantType?Container():ValidationErrorText(title: "* Select Plant Type",),

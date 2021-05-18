@@ -89,10 +89,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                              height: 205,
                              decoration: BoxDecoration(
                                color: AppTheme.yellowColor,
-                                /* image: DecorationImage(
-                                     image: AssetImage("assets/svg/gridHeader/companyDetailsHeader.jpg",),
-                                   fit: BoxFit.cover
-                                 )*/
+
 
                              ),
                            child: SvgPicture.asset("assets/svg/gridHeader/companyDetailsHeader.svg"),
@@ -138,13 +135,13 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                },
 
 
-                             /*  onVerticalDragDown: (v){
+                               /*onVerticalDragDown: (v){
 
                                  if(scrollController.offset==0 && listViewController.offset==0){
                                    scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
-                                 }
+                                 }*/
 
-                               },*/
+                              // },
                                child: Container(
                                  height: SizeConfig.screenHeight-60,
                                  width: SizeConfig.screenWidth,

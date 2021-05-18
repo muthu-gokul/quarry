@@ -903,6 +903,16 @@ List<dynamic> vehicleTypeList=[];/* {
     notifyListeners();
   }
 
+  searchSales(String v){
+    if(v.isEmpty){
+      reportsGridDataList=filterSalesReportGridList;
+    }else{
+      reportsGridDataList=filterSalesReportGridList.where((element) => element['SaleNumber'].toString().toLowerCase().contains(v)||
+          element['MaterialName'].toString().toLowerCase().contains(v)).toList();
+    }
+    notifyListeners();
+  }
+
 
   /* PurchaseReport */
 
