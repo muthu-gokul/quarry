@@ -14,7 +14,6 @@ import 'package:quarry/notifier/productionNotifier.dart';
 import 'package:quarry/notifier/profileNotifier.dart';
 import 'package:quarry/notifier/purchaseNotifier.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
-import 'package:quarry/notifier/reportsNotifier.dart';
 import 'package:quarry/notifier/supplierNotifier.dart';
 import 'package:quarry/notifier/vehicleNotifier.dart';
 import 'package:quarry/pages/homePage.dart';
@@ -56,7 +55,6 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<DrawerNotifier>(create:(_)=>DrawerNotifier()),
         ChangeNotifierProvider<InvoiceNotifier>(create:(_)=>InvoiceNotifier()),
         ChangeNotifierProvider<PaymentNotifier>(create:(_)=>PaymentNotifier()),
-        ChangeNotifierProvider<ReportsNotifier>(create:(_)=>ReportsNotifier()),
         ChangeNotifierProvider<ReportNotifier>(create:(_)=>ReportNotifier()),
         ChangeNotifierProvider<EmployeeNotifier>(create:(_)=>EmployeeNotifier()),
         ChangeNotifierProvider<EmployeeAttendanceNotifier>(create:(_)=>EmployeeAttendanceNotifier()),

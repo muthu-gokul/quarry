@@ -16,9 +16,6 @@ import 'package:quarry/widgets/autocompleteText.dart';
 import 'package:quarry/widgets/customTextField.dart';
 import 'package:quarry/widgets/navigationBarIcon.dart';
 import 'package:quarry/widgets/validationErrorText.dart';
-
-import '../qLocMaterials.dart';
-import '../qLocPAyment.dart';
 import 'plantDetailsAddNew.dart';
 
 

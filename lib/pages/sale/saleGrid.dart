@@ -5,9 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
-import 'package:quarry/pages/material/processAddNew.dart';
 import 'package:quarry/pages/sale/salesDetail.dart';
-import 'package:quarry/pages/vendor/vendorLocAddNew.dart';
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
@@ -668,7 +666,6 @@ class _SaleGridState extends State<SaleGrid> {
                               CustomAlert(
                                   callback: (){
                                     Navigator.pop(context);
-                                    qn.DeleteMasterDetailDbhit(context, qn.materialGridList[qn.selectedIndex].MaterialId);
                                   }
 
                               ).yesOrNoDialog(context, "", "Are you sure want to Delete?");

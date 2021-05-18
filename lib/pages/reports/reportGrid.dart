@@ -8,24 +8,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:month_picker_dialog/month_picker_dialog.dart';
 import 'package:provider/provider.dart';
-import 'package:quarry/notifier/productionNotifier.dart';
-import 'package:quarry/notifier/purchaseNotifier.dart';
 import 'package:quarry/notifier/reportNotifier.dart';
-import 'package:quarry/notifier/reportsNotifier.dart';
-import 'package:quarry/notifier/supplierNotifier.dart';
-import 'package:quarry/pages/productionDetails/productionDetailsAddNew.dart';
-import 'package:quarry/pages/purchaseDetails/purchaseAddNew.dart';
 import 'package:quarry/pages/reports/salesReport/checkPDF.dart';
-import 'package:quarry/pages/reports/salesReport/salesSettings.dart';
-import 'package:quarry/pages/sale/saleGrid.dart';
-import 'package:quarry/pages/supplierDetail/supplierAddNew.dart';
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/dateRangePicker.dart' as DateRagePicker;
 import 'package:quarry/widgets/navigationBarIcon.dart';
-import 'package:quarry/widgets/staticColumnScroll/reportDataTable.dart';
 import 'package:quarry/widgets/staticColumnScroll/reportDataTableWithoutModel.dart';
 
 import '../homePage.dart';
@@ -178,7 +168,7 @@ class ReportGridState extends State<ReportGrid> with TickerProviderStateMixin{
                   gridData: rn.reportsGridDataList,
                   gridDataRowList: rn.reportsGridColumnList,
                   func: (index){
-                    if(selectedIndex==index){
+                   /* if(selectedIndex==index){
                       setState(() {
                         selectedIndex=-1;
                         showEdit=false;
@@ -190,7 +180,7 @@ class ReportGridState extends State<ReportGrid> with TickerProviderStateMixin{
                         selectedIndex=index;
                         showEdit=true;
                       });
-                    }
+                    }*/
                   },
                 ),
 

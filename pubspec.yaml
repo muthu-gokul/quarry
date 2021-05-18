@@ -64,21 +64,8 @@ flutter:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
   assets:
-    - assets/images/quarry-contact-icon.png
-    - assets/images/quarry-info-icon.png
-    - assets/images/quarry-location-icon.png
-    - assets/images/quarry-contact-icon-white.png
-    - assets/images/quarry-info-icon-white.png
-    - assets/images/quarry-location-icon-white.png
-    - assets/images/vendor-location-icon.png
-    - assets/images/vendor-Materialt.png
-    - assets/images/vendor-payment.png
-    - assets/images/vendor-location-icon-white.png
-    - assets/images/vendor-Materialt-white.png
-    - assets/images/vendor-payment-white.png
     - assets/images/slide-logo.svg
     - assets/images/saleFormheader.jpg
-    - assets/images/Loader.gif
     - assets/images/login-bg.jpg
     - assets/capabilities.json
     - assets/svg/logo.svg
@@ -110,7 +97,6 @@ flutter:
     - assets/svg/gridHeader/customerHeader.svg
     - assets/svg/gridHeader/supplierHeader.svg
     - assets/svg/gridHeader/machineHeader.svg
-    - assets/svg/gridHeader/goodsHeader.svg
     - assets/svg/gridHeader/goodsHeader.jpg
     - assets/svg/plusIcon.svg
     - assets/svg/gridHeader/vehicleHeader.jpg

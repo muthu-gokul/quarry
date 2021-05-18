@@ -11,7 +11,6 @@ import 'package:quarry/model/productionDetailsModel/productionMaterialMappingLis
 import 'package:quarry/notifier/paymentNotifier.dart';
 import 'package:quarry/notifier/productionNotifier.dart';
 import 'package:quarry/notifier/reportNotifier.dart';
-import 'package:quarry/notifier/reportsNotifier.dart';
 import 'package:quarry/pages/sale/salesDetail.dart';
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';

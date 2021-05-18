@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/notifier/employeeAttendanceNotifier.dart';
-import 'package:quarry/pages/reports/salesReport/salesReportGrid.dart';
+import 'package:quarry/pages/reports/reportGrid.dart';
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';

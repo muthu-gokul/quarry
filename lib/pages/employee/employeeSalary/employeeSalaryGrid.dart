@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:quarry/notifier/employeeAttendanceNotifier.dart';
 import 'package:quarry/notifier/employeeSalaryNotifier.dart';
 import 'package:quarry/pages/employee/employeeSalary/employeeSalaryAddNew.dart';
-import 'package:quarry/pages/reports/salesReport/salesReportGrid.dart';
+import 'package:quarry/pages/reports/reportGrid.dart';
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';

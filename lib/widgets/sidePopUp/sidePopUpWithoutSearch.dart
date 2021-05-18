@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
-import 'package:quarry/widgets/innerShadow.dart';
 
 class PopUpStatic extends StatefulWidget {
 

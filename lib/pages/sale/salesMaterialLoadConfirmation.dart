@@ -7,20 +7,16 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
-import 'package:quarry/pages/vendor/vendorLocAddNew.dart';
-import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/bottomBarAddButton.dart';
-import 'package:quarry/widgets/customTextField.dart';
 import 'package:quarry/widgets/decimal.dart';
 import 'package:quarry/widgets/searchdropdownSingleSelect.dart';
 
 import '../../styles/app_theme.dart';
 import '../../styles/size.dart';
 import '../../widgets/alertDialog.dart';
-import 'saleAddNew.dart';
 
 
 
@@ -1228,18 +1224,7 @@ class SalesMaterialLoadConfirmationState extends State<SalesMaterialLoadConfirma
     );
   }
 
-  Route _createRoute() {
-    return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => SaleAddNew(),
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
 
-        return FadeTransition(
-          opacity: Tween(begin: 0.0, end: 1.0).animate(animation),
-          child: child,
-        );
-      },
-    );
-  }
 }
 
 class SidePopUpParent extends StatelessWidget {

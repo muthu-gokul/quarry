@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/pages/customerDetails/customerAddNew.dart';
 import 'package:quarry/pages/sale/salesMaterialLoadConfirmation.dart';
-import 'package:quarry/pages/vendor/vendorLocAddNew.dart';
+
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/constants.dart';
@@ -24,7 +24,6 @@ import 'package:quarry/widgets/sidePopUp/sidePopUpWithoutSearch.dart';
 
 import '../../notifier/quarryNotifier.dart';
 import '../../styles/app_theme.dart';
-import 'saleAddNew.dart';
 
 
 
