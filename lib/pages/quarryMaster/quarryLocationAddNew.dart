@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +14,8 @@ import 'package:quarry/pages/quarryMaster/plantDetailsGrid.dart';
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
-import 'package:quarry/widgets/autocompleteText.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:quarry/widgets/customTextField.dart';
 import 'package:quarry/widgets/navigationBarIcon.dart';
 import 'package:quarry/widgets/validationErrorText.dart';
@@ -47,6 +50,50 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
   bool address=false;
   bool contactNo=false;
   bool gstNo=false;
+
+  File sampleImage;
+  String imageurl;
+  String imagestring;
+  Image imagefrompreferences;
+
+  Future getImage() async
+  {
+
+    File tempImage = (await ImagePicker.platform.pickImage (source: ImageSource.gallery)) as File;
+    if (tempImage != null) {
+      _cropImage(tempImage);
+    }
+
+
+  }
+
+  _cropImage(File picked) async {
+    File cropped = await ImageCropper.cropImage(
+      androidUiSettings: AndroidUiSettings(
+          statusBarColor: Colors.red,
+          toolbarColor: Colors.red,
+          toolbarTitle: "Crop Image",
+          toolbarWidgetColor: Colors.white,
+          showCropGrid: false,
+          hideBottomControls: true
+      ),
+      sourcePath: picked.path,
+      aspectRatioPresets: [
+
+        CropAspectRatioPreset.square
+      ],
+      maxWidth: 800,
+      cropStyle: CropStyle.rectangle,
+
+    );
+    if (cropped != null) {
+      setState(() async{
+        sampleImage = cropped;
+
+      });
+    }
+
+  }
 
   @override
   void initState() {
@@ -195,6 +242,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                          regExp: '[A-Za-z  ]',
                                          textEditingController: qn.CD_quarryname,
                                          maxlines: null,
+                                         onChange: (v){},
                                          onEditComplete: (){
                                            node.unfocus();
                                            Timer(Duration(milliseconds: 50), (){
@@ -212,6 +260,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                          textInputType: TextInputType.text,
                                          scrollPadding: 200,
                                          textEditingController: qn.CD_address,
+                                         onChange: (v){},
                                          ontap: (){
                                            scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
                                            setState(() {
@@ -234,6 +283,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                          regExp: '[A-Za-z  ]',
                                          scrollPadding: 200,
                                          textEditingController: qn.CD_city,
+                                         onChange: (v){},
                                          ontap: (){
                                            scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
                                            setState(() {
@@ -255,6 +305,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                          regExp: '[A-Za-z  ]',
                                          scrollPadding: 200,
                                          textEditingController: qn.CD_state,
+                                         onChange: (v){},
                                          ontap: (){
                                            scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
                                            setState(() {
@@ -279,6 +330,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                          textInputType: TextInputType.number,
                                          scrollPadding: 400,
                                          textEditingController: qn.CD_zipcode,
+                                         onChange: (v){},
                                          ontap: (){
                                            scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
                                            setState(() {
@@ -303,6 +355,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                          isEnabled: isEdit,
                                          textInputType: TextInputType.number,
                                          textEditingController: qn.CD_contactNo,
+                                         onChange: (v){},
                                          ontap: (){
                                            scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
                                            setState(() {
@@ -327,6 +380,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                          textInputType: TextInputType.emailAddress,
                                          textEditingController: qn.CD_email,
                                          scrollPadding: 500,
+                                         onChange: (v){},
                                          ontap: (){
                                            scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
                                            setState(() {
@@ -349,6 +403,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                          isEnabled: isEdit,
                                          textEditingController: qn.CD_website,
                                          scrollPadding: 500,
+                                         onChange: (v){},
                                          ontap: (){
                                            scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
                                            setState(() {
@@ -373,6 +428,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                          regExp: '[A-Za-z0-9]',
                                          scrollPadding: 500,
                                          textEditingController: qn.CD_gstno,
+                                         onChange: (v){},
                                          ontap: (){
                                            scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
                                            setState(() {
@@ -394,6 +450,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                          isEnabled: isEdit,
                                          scrollPadding: 500,
                                          textEditingController: qn.CD_Panno,
+                                         onChange: (v){},
                                          ontap: (){
                                            scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
                                            setState(() {
@@ -415,6 +472,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                          regExp: '[A-Za-z0-9]',
                                          scrollPadding: 500,
                                          textEditingController: qn.CD_Cinno,
+                                         onChange: (v){},
                                          ontap: (){
                                            scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
                                            setState(() {
@@ -434,14 +492,15 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                        SizedBox(height: SizeConfig.height20,),
 
                                        Container(
-                                         height: SizeConfig.height70,
-                                         width: SizeConfig.height70,
+                                         height: 70,
+                                         width: 70,
                                          decoration: BoxDecoration(
                                              shape: BoxShape.circle,
                                              border: Border.all(color: AppTheme.uploadColor,width: 2)
                                          ),
                                          child: Center(
-                                           child: Icon(Icons.upload_rounded,color: AppTheme.yellowColor,),
+                                          //child: Image,
+                                        // child: SvgPicture.asset("assets/svg/upload.svg",height: 30,width: 30,),
                                          ),
                                        ),
                                        SizedBox(height: 20,),
@@ -480,8 +539,8 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
 
 
                                        Container(
-                                         height: SizeConfig.height70,
-                                         width: SizeConfig.height70,
+                                         height: 70,
+                                         width: 70,
                                          decoration: BoxDecoration(
                                              shape: BoxShape.circle,
                                              border: Border.all(color: AppTheme.uploadColor,width: 2)
@@ -606,16 +665,17 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
 
 
                                    AnimatedPositioned(
-                                     bottom:isEdit?20:-60,
+                                     bottom:isEdit?8:-60,
                                      duration: Duration(milliseconds: 300,),
-                                     curve: Curves.bounceInOut,
+                                     curve: Curves.bounceOut,
                                      child: Container(
 
                                          width: SizeConfig.screenWidth,
                                          child: Row(
-                                           crossAxisAlignment: CrossAxisAlignment.center,
+                                           mainAxisAlignment: MainAxisAlignment.center,
+                                           crossAxisAlignment: CrossAxisAlignment.end,
                                            children: [
-                                             SizedBox(width: SizeConfig.width20,),
+                                             SizedBox(width: SizeConfig.width10,),
                                              GestureDetector(
                                                onTap: (){
 
@@ -647,8 +707,9 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
 
                                                },
                                                child: Container(
-                                                 width: 90,
-                                                 decoration: BoxDecoration(
+                                                 width: 110,
+                                             //   height: 40,
+                                                /* decoration: BoxDecoration(
                                                      boxShadow: [
                                                        BoxShadow(
                                                          color: AppTheme.yellowColor.withOpacity(0.7),
@@ -657,18 +718,8 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                                          offset: Offset(0, 7), // changes position of shadow
                                                        )
                                                      ]
-                                                 ),
-                                                 child:FittedBox(
-                                                   child: Row(
-                                                     children: [
-                                                       SvgPicture.asset("assets/svg/tick.svg",height: 20,width: 20,color: AppTheme.yellowColor,),
-                                                       SizedBox(width: SizeConfig.width10,),
-                                                       Text("Update",style: TextStyle(fontSize: 20,fontFamily: 'RR',color:Color(0xFFFF9D10)),),
-
-
-                                                     ],
-                                                   ),
-                                                 ),
+                                                 ),*/
+                                                 child:FittedBox(child: Image.asset("assets/bottomIcons/update-text-icon.png")),
                                                ),
                                              ),
                                              Spacer(),
@@ -685,29 +736,9 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                                  qn.GetQuarryDetailDbhit(context);
                                                },
                                                child: Container(
-                                                 width: 90,
-                                                 decoration: BoxDecoration(
-                                                     boxShadow: [
-                                                       BoxShadow(
-                                                         color: AppTheme.red.withOpacity(0.5),
-                                                         spreadRadius: -3,
-                                                         blurRadius: 25,
-                                                         offset: Offset(0, 7), // changes position of shadow
-                                                       )
-                                                     ]
-                                                 ),
+                                                 width: 110,
                                                  child:FittedBox(
-                                                   child: Row(
-                                                     children: [
-                                                       Text("Cancel",style: TextStyle(fontSize: 18,fontFamily: 'RR',color:Colors.red),),
-                                                       SizedBox(width: SizeConfig.width10,),
-                                                       SvgPicture.asset("assets/svg/delete.svg",height: 20,width: 20,color: AppTheme.red,),
-
-
-
-
-                                                     ],
-                                                   ),
+                                                   child: Image.asset("assets/bottomIcons/cancel-text-icon.png")
                                                  ),
                                                ),
                                              ),

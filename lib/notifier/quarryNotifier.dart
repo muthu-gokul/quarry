@@ -523,14 +523,10 @@ class QuarryNotifier extends ChangeNotifier{
       await call.ApiCallGetInvoke(body,context).then((value) {
         var parsed=json.decode(value);
         saleVehicleNumberList.clear();
-        print("GET sALE ");
         var t=parsed['Table'] as List;
         var t1=parsed['Table1'] as List;
         var t2=parsed['Table2'] as List;
 
-        print(t);
-        print(t1);
-        print(t2);
 
         saleDetailsGrid=t.map((e) => SaleDetails.fromJson(e)).toList();
         saleDetailsGrid.forEach((element) {
@@ -544,11 +540,7 @@ class QuarryNotifier extends ChangeNotifier{
         saleDetails.forEach((element) {
           saleVehicleNumberList.add(element.VehicleNumber);
         });
-        print("SALE LEn-${saleDetailsGrid.length}");
-        print("SALE LE-${saleDetails.length}");
-        print("SALE LE-${saleVehicleNumberList.length}");
-        print("SALE LE-${saleGridReportList.length}");
-        print("SALE LE-${saleDetailsGridPrintersList.length}");
+
         //notifyListeners();
 
         clearIsOpen();
@@ -607,12 +599,6 @@ class QuarryNotifier extends ChangeNotifier{
               PlantName=element['PlantName'];
             }
           });
-
-          print(PlantId);
-          print(PlantName);
-
-
-
         }
         updateInsertSaleLoader(false);
       });
@@ -641,9 +627,6 @@ class QuarryNotifier extends ChangeNotifier{
   
   
   InsertSaleDetailDbhit(BuildContext context) async {
-   print("INSERT $GrandTotal");
-   print("INSERT $SubTotal");
-   print("INSERT TaxAmount $TaxAmount");
     updateInsertSaleLoader(true);
     var body={
       "Fields": [
@@ -796,16 +779,12 @@ class QuarryNotifier extends ChangeNotifier{
         if(value!=null){
           var parsed=json.decode(value);
 
-          print(parsed);
+
           var t=parsed['Table'] as List;
           var t1=parsed['Table1'] as List;
           var t2=parsed['Table2'] as List;
           var t3=parsed['Table3'] as List;
-          print(t);
-          print(t1);
-          print(t2);
-          print(t3);
-          //notifyListeners();
+
           clearEmptyForm();
           clearCustomerDetails();
           printItemwise(context,t3,t,t2,t1,true);
@@ -961,15 +940,11 @@ class QuarryNotifier extends ChangeNotifier{
       await call.ApiCallGetInvoke(body,context).then((value) {
         var parsed=json.decode(value);
 
-        print(parsed);
+
         var t=parsed['Table'] as List;
         var t1=parsed['Table1'] as List;
         var t2=parsed['Table2'] as List;
         var t3=parsed['Table3'] as List;
-        print(t);
-        print(t1);
-        print(t2);
-        print(t3);
         //notifyListeners();
         updateInsertSaleLoader(false);
         printItemwise(context,t3,t,t2,t1,false);
@@ -1019,7 +994,6 @@ class QuarryNotifier extends ChangeNotifier{
       await call.ApiCallGetInvoke(body,context).then((value) {
 
 
-        print(value);
         GetSaleDetailDbhit(context);
         updateInsertSaleLoader(false);
         CustomAlert().billSuccessAlert(context, "", "Successfully Deleted", "", "");
@@ -2106,7 +2080,7 @@ class QuarryNotifier extends ChangeNotifier{
   var CompanyLogoFolder;
 
   GetQuarryDetailDbhit(BuildContext context) async {
-    updateInsertCompanyLoader(true);
+  //  updateInsertCompanyLoader(true);
     var body={
       "Fields": [
         {
@@ -2132,7 +2106,7 @@ class QuarryNotifier extends ChangeNotifier{
 
         if(value!=null){
           var parsed=json.decode(value);
-          print(parsed);
+
 
           var t1=parsed['Table'] as List;
 
@@ -2151,19 +2125,18 @@ class QuarryNotifier extends ChangeNotifier{
           CompanyLogoFolder= t1[0]['CompanyLogoFolderName']??"";
         }
 
-        updateInsertCompanyLoader(false);
+     //   updateInsertCompanyLoader(false);
 
       });
     }
     catch(e){
-      updateInsertCompanyLoader(false);
+     // updateInsertCompanyLoader(false);
       CustomAlert().commonErrorAlert(context, "${Sp.dropDownValues}" , e.toString());
     }
   }
 
   UpdateQuarryDetailDbhit(BuildContext context) async {
-    print("USERID-$UserId");
-    print("DataBaseName-$DataBaseName");
+
     updateInsertCompanyLoader(true);
 
     var body={
@@ -2255,7 +2228,6 @@ class QuarryNotifier extends ChangeNotifier{
       await call.ApiCallGetInvoke(body,context).then((value) {
         if(value!=null){
           var parsed=json.decode(value);
-          print(parsed);
           updateInsertCompanyLoader(false);
         }
 

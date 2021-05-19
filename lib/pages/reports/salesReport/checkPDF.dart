@@ -127,7 +127,7 @@ checkpdf(context,String title,dynamic fromDate,dynamic toDate,List<dynamic> head
                                 return MapEntry(j,
                                  v.isActive?!v.isDate?Container(
                                  //   width: v.width,
-                                   width:count>7?  value.width:(480/count).toDouble(),
+                                   width:count>7?  v.width:(480/count).toDouble(),
                                     constraints: BoxConstraints(
                                         minWidth:count>7? 50:(480/count).toDouble(),
                                         maxWidth: count>7? 70:(480/count).toDouble()
@@ -141,7 +141,7 @@ checkpdf(context,String title,dynamic fromDate,dynamic toDate,List<dynamic> head
                                     ),
                                   ):Container(
                                     //width: v.width,
-                                   width:count>7?  value.width:(480/count).toDouble(),
+                                   width:count>7?  v.width:(480/count).toDouble(),
                                     constraints: BoxConstraints(
                                         minWidth:count>7? 50:(480/count).toDouble(),
                                         maxWidth: count>7? 70:(480/count).toDouble()

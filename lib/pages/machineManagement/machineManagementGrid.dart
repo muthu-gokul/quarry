@@ -10,6 +10,7 @@ import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/bottomBarAddButton.dart';
+import 'package:quarry/widgets/editDelete.dart';
 import 'package:quarry/widgets/navigationBarIcon.dart';
 import 'package:quarry/widgets/staticColumnScroll/customDataTable2.dart';
 import 'package:quarry/widgets/dateRangePicker.dart' as DateRagePicker;
@@ -172,41 +173,24 @@ class _MachineManagementGridState extends State<MachineManagementGrid> {
 
                                 children: [
 
+
+                                  EditDelete(
+                                    showEdit: showEdit,
+                                    editTap: (){
+                                      mmn.updateMachineManagementEdit(true);
+                                      mmn.PlantUserDropDownValues(context);
+                                      mmn.MachineManagementDropDownValues(context);
+                                      mmn.GetMachineManagementDbHit(context, mmn.gridData[selectedIndex]['MachineManagementId'], mmn.gridData[selectedIndex]['MachineId']);
+                                      Navigator.push(context, _createRoute());
+
+                                      setState(() {
+                                        selectedIndex=-1;
+                                        showEdit=false;
+                                      });
+                                    },
+                                  ),
+
                                   /*AnimatedPositioned(
-                          bottom:showEdit?-60:0,
-                          duration: Duration(milliseconds: 300,),
-                          curve: Curves.bounceInOut,
-                          child: Container(
-                            height: 70,
-                            width: SizeConfig.screenWidth,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                IconButton(icon: Icon(Icons.picture_as_pdf,color: Colors.grey,), onPressed: (){
-
-                                }),
-                                IconButton(icon: Icon(Icons.exit_to_app,color: Colors.grey,), onPressed: (){
-
-                                }),
-                                SizedBox(width: SizeConfig.width50,),
-                                IconButton(icon: Icon(Icons.add_comment_sharp,color: Colors.grey,), onPressed: (){
-
-                                }),
-                                GestureDetector(
-                                  onTap: (){
-
-                                  },
-                                  child: IconButton(icon: Icon(Icons.share,color: Colors.grey,), onPressed: (){
-
-                                  }),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),*/
-
-                                  AnimatedPositioned(
                                     bottom:showEdit?15:-60,
                                     duration: Duration(milliseconds: 300,),
                                     curve: Curves.bounceInOut,
@@ -286,7 +270,7 @@ class _MachineManagementGridState extends State<MachineManagementGrid> {
                                           ],
                                         )
                                     ),
-                                  )
+                                  )*/
 
                                 ],
                               ),

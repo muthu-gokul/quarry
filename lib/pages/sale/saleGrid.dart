@@ -122,66 +122,20 @@ class _SaleGridState extends State<SaleGrid> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Row(
-                        children: [
-                          GestureDetector(
-                            onTap: widget.drawerCallback,
-                            child: NavBarIcon(),
-                          ),
-                          Text("Sales Detail",
-                            style: AppTheme.appBarTS
-                          ),
-                          Spacer(),
-                          Theme(
-                            data: ThemeData(
-                              accentColor: Colors.blue,
+                      Container(
+                        height: 50,
+                        child: Row(
+                          children: [
+                            GestureDetector(
+                              onTap: widget.drawerCallback,
+                              child: NavBarIcon(),
                             ),
-                            child: GestureDetector(
-                              onTap: () async {
-
-                                final List<DateTime>  picked1 = await DateRagePicker.showDatePicker(
-                                    context: context,
-                                    initialFirstDate: new DateTime.now(),
-                                    initialLastDate: (new DateTime.now()),
-                                    firstDate: dateTime,
-                                    lastDate: (new DateTime.now())
-                                );
-                                if (picked1 != null && picked1.length == 2) {
-                                  setState(() {
-                                    qn.picked=picked1;
-                                    qn.GetSaleDetailDbhit(context);
-                                    // rn.reportDbHit(widget.UserId.toString(), widget.OutletId, DateFormat("dd-MM-yyyy").format( picked[0]).toString(), DateFormat("dd-MM-yyyy").format( picked[1]).toString(),"Itemwise Report", context);
-                                  });
-                                }
-                                else if(picked1!=null && picked1.length ==1){
-                                  setState(() {
-                                    qn.picked=picked1;
-                                    qn.GetSaleDetailDbhit(context);
-                                    // rn.reportDbHit(widget.UserId.toString(), widget.OutletId, DateFormat("dd-MM-yyyy").format( picked[0]).toString(), DateFormat("dd-MM-yyyy").format( picked[0]).toString(),"Itemwise Report", context);
-                                  });
-                                }
-                              },
-                              child: Container(
-                                height: SizeConfig.height50,
-                                width: SizeConfig.height50,
-
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  // color:Color(0xFF5E5E60),
-                                ),
-                                child: Center(
-                                  child: Icon(Icons.date_range_rounded),
-                                  // child:  SvgPicture.asset(
-                                  //   'assets/reportIcons/${rn.reportIcons[index]}.svg',
-                                  //   height:25,
-                                  //   width:25,
-                                  //   color: Colors.white,
-                                  // )
-                                ),
-                              ),
+                            Text("Sales Detail",
+                              style: AppTheme.appBarTS
                             ),
-                          ),
-                        ],
+
+                          ],
+                        ),
                       ),
                       Container(
                         padding: EdgeInsets.only(left: 5,right: 5,),
@@ -506,9 +460,10 @@ class _SaleGridState extends State<SaleGrid> {
                           Container(
                             height: 80,
                             width: SizeConfig.screenWidth,
+                            padding: EdgeInsets.only(bottom: 15),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              crossAxisAlignment: CrossAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 GestureDetector(
                                   onTap: (){
@@ -526,7 +481,7 @@ class _SaleGridState extends State<SaleGrid> {
 
 
                                   },
-                                  child: SvgPicture.asset("assets/svg/edit.svg",width: 30,height: 30,
+                                  child: SvgPicture.asset("assets/svg/edit.svg",width: 25,height: 25,
                                     color: qn.selectedIndex==-1? AppTheme.bgColor.withOpacity(0.5):isOpen?AppTheme.bgColor:AppTheme.bgColor.withOpacity(0.5),),
                                 ),
                                 GestureDetector(
@@ -536,12 +491,12 @@ class _SaleGridState extends State<SaleGrid> {
                                       qn.printClosedReport(context);
                                     }
                                   },
-                                  child: SvgPicture.asset("assets/svg/print.svg",width: 30,height: 30,
+                                  child: SvgPicture.asset("assets/svg/print.svg",width: 27,height: 27,
                                     color: qn.selectedIndex==-1? AppTheme.bgColor.withOpacity(0.5):isOpen?AppTheme.bgColor.withOpacity(0.5):AppTheme.bgColor,),
                                 ),
 
 
-                                SizedBox(width: SizeConfig.width60,),
+                                SizedBox(width: SizeConfig.screenWidth*0.27,),
                                 GestureDetector(
                                   onTap: (){
                                     if(qn.selectedIndex!=-1 && !isOpen){
@@ -550,25 +505,41 @@ class _SaleGridState extends State<SaleGrid> {
                                       print("pdf");
                                     }
                                   },
-                                  child: SvgPicture.asset("assets/svg/pdf.svg",width: 30,height: 30,
-                                    color: qn.selectedIndex==-1? AppTheme.bgColor.withOpacity(0.5):isOpen?AppTheme.bgColor.withOpacity(0.5):AppTheme.bgColor,),
+                                  child: Opacity(
+                                    opacity: qn.selectedIndex==-1? 0.5:1,
+                                    child: SvgPicture.asset( qn.selectedIndex==-1?"assets/bottomIcons/pdf-inactive.svg":
+                                    "assets/bottomIcons/pdf-active.svg",width: 30,height: 30,
+                                      //color: qn.selectedIndex==-1? AppTheme.bgColor.withOpacity(0.5):isOpen?AppTheme.bgColor.withOpacity(0.5):AppTheme.bgColor,
+                                    ),
+                                  ),
 
                                 ),
                                 GestureDetector(
-                                  onTap: (){
-                                   /* if(qn.selectedIndex!=-1 && isOpen){
-                                      print("delete");
-                                      int saleid=qn.saleDetailsGrid[qn.selectedIndex].SaleId;
+                                  onTap: () async{
+                                    final List<DateTime>  picked1 = await DateRagePicker.showDatePicker(
+                                        context: context,
+                                        initialFirstDate: new DateTime.now(),
+                                        initialLastDate: (new DateTime.now()),
+                                        firstDate: dateTime,
+                                        lastDate: (new DateTime.now())
+                                    );
+                                    if (picked1 != null && picked1.length == 2) {
                                       setState(() {
-                                        qn.selectedIndex=-1;
+                                        qn.picked=picked1;
+                                        qn.GetSaleDetailDbhit(context);
+                                        // rn.reportDbHit(widget.UserId.toString(), widget.OutletId, DateFormat("dd-MM-yyyy").format( picked[0]).toString(), DateFormat("dd-MM-yyyy").format( picked[1]).toString(),"Itemwise Report", context);
                                       });
-                                      qn.DeleteSaleDetailDbhit(context, saleid).then((value){
-
+                                    }
+                                    else if(picked1!=null && picked1.length ==1){
+                                      setState(() {
+                                        qn.picked=picked1;
+                                        qn.GetSaleDetailDbhit(context);
+                                        // rn.reportDbHit(widget.UserId.toString(), widget.OutletId, DateFormat("dd-MM-yyyy").format( picked[0]).toString(), DateFormat("dd-MM-yyyy").format( picked[0]).toString(),"Itemwise Report", context);
                                       });
-                                    }*/
+                                    }
 
                                   },
-                                  child: SvgPicture.asset("assets/svg/delete.svg",width: 30,height: 30,color: AppTheme.bgColor.withOpacity(0.5),
+                                  child: SvgPicture.asset("assets/svg/calender.svg",width: 27,height: 27,color: AppTheme.bgColor,
                                 //    color: qn.selectedIndex==-1? AppTheme.bgColor.withOpacity(0.5):isOpen?AppTheme.bgColor:AppTheme.bgColor.withOpacity(0.5),
                                   ),
                                 ),

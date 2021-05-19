@@ -66,7 +66,7 @@ class _DashBoardHomeState extends State<DashBoardHome> with TickerProviderStateM
 
 return Scaffold(
 body: WebView(
-initialUrl: 'https://www.google.com/',
+initialUrl: 'https://s3.amazonaws.com/qmsadminpanel.com/Quarry/Views/Dashboard/dashboard.html',
 javascriptMode: JavascriptMode.unrestricted,
 ),
 );

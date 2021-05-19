@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/notifier/enployeeAdvanceLoanNotifier.dart';
@@ -313,9 +314,13 @@ class _MachineManagementAddNewState extends State<MachineManagementAddNew> {
                                               ),
                                               child: Row(
                                                 children: [
-                                                  Text(mmn.inTime ??"Select InTime"),
+                                                  Text(mmn.inTime ??"Select InTime",style: TextStyle(fontFamily: 'RR',fontSize: 14,color: AppTheme.bgColor),),
                                                   Spacer(),
-                                                  Icon(Icons.timer)
+                                                  Opacity(
+                                                      opacity: 0.4,
+                                                      child: SvgPicture.asset("assets/bottomIcons/time.svg",height: 30,width: 30,)
+                                                  )
+
 
                                                 ],
                                               ),
@@ -351,9 +356,13 @@ class _MachineManagementAddNewState extends State<MachineManagementAddNew> {
                                               ),
                                               child: Row(
                                                 children: [
-                                                  Text(mmn.outTime ??"Select OutTime"),
+                                                  Text(mmn.outTime ??"Select OutTime",style: TextStyle(fontFamily: 'RR',fontSize: 14,color: AppTheme.bgColor),),
                                                   Spacer(),
-                                                  Icon(Icons.timer)
+                                                  Opacity(
+                                                      opacity: 0.4,
+                                                      child: SvgPicture.asset("assets/bottomIcons/time.svg",height: 30,width: 30,)
+                                                  )
+
 
                                                 ],
                                               ),

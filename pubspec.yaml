@@ -43,6 +43,8 @@ dependencies:
   excel:
   webview_flutter:
   month_picker_dialog:
+  image_cropper:
+  image_picker:
 
 dev_dependencies:
   flutter_test:
@@ -80,9 +82,6 @@ flutter:
     - assets/svg/print.svg
     - assets/images/inGate.jpg
     - assets/goodsIcons/cart.jpg
-    - assets/goodsIcons/invoice.jpg
-    - assets/goodsIcons/outGate.jpg
-    - assets/goodsIcons/plant.jpg
     - assets/goodsIcons/yes.jpg
     - assets/goodsIcons/no.jpg
     - assets/svg/drawer/
@@ -112,6 +111,9 @@ flutter:
     - assets/svg/gridHeader/saleHeader.jpg
     - assets/svg/gridHeader/DieselHeader.jpg
     - assets/svg/gridHeader/productionHeader.jpg
+    - assets/bottomIcons/
+    - assets/svg/upload.svg
+
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

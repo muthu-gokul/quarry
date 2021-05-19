@@ -12,6 +12,7 @@ import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/bottomBarAddButton.dart';
+import 'package:quarry/widgets/editDelete.dart';
 import 'package:quarry/widgets/navigationBarIcon.dart';
 import 'package:quarry/widgets/staticColumnScroll/customDataTable2.dart';
 
@@ -497,120 +498,48 @@ class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
                                 ),
                               ),
 
-                              AnimatedPositioned(
-                                bottom:showEdit?15:-60,
-                                duration: Duration(milliseconds: 300,),
-                                curve: Curves.bounceInOut,
-                                child: Container(
+                              EditDelete(
+                                showEdit: showEdit,
+                                editTap: (){
+                                  if(pageIndex==0){
+                                    dn.insertDP_Form();
+                                    dn.updateDieselEdit(true);
+                                    dn.PlantUserDropDownValues(context).then((value) {
+                                      dn.DieselDropDownValues(context);
+                                      dn.GetDieselPurchaseDbHit(context, dn.dieselPurchaseGridList[selectedIndex].dieselPurchaseId);
+                                      setState(() {
+                                        selectedIndex=-1;
+                                        showEdit=false;
+                                      });
+                                    });
+                                    Navigator.push(context, _createRoute());
+                                  }
+                                  else if(pageIndex==1){
+                                    dn.insertDI_form();
+                                    dn.updateDieselIssueEdit(true);
+                                    dn.PlantUserDropDownValues(context).then((value) {
+                                      dn.DieselDropDownValues(context);
+                                      dn.GetDieselIssueDbHit(context, dn.dieselIssueGridList[selectedIndex].dieselIssueId);
+                                      setState(() {
+                                        selectedIndex=-1;
+                                        showEdit=false;
+                                      });
+                                    });
+                                    Navigator.push(context, _createRouteDieselIssue());
+                                  }
 
-                                    width: SizeConfig.screenWidth,
-                                    child: Row(
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        SizedBox(width: SizeConfig.width20,),
-                                        GestureDetector(
-                                          onTap: (){
-
-                                            if(pageIndex==0){
-                                              dn.insertDP_Form();
-                                              dn.updateDieselEdit(true);
-                                              dn.PlantUserDropDownValues(context).then((value) {
-                                                dn.DieselDropDownValues(context);
-                                                dn.GetDieselPurchaseDbHit(context, dn.dieselPurchaseGridList[selectedIndex].dieselPurchaseId);
-                                                setState(() {
-                                                  selectedIndex=-1;
-                                                  showEdit=false;
-                                                });
-                                              });
-                                              Navigator.push(context, _createRoute());
-                                            }
-                                            else if(pageIndex==1){
-                                              dn.insertDI_form();
-                                              dn.updateDieselIssueEdit(true);
-                                              dn.PlantUserDropDownValues(context).then((value) {
-                                                dn.DieselDropDownValues(context);
-                                                dn.GetDieselIssueDbHit(context, dn.dieselIssueGridList[selectedIndex].dieselIssueId);
-                                                setState(() {
-                                                  selectedIndex=-1;
-                                                  showEdit=false;
-                                                });
-                                              });
-                                              Navigator.push(context, _createRouteDieselIssue());
-                                            }
-
-
-
-
-
-                                          },
-                                          child: Container(
-                                            width: 70,
-                                            decoration: BoxDecoration(
-                                                boxShadow: [
-                                                  BoxShadow(
-                                                    color: AppTheme.yellowColor.withOpacity(0.7),
-                                                    spreadRadius: -3,
-                                                    blurRadius: 15,
-                                                    offset: Offset(0, 7), // changes position of shadow
-                                                  )
-                                                ]
-                                            ),
-                                            child:FittedBox(
-                                              child: Row(
-                                                children: [
-                                                  SvgPicture.asset("assets/svg/edit.svg",height: 20,width: 20,color: AppTheme.yellowColor,),
-                                                  SizedBox(width: SizeConfig.width10,),
-                                                  Text("Edit",style: TextStyle(fontSize: 20,fontFamily: 'RR',color:Color(0xFFFF9D10)),),
-
-
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        Spacer(),
-                                        GestureDetector(
-                                          onTap: (){
-                                            if(pageIndex==1){
+                                },
+                              ),
+                              /*  if(pageIndex==1){
                                               dn.DeleteDieselIssueDbHit(context, dn.dieselIssueGridList[selectedIndex].dieselIssueId);
                                               setState(() {
                                                 showEdit=false;
                                                 selectedIndex=-1;
                                               });
-                                            }
-                                          },
-                                          child: Container(
-                                            width: 90,
-                                            decoration: BoxDecoration(
-                                                boxShadow: [
-                                                  BoxShadow(
-                                                    color: AppTheme.red.withOpacity(0.5),
-                                                    spreadRadius: -3,
-                                                    blurRadius: 25,
-                                                    offset: Offset(0, 7), // changes position of shadow
-                                                  )
-                                                ]
-                                            ),
-                                            child:FittedBox(
-                                              child: Row(
-                                                children: [
-                                                  Text("Delete",style: TextStyle(fontSize: 18,fontFamily: 'RR',color:Colors.red),),
-                                                  SizedBox(width: SizeConfig.width10,),
-                                                  SvgPicture.asset("assets/svg/delete.svg",height: 20,width: 20,color: AppTheme.red,),
+                                            }*/
 
 
 
-
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(width: SizeConfig.width10,),
-                                      ],
-                                    )
-                                ),
-                              )
 
                             ],
                           ),

@@ -14,6 +14,7 @@ import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/alertDialog.dart';
+import 'package:quarry/widgets/bottomBarAddButton.dart';
 import 'package:quarry/widgets/customTextField.dart';
 
 class PaymentEditForm extends StatefulWidget {
@@ -742,16 +743,18 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
                   width: SizeConfig.screenWidth,
                   child: Row(
                     children: [
-                      IconButton(icon: Icon(Icons.arrow_back), onPressed: () {
-                       qn.clearEditForm();
-                       qn.clearInsertForm();
-                        Navigator.pop(context);
-                      }),
-                      SizedBox(width: SizeConfig.width5,),
+                      CancelButton(
+                        ontap: (){
+                          qn.clearEditForm();
+                          qn.clearInsertForm();
+                          Navigator.pop(context);
+                        },
+                      ),
+
                       Text("${qn.EditInvoiceType}",
                         style: TextStyle(fontFamily: 'RR',
-                            color: Colors.black,
-                            fontSize: SizeConfig.width16),
+                            color: AppTheme.bgColor,
+                            fontSize: 16),
                       ),
 
                     ],

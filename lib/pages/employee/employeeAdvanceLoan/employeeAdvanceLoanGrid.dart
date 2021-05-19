@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:quarry/notifier/employeeNotifier.dart';
 import 'package:quarry/notifier/enployeeAdvanceLoanNotifier.dart';
 import 'package:quarry/pages/employee/employeeAdvanceLoan/employeeAdvanceLoanAddNew.dart';
 import 'package:quarry/pages/employee/employeeMaster/employeeView.dart';
@@ -10,8 +9,7 @@ import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/bottomBarAddButton.dart';
 import 'package:quarry/widgets/navigationBarIcon.dart';
-import 'package:quarry/widgets/staticColumnScroll/customDataTable2.dart';
-import 'package:quarry/widgets/staticColumnScroll/customDataTableWithoutModel.dart';
+
 
 
 class EmployeeAdvanceLoanGrid extends StatefulWidget {
@@ -468,52 +466,17 @@ class _EmployeeAdvanceLoanGridState extends State<EmployeeAdvanceLoanGrid> {
                         child: Stack(
 
                           children: [
-
-                            /*AnimatedPositioned(
-                          bottom:showEdit?-60:0,
-                          duration: Duration(milliseconds: 300,),
-                          curve: Curves.bounceInOut,
-                          child: Container(
-                            height: 70,
-                            width: SizeConfig.screenWidth,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                IconButton(icon: Icon(Icons.picture_as_pdf,color: Colors.grey,), onPressed: (){
-
-                                }),
-                                IconButton(icon: Icon(Icons.exit_to_app,color: Colors.grey,), onPressed: (){
-
-                                }),
-                                SizedBox(width: SizeConfig.width50,),
-                                IconButton(icon: Icon(Icons.add_comment_sharp,color: Colors.grey,), onPressed: (){
-
-                                }),
-                                GestureDetector(
-                                  onTap: (){
-
-                                  },
-                                  child: IconButton(icon: Icon(Icons.share,color: Colors.grey,), onPressed: (){
-
-                                  }),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),*/
-
                             AnimatedPositioned(
-                              bottom:showEdit?15:-60,
+                              bottom:showEdit?5:-60,
                               duration: Duration(milliseconds: 300,),
-                              curve: Curves.bounceInOut,
+                              curve: Curves.bounceOut,
                               child: Container(
 
                                   width: SizeConfig.screenWidth,
                                   child: Row(
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
-                                      SizedBox(width: SizeConfig.width20,),
+
                                       GestureDetector(
                                         onTap: (){
                                           eal.updateisEdit(true);
@@ -527,63 +490,40 @@ class _EmployeeAdvanceLoanGridState extends State<EmployeeAdvanceLoanGrid> {
                                           });
 
                                         },
-                                        child: Container(
-                                          width: 70,
-                                          decoration: BoxDecoration(
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  color: AppTheme.yellowColor.withOpacity(0.7),
-                                                  spreadRadius: -3,
-                                                  blurRadius: 15,
-                                                  offset: Offset(0, 7), // changes position of shadow
-                                                )
-                                              ]
-                                          ),
+                                        child:Container(
+                                          width: 130,
+                                          height: 50,
+                                          padding: EdgeInsets.only(left: 20),
                                           child:FittedBox(
-                                            child: Row(
-                                              children: [
-                                                SvgPicture.asset("assets/svg/edit.svg",height: 20,width: 20,color: AppTheme.yellowColor,),
-                                                SizedBox(width: SizeConfig.width10,),
-                                                Text("Edit",style: TextStyle(fontSize: 20,fontFamily: 'RR',color:Color(0xFFFF9D10)),),
-
-
-                                              ],
+                                            child: Container(
+                                                height: 55,
+                                                width: 130,
+                                                alignment: Alignment.centerLeft,
+                                                child: FittedBox(child: Image.asset("assets/bottomIcons/edit-text-icon.png"))
                                             ),
                                           ),
                                         ),
                                       ),
                                       Spacer(),
                                       Container(
-                                        width: 90,
-                                        decoration: BoxDecoration(
-                                            boxShadow: [
-                                              BoxShadow(
-                                                color: AppTheme.red.withOpacity(0.5),
-                                                spreadRadius: -3,
-                                                blurRadius: 25,
-                                                offset: Offset(0, 7), // changes position of shadow
-                                              )
-                                            ]
-                                        ),
+                                        width: 130,
+                                        height: 50,
+                                        padding: EdgeInsets.only(right: 20),
                                         child:FittedBox(
-                                          child: Row(
-                                            children: [
-                                              Text("Delete",style: TextStyle(fontSize: 18,fontFamily: 'RR',color:Colors.red),),
-                                              SizedBox(width: SizeConfig.width10,),
-                                              SvgPicture.asset("assets/svg/delete.svg",height: 20,width: 20,color: AppTheme.red,),
-
-
-
-
-                                            ],
+                                          child: Container(
+                                              height: 47,
+                                              width: 130,
+                                              alignment: Alignment.centerRight,
+                                              child: FittedBox(child: Image.asset("assets/bottomIcons/delete-text-icon.png"))
                                           ),
                                         ),
                                       ),
-                                      SizedBox(width: SizeConfig.width10,),
                                     ],
                                   )
                               ),
-                            )
+                            ),
+
+
 
                           ],
                         ),

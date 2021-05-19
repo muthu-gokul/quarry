@@ -938,7 +938,7 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                                                                         width: valueContainerWidth,
                                                                         alignment: Alignment.center,
                                                                         child: Text("${value.TaxAmount}",
-                                                                          style:AppTheme.ML_bgCT,
+                                                                          style:selectedMaterialIndex==index?AppTheme.TSWhite16:AppTheme.ML_bgCT,
                                                                         ),
                                                                       ),
                                                                       Container(
@@ -1213,22 +1213,33 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
 
                             children: [
 
-                              pn.purchaseOrdersMappingList.isNotEmpty?Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: InkWell(
-                                    onTap: (){
-                                      setState(() {
-                                        otherChargeAmountOpen=true;
-                                      });
-                                    },
-                                      child: Text("  + Other Charges",style: AppTheme.bgColorTS,)
-                                  )
+                              pn.purchaseOrdersMappingList.isNotEmpty?AnimatedPositioned(
+                                duration: Duration(milliseconds: 300),
+                                curve: Curves.bounceOut,
+                                left: 5,
+                                bottom:deleteOpen? -60:3,
+                                child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: InkWell(
+                                      onTap: (){
+                                        setState(() {
+                                          otherChargeAmountOpen=true;
+                                        });
+                                      },
+                                        child: Container(
+                                          height: 50,
+                                            width: 130,
+                                            child: FittedBox(child: Image.asset("assets/bottomIcons/other-charges-text-icon.png")
+                                            )
+                                        )
+                                    )
+                                ),
                               ):Container(),
 
                               AnimatedPositioned(
                                 duration: Duration(milliseconds: 300),
                                 curve: Curves.bounceInOut,
-                                bottom: deleteOpen? 10:-60,
+                                bottom: deleteOpen? 5:-60,
 
                                   child: InkWell(
                                       onTap: (){
@@ -1252,34 +1263,41 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                                         ).yesOrNoDialog(context, "", "Do you want to delete All Material?");
                                       },
                                       child: Container(
-                                        height: 30,
-                                          padding: EdgeInsets.only(left: 20,bottom: 5),
-                                          alignment: Alignment.centerLeft,
-                                          width: SizeConfig.screenWidth*0.35,
-                                          color: Colors.white,
-                                          child: Text("  Delete All",style: AppTheme.bgColorTS,)
+                                          height: 40,
+                                          width: 130,
+                                          child: FittedBox(child: Image.asset("assets/bottomIcons/delete-all-text-icon.png"))
                                       )
                                   )
                               ),
 
-                              pn.purchaseOrdersMappingList.isNotEmpty?Align(
-                                  alignment: Alignment.centerRight,
-                                  child: InkWell(
-                                      onTap: (){
+                              pn.purchaseOrdersMappingList.isNotEmpty?AnimatedPositioned(
+                                duration: Duration(milliseconds: 300),
+                                curve: Curves.bounceOut,
+                                right: 5,
+                                bottom:deleteOpen? -60:3,
+                                child: Align(
+                                    alignment: Alignment.centerRight,
+                                    child: InkWell(
+                                        onTap: (){
 
-                                        setState(() {
-                                          materialsListOpen=true;
-                                        });
-                                      },
-                                      child: Text("+ Add Material  ",style: AppTheme.bgColorTS)
-                                  )
+                                          setState(() {
+                                            materialsListOpen=true;
+                                          });
+                                        },
+                                        child: Container(
+                                          height: 50,
+                                            width: 130,
+                                            child: FittedBox(child: Image.asset("assets/bottomIcons/add-meterial-text.png"))
+                                        )
+                                    )
+                                ),
                               ):Container(),
 
                               AnimatedPositioned(
-                                  bottom: deleteOpen? 10:-60,
+                                  bottom: deleteOpen? 5:-60,
                                   right: 0,
                                   duration: Duration(milliseconds: 300),
-                                  curve: Curves.bounceInOut,
+                                  curve: Curves.bounceOut,
 
                                   child: InkWell(
                                       onTap: (){
@@ -1304,12 +1322,9 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                                         ).yesOrNoDialog(context, "", "Do you want to delete Material?");
                                       },
                                       child: Container(
-                                          height: 30,
-                                          padding: EdgeInsets.only(right: 20,bottom: 5),
-                                          alignment: Alignment.centerRight,
-                                          width: SizeConfig.screenWidth*0.35,
-                                          color: Colors.white,
-                                          child: Text("Delete",style: AppTheme.bgColorTS,)
+                                          height: 40,
+                                          width: 130,
+                                          child: FittedBox(child: Image.asset("assets/bottomIcons/delete-text-icon.png"))
                                       )
                                   )
                               ),
@@ -1423,8 +1438,8 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                   itemOnTap: (index){
                     node.unfocus();
                     setState(() {
-                      pn.supplierId=pn.filterSuppliersList[index].supplierId;
-                      pn.supplierName=pn.filterSuppliersList[index].supplierName;
+                      pn.supplierId=pn.searchFilterSuppliersList[index].supplierId;
+                      pn.supplierName=pn.searchFilterSuppliersList[index].supplierName;
                       if(pn.filterSuppliersList[index].supplierType=='External'){
                         pn.filterMaterialsList=pn.materialsList.where((element) => element.supplierId==pn.filterSuppliersList[index].supplierId
                             && element.SupplierType=='External'

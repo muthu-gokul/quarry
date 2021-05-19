@@ -753,6 +753,7 @@ List<dynamic> vehicleTypeList=[];/* {
           }
           else if(typeName=="CustomerSaleReport"){
             var t=parsed["Table"] as List;
+            print(t);
             customerSaleReportGridList=t;
             filterCustomerSale();
           }
@@ -1008,6 +1009,7 @@ List<dynamic> vehicleTypeList=[];/* {
       }
     });
 
+
     customerList.forEach((element) {
       if(element['IsActive']==1){
         tempCustomerSaleCustomerFilter=tempCustomerSaleCustomerFilter+tempCustomerSalePlantFilter.where((ele) => ele['CustomerId']==element['CustomerId']).toList();
@@ -1029,7 +1031,7 @@ List<dynamic> vehicleTypeList=[];/* {
 
     locationList.forEach((element) {
       if(element['IsActive']==1){
-        filterCustomerSaleReportGridList=filterCustomerSaleReportGridList+tempCustomerSalePaymentTypeFilter.where((ele) => ele['Location']==element['Location']).toList();
+        filterCustomerSaleReportGridList=filterCustomerSaleReportGridList+tempCustomerSalePaymentTypeFilter.where((ele) => ele['Location'].toString().toLowerCase()==element['Location'].toString().toLowerCase()).toList();
       }
     });
 
@@ -1562,7 +1564,7 @@ List<dynamic> vehicleTypeList=[];/* {
 
     locationList.forEach((element) {
       if(element['IsActive']==1){
-        tempDieselPurchaseReportLocationFilter=tempDieselPurchaseReportLocationFilter+tempDieselPurchaseReportPurchaserFilter.where((ele) => ele['DieselBunkLocation']==element['DieselBunkLocation']).toList();
+        tempDieselPurchaseReportLocationFilter=tempDieselPurchaseReportLocationFilter+tempDieselPurchaseReportPurchaserFilter.where((ele) => ele['DieselBunkLocation'].toString().toLowerCase()==element['DieselBunkLocation'].toString().toLowerCase()).toList();
       }
     });
 

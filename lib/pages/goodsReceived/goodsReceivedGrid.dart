@@ -430,10 +430,10 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
                           crossAxisAlignment: CrossAxisAlignment.end,
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            Image.asset("assets/goodsIcons/plant.jpg"),
+                            SvgPicture.asset("assets/bottomIcons/plant-slection.svg",height: 40,width: 40,color: AppTheme.bgColor,),
                             Image.asset("assets/goodsIcons/cart.jpg"),
 
-                            SizedBox(width: SizeConfig.width50,),
+                            SizedBox(width: SizeConfig.screenWidth*0.25,),
                             GestureDetector(
                                 onTap: (){
                                   gr.clearOGFform();
@@ -441,7 +441,7 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
                                   Navigator.push(context, _createRouteOutGateForm());
 
                                 },
-                                child: Image.asset("assets/goodsIcons/outGate.jpg")
+                                child: SvgPicture.asset("assets/bottomIcons/out-gate.svg",height: 42,width: 40,color: AppTheme.bgColor)
                             ),
                             GestureDetector(
                                 onTap:isInvoiceOpen?null: (){
@@ -499,47 +499,10 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
                                       //isInvoice=true;
                                     });
                                   }
-
-
-
-
-                                  /*int i=0;
-                                  if(mounted){
-                                    Timer.periodic(Duration(milliseconds: 200),(v){
-                                      print(i);
-                                      if(gr.goodsGridList[i].status=="Not Yet"){
-                                        if(mounted){
-                                          gr.goodsGridList[i].controller.forward().then((value) {
-                                            setState(() {
-                                              gr.goodsGridList[i].isAnimate=true;
-                                              i=i+1;
-                                            });
-                                          });
-
-                                        }
-
-                                      }
-                                      else{
-                                        i=i+1;
-                                      }
-
-                                      if(i==gr.goodsGridList.length){
-                                        v.cancel();
-                                        if(mounted){
-                                          setState(() {
-                                            isInvoiceOpen=false;
-                                          });
-                                        }
-
-                                      }
-
-                                    });*/
-
-
-
                                 },
                              //   child:Icon(Icons.cancel,size: 35,)
-                                child:isInvoice? Icon(Icons.cancel,size: 35,) :Image.asset("assets/goodsIcons/invoice.jpg")
+                                child:isInvoice? SvgPicture.asset("assets/bottomIcons/cancel-icon.svg",height: 40,width: 40,color: AppTheme.red,) :
+                                SvgPicture.asset("assets/bottomIcons/convert-invoice.svg",height: 40,width: 40,color: AppTheme.bgColor,)
                             ),
                           ],
                         ),

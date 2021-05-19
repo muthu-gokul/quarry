@@ -574,7 +574,7 @@ class _EmployeeAttendanceLoginLogoutState extends State<EmployeeAttendanceLoginL
 
 
                                   AnimatedPositioned(
-                                    bottom:15,
+                                    bottom:0,
                                     duration: Duration(milliseconds: 300,),
                                     curve: Curves.bounceInOut,
                                     child: Container(
@@ -593,27 +593,12 @@ class _EmployeeAttendanceLoginLogoutState extends State<EmployeeAttendanceLoginL
 
                                               },
                                               child: Container(
-                                                width: 70,
-                                                height: 22,
-                                                decoration: BoxDecoration(
-                                                    boxShadow: [
-                                                      BoxShadow(
-                                                        color: Colors.green.withOpacity(0.4),
-                                                        spreadRadius: -3,
-                                                        blurRadius: 15,
-                                                        offset: Offset(0, 7), // changes position of shadow
-                                                      )
-                                                    ]
-                                                ),
+                                                width: 130,
+                                                height: 50,
+                                                alignment: Alignment.centerLeft,
                                                 child:FittedBox(
-                                                  child: Row(
-                                                    children: [
-
-                                                      Text("Login",style: TextStyle(fontSize: 20,fontFamily: 'RR',color:Colors.green),),
-
-
-                                                    ],
-                                                  ),
+                                                  child:Image.asset(pageIndex==0?"assets/bottomIcons/Login-text-icon.png":
+                                                  "assets/bottomIcons/Login-text-icon-gray.png")
                                                 ),
                                               ),
                                             ),
@@ -628,33 +613,16 @@ class _EmployeeAttendanceLoginLogoutState extends State<EmployeeAttendanceLoginL
 
                                               },
                                               child: Container(
-                                                width: 90,
-                                                height: 22,
-                                                decoration: BoxDecoration(
-                                                    boxShadow: [
-                                                      BoxShadow(
-                                                        color: AppTheme.red.withOpacity(0.5),
-                                                        spreadRadius: -3,
-                                                        blurRadius: 25,
-                                                        offset: Offset(0, 7), // changes position of shadow
-                                                      )
-                                                    ]
-                                                ),
+                                                width: 130,
+                                                height: 50,
+                                                alignment: Alignment.centerRight,
                                                 child:FittedBox(
-                                                  child: Row(
-                                                    children: [
-                                                      Text("Logout",style: TextStyle(fontSize: 18,fontFamily: 'RR',color:Colors.red),),
-
-
-
-
-
-                                                    ],
-                                                  ),
+                                                  child:Image.asset(pageIndex==1?"assets/bottomIcons/Logout-text-icon.png":
+                                                  "assets/bottomIcons/Logout-text-icon-gray.png")
                                                 ),
                                               ),
                                             ),
-                                            SizedBox(width: SizeConfig.width10,),
+                                            SizedBox(width: SizeConfig.width20,),
                                           ],
                                         )
                                     ),

@@ -315,7 +315,7 @@ class ReportGridState extends State<ReportGrid> with TickerProviderStateMixin{
                           ]
                       ),
                       child: Center(
-                        child: SvgPicture.asset("assets/svg/pdf.svg",width: 30,height: 30,),
+                        child: SvgPicture.asset("assets/svg/pdf.svg",width: 30,height: 30),
                       ),
                     ),
                   ),
@@ -360,13 +360,18 @@ class ReportGridState extends State<ReportGrid> with TickerProviderStateMixin{
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                IconButton(icon: Icon(Icons.import_export,color: Colors.grey,), onPressed: (){
-                                  setState(() {
-                                    exportOpen=!exportOpen;
-                                  });
+                                Padding(
+                                  padding: EdgeInsets.only(top: 10),
+                                  child: GestureDetector(
+                                    onTap: (){
+                                      setState(() {
+                                        exportOpen=!exportOpen;
+                                      });
+                                    },
+                                    child: SvgPicture.asset("assets/bottomIcons/export-icon.svg",height: 30,width: 30,color: AppTheme.bgColor,),
+                                  ),
+                                ),
 
-                               //   checkpdf(context,rn.reportHeader,DateFormat('dd-MM-yyyy').format(rn.picked[0]),DateFormat('dd-MM-yyyy').format(rn.picked[1]),rn.reportsGridColumnList,rn.reportsGridDataList);
-                                }),
                                 GestureDetector(
                                   onTap: () async {
                                     if(rn.TypeName=='AttendanceReport'){
@@ -419,50 +424,38 @@ class ReportGridState extends State<ReportGrid> with TickerProviderStateMixin{
                                       }
                                     }
                                   },
-                                  child: Container(
-                                    height: SizeConfig.height50,
-                                    width: SizeConfig.height50,
-
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      // color:Color(0xFF5E5E60),
-                                    ),
-                                    child: Center(
-                                    //  child: Icon(Icons.date_range_outlined),
-                                      child:  SvgPicture.asset(
-                                        'assets/svg/calender.svg',
-                                        height:25,
-                                        width:25,
-                                     //   color: Colors.white,
-                                      )
-                                    ),
+                                  child: Padding(
+                                   padding: EdgeInsets.only(top: 10),
+                                    child:  SvgPicture.asset(
+                                      'assets/svg/calender.svg',
+                                      height:26,
+                                      width:26,
+                                      color: AppTheme.bgColor,
+                                    )
                                   ),
                                 ),
-                                SizedBox(width: SizeConfig.width80,),
-                                IconButton(icon: Icon(Icons.settings,), onPressed: (){
+                                SizedBox(width: SizeConfig.screenWidth*0.27,),
+                                Padding(
+                                  padding: EdgeInsets.only(top: 10),
+                                  child: GestureDetector(
+                                    onTap: (){
+                                      Navigator.push(context, _createRouteReportSettings());
+                                    },
+                                    child: SvgPicture.asset("assets/bottomIcons/settings-icon.svg",height: 30,width: 30,color: AppTheme.bgColor,),
+                                  ),
+                                ),
 
-                                  Navigator.push(context, _createRouteReportSettings());
-                                }),
                                 GestureDetector(
                                   onTap: () async {
                                     Navigator.push(context, _createRoute());
                                   },
-                                  child: Container(
-                                    height: SizeConfig.height50,
-                                    width: SizeConfig.height50,
+                                  child: Padding(
+                                    padding: EdgeInsets.only(top: 10),
+                                    child: SvgPicture.asset(
+                                      "assets/bottomIcons/reports-icon.svg",
+                                      height:50,
+                                      width:50,
 
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      // color:Color(0xFF5E5E60),
-                                    ),
-                                    child: Center(
-                                      child: Icon(Icons.more_vert_rounded),
-                                      // child:  SvgPicture.asset(
-                                      //   'assets/reportIcons/${rn.reportIcons[index]}.svg',
-                                      //   height:25,
-                                      //   width:25,
-                                      //   color: Colors.white,
-                                      // )
                                     ),
                                   ),
                                 )
@@ -562,7 +555,10 @@ class ReportGridState extends State<ReportGrid> with TickerProviderStateMixin{
                           GestureDetector(
                             onTap: (){
                                searchController.clear();
-                               rn.searchSales("");
+                               if(rn.TypeName=="SaleReport"){
+                                 rn.searchSales("");
+                               }
+
                                 setState(() {
                                   searchBody=false;
                                 });

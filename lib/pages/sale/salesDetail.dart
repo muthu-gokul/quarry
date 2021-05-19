@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
@@ -1832,8 +1833,15 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                               child:Column(
                                                 mainAxisAlignment: MainAxisAlignment.center,
                                                 children: [
-                                                  Image.asset("assets/images/Empty-vehicle-active.png",height: 40,width: 40,),
-                                                  Text('In Gate',style: TextStyle(fontFamily: 'RR',fontSize: 14,color: AppTheme.bgColor),),
+                                                  Padding(
+                                                    padding:  EdgeInsets.only(top: 10),
+                                                    child: Opacity(
+                                                        opacity:qn.tabController.index==0?1:0.7,
+                                                      child: SvgPicture.asset(qn.tabController.index==0?"assets/bottomIcons/Lorry-in.svg":
+                                                      "assets/bottomIcons/Lorry-in-inactive.svg"),
+                                                    ),
+                                                  ),
+
                                                 ],
                                               ),
                                             ),
@@ -1851,19 +1859,25 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                               scrollController.jumpTo(0);
                                             },
                                             child: Container(
-                                              width: 90,
+                                              width: 75,
 
                                               child:Column(
                                                 mainAxisAlignment: MainAxisAlignment.center,
                                                 children: [
-                                                  Image.asset("assets/images/Loaded-vehicle-active.png",height: 40,width: 40,),
-                                                  Text('Out Gate',style: TextStyle(fontFamily: 'RR',fontSize: 14,color: AppTheme.bgColor),),
+                                                  Padding(
+                                                    padding:  EdgeInsets.only(top: 10),
+                                                    child: Opacity(
+                                                      opacity:qn.tabController.index==1?1:0.7,
+                                                      child: SvgPicture.asset(qn.tabController.index==1?"assets/bottomIcons/Lorry-out.svg":
+                                                      "assets/bottomIcons/Lorry-out-inactive.svg"),
+                                                    ),
+                                                  ),
 
                                                 ],
                                               ),
                                             ),
                                           ),
-                                          SizedBox(width: SizeConfig.width10,),
+                                          SizedBox(width: SizeConfig.width20,),
                                         ],
                                       )
                                   )
