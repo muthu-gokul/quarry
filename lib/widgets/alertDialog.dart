@@ -283,7 +283,7 @@ class CustomAlert{
         builder: (ctx) => Dialog(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0),),
           child: Container(
-              height:450,
+              height:400,
               width:400,
               decoration:BoxDecoration(
                 color:Colors.white,
@@ -308,14 +308,6 @@ class CustomAlert{
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
                             color: AppTheme.red,
-                            // boxShadow: [
-                            //   BoxShadow(
-                            //     color:AppTheme.red.withOpacity(0.6),
-                            //     offset: const Offset(0, 8.0),
-                            //     blurRadius: 15.0,
-                            //     // spreadRadius: 2.0,
-                            //   ),
-                            // ]
                         ),
                         child: Center(
                           child: Text("Delete",
@@ -331,19 +323,6 @@ class CustomAlert{
                       child: Container(
                         height: 30.0,
                         width: SizeConfig.width100,
-
-                        // decoration: BoxDecoration(
-                        //     borderRadius: BorderRadius.circular(5),
-                        //     color: Color(0xFFE4E4E4),
-                        //     // boxShadow: [
-                        //     //   BoxShadow(
-                        //     //     color:Color(0xFF808080).withOpacity(0.6),
-                        //     //     offset: const Offset(0, 8.0),
-                        //     //     blurRadius: 15.0,
-                        //     //     // spreadRadius: 2.0,
-                        //     //   ),
-                        //     // ]
-                        // ),
                         child: Center(
                           child: Text("Cancel",
                             style: TextStyle(fontFamily:'RR',color: Color(0xFF8d8d8d),fontSize: 20),

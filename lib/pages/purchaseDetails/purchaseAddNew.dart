@@ -1260,7 +1260,7 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                                                 selectedMaterialIndex=-1;
                                               });
                                             }
-                                        ).yesOrNoDialog(context, "", "Do you want to delete All Material?");
+                                        ).yesOrNoDialog(context, "", "Do you want to Delete All Material?");
                                       },
                                       child: Container(
                                           height: 40,
@@ -1319,7 +1319,7 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                                             selectedMaterialIndex=-1;
                                           });
                                         }
-                                        ).yesOrNoDialog(context, "", "Do you want to delete Material?");
+                                        ).yesOrNoDialog(context, "", "Do you want to Delete Material?");
                                       },
                                       child: Container(
                                           height: 40,
@@ -1555,7 +1555,7 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                                        return GestureDetector(
                                          onTap: (){
 
-                                           if(pn.purchaseOrdersMappingList.any((element) => element.materialName==pn.filterMaterialsList[index].materialName)){
+                                           if(pn.purchaseOrdersMappingList.any((element) => element.materialName==pn.searchFilterMaterialsList[index].materialName)){
                                              CustomAlert().commonErrorAlert(context, "Material Exists", "");
                                            }
                                            else{
@@ -1618,7 +1618,7 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                                                                  Row(
                                                                    mainAxisAlignment: MainAxisAlignment.center,
                                                                    children: [
-                                                                     Text("${indentQty.isEmpty?"0":indentQty} ${pn.searchFilterMaterialsList[pn.searchFilterMaterialsList.length-1].unitName??""}",
+                                                                     Text("${indentQty.isEmpty?"0":indentQty} ${pn.purchaseOrdersMappingList[pn.purchaseOrdersMappingList.length-1].unitName??""}",
                                                                        style: TextStyle(fontFamily: 'RL',fontSize: 16,color: AppTheme.gridTextColor),textAlign: TextAlign.center,),
                                                                      SizedBox(width: 20,),
 

@@ -178,6 +178,7 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                     labelText: 'Supplier Name',
                                     regExp: '[A-Za-z  ]',
                                     textEditingController: qn.supplierName,
+                                    onChange: (v){},
                                     onEditComplete: (){
                                       node.unfocus();
                                       setState(() {
@@ -220,6 +221,7 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                         });
                                     },
                                     labelText: 'Address',
+                                    onChange: (v){},
                                     textEditingController: qn.supplierAddress,
                                     onEditComplete: (){
                                       node.unfocus();
@@ -239,6 +241,7 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                     },
                                     labelText: 'City',
                                     regExp: '[A-Za-z  ]',
+                                    onChange: (v){},
                                     textEditingController: qn.supplierCity,
                                     onEditComplete: (){
                                       node.unfocus();
@@ -258,6 +261,7 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                     },
                                     labelText: 'State',
                                     regExp: '[A-Za-z  ]',
+                                    onChange: (v){},
                                     textEditingController: qn.supplierState,
                                     scrollPadding: 400,
                                     onEditComplete: (){
@@ -277,6 +281,7 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                     },
                                     labelText: 'Country',
                                     regExp: '[A-Za-z  ]',
+                                    onChange: (v){},
                                     textEditingController: qn.supplierCountry,
                                     scrollPadding: 400,
                                     onEditComplete: (){
@@ -297,6 +302,7 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                     labelText: 'Zipcode',
                                     regExp: '[0-9]',
                                     textLength: zipcodeLength,
+                                    onChange: (v){},
                                     textEditingController: qn.supplierZipcode,
                                     scrollPadding: 400,
                                     textInputType: TextInputType.number,
@@ -313,6 +319,7 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                     textLength: phoneNoLength,
                                     regExp: '[0-9]',
                                     scrollPadding: 400,
+                                    onChange: (v){},
                                     textInputType: TextInputType.number,
                                     onEditComplete: (){
                                       node.unfocus();
@@ -333,6 +340,7 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                     labelText: 'Email',
                                     textEditingController: qn.supplierEmail,
                                     textInputType: TextInputType.emailAddress,
+                                    onChange: (v){},
                                     scrollPadding: 400,
                                     onEditComplete: (){
                                       node.unfocus();
@@ -354,6 +362,7 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                     textEditingController: qn.supplierGstNo,
                                     scrollPadding: 400,
                                     regExp: '[A-Za-z0-9  ]',
+                                    onChange: (v){},
                                     onEditComplete: (){
                                       node.unfocus();
                                       setState(() {

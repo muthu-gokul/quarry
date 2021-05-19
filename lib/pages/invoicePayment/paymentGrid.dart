@@ -647,7 +647,8 @@ class PaymentGridState extends State<PaymentGrid> with TickerProviderStateMixin{
                         ],
                       ),
                       child: Center(
-                        child: Icon(filterOpen?Icons.clear:Icons.filter_alt_outlined,size: SizeConfig.height30,color: AppTheme.bgColor,),
+                        child:filterOpen?Icon(Icons.clear,size: 30,color: AppTheme.bgColor,):
+                        SvgPicture.asset("assets/bottomIcons/payReceive.svg",height: 35,width: 35,color: AppTheme.bgColor,),
                       ),
                     ),
                   ),

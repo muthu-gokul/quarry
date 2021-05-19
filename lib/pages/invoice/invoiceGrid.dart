@@ -517,6 +517,7 @@ class InvoiceGridState extends State<InvoiceGrid> with TickerProviderStateMixin{
                                 editTap: (){
                                   inv.insertForm();
                                   inv.updateInvoiceEdit(true);
+                                  inv.InvoiceDropDownValues(context);
                                   inv.PlantUserDropDownValues(context).then((value) {
                                     inv.GetInvoiceDbHit(context, inv.filterInvoiceGridList[selectedIndex].invoiceId);
                                     Navigator.push(context, _createRoute());
@@ -647,7 +648,8 @@ class InvoiceGridState extends State<InvoiceGrid> with TickerProviderStateMixin{
                         ],
                       ),
                       child: Center(
-                        child: Icon(filterOpen?Icons.clear:Icons.filter_alt_outlined,size: SizeConfig.height30,color: AppTheme.bgColor,),
+                        child:filterOpen?Icon(Icons.clear,size: 30,color: AppTheme.bgColor,):
+                        SvgPicture.asset("assets/bottomIcons/payReceive.svg",height: 35,width: 35,color: AppTheme.bgColor,),
                       ),
                     ),
                   ),

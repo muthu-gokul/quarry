@@ -1,3 +1,6 @@
+import 'dart:ffi';
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -219,7 +222,7 @@ class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
                                                   width: SizeConfig.screenWidth*0.35,
                                                   child: FittedBox(
 
-                                                    child:Text("$value",style: TextStyle(fontFamily: 'RM',fontSize: 16,color: AppTheme.yellowColor,letterSpacing: 0.1),),
+                                                    child:Text("${value??"0.0"}",style: TextStyle(fontFamily: 'RM',fontSize: 16,color: AppTheme.yellowColor,letterSpacing: 0.1),),
                                                   ),
                                                 )
                                               ],
@@ -327,7 +330,7 @@ class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
                                   map((i, value) => MapEntry(i,
                                       Container(
                                         height: 80,
-                                        width: SizeConfig.screenWidth*0.35,
+                                        width: SizeConfig.screenWidth*0.38,
                                         margin: EdgeInsets.only(right: SizeConfig.width10),
                                         //padding: EdgeInsets.only(right: SizeConfig.width10),
                                         decoration: BoxDecoration(
@@ -343,13 +346,13 @@ class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
                                               crossAxisAlignment: CrossAxisAlignment.center,
                                               children: [
                                                 Container(
-                                                    height: 15,
+                                                    height: 16,
                                                     padding: EdgeInsets.only(left: 5,right: 5),
                                                     width: SizeConfig.screenWidth*0.35,
                                                     child: FittedBox(child: Text("$i",style: TextStyle(fontFamily: 'RR',fontSize: 14,color: Colors.white),))),
                                                 SizedBox(height: 5,),
                                                 Container(
-                                                  height: 25,
+                                                  height: 23,
                                                   padding: EdgeInsets.only(left: 5,right: 5),
                                                   width: SizeConfig.screenWidth*0.35,
                                                   child: FittedBox(
@@ -454,22 +457,21 @@ class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
                                 child: Container(
                                     width: SizeConfig.screenWidth,
                                     child: Row(
-                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.end,
                                       children: [
                                         SizedBox(width: SizeConfig.width20,),
                                         GestureDetector(
                                           onTap: (){
+                                            dn.GetDieselPurchaseDbHit(context, null);
                                             pageController.animateToPage(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
                                           },
                                           child: Container(
                                             width: 70,
-
-                                            child:Column(
-                                              mainAxisAlignment: MainAxisAlignment.center,
-                                              children: [
-                                                Image.asset("assets/images/Empty-vehicle-active.png",height: 40,width: 40,),
-                                                Text('Purchase',style: TextStyle(fontFamily: 'RR',fontSize: 14,color: AppTheme.hintColor),),
-                                              ],
+                                            height: 45,
+                                            child:Opacity(
+                                                opacity: pageIndex==0?1:0.5,
+                                                child: SvgPicture.asset(pageIndex==0?"assets/bottomIcons/diesel-in.svg":
+                                                  "assets/bottomIcons/diesel-in-gray.svg",)
                                             ),
                                           ),
                                         ),
@@ -480,19 +482,17 @@ class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
                                             dn.GetDieselIssueDbHit(context, null);
                                           },
                                           child: Container(
-                                            width: 90,
-
-                                            child:Column(
-                                              mainAxisAlignment: MainAxisAlignment.center,
-                                              children: [
-                                                Image.asset("assets/images/Loaded-vehicle-active.png",height: 40,width: 40,),
-                                                Text('Issue',style: TextStyle(fontFamily: 'RR',fontSize: 14,color: AppTheme.hintColor),),
-
-                                              ],
+                                            width: 70,
+                                             height: 40,
+                                            margin: EdgeInsets.only(bottom: 5),
+                                            child:Opacity(
+                                                opacity: pageIndex==1?1:0.5,
+                                                child: SvgPicture.asset(pageIndex==1?"assets/bottomIcons/diesel-out.svg":
+                                                  "assets/bottomIcons/diesel-out-gray.svg",)
                                             ),
                                           ),
                                         ),
-                                        SizedBox(width: SizeConfig.width10,),
+                                        SizedBox(width: SizeConfig.width20,),
                                       ],
                                     )
                                 ),
@@ -529,6 +529,16 @@ class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
                                   }
 
                                 },
+                                deleteTap: (){
+                                 /* if(pageIndex==1){
+                                    dn.DeleteDieselIssueDbHit(context, dn.dieselIssueGridList[selectedIndex].dieselIssueId);
+                                    setState(() {
+                                      showEdit=false;
+                                      selectedIndex=-1;
+                                    });
+                                  }*/
+                                },
+
                               ),
                               /*  if(pageIndex==1){
                                               dn.DeleteDieselIssueDbHit(context, dn.dieselIssueGridList[selectedIndex].dieselIssueId);

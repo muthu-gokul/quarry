@@ -140,6 +140,7 @@ class InvoiceNotifier extends ChangeNotifier{
   List<InvoiceTypeModel> invoiceTypeList=[];
   List<InvoiceSupplierModel> invoiceSupplierList=[];
   List<InvoiceSupplierModel> filterInvoiceSupplierList=[];
+  List<InvoiceMaterialModel> searchFilterMaterialList=[];
   List<InvoiceMaterialModel> filtermaterialList=[];
   List<InvoiceMaterialModel> materialList=[];
 
@@ -185,6 +186,7 @@ class InvoiceNotifier extends ChangeNotifier{
 
           materialList=t2.map((e) => InvoiceMaterialModel.fromJson(e)).toList();
           filtermaterialList=t2.map((e) => InvoiceMaterialModel.fromJson(e)).toList();
+          searchFilterMaterialList=t2.map((e) => InvoiceMaterialModel.fromJson(e)).toList();
 
 
 
@@ -204,10 +206,12 @@ class InvoiceNotifier extends ChangeNotifier{
 
   searchMaterial(String value){
     if(value.isEmpty){
-      filtermaterialList=materialList;
+     // filtermaterialList=materialList;
+      searchFilterMaterialList=filtermaterialList;
     }
     else{
-      filtermaterialList=materialList.where((element) => element.materialName.toLowerCase().contains(value.toLowerCase())).toList();
+     // filtermaterialList=materialList.where((element) => element.materialName.toLowerCase().contains(value.toLowerCase())).toList();
+      searchFilterMaterialList=filtermaterialList.where((element) => element.materialName.toLowerCase().contains(value.toLowerCase())).toList();
     }
     notifyListeners();
   }
@@ -555,9 +559,11 @@ class InvoiceNotifier extends ChangeNotifier{
 
             if(selectedInvoiceType=='Payable'){
               filtermaterialList=materialList.where((element) => element.supplierId==selectedPartyId && element.supplierType=='Payable').toList();
+              searchFilterMaterialList=filtermaterialList.where((element) => element.supplierId==selectedPartyId && element.supplierType=='Payable').toList();
             }
             else{
               filtermaterialList=materialList.where((element) => element.supplierType=='Receivable').toList();
+              searchFilterMaterialList=filtermaterialList.where((element) => element.supplierType=='Receivable').toList();
             }
 
 

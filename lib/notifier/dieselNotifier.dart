@@ -714,7 +714,7 @@ double totalAmount=0.0;
             DI_plantName=t[0]['PlantName'];
             DI_MachinType=t[0]['Type'];
 
-            DI_machineRunningMeter.text=t[0]['MachineFuelReadingQuantity'].toString();
+            DI_machineRunningMeter.text=t[0]['MachineFuelReadingQuantity']??"";
             DI_dieselQty.text=t[0]['DieselIssuedQuantity'].toString();
             DI_issueID=t[0]['IssuedBy'];
             DI_issueName=t[0]['IssuedName'];

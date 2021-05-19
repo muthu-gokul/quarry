@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../styles/app_theme.dart';
 import '../../styles/size.dart';
@@ -300,6 +301,21 @@ class _CustomDataTable2State extends State<CustomDataTable2> {
                 ],
               ),
             ),
+
+
+            widget.gridData.isEmpty?Container(
+              width: SizeConfig.screenWidth,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(height: 70,),
+                  Text("No Data",style: TextStyle(fontSize: 18,fontFamily:'RMI',color: AppTheme.addNewTextFieldText),),
+                  SvgPicture.asset("assets/nodata.svg",height: 350,),
+
+                ],
+              ),
+            ):Container()
 
 
           ],

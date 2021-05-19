@@ -132,6 +132,7 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
     SizeConfig().init(context);
     return Scaffold(
         key: scaffoldkey,
+        resizeToAvoidBottomInset: false,
         body: Consumer<InvoiceNotifier>(
             builder: (context,pn,child)=> Stack(
               children: [
@@ -1514,9 +1515,11 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
                         pn.filtermaterialList=pn.materialList.where((element) => element.supplierId==pn.filterInvoiceSupplierList[index].supplierId
                             && element.supplierType=='Payable'
                         ).toList();
+                        pn.searchFilterMaterialList=pn.filtermaterialList;
                       }
                       else{
                         pn.filtermaterialList=pn.materialList.where((element) => element.supplierType=='Receivable').toList();
+                        pn.searchFilterMaterialList=pn.filtermaterialList;
                       }
 
                       print(pn.filtermaterialList.length);
@@ -1614,318 +1617,326 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
                                       border: Border.all(color: AppTheme.addNewTextFieldBorder)
                                   ),
                                   child: ListView.builder(
-                                    itemCount: pn.filtermaterialList.length,
+                                    itemCount: pn.searchFilterMaterialList.length,
                                     itemBuilder: (context,index){
                                       return GestureDetector(
                                         onTap: (){
-                                          setState(() {
-                                            indentQty='';
-                                            disValue='';
-                                            discountKeyPad=false;
-                                            pn.isDiscountPercentage=true;
-                                            pn.invoiceMaterialMappingList.add(
-                                                InvoiceMaterialMappingListModel(
-                                                    InvoiceMaterialMappingId:null,
-                                                    InvoiceId:null,
-                                                    MaterialId:pn.filtermaterialList[index].materialId,
-                                                    materialName:pn.filtermaterialList[index].materialName,
-                                                    MaterialPrice:pn.filtermaterialList[index].materialPrice,
-                                                    PurchaseQuantity:0,
-                                                    Subtotal:0.0,
-                                                    IsDiscount:0,
-                                                    IsPercentage:0,
-                                                    IsAmount:0,
-                                                    DiscountValue:0.0,
-                                                    DiscountAmount:0.0,
-                                                    TaxValue:pn.filtermaterialList[index].taxValue,
-                                                    TaxAmount:0.0,
-                                                    TotalAmount:0.0,
-                                                    IsActive:1,
-                                                    materialUnitId:pn.filtermaterialList[index].materialUnitId,
-                                                    unitName:pn.filtermaterialList[index].unitName,
-                                                    purchaseQty: TextEditingController()..text=""
-                                                )
-                                            );
-                                          });
 
-                                          showDialog(context: context,
-                                              // barrierDismissible: false,
+                                          if(pn.invoiceMaterialMappingList.any((element) => element.materialName==pn.searchFilterMaterialList[index].materialName)){
+                                            CustomAlert().commonErrorAlert(context, "Material Exists", "");
+                                          }
+                                          else {
+                                            setState(() {
+                                              indentQty='';
+                                              disValue='';
+                                              discountKeyPad=false;
+                                              pn.isDiscountPercentage=true;
+                                              pn.invoiceMaterialMappingList.add(
+                                                  InvoiceMaterialMappingListModel(
+                                                      InvoiceMaterialMappingId:null,
+                                                      InvoiceId:null,
+                                                      MaterialId:pn.searchFilterMaterialList[index].materialId,
+                                                      materialName:pn.searchFilterMaterialList[index].materialName,
+                                                      MaterialPrice:pn.searchFilterMaterialList[index].materialPrice,
+                                                      PurchaseQuantity:0,
+                                                      Subtotal:0.0,
+                                                      IsDiscount:0,
+                                                      IsPercentage:0,
+                                                      IsAmount:0,
+                                                      DiscountValue:0.0,
+                                                      DiscountAmount:0.0,
+                                                      TaxValue:pn.searchFilterMaterialList[index].taxValue,
+                                                      TaxAmount:0.0,
+                                                      TotalAmount:0.0,
+                                                      IsActive:1,
+                                                      materialUnitId:pn.searchFilterMaterialList[index].materialUnitId,
+                                                      unitName:pn.searchFilterMaterialList[index].unitName,
+                                                      purchaseQty: TextEditingController()..text=""
+                                                  )
+                                              );
+                                            });
 
-                                              builder: (context){
-                                                return StatefulBuilder(
-                                                  builder:(context,setState){
-                                                    return Consumer<InvoiceNotifier>(
-                                                      builder: (context,pn,child)=>Dialog(
-                                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10), ),
+                                            showDialog(context: context,
+                                                // barrierDismissible: false,
 
-                                                        child: Container(
-                                                          height: SizeConfig.screenHeight*0.85,
-                                                          width: SizeConfig.screenWidth*0.9,
-                                                          decoration: BoxDecoration(
-                                                              borderRadius: BorderRadius.circular(10),
-                                                              color: Colors.white
-                                                          ),
-                                                          child: Column(
-                                                            children: [
-                                                              SizedBox(height: 15,),
-                                                              Text("${pn.invoiceMaterialMappingList[pn.invoiceMaterialMappingList.length-1].materialName??""}",
-                                                                style: TextStyle(fontFamily: 'RR',fontSize: 18,color: AppTheme.gridTextColor),textAlign: TextAlign.center,),
-                                                              SizedBox(height: 10,),
-                                                              discountKeyPad?
-                                                              Row(
-                                                                mainAxisAlignment: MainAxisAlignment.center,
-                                                                children: [
-                                                                  Text("${indentQty.isEmpty?"0":indentQty} ${pn.invoiceMaterialMappingList[pn.invoiceMaterialMappingList.length-1].unitName??""}",
-                                                                    style: TextStyle(fontFamily: 'RL',fontSize: 16,color: AppTheme.gridTextColor),textAlign: TextAlign.center,),
-                                                                  SizedBox(width: 20,),
+                                                builder: (context){
+                                                  return StatefulBuilder(
+                                                    builder:(context,setState){
+                                                      return Consumer<InvoiceNotifier>(
+                                                        builder: (context,pn,child)=>Dialog(
+                                                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10), ),
 
-                                                                  Text("${disValue.isEmpty?"0":disValue}",
-                                                                    style: TextStyle(fontFamily: 'RM',fontSize: 20,color: AppTheme.gridTextColor),textAlign: TextAlign.center,),
-                                                                  SizedBox(width: 20,),
-                                                                  GestureDetector(
-                                                                    onTap: (){
-                                                                      pn.updateisDiscountPercentage(false);
+                                                          child: Container(
+                                                            height: SizeConfig.screenHeight*0.85,
+                                                            width: SizeConfig.screenWidth*0.9,
+                                                            decoration: BoxDecoration(
+                                                                borderRadius: BorderRadius.circular(10),
+                                                                color: Colors.white
+                                                            ),
+                                                            child: Column(
+                                                              children: [
+                                                                SizedBox(height: 15,),
+                                                                Text("${pn.invoiceMaterialMappingList[pn.invoiceMaterialMappingList.length-1].materialName??""}",
+                                                                  style: TextStyle(fontFamily: 'RR',fontSize: 18,color: AppTheme.gridTextColor),textAlign: TextAlign.center,),
+                                                                SizedBox(height: 10,),
+                                                                discountKeyPad?
+                                                                Row(
+                                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                                  children: [
+                                                                    Text("${indentQty.isEmpty?"0":indentQty} ${pn.invoiceMaterialMappingList[pn.invoiceMaterialMappingList.length-1].unitName??""}",
+                                                                      style: TextStyle(fontFamily: 'RL',fontSize: 16,color: AppTheme.gridTextColor),textAlign: TextAlign.center,),
+                                                                    SizedBox(width: 20,),
 
-                                                                    },
-                                                                    child: AnimatedContainer(
-                                                                      duration: Duration(milliseconds: 200),
-                                                                      curve: Curves.easeIn,
-                                                                      height: 35,
-                                                                      width: 35,
-                                                                      decoration: BoxDecoration(
-                                                                          shape: BoxShape.circle,
-                                                                          border: Border.all(color: pn.isDiscountPercentage?AppTheme.addNewTextFieldBorder:Colors.transparent),
-                                                                          color: pn.isDiscountPercentage?AppTheme.EFEFEF:AppTheme.addNewTextFieldFocusBorder
+                                                                    Text("${disValue.isEmpty?"0":disValue}",
+                                                                      style: TextStyle(fontFamily: 'RM',fontSize: 20,color: AppTheme.gridTextColor),textAlign: TextAlign.center,),
+                                                                    SizedBox(width: 20,),
+                                                                    GestureDetector(
+                                                                      onTap: (){
+                                                                        pn.updateisDiscountPercentage(false);
+
+                                                                      },
+                                                                      child: AnimatedContainer(
+                                                                        duration: Duration(milliseconds: 200),
+                                                                        curve: Curves.easeIn,
+                                                                        height: 35,
+                                                                        width: 35,
+                                                                        decoration: BoxDecoration(
+                                                                            shape: BoxShape.circle,
+                                                                            border: Border.all(color: pn.isDiscountPercentage?AppTheme.addNewTextFieldBorder:Colors.transparent),
+                                                                            color: pn.isDiscountPercentage?AppTheme.EFEFEF:AppTheme.addNewTextFieldFocusBorder
+                                                                        ),
+                                                                        child: Center(
+                                                                          child: Text("₹",style: pn.isDiscountPercentage?AppTheme.discountDeactive:AppTheme.discountactive,),
+                                                                        ),
+
                                                                       ),
-                                                                      child: Center(
-                                                                        child: Text("₹",style: pn.isDiscountPercentage?AppTheme.discountDeactive:AppTheme.discountactive,),
-                                                                      ),
-
                                                                     ),
-                                                                  ),
-                                                                  SizedBox(width: 10,),
-                                                                  GestureDetector(
-                                                                    onTap: (){
-                                                                      pn.updateisDiscountPercentage(true);
-                                                                      /* if(discountCont.text.isEmpty){
+                                                                    SizedBox(width: 10,),
+                                                                    GestureDetector(
+                                                                      onTap: (){
+                                                                        pn.updateisDiscountPercentage(true);
+                                                                        /* if(discountCont.text.isEmpty){
                                                                                                 In.vendorMaterialDiscountCalc(key,"");
                                                                                               }
                                                                                               else{
                                                                                                 In.vendorMaterialDiscountCalc(key,discountCont.text);
                                                                                               }*/
 
-                                                                    },
-                                                                    child: AnimatedContainer(
-                                                                      duration: Duration(milliseconds: 200),
-                                                                      curve: Curves.easeIn,
-                                                                      height: 35,
-                                                                      width: 35,
-                                                                      decoration: BoxDecoration(
-                                                                          shape: BoxShape.circle,
-                                                                          border: Border.all(color: pn.isDiscountPercentage?Colors.transparent:AppTheme.addNewTextFieldBorder),
-                                                                          color: pn.isDiscountPercentage?AppTheme.addNewTextFieldFocusBorder:AppTheme.EFEFEF
-                                                                      ),
-                                                                      child: Center(
+                                                                      },
+                                                                      child: AnimatedContainer(
+                                                                        duration: Duration(milliseconds: 200),
+                                                                        curve: Curves.easeIn,
+                                                                        height: 35,
+                                                                        width: 35,
+                                                                        decoration: BoxDecoration(
+                                                                            shape: BoxShape.circle,
+                                                                            border: Border.all(color: pn.isDiscountPercentage?Colors.transparent:AppTheme.addNewTextFieldBorder),
+                                                                            color: pn.isDiscountPercentage?AppTheme.addNewTextFieldFocusBorder:AppTheme.EFEFEF
+                                                                        ),
+                                                                        child: Center(
 
-                                                                        child: Text("%",style: pn.isDiscountPercentage?AppTheme.discountactive:AppTheme.discountDeactive,),
-                                                                      ),
+                                                                          child: Text("%",style: pn.isDiscountPercentage?AppTheme.discountactive:AppTheme.discountDeactive,),
+                                                                        ),
 
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ):
+
+
+
+
+                                                                Text("${indentQty.isEmpty?"0":indentQty} ${pn.invoiceMaterialMappingList[pn.invoiceMaterialMappingList.length-1].unitName??""}",
+                                                                  style: TextStyle(fontFamily: 'RM',fontSize: 20,color: AppTheme.gridTextColor),textAlign: TextAlign.center,),
+
+                                                                Container(
+                                                                    margin: EdgeInsets.only(top: 20),
+                                                                    width: SizeConfig.screenWidth*0.8,
+                                                                    child: Wrap(
+                                                                        spacing: 10,
+                                                                        runSpacing: 10,
+                                                                        direction: Axis.horizontal,
+                                                                        alignment: WrapAlignment.center,
+                                                                        children: numbers
+                                                                            .asMap().map((i, element) => MapEntry(i,
+                                                                            GestureDetector(
+                                                                              onTap: () {
+                                                                                setState(() {
+                                                                                  if (numbers[i] == 'X') {
+
+                                                                                    if(!discountKeyPad){
+                                                                                      indentQty = indentQty.substring(0, indentQty.length - 1);
+                                                                                    } else{
+                                                                                      disValue = disValue.substring(0, disValue.length - 1);
+                                                                                    }
+
+                                                                                    reorderLevelIndex=i;
+                                                                                  }
+                                                                                  else if (numbers[i] == '.') {
+
+
+                                                                                    if(!discountKeyPad){
+                                                                                      if(indentQty.length<6 && indentQty.length>=1){
+                                                                                        if(indentQty.contains('.')){}
+                                                                                        else{
+                                                                                          setState(() {
+                                                                                            indentQty=indentQty+'.';
+                                                                                          });
+                                                                                        }
+                                                                                      }
+                                                                                    }
+                                                                                    else{
+                                                                                      if(disValue.length<4 && disValue.length>=1){
+                                                                                        if(disValue.contains('.')){}
+                                                                                        else{
+                                                                                          setState(() {
+                                                                                            disValue=disValue+'.';
+                                                                                          });
+                                                                                        }
+                                                                                      }
+                                                                                    }
+
+                                                                                    reorderLevelIndex=i;
+                                                                                  }
+                                                                                  else {
+
+                                                                                    if(!discountKeyPad){
+                                                                                      if(indentQty.isEmpty && numbers[i]=='0'){}
+                                                                                      else{
+                                                                                        setState(() {
+                                                                                          reorderLevelIndex = i;
+                                                                                        });
+                                                                                        if(indentQty.length<6){
+                                                                                          setState(() {
+                                                                                            indentQty=indentQty+numbers[i];
+                                                                                          });
+                                                                                        }
+                                                                                      }
+                                                                                    }
+                                                                                    else{
+                                                                                      if(disValue.isEmpty && numbers[i]=='0'){}
+                                                                                      else{
+                                                                                        setState(() {
+                                                                                          reorderLevelIndex = i;
+                                                                                        });
+                                                                                        if(disValue.length<4){
+                                                                                          setState(() {
+                                                                                            disValue=disValue+numbers[i];
+                                                                                          });
+                                                                                        }
+                                                                                      }
+                                                                                    }
+
+
+                                                                                  }
+                                                                                });
+                                                                                Timer(Duration(milliseconds: 300), (){
+                                                                                  setState((){
+                                                                                    reorderLevelIndex=-1;
+                                                                                  });
+                                                                                });
+                                                                              },
+                                                                              child: AnimatedContainer(
+                                                                                  height: SizeConfig.screenWidth*0.19,
+                                                                                  width: SizeConfig.screenWidth*0.19,
+                                                                                  duration: Duration(milliseconds: 200),
+                                                                                  curve: Curves.easeIn,
+                                                                                  decoration: BoxDecoration(
+                                                                                    color: reorderLevelIndex == i?AppTheme.yellowColor:AppTheme.unitSelectColor,
+                                                                                    border: Border.all(color: AppTheme.addNewTextFieldBorder),
+                                                                                    borderRadius: BorderRadius.circular(10),
+                                                                                  ),
+                                                                                  child: Center(
+                                                                                      child: Text(numbers[i],
+                                                                                        style: TextStyle(fontFamily: 'RR', color:reorderLevelIndex == i?Colors.white:AppTheme.gridTextColor, fontSize: 28,),
+                                                                                        textAlign: TextAlign.center,
+                                                                                      )
+                                                                                  )
+                                                                              ),
+                                                                            )))
+                                                                            .values
+                                                                            .toList()
+                                                                    )
+                                                                ),
+                                                                SizedBox(height: 10,),
+                                                                Row(
+                                                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                                  children: [
+                                                                    Checkbox(
+                                                                        activeColor: AppTheme.addNewTextFieldFocusBorder,
+                                                                        value: discountKeyPad,
+                                                                        // value: qn.PO_purchaseList[qn.PO_purchaseList.length-1].isDiscount==0?false:true,
+                                                                        onChanged: (v){
+                                                                          setState((){
+
+                                                                            discountKeyPad=v;
+                                                                          });
+                                                                          // if(v){
+                                                                          //   qn.PO_updateIsDiscountFromQtyDialog(qn.PO_purchaseList.length-1,1,disValue,indentQty);
+                                                                          // }else{
+                                                                          //   qn.PO_updateIsDiscountFromQtyDialog(qn.PO_purchaseList.length-1,0,'0',indentQty);
+                                                                          // }
+
+                                                                        }
+                                                                    ),
+
+                                                                    Text("Discount",style: TextStyle(fontFamily: 'RR',fontSize: 16,color: AppTheme.addNewTextFieldFocusBorder))
+
+                                                                  ],
+                                                                ),
+                                                                SizedBox(height: 10,),
+                                                                GestureDetector(
+                                                                  onTap: (){
+                                                                    pn.updateIsDiscountFromQtyShowDialog(pn.invoiceMaterialMappingList.length-1,disValue,indentQty);
+                                                                    //  qn.PO_updateIsDiscountFromQtyDialog(qn.PO_purchaseList.length-1,disValue,indentQty);
+
+                                                                    // if(indentQty.isNotEmpty){
+                                                                    //   qn.PO_updateIsDiscountFromQtyDialog(qn.PO_purchaseList.length-1,disValue,indentQty);
+                                                                    //  // qn.updatePO_purchaseListFromQuantityDialog(qn.PO_purchaseList.length-1,indentQty);
+                                                                    // }
+
+                                                                    Navigator.pop(context);
+
+                                                                  },
+                                                                  child: Container(
+                                                                    height: 50,
+                                                                    width: 150,
+                                                                    decoration: BoxDecoration(
+                                                                        borderRadius: BorderRadius.circular(10),
+                                                                        color: AppTheme.yellowColor
+                                                                    ),
+                                                                    child: Center(
+                                                                      child: Text("Done",style: AppTheme.TSWhite20,),
                                                                     ),
                                                                   ),
-                                                                ],
-                                                              ):
+                                                                ),
+                                                                GestureDetector(
+                                                                  onTap: (){
+                                                                    pn.removepurchaseOrdersMappingList(pn.invoiceMaterialMappingList.length-1);
+                                                                    Navigator.pop(context);
 
-
-
-
-                                                              Text("${indentQty.isEmpty?"0":indentQty} ${pn.invoiceMaterialMappingList[pn.invoiceMaterialMappingList.length-1].unitName??""}",
-                                                                style: TextStyle(fontFamily: 'RM',fontSize: 20,color: AppTheme.gridTextColor),textAlign: TextAlign.center,),
-
-                                                              Container(
-                                                                  margin: EdgeInsets.only(top: 20),
-                                                                  width: SizeConfig.screenWidth*0.8,
-                                                                  child: Wrap(
-                                                                      spacing: 10,
-                                                                      runSpacing: 10,
-                                                                      direction: Axis.horizontal,
-                                                                      alignment: WrapAlignment.center,
-                                                                      children: numbers
-                                                                          .asMap().map((i, element) => MapEntry(i,
-                                                                          GestureDetector(
-                                                                            onTap: () {
-                                                                              setState(() {
-                                                                                if (numbers[i] == 'X') {
-
-                                                                                  if(!discountKeyPad){
-                                                                                    indentQty = indentQty.substring(0, indentQty.length - 1);
-                                                                                  } else{
-                                                                                    disValue = disValue.substring(0, disValue.length - 1);
-                                                                                  }
-
-                                                                                  reorderLevelIndex=i;
-                                                                                }
-                                                                                else if (numbers[i] == '.') {
-
-
-                                                                                  if(!discountKeyPad){
-                                                                                    if(indentQty.length<6 && indentQty.length>=1){
-                                                                                      if(indentQty.contains('.')){}
-                                                                                      else{
-                                                                                        setState(() {
-                                                                                          indentQty=indentQty+'.';
-                                                                                        });
-                                                                                      }
-                                                                                    }
-                                                                                  }
-                                                                                  else{
-                                                                                    if(disValue.length<4 && disValue.length>=1){
-                                                                                      if(disValue.contains('.')){}
-                                                                                      else{
-                                                                                        setState(() {
-                                                                                          disValue=disValue+'.';
-                                                                                        });
-                                                                                      }
-                                                                                    }
-                                                                                  }
-
-                                                                                  reorderLevelIndex=i;
-                                                                                }
-                                                                                else {
-
-                                                                                  if(!discountKeyPad){
-                                                                                    if(indentQty.isEmpty && numbers[i]=='0'){}
-                                                                                    else{
-                                                                                      setState(() {
-                                                                                        reorderLevelIndex = i;
-                                                                                      });
-                                                                                      if(indentQty.length<6){
-                                                                                        setState(() {
-                                                                                          indentQty=indentQty+numbers[i];
-                                                                                        });
-                                                                                      }
-                                                                                    }
-                                                                                  }
-                                                                                  else{
-                                                                                    if(disValue.isEmpty && numbers[i]=='0'){}
-                                                                                    else{
-                                                                                      setState(() {
-                                                                                        reorderLevelIndex = i;
-                                                                                      });
-                                                                                      if(disValue.length<4){
-                                                                                        setState(() {
-                                                                                          disValue=disValue+numbers[i];
-                                                                                        });
-                                                                                      }
-                                                                                    }
-                                                                                  }
-
-
-                                                                                }
-                                                                              });
-                                                                              Timer(Duration(milliseconds: 300), (){
-                                                                                setState((){
-                                                                                  reorderLevelIndex=-1;
-                                                                                });
-                                                                              });
-                                                                            },
-                                                                            child: AnimatedContainer(
-                                                                                height: SizeConfig.screenWidth*0.19,
-                                                                                width: SizeConfig.screenWidth*0.19,
-                                                                                duration: Duration(milliseconds: 200),
-                                                                                curve: Curves.easeIn,
-                                                                                decoration: BoxDecoration(
-                                                                                  color: reorderLevelIndex == i?AppTheme.yellowColor:AppTheme.unitSelectColor,
-                                                                                  border: Border.all(color: AppTheme.addNewTextFieldBorder),
-                                                                                  borderRadius: BorderRadius.circular(10),
-                                                                                ),
-                                                                                child: Center(
-                                                                                    child: Text(numbers[i],
-                                                                                      style: TextStyle(fontFamily: 'RR', color:reorderLevelIndex == i?Colors.white:AppTheme.gridTextColor, fontSize: 28,),
-                                                                                      textAlign: TextAlign.center,
-                                                                                    )
-                                                                                )
-                                                                            ),
-                                                                          )))
-                                                                          .values
-                                                                          .toList()
-                                                                  )
-                                                              ),
-                                                              SizedBox(height: 10,),
-                                                              Row(
-                                                                crossAxisAlignment: CrossAxisAlignment.center,
-                                                                mainAxisAlignment: MainAxisAlignment.center,
-                                                                children: [
-                                                                  Checkbox(
-                                                                      activeColor: AppTheme.addNewTextFieldFocusBorder,
-                                                                      value: discountKeyPad,
-                                                                      // value: qn.PO_purchaseList[qn.PO_purchaseList.length-1].isDiscount==0?false:true,
-                                                                      onChanged: (v){
-                                                                        setState((){
-
-                                                                          discountKeyPad=v;
-                                                                        });
-                                                                        // if(v){
-                                                                        //   qn.PO_updateIsDiscountFromQtyDialog(qn.PO_purchaseList.length-1,1,disValue,indentQty);
-                                                                        // }else{
-                                                                        //   qn.PO_updateIsDiscountFromQtyDialog(qn.PO_purchaseList.length-1,0,'0',indentQty);
-                                                                        // }
-
-                                                                      }
-                                                                  ),
-
-                                                                  Text("Discount",style: TextStyle(fontFamily: 'RR',fontSize: 16,color: AppTheme.addNewTextFieldFocusBorder))
-
-                                                                ],
-                                                              ),
-                                                              SizedBox(height: 10,),
-                                                              GestureDetector(
-                                                                onTap: (){
-                                                                  pn.updateIsDiscountFromQtyShowDialog(pn.invoiceMaterialMappingList.length-1,disValue,indentQty);
-                                                                  //  qn.PO_updateIsDiscountFromQtyDialog(qn.PO_purchaseList.length-1,disValue,indentQty);
-
-                                                                  // if(indentQty.isNotEmpty){
-                                                                  //   qn.PO_updateIsDiscountFromQtyDialog(qn.PO_purchaseList.length-1,disValue,indentQty);
-                                                                  //  // qn.updatePO_purchaseListFromQuantityDialog(qn.PO_purchaseList.length-1,indentQty);
-                                                                  // }
-
-                                                                  Navigator.pop(context);
-
-                                                                },
-                                                                child: Container(
-                                                                  height: 50,
-                                                                  width: 150,
-                                                                  decoration: BoxDecoration(
-                                                                      borderRadius: BorderRadius.circular(10),
-                                                                      color: AppTheme.yellowColor
-                                                                  ),
-                                                                  child: Center(
-                                                                    child: Text("Done",style: AppTheme.TSWhite20,),
+                                                                  },
+                                                                  child: Container(
+                                                                    height: 50,
+                                                                    width: 150,
+                                                                    child: Center(
+                                                                      child: Text("Cancel",style: TextStyle(fontFamily: 'RL',fontSize: 20,color: Color(0xFFA1A1A1))),
+                                                                    ),
                                                                   ),
                                                                 ),
-                                                              ),
-                                                              GestureDetector(
-                                                                onTap: (){
-                                                                  pn.removepurchaseOrdersMappingList(pn.invoiceMaterialMappingList.length-1);
-                                                                  Navigator.pop(context);
-
-                                                                },
-                                                                child: Container(
-                                                                  height: 50,
-                                                                  width: 150,
-                                                                  child: Center(
-                                                                    child: Text("Cancel",style: TextStyle(fontFamily: 'RL',fontSize: 20,color: Color(0xFFA1A1A1))),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ],
+                                                              ],
+                                                            ),
                                                           ),
                                                         ),
-                                                      ),
-                                                    );
-                                                  },
-                                                );
-                                              }
-                                          );
+                                                      );
+                                                    },
+                                                  );
+                                                }
+                                            );
+                                          }
+
+
 
                                         },
                                         child: Container(
@@ -1936,7 +1947,7 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
                                           decoration: BoxDecoration(
                                               border: Border(bottom: BorderSide(color: AppTheme.addNewTextFieldBorder))
                                           ),
-                                          child: Text("${pn.filtermaterialList[index].materialName}",
+                                          child: Text("${pn.searchFilterMaterialList[index].materialName}",
                                             style: TextStyle(fontFamily: 'RR',fontSize: 16,color: AppTheme.addNewTextFieldText.withOpacity(0.5)),
                                           ),
                                         ),

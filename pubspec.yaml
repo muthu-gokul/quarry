@@ -113,6 +113,7 @@ flutter:
     - assets/svg/gridHeader/productionHeader.jpg
     - assets/bottomIcons/
     - assets/svg/upload.svg
+    - assets/nodata.svg
 
 
 

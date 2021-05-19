@@ -5,7 +5,8 @@ class EditDelete extends StatelessWidget {
 
   bool showEdit;
   VoidCallback editTap;
-  EditDelete({this.showEdit,this.editTap});
+  VoidCallback deleteTap;
+  EditDelete({this.showEdit,this.editTap,this.deleteTap});
 
   @override
   Widget build(BuildContext context) {
@@ -37,16 +38,19 @@ class EditDelete extends StatelessWidget {
                 ),
               ),
               Spacer(),
-              Container(
-                width: 130,
-                height: 50,
-                padding: EdgeInsets.only(right: 20),
-                child:FittedBox(
-                  child: Container(
-                      height: 47,
-                      width: 130,
-                      alignment: Alignment.centerRight,
-                      child: FittedBox(child: Image.asset("assets/bottomIcons/delete-text-icon.png"))
+              GestureDetector(
+                onTap: deleteTap,
+                child: Container(
+                  width: 130,
+                  height: 50,
+                  padding: EdgeInsets.only(right: 20),
+                  child:FittedBox(
+                    child: Container(
+                        height: 47,
+                        width: 130,
+                        alignment: Alignment.centerRight,
+                        child: FittedBox(child: Image.asset("assets/bottomIcons/delete-text-icon.png"))
+                    ),
                   ),
                 ),
               ),
