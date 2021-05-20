@@ -238,6 +238,7 @@ class _MachineManagementAddNewState extends State<MachineManagementAddNew> {
                                     AddNewLabelTextField(
                                       textEditingController: mmn.operatorName,
                                       labelText: "Operator Name",
+                                      regExp: '[A-Za-z ]',
                                       scrollPadding: 550,
                                       ontap: (){
                                         scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
@@ -254,8 +255,7 @@ class _MachineManagementAddNewState extends State<MachineManagementAddNew> {
                                           });
                                         });
                                       },
-                                      onChange: (v){
-                                      },
+                                      onChange: (v){},
 
                                     ),
 
@@ -404,6 +404,7 @@ class _MachineManagementAddNewState extends State<MachineManagementAddNew> {
                                     AddNewLabelTextField(
                                       textEditingController: mmn.reason,
                                       labelText: "Reason",
+                                      regExp: '[A-Za-z ]',
                                       scrollPadding: 550,
                                       ontap: (){
                                         scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
@@ -420,8 +421,7 @@ class _MachineManagementAddNewState extends State<MachineManagementAddNew> {
                                           });
                                         });
                                       },
-                                      onChange: (v){
-                                      },
+                                      onChange: (v){},
 
                                     ),
 

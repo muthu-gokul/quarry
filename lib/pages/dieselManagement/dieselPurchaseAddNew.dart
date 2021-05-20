@@ -241,6 +241,7 @@ class DieselPurchaseFormState extends State<DieselPurchaseForm> with TickerProvi
 
                                   AddNewLabelTextField(
                                     textEditingController: dn.DP_billno,
+                                    onChange: (v){},
                                     labelText: "Bill Number",
                                     regExp: '[A-Za-z0-9  ]',
                                     ontap: (){
@@ -341,6 +342,7 @@ class DieselPurchaseFormState extends State<DieselPurchaseForm> with TickerProvi
                                     textEditingController: dn.DP_location,
                                     labelText: "Location",
                                     scrollPadding: 450,
+                                    onChange: (v){},
                                     ontap: (){
                                       scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                       setState(() {
@@ -360,6 +362,7 @@ class DieselPurchaseFormState extends State<DieselPurchaseForm> with TickerProvi
                                   ),
                                   AddNewLabelTextField(
                                     textEditingController: dn.DP_contactNo,
+                                    onChange: (v){},
                                     labelText: "Contact Number",
                                     regExp: '[0-9]',
                                     textLength: phoneNoLength,
@@ -437,7 +440,7 @@ class DieselPurchaseFormState extends State<DieselPurchaseForm> with TickerProvi
                                   AddNewLabelTextField(
                                     textEditingController: dn.DP_dieselQTY,
                                     labelText: "Diesel Quantity",
-                                    regExp: '[0-9.]',
+                                    regExp: decimalReg,
                                     textInputType: TextInputType.number,
                                     scrollPadding: 550,
                                     ontap: (){
@@ -475,7 +478,7 @@ class DieselPurchaseFormState extends State<DieselPurchaseForm> with TickerProvi
                                   AddNewLabelTextField(
                                     textEditingController: dn.DP_dieselPrice,
                                     labelText: "Diesel Price",
-                                    regExp: '[0-9.]',
+                                    regExp: decimalReg,
                                     textInputType: TextInputType.number,
                                     scrollPadding: 550,
                                     ontap: (){

@@ -792,7 +792,7 @@ class QuarryNotifier extends ChangeNotifier{
           GetSaleDetailDbhit(context);
           CustomAlert().billSuccessAlert(context,"","Inward Receipt Successfully Saved","","");
         }
-
+        updateInsertSaleLoader(false);
       });
     }
     catch(e){
@@ -1932,14 +1932,21 @@ class QuarryNotifier extends ChangeNotifier{
       UpdateDiscountAmount=SS_DiscountAmount;
       UpdateDiscountedOutputQtyAmount=SS_DiscountedOutputQtyAmount;
       UpdateRoundOffAmount=SS_RoundOffAmount;
-      print("SS_UpdatecustomerNeedWeightEQQUAL $SS_UpdatecustomerNeedWeight");
+    /*  print("SS_UpdatecustomerNeedWeightEQQUAL $SS_UpdatecustomerNeedWeight");
       print(SS_UpdateAmount);
       print(UpdateGrandTotalAmount);
       print(UpdateTaxAmount);
       print(UpdateDiscountAmount);
       print(UpdateDiscountedOutputQtyAmount);
-      print(UpdateRoundOffAmount);
+      print(UpdateRoundOffAmount);*/
     }
+    print("SS_UpdatecustomerNeedWeightEQQUAL $SS_UpdatecustomerNeedWeight");
+    print(SS_UpdateAmount);
+    print(UpdateGrandTotalAmount);
+    print(UpdateTaxAmount);
+    print(UpdateDiscountAmount);
+    print(UpdateDiscountedOutputQtyAmount);
+    print(UpdateRoundOffAmount);
     notifyListeners();
   }
 
@@ -2051,6 +2058,7 @@ class QuarryNotifier extends ChangeNotifier{
     SS_TotalWeight=(Decimal.parse(SS_EmptyWeightOfVehicle)+Decimal.parse((SS_RequiredMaterialQty))).toString();
     SS_MaterialUnitPrice=saleDetails[selectedIndex].MaterialUnitPrice;
     notifyListeners();
+    print(SS_GrandTotalAmount);
   }
 
   int selectedIndex=-1;

@@ -265,8 +265,6 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                       children: [
                                                         DropDownField(
 
-
-
                                                           add: (){
                                                           },
                                                           nodeFocus: (){
@@ -334,6 +332,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                         AddNewLabelTextField(
                                                           labelText: 'Empty Vehicle Weight',
                                                           regExp: decimalReg,
+                                                          onChange: (v){},
                                                           textEditingController: qn.SS_emptyVehicleWeight,
                                                           textInputType: TextInputType.number,
                                                           ontap: () {
@@ -480,12 +479,16 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                           child: AddNewLabelTextField(
                                                             labelText: 'Required Quantity',
                                                             regExp: decimalReg,
+
                                                             textEditingController: qn.SS_customerNeedWeight,
                                                             textInputType: TextInputType.number,
                                                             isEnabled:qn.SS_selectedMaterialTypeId==null?false: true,
                                                             scrollPadding: 500,
                                                             ontap: () {
-                                                              scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                                              if(scrollController.offset==0){
+                                                                scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                                              }
+
 
                                                               setState(() {
                                                                 _keyboardVisible=true;
@@ -550,11 +553,14 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                               qn.amountToWeight();
                                                             },
                                                             ontap: () {
+                                                              if(scrollController.offset==0){
+                                                                scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                                              }
                                                               setState(() {
                                                                 _keyboardVisible=true;
                                                                 isListScroll=true;
                                                               });
-                                                              scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+
                                                             },
 
                                                             onEditComplete: () {
@@ -1033,6 +1039,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                                 regExp: '[A-Za-z ]',
                                                                 textEditingController: qn.driverName,
                                                                 scrollPadding: 400,
+                                                                onChange: (v){},
                                                                 ontap: () {
                                                                   setState(() {
                                                                     _keyboardVisible=true;
@@ -1054,6 +1061,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                                 regExp: '[0-9]',
                                                                 textLength: phoneNoLength,
                                                                 textInputType: TextInputType.number,
+                                                                onChange: (v){},
                                                                 textEditingController: qn.driverContactNumber,
                                                                 scrollPadding: 400,
                                                                 ontap: () {
@@ -1077,6 +1085,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                                 regExp: decimalReg,
                                                                 textInputType: TextInputType.number,
                                                                 textEditingController: qn.driverBeta,
+                                                                onChange: (v){},
                                                                 scrollPadding: 400,
                                                                 ontap: () {
                                                                   setState(() {

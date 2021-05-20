@@ -702,7 +702,8 @@ double totalAmount=0.0;
       ]
     };
 
-    try{
+
+ try{
       await call.ApiCallGetInvoke(body,context).then((value) {
         if(value!=null){
           var parsed=json.decode(value);
@@ -714,7 +715,7 @@ double totalAmount=0.0;
             DI_plantName=t[0]['PlantName'];
             DI_MachinType=t[0]['Type'];
 
-            DI_machineRunningMeter.text=t[0]['MachineFuelReadingQuantity']??"";
+            DI_machineRunningMeter.text=t[0]['MachineFuelReadingQuantity']==null?"":t[0]['MachineFuelReadingQuantity'].toString();
             DI_dieselQty.text=t[0]['DieselIssuedQuantity'].toString();
             DI_issueID=t[0]['IssuedBy'];
             DI_issueName=t[0]['IssuedName'];

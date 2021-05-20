@@ -12,6 +12,7 @@ import 'package:quarry/notifier/dieselNotifier.dart';
 import 'package:quarry/pages/sale/salesDetail.dart';
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
+import 'package:quarry/styles/constants.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/bottomBarAddButton.dart';
@@ -304,7 +305,9 @@ class DieselIssueFormState extends State<DieselIssueForm> with TickerProviderSta
                                   AddNewLabelTextField(
                                     textEditingController: dn.DI_machineRunningMeter,
                                     labelText: "Machine Reading",
+                                    regExp: decimalReg,
                                     textInputType: TextInputType.number,
+                                    onChange: (v){},
                                     ontap: (){
                                       scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                       setState(() {
@@ -354,7 +357,9 @@ class DieselIssueFormState extends State<DieselIssueForm> with TickerProviderSta
                                   AddNewLabelTextField(
                                     textEditingController: dn.DI_dieselQty,
                                     labelText: "Diesel Quantity",
+                                    regExp: decimalReg,
                                     textInputType: TextInputType.number,
+                                    onChange: (v){},
                                     scrollPadding: 400,
                                     ontap: (){
                                       scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
