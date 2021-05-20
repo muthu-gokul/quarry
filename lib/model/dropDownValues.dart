@@ -136,7 +136,7 @@ class CustomerModel {
 
 class SaleDetails{
   int SaleId;
-  int SaleNumber;
+  String SaleNumber;
   int VehicleTypeId;
   int MaterialId;
   int PaymentCategoryId;

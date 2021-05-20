@@ -52,6 +52,8 @@ class AppTheme {
   static TextStyle bgColorTS14=TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 14);
   static TextStyle gridTextColorTS=TextStyle(fontFamily: 'RR',color: AppTheme.gridTextColor,fontSize: 16);
   static TextStyle gridTextColor14=TextStyle(fontFamily: 'RR',color: AppTheme.gridTextColor,fontSize: 14);
+  static TextStyle gridTextGreenColor14=TextStyle(fontFamily: 'RR',color: Colors.green,fontSize: 14);
+  static TextStyle gridTextRedColor14=TextStyle(fontFamily: 'RR',color: AppTheme.red,fontSize: 14);
 
 
   static const Color popUpSelectedColor=Color(0xFF3B3B3D);

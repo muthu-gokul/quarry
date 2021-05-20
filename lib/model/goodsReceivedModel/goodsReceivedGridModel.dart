@@ -16,7 +16,7 @@ class GoodsReceivedGridModel {
   });
 
   int goodsReceivedId;
-  int grnNumber;
+  String grnNumber;
   int purchaseOrderId;
   String purchaseOrderNumber;
   String date;

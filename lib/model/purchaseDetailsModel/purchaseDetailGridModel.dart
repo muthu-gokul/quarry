@@ -17,7 +17,7 @@ class PurchaseOrderGridModel {
 
   int purchaseOrderId;
   DateTime expectedDate;
-  int purchaseOrderNumber;
+  String purchaseOrderNumber;
   int materialId;
   String materialName;
   String supplierName;

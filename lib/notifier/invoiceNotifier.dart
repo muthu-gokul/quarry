@@ -516,10 +516,11 @@ class InvoiceNotifier extends ChangeNotifier{
 
 
 
-  List<String> invoiceGridCol=["Invoice Number","Date","Party Name","Net Amount"];
+  List<String> invoiceGridCol=["Invoice Number","Date","Party Name","Net Amount","Status"];
 
   List<InvoiceGridModel> invoiceGridList=[];
   List<InvoiceGridModel> filterInvoiceGridList=[];
+  List<InvoiceCounterModel> counterList=[];
 
 
   GetInvoiceDbHit(BuildContext context,int InvoiceId)  async{
@@ -555,6 +556,7 @@ class InvoiceNotifier extends ChangeNotifier{
         if(value!=null){
           var parsed=json.decode(value);
           var t=parsed['Table'] as List;
+          print(t);
           if(InvoiceId!=null){
             print(t);
             var t1=parsed['Table1'] as List;
@@ -609,12 +611,8 @@ class InvoiceNotifier extends ChangeNotifier{
           else{
             invoiceGridList=t.map((e) => InvoiceGridModel.fromJson(e)).toList();
             filterInvoiceGridList=t.map((e) => InvoiceGridModel.fromJson(e)).toList();
-            if(isInvoiceReceivable){
-              filterInvoiceGridList=invoiceGridList.where((element) => element.invoiceType=="Receivable").toList();
-            }
-            else{
-              filterInvoiceGridList=invoiceGridList.where((element) => element.invoiceType=="Payable").toList();
-            }
+            filterGridValues();
+
           }
         }
 
@@ -666,11 +664,33 @@ class InvoiceNotifier extends ChangeNotifier{
 
 
   filterGridValues(){
+
+    int paid=0;
+    int unpaid=0;
+    int partially=0;
     if(isInvoiceReceivable){
       filterInvoiceGridList=invoiceGridList.where((element) => element.invoiceType=="Receivable").toList();
+      paid=filterInvoiceGridList.where((element) => element.status=='Paid').toList().length;
+      unpaid=filterInvoiceGridList.where((element) => element.status=='Unpaid').toList().length;
+      partially=filterInvoiceGridList.where((element) => element.status=='Partially Paid').toList().length;
+      counterList=[
+        InvoiceCounterModel(name: "Receivable Invoice",value: filterInvoiceGridList.length),
+        InvoiceCounterModel(name: "Paid Invoice",value: paid),
+        InvoiceCounterModel(name: "UnPaid Invoice",value: unpaid),
+        InvoiceCounterModel(name: "Partially Paid Invoice",value: partially),
+      ];
     }
     else{
       filterInvoiceGridList=invoiceGridList.where((element) => element.invoiceType=="Payable").toList();
+      paid=filterInvoiceGridList.where((element) => element.status=='Paid').toList().length;
+      unpaid=filterInvoiceGridList.where((element) => element.status=='Unpaid').toList().length;
+      partially=filterInvoiceGridList.where((element) => element.status=='Partially Paid').toList().length;
+      counterList=[
+        InvoiceCounterModel(name: "Payable Invoice",value: filterInvoiceGridList.length),
+        InvoiceCounterModel(name: "Paid Invoice",value: paid),
+        InvoiceCounterModel(name: "UnPaid Invoice",value: unpaid),
+        InvoiceCounterModel(name: "Partially Paid Invoice",value: partially),
+      ];
     }
     notifyListeners();
   }
@@ -694,4 +714,12 @@ updateInvoiceLoader(bool value){
   notifyListeners();
 }
 
+}
+
+
+
+class InvoiceCounterModel{
+  String name;
+  dynamic value;
+  InvoiceCounterModel({this.value,this.name});
 }

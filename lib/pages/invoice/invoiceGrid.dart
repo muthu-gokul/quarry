@@ -134,16 +134,16 @@ class InvoiceGridState extends State<InvoiceGrid> with TickerProviderStateMixin{
                     height: 110,
                     alignment: Alignment.topCenter,
 
-                    /*child:SingleChildScrollView(
+                    child:SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Row(
 
                           crossAxisAlignment: CrossAxisAlignment.center,
-                          children: inv.gridOverAllHeader.asMap().
+                          children: inv.counterList.asMap().
                           map((i, value) => MapEntry(i,
                               Container(
-                                height: SizeConfig.height80,
-                                width: SizeConfig.screenWidth*0.3,
+                                height: 80,
+                                width: SizeConfig.screenWidth*0.35,
                                 margin: EdgeInsets.only(right: SizeConfig.width10),
 
                                 decoration: BoxDecoration(
@@ -158,26 +158,22 @@ class InvoiceGridState extends State<InvoiceGrid> with TickerProviderStateMixin{
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       crossAxisAlignment: CrossAxisAlignment.center,
                                       children: [
-                                        Text(value.materialName,style: TextStyle(fontFamily: 'RR',fontSize: 16,color: Colors.white,letterSpacing: 0.1),),
-                                        SizedBox(height: 5,),
-                                        Text( '${value.totalQuantity}',style: TextStyle(fontFamily: 'RR',fontSize: 20,color: AppTheme.yellowColor),),
-                                        *//*RichText(
-                                        text: TextSpan(
-                                          text: '${value.totalQuantity}',
-                                          style: TextStyle(fontFamily: 'RM',fontSize: 20,color: AppTheme.yellowColor),
-                                          children: <TextSpan>[
-                                           // TextSpan(text: '${value.unitName}', style: TextStyle(fontFamily: 'RR',fontSize: 11,color: AppTheme.addNewTextFieldBorder)),
-                                          ],
+                                        Container(
+                                          height: 18,
+                                            width: SizeConfig.screenWidth*0.35,
+                                            alignment: Alignment.center,
+                                            padding: EdgeInsets.only(left: 3,right: 3),
+                                            child: FittedBox(
+                                              child: Text(value.name,style: TextStyle(fontFamily: 'RR',fontSize: 16,color: Colors.white,letterSpacing: 0.1),
+                                              ),
+                                            )
                                         ),
-                                      ),*//*
+                                        SizedBox(height: 5,),
+                                        Text( '${value.value}',style: TextStyle(fontFamily: 'RR',fontSize: 20,color: AppTheme.yellowColor),),
+
                                       ],
                                     ),
-                                    Padding(
-                                      padding: EdgeInsets.only(bottom: SizeConfig.height18),
-                                      child: Text(' ${value.unitName}',
-                                          style: TextStyle(fontFamily: 'RR',fontSize: 10,color: AppTheme.addNewTextFieldBorder)
-                                      ),
-                                    )
+
                                   ],
 
                                 ),
@@ -185,7 +181,7 @@ class InvoiceGridState extends State<InvoiceGrid> with TickerProviderStateMixin{
                           )
                           ).values.toList()
                       ),
-                    )*/
+                    )
                 ),
 
                 Container(
@@ -296,6 +292,14 @@ class InvoiceGridState extends State<InvoiceGrid> with TickerProviderStateMixin{
                                                       style:selectedIndex==i?AppTheme.TSWhiteML:AppTheme.gridTextColor14,
                                                     ),
                                                   ),
+                                                  Container(
+                                                    width: 150,
+                                                    alignment: Alignment.centerLeft,
+                                                    child: Text("${value.status}",
+                                                      style:selectedIndex==i?AppTheme.TSWhiteML:value.status=='Unpaid'?AppTheme.gridTextColor14:
+                                                      value.status=='Paid'?AppTheme.gridTextGreenColor14:AppTheme.gridTextRedColor14,
+                                                    ),
+                                                  ),
 
 
 
@@ -328,6 +332,7 @@ class InvoiceGridState extends State<InvoiceGrid> with TickerProviderStateMixin{
                                 width: 150,
                                 color: AppTheme.bgColor,
                                 alignment: Alignment.centerLeft,
+                                padding: EdgeInsets.only(left: 5),
                                 child: Text("${inv.invoiceGridCol[0]}",style: AppTheme.TSWhite166,),
 
                               ),

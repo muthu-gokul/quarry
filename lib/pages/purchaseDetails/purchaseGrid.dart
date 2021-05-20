@@ -343,7 +343,7 @@ class PurchaseDetailsGridState extends State<PurchaseDetailsGrid> with TickerPro
                                               ),
                                               child: FittedBox(
                                                 fit: BoxFit.contain,
-                                                child: Text("${value.purchaseOrderNumber}",
+                                                child: Text("${value.purchaseOrderNumber.toString()}",
                                                     //  style:selectedIndex==i?AppTheme.bgColorTS14:AppTheme.gridTextColorTS,
                                                   style:selectedIndex==i?AppTheme.bgColorTS14:AppTheme.gridTextColor14,
                                                 ),

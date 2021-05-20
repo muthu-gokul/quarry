@@ -1686,7 +1686,7 @@ class QuarryNotifier extends ChangeNotifier{
   int SS_MaterialTypeId;
   int SS_PaymentTypeId;
   int SS_UpdateSaleId;
-  int SS_UpdateSaleNo;
+  String SS_UpdateSaleNo;
 
   double SS_Amount;
   double SS_DiscountAmount;
