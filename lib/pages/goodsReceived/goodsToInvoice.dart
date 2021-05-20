@@ -119,7 +119,7 @@ class GoodsToInvoiceState extends State<GoodsToInvoice> with TickerProviderState
     super.initState();
   }
 
-  List<String> gridcol=["Material","Qty","Received Qty","Per Ton","Amount","Status"];
+  List<String> gridcol=["Material","Qty","Received Qty","Per Ton","Tax","Amount","Status"];
 
   @override
   Widget build(BuildContext context) {
@@ -309,6 +309,13 @@ class GoodsToInvoiceState extends State<GoodsToInvoice> with TickerProviderState
                                                                   width: valueContainerWidth,
                                                                   alignment: Alignment.center,
                                                                   child: Text("${value.materialPrice}",
+                                                                    style:AppTheme.ML_bgCT,
+                                                                  ),
+                                                                ),
+                                                                Container(
+                                                                  width: valueContainerWidth,
+                                                                  alignment: Alignment.center,
+                                                                  child: Text("${value.taxAmount}",
                                                                     style:AppTheme.ML_bgCT,
                                                                   ),
                                                                 ),
@@ -909,6 +916,7 @@ class GoodsToInvoiceState extends State<GoodsToInvoice> with TickerProviderState
                                     SizedBox(width: SizeConfig.width20,),
                                     GestureDetector(
                                       onTap: (){
+                                        gr.GINV_clear();
                                         Navigator.pop(context);
                                       },
                                       child: Container(

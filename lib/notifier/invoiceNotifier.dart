@@ -21,6 +21,7 @@ import 'package:quarry/model/purchaseDetailsModel/purchaseSupplierTypeModel.dart
 import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/pages/invoice/invoiceGrid.dart';
 import 'package:quarry/widgets/alertDialog.dart';
+import 'package:quarry/widgets/calculation.dart';
 import '../widgets/decimal.dart';
 
 class InvoiceNotifier extends ChangeNotifier{
@@ -220,6 +221,7 @@ class InvoiceNotifier extends ChangeNotifier{
 
   List<InvoiceMaterialMappingListModel> invoiceMaterialMappingList=[];
   List<InvoiceOtherChargesMappingList> invoiceOtherChargesMappingList=[];
+  bool IsTax=false;
 
   bool isDiscountPercentage=true;
   updateisDiscountPercentage(bool value){
@@ -299,7 +301,12 @@ class InvoiceNotifier extends ChangeNotifier{
 
       if( invoiceMaterialMappingList[index].IsDiscount==0){
         invoiceMaterialMappingList[index].Subtotal=double.parse((Decimal.parse(purchaseQty)*Decimal.parse(invoiceMaterialMappingList[index].MaterialPrice.toString())).toString());
-        invoiceMaterialMappingList[index].TaxAmount=double.parse(((Decimal.parse(invoiceMaterialMappingList[index].TaxValue.toString())*(Decimal.parse(invoiceMaterialMappingList[index].Subtotal.toString())-Decimal.parse(invoiceMaterialMappingList[index].DiscountAmount.toString())))/Decimal.parse("100")).toString());
+        if(IsTax){
+          invoiceMaterialMappingList[index].TaxAmount=double.parse(((Decimal.parse(invoiceMaterialMappingList[index].TaxValue.toString())*(Decimal.parse(invoiceMaterialMappingList[index].Subtotal.toString())-Decimal.parse(invoiceMaterialMappingList[index].DiscountAmount.toString())))/Decimal.parse("100")).toString());
+        }
+        else{
+          invoiceMaterialMappingList[index].TaxAmount=0.0;
+        }
         invoiceMaterialMappingList[index].TotalAmount=double.parse((Decimal.parse(invoiceMaterialMappingList[index].Subtotal.toString())+Decimal.parse(invoiceMaterialMappingList[index].TaxAmount.toString())).toString());
         invoiceMaterialMappingList[index].DiscountAmount=0.0;
         invoiceMaterialMappingList[index].DiscountedSubTotal=0.0;
@@ -310,8 +317,12 @@ class InvoiceNotifier extends ChangeNotifier{
           invoiceMaterialMappingList[index].Subtotal=double.parse((Decimal.parse(purchaseQty)*Decimal.parse(invoiceMaterialMappingList[index].MaterialPrice.toString())).toString());
           invoiceMaterialMappingList[index].DiscountAmount=double.parse(((Decimal.parse(invoiceMaterialMappingList[index].DiscountValue.toString())*Decimal.parse(invoiceMaterialMappingList[index].Subtotal.toString()))/Decimal.parse("100")).toString());
           invoiceMaterialMappingList[index].DiscountedSubTotal=double.parse((((Decimal.parse(invoiceMaterialMappingList[index].Subtotal.toString()))-Decimal.parse(invoiceMaterialMappingList[index].DiscountAmount.toString()))).toString());
-
-          invoiceMaterialMappingList[index].TaxAmount=double.parse(((((Decimal.parse(invoiceMaterialMappingList[index].Subtotal.toString()))-Decimal.parse(invoiceMaterialMappingList[index].DiscountAmount.toString())) * Decimal.parse(invoiceMaterialMappingList[index].TaxValue.toString()) )/Decimal.parse("100")).toString());
+          if(IsTax){
+            invoiceMaterialMappingList[index].TaxAmount=double.parse(((((Decimal.parse(invoiceMaterialMappingList[index].Subtotal.toString()))-Decimal.parse(invoiceMaterialMappingList[index].DiscountAmount.toString())) * Decimal.parse(invoiceMaterialMappingList[index].TaxValue.toString()) )/Decimal.parse("100")).toString());
+          }
+          else{
+            invoiceMaterialMappingList[index].TaxAmount=0.0;
+          }
           invoiceMaterialMappingList[index].TotalAmount=double.parse((Decimal.parse(invoiceMaterialMappingList[index].Subtotal.toString())+Decimal.parse(invoiceMaterialMappingList[index].TaxAmount.toString())-Decimal.parse(invoiceMaterialMappingList[index].DiscountAmount.toString())).toString());
 
         }
@@ -320,9 +331,13 @@ class InvoiceNotifier extends ChangeNotifier{
           invoiceMaterialMappingList[index].Subtotal=double.parse((Decimal.parse(purchaseQty)*Decimal.parse(invoiceMaterialMappingList[index].MaterialPrice.toString())).toString());
           invoiceMaterialMappingList[index].DiscountAmount=double.parse((Decimal.parse(invoiceMaterialMappingList[index].DiscountValue.toString())).toString());
           invoiceMaterialMappingList[index].DiscountedSubTotal=double.parse((((Decimal.parse(invoiceMaterialMappingList[index].Subtotal.toString()))-Decimal.parse(invoiceMaterialMappingList[index].DiscountAmount.toString()))).toString());
+          if(IsTax){
+            invoiceMaterialMappingList[index].TaxAmount=double.parse(((((Decimal.parse(invoiceMaterialMappingList[index].Subtotal.toString()))-Decimal.parse(invoiceMaterialMappingList[index].DiscountAmount.toString())) * Decimal.parse(invoiceMaterialMappingList[index].TaxValue.toString()) )/Decimal.parse("100")).toString());
+          }
+          else{
+            invoiceMaterialMappingList[index].TaxAmount=0.0;
+          }
 
-
-          invoiceMaterialMappingList[index].TaxAmount=double.parse(((((Decimal.parse(invoiceMaterialMappingList[index].Subtotal.toString()))-Decimal.parse(invoiceMaterialMappingList[index].DiscountAmount.toString())) * Decimal.parse(invoiceMaterialMappingList[index].TaxValue.toString()) )/Decimal.parse("100")).toString());
           invoiceMaterialMappingList[index].TotalAmount=double.parse((Decimal.parse(invoiceMaterialMappingList[index].Subtotal.toString())+Decimal.parse(invoiceMaterialMappingList[index].TaxAmount.toString())-Decimal.parse(invoiceMaterialMappingList[index].DiscountAmount.toString())).toString());
         }
 
@@ -402,6 +417,11 @@ class InvoiceNotifier extends ChangeNotifier{
           "Key": "PlantId",
           "Type": "int",
           "Value": PlantId
+        },
+        {
+          "Key": "IsTax",
+          "Type": "int",
+          "Value": IsTax?1:0
         },
         {
           "Key": "PurchaseOrderId",
@@ -548,6 +568,7 @@ class InvoiceNotifier extends ChangeNotifier{
 
             PlantId=t[0]['PlantId'];
             PlantName=t[0]['PlantName'];
+            IsTax=t[0]['IsTax'];
 
 
 
@@ -640,6 +661,7 @@ class InvoiceNotifier extends ChangeNotifier{
     grandTotal=0.0;
     otherCharges=0.0;
     invoiceOtherChargesMappingList.clear();
+    IsTax=false;
   }
 
 

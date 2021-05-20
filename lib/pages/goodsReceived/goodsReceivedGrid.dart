@@ -285,6 +285,8 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
                                                           if(isInvoice){
                                                             if(value.status!='Not Yet'){
                                                             gr.GoodsDropDownValues(context);
+                                                            gr.GINV_clear();
+                                                            gr.GPO_clear();
                                                             gr.GetGoodsDbHit(context, value.goodsReceivedId, value.purchaseOrderId,true,GoodsReceivedGridState());
                                                             Navigator.push(context, _createRouteGoodsToInvoice());
 

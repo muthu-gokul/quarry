@@ -24,6 +24,7 @@ class GoodsOutGateModel {
     this.inwardLoadedVehicleWeight,
     this.outwardEmptyVehicleWeight,
     this.GoodsReceivedMaterialMappingId,
+    this.IsTax
   });
 
   int GoodsReceivedMaterialMappingId;
@@ -50,6 +51,7 @@ class GoodsOutGateModel {
   String vehicleNumber;
   double inwardLoadedVehicleWeight;
   double outwardEmptyVehicleWeight;
+  bool IsTax;
 
   factory GoodsOutGateModel.fromJson(Map<String, dynamic> json) => GoodsOutGateModel(
     GoodsReceivedMaterialMappingId: json["GoodsReceivedMaterialMappingId"],
@@ -67,6 +69,7 @@ class GoodsOutGateModel {
     isDiscount: json["IsDiscount"],
     isPercentage: json["IsPercentage"],
     isAmount: json["IsAmount"],
+    IsTax: json["IsTax"],
     discountValue: json["DiscountValue"],
     discountAmount: json["DiscountAmount"],
     vehicleTypeId: json["VehicleTypeId"],

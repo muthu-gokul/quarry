@@ -338,7 +338,40 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
                                     ),
                                     !party?Container():ValidationErrorText(title: "* Select Party Name"),
 
-                                    SizedBox(height: SizeConfig.height20,),
+                                    SizedBox(height: 20,),
+                                    Container(
+                                      height: 30,
+                                      width: SizeConfig.screenWidth,
+                                      padding: EdgeInsets.only(left: SizeConfig.width10,right: SizeConfig.width20),
+                                      child: Row(
+                                        children: [
+
+
+                                          Spacer(),
+                                          Checkbox(
+                                              fillColor: MaterialStateColor.resolveWith((states) => AppTheme.yellowColor),
+                                              value: pn.IsTax,
+                                              onChanged: (v){
+                                                setState(() {
+                                                  pn.IsTax=v;
+                                                });
+                                                for(int i=0;i<pn.invoiceMaterialMappingList.length;i++)
+                                                  pn.purchaseOrdersCalc(i, pn.invoiceMaterialMappingList[i].purchaseQty.text);
+
+                                              }
+                                          ),
+                                          InkWell(
+                                              onTap: (){
+                                                /*setState(() {
+                                                                  qn.isDiscount=!qn.isDiscount;
+                                                                });*/
+                                              },
+                                              child: Text("Is Tax?", style:  TextStyle(fontFamily: 'RR',fontSize: 16,color:AppTheme.addNewTextFieldText,letterSpacing: 0.2),)
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(height: 20,),
 
 
                                     //Material data table

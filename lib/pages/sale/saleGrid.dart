@@ -293,7 +293,7 @@ class _SaleGridState extends State<SaleGrid> {
                                                     width: 150,
                                                     alignment: Alignment.center,
                                                     child: Text("${value.RoundedTotalAmount}",
-                                                      style: qn.selectedIndex==i?AppTheme.bgColorTS:AppTheme.gridTextColor14,
+                                                      style: qn.selectedIndex==i?AppTheme.bgColorTS14:AppTheme.gridTextColor14,
                                                     ),
                                                   ),
 
@@ -301,7 +301,7 @@ class _SaleGridState extends State<SaleGrid> {
                                                     width: 150,
                                                     alignment: Alignment.center,
                                                     child: Text("${value.CustomerName??" "}",
-                                                      style: qn.selectedIndex==i?AppTheme.bgColorTS:AppTheme.gridTextColor14,
+                                                      style: qn.selectedIndex==i?AppTheme.bgColorTS14:AppTheme.gridTextColor14,
                                                     ),
                                                   ),
 

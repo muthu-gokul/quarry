@@ -437,7 +437,9 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                           child:qn.isCustomPrice? TextField(
                                                             scrollPadding: EdgeInsets.only(bottom: 500),
                                                             onTap: (){
-                                                              scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                                              if(scrollController.offset==0){
+                                                                scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                                              }
                                                               setState(() {
                                                                 _keyboardVisible=true;
                                                                 isListScroll=true;

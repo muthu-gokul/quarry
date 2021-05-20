@@ -13,6 +13,7 @@ import 'package:quarry/model/purchaseDetailsModel/purchaseSupplierListModel.dart
 import 'package:quarry/model/purchaseDetailsModel/purchaseSupplierTypeModel.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/widgets/alertDialog.dart';
+import 'package:quarry/widgets/calculation.dart';
 import '../widgets/decimal.dart';
 
 class PurchaseNotifier extends ChangeNotifier{
@@ -341,6 +342,8 @@ class PurchaseNotifier extends ChangeNotifier{
       grandTotal=double.parse((Decimal.parse(grandTotal.toString()) + Decimal.parse(element.TotalAmount.toString()) + Decimal.parse(otherCharges.toString())).toString());
     });
 
+
+
     notifyListeners();
   }
 
@@ -423,6 +426,11 @@ class PurchaseNotifier extends ChangeNotifier{
           "Type": "String",
           "Value": grandTotal
         },
+        {
+          "Key": "IsTax",
+          "Type": "int",
+          "Value": isTax?1:0
+        },
 
         {
           "Key": "PurchaseOrderMaterialMappingList",
@@ -473,7 +481,7 @@ class PurchaseNotifier extends ChangeNotifier{
 
 
 
-  List<String> purchaseGridCol=["Order Number","Expected Date","No of Material","Purchase Quantity","Tax Amount","Sub Total","Net Amount"];
+  List<String> purchaseGridCol=["Order Number","Supplier Name","Expected Date","No of Material","Purchase Quantity","Tax Amount","Sub Total","Net Amount","Status"];
   List<PurchaseOrderGridModel> purchaseGridList=[];
 
 
@@ -511,7 +519,7 @@ class PurchaseNotifier extends ChangeNotifier{
           var parsed=json.decode(value);
           var t=parsed['Table'] as List;
           if(PurchaseOrderId!=null){
-            print(t);
+            print("t_$t");
             var t1=parsed['Table1'] as List;
             print(t1);
             var t2=parsed['Table2'] as List;
@@ -544,13 +552,18 @@ class PurchaseNotifier extends ChangeNotifier{
             taxAmount=t[0]['GST'];
             grandTotal=t[0]['Total'];
             discountAmount=t[0]['Discount']??0.0;
-            isTax=taxAmount>0?true:false;
+            isTax=t[0]['IsTax'];
 
             purchaseOrdersMappingList=t1.map((e) => PurchaseOrderMaterialMappingListModel.fromJson(e)).toList();
             purchaseOrdersOtherChargesMappingList=t2.map((e) => PurchaseOrderOtherChargesMappingList.fromJson(e)).toList();
             purchaseOrdersOtherChargesMappingList.forEach((element) {
               otherCharges=double.parse((Decimal.parse(otherCharges.toString()) + Decimal.parse(element.OtherChargesAmount.toString())).toString());
             });
+            if(t[0]['Status']=='Not Yet'){
+              isPurchaseView=false;
+            }else{
+              isPurchaseView=true;
+            }
 
             notifyListeners();
           }
@@ -606,6 +619,12 @@ class PurchaseNotifier extends ChangeNotifier{
   bool isPurchaseEdit=false;
   updatePurchaseEdit(bool value){
     isPurchaseEdit=value;
+    notifyListeners();
+  }
+
+  bool isPurchaseView=false;
+  updatePurchaseView(bool value){
+    isPurchaseView=value;
     notifyListeners();
   }
 

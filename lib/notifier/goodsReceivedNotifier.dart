@@ -23,9 +23,13 @@ class GoodsReceivedNotifier extends ChangeNotifier{
 
 
 
-  List<VehicleTypeModel> vehicleTypeList=[];
+  List<dynamic> vehicleTypeList=[];
+  List<dynamic> filterVehicleTypeList=[];
   List<GoodsOutGateModel> outGateFormList=[];
   List<String> outGateFormVehiclesList=[];
+
+  List<dynamic> supplierList=[];
+  List<dynamic> filterSupplierList=[];
 
   List<GoodsMaterialTripDetailsModel> materialTripList=[];
 
@@ -62,18 +66,23 @@ class GoodsReceivedNotifier extends ChangeNotifier{
 
           var t=parsed['Table'] as List;
           var t1=parsed['Table1'] as List;
+          var t2=parsed['Table2'] as List;
 
-          print(parsed);
+          print("Dt1_$t1");
 
 
 
-          vehicleTypeList=t.map((e) => VehicleTypeModel.fromJson(e)).toList();
-          print(vehicleTypeList.length);
+          vehicleTypeList=t;
+          filterVehicleTypeList=t;
+
           outGateFormList=t1.map((e) => GoodsOutGateModel.fromJson(e)).toList();
           outGateFormVehiclesList.clear();
           outGateFormList.forEach((element) {
             outGateFormVehiclesList.add(element.vehicleNumber);
           });
+
+          supplierList=t2;
+          filterSupplierList=t2;
 
 
         }
@@ -89,6 +98,25 @@ class GoodsReceivedNotifier extends ChangeNotifier{
     }
   }
 
+  searchVehicleType(String v){
+    if(v.isEmpty){
+      filterVehicleTypeList=vehicleTypeList;
+    }
+    else{
+      filterVehicleTypeList=vehicleTypeList.where((element) => element['VehicleTypeName'].toString().toLowerCase().contains(v)).toList();
+    }
+    notifyListeners();
+  }
+
+  searchSupplier(String v){
+    if(v.isEmpty){
+      filterSupplierList=supplierList;
+    }
+    else{
+      filterSupplierList=supplierList.where((element) => element['SupplierName'].toString().toLowerCase().contains(v)).toList();
+    }
+    notifyListeners();
+  }
 
 
    // Materials List
@@ -96,6 +124,7 @@ class GoodsReceivedNotifier extends ChangeNotifier{
   int ML_PorderId=null;
   int ML_GoodsorderId=null;
   String ML_Date=null;
+  bool ML_isTax=false;
   List<GoodsReceivedMaterialListModel> ML_Materials=[];
 
   ML_clear(){
@@ -104,7 +133,9 @@ class GoodsReceivedNotifier extends ChangeNotifier{
     ML_PorderNo=null;
     ML_PorderId=null;
     ML_GoodsorderId=null;
+    ML_isTax=false;
     IGF_Materials.clear();
+    notifyListeners();
   }
 
 
@@ -126,6 +157,7 @@ class GoodsReceivedNotifier extends ChangeNotifier{
     selectedVehicleTypeName=null;
     IGF_Materials.clear();
     IGf_OtherChargesList.clear();
+    notifyListeners();
   }
 
 
@@ -162,6 +194,11 @@ class GoodsReceivedNotifier extends ChangeNotifier{
           "Key": "PurchaseOrderId",
           "Type": "int",
           "Value": ML_PorderId
+        },
+        {
+          "Key": "IsTax",
+          "Type": "int",
+          "Value": ML_isTax?1:0
         },
         {
           "Key": "Subtotal",
@@ -254,6 +291,7 @@ class GoodsReceivedNotifier extends ChangeNotifier{
   double OGF_taxAmount;
   double OGF_TotalAmount;
   double OGF_discountedSubTotal;
+  bool OGF_isTax=false;
 
   clearOGFform(){
      OGF_vehicleNumber=null;
@@ -274,6 +312,8 @@ class GoodsReceivedNotifier extends ChangeNotifier{
      OGF_taxAmount=0.0;
      OGF_TotalAmount=0.0;
      OGF_discountedSubTotal=0.0;
+     OGF_isTax=false;
+     notifyListeners();
   }
 
   UpdateGoodsDbHit(BuildContext context,List insertMappingList,TickerProviderStateMixin tickerProviderStateMixin)  async{
@@ -414,6 +454,7 @@ class GoodsReceivedNotifier extends ChangeNotifier{
       print(OGF_ReceivedQty);
       print(OGF_InwardLoadedVehicleWeight);
       print(OGF_emptyWeightofVehicle.text);
+      print(outGateFormList[OGF_index].taxAmount);
 
       OGF_showReceivedQty=double.parse((Decimal.parse(OGF_InwardLoadedVehicleWeight.toString())-Decimal.parse(OGF_emptyWeightofVehicle.text) + Decimal.parse(OGF_ReceivedQty.toString())).toString());
       OGF_dbReceivedQty=double.parse((Decimal.parse(OGF_InwardLoadedVehicleWeight.toString())-Decimal.parse(OGF_emptyWeightofVehicle.text)).toString());
@@ -426,12 +467,14 @@ class GoodsReceivedNotifier extends ChangeNotifier{
       if( outGateFormList[OGF_index].isDiscount==0){
 
         OGF_amount=Calculation().mul(OGF_dbReceivedQty, outGateFormList[OGF_index].materialPrice);
-        OGF_taxAmount=Calculation().taxAmount(taxValue:outGateFormList[OGF_index].taxValue, amount: OGF_amount, discountAmount: 0.0 );
+        if(outGateFormList[OGF_index].IsTax){
+          OGF_taxAmount=Calculation().taxAmount(taxValue:outGateFormList[OGF_index].taxValue, amount: OGF_amount, discountAmount: 0.0 );
+        }
+        else{
+          OGF_taxAmount=0.0;
+        }
         OGF_TotalAmount=Calculation().totalAmount(amount:OGF_amount, taxAmount: OGF_taxAmount, discountAmount: 0.0);
 
-     //   purchaseOrdersMappingList[index].Amount=double.parse((Decimal.parse(purchaseQty)*Decimal.parse(purchaseOrdersMappingList[index].MaterialPrice.toString())).toString());
-     //   purchaseOrdersMappingList[index].TaxAmount=double.parse(((Decimal.parse(purchaseOrdersMappingList[index].TaxValue.toString())*(Decimal.parse(purchaseOrdersMappingList[index].Amount.toString())-Decimal.parse(purchaseOrdersMappingList[index].DiscountAmount.toString())))/Decimal.parse("100")).toString());
-     //   purchaseOrdersMappingList[index].TotalAmount=double.parse((Decimal.parse(purchaseOrdersMappingList[index].Amount.toString())+Decimal.parse(purchaseOrdersMappingList[index].TaxAmount.toString())).toString());
 
       }
       else if(outGateFormList[OGF_index].isDiscount==1){
@@ -440,26 +483,30 @@ class GoodsReceivedNotifier extends ChangeNotifier{
 
           OGF_amount=Calculation().mul(OGF_dbReceivedQty, outGateFormList[OGF_index].materialPrice);
           OGF_discountAmount=Calculation().discountAmount(discountValue: outGateFormList[OGF_index].discountValue, amount:  OGF_amount);
-          OGF_taxAmount=Calculation().taxAmount(taxValue:outGateFormList[OGF_index].taxValue, amount: OGF_amount, discountAmount: OGF_discountAmount );
+          if(outGateFormList[OGF_index].IsTax){
+            OGF_taxAmount=Calculation().taxAmount(taxValue:outGateFormList[OGF_index].taxValue, amount: OGF_amount, discountAmount: OGF_discountAmount );
+          }
+          else{
+            OGF_taxAmount=0.0;
+          }
           OGF_TotalAmount=Calculation().totalAmount(amount: OGF_amount, taxAmount: OGF_taxAmount, discountAmount:  OGF_discountAmount);
 
-         // purchaseOrdersMappingList[index].Amount=double.parse((Decimal.parse(purchaseQty)*Decimal.parse(purchaseOrdersMappingList[index].MaterialPrice.toString())).toString());
-         // purchaseOrdersMappingList[index].DiscountAmount=double.parse(((Decimal.parse(purchaseOrdersMappingList[index].DiscountValue.toString())*Decimal.parse(purchaseOrdersMappingList[index].Amount.toString()))/Decimal.parse("100")).toString());
 
-        //  purchaseOrdersMappingList[index].TaxAmount=double.parse(((((Decimal.parse(purchaseOrdersMappingList[index].Amount.toString()))-Decimal.parse(purchaseOrdersMappingList[index].DiscountAmount.toString())) * Decimal.parse(purchaseOrdersMappingList[index].TaxValue.toString()) )/Decimal.parse("100")).toString());
-         // purchaseOrdersMappingList[index].TotalAmount=double.parse((Decimal.parse(purchaseOrdersMappingList[index].Amount.toString())+Decimal.parse(purchaseOrdersMappingList[index].TaxAmount.toString())-Decimal.parse(purchaseOrdersMappingList[index].DiscountAmount.toString())).toString());
+
 
         }
         else if(outGateFormList[OGF_index].isAmount==1){
           OGF_amount=Calculation().mul(OGF_dbReceivedQty, outGateFormList[OGF_index].materialPrice);
           OGF_discountAmount=double.parse((Decimal.parse(outGateFormList[OGF_index].discountValue.toString())).toString());
-          OGF_taxAmount=Calculation().taxAmount(taxValue:outGateFormList[OGF_index].taxValue, amount: OGF_amount, discountAmount: OGF_discountAmount );
+          if(outGateFormList[OGF_index].IsTax){
+            OGF_taxAmount=Calculation().taxAmount(taxValue:outGateFormList[OGF_index].taxValue, amount: OGF_amount, discountAmount: OGF_discountAmount );
+          }
+          else{
+            OGF_taxAmount=0.0;
+          }
           OGF_TotalAmount=Calculation().totalAmount(amount: OGF_amount, taxAmount: OGF_taxAmount, discountAmount:  OGF_discountAmount);
-        //  purchaseOrdersMappingList[index].Amount=double.parse((Decimal.parse(purchaseQty)*Decimal.parse(purchaseOrdersMappingList[index].MaterialPrice.toString())).toString());
 
 
-       //   purchaseOrdersMappingList[index].TaxAmount=double.parse(((((Decimal.parse(purchaseOrdersMappingList[index].Amount.toString()))-Decimal.parse(purchaseOrdersMappingList[index].DiscountAmount.toString())) * Decimal.parse(purchaseOrdersMappingList[index].TaxValue.toString()) )/Decimal.parse("100")).toString());
-         // purchaseOrdersMappingList[index].TotalAmount=double.parse((Decimal.parse(purchaseOrdersMappingList[index].Amount.toString())+Decimal.parse(purchaseOrdersMappingList[index].TaxAmount.toString())-Decimal.parse(purchaseOrdersMappingList[index].DiscountAmount.toString())).toString());
         }
 
       }
@@ -488,6 +535,7 @@ class GoodsReceivedNotifier extends ChangeNotifier{
   int GINV_GoodsorderId=null;
   String GINV_Date=null;
   double GINV_invoiceAmount=0.0;
+  bool GINV_IsTax=false;
   List<GoodsReceivedMaterialListModel> GINV_Materials=[];
   List<GoodsOtherChargesModel> GINV_OtherChargesList=[];
 
@@ -507,7 +555,11 @@ class GoodsReceivedNotifier extends ChangeNotifier{
     GINV_PorderNo=null;
     GINV_PorderId=null;
     GINV_GoodsorderId=null;
+    GINV_IsTax=false;
     GINV_invoiceAmount=0.0;
+    GINV_Materials.clear();
+    GINV_OtherChargesList.clear();
+    notifyListeners();
   }
 
   // ToPurchase List (GPO)-Goods To Purchase
@@ -516,8 +568,10 @@ class GoodsReceivedNotifier extends ChangeNotifier{
   int GPO_GoodsorderId=null;
   int GPO_PlantId=null;
   int GPO_SupplierId=null;
+  String GPO_SupplierType=null;
   String GPO_Date=null;
   double GPO_purchaseAmount=0.0;
+  bool GPO_IsTax=false;
   List<GoodsReceivedMaterialListModel> GPO_Materials=[];
 
   GPO_clear(){
@@ -527,6 +581,8 @@ class GoodsReceivedNotifier extends ChangeNotifier{
     GPO_PorderId=null;
     GPO_GoodsorderId=null;
     GPO_purchaseAmount=0.0;
+    GPO_IsTax=false;
+    notifyListeners();
   }
 
   Future<dynamic> GPO_assignValues() async{
@@ -535,13 +591,16 @@ class GoodsReceivedNotifier extends ChangeNotifier{
     GPO_PorderId=GINV_PorderId;
     GPO_GoodsorderId=GINV_GoodsorderId;
     GPO_PlantId=GINV_PlantId;
-    GPO_SupplierId=GINV_SupplierId;
+    GPO_IsTax=GINV_IsTax;
+    GPO_SupplierId=null;
+    GPO_SupplierType=null;
     double balanceQuantity=0.0;
     double amount=0.0;
     double discountAmount=0.0;
     double taxAmount=0.0;
     double totalAmount=0.0;
 
+    print(GINV_Materials.length);
     GINV_Materials.forEach((element) {
       if(element.status!='Completed'){
         balanceQuantity=Calculation().sub(element.quantity, element.receivedQuantity);
@@ -556,8 +615,12 @@ class GoodsReceivedNotifier extends ChangeNotifier{
         }else{
           discountAmount=0.0;
         }
+        if(GINV_IsTax){
+          taxAmount=Calculation().taxAmount(taxValue: element.taxValue,discountAmount: discountAmount,amount: amount);
+        }else{
+          taxAmount=0.0;
+        }
 
-        taxAmount=Calculation().taxAmount(taxValue: element.taxValue,discountAmount: discountAmount,amount: amount);
         totalAmount=Calculation().totalAmount(amount: amount,discountAmount: discountAmount,taxAmount: taxAmount);
 
         GPO_Materials.add(GoodsReceivedMaterialListModel(
@@ -643,21 +706,31 @@ class GoodsReceivedNotifier extends ChangeNotifier{
               GINV_PlantId=t[0]['PlantId'];
               GINV_SupplierId=t[0]['SupplierId'];
               GINV_Date=t[0]['Date'];
+              GINV_IsTax=t[0]['IsTax'];
+              print("GINV_IsTax$GINV_IsTax");
               var t1=parsed['Table1'] as List;
               var t4=parsed['Table4'] as List;
+              print(t1);
+              print(t4);
 
               GINV_Materials=t1.map((e) => GoodsReceivedMaterialListModel.fromJson(e)).toList();
+              print(GINV_Materials.length);
               GINV_Materials.forEach((element) {
                 if(element.status=='Completed' || element.status=='Partially Received'){
-                  GINV_invoiceAmount=GINV_invoiceAmount+element.totalAmount;
+               //   GINV_invoiceAmount=GINV_invoiceAmount+element.totalAmount;
+                  GINV_invoiceAmount=Calculation().add(GINV_invoiceAmount, element.totalAmount);
                 }
               });
               GINV_OtherChargesList=t4.map((e) => GoodsOtherChargesModel.fromJson(e,tickerProviderStateMixin)).toList();
-
-
+              double otherCharges=0.0;
+              GINV_OtherChargesList.forEach((element) {
+                otherCharges=Calculation().add(otherCharges, element.otherChargesAmount);
+              });
+              GINV_invoiceAmount=Calculation().add(GINV_invoiceAmount, otherCharges);
+              print(GINV_invoiceAmount);
             }
             else{
-              print("t_$t");
+              print("GOODSt_$t");
 
 
 
@@ -665,6 +738,7 @@ class GoodsReceivedNotifier extends ChangeNotifier{
               ML_PorderId=t[0]['PurchaseOrderId'];
               ML_GoodsorderId=t[0]['GoodsReceivedId'];
               ML_Date=t[0]['Date'];
+              ML_isTax=t[0]['IsTax'];
               print("ML_PorderId $ML_PorderId");
               var t1=parsed['Table1'] as List;
               print("t1_$t1");
@@ -687,6 +761,7 @@ class GoodsReceivedNotifier extends ChangeNotifier{
             notifyListeners();
           }
           else{
+            print(t);
             goodsGridList=t.map((e) => GoodsReceivedGridModel.fromJson(e,tickerProviderStateMixin)).toList();
            // filtergoodsGridList=List.from(goodsGridList);
           }
@@ -723,14 +798,25 @@ class GoodsReceivedNotifier extends ChangeNotifier{
     double discountedSubtotal=0.0;
     double taxAmount=0.0;
     double grandTotal=0.0;
+    double otherCharges=0.0;
 
     js.forEach((element) {
       subtotal=Calculation().add(subtotal, element['Subtotal']);
       discountAmount=Calculation().add(discountAmount, element['DiscountAmount']);
       discountedSubtotal=Calculation().sub(subtotal, discountAmount);
-      taxAmount=Calculation().add(taxAmount, element['TaxAmount']);
+    //  if(GINV_IsTax){
+        taxAmount=Calculation().add(taxAmount, element['TaxAmount']);
+    //  }
+
+
       grandTotal=Calculation().add(grandTotal, element['TotalAmount']);
     });
+
+    oa.forEach((element) {
+      otherCharges=Calculation().add(otherCharges, element['OtherChargesAmount']);
+    });
+
+    grandTotal=Calculation().add(grandTotal, otherCharges);
     print(subtotal);
     print(discountAmount);
     print(discountedSubtotal);
@@ -771,6 +857,11 @@ class GoodsReceivedNotifier extends ChangeNotifier{
           "Key": "PartyId",
           "Type": "int",
           "Value": GINV_SupplierId
+        },
+        {
+          "Key": "IsTax",
+          "Type": "int",
+          "Value": GINV_IsTax?1:0
         },
         {
           "Key": "Subtotal",
@@ -820,7 +911,7 @@ class GoodsReceivedNotifier extends ChangeNotifier{
       await call.ApiCallGetInvoke(body,context).then((value) {
 
         if(value!=null){
-          GetGoodsDbHit(context, null, null, false, tickerProviderStateMixin);
+       //   GetGoodsDbHit(context, null, null, false, tickerProviderStateMixin);
         }
 
         updateGoodsLoader(false);
@@ -879,12 +970,17 @@ class GoodsReceivedNotifier extends ChangeNotifier{
         {
           "Key": "SupplierType",
           "Type": "String",
-          "Value": ""
+          "Value": GPO_SupplierType
         },
         {
           "Key": "Supplier",
           "Type": "int",
           "Value": GPO_SupplierId
+        },
+        {
+          "Key": "IsTax",
+          "Type": "int",
+          "Value": GPO_IsTax?1:0
         },
         {
           "Key": "Subtotal",

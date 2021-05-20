@@ -108,7 +108,7 @@ class GoodsMaterialsListState extends State<GoodsMaterialsList> with TickerProvi
     super.initState();
   }
 
-  List<String> gridcol=["Material","Qty","Received Qty","Per Ton","Amount","Status"];
+  List<String> gridcol=["Material","Qty","Received Qty","Per Ton","Tax","Amount","Status"];
 
   @override
   Widget build(BuildContext context) {
@@ -306,6 +306,13 @@ class GoodsMaterialsListState extends State<GoodsMaterialsList> with TickerProvi
                                                                 width: valueContainerWidth,
                                                                 alignment: Alignment.center,
                                                                 child: Text("${value.materialPrice}",
+                                                                  style:AppTheme.ML_bgCT,
+                                                                ),
+                                                              ),
+                                                              Container(
+                                                                width: valueContainerWidth,
+                                                                alignment: Alignment.center,
+                                                                child: Text("${value.taxAmount}",
                                                                   style:AppTheme.ML_bgCT,
                                                                 ),
                                                               ),

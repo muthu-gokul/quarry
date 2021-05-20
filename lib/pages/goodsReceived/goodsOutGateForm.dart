@@ -78,6 +78,7 @@ class GoodsOutGateFormState extends State<GoodsOutGateForm> with TickerProviderS
     final node=FocusScope.of(context);
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Consumer<GoodsReceivedNotifier>(
           builder: (context,gr,child)=> Stack(
             children: [
@@ -281,7 +282,9 @@ class GoodsOutGateFormState extends State<GoodsOutGateForm> with TickerProviderS
                                     borderRadius: BorderRadius.circular(25)
                                   ),
                                   child: Center(
-                                    child: Text("${gr.OGF_showReceivedQty??0.0} ${gr.OGF_UnitName??""} Received, Balance ${gr.OGF_BalanceQty} ${gr.OGF_UnitName??""}",
+                                    child:gr.OGF_BalanceQty>0? Text("${gr.OGF_showReceivedQty??0.0} ${gr.OGF_UnitName??""} Received, Balance ${gr.OGF_BalanceQty} ${gr.OGF_UnitName??""}",
+                                    style: TextStyle(fontFamily: 'RR',fontSize: 16,color: Colors.white),
+                                    ):Text("${gr.OGF_showReceivedQty??0.0} ${gr.OGF_UnitName??""} Received, Extra ${-1*(gr.OGF_BalanceQty)} ${gr.OGF_UnitName??""}",
                                     style: TextStyle(fontFamily: 'RR',fontSize: 16,color: Colors.white),
                                     ),
                                   ),
@@ -299,7 +302,7 @@ class GoodsOutGateFormState extends State<GoodsOutGateForm> with TickerProviderS
               AnimatedPositioned(
                 duration: Duration(milliseconds: 100),
                 curve: Curves.easeIn,
-                bottom: _keyboardVisible?-90:0,
+                bottom: 0,
                 child: Container(
                   width: SizeConfig.screenWidth,
                   height:70,

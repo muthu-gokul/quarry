@@ -285,6 +285,7 @@ class CustomAlert{
           child: Container(
               height:400,
               width:400,
+        //      padding: EdgeInsets.only(top: 20,bottom: 20),
               decoration:BoxDecoration(
                 color:Colors.white,
                 borderRadius: BorderRadius.circular(10.0),
@@ -292,7 +293,7 @@ class CustomAlert{
 
               child:Column(
                   children:[
-                    SizedBox(height:40),
+                    SizedBox(height:25),
                     // SvgPicture.asset(img),
                     Image.asset("assets/images/delete.jpg"),
                     SizedBox(height:20),
@@ -316,7 +317,7 @@ class CustomAlert{
                         ),
                       ),
                     ),
-                    SizedBox(height:10),
+
 
                     GestureDetector(
                       onTap: Cancelcallback,

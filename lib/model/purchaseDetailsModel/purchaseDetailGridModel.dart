@@ -11,6 +11,8 @@ class PurchaseOrderGridModel {
     this.NoOfMaterial,
     this.TotalQuantity,
     this.Subtotal,
+    this.supplierName,
+    this.status,
   });
 
   int purchaseOrderId;
@@ -18,6 +20,8 @@ class PurchaseOrderGridModel {
   int purchaseOrderNumber;
   int materialId;
   String materialName;
+  String supplierName;
+  String status;
   double taxAmount;
   double Subtotal;
   double purchaseQuantity;
@@ -31,12 +35,14 @@ class PurchaseOrderGridModel {
     purchaseOrderNumber: json["PurchaseOrderNumber"],
     materialId: json["MaterialId"],
     materialName: json["MaterialName"],
+    supplierName: json["SupplierName"],
     taxAmount: json["TaxAmount"],
     purchaseQuantity: json["PurchaseQuantity"],
     netAmount: json["NetAmount"],
     NoOfMaterial: json["NoOfMaterial"],
     TotalQuantity: json["TotalQuantity"],
     Subtotal: json["Subtotal"],
+    status: json["Status"],
   );
 
   Map<String, dynamic> toJson() => {

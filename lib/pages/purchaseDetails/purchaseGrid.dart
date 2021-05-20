@@ -187,7 +187,15 @@ class PurchaseDetailsGridState extends State<PurchaseDetailsGrid> with TickerPro
                                               // padding: EdgeInsets.only(top: 20,bottom: 20),
                                               child: Row(
                                                 children: [
+                                                  Container(
+                                                    alignment: Alignment.center,
+                                                    // padding: EdgeInsets.only(left: 20,right: 20),
+                                                    width: 150,
+                                                    child: Text("${value.supplierName}",
+                                                      style:selectedIndex==i?AppTheme.bgColorTS14:AppTheme.gridTextColor14,
+                                                    ),
 
+                                                  ),
                                                   Container(
                                                     alignment: Alignment.center,
                                                     //  padding: EdgeInsets.only(left: 20,right: 20),
@@ -196,7 +204,6 @@ class PurchaseDetailsGridState extends State<PurchaseDetailsGrid> with TickerPro
                                                       style:selectedIndex==i?AppTheme.bgColorTS14:AppTheme.gridTextColor14,
                                                     ),
                                                   ),
-
                                                   Container(
                                                     alignment: Alignment.center,
                                                     // padding: EdgeInsets.only(left: 20,right: 20),
@@ -233,7 +240,16 @@ class PurchaseDetailsGridState extends State<PurchaseDetailsGrid> with TickerPro
                                                     width: 150,
                                                     alignment: Alignment.center,
                                                     child: Text("${value.netAmount.toString()}",
-                                                      style:selectedIndex==i?AppTheme.bgColorTS:AppTheme.gridTextColor14,
+                                                      style:selectedIndex==i?AppTheme.bgColorTS14:AppTheme.gridTextColor14,
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    width: 150,
+                                                    alignment: Alignment.center,
+                                                    child: Text("${value.status}",
+                                                      style:selectedIndex==i?AppTheme.bgColorTS14:
+                                                      TextStyle(fontFamily: 'RR',color:value.status=='Not Yet'? AppTheme.gridTextColor:
+                                                          value.status=='Completed'?Colors.green:AppTheme.red,fontSize: 14),
                                                     ),
                                                   ),
 
@@ -482,6 +498,7 @@ class PurchaseDetailsGridState extends State<PurchaseDetailsGrid> with TickerPro
                   alignment: Alignment.bottomCenter,
                   child: AddButton(
                     ontap: (){
+                      pn.updatePurchaseView(false);
                       pn.updatePurchaseEdit(false);
                       pn.PurchaseDropDownValues(context);
                       pn.insertForm();

@@ -14,6 +14,7 @@ import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/bottomBarAddButton.dart';
+import 'package:quarry/widgets/sidePopUp/noModel/sidePopUpSearchNoModel.dart';
 
 
 
@@ -37,6 +38,9 @@ class GoodsToPurchaseState extends State<GoodsToPurchase> with TickerProviderSta
   ScrollController body=new ScrollController();
   ScrollController verticalLeft=new ScrollController();
   ScrollController verticalRight=new ScrollController();
+
+  TextEditingController searchController=new TextEditingController();
+  bool isSupplierOpen=false;
 
   bool showShadow=false;
 
@@ -109,7 +113,7 @@ class GoodsToPurchaseState extends State<GoodsToPurchase> with TickerProviderSta
     super.initState();
   }
 
-  List<String> gridcol=["Material","Qty","Per Ton","Amount","Status"];
+  List<String> gridcol=["Material","Qty","Per Ton","Tax","Amount"];
 
   @override
   Widget build(BuildContext context) {
@@ -299,11 +303,18 @@ class GoodsToPurchaseState extends State<GoodsToPurchase> with TickerProviderSta
                                                                 Container(
                                                                   width: valueContainerWidth,
                                                                   alignment: Alignment.center,
-                                                                  child: Text("${value.amount}",
+                                                                  child: Text("${value.taxAmount}",
                                                                     style:AppTheme.ML_bgCT,
                                                                   ),
                                                                 ),
                                                                 Container(
+                                                                  width: valueContainerWidth,
+                                                                  alignment: Alignment.center,
+                                                                  child: Text("${value.amount}",
+                                                                    style:AppTheme.ML_bgCT,
+                                                                  ),
+                                                                ),
+                                                               /* Container(
                                                                   width: valueContainerWidth,
                                                                   alignment: Alignment.center,
                                                                   child: Text("${value.status}",
@@ -311,7 +322,7 @@ class GoodsToPurchaseState extends State<GoodsToPurchase> with TickerProviderSta
                                                                     gr.GPO_Materials[index].status=='Completed'?Colors.green:AppTheme.red
                                                                         ,fontSize: 12),textAlign: TextAlign.center,
                                                                   ),
-                                                                ),
+                                                                ),*/
 
 
                                                               ],
@@ -353,10 +364,10 @@ class GoodsToPurchaseState extends State<GoodsToPurchase> with TickerProviderSta
                                                   color: Colors.white,
                                                   boxShadow: [
                                                     showShadow?  BoxShadow(
-                                                      color: AppTheme.addNewTextFieldText.withOpacity(0.3),
+                                                      color: AppTheme.addNewTextFieldText.withOpacity(0.2),
                                                       spreadRadius: 0,
                                                       blurRadius: 15,
-                                                      offset: Offset(10, -8), // changes position of shadow
+                                                      offset: Offset(0, -8), // changes position of shadow
                                                     ):BoxShadow(color: Colors.transparent)
                                                   ]
                                               ),
@@ -447,10 +458,10 @@ class GoodsToPurchaseState extends State<GoodsToPurchase> with TickerProviderSta
                                 alignment: Alignment.center,
                                 child: RichText(
                                   text: TextSpan(
-                                    text: 'Do you want to raise Purchase for ',
+                                    text: 'Do you want to raise new Purchase Order ?',
                                     style: TextStyle(fontSize: 14,fontFamily: 'RR',color: AppTheme.addNewTextFieldText),
                                     children: <TextSpan>[
-                                      TextSpan(text: '${gr.GINV_PorderNo}', style:TextStyle(fontFamily: 'RM',color: AppTheme.bgColor,fontSize: 14)),
+                                      TextSpan(text: '', style:TextStyle(fontFamily: 'RM',color: AppTheme.bgColor,fontSize: 14)),
                                     ],
                                   ),
                                 ),
@@ -516,9 +527,10 @@ class GoodsToPurchaseState extends State<GoodsToPurchase> with TickerProviderSta
 
                                     GestureDetector(
                                       onTap: (){
-                                        gr.InsertPurchaseDbHit(context, GoodsReceivedGridState()).then((value){
-                                          Navigator.pop(context);
+                                        setState(() {
+                                          isSupplierOpen=true;
                                         });
+
                                       },
                                       child: Container(
                                         width: SizeConfig.screenWidth*0.4,
@@ -532,7 +544,10 @@ class GoodsToPurchaseState extends State<GoodsToPurchase> with TickerProviderSta
                                     SizedBox(width: SizeConfig.width20,),
                                     GestureDetector(
                                       onTap: (){
+                                        gr.GPO_clear();
+                                        gr.GINV_clear();
                                         Navigator.pop(context);
+                                        gr.GetGoodsDbHit(context, null, null,false,GoodsReceivedGridState());
                                       },
                                       child: Container(
                                         width: SizeConfig.screenWidth*0.4,
@@ -559,10 +574,10 @@ class GoodsToPurchaseState extends State<GoodsToPurchase> with TickerProviderSta
                 alignment: Alignment.bottomCenter,
                 child: AddButton(
                   ontap: (){
+                    gr.GINV_clear();
                     gr.GPO_clear();
-
                     Navigator.pop(context);
-
+                    gr.GetGoodsDbHit(context, null, null,false,GoodsReceivedGridState());
                   },
                   image: "assets/svg/drawer/back-icon.svg",
                 ),
@@ -576,8 +591,8 @@ class GoodsToPurchaseState extends State<GoodsToPurchase> with TickerProviderSta
                   children: [
                     CancelButton(
                       ontap: (){
+                        gr.GINV_clear();
                         gr.GPO_clear();
-
                         Navigator.pop(context);
                       },
                     ),
@@ -585,22 +600,18 @@ class GoodsToPurchaseState extends State<GoodsToPurchase> with TickerProviderSta
                       style: TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 16),
                     ),
 
-                    Spacer(),
-                    Container(
-                      padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(50)
-                      ),
-                      child: Text("${gr.GPO_PorderNo}",
-                        style: TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 16),
-                      ),
-                    ),
+
                     SizedBox(width: SizeConfig.width10,),
                   ],
                 ),
               ),
+              Container(
 
+                height: isSupplierOpen? SizeConfig.screenHeight:0,
+                width: isSupplierOpen? SizeConfig.screenWidth:0,
+                color: Colors.black.withOpacity(0.5),
+
+              ),
 
               Container(
 
@@ -610,6 +621,51 @@ class GoodsToPurchaseState extends State<GoodsToPurchase> with TickerProviderSta
                 child: Center(
                   child:CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(AppTheme.yellowColor),),
                 ),
+              ),
+
+
+
+
+
+
+              //supplier List
+              PopUpSearchOnly2(
+                isOpen: isSupplierOpen,
+                searchController: searchController,
+
+                searchHintText:"Search Supplier",
+
+                dataList:gr.filterSupplierList,
+                propertyKeyId:"SupplierName",
+                propertyKeyName: "SupplierName",
+                selectedId: gr.GPO_SupplierId,
+
+                searchOnchange: (v){
+                  gr.searchSupplier(v.toLowerCase());
+                },
+                itemOnTap: (index){
+
+                  setState(() {
+                    gr.GPO_SupplierId=gr.filterSupplierList[index]['SupplierId'];
+                    gr.GPO_SupplierType=gr.filterSupplierList[index]['SupplierType'];
+                    isSupplierOpen=false;
+                    gr.filterSupplierList=gr.supplierList;
+                  });
+                  searchController.clear();
+                  gr.InsertPurchaseDbHit(context, GoodsReceivedGridState()).then((value){
+                    Navigator.pop(context);
+                    gr.GINV_clear();
+                    gr.GPO_clear();
+                  });
+                },
+                closeOnTap: (){
+
+                  setState(() {
+                    isSupplierOpen=false;
+                  });
+                  gr.filterSupplierList=gr.supplierList;
+                  searchController.clear();
+                },
               ),
             ],
           )

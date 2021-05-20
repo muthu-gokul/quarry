@@ -59,7 +59,10 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
   Future getImage() async
   {
 
-    File tempImage = (await ImagePicker.platform.pickImage (source: ImageSource.gallery)) as File;
+     PickedFile temp=await ImagePicker().getImage(source: ImageSource.gallery);
+     print(temp);
+
+    File tempImage = File(temp.path);
     if (tempImage != null) {
       _cropImage(tempImage);
     }
@@ -82,12 +85,12 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
 
         CropAspectRatioPreset.square
       ],
-      maxWidth: 800,
-      cropStyle: CropStyle.rectangle,
+      maxWidth: 400,
+      cropStyle: CropStyle.circle,
 
     );
     if (cropped != null) {
-      setState(() async{
+      setState(() {
         sampleImage = cropped;
 
       });
@@ -498,8 +501,10 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                              shape: BoxShape.circle,
                                              border: Border.all(color: AppTheme.uploadColor,width: 2)
                                          ),
+                                         clipBehavior: Clip.antiAlias,
                                          child: Center(
-                                          //child: Image,
+                                          child: sampleImage!=null? Image.file(sampleImage):
+                                          SvgPicture.asset("assets/svg/upload.svg",height: 30,width: 30,),
                                         // child: SvgPicture.asset("assets/svg/upload.svg",height: 30,width: 30,),
                                          ),
                                        ),
@@ -511,28 +516,30 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                          ),
                                        ),
                                        SizedBox(height: 10,),
-                                       Container(
-
-                                         margin: EdgeInsets.only(left: SizeConfig.width90,right:  SizeConfig.width90,),
-                                         height:45,
-                                         decoration: BoxDecoration(
-                                           borderRadius: BorderRadius.circular(25.0),
-                                           color: AppTheme.yellowColor,
-                                           boxShadow: [
-                                             BoxShadow(
-                                               color: AppTheme.yellowColor.withOpacity(0.4),
-                                               spreadRadius: 1,
-                                               blurRadius: 5,
-                                               offset: Offset(1, 8), // changes position of shadow
-                                             ),
-                                           ],
+                                       GestureDetector(
+                                         onTap: (){
+                                           getImage();
+                                         },
+                                         child: Container(
+                                           margin: EdgeInsets.only(left: SizeConfig.width90,right:  SizeConfig.width90,),
+                                           height:45,
+                                           decoration: BoxDecoration(
+                                             borderRadius: BorderRadius.circular(25.0),
+                                             color: AppTheme.yellowColor,
+                                             boxShadow: [
+                                               BoxShadow(
+                                                 color: AppTheme.yellowColor.withOpacity(0.4),
+                                                 spreadRadius: 1,
+                                                 blurRadius: 5,
+                                                 offset: Offset(1, 8), // changes position of shadow
+                                               ),
+                                             ],
+                                           ),
+                                           child: Center(
+                                               child: Text("Choose File",style: TextStyle(color:AppTheme.bgColor,fontSize:16,fontFamily: 'RM'),
+                                               )
+                                           ),
                                          ),
-                                         child: Center(
-                                             child: Text("Choose File",style: TextStyle(color:AppTheme.bgColor,fontSize:16,fontFamily: 'RM'),
-                                             )
-                                         ),
-
-
                                        ),
 
                                        SizedBox(height: 70),
