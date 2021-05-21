@@ -15,7 +15,10 @@ import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/bottomBarAddButton.dart';
+import 'package:quarry/widgets/customTextField.dart';
+import 'package:quarry/widgets/expectedDateContainer.dart';
 import 'package:quarry/widgets/sidePopUp/sidePopUpWithoutSearch.dart';
+import 'package:quarry/widgets/singleDatePicker.dart';
 import 'package:quarry/widgets/validationErrorText.dart';
 
 
@@ -338,6 +341,37 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
                                     ),
                                     !party?Container():ValidationErrorText(title: "* Select Party Name"),
 
+
+                                    GestureDetector(
+                                      onTap: () async{
+                                        final DateTime picked = await showDatePicker2(
+                                            context: context,
+                                            initialDate:  pn.expectedDate==null?DateTime.now():pn.expectedDate, // Refer step 1
+                                            firstDate: DateTime.now(),
+                                            lastDate: DateTime(2100),
+                                            builder: (BuildContext context,Widget child){
+                                              return Theme(
+                                                data: Theme.of(context).copyWith(
+                                                  colorScheme: ColorScheme.light(
+                                                    primary: AppTheme.yellowColor, // header background color
+                                                    onPrimary: AppTheme.bgColor, // header text color
+                                                    onSurface: AppTheme.addNewTextFieldText, // body text color
+                                                  ),
+
+                                                ),
+                                                child: child,
+                                              );
+                                            });
+                                        if (picked != null)
+                                          setState(() {
+                                            pn.expectedDate = picked;
+                                          });
+                                      },
+                                      child: ExpectedDateContainer(
+                                        text: pn.expectedDate==null?"Expected Date":"${DateFormat.yMMMd().format(pn.expectedDate)}",
+                                        textColor: pn.expectedDate==null? AppTheme.addNewTextFieldText.withOpacity(0.5):AppTheme.addNewTextFieldText,
+                                      ),
+                                    ),
                                     SizedBox(height: 20,),
                                     Container(
                                       height: 30,
@@ -1107,12 +1141,63 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
 
                                     ),
 
+                                    SizedBox(height: 50,),
+                                    AddNewLabelTextField(
+                                      labelText: 'Notes',
+                                      regExp: '[A-Za-z0-9.,  ]',
+                                      textEditingController: pn.notes,
+                                      scrollPadding: 500,
+                                      onChange: (v){},
+                                      ontap: (){
+                                        setState(() {
+                                          isListScroll=true;
+                                          _keyboardVisible=true;
+                                        });
+                                        scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+
+                                      },
+                                      onEditComplete: (){
+                                        node.unfocus();
+                                        Timer(Duration(milliseconds: 100), (){
+                                          setState(() {
+                                            isListScroll=true;
+                                            _keyboardVisible=false;
+                                          });
+                                        });
+                                      },
+                                    ),
+                                    AddNewLabelTextField(
+                                      labelText: 'Terms and Conditions',
+                                      regExp: '[A-Za-z0-9.,  ]',
+                                      textEditingController: pn.terms,
+                                      scrollPadding: 500,
+                                      maxlines: null,
+                                      onChange: (v){},
+                                      ontap: (){
+                                        setState(() {
+                                          isListScroll=true;
+                                          _keyboardVisible=true;
+                                        });
+                                        scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+
+                                      },
+                                      onEditComplete: (){
+                                        node.unfocus();
+                                        Timer(Duration(milliseconds: 100), (){
+                                          setState(() {
+                                            isListScroll=true;
+                                            _keyboardVisible=false;
+                                          });
+                                        });
+                                      },
+                                    ),
 
 
 
 
 
-                                    SizedBox(height: SizeConfig.height100,)
+
+                                    SizedBox(height:_keyboardVisible?SizeConfig.screenHeight*0.5: SizeConfig.height100,)
                                   ],
                                 ),
                               ),

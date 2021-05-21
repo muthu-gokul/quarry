@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/api/ApiManager.dart';
 import 'package:quarry/api/sp.dart';
@@ -11,6 +12,9 @@ import 'package:quarry/model/paymentModel/paymentTypeModel.dart';
 import 'package:quarry/model/plantModel/plantUserModel.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/widgets/alertDialog.dart';
+import 'package:quarry/widgets/calculation.dart';
+
+import 'invoiceNotifier.dart';
 
 class PaymentNotifier extends ChangeNotifier{
 
@@ -161,9 +165,10 @@ class PaymentNotifier extends ChangeNotifier{
 
 
 
-  List<String> gridCol=["Invoice No","Received On","Party Name","Gross Amount","Paid Amount"];
+  List<String> gridCol=[];
   List<PaymentGridModel> gridPaymentList=[];
   List<PaymentGridModel> filterGridPaymentList=[];
+  List<InvoiceCounterModel> counterList=[];
 
 
   int EditinvoiceId=null;
@@ -339,14 +344,10 @@ class PaymentNotifier extends ChangeNotifier{
             notifyListeners();
           }
           else{
+            print(t);
                 gridPaymentList=t.map((e) => PaymentGridModel.fromJson(e)).toList();
                 filterGridPaymentList=t.map((e) => PaymentGridModel.fromJson(e)).toList();
-                if(isPaymentReceivable){
-                  filterGridPaymentList=gridPaymentList.where((element) => element.invoiceType=="Receivable").toList();
-                }
-                else{
-                  filterGridPaymentList=gridPaymentList.where((element) => element.invoiceType=="Payable").toList();
-                }
+                filterGridValues();
           }
         }
 
@@ -363,11 +364,67 @@ class PaymentNotifier extends ChangeNotifier{
   }
 
   filterGridValues(){
+
+    double total=0.0;
+    int paidCount=0;
+    double totalPaid=0.0;
+    int unpaidCount=0;
+    double totalUnPaid=0.0;
+    int partiallyCount=0;
+    double totalpartiallyPaid=0.0;
+
     if(isPaymentReceivable){
+      gridCol=["Payment No","Received On Date","Customer Name","Gross Amount","Received Amount","Balance Amount","Status"];
       filterGridPaymentList=gridPaymentList.where((element) => element.invoiceType=="Receivable").toList();
+
+      filterGridPaymentList.forEach((element) {
+        total=Calculation().add(total, element.grandTotalAmount);
+        if(element.status=='Paid'){
+          paidCount=paidCount+1;
+          totalPaid=Calculation().add(totalPaid, element.grandTotalAmount);
+        }
+        else if(element.status=='Unpaid'){
+          unpaidCount=unpaidCount+1;
+          totalUnPaid=Calculation().add(totalUnPaid, element.grandTotalAmount);
+        }
+        else if(element.status=='Partially Paid'){
+          partiallyCount=partiallyCount+1;
+          totalpartiallyPaid=Calculation().add(totalpartiallyPaid, element.balanceAmount);
+        }
+      });
+
+      counterList=[
+        InvoiceCounterModel(name: "Receivable Payment",value: "${filterGridPaymentList.length} bill/Rs.$total"),
+        InvoiceCounterModel(name: "Paid Payment",value: "$paidCount bill/Rs.$totalPaid"),
+        InvoiceCounterModel(name: "UnPaid Payment",value: "$unpaidCount bill/Rs.$totalUnPaid"),
+        InvoiceCounterModel(name: "Partially Paid Payment",value: "$partiallyCount bill/Rs.$totalpartiallyPaid"),
+      ];
     }
     else{
+      gridCol=["Payment No","Received On Date","Supplier Name","Gross Amount","Paid Amount","Balance Amount","Status"];
       filterGridPaymentList=gridPaymentList.where((element) => element.invoiceType=="Payable").toList();
+      filterGridPaymentList.forEach((element) {
+        total=Calculation().add(total, element.grandTotalAmount);
+        if(element.status=='Paid'){
+          paidCount=paidCount+1;
+          totalPaid=Calculation().add(totalPaid, element.grandTotalAmount);
+        }
+        else if(element.status=='Unpaid'){
+          unpaidCount=unpaidCount+1;
+          totalUnPaid=Calculation().add(totalUnPaid, element.grandTotalAmount);
+        }
+        else if(element.status=='Partially Paid'){
+          partiallyCount=partiallyCount+1;
+          totalpartiallyPaid=Calculation().add(totalpartiallyPaid, element.balanceAmount);
+        }
+      });
+
+      counterList=[
+        InvoiceCounterModel(name: "Payable Payment",value: "${filterGridPaymentList.length} bill/Rs.$total"),
+        InvoiceCounterModel(name: "Paid Payment",value: "$paidCount bill/Rs.$totalPaid"),
+        InvoiceCounterModel(name: "UnPaid Payment",value: "$unpaidCount bill/Rs.$totalUnPaid"),
+        InvoiceCounterModel(name: "Partially Paid Payment",value: "$partiallyCount bill/Rs.$totalpartiallyPaid"),
+      ];
     }
     notifyListeners();
   }
@@ -378,6 +435,83 @@ class PaymentNotifier extends ChangeNotifier{
   int selectedPartyId=null;
   String selectedPartyName=null;
   TextEditingController materialName=new TextEditingController();
+  DateTime paymentDate;
+
+
+  InsertPaymentDbHit(BuildContext context,TickerProviderStateMixin tickerProviderStateMixin)  async{
+    updatePaymentLoader(true);
+
+    var body={
+      "Fields": [
+        {
+          "Key": "SpName",
+          "Type": "String",
+          "Value": "${Sp.insertPaymentDetail}"
+        },
+        {
+          "Key": "LoginUserId",
+          "Type": "int",
+          "Value": Provider.of<QuarryNotifier>(context,listen: false).UserId
+        },
+
+        {
+          "Key": "MaterialName",
+          "Type": "String",
+          "Value": materialName.text
+        },
+        {
+          "Key": "Date",
+          "Type": "String",
+          "Value": DateFormat('yyyy-MM-dd').format(paymentDate)
+        },
+        {
+          "Key": "PlantId",
+          "Type": "int",
+          "Value": PlantId
+        },
+        {
+          "Key": "PartyId",
+          "Type": "int",
+          "Value": selectedPartyId
+        },
+        {
+          "Key": "PaymentCategoryId",
+          "Type": "int",
+          "Value": paymentCategoryId
+        },
+        {
+          "Key": "Amount",
+          "Type": "String",
+          "Value": double.parse(amount.text)
+        },
+        {
+          "Key": "database",
+          "Type": "String",
+          "Value": Provider.of<QuarryNotifier>(context,listen: false).DataBaseName
+        }
+      ]
+    };
+
+    try{
+      await call.ApiCallGetInvoke(body,context).then((value) {
+
+        if(value!=null){
+
+          Navigator.pop(context);
+          clearEditForm();
+          clearInsertForm();
+          GetPaymentDbHit(context, null,tickerProviderStateMixin);
+        }
+
+        updatePaymentLoader(false);
+      });
+    }catch(e){
+      updatePaymentLoader(false);
+      CustomAlert().commonErrorAlert(context, "${Sp.insertPaymentDetail}" , e.toString());
+    }
+
+
+  }
 
   clearInsertForm(){
     selectedPartyId=null;
@@ -386,7 +520,7 @@ class PaymentNotifier extends ChangeNotifier{
     paymentCategoryName=null;
     amount.clear();
     materialName.clear();
-
+    paymentDate=null;
   }
 
 

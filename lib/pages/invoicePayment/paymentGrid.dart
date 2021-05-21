@@ -101,16 +101,16 @@ class PaymentGridState extends State<PaymentGrid> with TickerProviderStateMixin{
                   child: Column(
                     children: [
                       Opacity(
-                        opacity:1,
+                        opacity:0.8,
                         child: Container(
                           width: double.maxFinite,
-                          height: 150,
+                          height: 170,
 
 
                           decoration: BoxDecoration(
                             image: DecorationImage(
                                 image: AssetImage(
-                                  "assets/svg/gridHeader/paymentHeader.jpg",),
+                                  "assets/svg/gridHeader/reportsHeader.jpg",),
                                 fit: BoxFit.cover
                             ),
 
@@ -129,7 +129,7 @@ class PaymentGridState extends State<PaymentGrid> with TickerProviderStateMixin{
                       GestureDetector(
                           onTap: widget.drawerCallback,
                           child: NavBarIcon()),
-                      Text("Payment",
+                      Text(pn.isPaymentReceivable?"Receivable Payment":"Payable Payment",
                         style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize:16),
                       ),
 
@@ -142,20 +142,20 @@ class PaymentGridState extends State<PaymentGrid> with TickerProviderStateMixin{
                 Container(
                     margin: EdgeInsets.only(top: 50),
                     padding: EdgeInsets.only(left:5,bottom:25),
-                   // color: AppTheme.yellowColor,
+                    //  color: AppTheme.yellowColor,
                     height: 110,
                     alignment: Alignment.topCenter,
 
-                    /*child:SingleChildScrollView(
+                    child:SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Row(
 
                           crossAxisAlignment: CrossAxisAlignment.center,
-                          children: pn.gridOverAllHeader.asMap().
+                          children: pn.counterList.asMap().
                           map((i, value) => MapEntry(i,
                               Container(
-                                height: SizeConfig.height80,
-                                width: SizeConfig.screenWidth*0.3,
+                                height: 80,
+                                width: SizeConfig.screenWidth*0.40,
                                 margin: EdgeInsets.only(right: SizeConfig.width10),
 
                                 decoration: BoxDecoration(
@@ -170,17 +170,22 @@ class PaymentGridState extends State<PaymentGrid> with TickerProviderStateMixin{
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       crossAxisAlignment: CrossAxisAlignment.center,
                                       children: [
-                                        Text(value.materialName,style: TextStyle(fontFamily: 'RR',fontSize: 16,color: Colors.white,letterSpacing: 0.1),),
+                                        Container(
+                                            height: 18,
+                                            width: SizeConfig.screenWidth*0.40,
+                                            alignment: Alignment.center,
+                                            padding: EdgeInsets.only(left: 3,right: 3),
+                                            child: FittedBox(
+                                              child: Text(value.name,style: TextStyle(fontFamily: 'RR',fontSize: 16,color: Colors.white,letterSpacing: 0.1),
+                                              ),
+                                            )
+                                        ),
                                         SizedBox(height: 5,),
-                                        Text( '${value.totalQuantity}',style: TextStyle(fontFamily: 'RR',fontSize: 20,color: AppTheme.yellowColor),),
+                                        Text( '${value.value}',style: TextStyle(fontFamily: 'RR',fontSize: 18,color: AppTheme.yellowColor),),
+
                                       ],
                                     ),
-                                    Padding(
-                                      padding: EdgeInsets.only(bottom: SizeConfig.height18),
-                                      child: Text(' ${value.unitName}',
-                                          style: TextStyle(fontFamily: 'RR',fontSize: 10,color: AppTheme.addNewTextFieldBorder)
-                                      ),
-                                    )
+
                                   ],
 
                                 ),
@@ -188,8 +193,9 @@ class PaymentGridState extends State<PaymentGrid> with TickerProviderStateMixin{
                           )
                           ).values.toList()
                       ),
-                    )*/
+                    )
                 ),
+
 
                 Container(
                     height: SizeConfig.screenHeight-140,
@@ -211,7 +217,7 @@ class PaymentGridState extends State<PaymentGrid> with TickerProviderStateMixin{
                             children: [
                               Container(
                                 height: 50,
-                                width: SizeConfig.screenWidth-150,
+                                width: SizeConfig.screenWidth-149,
                                 color: showShadow? AppTheme.bgColor.withOpacity(0.8):AppTheme.bgColor,
                                 child: SingleChildScrollView(
                                   controller: header,
@@ -220,7 +226,7 @@ class PaymentGridState extends State<PaymentGrid> with TickerProviderStateMixin{
                                       children: pn.gridCol.asMap().
                                       map((i, value) => MapEntry(i, i==0?Container():
                                       Container(
-                                          alignment: Alignment.center,
+                                          alignment: Alignment.centerLeft,
                                           width: 150,
                                           child: Text(value,style: AppTheme.TSWhite166,)
                                       )
@@ -231,7 +237,7 @@ class PaymentGridState extends State<PaymentGrid> with TickerProviderStateMixin{
                               ),
                               Container(
                                 height: SizeConfig.screenHeight-260,
-                                width: SizeConfig.screenWidth-150,
+                                width: SizeConfig.screenWidth-149,
                                 alignment: Alignment.topCenter,
                                 color: AppTheme.gridbodyBgColor,
                                 child: SingleChildScrollView(
@@ -276,7 +282,7 @@ class PaymentGridState extends State<PaymentGrid> with TickerProviderStateMixin{
 
 
                                                   Container(
-                                                    alignment: Alignment.center,
+                                                    alignment: Alignment.centerLeft,
                                                     // padding: EdgeInsets.only(left: 20,right: 20),
                                                     width: 150,
                                                     child: Text("${DateFormat.yMMMd().format(value.invoiceDate)}",
@@ -285,7 +291,7 @@ class PaymentGridState extends State<PaymentGrid> with TickerProviderStateMixin{
 
                                                   ),
                                                   Container(
-                                                    alignment: Alignment.center,
+                                                    alignment: Alignment.centerLeft,
                                                     width: 150,
                                                     child: Text("${value.partyName}",
                                                       style:selectedIndex==i?AppTheme.TSWhiteML:AppTheme.gridTextColor14,
@@ -294,18 +300,34 @@ class PaymentGridState extends State<PaymentGrid> with TickerProviderStateMixin{
 
                                                   Container(
                                                     width: 150,
-                                                    alignment: Alignment.center,
+                                                    alignment: Alignment.centerLeft,
                                                     child: Text("${value.grandTotalAmount}",
                                                       style:selectedIndex==i?AppTheme.TSWhiteML:AppTheme.gridTextColor14,
                                                     ),
                                                   ),
                                                   Container(
                                                     width: 150,
-                                                    alignment: Alignment.center,
+                                                    alignment: Alignment.centerLeft,
                                                     child: Text("${value.paidAmount}",
                                                       style:selectedIndex==i?AppTheme.TSWhiteML:AppTheme.gridTextColor14,
                                                     ),
                                                   ),
+                                                  Container(
+                                                    width: 150,
+                                                    alignment: Alignment.centerLeft,
+                                                    child: Text("${value.balanceAmount??"0.0"}",
+                                                      style:selectedIndex==i?AppTheme.TSWhiteML:AppTheme.gridTextColor14,
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    width: 150,
+                                                    alignment: Alignment.centerLeft,
+                                                    child: Text("${value.status}",
+                                                      style:selectedIndex==i?AppTheme.TSWhiteML:value.status=='Unpaid'?AppTheme.gridTextColor14:
+                                                      value.status=='Paid'?AppTheme.gridTextGreenColor14:AppTheme.gridTextRedColor14,
+                                                    ),
+                                                  ),
+
 
 
                                                 ],
@@ -336,18 +358,20 @@ class PaymentGridState extends State<PaymentGrid> with TickerProviderStateMixin{
                                 height: 50,
                                 width: 150,
                                 color: AppTheme.bgColor,
-                                alignment: Alignment.center,
+                                alignment: Alignment.centerLeft,
+                                padding: EdgeInsets.only(left: 5),
                                 child: Text("${pn.gridCol[0]}",style: AppTheme.TSWhite166,),
 
                               ),
                               Container(
                                 height: SizeConfig.screenHeight-260,
+                                width: 150,
                                 alignment: Alignment.topCenter,
                                 decoration: BoxDecoration(
                                     color:showShadow? AppTheme.gridbodyBgColor:Colors.transparent,
                                     boxShadow: [
                                       showShadow?  BoxShadow(
-                                        color: AppTheme.addNewTextFieldText.withOpacity(0.3),
+                                        color: AppTheme.addNewTextFieldText.withOpacity(0.1),
                                         spreadRadius: 0,
                                         blurRadius: 15,
                                         offset: Offset(0, -8), // changes position of shadow
@@ -387,6 +411,7 @@ class PaymentGridState extends State<PaymentGrid> with TickerProviderStateMixin{
                                             ),
                                             height: 50,
                                             width: 150,
+                                            margin: EdgeInsets.only(bottom:i==pn.filterGridPaymentList.length-1?70: 0),
                                             child: Container(
                                               padding: EdgeInsets.only(left: 10,right: 10,top: 3,bottom: 3),
 
@@ -397,8 +422,8 @@ class PaymentGridState extends State<PaymentGrid> with TickerProviderStateMixin{
                                               child: FittedBox(
                                                 fit: BoxFit.contain,
                                                 child: Text("${value.invoiceNumber}",
-                                                //  style:selectedIndex==i?AppTheme.bgColorTS:AppTheme.gridTextColorTS,
-                                                  style:TextStyle(fontFamily: 'RR',fontSize: 12,color: Colors.white,letterSpacing: 0.1)
+                                                    //  style:selectedIndex==i?AppTheme.bgColorTS:AppTheme.gridTextColorTS,
+                                                    style:TextStyle(fontFamily: 'RR',fontSize: 12,color: Colors.white,letterSpacing: 0.1)
                                                 ),
                                               ),
                                             ),
@@ -428,6 +453,7 @@ class PaymentGridState extends State<PaymentGrid> with TickerProviderStateMixin{
 
 
                 ),
+
 
 
 
@@ -496,6 +522,9 @@ class PaymentGridState extends State<PaymentGrid> with TickerProviderStateMixin{
                                       ),
                                       GestureDetector(
                                         onTap: (){
+                                          setState(() {
+                                            pn.paymentDate=DateTime.now();
+                                          });
                                           pn.updatePaymentEdit(false);
                                           pn.PaymentDropDownValues(context);
                                           pn.PlantUserDropDownValues(context).then((value){

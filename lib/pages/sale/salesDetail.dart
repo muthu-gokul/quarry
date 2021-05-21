@@ -2156,8 +2156,6 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                       isPaymentTypeOpen=false;
                     });
                   },
-
-
                 ),
 
 

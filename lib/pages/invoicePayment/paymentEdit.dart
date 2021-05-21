@@ -12,10 +12,12 @@ import 'package:quarry/notifier/productionNotifier.dart';
 import 'package:quarry/pages/sale/salesDetail.dart';
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
+import 'package:quarry/styles/constants.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/bottomBarAddButton.dart';
 import 'package:quarry/widgets/customTextField.dart';
+import 'package:quarry/widgets/sidePopUp/sidePopUpWithoutSearch.dart';
 
 class PaymentEditForm extends StatefulWidget {
   @override
@@ -325,7 +327,7 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
                                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                               children: [
                                                 Container(width: SizeConfig.screenWidthM40*0.30,child: Text("Amount")),
-                                                Container( width: SizeConfig.screenWidthM40*0.25,child: Text("Payment Type")),
+                                                Container( width: SizeConfig.screenWidthM40*0.30,child: Text("Payment Type")),
                                                 Container( width: SizeConfig.screenWidthM40*0.25,child: Text("Terms")),
 
                                               ],
@@ -363,7 +365,7 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
                                                             children: [
 
                                                               Container(
-                                                                width: SizeConfig.screenWidthM40*0.42,
+                                                                width: SizeConfig.screenWidthM40*0.4,
                                                                 height: 25,
                                                                 alignment:Alignment.centerLeft,
 
@@ -374,9 +376,7 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
                                                                       Text("${qn.paymentMappingList[index].Amount}",
                                                                         style: TextStyle(fontSize: 14, fontFamily: 'RR', color: AppTheme.gridTextColor, letterSpacing: 0.2),textAlign: TextAlign.left,
                                                                       ),
-                                                                      Text("${DateFormat.yMMMd().add_jm().format(qn.paymentMappingList[index].createdDate)}",
-                                                                        style: TextStyle(fontSize: 10, fontFamily: 'RR', color: AppTheme.gridTextColor.withOpacity(0.5)),textAlign: TextAlign.left,
-                                                                      ),
+
                                                                     ],
                                                                   ),
                                                                 ),
@@ -385,7 +385,7 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
                                                                 padding: EdgeInsets.only(left: 5),
                                                                 alignment: Alignment.centerLeft,
 
-                                                                width: SizeConfig.screenWidthM40*0.18,
+                                                                width: SizeConfig.screenWidthM40*0.20,
                                                                 child: Text("${qn.paymentMappingList[index].PaymentCategoryName}",
                                                                   style: TextStyle(fontSize: 14, fontFamily: 'RR', color: AppTheme.gridTextColor, letterSpacing: 0.2),
                                                                 ),
@@ -393,11 +393,11 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
                                                               Container(
                                                                 alignment: Alignment.center,
                                                                 width:SizeConfig.screenWidthM40*0.25,
-                                                                padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
+                                                              /*  padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
                                                                 decoration: BoxDecoration(
                                                                   borderRadius: BorderRadius.circular(25),
                                                                   color: Colors.grey[300]
-                                                                ),
+                                                                ),*/
 
                                                                 child: Text("${index+1} Payment",
                                                                   style: TextStyle(fontSize: 12, fontFamily: 'RR', color: AppTheme.gridTextColor,letterSpacing: 0.2),
@@ -406,41 +406,55 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
                                                               Spacer(),
                                                               GestureDetector(
                                                                 onTap: () {
-
-
-
-                                                                  if (qn.paymentMappingList[index].isEdit) {
-                                                                    qn.paymentMappingList[index].scaleController.forward().whenComplete(() {
-                                                                      print("EIT");
-                                                                      if (this.mounted) {
-                                                                        setState(() {
-                                                                          qn.paymentMappingList.removeAt(index);
-                                                                        });
-                                                                        qn.balanceCalc();
-                                                                      }
-                                                                    });
-
-                                                                  }
-                                                                  else {
-                                                                    setState(() {
-                                                                      qn.paymentMappingList[index].isDelete=true;
-                                                                    });
-
-
-
-                                                                      qn.paymentMappingList[index].scaleController.reverse().whenComplete(() {
-                                                                        if (this.mounted) {
-
-                                                                          setState(() {
-                                                                            qn.paymentMappingList.removeAt(index);
+                                                                  
+                                                                  
+                                                                  CustomAlert(
+                                                                    callback: (){
+                                                                      Navigator.pop(context);
+                                                                      Timer(Duration(milliseconds: 200), (){
+                                                                        if (qn.paymentMappingList[index].isEdit) {
+                                                                          qn.paymentMappingList[index].scaleController.forward().whenComplete(() {
+                                                                            print("EIT");
+                                                                            if (this.mounted) {
+                                                                              setState(() {
+                                                                                qn.paymentMappingList.removeAt(index);
+                                                                              });
+                                                                              qn.balanceCalc();
+                                                                            }
                                                                           });
-                                                                          qn.balanceCalc();
+
+                                                                        }
+                                                                        else {
+                                                                          setState(() {
+                                                                            qn.paymentMappingList[index].isDelete=true;
+                                                                          });
+
+
+
+                                                                          qn.paymentMappingList[index].scaleController.reverse().whenComplete(() {
+                                                                            if (this.mounted) {
+
+                                                                              setState(() {
+                                                                                qn.paymentMappingList.removeAt(index);
+                                                                              });
+                                                                              qn.balanceCalc();
+                                                                            }
+                                                                          });
+
+
+
                                                                         }
                                                                       });
 
+                                                                    },
+                                                                    Cancelcallback: (){
+                                                                      Navigator.pop(context);
+                                                                    }
+                                                                  ).yesOrNoDialog(context, "", "Are you sure want to delete this Payment ?");
 
 
-                                                                  }
+
+
                                                                 },
                                                                 child: Container(
                                                                     height: 25,
@@ -452,6 +466,9 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
                                                               ),
 
                                                             ],
+                                                          ),
+                                                          Text("${DateFormat.yMMMd().add_jm().format(qn.paymentMappingList[index].createdDate)}",
+                                                            style: TextStyle(fontSize: 10, fontFamily: 'RR', color: AppTheme.gridTextColor.withOpacity(0.5)),textAlign: TextAlign.left,
                                                           ),
                                                           qn.paymentMappingList[index].Comment.isNotEmpty?Container(
                                                             margin: EdgeInsets.only(top: 5),
@@ -495,23 +512,26 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
 
                                           Container(
                                             height: 50,
-                                            width: SizeConfig.screenWidth*0.4,
+                                            width: SizeConfig.screenWidth*0.42,
 
                                             child: Stack(
                                               children: [
                                                 Align(
                                                   alignment: Alignment.centerLeft,
                                                   child: Container(
-                                                    width: SizeConfig.screenWidth*0.4,
+                                                    width: SizeConfig.screenWidth*0.42,
                                                     height:50,
                                                     alignment: Alignment.center,
                                                     child: TextFormField(
                                                       onTap: (){
+                                                        if(scrollController.offset==0){
+                                                          scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                                        }
                                                         setState(() {
                                                           _keyboardVisible=true;
                                                           isListScroll=true;
                                                         });
-                                                        scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+
 
                                                       },
 
@@ -534,7 +554,7 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
                                                       maxLines: null,
                                                       keyboardType: TextInputType.number,
                                                       inputFormatters: [
-                                                        FilteringTextInputFormatter.allow(RegExp('[0-9.]')),
+                                                        FilteringTextInputFormatter.allow(RegExp(decimalReg)),
                                                       ],
                                                       textInputAction: TextInputAction.done,
                                                       onChanged: (v) {
@@ -608,8 +628,8 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
 
                                                     },
                                                     child: Container(
-                                                      height: SizeConfig.height40,
-                                                      width: SizeConfig.height40,
+                                                      height: 40,
+                                                      width: 40,
                                                      margin: EdgeInsets.only( right: SizeConfig.width5),
                                                       decoration: BoxDecoration(
                                                         shape: BoxShape.circle,
@@ -637,7 +657,7 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
                                             child: Container(
                                               padding: EdgeInsets.only(left: SizeConfig.width5, right: SizeConfig.width5),
                                               height:50,
-                                              width: SizeConfig.screenWidth*0.4,
+                                              width: SizeConfig.screenWidth*0.42,
                                               alignment: Alignment.centerLeft,
                                               decoration: BoxDecoration(
                                                 color: qn.paymentCategoryName == null ? AppTheme.disableColor:Colors.white,
@@ -679,6 +699,7 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
                                       maxlines: 5,
                                       scrollPadding: 400,
                                       textEditingController: qn.comment,
+                                      regExp: '[A-Za-z0-9,. ]',
                                       ontap: (){
                                         setState(() {
                                           _keyboardVisible=true;
@@ -751,7 +772,7 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
                         },
                       ),
 
-                      Text("${qn.EditInvoiceType}",
+                      Text("${qn.EditInvoiceType} Payment / Edit",
                         style: TextStyle(fontFamily: 'RR',
                             color: AppTheme.bgColor,
                             fontSize: 16),
@@ -867,99 +888,29 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
 
 
                 /////////////////////////////////// payment type /////////////////////////////////////////////////////
-                Align(
-                  alignment: Alignment.center,
-                  child: AnimatedContainer(
-                      duration: Duration(milliseconds: 300),
-                      curve: Curves.easeIn,
-                      width: SizeConfig.screenWidth,
-                      height: SizeConfig.height430,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.white,
-                      ),
-                      clipBehavior: Clip.antiAlias,
-                      margin: EdgeInsets.only(left: SizeConfig.width30,right: SizeConfig.width30),
-                      transform: Matrix4.translationValues(paymentCategoryOpen?0:SizeConfig.screenWidth, 0, 0),
 
-                      child:Container(
-                        height: SizeConfig.height430,
-                        width: SizeConfig.screenWidth,
-                        color: Colors.white,
-                        //  padding: EdgeInsets.only(left: SizeConfig.width20,right: SizeConfig.width20,bottom: SizeConfig.height10),
-                        child:Column (
-                          // crossAxisAlignment: CrossAxisAlignment.center,
-                          // mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                height: SizeConfig.height50,
-                                child: Stack(
-                                  children: [
-                                    Align(
-                                      alignment: Alignment.topRight,
-                                      child: IconButton(icon: Icon(Icons.cancel), onPressed: (){
-                                        setState(() {
-                                          paymentCategoryOpen=false;
-                                        });
-                                      }),
-                                    ),
-                                    Align(
-                                        alignment: Alignment.center,
-                                        child: Text('Select Material',style:TextStyle(color:Colors.black,fontFamily: 'RR',fontSize:16),)),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(height: SizeConfig.height10,),
-                              Container(
-                                height: SizeConfig.screenHeight*(300/720),
-                                /*color: Colors.red,*/
-                                margin: EdgeInsets.only(left: SizeConfig.width30,right: SizeConfig.width30),
-                                child: ListView.builder(
-                                  itemCount: qn.paymentTypeList.length,
-                                  itemBuilder: (context,index){
-                                    return GestureDetector(
-                                      onTap: (){
-                                    
-                                          setState(() {
-                                            qn.paymentCategoryId=qn.paymentTypeList[index].paymentCategoryId;
-                                            qn.paymentCategoryName=qn.paymentTypeList[index].paymentCategoryName;
-                                            paymentCategoryOpen=false;
-                                          });
-                                       
-                                        
+                PopUpStatic(
+                  title: "Select Payment Type",
 
-
-                                      },
-                                      child: Container(
-                                        margin: EdgeInsets.only(bottom: 20),
-                                        alignment: Alignment.center,
-                                        decoration:BoxDecoration(
-                                            borderRadius:BorderRadius.circular(8),
-                                            border: Border.all(color: qn.paymentCategoryId==null? AppTheme.addNewTextFieldBorder:qn.paymentCategoryId==qn.paymentTypeList[index].paymentCategoryId?Colors.transparent: AppTheme.addNewTextFieldBorder),
-                                            color: qn.paymentCategoryId==null? Colors.white: qn.paymentCategoryId==qn.paymentTypeList[index].paymentCategoryId?AppTheme.popUpSelectedColor:Colors.white
-                                        ),
-                                        width:300,
-                                        height:50,
-                                        child: Text("${qn.paymentTypeList[index].paymentCategoryName}",
-                                          style: TextStyle(color:qn.paymentCategoryId==null? AppTheme.grey:qn.paymentCategoryId==qn.paymentTypeList[index].paymentCategoryId?Colors.white:AppTheme.grey,
-                                              fontSize:18,fontFamily: 'RR'),
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ),
-
-
-
-
-                            ]
-
-
-                        ),
-                      )
-                  ),
+                  isOpen: paymentCategoryOpen,
+                  dataList: qn.paymentTypeList,
+                  propertyKeyName:"PaymentCategoryName",
+                  propertyKeyId: "PaymentCategoryId",
+                  selectedId: qn.paymentCategoryId,
+                  itemOnTap: (index){
+                    setState(() {
+                      paymentCategoryOpen=false;
+                      qn.paymentCategoryId=qn.paymentTypeList[index].paymentCategoryId;
+                      qn.paymentCategoryName=qn.paymentTypeList[index].paymentCategoryName;
+                    });
+                  },
+                  closeOnTap: (){
+                    setState(() {
+                      paymentCategoryOpen=false;
+                    });
+                  },
                 ),
+
 
               ],
             ),

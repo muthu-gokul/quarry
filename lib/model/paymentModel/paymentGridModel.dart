@@ -8,6 +8,8 @@ class PaymentGridModel {
     this.partyName,
     this.grandTotalAmount,
     this.paidAmount,
+    this.status,
+    this.balanceAmount,
   });
 
   int invoiceId;
@@ -16,8 +18,10 @@ class PaymentGridModel {
   DateTime invoiceDate;
   int partyId;
   String partyName;
+  String status;
   double grandTotalAmount;
   double paidAmount;
+  double balanceAmount;
 
   factory PaymentGridModel.fromJson(Map<String, dynamic> json) => PaymentGridModel(
     invoiceId: json["InvoiceId"],
@@ -28,6 +32,8 @@ class PaymentGridModel {
     partyName: json["PartyName"],
     grandTotalAmount: json["GrandTotalAmount"],
     paidAmount: json["PaidAmount"],
+    balanceAmount: json["BalanceAmount"],
+    status: json["Status"],
   );
 
   Map<String, dynamic> toJson() => {

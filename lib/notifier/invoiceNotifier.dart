@@ -49,13 +49,10 @@ class InvoiceNotifier extends ChangeNotifier{
   String selectedInvoiceType=null;
   int selectedPartyId=null;
   String selectedPartyName=null;
+  DateTime expectedDate;
+  TextEditingController notes=new TextEditingController();
+  TextEditingController terms=new TextEditingController();
 
-
-  clearInvoiceForm(){
-    selectedInvoiceType=null;
-    selectedPartyId=null;
-    selectedPartyName=null;
-  }
 
 
 
@@ -414,6 +411,16 @@ class InvoiceNotifier extends ChangeNotifier{
           "Value": InvoiceEditId
         },
         {
+          "Key": "InvoiceDate",
+          "Type": "String",
+          "Value": DateFormat("yyyy-MM-dd").format(invoiceCurrentDate)
+        },
+        {
+          "Key": "ExpectedDate",
+          "Type": "String",
+          "Value":expectedDate==null?null: DateFormat("yyyy-MM-dd").format(expectedDate)
+        },
+        {
           "Key": "PlantId",
           "Type": "int",
           "Value": PlantId
@@ -463,6 +470,16 @@ class InvoiceNotifier extends ChangeNotifier{
           "Key": "GrandTotalAmount",
           "Type": "String",
           "Value": grandTotal
+        },
+        {
+          "Key": "Notes",
+          "Type": "String",
+          "Value": notes.text
+        },
+        {
+          "Key": "TermsandConditions",
+          "Type": "String",
+          "Value": terms.text
         },
 
         {
@@ -516,7 +533,7 @@ class InvoiceNotifier extends ChangeNotifier{
 
 
 
-  List<String> invoiceGridCol=["Invoice Number","Date","Party Name","Net Amount","Status"];
+  List<String> invoiceGridCol=[];
 
   List<InvoiceGridModel> invoiceGridList=[];
   List<InvoiceGridModel> filterInvoiceGridList=[];
@@ -567,6 +584,15 @@ class InvoiceNotifier extends ChangeNotifier{
             InvoiceEditId=t[0]['InvoiceId'];
 
             InvoiceEditNumber=t[0]['InvoiceNumber'];
+            invoiceCurrentDate=DateTime.parse(t[0]['InvoiceDate']);
+            if(t[0]['ExpectedDate']!=null){
+              expectedDate=DateTime.parse(t[0]['ExpectedDate']);
+            }else{
+              expectedDate=null;
+            }
+            print(expectedDate);
+            notes.text=t[0]['Notes']==null?"":t[0]['Notes'];
+            terms.text=t[0]['TermsandConditions']==null?"":t[0]['TermsandConditions'];
 
             PlantId=t[0]['PlantId'];
             PlantName=t[0]['PlantName'];
@@ -643,7 +669,6 @@ class InvoiceNotifier extends ChangeNotifier{
 
 
   clearForm(){
-
     PlantId=null;
     PlantName=null;
     selectedPartyId=null;
@@ -660,6 +685,9 @@ class InvoiceNotifier extends ChangeNotifier{
     otherCharges=0.0;
     invoiceOtherChargesMappingList.clear();
     IsTax=false;
+    expectedDate=null;
+    notes.clear();
+    terms.clear();
   }
 
 
@@ -669,6 +697,7 @@ class InvoiceNotifier extends ChangeNotifier{
     int unpaid=0;
     int partially=0;
     if(isInvoiceReceivable){
+      invoiceGridCol=["Invoice Number","Date","Customer Name","Gross Amount","Status"];
       filterInvoiceGridList=invoiceGridList.where((element) => element.invoiceType=="Receivable").toList();
       paid=filterInvoiceGridList.where((element) => element.status=='Paid').toList().length;
       unpaid=filterInvoiceGridList.where((element) => element.status=='Unpaid').toList().length;
@@ -681,6 +710,7 @@ class InvoiceNotifier extends ChangeNotifier{
       ];
     }
     else{
+      invoiceGridCol=["Invoice Number","Date","Supplier Name","Gross Amount","Status"];
       filterInvoiceGridList=invoiceGridList.where((element) => element.invoiceType=="Payable").toList();
       paid=filterInvoiceGridList.where((element) => element.status=='Paid').toList().length;
       unpaid=filterInvoiceGridList.where((element) => element.status=='Unpaid').toList().length;

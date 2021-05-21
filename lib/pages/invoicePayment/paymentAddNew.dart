@@ -17,7 +17,9 @@ import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/bottomBarAddButton.dart';
 import 'package:quarry/widgets/currentDateContainer.dart';
 import 'package:quarry/widgets/customTextField.dart';
+import 'package:quarry/widgets/expectedDateContainer.dart';
 import 'package:quarry/widgets/sidePopUp/sidePopUpWithoutSearch.dart';
+import 'package:quarry/widgets/singleDatePicker.dart';
 import 'package:quarry/widgets/validationErrorText.dart';
 
 class PaymentAddNewForm extends StatefulWidget {
@@ -191,7 +193,36 @@ class PaymentAddNewFormState extends State<PaymentAddNewForm> with TickerProvide
                                   scrollDirection: Axis.vertical,
 
                                   children: [
-                                    CurrentDate(DateTime.now()),
+                                    GestureDetector(
+                                      onTap: () async{
+                                        final DateTime picked = await showDatePicker2(
+                                            context: context,
+                                            initialDate:  qn.paymentDate==null?DateTime.now():qn.paymentDate, // Refer step 1
+                                            firstDate: DateTime(1900),
+                                            lastDate: DateTime(2100),
+                                            builder: (BuildContext context,Widget child){
+                                              return Theme(
+                                                data: Theme.of(context).copyWith(
+                                                  colorScheme: ColorScheme.light(
+                                                    primary: AppTheme.yellowColor, // header background color
+                                                    onPrimary: AppTheme.bgColor, // header text color
+                                                    onSurface: AppTheme.addNewTextFieldText, // body text color
+                                                  ),
+
+                                                ),
+                                                child: child,
+                                              );
+                                            });
+                                        if (picked != null)
+                                          setState(() {
+                                            qn.paymentDate = picked;
+                                          });
+                                      },
+                                      child: ExpectedDateContainer(
+                                        text: qn.paymentDate==null?"Date":"${DateFormat.yMMMd().format(qn.paymentDate)}",
+                                        textColor: qn.paymentDate==null? AppTheme.addNewTextFieldText.withOpacity(0.5):AppTheme.addNewTextFieldText,
+                                      ),
+                                    ),
 
                                     AddNewLabelTextField(
                                       labelText: 'Material Name',
@@ -429,7 +460,7 @@ class PaymentAddNewFormState extends State<PaymentAddNewForm> with TickerProvide
                       else{setState(() {party=false;});}
 
                       if(!amount && !material && !plant && !party){
-                        qn.UpdatePaymentDbHit(context,this);
+                        qn.InsertPaymentDbHit(context,this);
                       }
 
                     },
@@ -447,10 +478,9 @@ class PaymentAddNewFormState extends State<PaymentAddNewForm> with TickerProvide
                   color: Colors.black.withOpacity(0.5),
                   child: Center(
                     child: CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                          AppTheme.yellowColor),),
+                      valueColor: AlwaysStoppedAnimation<Color>(AppTheme.yellowColor),
+                    ),
                     //Image.asset("assets/images/Loader.gif",filterQuality: FilterQuality.high,gaplessPlayback: true,isAntiAlias: true,)
-
                   ),
                 ),
 

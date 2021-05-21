@@ -854,6 +854,26 @@ class GoodsReceivedNotifier extends ChangeNotifier{
           "Value": "Payable"
         },
         {
+          "Key": "InvoiceDate",
+          "Type": "String",
+          "Value": DateFormat("yyyy-MM-dd").format(DateTime.now())
+        },
+        {
+          "Key": "ExpectedDate",
+          "Type": "String",
+          "Value":null
+        },
+        {
+          "Key": "Notes",
+          "Type": "String",
+          "Value": null
+        },
+        {
+          "Key": "TermsandConditions",
+          "Type": "String",
+          "Value": null
+        },
+        {
           "Key": "PartyId",
           "Type": "int",
           "Value": GINV_SupplierId
