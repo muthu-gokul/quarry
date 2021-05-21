@@ -211,7 +211,7 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
                                                   border: Border.all(color: AppTheme.addNewTextFieldBorder),
                                                   color: AppTheme.editDisableColor
                                               ),
-                                              child:  Text("${DateFormat.yMMMd().add_jm().format(qn.EditInvoiceDate)}",
+                                              child:  Text(qn.EditInvoiceDate==null?"":"${DateFormat.yMMMd().add_jm().format(qn.EditInvoiceDate)}",
                                                 style: TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 14),
                                               )
 

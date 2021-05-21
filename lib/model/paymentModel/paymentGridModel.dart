@@ -2,6 +2,7 @@ class PaymentGridModel {
   PaymentGridModel({
     this.invoiceId,
     this.invoiceNumber,
+    this.invoicePaymentNumber,
     this.invoiceType,
     this.invoiceDate,
     this.partyId,
@@ -10,10 +11,13 @@ class PaymentGridModel {
     this.paidAmount,
     this.status,
     this.balanceAmount,
+    this.DBInvoiceNumber,
   });
 
   int invoiceId;
+  int DBInvoiceNumber;
   String invoiceNumber;
+  String invoicePaymentNumber;
   String invoiceType;
   DateTime invoiceDate;
   int partyId;
@@ -25,7 +29,9 @@ class PaymentGridModel {
 
   factory PaymentGridModel.fromJson(Map<String, dynamic> json) => PaymentGridModel(
     invoiceId: json["InvoiceId"],
+    DBInvoiceNumber: json["DBInvoiceNumber"],
     invoiceNumber: json["InvoiceNumber"],
+    invoicePaymentNumber: json["InvoicePaymentNumber"],
     invoiceType: json["InvoiceType"],
     invoiceDate: DateTime.parse(json["InvoiceDate"]),
     partyId: json["PartyId"],

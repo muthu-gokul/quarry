@@ -317,7 +317,8 @@ class PaymentNotifier extends ChangeNotifier{
       ]
     };
 
-    try{
+    updatePaymentLoader(false);
+  //  try{
       await call.ApiCallGetInvoke(body,context).then((value) {
         if(value!=null){
           var parsed=json.decode(value);
@@ -355,10 +356,10 @@ class PaymentNotifier extends ChangeNotifier{
 
         updatePaymentLoader(false);
       });
-    }catch(e){
+ /*   }catch(e){
       updatePaymentLoader(false);
       CustomAlert().commonErrorAlert(context, "${Sp.getPaymentDetail}" , e.toString());
-    }
+    }*/
 
 
   }
@@ -455,12 +456,17 @@ class PaymentNotifier extends ChangeNotifier{
         },
 
         {
-          "Key": "MaterialName",
+          "Key": "PayReceiveName",
           "Type": "String",
           "Value": materialName.text
         },
         {
-          "Key": "Date",
+          "Key": "Type",
+          "Type": "String",
+          "Value": isPaymentReceivable?"Receivable":"Payable"
+        },
+        {
+          "Key": "InvoicePaymentDate",
           "Type": "String",
           "Value": DateFormat('yyyy-MM-dd').format(paymentDate)
         },
@@ -483,6 +489,21 @@ class PaymentNotifier extends ChangeNotifier{
           "Key": "Amount",
           "Type": "String",
           "Value": double.parse(amount.text)
+        },
+        {
+          "Key": "Comment",
+          "Type": "String",
+          "Value": null
+        },
+        {
+          "Key": "InvoicePaymentImageFileName",
+          "Type": "String",
+          "Value": null
+        },
+        {
+          "Key": "InvoicePaymentImageFolderName",
+          "Type": "String",
+          "Value": null
         },
         {
           "Key": "database",

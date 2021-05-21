@@ -17,6 +17,7 @@ import 'package:quarry/pages/supplierDetail/supplierAddNew.dart';
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
+import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/editDelete.dart';
 import 'package:quarry/widgets/navigationBarIcon.dart';
 
@@ -412,20 +413,29 @@ class PaymentGridState extends State<PaymentGrid> with TickerProviderStateMixin{
                                             height: 50,
                                             width: 150,
                                             margin: EdgeInsets.only(bottom:i==pn.filterGridPaymentList.length-1?70: 0),
-                                            child: Container(
-                                              padding: EdgeInsets.only(left: 10,right: 10,top: 3,bottom: 3),
+                                            child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: [
+                                                Container(
+                                                  padding: EdgeInsets.only(left: 10,right: 10,top: 3,bottom: 3),
 
-                                              decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.circular(50),
-                                                color:value.invoiceType=='Receivable'? Colors.green:AppTheme.red,
-                                              ),
-                                              child: FittedBox(
-                                                fit: BoxFit.contain,
-                                                child: Text("${value.invoiceNumber}",
-                                                    //  style:selectedIndex==i?AppTheme.bgColorTS:AppTheme.gridTextColorTS,
-                                                    style:TextStyle(fontFamily: 'RR',fontSize: 12,color: Colors.white,letterSpacing: 0.1)
+                                                  decoration: BoxDecoration(
+                                                    borderRadius: BorderRadius.circular(50),
+                                                    color:value.invoiceType=='Receivable'? Colors.green:AppTheme.red,
+                                                  ),
+                                                  child: FittedBox(
+                                                    fit: BoxFit.contain,
+                                                    child: Text("${value.invoicePaymentNumber}",
+                                                        //  style:selectedIndex==i?AppTheme.bgColorTS:AppTheme.gridTextColorTS,
+                                                        style:TextStyle(fontFamily: 'RR',fontSize: 12,color: Colors.white,letterSpacing: 0.1)
+                                                    ),
+                                                  ),
                                                 ),
-                                              ),
+                                               value.DBInvoiceNumber!=0? Text("${value.invoiceNumber}",
+                                                    //  style:selectedIndex==i?AppTheme.bgColorTS:AppTheme.gridTextColorTS,
+                                                    style:TextStyle(fontFamily: 'RR',fontSize: 12,color:AppTheme.gridTextColor,letterSpacing: 0.1)
+                                                ):Container()
+                                              ],
                                             ),
                                           ),
                                         )
@@ -549,14 +559,24 @@ class PaymentGridState extends State<PaymentGrid> with TickerProviderStateMixin{
                               EditDelete(
                                 showEdit: showEdit,
                                 editTap: (){
-                                  pn.updatePaymentEdit(true);
-                                  pn.PaymentDropDownValues(context);
-                                  pn.GetPaymentDbHit(context, pn.filterGridPaymentList[selectedIndex].invoiceId,PaymentEditFormState());
-                                  Navigator.push(context, _createRoute());
-                                  setState(() {
-                                    selectedIndex=-1;
-                                    showEdit=false;
-                                  });
+                                  if(pn.filterGridPaymentList[selectedIndex].DBInvoiceNumber!=0){
+                                    pn.updatePaymentEdit(true);
+                                    pn.PaymentDropDownValues(context);
+                                    pn.GetPaymentDbHit(context, pn.filterGridPaymentList[selectedIndex].invoiceId,PaymentEditFormState());
+                                    Navigator.push(context, _createRoute());
+                                    setState(() {
+                                      selectedIndex=-1;
+                                      showEdit=false;
+                                    });
+                                  }
+                                  else{
+                                    CustomAlert().commonErrorAlert(context, "Its Directly Paid.You cant edit", "");
+                                    setState(() {
+                                      selectedIndex=-1;
+                                      showEdit=false;
+                                    });
+                                  }
+
 
                                 },
                               ),
