@@ -365,7 +365,7 @@ class _EmployeeMasterViewState extends State<EmployeeMasterView> with TickerProv
                                                 alignment: Alignment.centerLeft,
                                                 width: (SizeConfig.screenWidthM40*0.5)-1,
                                                 child: FittedBox(
-                                                  child: Text("${i==0?en.selectShiftName??"":i==1?en.employeeSalary.text:en.joiningDate!=null?DateFormat('dd-MM-yyyy').format(en.joiningDate):""}",
+                                                  child: Text("${i==0?en.selectShiftName??"":i==1?"${en.employeeSalary.text} / ${en.selectSalaryTypeName}":en.joiningDate!=null?DateFormat('dd-MM-yyyy').format(en.joiningDate):""}",
                                                 style: tableTextStyle,
                                                 ),
 

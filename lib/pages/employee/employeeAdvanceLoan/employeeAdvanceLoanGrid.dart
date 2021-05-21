@@ -232,61 +232,158 @@ class _EmployeeAdvanceLoanGridState extends State<EmployeeAdvanceLoanGrid> {
                                                   children: [
 
                                                    value['AmountType']=="Loan" ?SizedBox(
-                                                     width:25,
-                                                     child: IconButton(icon: Icon(Icons.info), onPressed: (){
-                                                       showDialog(context: context, builder: (ctx)=> Dialog(
-                                                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-                                                         clipBehavior: Clip.antiAlias,
-                                                         child: Container(
-                                                           height: 100,
-                                                           width: SizeConfig.screenWidth*0.7,
-                                                           color: Colors.white,
-                                                           padding: EdgeInsets.only(left: 5),
-                                                           child: Column(
-                                                             mainAxisAlignment:MainAxisAlignment.center,
-                                                             crossAxisAlignment: CrossAxisAlignment.start,
-                                                             children: [
-                                                               RichText(
-                                                                 text: TextSpan(
-                                                                   text: 'Loan Amount: ',
-                                                                   style: TextStyle(fontFamily: 'RM',fontSize: 16,color: AppTheme.bgColor),
-                                                                   children: <TextSpan>[
-                                                                     TextSpan(text: '${value['LoanAmount']}',
-                                                                       style: TextStyle(fontFamily: 'RR',fontSize: 16,color: AppTheme.bgColor),
-                                                                     ),
-                                                                   ],
-                                                                 ),
-                                                               ),
-                                                               SizedBox(height: 5,),
-                                                               RichText(
-                                                                 text: TextSpan(
-                                                                   text: 'Due Month: ',
-                                                                   style: TextStyle(fontFamily: 'RM',fontSize: 16,color: AppTheme.bgColor),
-                                                                   children: <TextSpan>[
-                                                                     TextSpan(text: '${value['DueMonth']}',
-                                                                       style: TextStyle(fontFamily: 'RR',fontSize: 16,color: AppTheme.bgColor),
-                                                                     ),
-                                                                   ],
-                                                                 ),
-                                                               ),
-                                                               SizedBox(height: 5,),
-                                                               RichText(
-                                                                 text: TextSpan(
-                                                                   text: 'LoanEMI/Month: ',
-                                                                   style: TextStyle(fontFamily: 'RM',fontSize: 16,color: AppTheme.bgColor),
-                                                                   children: <TextSpan>[
-                                                                     TextSpan(text: '${value['LoanEMI/Month']}',
-                                                                       style: TextStyle(fontFamily: 'RR',fontSize: 16,color: AppTheme.bgColor),
-                                                                     ),
-                                                                   ],
-                                                                 ),
-                                                               ),
-                                                             ],
-                                                           ),
-                                                         ),
+                                                     width:30,
+                                                     child: GestureDetector(
+                                                       onTap: (){
+                                                         showDialog(context: context, builder: (ctx)=> Dialog(
+                                                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                                                           clipBehavior: Clip.antiAlias,
+                                                           child: Container(
+                                                             height: 400,
+                                                             margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,),
+                                                             width: SizeConfig.screenWidth,
+                                                             color: Colors.white,
+                                                         //    padding: EdgeInsets.only(left: 5),
+                                                             child: Column(
+                                                               mainAxisAlignment:MainAxisAlignment.start,
+                                                               crossAxisAlignment: CrossAxisAlignment.center,
+                                                               children: [
+                                                                 SvgPicture.asset("assets/svg/loan/Loan-header.svg",height: 200,width: 200,),
+                                                                 Text("Loan Details",style: TextStyle(fontFamily: 'RM',fontSize: 18,color: AppTheme.bgColor),),
+                                                                 SizedBox(height: 20,),
+                                                                 Container(
+                                                                //   margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,),
+                                                                   height:40,
+                                                                   width: SizeConfig.screenWidthM40,
+                                                                   decoration: BoxDecoration(
+                                                                       color: tableColor,
+                                                                       borderRadius: BorderRadius.only(topLeft: Radius.circular(3),topRight: Radius.circular(3)),
+                                                                       border: Border.all(color: AppTheme.addNewTextFieldBorder)
 
-                                                       ));
-                                                      }),
+
+                                                                   ),
+                                                                   child:Row(
+                                                                     children: [
+                                                                       Container(
+                                                                           padding: EdgeInsets.only(left: SizeConfig.width10),
+                                                                           width: (SizeConfig.screenWidthM40*0.35),
+                                                                           child: Text("Loan Amount",style: tableTextStyle,)
+                                                                       ),
+
+                                                                       Container(
+                                                                           height: 50,
+                                                                           width: 1,
+                                                                           color: AppTheme.addNewTextFieldBorder
+                                                                       ),
+
+                                                                       Container(
+                                                                         padding: EdgeInsets.only(left: SizeConfig.width10),
+                                                                         height: 16,
+                                                                         alignment: Alignment.centerLeft,
+                                                                         width: (SizeConfig.screenWidthM40*0.35),
+                                                                         child: FittedBox(child: Text("${value['LoanAmount']}",
+
+                                                                           style:tableTextStyle,
+                                                                         ),
+
+                                                                         ),
+                                                                       ),
+                                                                     ],
+                                                                   ),
+                                                                 ),
+                                                                 Container(
+                                                                //   margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,),
+                                                                   height:40,
+                                                                   width: SizeConfig.screenWidthM40,
+                                                                   decoration: BoxDecoration(
+                                                                       color: tableColor,
+                                                                       border: Border(left: BorderSide(color: AppTheme.addNewTextFieldBorder),
+                                                                         right: BorderSide(color: AppTheme.addNewTextFieldBorder),bottom: BorderSide(color: AppTheme.addNewTextFieldBorder),
+
+                                                                       )
+
+
+                                                                   ),
+                                                                   child:Row(
+                                                                     children: [
+                                                                       Container(
+                                                                           padding: EdgeInsets.only(left: SizeConfig.width10),
+                                                                           width: (SizeConfig.screenWidthM40*0.35),
+                                                                           child: Text("Due Month",style: tableTextStyle,)
+                                                                       ),
+
+                                                                       Container(
+                                                                           height: 50,
+                                                                           width: 1,
+                                                                           color: AppTheme.addNewTextFieldBorder
+                                                                       ),
+
+                                                                       Container(
+                                                                         padding: EdgeInsets.only(left: SizeConfig.width10),
+                                                                         height: 16,
+                                                                         alignment: Alignment.centerLeft,
+                                                                         width: (SizeConfig.screenWidthM40*0.35),
+                                                                         child: FittedBox(child: Text("${value['DueMonth']}",
+
+                                                                           style:tableTextStyle,
+                                                                         ),
+
+                                                                         ),
+                                                                       ),
+                                                                     ],
+                                                                   ),
+                                                                 ),
+                                                                 Container(
+                                                                //   margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,),
+                                                                   height:40,
+                                                                   width: SizeConfig.screenWidthM40,
+                                                                   decoration: BoxDecoration(
+                                                                       color: tableColor,
+                                                                       border: Border(left: BorderSide(color: AppTheme.addNewTextFieldBorder),
+                                                                         right: BorderSide(color: AppTheme.addNewTextFieldBorder),bottom: BorderSide(color: AppTheme.addNewTextFieldBorder),
+
+                                                                       )
+
+
+                                                                   ),
+                                                                   child:Row(
+                                                                     children: [
+                                                                       Container(
+                                                                           padding: EdgeInsets.only(left: SizeConfig.width10),
+                                                                           width: (SizeConfig.screenWidthM40*0.35),
+                                                                           child: Text("LoanEMI/Month",style: tableTextStyle,)
+                                                                       ),
+
+                                                                       Container(
+                                                                           height: 50,
+                                                                           width: 1,
+                                                                           color: AppTheme.addNewTextFieldBorder
+                                                                       ),
+
+                                                                       Container(
+                                                                         padding: EdgeInsets.only(left: SizeConfig.width10),
+                                                                         height: 16,
+                                                                         alignment: Alignment.centerLeft,
+                                                                         width: (SizeConfig.screenWidthM40*0.35),
+                                                                         child: FittedBox(child: Text("${value['LoanEMI/Month']}",
+
+                                                                           style:tableTextStyle,
+                                                                         ),
+
+                                                                         ),
+                                                                       ),
+                                                                     ],
+                                                                   ),
+                                                                 ),
+
+                                                               ],
+                                                             ),
+                                                           ),
+
+                                                         ));
+                                                       },
+                                                       child: SvgPicture.asset("assets/svg/loan/Loan-icon.svg",height: 30,width: 30,),
+                                                     ),
                                                    ):Container(),
                                                     SizedBox(width: 10),
 
@@ -565,6 +662,9 @@ class _EmployeeAdvanceLoanGridState extends State<EmployeeAdvanceLoanGrid> {
       ),
     );
   }
+  TextStyle tableTextStyle=TextStyle(fontFamily: 'RR',color: AppTheme.gridTextColor);
+  // Color tableColor=AppTheme.disableColor.withOpacity(0.5);
+  Color tableColor=AppTheme.gridbodyBgColor;
   Route _createRoute() {
     return PageRouteBuilder(
       pageBuilder: (context, animation, secondaryAnimation) => EmployeeAdvanceAddNew(),

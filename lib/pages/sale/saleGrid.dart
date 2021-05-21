@@ -494,7 +494,8 @@ class _SaleGridState extends State<SaleGrid> {
 
                                   },
                                   child: SvgPicture.asset("assets/svg/edit.svg",width: 25,height: 25,
-                                    color: qn.selectedIndex==-1? AppTheme.bgColor.withOpacity(0.5):isOpen?AppTheme.bgColor:AppTheme.bgColor.withOpacity(0.5),),
+                                    color: qn.selectedIndex==-1? AppTheme.bgColor.withOpacity(0.5):isOpen?AppTheme.bgColor:AppTheme.bgColor.withOpacity(0.5),
+                                  ),
                                 ),
                                 GestureDetector(
                                   onTap: (){

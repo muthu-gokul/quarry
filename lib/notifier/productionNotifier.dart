@@ -110,6 +110,7 @@ class ProductionNotifier extends ChangeNotifier{
 
   double dustQty=0.0;
   double wastageQty=0.0;
+  double totalOutputQty=0.0;
 
   List<ProductionMachineListModel> machineCategoryList=[];
   List<ProductionInputTypeListModel> inputMaterialList=[];
@@ -317,7 +318,7 @@ class ProductionNotifier extends ChangeNotifier{
 
 
   List<ProductionGridHeaderModel> gridOverAllHeader=[];
-  List<String> productionGridCol=["Machine Name","Input Material","Input Material Qty","Output Material Count"];
+  List<String> productionGridCol=["Machine Name","Input Material","Input Material Qty","Output Material Count","Output Material Qty"];
   List<ProductionDetailGridModel> productionGridValues=[];
 
   GetProductionDbHit(BuildContext context,int productionId,TickerProviderStateMixin tickerProviderStateMixin)  async{
@@ -422,15 +423,20 @@ class ProductionNotifier extends ChangeNotifier{
      selectInputTypeName=null;
      selectInputUnitId=null;
      selectInputUnitName=null;
+     productionMaterialName=null;
+     productionMaterialId=null;
      materialQuantity.clear();
+     materialWeight.clear();
 
      wastageQty=0.0;
      dustQty=0.0;
+     totalOutputQty=0.0;
      isWastage=false;
      plantId=null;
      plantName=null;
 
     productionMaterialMappingList.clear();
+
   }
 
 

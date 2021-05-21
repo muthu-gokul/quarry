@@ -78,7 +78,7 @@ class _EmployeeAttendanceLoginLogoutState extends State<EmployeeAttendanceLoginL
 
 
                     PageView(
-                      physics: NeverScrollableScrollPhysics(),
+                     // physics: NeverScrollableScrollPhysics(),
                       controller: pageController,
                       onPageChanged: (i){
                         setState(() {

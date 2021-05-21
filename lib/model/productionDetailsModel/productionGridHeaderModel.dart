@@ -4,9 +4,11 @@ class ProductionGridHeaderModel {
     this.materialName,
     this.unitName,
     this.totalQuantity,
+    this.materialType,
   });
 
   int materialId;
+  int materialType;
   String materialName;
   String unitName;
   double totalQuantity;
@@ -16,6 +18,7 @@ class ProductionGridHeaderModel {
     materialName: json["MaterialName"],
     unitName: json["UnitName"],
     totalQuantity: json["TotalQuantity"],
+    materialType: json["MaterialType"],
   );
 
   Map<String, dynamic> toJson() => {

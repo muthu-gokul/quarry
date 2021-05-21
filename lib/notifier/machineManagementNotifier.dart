@@ -155,6 +155,7 @@ class MachineManagementNotifier extends ChangeNotifier{
   String selectedPersonName=null;
 
   TextEditingController operatorName =new TextEditingController();
+  TextEditingController operatorNo =new TextEditingController();
   TextEditingController reason =new TextEditingController();
   DateTime MachineServicedate;
 
@@ -177,6 +178,7 @@ class MachineManagementNotifier extends ChangeNotifier{
      outTime=null;
 
      operatorName.clear();
+     operatorNo.clear();
      reason.clear();
   }
 
@@ -213,6 +215,11 @@ class MachineManagementNotifier extends ChangeNotifier{
           "Key": "OperatorName",
           "Type": "String",
           "Value": operatorName.text
+        },
+        {
+          "Key": "OperatorContactNumber",
+          "Type": "String",
+          "Value": operatorNo.text
         },
         {
           "Key": "MachineServicedate",
@@ -286,14 +293,14 @@ class MachineManagementNotifier extends ChangeNotifier{
 
 
   List<GridStyleModel3> gridDataRowList=[
-    GridStyleModel3(columnName: "MachineName"),
-    GridStyleModel3(columnName: "MachineModel"),
-    GridStyleModel3(columnName: "OperatorName"),
-    GridStyleModel3(columnName: "MachineServiceDate"),
-    GridStyleModel3(columnName: "OperatorInTime"),
-    GridStyleModel3(columnName: "OperatorOutTime"),
+    GridStyleModel3(columnName: "Machine Name"),
+    GridStyleModel3(columnName: "Machine Model"),
+    GridStyleModel3(columnName: "Operator Name"),
+    GridStyleModel3(columnName: "Service Date"),
+    GridStyleModel3(columnName: "Operator InTime"),
+    GridStyleModel3(columnName: "Operator OutTime"),
     GridStyleModel3(columnName: "Reason"),
-    GridStyleModel3(columnName: "ResponsiblePerson"),
+    GridStyleModel3(columnName: "Responsible Person"),
 
 
   ];
@@ -352,6 +359,7 @@ class MachineManagementNotifier extends ChangeNotifier{
             selectedPersonId=t[0]['ResponsibleEmployeeId'];
             selectedPersonName=t[0]['ResponsiblePerson'];
             operatorName.text=t[0]['OperatorName'];
+            operatorNo.text=t[0]['OperatorContactNumber']==null?"":t[0]['OperatorContactNumber'];
             reason.text=t[0]['Reason'];
             MachineServicedate=DateTime.parse(t[0]['MachineServiceDate']);
             InTime=TimeOfDay(hour: int.parse(t[0]['DBInTime'].split(":")[0]), minute: int.parse(t[0]['DBInTime'].split(":")[1]));

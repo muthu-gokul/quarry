@@ -42,7 +42,7 @@ class ProductionGridState extends State<ProductionGrid> with TickerProviderState
   ScrollController verticalRight=new ScrollController();
 
   bool showShadow=false;
-  List<String> gridDataRowList=["MachineName","InputMaterialName","InputMaterialQuantity","OutputMaterialCount"];
+  List<String> gridDataRowList=["MachineName","InputMaterialName","InputMaterialQuantity","OutputMaterialCount","OutPutMaterialQuantity"];
   @override
   void initState() {
 
@@ -155,7 +155,8 @@ class ProductionGridState extends State<ProductionGrid> with TickerProviderState
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Text(value.materialName,style: TextStyle(fontFamily: 'RR',fontSize: 16,color: Colors.white,letterSpacing: 0.1),),
+                                  Text(value.materialName,style: TextStyle(fontFamily: 'RR',fontSize: 16,color:
+                                  value.materialType==1?Color(0xFF1293ff):value.materialType==2?Color(0xFF01b075):Color(0xFF979797),letterSpacing: 0.1),),
                                   SizedBox(height: 5,),
                                   Container(
                                     alignment: Alignment.center,

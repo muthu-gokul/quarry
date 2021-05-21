@@ -549,6 +549,7 @@ class EmployeeNotifier extends ChangeNotifier{
         if(value!=null){
           var parsed=json.decode(value);
           var t=parsed['Table'] as List;
+          print("t$t");
           if(EmployeeId!=null ){
             editEmployeeId=t[0]['EmployeeId'];
             EmployeePrefix=t[0]['EmployeePrefix'];

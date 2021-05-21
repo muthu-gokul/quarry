@@ -11,6 +11,7 @@ import 'package:quarry/notifier/machineManagementNotifier.dart';
 import 'package:quarry/pages/sale/salesDetail.dart';
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
+import 'package:quarry/styles/constants.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/bottomBarAddButton.dart';
 import 'package:quarry/widgets/customTextField.dart';
@@ -258,10 +259,36 @@ class _MachineManagementAddNewState extends State<MachineManagementAddNew> {
                                       onChange: (v){},
 
                                     ),
+                                    AddNewLabelTextField(
+                                      textEditingController: mmn.operatorNo,
+                                      labelText: "Operator Contact Number",
+                                      regExp: '[0-9]',
+                                      textLength: phoneNoLength,
+                                      textInputType: TextInputType.number,
+                                      scrollPadding: 550,
+                                      ontap: (){
+                                        scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                        setState(() {
+                                          _keyboardVisible=true;
+                                          isListScroll=true;
+                                        });
+                                      },
+                                      onEditComplete: (){
+                                        node.unfocus();
+                                        Timer(Duration(milliseconds: 300), (){
+                                          setState(() {
+                                            _keyboardVisible=false;
+                                          });
+                                        });
+                                      },
+                                      onChange: (v){},
+
+                                    ),
 
 
                                     GestureDetector(
                                       onTap: () async{
+                                        node.unfocus();
                                         final DateTime picked = await showDatePicker(
                                           context: context,
                                           initialDate:  mmn.MachineServicedate==null?DateTime.now():mmn.MachineServicedate, // Refer step 1
@@ -287,6 +314,7 @@ class _MachineManagementAddNewState extends State<MachineManagementAddNew> {
                                         children: [
                                           GestureDetector(
                                             onTap: () async{
+                                              node.unfocus();
                                               final TimeOfDay picked = await showTimePicker(
                                                 context: context,
                                                 initialTime: mmn.InTime==null?TimeOfDay.now():mmn.InTime,
@@ -328,6 +356,7 @@ class _MachineManagementAddNewState extends State<MachineManagementAddNew> {
                                           ),
                                           GestureDetector(
                                             onTap: () async{
+                                              node.unfocus();
                                               final TimeOfDay picked = await showTimePicker(
                                                 context: context,
                                                 initialTime: mmn.OutTime==null?TimeOfDay.now():mmn.OutTime,

@@ -62,6 +62,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
   bool phoneNo=false;
   bool address=false;
   bool aadhaar=false;
+  bool emailValid=true;
 
   @override
   void initState() {
@@ -726,6 +727,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                                   });
                                                 },
                                               ),
+                                              emailValid?Container():ValidationErrorText(title: "* Invalid Email Address",),
                                               AddNewLabelTextField(
                                                 labelText: 'Address',
                                                maxlines: null,
@@ -1396,6 +1398,11 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                   child: AddButton(
                     ontap: (){
                       node.unfocus();
+                      if(en.employeeEmail.text.isNotEmpty){
+                        setState(() {
+                          emailValid=EmailValidation().validateEmail(en.employeeEmail.text);
+                        });
+                      }
 
                       if(en.employeeFirstName.text.isEmpty){setState(() {firstName=true;});}
                       else{setState(() {firstName=false;});}
@@ -1421,7 +1428,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                       if(en.employeeAadhaarNo.text.isEmpty){setState(() {aadhaar=true;otherDetailsOpen=true;otherDetailsArrowAnimationController.forward();});}
                       else{setState(() {aadhaar=false;});}
 
-                      if(!firstName && !designation && !employeeType && !salary && !phoneNo && !address && !aadhaar && !dob){
+                      if(emailValid && !firstName && !designation && !employeeType && !salary && !phoneNo && !address && !aadhaar && !dob){
                         en.InsertEmployeeDbHit(context);
                       }
 
@@ -1535,7 +1542,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                 //////////////////// Blood Group  /////////////
                 PopUpStatic(
                   title: "Select Blood Group",
-
+                  isAlwaysShown: true,
                   isOpen: isBloodGroupOpen,
                   dataList: en.employeeBloodGroupList,
                   propertyKeyName:"EmployeeBloodGroup",

@@ -517,7 +517,15 @@ class InvoiceGridState extends State<InvoiceGrid> with TickerProviderStateMixin{
                                 ),
                               ),
 
-                              EditDelete(
+                              EditDeletePdf(
+                                showEdit: showEdit,
+                                editTap: (){},
+                                deleteTap: (){},
+                                viewTap: (){},
+                                pdfTap: (){},
+                              ),
+
+                              /*EditDelete(
                                 showEdit: showEdit,
                                 editTap: (){
                                   inv.insertForm();
@@ -534,7 +542,7 @@ class InvoiceGridState extends State<InvoiceGrid> with TickerProviderStateMixin{
                                   });
 
                                 },
-                              ),
+                              ),*/
 
 
 

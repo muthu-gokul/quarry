@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/model/productionDetailsModel/productionMaterialMappingListModel.dart';
 import 'package:quarry/notifier/productionNotifier.dart';
@@ -12,6 +13,7 @@ import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/bottomBarAddButton.dart';
+import 'package:quarry/widgets/calculation.dart';
 import 'package:quarry/widgets/customTextField.dart';
 import 'package:quarry/widgets/sidePopUp/sidePopUpWithoutSearch.dart';
 import 'package:quarry/widgets/validationErrorText.dart';
@@ -282,183 +284,226 @@ class ProductionDetailAddNewState extends State<ProductionDetailAddNew> with Tic
                                     //  duration: Duration(milliseconds: 300),
                                     // curve: Curves.easeIn,
                                     height: qn.productionMaterialMappingList.length == 0 ? 0 :
-                                       qn.productionMaterialMappingList.length * 50.0,
-                                    padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+                                    ( qn.productionMaterialMappingList.length * 50.0)+40,
+                                    constraints: BoxConstraints(
+                                        maxHeight: 300
+                                    ),
+                                    //  padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
 
                                     width: SizeConfig.screenWidth,
+
                                     margin: EdgeInsets.only(
                                       left: SizeConfig.width20,
                                       right: SizeConfig.width20,
                                       top: SizeConfig.height20,),
                                     decoration: BoxDecoration(
                                         color: Colors.white,
-                                        borderRadius: BorderRadius.circular(10),
-                                        boxShadow: [
-                                          qn.productionMaterialMappingList.length == 0 ? BoxShadow() :
-                                          BoxShadow(
-                                            color: AppTheme.addNewTextFieldText
-                                                .withOpacity(0.2),
-                                            spreadRadius: 2,
-                                            blurRadius: 15,
-                                            offset: Offset(0, 0), // changes position of shadow
-                                          )
-                                        ]
+                                        borderRadius: BorderRadius.circular(5),
+                                        border: Border.all(color: AppTheme.addNewTextFieldBorder)
                                     ),
-                                    child: ListView.builder(
-                                      itemCount: qn.productionMaterialMappingList.length,
-                                      itemBuilder: (context, index) {
-                                        return SlideTransition(
-                                          position: Tween<Offset>(begin: Offset(qn.productionMaterialMappingList[index].isEdit ? 0.0 :
-                                          qn.productionMaterialMappingList[index].isDelete ?1.0:0.0,
-                                              qn.productionMaterialMappingList[index].isEdit ? 0.0 :qn.productionMaterialMappingList[index].isDelete ?0.0: 1.0),
-                                              end:qn.productionMaterialMappingList[index].isEdit ?Offset(1, 0): Offset.zero)
-                                              .animate(qn.productionMaterialMappingList[index].scaleController),
-                                          // scale: Tween(begin:qn.isSupplierEdit?1.0: 0.0, end:qn.isSupplierEdit?0.0: 1.0)
-                                          //     .animate(qn.supplierMaterialMappingList[index].scaleController),
-                                          child: FadeTransition(
-                                            opacity: Tween(begin: qn.productionMaterialMappingList[index].isEdit ? 1.0 : 0.0,
-                                                end: qn.productionMaterialMappingList[index].isEdit ? 0.0 : 1.0)
-                                                .animate(qn.productionMaterialMappingList[index].scaleController),
-                                            child: Container(
-                                              padding: EdgeInsets.only(top: 5, bottom: 5),
-                                              decoration: BoxDecoration(
-                                                  border: Border(
-                                                      bottom: BorderSide(color: AppTheme.addNewTextFieldBorder.withOpacity(0.5))
-                                                  )
-                                              ),
-                                              child: Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: [
-                                                  Row(
-                                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                                    children: [
-                                                      qn.productionMaterialMappingList[index].MaterialName.toLowerCase()!='dust'?
-                                                      Container(
-                                                        width: SizeConfig.width100,
-                                                        child: Text("${qn.productionMaterialMappingList[index].MaterialName}",
-                                                          style: TextStyle(fontSize: 14, fontFamily: 'RR', color: AppTheme.gridTextColor, letterSpacing: 0.2),
-                                                        ),
-                                                      ):
-                                                      Container(
-                                                        width: SizeConfig.width100,
-                                                        child: Row(
+                                    child: Column(
+                                      children: [
+
+                                        Container(
+                                          height: 40,
+                                          width: SizeConfig.screenWidth,
+                                          padding: EdgeInsets.only(left: 10,right: 10,),
+                                          decoration: BoxDecoration(
+                                            color: Colors.grey[200],
+                                            borderRadius: BorderRadius.only(topLeft: Radius.circular(5),topRight: Radius.circular(5),),
+                                          ),
+                                          child: Row(
+                                            //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Container(width: SizeConfig.screenWidthM40*0.35,child: Text("Material Name")),
+                                              Container(padding: EdgeInsets.only(left: 10),alignment: Alignment.centerLeft, width: SizeConfig.screenWidthM40*0.3,child: Text("Quantity")),
+                                              Container(padding: EdgeInsets.only(left: 10), width: SizeConfig.screenWidthM40*0.2,child: Text("Unit")),
+
+                                            ],
+
+                                          ),
+                                        ),
+
+                                        Expanded(
+                                          child: ListView.builder(
+                                            itemCount: qn.productionMaterialMappingList.length,
+                                            itemBuilder: (context, index) {
+                                              return SlideTransition(
+                                                position: Tween<Offset>(begin: Offset(qn.productionMaterialMappingList[index].isEdit ? 0.0 :
+                                                qn.productionMaterialMappingList[index].isDelete ?1.0:0.0,
+                                                    qn.productionMaterialMappingList[index].isEdit ? 0.0 :qn.productionMaterialMappingList[index].isDelete ?0.0: 1.0),
+                                                    end:qn.productionMaterialMappingList[index].isEdit ?Offset(1, 0): Offset.zero)
+                                                    .animate(qn.productionMaterialMappingList[index].scaleController),
+
+                                                child: FadeTransition(
+                                                  opacity: Tween(begin: qn.productionMaterialMappingList[index].isEdit ? 1.0 : 0.0,
+                                                      end: qn.productionMaterialMappingList[index].isEdit ? 0.0 : 1.0)
+                                                      .animate(qn.productionMaterialMappingList[index].scaleController),
+                                                  child: Container(
+                                                    height: 50,
+                                                    padding: EdgeInsets.only(left: 10,right: 10),
+                                                    decoration: BoxDecoration(
+                                                        border: Border(
+                                                            bottom: BorderSide(color: AppTheme.addNewTextFieldBorder.withOpacity(0.5))
+                                                        )
+                                                    ),
+                                                    child: Column(
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                      children: [
+                                                        Row(
+                                                          crossAxisAlignment: CrossAxisAlignment.center,
                                                           children: [
-                                                            Text("${qn.productionMaterialMappingList[index].MaterialName}",
-                                                              style: TextStyle(fontSize: 14, fontFamily: 'RR', color: AppTheme.gridTextColor, letterSpacing: 0.2),
+                                                            qn.productionMaterialMappingList[index].MaterialName.toLowerCase()!='dust'?
+                                                            Container(
+                                                              width: SizeConfig.screenWidthM40*0.35,
+                                                              alignment:Alignment.centerLeft,
+
+                                                              child: Text("${qn.productionMaterialMappingList[index].MaterialName}",
+                                                                style: TextStyle(fontSize: 14, fontFamily: 'RR', color: AppTheme.gridTextColor, letterSpacing: 0.2),
+                                                              ),
+                                                            ):
+                                                            Container(
+                                                              width: SizeConfig.screenWidthM40*0.35,
+                                                              alignment:Alignment.centerLeft,
+                                                              child: Row(
+                                                                children: [
+                                                                  Text("${qn.productionMaterialMappingList[index].MaterialName}",
+                                                                    style: TextStyle(fontSize: 14, fontFamily: 'RR', color: AppTheme.gridTextColor, letterSpacing: 0.2),
+                                                                  ),
+                                                                  SizedBox(width: 10,),
+                                                                  GestureDetector(
+                                                                    onTap: (){
+                                                                      setState(() {
+                                                                        qn.isWastage=!qn.isWastage;
+                                                                      });
+                                                                      qn.wastageCalc();
+                                                                    },
+                                                                    child: AnimatedContainer(
+                                                                      duration: Duration(milliseconds: 300),
+                                                                      curve: Curves.easeIn,
+                                                                      height: 20,
+                                                                      width: 20,
+                                                                      decoration: BoxDecoration(
+                                                                          color:qn.isWastage?AppTheme.yellowColor: AppTheme.uploadColor.withOpacity(0.2),
+                                                                          borderRadius: BorderRadius.circular(3),
+                                                                          border: Border.all(color:qn.isWastage?AppTheme.yellowColor: AppTheme.addNewTextFieldBorder)
+                                                                      ),
+                                                                      child: Center(
+                                                                        child: Icon(Icons.done,color:qn.isWastage?AppTheme.bgColor: AppTheme.addNewTextFieldBorder.withOpacity(0.5),size: 15,),
+                                                                      ),
+                                                                    ),
+                                                                  )
+                                                                ],
+                                                              ),
                                                             ),
-                                                            SizedBox(width: 10,),
-                                                            GestureDetector(
-                                                              onTap: (){
-                                                                setState(() {
-                                                                  qn.isWastage=!qn.isWastage;
-                                                                });
-                                                                qn.wastageCalc();
-                                                              },
-                                                              child: AnimatedContainer(
-                                                                duration: Duration(milliseconds: 300),
-                                                                curve: Curves.easeIn,
-                                                                height: 20,
-                                                                width: 20,
-                                                                decoration: BoxDecoration(
-                                                                    color:qn.isWastage?AppTheme.yellowColor: AppTheme.uploadColor.withOpacity(0.2),
-                                                                    borderRadius: BorderRadius.circular(3),
-                                                                    border: Border.all(color:qn.isWastage?AppTheme.yellowColor: AppTheme.addNewTextFieldBorder)
-                                                                ),
-                                                                child: Center(
-                                                                  child: Icon(Icons.done,color:qn.isWastage?AppTheme.bgColor: AppTheme.addNewTextFieldBorder.withOpacity(0.5),size: 15,),
+
+                                                            Container(
+                                                              padding: EdgeInsets.only(left: 10),
+                                                              alignment: Alignment.centerLeft,
+
+                                                              width: SizeConfig.screenWidthM40*0.3,
+                                                              child: FittedBox(
+                                                                child: Text("${qn.productionMaterialMappingList[index].OutputMaterialQuantity}",
+                                                                  style: TextStyle(fontSize: 14, fontFamily: 'RR', color: AppTheme.gridTextColor, letterSpacing: 0.2),
                                                                 ),
                                                               ),
-                                                            )
+                                                            ),
+                                                            Container(
+                                                              alignment: Alignment.centerLeft,
+                                                              width:SizeConfig.screenWidthM40*0.2,
+                                                              padding: EdgeInsets.only(left: 10),
+
+
+                                                              child: Text("${qn.productionMaterialMappingList[index].MaterialUnit}",
+                                                                style: TextStyle(fontSize: 14, fontFamily: 'RR', color: AppTheme.gridTextColor,letterSpacing: 0.2),
+                                                              ),
+                                                            ),
+                                                            Spacer(),
+                                                            GestureDetector(
+                                                              onTap: () {
+
+                                                                CustomAlert(
+                                                                  Cancelcallback: (){
+                                                                    Navigator.pop(context);
+                                                                  },
+                                                                  callback: (){
+                                                                    Navigator.pop(context);
+                                                                    Timer(Duration(milliseconds: 200), (){
+                                                                      if (qn.productionMaterialMappingList[index].isEdit) {
+                                                                        qn.productionMaterialMappingList[index].scaleController.forward().whenComplete(() {
+                                                                          if (this.mounted) {
+                                                                            if(qn.productionMaterialMappingList[index].MaterialName.toLowerCase()=='dust'){
+                                                                              setState(() {
+                                                                                qn.dustQty=0.0;
+                                                                                qn.isWastage=false;
+                                                                              });
+                                                                            }
+                                                                            setState(() {
+                                                                              qn.productionMaterialMappingList.removeAt(index);
+                                                                            });
+                                                                            qn.wastageCalc();
+                                                                          }
+                                                                        });
+
+                                                                      }
+                                                                      else {
+                                                                        setState(() {
+                                                                          qn.productionMaterialMappingList[index].isDelete=true;
+                                                                        });
+                                                                        qn.productionMaterialMappingList[index].scaleController.reverse().whenComplete(() {
+                                                                          if (this.mounted) {
+                                                                            if(qn.productionMaterialMappingList[index].MaterialName.toLowerCase()=='dust'){
+                                                                              setState(() {
+                                                                                qn.dustQty=0.0;
+                                                                                qn.isWastage=false;
+                                                                              });
+                                                                            }
+                                                                            setState(() {
+                                                                              qn.productionMaterialMappingList.removeAt(index);
+                                                                            });
+                                                                            qn.wastageCalc();
+                                                                          }
+                                                                        });
+                                                                      }
+                                                                    });
+                                                                  }
+                                                                ).yesOrNoDialog(context, "", "Are you sure want to delete this material ?");
+
+
+
+
+
+
+
+                                                              },
+                                                              child: Container(
+                                                                  height: 20,
+                                                                  width: 20,
+                                                                  child: SvgPicture.asset("assets/svg/delete.svg",color: AppTheme.red)
+                                                              ),
+                                                            ),
+
                                                           ],
                                                         ),
-                                                      ),
-                                                      Container(
-                                                        padding: EdgeInsets.only(left: 5),
-                                                        alignment: Alignment.centerLeft,
-                                                        width: SizeConfig.width60,
-                                                        child: Text("${qn.productionMaterialMappingList[index].OutputMaterialQuantity}",
-                                                          style: TextStyle(fontSize: 14, fontFamily: 'RR', color: AppTheme.gridTextColor, letterSpacing: 0.2),
-                                                        ),
-                                                      ),
-                                                      Container(
-                                                        alignment: Alignment.centerRight,
-                                                        width: SizeConfig.width70 +
-                                                            SizeConfig.width5,
-                                                        child: Text("${qn.productionMaterialMappingList[index].MaterialUnit}",
-                                                          style: TextStyle(fontSize: 14, fontFamily: 'RR', color: AppTheme.gridTextColor,letterSpacing: 0.2),
-                                                        ),
-                                                      ),
-                                                      Spacer(),
-                                                      GestureDetector(
-                                                        onTap: () {
+                                                        qn.productionMaterialMappingList[index].MaterialName.toLowerCase()!='dust'?Container():
+                                                        Text("Do you want to add this product to Wastage?",
+                                                          style: TextStyle(fontSize: 12,fontFamily: 'RR',color: AppTheme.hintColor),
+                                                        )
 
-                                                          print(qn.isProductionEdit);
+                                                      ],
+                                                    ),
 
-                                                          if (qn.productionMaterialMappingList[index].isEdit) {
-                                                            qn.productionMaterialMappingList[index].scaleController.forward().whenComplete(() {
-                                                              print("EIT");
-                                                              if (this.mounted) {
-                                                                if(qn.productionMaterialMappingList[index].MaterialName.toLowerCase()=='dust'){
-                                                                  setState(() {
-                                                                    qn.dustQty=0.0;
-                                                                    qn.isWastage=false;
-                                                                  });
-                                                                }
-                                                                setState(() {
-                                                                  qn.productionMaterialMappingList.removeAt(index);
-                                                                });
-                                                                qn.wastageCalc();
-                                                              }
-                                                            });
-
-                                                          }
-                                                          else {
-                                                            setState(() {
-                                                              qn.productionMaterialMappingList[index].isDelete=true;
-                                                            });
-                                                            qn.productionMaterialMappingList[index].scaleController.reverse().whenComplete(() {
-                                                              if (this.mounted) {
-                                                                if(qn.productionMaterialMappingList[index].MaterialName.toLowerCase()=='dust'){
-                                                                  setState(() {
-                                                                    qn.dustQty=0.0;
-                                                                    qn.isWastage=false;
-                                                                  });
-                                                                }
-                                                                setState(() {
-                                                                  qn.productionMaterialMappingList.removeAt(index);
-                                                                });
-                                                                qn.wastageCalc();
-                                                              }
-                                                              // setState(() {
-                                                              //     qn.productionMaterialMappingList.removeAt(index);
-                                                              //   });
-                                                            });
-                                                          }
-                                                        },
-                                                        child: Container(
-                                                            height: 25,
-                                                            width: 25,
-                                                            child: Icon(
-                                                                Icons.delete,
-                                                                color: Colors.red)
-                                                        ),
-                                                      ),
-
-                                                    ],
                                                   ),
-                                                  qn.productionMaterialMappingList[index].MaterialName.toLowerCase()!='dust'?Container():
-                                                  Text("Do you want to add this product to Wastage?",
-                                                    style: TextStyle(fontSize: 12,fontFamily: 'RR',color: AppTheme.hintColor),
-                                                  )
-                                                ],
-                                              ),
-
-                                            ),
+                                                ),
+                                              );
+                                            },
                                           ),
-                                        );
-                                      },
+                                        ),
+                                      ],
                                     ),
                                   ),
+
 
 
 
@@ -468,10 +513,19 @@ class ProductionDetailAddNewState extends State<ProductionDetailAddNew> with Tic
                                       GestureDetector(
                                         onTap: () {
                                           node.unfocus();
-                                          setState(() {
-                                            _keyboardVisible=false;
-                                            productionMaterailOpen = true;
-                                          });
+                                          if(qn.selectInputTypeName==null){
+                                            CustomAlert().commonErrorAlert(context, "Select Input Material", "");
+                                          }
+                                          else if(qn.materialQuantity.text.isEmpty){
+                                            CustomAlert().commonErrorAlert(context, "Enter Input Material Qty", "");
+                                          }
+                                          else{
+                                            setState(() {
+                                              _keyboardVisible=false;
+                                              productionMaterailOpen = true;
+                                            });
+
+                                          }
 
                                         },
                                         child: Container(
@@ -583,39 +637,50 @@ class ProductionDetailAddNewState extends State<ProductionDetailAddNew> with Tic
                                                 CustomAlert().commonErrorAlert(context, "Enter Output Material Weight", "");
                                               }
                                               else{
-                                                Timer(Duration(milliseconds: 300), () {
-                                                  setState(() {
-                                                    qn.productionMaterialMappingList.add(
-                                                        ProductionMaterialMappingListModel(
-                                                            OutputMaterialId: qn.productionMaterialId,
-                                                            MaterialName: qn.productionMaterialName,
-                                                            MaterialUnit: qn.selectInputUnitName,
-                                                            UnitId: qn.selectInputUnitId,
-                                                            OutputMaterialQuantity: qn.materialWeight.text.isEmpty?0.0:double.parse(qn.materialWeight.text),
-
-                                                            IsActive: 1,
-                                                            scaleController: AnimationController(duration: Duration(milliseconds: 300), vsync: this),
-                                                            isEdit: false,
-                                                          isDelete: false
-                                                        )
-                                                    );
-
-                                                    if(qn.productionMaterialName.toString().toLowerCase()=='dust'){
-                                                      qn.dustQty=double.parse(qn.materialWeight.text);
-                                                    }
-
-                                                  });
-
-                                                  listViewController.animateTo(listViewController.position.maxScrollExtent,
-                                                      duration: Duration(milliseconds: 200), curve: Curves.easeIn).then((value) {
-                                                    qn.productionMaterialMappingList[qn.productionMaterialMappingList.length - 1].scaleController
-                                                        .forward().then((value) {
-                                                      listViewController.animateTo(listViewController.position.maxScrollExtent, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
-                                                      qn.clearMappingList();
-                                                    });
-                                                  });
-                                                  qn.wastageCalc();
+                                                qn.totalOutputQty=0.0;
+                                                qn.productionMaterialMappingList.forEach((element) {
+                                                  qn.totalOutputQty=Calculation().add(qn.totalOutputQty, element.OutputMaterialQuantity);
                                                 });
+                                                qn.totalOutputQty=Calculation().add(qn.totalOutputQty, qn.materialWeight.text);
+                                                if(qn.totalOutputQty<double.parse(qn.materialQuantity.text)){
+                                                  Timer(Duration(milliseconds: 300), () {
+                                                    setState(() {
+                                                      qn.productionMaterialMappingList.add(
+                                                          ProductionMaterialMappingListModel(
+                                                              OutputMaterialId: qn.productionMaterialId,
+                                                              MaterialName: qn.productionMaterialName,
+                                                              MaterialUnit: qn.selectInputUnitName,
+                                                              UnitId: qn.selectInputUnitId,
+                                                              OutputMaterialQuantity: qn.materialWeight.text.isEmpty?0.0:double.parse(qn.materialWeight.text),
+
+                                                              IsActive: 1,
+                                                              scaleController: AnimationController(duration: Duration(milliseconds: 300), vsync: this),
+                                                              isEdit: false,
+                                                              isDelete: false
+                                                          )
+                                                      );
+
+                                                      if(qn.productionMaterialName.toString().toLowerCase()=='dust'){
+                                                        qn.dustQty=double.parse(qn.materialWeight.text);
+                                                      }
+
+                                                    });
+
+                                                    listViewController.animateTo(listViewController.position.maxScrollExtent,
+                                                        duration: Duration(milliseconds: 200), curve: Curves.easeIn).then((value) {
+                                                      qn.productionMaterialMappingList[qn.productionMaterialMappingList.length - 1].scaleController
+                                                          .forward().then((value) {
+                                                        listViewController.animateTo(listViewController.position.maxScrollExtent, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                                        qn.clearMappingList();
+                                                      });
+                                                    });
+                                                    qn.wastageCalc();
+                                                  });
+                                                }
+                                                else{
+                                                  CustomAlert().commonErrorAlert(context, "Excess Weight", "Total Output Material Weight should be less than input Material Weight");
+                                                }
+
                                               }
                                             });
 
@@ -892,25 +957,32 @@ class ProductionDetailAddNewState extends State<ProductionDetailAddNew> with Tic
                   propertyKeyId: "MaterialId",
                   selectedId: qn.productionMaterialId,
                   itemOnTap: (index){
-                    if(qn.MaterialList[index].materialName.toLowerCase()!='dust'){
-                      setState(() {
-                        qn.productionMaterialId=qn.MaterialList[index].materialId;
-                        qn.productionMaterialName=qn.MaterialList[index].materialName;
-                        productionMaterailOpen=false;
-                      });
+                    if(qn.productionMaterialMappingList.any((element) => element.MaterialName.toLowerCase()==qn.MaterialList[index].materialName.toLowerCase())){
+                      CustomAlert().commonErrorAlert(context, "Material Already Added","");
                     }
                     else{
-                      if(qn.productionMaterialMappingList.any((element) => element.MaterialName.toLowerCase()=='dust')){
-                        CustomAlert().commonErrorAlert(context, "Dust Already Added", "You cant add Extra Dust");
-                      }
-                      else{
+                      if(qn.MaterialList[index].materialName.toLowerCase()!='dust'){
                         setState(() {
                           qn.productionMaterialId=qn.MaterialList[index].materialId;
                           qn.productionMaterialName=qn.MaterialList[index].materialName;
                           productionMaterailOpen=false;
                         });
                       }
+                      else{
+                        if(qn.productionMaterialMappingList.any((element) => element.MaterialName.toLowerCase()=='dust')){
+                          CustomAlert().commonErrorAlert(context, "Dust Already Added", "You cant add Extra Dust");
+                        }
+                        else{
+                          setState(() {
+                            qn.productionMaterialId=qn.MaterialList[index].materialId;
+                            qn.productionMaterialName=qn.MaterialList[index].materialName;
+                            productionMaterailOpen=false;
+                          });
+                        }
+                      }
                     }
+
+
                   },
                   closeOnTap: (){
                     setState(() {

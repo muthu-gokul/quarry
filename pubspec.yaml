@@ -114,6 +114,9 @@ flutter:
     - assets/bottomIcons/
     - assets/svg/upload.svg
     - assets/nodata.svg
+    - assets/svg/pdfView.svg
+    - assets/svg/loan/
+    - assets/svg/loan/Loan-header.svg
 
 
 
