@@ -272,7 +272,7 @@ class InvoiceGridState extends State<InvoiceGrid> with TickerProviderStateMixin{
                                                     alignment: Alignment.centerLeft,
                                                     // padding: EdgeInsets.only(left: 20,right: 20),
                                                     width: 150,
-                                                    child: Text("${DateFormat.yMMMd().format(value.invoiceDate)}",
+                                                    child: Text(value.invoiceDate!=null?"${DateFormat.yMMMd().format(value.invoiceDate)}":"",
                                                       style:selectedIndex==i?AppTheme.TSWhiteML:AppTheme.gridTextColor14,
                                                     ),
 

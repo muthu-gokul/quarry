@@ -24,7 +24,7 @@ class InvoiceGridModel {
     invoiceId: json["InvoiceId"],
     invoiceNumber: json["InvoiceNumber"],
     invoiceType: json["InvoiceType"],
-    invoiceDate: DateTime.parse(json["InvoiceDate"]),
+    invoiceDate:json["InvoiceDate"]!=null? DateTime.parse(json["InvoiceDate"]):null,
     partyId: json["PartyId"],
     partyName: json["PartyName"],
     grandTotalAmount: json["GrandTotalAmount"],

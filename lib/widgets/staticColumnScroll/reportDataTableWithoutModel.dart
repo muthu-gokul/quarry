@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 
 import '../../styles/app_theme.dart';
@@ -145,7 +146,7 @@ class _ReportDataTable2State extends State<ReportDataTable2> {
                               width: value.width,
 
                               constraints: BoxConstraints(
-                                  minWidth: 150,
+                                  minWidth: 100,
                                   maxWidth: 200
                               ),
                               child: FittedBox(child: Text(value.columnName,style: AppTheme.TSWhite166,))
@@ -197,11 +198,14 @@ class _ReportDataTable2State extends State<ReportDataTable2> {
                                       children: widget.gridDataRowList.asMap().map((j, v) {
 
 
-                                        if((10.0*value[v.columnName].toString().length)>v.width){
-                                          setState(() {
-                                            v.width=10.0*value[v.columnName].toString().length;
-                                          });
+                                        if(!v.isDate){
+                                          if((10.0*value[v.columnName].toString().length)>v.width){
+                                            setState(() {
+                                              v.width=10.0*value[v.columnName].toString().length;
+                                            });
+                                          }
                                         }
+
                                         // print("${value.get(v.columnName)} ${v.width} ${10.0*value.get(v.columnName).toString().length}");
 
                                         return MapEntry(j,
@@ -211,7 +215,7 @@ class _ReportDataTable2State extends State<ReportDataTable2> {
                                             alignment: v.alignment,
                                             padding: v.edgeInsets,
                                             constraints: BoxConstraints(
-                                                minWidth: 150,
+                                                minWidth: 100,
                                                 maxWidth: 200
                                             ),
                                             decoration: BoxDecoration(
@@ -227,7 +231,7 @@ class _ReportDataTable2State extends State<ReportDataTable2> {
                                             alignment: v.alignment,
                                             padding: v.edgeInsets,
                                             constraints: BoxConstraints(
-                                                minWidth: 150,
+                                                minWidth: 100,
                                                 maxWidth: 200
                                             ),
                                             decoration: BoxDecoration(
@@ -347,6 +351,22 @@ class _ReportDataTable2State extends State<ReportDataTable2> {
                 ],
               ),
             ),
+
+
+            widget.gridData.isEmpty?Container(
+              width: SizeConfig.screenWidth,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(height: 70,),
+                  Text("No Data Found",style: TextStyle(fontSize: 18,fontFamily:'RMI',color: AppTheme.addNewTextFieldText),),
+                  SvgPicture.asset("assets/nodata.svg",height: 350,),
+
+                ],
+              ),
+            ):Container()
+
 
 
           ],

@@ -192,6 +192,11 @@ class ReportSettingsState extends State<ReportSettings> with TickerProviderState
                                         instanceName: rn.filtersList[i].instanceName,
                                         index: i,
                                         all: rn.filterAll,
+                                        ontap: (){
+                                          setState(() {
+                                      //      isListScroll=true;
+                                          });
+                                        },
 
                                       ),
 
@@ -397,8 +402,9 @@ class ReportSettingsHeader extends StatefulWidget {
   String instanceName;
   int index;
   List<int> all;
+  VoidCallback ontap;
 
-  ReportSettingsHeader({  this.title,this.list,this.instanceName,this.index,this.all});
+  ReportSettingsHeader({  this.title,this.list,this.instanceName,this.index,this.all,this.ontap});
 
   @override
   _ReportSettingsHeaderState createState() => _ReportSettingsHeaderState();
@@ -430,6 +436,7 @@ class _ReportSettingsHeaderState extends State<ReportSettingsHeader> with Ticker
             setState(() {
               open=!open;
             });
+            widget.ontap();
           },
           child: Container(
             height: 50,
@@ -608,8 +615,9 @@ class ReportSettingsColumnFilter extends StatefulWidget {
   List<dynamic> list=[];
   String instanceName;
   List<bool> all;
+  VoidCallback ontap;
 
-  ReportSettingsColumnFilter({  this.title,this.list,this.instanceName,this.all});
+  ReportSettingsColumnFilter({  this.title,this.list,this.instanceName,this.all,this.ontap});
   @override
   _ReportSettingsColumnFilterState createState() => _ReportSettingsColumnFilterState();
 }

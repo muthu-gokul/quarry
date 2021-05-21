@@ -567,8 +567,8 @@ class InvoiceNotifier extends ChangeNotifier{
         }
       ]
     };
-
-    try{
+    updateInvoiceLoader(false);
+ //   try{
       await call.ApiCallGetInvoke(body,context).then((value) {
         if(value!=null){
           var parsed=json.decode(value);
@@ -646,10 +646,10 @@ class InvoiceNotifier extends ChangeNotifier{
 
         updateInvoiceLoader(false);
       });
-    }catch(e){
+  /*  }catch(e){
       updateInvoiceLoader(false);
       CustomAlert().commonErrorAlert(context, "${Sp.getInvoiceDetail}" , e.toString());
-    }
+    }*/
 
 
   }

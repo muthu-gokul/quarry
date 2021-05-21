@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/api/ApiManager.dart';
@@ -106,15 +107,15 @@ List<dynamic> vehicleTypeList=[];/* {
 
   Future<dynamic> ReportsDropDownValues(BuildContext context,String typeName) async {
     TypeName=typeName;
-    dateTime=DateTime.parse('1999-01-01');
+   // dateTime=DateTime.parse('1999-01-01');
     filtersList.clear();
     updateReportLoader(true);
 
     if(typeName=="SaleReport"){
       reportsGridColumnList.clear();
-      List<ReportGridStyleModel2> salesReportGridCol=[ReportGridStyleModel2(columnName: "SaleNumber"),
-        ReportGridStyleModel2(columnName: "CreatedDate",isDate: true),ReportGridStyleModel2(columnName: "MaterialName"),ReportGridStyleModel2(columnName:"OutputMaterialQty"),
-        ReportGridStyleModel2(columnName: "OutputQtyAmount"),ReportGridStyleModel2(columnName: "CustomerName"),ReportGridStyleModel2(columnName: "PlantName"),];
+      List<ReportGridStyleModel2> salesReportGridCol=[ReportGridStyleModel2(columnName: "Sales Number"),
+        ReportGridStyleModel2(columnName: "Date",isDate: true,width: 130),ReportGridStyleModel2(columnName: "Material"),ReportGridStyleModel2(columnName:"Qty"),
+        ReportGridStyleModel2(columnName: "Amount"),ReportGridStyleModel2(columnName: "Customer Name"),ReportGridStyleModel2(columnName: "Plant Name"),];
       reportHeader="Sales Report";
       totalReportTitle="Total Sale";
       totalReportQtyTitle="Sale Quantity";
@@ -123,9 +124,9 @@ List<dynamic> vehicleTypeList=[];/* {
     }
     else if(typeName=="PurchaseReport"){
       reportsGridColumnList.clear();
-      List<ReportGridStyleModel2> purchaseReportGridCol=[ReportGridStyleModel2(columnName: "PurchaseOrderNumber",edgeInsets: EdgeInsets.only(left: 10,right: 10)),
-        ReportGridStyleModel2(columnName: "CreatedDate",isDate: true),ReportGridStyleModel2(columnName: "MaterialName"),ReportGridStyleModel2(columnName:"PurchaseQuantity"),
-        ReportGridStyleModel2(columnName: "Amount"),ReportGridStyleModel2(columnName: "SupplierName"),ReportGridStyleModel2(columnName: "PlantName"),];
+      List<ReportGridStyleModel2> purchaseReportGridCol=[ReportGridStyleModel2(columnName: "Purchase No",edgeInsets: EdgeInsets.only(left: 10,right: 10)),
+        ReportGridStyleModel2(columnName: "Date",isDate: true,width: 130),ReportGridStyleModel2(columnName: "Material"),ReportGridStyleModel2(columnName:"Qty"),
+        ReportGridStyleModel2(columnName: "Amount"),ReportGridStyleModel2(columnName: "Supplier Name"),ReportGridStyleModel2(columnName: "Plant Name"),];
       reportHeader="Purchase Report";
       totalReportTitle="Total Purchase";
       totalReportQtyTitle="Purchase Quantity";
@@ -134,11 +135,11 @@ List<dynamic> vehicleTypeList=[];/* {
     }
     else if(typeName=="CustomerSaleReport"){
       reportsGridColumnList.clear();
-      List<ReportGridStyleModel2> customerSaleReportGridCol=[ReportGridStyleModel2(columnName: "SaleNumber",edgeInsets: EdgeInsets.only(left: 10,right: 10)),
-        ReportGridStyleModel2(columnName: "CreatedDate",isDate: true),ReportGridStyleModel2(columnName: "CustomerName"),ReportGridStyleModel2(columnName:"MaterialName"),
-        ReportGridStyleModel2(columnName:"Quantity"), ReportGridStyleModel2(columnName: "Amount"),ReportGridStyleModel2(columnName: "PaymentCategoryName"),
-        ReportGridStyleModel2(columnName: "VehicleNumber"),ReportGridStyleModel2(columnName: "Location"),ReportGridStyleModel2(columnName: "CustomerContactNumber"),
-        ReportGridStyleModel2(columnName: "PlantName"),];
+      List<ReportGridStyleModel2> customerSaleReportGridCol=[ReportGridStyleModel2(columnName: "Sales Number",edgeInsets: EdgeInsets.only(left: 10,right: 10)),
+        ReportGridStyleModel2(columnName: "Date",isDate: true,width: 130),ReportGridStyleModel2(columnName: "Customer Name"),ReportGridStyleModel2(columnName:"Material"),
+        ReportGridStyleModel2(columnName:"Qty"), ReportGridStyleModel2(columnName: "Amount"),ReportGridStyleModel2(columnName: "Payment Type"),
+        ReportGridStyleModel2(columnName: "Vehicle No"),ReportGridStyleModel2(columnName: "Location"),ReportGridStyleModel2(columnName: "Contact Number"),
+        ReportGridStyleModel2(columnName: "Plant Name"),];
       reportHeader="Customer Sale Report";
       totalReportTitle="Total Sale";
       totalReportQtyTitle="Sale Quantity";
@@ -297,10 +298,10 @@ List<dynamic> vehicleTypeList=[];/* {
     }
     else if(typeName=="PurchaseAuditReport"){
       reportsGridColumnList.clear();
-      List<ReportGridStyleModel2> purchaseAuditReportGridCol=[ReportGridStyleModel2(columnName: "PurchaseOrderNumber",edgeInsets: EdgeInsets.only(left: 10,right: 10)),
-        ReportGridStyleModel2(columnName: "SupplierGSTNumber"),ReportGridStyleModel2(columnName: "SupplierName"),ReportGridStyleModel2(columnName:"CGST"),
-        ReportGridStyleModel2(columnName: "SGST"),ReportGridStyleModel2(columnName: "DiscountAmount"),ReportGridStyleModel2(columnName: "GrandTotalAmount"),
-        ReportGridStyleModel2(columnName: "PlantName"),
+      List<ReportGridStyleModel2> purchaseAuditReportGridCol=[ReportGridStyleModel2(columnName: "Purchase No",edgeInsets: EdgeInsets.only(left: 10,right: 10)),
+        ReportGridStyleModel2(columnName: "GST No"),ReportGridStyleModel2(columnName: "Supplier Name"),ReportGridStyleModel2(columnName:"CGST"),
+        ReportGridStyleModel2(columnName: "SGST"),ReportGridStyleModel2(columnName: "DisCount"),ReportGridStyleModel2(columnName: "Grand Total"),
+        ReportGridStyleModel2(columnName: "Plant Name"),
 
       ];
 
@@ -631,7 +632,7 @@ List<dynamic> vehicleTypeList=[];/* {
             supplierList=t1;
 
             filtersList.add(FilterDetailsModel(title:  "Plant Filter", list: plantList, instanceName: 'PlantName'),);
-            filtersList.add(FilterDetailsModel(title:  "Supplier  Filter", list: customerList, instanceName: 'SupplierName'));
+            filtersList.add(FilterDetailsModel(title:  "Supplier  Filter", list: supplierList, instanceName: 'SupplierName'));
             filterAll=List.filled(filtersList.length, 1);
           }
           else if(typeName=="VehicleMonitoringReport"){
@@ -698,6 +699,8 @@ List<dynamic> vehicleTypeList=[];/* {
       toDate=DateFormat("yyyy-MM-dd").format(picked[1]).toString();
     }
 
+    print(fromDate);
+    print(toDate);
 
     updateReportLoader(true);
     var body={
@@ -742,19 +745,20 @@ List<dynamic> vehicleTypeList=[];/* {
           var parsed=json.decode(value);
 
           if(typeName=="SaleReport"){
-            var t=parsed["Table"] as List;
-            salesReportGridList=t;
+            salesReportGridList.clear();
+           // var t=parsed["Table"] as List;
+            salesReportGridList=parsed["Table"] as List;
             filterSales();
           }
           else if(typeName=="PurchaseReport"){
-            var t=parsed["Table"] as List;
-            purchaseReportGridList=t;
+        //    var t=parsed["Table"] as List;
+            purchaseReportGridList=parsed["Table"] as List;
             filterPurchase();
           }
           else if(typeName=="CustomerSaleReport"){
-            var t=parsed["Table"] as List;
-            print(t);
-            customerSaleReportGridList=t;
+          //  var t=parsed["Table"] as List;
+          //  print(t);
+            customerSaleReportGridList=parsed["Table"] as List;
             filterCustomerSale();
           }
           else if(typeName=="SupplierPurchaseReport"){
@@ -821,8 +825,8 @@ List<dynamic> vehicleTypeList=[];/* {
             filterSaleAuditReport();
           }
           else if(typeName=="PurchaseAuditReport"){
-            var t=parsed["Table"] as List;
-            purchaseAuditReportGridList=t;
+          //  var t=parsed["Table"] as List;
+            purchaseAuditReportGridList=parsed["Table"] as List;
             filterPurchaseAuditReport();
           }
           else if(typeName=="VehicleMonitoringReport"){
@@ -869,6 +873,7 @@ List<dynamic> vehicleTypeList=[];/* {
     tempSalesCustomerFilter.clear();
 
 
+
     totalReport=0;
     totalReportQty=0.0;
     totalReportAmount=0.0;
@@ -896,9 +901,11 @@ List<dynamic> vehicleTypeList=[];/* {
 
     totalReport=filterSalesReportGridList.length;
     filterSalesReportGridList.forEach((element) {
-      totalReportAmount=Calculation().add(totalReportAmount, element['OutputQtyAmount']);
-      totalReportQty=Calculation().add(totalReportQty, element['OutputMaterialQty']);
+      totalReportAmount=Calculation().add(totalReportAmount, element['Amount']);
+      totalReportQty=Calculation().add(totalReportQty, element['Qty']);
     });
+    totalReportQty="${totalReportQty} Ton";
+    filterSalesReportGridList.sort((a,b)=>a['SaleId'].compareTo(b['SaleId']));
 
     reportsGridDataList=filterSalesReportGridList;
     notifyListeners();
@@ -908,8 +915,8 @@ List<dynamic> vehicleTypeList=[];/* {
     if(v.isEmpty){
       reportsGridDataList=filterSalesReportGridList;
     }else{
-      reportsGridDataList=filterSalesReportGridList.where((element) => element['SaleNumber'].toString().toLowerCase().contains(v)||
-          element['MaterialName'].toString().toLowerCase().contains(v)).toList();
+      reportsGridDataList=filterSalesReportGridList.where((element) => element['Sales Number'].toString().toLowerCase().contains(v)||
+          element['Material'].toString().toLowerCase().contains(v)).toList();
     }
     notifyListeners();
   }
@@ -963,13 +970,31 @@ List<dynamic> vehicleTypeList=[];/* {
     });
 
 
-    totalReport=filterPurchaseReportGridList.length;
-    filterPurchaseReportGridList.forEach((element) {
-      totalReportAmount=Calculation().add(totalReportAmount, element['Amount']);
-      totalReportQty=Calculation().add(totalReportQty, element['PurchaseQuantity']);
-    });
 
+    Map<int,dynamic> inputQty={};
+    filterPurchaseReportGridList.forEach((element) {
+      if(!inputQty.containsKey(element['PurchaseOrderId'])){
+        inputQty[element['PurchaseOrderId']]=element['Qty'];
+      }
+      totalReportQty=Calculation().add(totalReportQty, element['Qty']);
+      totalReportAmount=Calculation().add(totalReportAmount, element['Amount']);
+    });
+    totalReportQty="${totalReportQty} Ton";
+    totalReport=inputQty.length;
+
+    filterPurchaseReportGridList.sort((a,b)=>a['PurchaseOrderId'].compareTo(b['PurchaseOrderId']));
     reportsGridDataList=filterPurchaseReportGridList;
+    notifyListeners();
+
+  }
+
+  searchPurchase(String v){
+    if(v.isEmpty){
+      reportsGridDataList=filterPurchaseReportGridList;
+    }else{
+      reportsGridDataList=filterPurchaseReportGridList.where((element) => element['Purchase No'].toString().toLowerCase().contains(v)||
+          element['Material'].toString().toLowerCase().contains(v)).toList();
+    }
     notifyListeners();
   }
 
@@ -1041,10 +1066,28 @@ List<dynamic> vehicleTypeList=[];/* {
     totalReport=filterCustomerSaleReportGridList.length;
     filterCustomerSaleReportGridList.forEach((element) {
       totalReportAmount=Calculation().add(totalReportAmount, element['Amount']);
-      totalReportQty=Calculation().add(totalReportQty, element['Quantity']);
+      totalReportQty=Calculation().add(totalReportQty, element['Qty']);
+    });
+    totalReportQty="${totalReportQty} Ton";
+    print(customerSaleReportGridList);
+    customerSaleReportGridList.forEach((element) {
+      print(element['SaleId']);
     });
 
+    filterCustomerSaleReportGridList.sort((a,b)=>a['SaleId'].compareTo(b['SaleId']));
     reportsGridDataList=filterCustomerSaleReportGridList;
+    notifyListeners();
+  }
+
+  searchCustomerSale(String v){
+    if(v.isEmpty){
+      reportsGridDataList=filterCustomerSaleReportGridList;
+    }else{
+      reportsGridDataList=filterCustomerSaleReportGridList.where((element) => element['Sales Number'].toString().toLowerCase().contains(v)||
+          element['Material'].toString().toLowerCase().contains(v) || element['Vehicle No'].toString().toLowerCase().contains(v) ||
+          element['Customer Name'].toString().toLowerCase().contains(v) || element['Location'].toString().toLowerCase().contains(v)
+      ).toList();
+    }
     notifyListeners();
   }
 
@@ -1161,10 +1204,19 @@ List<dynamic> vehicleTypeList=[];/* {
     });
 
 
-    totalReport=filterProductionReportGridList.length;
+
+    Map<int,dynamic> inputQty={};
     filterProductionReportGridList.forEach((element) {
+      if(!inputQty.containsKey(element['ProductionId'])){
+        inputQty[element['ProductionId']]=element['InputMaterialQuantity'];
+      }
+
       totalReportAmount=Calculation().add(totalReportAmount, element['OutputMaterialQuantity']);
-      totalReportQty=Calculation().add(totalReportQty, element['InputMaterialQuantity']);
+
+    });
+    totalReport=inputQty.length;
+    inputQty.forEach((key, value) {
+      totalReportQty=Calculation().add(totalReportQty, value);
     });
 
     reportsGridDataList=filterProductionReportGridList;
@@ -1828,20 +1880,28 @@ List<dynamic> vehicleTypeList=[];/* {
 
 
     totalReport=filterPurchaseAuditReportGridList.length;
-    Map<int,dynamic> machinesTotal={};
+
 
     filterPurchaseAuditReportGridList.forEach((element) {
-      totalReportQty=Calculation().add(totalReportQty, element['GrandTotalAmount']??0.0);
-      totalReportAmount=Calculation().add(totalReportAmount, element['DiscountAmount']??0.0);
+      totalReportQty=Calculation().add(totalReportQty, element['Grand Total']??0.0);
+      totalReportAmount=Calculation().add(totalReportAmount, element['DisCount']??0.0);
 
     });
 
-
+    filterPurchaseAuditReportGridList.sort((a,b)=>a['PurchaseOrderId'].compareTo(b['PurchaseOrderId']));
 
     reportsGridDataList=filterPurchaseAuditReportGridList;
     notifyListeners();
   }
-
+  searchPurchaseAuditReport(String v){
+    if(v.isEmpty){
+      reportsGridDataList=filterPurchaseAuditReportGridList;
+    }else{
+      reportsGridDataList=filterPurchaseAuditReportGridList.where((element) => element['Purchase No'].toString().toLowerCase().contains(v)||
+          element['Supplier Name'].toString().toLowerCase().contains(v)).toList();
+    }
+    notifyListeners();
+  }
 
 
 

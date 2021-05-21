@@ -407,7 +407,8 @@ class ReportGridState extends State<ReportGrid> with TickerProviderStateMixin{
                                           initialFirstDate: new DateTime.now(),
                                           initialLastDate: (new DateTime.now()),
                                           firstDate: rn.dateTime,
-                                          lastDate: (new DateTime.now())
+                                          lastDate: (new DateTime.now()),
+
                                       );
                                       if (picked1 != null && picked1.length == 2) {
                                         setState(() {
@@ -547,6 +548,12 @@ class ReportGridState extends State<ReportGrid> with TickerProviderStateMixin{
                               onChanged: (v){
                                 if(rn.TypeName=="SaleReport"){
                                   rn.searchSales(v.toLowerCase());
+                                }else  if(rn.TypeName=="PurchaseReport"){
+                                  rn.searchPurchase(v.toLowerCase());
+                                }else  if(rn.TypeName=="PurchaseAuditReport"){
+                                  rn.searchPurchaseAuditReport(v.toLowerCase());
+                                }else  if(rn.TypeName=="CustomerSaleReport"){
+                                  rn.searchCustomerSale(v.toLowerCase());
                                 }
 
                               },
@@ -557,6 +564,12 @@ class ReportGridState extends State<ReportGrid> with TickerProviderStateMixin{
                                searchController.clear();
                                if(rn.TypeName=="SaleReport"){
                                  rn.searchSales("");
+                               }else  if(rn.TypeName=="PurchaseReport"){
+                                 rn.searchPurchase("");
+                               }else  if(rn.TypeName=="PurchaseAuditReport"){
+                                 rn.searchPurchaseAuditReport("");
+                               }else  if(rn.TypeName=="CustomerSaleReport"){
+                                 rn.searchCustomerSale("");
                                }
 
                                 setState(() {

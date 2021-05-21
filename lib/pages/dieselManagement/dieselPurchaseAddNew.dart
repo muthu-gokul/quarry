@@ -25,6 +25,7 @@ import 'package:quarry/widgets/expectedDateContainer.dart';
 import 'package:quarry/widgets/sidePopUp/noModel/sidePopUpSearchNoModel.dart';
 import 'package:quarry/widgets/sidePopUp/sidePopUpSearchOnly.dart';
 import 'package:quarry/widgets/sidePopUp/sidePopUpWithoutSearch.dart';
+import 'package:quarry/widgets/singleDatePicker.dart';
 import 'package:quarry/widgets/validationErrorText.dart';
 
 
@@ -263,12 +264,26 @@ class DieselPurchaseFormState extends State<DieselPurchaseForm> with TickerProvi
                                   !billNo?Container():ValidationErrorText(title: "* Enter Bill Number",),
                                   GestureDetector(
                                     onTap: () async{
-                                      final DateTime picked = await showDatePicker(
+                                      final DateTime picked = await showDatePicker2(
                                         context: context,
                                         initialDate:  dn.DP_billDate==null?DateTime.now():dn.DP_billDate, // Refer step 1
                                         firstDate: DateTime(2000),
-                                        lastDate: DateTime(2100),
-                                      );
+                                        lastDate: DateTime.now(),
+                                          builder: (BuildContext context,Widget child){
+                                            return Theme(
+                                              data: Theme.of(context).copyWith(
+                                                colorScheme: ColorScheme.light(
+                                                  primary: AppTheme.yellowColor, // header background color
+                                                  onPrimary: AppTheme.bgColor, // header text color
+                                                  onSurface: AppTheme.addNewTextFieldText, // body text color
+                                                ),
+                                              ),
+                                              child: child,
+                                            );
+                                          });
+
+
+
                                       if (picked != null)
                                         setState(() {
                                           dn.DP_billDate = picked;
