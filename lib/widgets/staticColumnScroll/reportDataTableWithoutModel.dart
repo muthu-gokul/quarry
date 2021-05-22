@@ -266,7 +266,7 @@ class _ReportDataTable2State extends State<ReportDataTable2> {
             //not Scrollable
             Positioned(
               left: 0,
-              child: Column(
+              child:widget.gridDataRowList.isEmpty?Container(): Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Container(
@@ -330,9 +330,10 @@ class _ReportDataTable2State extends State<ReportDataTable2> {
                                     child: !widget.gridDataRowList[0].isDate? Text("${value[widget.gridDataRowList[0].columnName]}",
                                       style:widget.selectedIndex==i?AppTheme.bgColorTS14:AppTheme.gridTextColor14,
                                     ):
-                                    Text("${widget.gridDataRowList[0].columnName.toString().isNotEmpty?DateFormat('dd-MM-yyyy').format(DateTime.parse(value[widget.gridDataRowList[0].columnName])):" "}",
+                                    widget.gridDataRowList[0].columnName!=null?Text("${widget.gridDataRowList[0].columnName.toString().isNotEmpty?widget.gridDataRowList[0].columnName!=null?
+                                    DateFormat('dd-MM-yyyy').format(DateTime.parse(value[widget.gridDataRowList[0].columnName])):" ":" "}",
                                       style:widget.selectedIndex==i?AppTheme.bgColorTS14:AppTheme.gridTextColor14,
-                                    ),
+                                    ):Container(),
                                   ),
                                 ),
                               ),

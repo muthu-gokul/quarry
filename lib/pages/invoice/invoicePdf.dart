@@ -3,15 +3,15 @@ import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
 import 'dart:io';
 import 'package:pdf/widgets.dart' as pw;
-import 'package:path_provider/path_provider.dart';
 import 'package:pdf/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/notifier/invoiceNotifier.dart';
+import 'package:open_file/open_file.dart';
 
 import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/calculation.dart';
 
-import '../pdfView.dart';
+
 
 invoicePdf(context,bool view) async {
   var inv=Provider.of<InvoiceNotifier>(context,listen: false);
@@ -372,11 +372,8 @@ invoicePdf(context,bool view) async {
   final File file = File(path);
   await file.writeAsBytes(await pdf.save()).then((value) async {
     if(view){
-      material.Navigator.of(context).push(
-        material.MaterialPageRoute(
-          builder: (_) => PdfViewerPage(path: path,filename: "$filename.pdf",),
-        ),
-      );
+      OpenFile.open(path);
+
     }else{
       CustomAlert().billSuccessAlert(context, "", "Successfully Downloaded @ \n\n Internal Storage/quarry/invoice/$filename.pdf", "", "");
     }

@@ -108,9 +108,11 @@ List<dynamic> vehicleTypeList=[];/* {
   List<bool> columnFilterAll=[];
 
   Future<dynamic> ReportsDropDownValues(BuildContext context,String typeName) async {
+    print(context);
     TypeName=typeName;
    // dateTime=DateTime.parse('1999-01-01');
     filtersList.clear();
+    reportsGridDataList.clear();
     updateReportLoader(true);
 
     if(typeName=="SaleReport"){
@@ -306,9 +308,9 @@ List<dynamic> vehicleTypeList=[];/* {
       reportsGridColumnList.clear();
       counterList.clear();
       List<ReportGridStyleModel2> saleAuditReportGridCol=[ReportGridStyleModel2(columnName: "Sale Number",edgeInsets: EdgeInsets.only(left: 10,right: 10)),
-        ReportGridStyleModel2(columnName: "CustomerGSTNumber"),ReportGridStyleModel2(columnName: "CustomerName"),ReportGridStyleModel2(columnName:"CGST"),
-        ReportGridStyleModel2(columnName: "SGST"),ReportGridStyleModel2(columnName: "DiscountAmount"),ReportGridStyleModel2(columnName: "GrossAmount"),
-        ReportGridStyleModel2(columnName: "PlantName"),
+        ReportGridStyleModel2(columnName: "GST No"),ReportGridStyleModel2(columnName: "Customer Name"),ReportGridStyleModel2(columnName:"SubTotal"),
+        ReportGridStyleModel2(columnName: "GST"),ReportGridStyleModel2(columnName: "Discount Amount"),ReportGridStyleModel2(columnName: "Grand Total"),
+        ReportGridStyleModel2(columnName: "Plant Name"),
 
       ];
 
@@ -323,8 +325,8 @@ List<dynamic> vehicleTypeList=[];/* {
       reportsGridColumnList.clear();
       counterList.clear();
       List<ReportGridStyleModel2> purchaseAuditReportGridCol=[ReportGridStyleModel2(columnName: "Purchase No",edgeInsets: EdgeInsets.only(left: 10,right: 10)),
-        ReportGridStyleModel2(columnName: "GST No"),ReportGridStyleModel2(columnName: "Supplier Name"),ReportGridStyleModel2(columnName:"CGST"),
-        ReportGridStyleModel2(columnName: "SGST"),ReportGridStyleModel2(columnName: "Discount"),ReportGridStyleModel2(columnName: "Grand Total"),
+        ReportGridStyleModel2(columnName: "GST No"),ReportGridStyleModel2(columnName: "Supplier Name"),ReportGridStyleModel2(columnName:"GST"),
+        ReportGridStyleModel2(columnName: "SubTotal"),ReportGridStyleModel2(columnName: "Discount Amount"),ReportGridStyleModel2(columnName: "Grand Total"),
         ReportGridStyleModel2(columnName: "Plant Name"),
 
       ];
@@ -708,6 +710,7 @@ List<dynamic> vehicleTypeList=[];/* {
 
 
   Future<dynamic> ReportsDbHit(BuildContext context,String typeName) async {
+   print(context);
 
     String fromDate,toDate;
 
@@ -1999,21 +2002,20 @@ List<dynamic> vehicleTypeList=[];/* {
     double gst=0.0;
     double discount=0.0;
     double grandTotal=0.0;
-    double cgst=0.0;
-    double sgst=0.0;
+
 
     filterSaleAuditReportGridList.forEach((element) {
-      grandTotal=Calculation().add(grandTotal, element['GrossAmount']??0.0);
-      discount=Calculation().add(discount, element['DiscountAmount']??0.0);
-      cgst=Calculation().add(cgst, element['CGST']??0.0);
-      sgst=Calculation().add(sgst, element['SGST']??0.0);
+      grandTotal=Calculation().add(grandTotal, element['Grand Total']??0.0);
+      discount=Calculation().add(discount, element['Discount Amount']??0.0);
+      gst=Calculation().add(gst, element['GST']??0.0);
+
 
     });
 
 
 
     counterList[0].value=filterSaleAuditReportGridList.length;
-    counterList[1].value=Calculation().add(cgst, sgst);
+    counterList[1].value=gst;
     counterList[2].value=discount;
     counterList[3].value=grandTotal;
 
@@ -2027,7 +2029,7 @@ List<dynamic> vehicleTypeList=[];/* {
       reportsGridDataList=filterSaleAuditReportGridList;
     }else{
       reportsGridDataList=filterSaleAuditReportGridList.where((element) => element['Sale Number'].toString().toLowerCase().contains(v)||
-          element['CustomerName'].toString().toLowerCase().contains(v)).toList();
+          element['Customer Name'].toString().toLowerCase().contains(v)).toList();
     }
     notifyListeners();
   }
@@ -2073,7 +2075,7 @@ List<dynamic> vehicleTypeList=[];/* {
 
     filterPurchaseAuditReportGridList.forEach((element) {
       grandTotal=Calculation().add(grandTotal, element['Grand Total']??0.0);
-      discount=Calculation().add(discount, element['Discount']??0.0);
+      discount=Calculation().add(discount, element['Discount Amount']??0.0);
       gst=Calculation().add(gst, element['GST']??0.0);
 
     });

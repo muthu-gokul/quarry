@@ -37,6 +37,8 @@ class PurchaseDetailsGridState extends State<PurchaseDetailsGrid> with TickerPro
 
   @override
   void initState() {
+
+    print(this.mounted);
     header.addListener(() {
       if(body.offset!=header.offset){
         body.jumpTo(header.offset);

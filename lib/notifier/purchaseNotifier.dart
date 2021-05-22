@@ -49,6 +49,7 @@ class PurchaseNotifier extends ChangeNotifier{
   final call=ApiManager();
 
   Future<dynamic> UserDropDownValues(BuildContext context) async {
+    print(context);
     updatePurchaseLoader(true);
     var body={
       "Fields": [
@@ -106,6 +107,7 @@ class PurchaseNotifier extends ChangeNotifier{
 
 
   Future<dynamic> PurchaseDropDownValues(BuildContext context) async {
+    print(context);
     updatePurchaseLoader(true);
     var body={
       "Fields": [

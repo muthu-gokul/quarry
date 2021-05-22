@@ -538,7 +538,7 @@ class DrawerContent extends StatelessWidget {
 
 class DrawerNotifier extends ChangeNotifier{
   int menuSelected=1;
-  changeMenu(int index){
+  Future<dynamic> changeMenu(int index) async{
     menuSelected=index;
     notifyListeners();
   }
@@ -863,10 +863,14 @@ class ReportsPageState extends State<ReportsPage> with TickerProviderStateMixin{
                       tag: 'SalesReport',
                       titleColor: AppTheme.yellowColor,
                       callback: (){
+
                         Navigator.pop(context);
                         widget.voidCallback();
 
-                        Provider.of<DrawerNotifier>(context,listen: false).changeMenu(16);
+
+                        Provider.of<DrawerNotifier>(context,listen: false).changeMenu(16).then((value){
+
+                        });
                         Provider.of<ReportNotifier>(context,listen: false).ReportsDropDownValues(context,"SaleReport").then((value) {
                           Provider.of<ReportNotifier>(context,listen: false).ReportsDbHit(context,"SaleReport");
                         });
@@ -1005,7 +1009,6 @@ class ReportsPageState extends State<ReportsPage> with TickerProviderStateMixin{
                         widget.voidCallback();
 
                        Provider.of<DrawerNotifier>(context,listen: false).changeMenu(16);
-
                        Provider.of<ReportNotifier>(context,listen: false).ReportsDropDownValues(context,"ReceivablePaymentReport").then((value) {
                          Provider.of<ReportNotifier>(context,listen: false).ReportsDbHit(context,"ReceivablePaymentReport");
                        });

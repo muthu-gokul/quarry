@@ -45,6 +45,11 @@ class ReportGridState extends State<ReportGrid> with TickerProviderStateMixin{
   void initState() {
     super.initState();
   }
+  @override
+  void didChangeDependencies() {
+
+    super.didChangeDependencies();
+  }
 
   @override
   void dispose() {
@@ -61,7 +66,7 @@ class ReportGridState extends State<ReportGrid> with TickerProviderStateMixin{
         ),
         child: SafeArea(
           child: Consumer<ReportNotifier>(
-            builder: (context,rn,child)=>  Stack(
+            builder: (con,rn,child)=>  Stack(
               children: [
                 //Image
                 Container(

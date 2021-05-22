@@ -23,8 +23,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_full_pdf_viewer:
-    path: ./flutter_full_pdf_viewer-master
+
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -47,6 +46,7 @@ dependencies:
   image_cropper:
   image_picker:
   share_extend:
+  open_file:
 
 
 

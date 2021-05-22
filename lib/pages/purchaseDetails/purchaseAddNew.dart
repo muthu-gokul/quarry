@@ -83,7 +83,6 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
 
     WidgetsBinding.instance.addPostFrameCallback((_){
 
-
       scrollController=new ScrollController();
       listViewController=new ScrollController();
       setState(() {
