@@ -147,25 +147,36 @@ class ReportGridState extends State<ReportGrid> with TickerProviderStateMixin{
                     height: 110,
                     alignment: Alignment.topCenter,
 
-                    child:Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
+                    child:rn.counterList.isEmpty?Container():SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: rn.counterList.asMap().map((i, value) => MapEntry(i, Container(
+                          height: 85,
+                          width: SizeConfig.screenWidth*0.35,
+                          padding: EdgeInsets.only(left: 5,right: 5),
+                          margin: EdgeInsets.only(right: 10,),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: AppTheme.bgColor
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              FittedBox(child: Text(value.title??" ",style: TextStyle(fontFamily: 'RR',fontSize: 14,color: Colors.white,letterSpacing: 0.1),)),
+                              SizedBox(height: 5,),
+                              FittedBox(
+                                  fit: BoxFit.contain,
+                                  child: Text("${value.value??" "}",style:TextStyle(fontFamily: 'RM',fontSize: 18,color: Colors.yellow),)),
 
-                        ReportHeader(
-                          title: '${rn.totalReportTitle}',
-                          value:rn.totalReport,
-                        ),
-                        ReportHeader(
-                          title: '${rn.totalReportQtyTitle}',
-                          value:rn.totalReportQty,
-
-                        ),
-                        ReportHeader(
-                          title: '${rn.totalReportAmountTitle}',
-                          value: rn.totalReportAmount,
-                        ),
-                      ],
+                            ],
+                          ),
+                        )
+                        )
+                        ).values.toList(),
+                      ),
                     )
                 ),
 
@@ -492,7 +503,9 @@ class ReportGridState extends State<ReportGrid> with TickerProviderStateMixin{
                   child:GestureDetector(
                     behavior: HitTestBehavior.translucent,
                     onTap: () async {
+
                       setState(() {
+                        exportOpen=false;
                         searchMargin=true;
                       });
                       Timer(Duration(milliseconds: 200), (){
@@ -554,6 +567,14 @@ class ReportGridState extends State<ReportGrid> with TickerProviderStateMixin{
                                   rn.searchPurchaseAuditReport(v.toLowerCase());
                                 }else  if(rn.TypeName=="CustomerSaleReport"){
                                   rn.searchCustomerSale(v.toLowerCase());
+                                }else  if(rn.TypeName=="SupplierPurchaseReport"){
+                                  rn.searchSupplierPurchase(v.toLowerCase());
+                                }else  if(rn.TypeName=="ProductionReport"){
+                                  rn.searchProduction(v.toLowerCase());
+                                }else  if(rn.TypeName=="InvoiceReport"){
+                                  rn.searchInvoice(v.toLowerCase());
+                                }else  if(rn.TypeName=="ReceivablePaymentReport"){
+                                  rn.searchReceivablePaymentReport(v.toLowerCase());
                                 }
 
                               },
@@ -570,6 +591,14 @@ class ReportGridState extends State<ReportGrid> with TickerProviderStateMixin{
                                  rn.searchPurchaseAuditReport("");
                                }else  if(rn.TypeName=="CustomerSaleReport"){
                                  rn.searchCustomerSale("");
+                               }else  if(rn.TypeName=="SupplierPurchaseReport"){
+                                 rn.searchSupplierPurchase("");
+                               }else  if(rn.TypeName=="ProductionReport"){
+                                 rn.searchProduction("");
+                               }else  if(rn.TypeName=="InvoiceReport"){
+                                 rn.searchInvoice("");
+                               }else  if(rn.TypeName=="ReceivablePaymentReport"){
+                                 rn.searchReceivablePaymentReport("");
                                }
 
                                 setState(() {

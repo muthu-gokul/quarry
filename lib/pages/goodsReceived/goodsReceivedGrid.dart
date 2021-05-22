@@ -433,12 +433,14 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
                         width:  SizeConfig.screenWidth,
                         height: 80,
                         padding: EdgeInsets.only(bottom: 10),
+
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             SvgPicture.asset("assets/bottomIcons/plant-slection.svg",height: 40,width: 40,color: AppTheme.bgColor,),
-                            Image.asset("assets/goodsIcons/cart.jpg"),
+                            SvgPicture.asset("assets/bottomIcons/completed-Goods.svg",height: 37,width: 37,),
+
 
                             SizedBox(width: SizeConfig.screenWidth*0.25,),
                             GestureDetector(

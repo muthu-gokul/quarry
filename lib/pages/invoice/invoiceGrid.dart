@@ -9,6 +9,7 @@ import 'package:quarry/notifier/productionNotifier.dart';
 import 'package:quarry/notifier/purchaseNotifier.dart';
 import 'package:quarry/notifier/supplierNotifier.dart';
 import 'package:quarry/pages/invoice/invoiceAddnew.dart';
+import 'package:quarry/pages/invoice/invoicePdf.dart';
 import 'package:quarry/pages/productionDetails/productionDetailsAddNew.dart';
 import 'package:quarry/pages/purchaseDetails/purchaseAddNew.dart';
 import 'package:quarry/pages/sale/saleGrid.dart';
@@ -519,10 +520,27 @@ class InvoiceGridState extends State<InvoiceGrid> with TickerProviderStateMixin{
 
                               EditDeletePdf(
                                 showEdit: showEdit,
-                                editTap: (){},
+                                editTap: (){
+                                  inv.insertForm();
+                                  inv.updateInvoiceEdit(true);
+                                  inv.InvoiceDropDownValues(context);
+                                  inv.PlantUserDropDownValues(context).then((value) {
+                                    inv.GetInvoiceDbHit(context, inv.filterInvoiceGridList[selectedIndex].invoiceId);
+                                    Navigator.push(context, _createRoute());
+                                    setState(() {
+                                      selectedIndex=-1;
+                                      showEdit=false;
+                                    });
+
+                                  });
+                                },
                                 deleteTap: (){},
-                                viewTap: (){},
-                                pdfTap: (){},
+                                viewTap: (){
+                                  invoicePdf(context);
+                                },
+                                pdfTap: (){
+
+                                },
                               ),
 
                               /*EditDelete(

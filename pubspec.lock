@@ -132,6 +132,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_full_pdf_viewer:
+    dependency: "direct main"
+    description:
+      path: flutter_full_pdf_viewer-master
+      relative: true
+    source: path
+    version: "1.0.6"
   flutter_localizations:
     dependency: transitive
     description: flutter
@@ -413,6 +420,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.26.0"
+  share_extend:
+    dependency: "direct main"
+    description:
+      name: share_extend
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.0"
   shared_preferences:
     dependency: "direct main"
     description:
