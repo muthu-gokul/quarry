@@ -96,8 +96,13 @@ class CustomAlert{
                         style:TextStyle(fontFamily:'RM',fontSize:22,color:AppTheme.red),textAlign: TextAlign.center,
                     ),
                     SizedBox(height:10),
-                    Text(des,
-                        style:TextStyle(fontFamily:'RL',fontSize:18,color:Color(0xFF787878)),textAlign: TextAlign.center,
+                    Expanded(
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.vertical,
+                        child: Text(des,
+                            style:TextStyle(fontFamily:'RL',fontSize:18,color:Color(0xFF787878)),textAlign: TextAlign.center,
+                        ),
+                      ),
                     ),
                   ]
               )
@@ -149,7 +154,7 @@ class CustomAlert{
              });
             return Dialog(
         child: Container(
-            height: 400,
+            height: 420,
             width: 300,
             decoration: BoxDecoration(
               color: Colors.white,

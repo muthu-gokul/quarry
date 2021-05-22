@@ -496,6 +496,7 @@ class InvoiceGridState extends State<InvoiceGrid> with TickerProviderStateMixin{
                                       GestureDetector(
                                         onTap: (){
                                           inv.insertForm();
+                                          inv.clearForm();
                                           Navigator.of(context).push(_createRoute());
                                           inv.updateInvoiceEdit(false);
                                           inv.PlantUserDropDownValues(context).then((value){
@@ -536,10 +537,23 @@ class InvoiceGridState extends State<InvoiceGrid> with TickerProviderStateMixin{
                                 },
                                 deleteTap: (){},
                                 viewTap: (){
-                                  invoicePdf(context);
+                                  inv.GetInvoiceDbHit(context, inv.filterInvoiceGridList[selectedIndex].invoiceId).then((value) {
+                                    invoicePdf(context,true);
+                                    setState(() {
+                                      selectedIndex=-1;
+                                      showEdit=false;
+                                    });
+                                  });
+
                                 },
                                 pdfTap: (){
-
+                                  inv.GetInvoiceDbHit(context, inv.filterInvoiceGridList[selectedIndex].invoiceId).then((value) {
+                                    invoicePdf(context,false);
+                                    setState(() {
+                                      selectedIndex=-1;
+                                      showEdit=false;
+                                    });
+                                  });
                                 },
                               ),
 

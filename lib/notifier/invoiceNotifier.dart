@@ -540,8 +540,15 @@ class InvoiceNotifier extends ChangeNotifier{
   List<InvoiceCounterModel> counterList=[];
 
 
-  GetInvoiceDbHit(BuildContext context,int InvoiceId)  async{
+  List<dynamic> pdfHeader=[];
+  List<dynamic> pdfMaterial=[];
+  List<dynamic> pdfOtherCharges=[];
+
+ Future<dynamic> GetInvoiceDbHit(BuildContext context,int InvoiceId)  async{
     updateInvoiceLoader(true);
+    pdfHeader.clear();
+    pdfMaterial.clear();
+    pdfOtherCharges.clear();
 
     var body={
       "Fields": [
@@ -573,13 +580,17 @@ class InvoiceNotifier extends ChangeNotifier{
         if(value!=null){
           var parsed=json.decode(value);
           var t=parsed['Table'] as List;
-          print(t);
+
           if(InvoiceId!=null){
             print(t);
             var t1=parsed['Table1'] as List;
             print(t1);
             var t2=parsed['Table2'] as List;
             print(t2);
+
+            pdfHeader=t;
+            pdfMaterial=t1;
+            pdfOtherCharges=t2;
 
             InvoiceEditId=t[0]['InvoiceId'];
 

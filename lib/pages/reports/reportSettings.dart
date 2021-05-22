@@ -298,7 +298,7 @@ class ReportSettingsState extends State<ReportSettings> with TickerProviderState
                                 rn.filterDieselPurchaseReport();
                               }
                              else if(rn.TypeName=="DieselIssueReport"){
-                                rn.filterDieselIssueReport();
+                                rn.filterDieselIssueReport(context);
                               }
                              else if(rn.TypeName=="MachineManagementReport"){
                                 rn.filterMachineManagementReport();
@@ -540,7 +540,8 @@ class _ReportSettingsHeaderState extends State<ReportSettingsHeader> with Ticker
                         children: [
                           Container(
                             width:SizeConfig.screenWidth*0.6,
-                              child: widget.title=="Customer Filter"?Text("${widget.list[index][widget.instanceName]??"Direct Customer"}",
+                              child: widget.title=="Location Filter"?Text("${widget.list[index][widget.instanceName].toString().isEmpty?"Empty":
+                              widget.list[index][widget.instanceName]}",
                                 style:TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 14),) :
                                     Text("${widget.list[index][widget.instanceName]}",
                                 style:TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 14),)

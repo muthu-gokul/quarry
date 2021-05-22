@@ -145,16 +145,16 @@ class ReportGridState extends State<ReportGrid> with TickerProviderStateMixin{
                     padding: EdgeInsets.only(left:5,bottom:25,right: 5),
                    // color: AppTheme.yellowColor,
                     height: 110,
-                    alignment: Alignment.topCenter,
+                    alignment: Alignment.centerLeft,
 
                     child:rn.counterList.isEmpty?Container():SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: rn.counterList.asMap().map((i, value) => MapEntry(i, Container(
                           height: 85,
-                          width: SizeConfig.screenWidth*0.35,
+                          width: SizeConfig.screenWidth*0.37,
                           padding: EdgeInsets.only(left: 5,right: 5),
                           margin: EdgeInsets.only(right: 10,),
                           decoration: BoxDecoration(
@@ -165,7 +165,7 @@ class ReportGridState extends State<ReportGrid> with TickerProviderStateMixin{
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              FittedBox(child: Text(value.title??" ",style: TextStyle(fontFamily: 'RR',fontSize: 14,color: Colors.white,letterSpacing: 0.1),)),
+                              FittedBox(child: Text(value.title??" ",style: TextStyle(fontFamily: 'RR',fontSize: 15,color: Colors.white,letterSpacing: 0.1),)),
                               SizedBox(height: 5,),
                               FittedBox(
                                   fit: BoxFit.contain,
@@ -575,6 +575,20 @@ class ReportGridState extends State<ReportGrid> with TickerProviderStateMixin{
                                   rn.searchInvoice(v.toLowerCase());
                                 }else  if(rn.TypeName=="ReceivablePaymentReport"){
                                   rn.searchReceivablePaymentReport(v.toLowerCase());
+                                }else  if(rn.TypeName=="PayablePaymentReport"){
+                                  rn.searchPayablePaymentReport(v.toLowerCase());
+                                }else  if(rn.TypeName=="VehicleMonitoringReport"){
+                                  rn.searchVehicleMonitoring(v.toLowerCase());
+                                }else  if(rn.TypeName=="MachineManagementReport"){
+                                  rn.searchMachineManagement(v.toLowerCase());
+                                }else  if(rn.TypeName=="SaleAuditReport"){
+                                  rn.searchSaleAuditReport(v.toLowerCase());
+                                }else  if(rn.TypeName=="DieselPurchaseReport"){
+                                  rn.searchDieselPurchaseReport(v.toLowerCase());
+                                }else  if(rn.TypeName=="DieselIssueReport"){
+                                  rn.searchDieselIssueReport(v.toLowerCase());
+                                }else  if(rn.TypeName=="StockReport"){
+                                  rn.searchStockReport(v.toLowerCase());
                                 }
 
                               },
@@ -599,6 +613,20 @@ class ReportGridState extends State<ReportGrid> with TickerProviderStateMixin{
                                  rn.searchInvoice("");
                                }else  if(rn.TypeName=="ReceivablePaymentReport"){
                                  rn.searchReceivablePaymentReport("");
+                               }else  if(rn.TypeName=="PayablePaymentReport"){
+                                 rn.searchPayablePaymentReport("");
+                               }else  if(rn.TypeName=="VehicleMonitoringReport"){
+                                 rn.searchVehicleMonitoring("");
+                               }else  if(rn.TypeName=="MachineManagementReport"){
+                                 rn.searchMachineManagement("");
+                               }else  if(rn.TypeName=="SaleAuditReport"){
+                                 rn.searchSaleAuditReport("");
+                               }else  if(rn.TypeName=="DieselPurchaseReport"){
+                                 rn.searchDieselPurchaseReport("");
+                               }else  if(rn.TypeName=="DieselIssueReport"){
+                                 rn.searchDieselIssueReport("");
+                               }else  if(rn.TypeName=="StockReport"){
+                                 rn.searchStockReport("");
                                }
 
                                 setState(() {
