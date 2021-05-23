@@ -6,7 +6,6 @@ import 'package:quarry/api/ApiManager.dart';
 import 'package:quarry/api/sp.dart';
 import 'package:quarry/model/customerDetailsModel.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
-import 'package:quarry/pages/customerDetails/customerAddNew.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 
 class CustomerNotifier extends ChangeNotifier {

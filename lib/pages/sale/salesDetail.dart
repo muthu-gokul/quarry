@@ -8,9 +8,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
-import 'package:quarry/pages/customerDetails/customerAddNew.dart';
 import 'package:quarry/pages/sale/salesMaterialLoadConfirmation.dart';
-
+import 'package:quarry/pages/settings/customerDetails/customerAddNew.dart';
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/constants.dart';
@@ -1963,6 +1962,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                       isTransportModeOpen=false;
                     });
                     transportTypeSearchController.clear();
+                    qn.filterVehicleTypeList=qn.vehicleList;
                   },
                   addNewOnTap: (){
                     setState(() {

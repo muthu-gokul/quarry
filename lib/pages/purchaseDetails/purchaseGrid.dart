@@ -6,7 +6,6 @@ import 'package:provider/provider.dart';
 import 'package:quarry/notifier/purchaseNotifier.dart';
 import 'package:quarry/notifier/supplierNotifier.dart';
 import 'package:quarry/pages/purchaseDetails/purchaseAddNew.dart';
-import 'package:quarry/pages/supplierDetail/supplierAddNew.dart';
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
@@ -366,6 +365,20 @@ class PurchaseDetailsGridState extends State<PurchaseDetailsGrid> with TickerPro
                             ],
                           ),
                         ),
+
+                        pn.purchaseGridList.isEmpty?Container(
+                          width: SizeConfig.screenWidth,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              SizedBox(height: 70,),
+                              Text("No Data Found",style: TextStyle(fontSize: 18,fontFamily:'RMI',color: AppTheme.addNewTextFieldText),),
+                              SvgPicture.asset("assets/nodata.svg",height: 350,),
+
+                            ],
+                          ),
+                        ):Container()
 
                       ],
                     )

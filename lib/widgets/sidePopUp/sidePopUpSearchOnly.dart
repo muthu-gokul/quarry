@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
 
@@ -112,7 +113,20 @@ class _PopUpSearchOnlyState extends State<PopUpSearchOnly> {
                     width: SizeConfig.screenWidth-SizeConfig.width60,
                     color: Colors.white,
                     padding: EdgeInsets.only(right: 5,left: 5),
-                    child: RawScrollbar(
+                    child:widget.dataList.isEmpty?Container(
+                      width: SizeConfig.screenWidth*0.8,
+                      height: SizeConfig.screenHeight*0.2,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+
+                          Text("No Data Found",style: TextStyle(fontSize: 18,fontFamily:'RMI',color: AppTheme.addNewTextFieldText),),
+                          SvgPicture.asset("assets/nodata.svg",height:SizeConfig.screenHeight*0.3 ,),
+
+                        ],
+                      ),
+                    ):  RawScrollbar(
                       isAlwaysShown: false,
                       thumbColor: AppTheme.srollBarColor,
                       radius: Radius.circular(AppTheme.scrollBarRadius),

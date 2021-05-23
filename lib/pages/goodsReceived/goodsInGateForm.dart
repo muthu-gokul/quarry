@@ -5,11 +5,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:quarry/model/goodsReceivedModel/goodsMaterialListModel.dart';
 import 'package:quarry/notifier/goodsReceivedNotifier.dart';
-import 'package:quarry/notifier/quarryNotifier.dart';
-import 'package:quarry/pages/quarryMaster/plantDetailsAddNew.dart';
+
+
 import 'package:quarry/pages/sale/salesDetail.dart';
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
@@ -175,8 +175,9 @@ class GoodsInGateFormState extends State<GoodsInGateForm> with TickerProviderSta
                               child: ListView(
                                 controller: listViewController,
                                 children: [
-                                     Image.asset("assets/images/inGate.jpg",height: 50,width: 100,),
-                                      Row(
+                                     SvgPicture.asset("assets/goodsIcons/goods-in.svg",height: 40,width: 100,),
+                                      SizedBox(height: 10,),
+                                      gr.IGF_Materials.isEmpty?Container(): Row(
                                         crossAxisAlignment: CrossAxisAlignment.end,
                                         mainAxisAlignment: MainAxisAlignment.center,
                                         children: [
@@ -345,9 +346,7 @@ class GoodsInGateFormState extends State<GoodsInGateForm> with TickerProviderSta
                       ontap: (){
                         Navigator.pop(context);
                         gr.IGF_clear();
-                        setState(() {
-                          gr.IGF_Materials.removeLast();
-                        });
+
                       },
                     ),
                     SizedBox(width: SizeConfig.width5,),
@@ -434,17 +433,6 @@ class GoodsInGateFormState extends State<GoodsInGateForm> with TickerProviderSta
       ),
     );
   }
-  Route _createRoute() {
-    return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => PlantDetailsAddNew(),
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
 
-        return FadeTransition(
-          opacity: Tween(begin: 0.0, end: 1.0).animate(animation),
-          child: child,
-        );
-      },
-    );
-  }
 }
 

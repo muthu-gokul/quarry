@@ -35,7 +35,7 @@ class VehicleNotifier extends ChangeNotifier{
 
   final call=ApiManager();
 
-  vehicleDropDownValues(BuildContext context) async {
+  Future<dynamic> vehicleDropDownValues(BuildContext context) async {
     updatevehicleLoader(true);
     var body={
       "Fields": [

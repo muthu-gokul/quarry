@@ -8,6 +8,7 @@ import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/bottomBarAddButton.dart';
+import 'package:quarry/widgets/editDelete.dart';
 import 'package:quarry/widgets/navigationBarIcon.dart';
 import 'package:quarry/widgets/staticColumnScroll/customDataTable.dart';
 import 'supplierAddNew.dart';
@@ -398,89 +399,24 @@ class SupplierDetailsGridState extends State<SupplierDetailsGrid> with TickerPro
 
                             children: [
 
+                              EditDelete(
+                                showEdit: showEdit,
+                                editTap: (){
+                                  sn.updateSupplierEdit(true);
+                                  sn.clearForm();
+                                  sn.SupplierDropDownValues(context).then((value){
+                                    sn.GetSupplierDbHit(context, sn.supplierGridList[selectedIndex].supplierId,SupplierDetailAddNewState());
+                                    setState(() {
+                                      showEdit=false;
+                                      selectedIndex=-1;
+                                    });
+                                  });
 
+                                  Navigator.of(context).push(_createRoute());
 
-                              AnimatedPositioned(
-                                bottom:showEdit?15:-60,
-                                duration: Duration(milliseconds: 300,),
-                                curve: Curves.bounceInOut,
-                                child: Container(
+                                },
+                              ),
 
-                                    width: SizeConfig.screenWidth,
-                                    child: Row(
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        SizedBox(width: SizeConfig.width20,),
-                                        GestureDetector(
-                                          onTap: (){
-                                            sn.updateSupplierEdit(true);
-                                            sn.clearForm();
-                                            sn.SupplierDropDownValues(context);
-                                            sn.GetSupplierDbHit(context, sn.supplierGridList[selectedIndex].supplierId,SupplierDetailAddNewState());
-                                            setState(() {
-                                              showEdit=false;
-                                              selectedIndex=-1;
-                                            });
-                                            Navigator.of(context).push(_createRoute());
-
-                                          },
-                                          child: Container(
-                                            width: 70,
-                                            decoration: BoxDecoration(
-                                                boxShadow: [
-                                                  BoxShadow(
-                                                    color: AppTheme.yellowColor.withOpacity(0.7),
-                                                    spreadRadius: -3,
-                                                    blurRadius: 15,
-                                                    offset: Offset(0, 7), // changes position of shadow
-                                                  )
-                                                ]
-                                            ),
-                                            child:FittedBox(
-                                              child: Row(
-                                                children: [
-                                                  SvgPicture.asset("assets/svg/edit.svg",height: 20,width: 20,color: AppTheme.yellowColor,),
-                                                  SizedBox(width: SizeConfig.width10,),
-                                                  Text("Edit",style: TextStyle(fontSize: 20,fontFamily: 'RR',color:Color(0xFFFF9D10)),),
-
-
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        Spacer(),
-                                        Container(
-                                          width: 90,
-                                          decoration: BoxDecoration(
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  color: AppTheme.red.withOpacity(0.5),
-                                                  spreadRadius: -3,
-                                                  blurRadius: 25,
-                                                  offset: Offset(0, 7), // changes position of shadow
-                                                )
-                                              ]
-                                          ),
-                                          child:FittedBox(
-                                            child: Row(
-                                              children: [
-                                                Text("Delete",style: TextStyle(fontSize: 18,fontFamily: 'RR',color:Colors.red),),
-                                                SizedBox(width: SizeConfig.width10,),
-                                                SvgPicture.asset("assets/svg/delete.svg",height: 20,width: 20,color: AppTheme.red,),
-
-
-
-
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(width: SizeConfig.width10,),
-                                      ],
-                                    )
-                                ),
-                              )
 
                             ],
                           ),

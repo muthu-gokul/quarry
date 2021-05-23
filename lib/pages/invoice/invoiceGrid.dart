@@ -5,15 +5,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/notifier/invoiceNotifier.dart';
-import 'package:quarry/notifier/productionNotifier.dart';
-import 'package:quarry/notifier/purchaseNotifier.dart';
-import 'package:quarry/notifier/supplierNotifier.dart';
 import 'package:quarry/pages/invoice/invoiceAddnew.dart';
 import 'package:quarry/pages/invoice/invoicePdf.dart';
-import 'package:quarry/pages/productionDetails/productionDetailsAddNew.dart';
-import 'package:quarry/pages/purchaseDetails/purchaseAddNew.dart';
-import 'package:quarry/pages/sale/saleGrid.dart';
-import 'package:quarry/pages/supplierDetail/supplierAddNew.dart';
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
@@ -334,7 +327,7 @@ class InvoiceGridState extends State<InvoiceGrid> with TickerProviderStateMixin{
                                 color: AppTheme.bgColor,
                                 alignment: Alignment.centerLeft,
                                 padding: EdgeInsets.only(left: 5),
-                                child: Text("${inv.invoiceGridCol[0]}",style: AppTheme.TSWhite166,),
+                                child:inv.invoiceGridCol.isEmpty?Container(): Text("${inv.invoiceGridCol[0]}",style: AppTheme.TSWhite166,),
 
                               ),
                               Container(
@@ -417,7 +410,19 @@ class InvoiceGridState extends State<InvoiceGrid> with TickerProviderStateMixin{
                           ),
                         ),
 
+                        inv.filterInvoiceGridList.isEmpty?Container(
+                          width: SizeConfig.screenWidth,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              SizedBox(height: 70,),
+                              Text("No Data Found",style: TextStyle(fontSize: 18,fontFamily:'RMI',color: AppTheme.addNewTextFieldText),),
+                              SvgPicture.asset("assets/nodata.svg",height: 350,),
 
+                            ],
+                          ),
+                        ):Container()
 
 
                       ],

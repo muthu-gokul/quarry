@@ -9,6 +9,7 @@ import 'package:quarry/api/ApiManager.dart';
 import 'package:quarry/api/sp.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/pages/reports/reportGrid.dart';
+import 'package:quarry/styles/constants.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/calculation.dart';
 import 'package:quarry/widgets/staticColumnScroll/reportDataTableWithoutModel.dart';
@@ -939,8 +940,8 @@ List<dynamic> vehicleTypeList=[];/* {
 
 
     counterList[0].value=filterSalesReportGridList.length;
-    counterList[1].value="${totalReportQty} Ton";
-    counterList[4].value=totalReportAmount;
+    counterList[1].value="${formatCurrency.format(totalReportQty)} Ton";
+    counterList[4].value=formatCurrency.format(totalReportAmount);
 
     filterSalesReportGridList.sort((a,b)=>a['SaleId'].compareTo(b['SaleId']));
 
@@ -1021,8 +1022,8 @@ List<dynamic> vehicleTypeList=[];/* {
 
 
     counterList[0].value=inputQty.length;
-    counterList[1].value="$totalReportQty Ton";
-    counterList[2].value=totalReportAmount;
+    counterList[1].value="${formatCurrency.format(totalReportQty)} Ton";
+    counterList[2].value=formatCurrency.format(totalReportAmount);
 
     filterPurchaseReportGridList.sort((a,b)=>a['PurchaseOrderId'].compareTo(b['PurchaseOrderId']));
     reportsGridDataList=filterPurchaseReportGridList;
@@ -1120,8 +1121,8 @@ List<dynamic> vehicleTypeList=[];/* {
 
 
     counterList[0].value=customers.length;
-    counterList[1].value="$qty Ton";
-    counterList[2].value=amount;
+    counterList[1].value="${formatCurrency.format(qty)} Ton";
+    counterList[2].value=formatCurrency.format(amount);
 
 
 
@@ -1196,12 +1197,12 @@ List<dynamic> vehicleTypeList=[];/* {
       totalReportQty=Calculation().add(totalReportQty, element['Qty']);
       totalReportAmount=Calculation().add(totalReportAmount, element['Amount']);
     });
-    totalReportQty="${totalReportQty} Ton";
+
     totalReport=inputQty.length;
 
    counterList[0].value=inputQty.length;
-   counterList[1].value=totalReportQty;
-   counterList[2].value=totalReportAmount;
+   counterList[1].value="${formatCurrency.format(totalReportQty)} Ton";
+   counterList[2].value=formatCurrency.format(totalReportAmount);
 
     filterSupplierPurchaseReportGridList.sort((a,b)=>a['PurchaseOrderId'].compareTo(b['PurchaseOrderId']));
 
@@ -1296,8 +1297,8 @@ List<dynamic> vehicleTypeList=[];/* {
 
 
     counterList[0].value=inputQty.length;
-    counterList[1].value="$inputqty Ton";
-    counterList[2].value="$outputQty Ton";
+    counterList[1].value="${formatCurrency.format(inputqty)} Ton";
+    counterList[2].value="${formatCurrency.format(outputQty)} Ton";
 
     filterProductionReportGridList.sort((a,b)=>a['ProductionId'].compareTo(b['ProductionId']));
 
@@ -1471,9 +1472,9 @@ List<dynamic> vehicleTypeList=[];/* {
       balanceAmount=Calculation().add(balanceAmount, element['Balance Amount']);
     });
 
-    counterList[0].value="${filterReceivablePaymentReportReportGridList.length} / $grandTotal";
-    counterList[1].value=receivedAmount;
-    counterList[2].value=balanceAmount;
+    counterList[0].value="${filterReceivablePaymentReportReportGridList.length} / ${formatCurrency.format(grandTotal)}";
+    counterList[1].value=formatCurrency.format(receivedAmount);
+    counterList[2].value=formatCurrency.format(balanceAmount);
     filterReceivablePaymentReportReportGridList.sort((a,b)=>a['InvoiceId'].compareTo(b['InvoiceId']));
 
     reportsGridDataList=filterReceivablePaymentReportReportGridList;
@@ -1562,9 +1563,11 @@ List<dynamic> vehicleTypeList=[];/* {
       balanceAmount=Calculation().add(balanceAmount, element['Balance Amount']);
     });
 
-    counterList[0].value="${filterPayablePaymentReportGridList.length} / $grandTotal";
-    counterList[1].value=paidAmount;
-    counterList[2].value=balanceAmount;
+
+
+    counterList[0].value="${filterPayablePaymentReportGridList.length} / ${formatCurrency.format(grandTotal)}";
+    counterList[1].value=formatCurrency.format(paidAmount);
+    counterList[2].value=formatCurrency.format(balanceAmount);
     filterPayablePaymentReportGridList.sort((a,b)=>a['InvoiceId'].compareTo(b['InvoiceId']));
 
 
@@ -1781,8 +1784,8 @@ List<dynamic> vehicleTypeList=[];/* {
     });
 
     counterList[0].value=filterDieselPurchaseReportGridList.length;
-    counterList[1].value="$qty Ltr";
-    counterList[2].value="$amount";
+    counterList[1].value="${formatCurrency.format(qty)} Ltr";
+    counterList[2].value="${formatCurrency.format(amount)}";
     filterDieselPurchaseReportGridList.sort((a,b)=>b['Date'].compareTo(a['Date']));
     reportsGridDataList=filterDieselPurchaseReportGridList;
     notifyListeners();
@@ -1860,8 +1863,8 @@ List<dynamic> vehicleTypeList=[];/* {
       });
 
       counterList[0].value=filterDieselIssueReportGridList.length;
-      counterList[1].value="$issuedQty Ltr";
-      counterList[2].value="$issuedMachine / $issuedVehicle Ltr";
+      counterList[1].value="${formatCurrency.format(issuedQty)} Ltr";
+      counterList[2].value="${formatCurrency.format(issuedMachine)} / ${formatCurrency.format(issuedVehicle)} Ltr";
       filterDieselIssueReportGridList.sort((a,b)=>b['Date'].compareTo(a['Date']));
       reportsGridDataList=filterDieselIssueReportGridList;
       notifyListeners();
@@ -2015,9 +2018,9 @@ List<dynamic> vehicleTypeList=[];/* {
 
 
     counterList[0].value=filterSaleAuditReportGridList.length;
-    counterList[1].value=gst;
-    counterList[2].value=discount;
-    counterList[3].value=grandTotal;
+    counterList[1].value=formatCurrency.format(gst);
+    counterList[2].value=formatCurrency.format(discount);
+    counterList[3].value=formatCurrency.format(grandTotal);
 
 
     filterSaleAuditReportGridList.sort((a,b)=>a['SaleId'].compareTo(b['SaleId']));
@@ -2083,9 +2086,9 @@ List<dynamic> vehicleTypeList=[];/* {
     filterPurchaseAuditReportGridList.sort((a,b)=>a['PurchaseOrderId'].compareTo(b['PurchaseOrderId']));
 
     counterList[0].value=filterPurchaseAuditReportGridList.length;
-    counterList[1].value=gst;
-    counterList[2].value=discount;
-    counterList[3].value=grandTotal;
+    counterList[1].value=formatCurrency.format(gst);
+    counterList[2].value=formatCurrency.format(discount);
+    counterList[3].value=formatCurrency.format(grandTotal);
 
     reportsGridDataList=filterPurchaseAuditReportGridList;
     notifyListeners();
@@ -2164,8 +2167,8 @@ List<dynamic> vehicleTypeList=[];/* {
     });
 
     counterList[0].value=filterVehicleMonitoringReportGridList.length;
-    counterList[1].value="$purchaseCount / $purchaseAmount";
-    counterList[2].value="$saleCount / $saleAmount";
+    counterList[1].value="$purchaseCount / ${formatCurrency.format(purchaseAmount)}";
+    counterList[2].value="$saleCount / ${formatCurrency.format(saleAmount)}";
 
     reportsGridDataList=filterVehicleMonitoringReportGridList;
     notifyListeners();
@@ -2240,8 +2243,8 @@ List<dynamic> vehicleTypeList=[];/* {
 
 
     counterList[0].value=filterStockReportGridList.length;
-    counterList[1].value="$inputStock Ton";
-    counterList[2].value="$outputStock Ton";
+    counterList[1].value="${formatCurrency.format(inputStock)} Ton";
+    counterList[2].value="${formatCurrency.format(outputStock)} Ton";
 
 
 

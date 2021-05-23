@@ -30,25 +30,26 @@ import 'package:quarry/pages/invoice/invoiceGrid.dart';
 import 'package:quarry/pages/invoicePayment/paymentGrid.dart';
 import 'package:quarry/pages/productionDetails/productionDetailsGrid.dart';
 import 'package:quarry/pages/purchaseDetails/purchaseGrid.dart';
-import 'package:quarry/pages/supplierDetail/supplierGrid.dart';
 import 'package:quarry/pages/users/profile.dart';
-import 'package:quarry/pages/vehicleDetail/vehicleDetailsGrid.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/animation/fadeanimation.dart';
 import '../styles/size.dart';
-import 'customerDetails/customerGrid.dart';
 import 'dashboard/dashboardHome.dart';
 import 'dieselManagement/dieselGrid.dart';
 import 'employee/employeeAdvanceLoan/employeeAdvanceLoanGrid.dart';
 import 'employee/employeeMaster/employeeMasterGrid.dart';
 import 'employee/employeeSalary/employeeSalaryGrid.dart';
-import 'machineDetails/machineDetailsGrid.dart';
 import 'machineManagement/machineManagementGrid.dart';
-import 'materialDetails/materialDetailsGrid.dart';
-import 'quarryMaster/quarryLocationAddNew.dart';
+
 import 'reports/reportGrid.dart';
 import 'sale/saleGrid.dart';
+import 'settings/customerDetails/customerGrid.dart';
+import 'settings/machineDetails/machineDetailsGrid.dart';
+import 'settings/materialDetails/materialDetailsGrid.dart';
+import 'settings/quarryMaster/quarryLocationAddNew.dart';
+import 'settings/supplierDetail/supplierGrid.dart';
+import 'settings/vehicleDetail/vehicleDetailsGrid.dart';
 
 
 

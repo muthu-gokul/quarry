@@ -302,7 +302,7 @@ class CustomAlert{
                     // SvgPicture.asset(img),
                     Image.asset("assets/images/delete.jpg"),
                     SizedBox(height:20),
-                    Text(title, style:TextStyle(fontFamily:'RR',fontSize:23,color:Color(0xFF787878)),textAlign: TextAlign.center,),
+                    Text(title, style:TextStyle(fontFamily:'RR',fontSize:20,color:Color(0xFF787878)),textAlign: TextAlign.center,),
 
                     SizedBox(height:10),
                     GestureDetector(

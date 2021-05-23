@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/model/paymentModel/paymentMappingModel.dart';
@@ -278,6 +279,7 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
 
                                     /////////////  Payment Details List  /////////////////
                                     Container(
+                                      clipBehavior: Clip.antiAlias,
                                       //  duration: Duration(milliseconds: 300),
                                       // curve: Curves.easeIn,
                                       height: qn.paymentMappingList.length == 0 ? 0 :
@@ -297,16 +299,6 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
                                           color: Colors.white,
                                           borderRadius: BorderRadius.circular(5),
                                         border: Border.all(color: AppTheme.addNewTextFieldBorder)
-                                        /*  boxShadow: [
-                                            qn.productionMaterialMappingList.length == 0 ? BoxShadow() :
-                                            BoxShadow(
-                                              color: AppTheme.addNewTextFieldText
-                                                  .withOpacity(0.2),
-                                              spreadRadius: 2,
-                                              blurRadius: 15,
-                                              offset: Offset(0, 0), // changes position of shadow
-                                            )
-                                          ]*/
                                       ),
                                       child: Column(
                                         children: [
@@ -456,13 +448,11 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
 
 
                                                                 },
-                                                                child: Container(
-                                                                    height: 25,
-                                                                    width: 25,
-                                                                    child: Icon(
-                                                                        Icons.delete,
-                                                                        color: Colors.red)
-                                                                ),
+                                                                  child: Container(
+                                                                      height: 20,
+                                                                      width: 20,
+                                                                      child: SvgPicture.asset("assets/svg/delete.svg",color: AppTheme.red)
+                                                                  ),
                                                               ),
 
                                                             ],
@@ -747,7 +737,7 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
                                           ),
                                         )
                                     ),
-                                    SizedBox(height:  _keyboardVisible ? SizeConfig.screenHeight * 0.5 :SizeConfig.height50,)
+                                    SizedBox(height:  _keyboardVisible ? SizeConfig.screenHeight * 0.5 :SizeConfig.height100,)
                                   ],
                                 ),
                               ),

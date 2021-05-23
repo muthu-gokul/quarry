@@ -7,15 +7,11 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/model/purchaseDetailsModel/PurchaseOrderOtherChargesMappingListModel.dart';
 import 'package:quarry/model/purchaseDetailsModel/purchaseOrderMaterialMappingListModel.dart';
-import 'package:quarry/model/supplierDetailModel/SupplierMaterialMappingListModel.dart';
-import 'package:quarry/notifier/machineNotifier.dart';
 import 'package:quarry/notifier/purchaseNotifier.dart';
-import 'package:quarry/notifier/quarryNotifier.dart';
-import 'package:quarry/notifier/supplierNotifier.dart';
-import 'package:quarry/pages/quarryMaster/quarryLocationAddNew.dart';
 import 'package:quarry/pages/sale/salesDetail.dart';
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
+import 'package:quarry/styles/constants.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/bottomBarAddButton.dart';
@@ -115,6 +111,15 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
       });*/
 
       header.addListener(() {
+
+        if(scrollController.offset==100){
+          if(!isListScroll){
+            setState(() {
+              isListScroll=true;
+            });
+          }
+          listViewController.animateTo(listViewController.position.maxScrollExtent,duration: Duration(milliseconds: 200),curve: Curves.easeIn);
+        }
         if(body.offset!=header.offset){
           body.jumpTo(header.offset);
         }
@@ -133,18 +138,42 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
       });
 
       body.addListener(() {
+        if(scrollController.offset==100){
+          if(!isListScroll){
+            setState(() {
+              isListScroll=true;
+            });
+          }
+          listViewController.animateTo(listViewController.position.maxScrollExtent,duration: Duration(milliseconds: 200),curve: Curves.easeIn);
+        }
         if(header.offset!=body.offset){
           header.jumpTo(body.offset);
         }
       });
 
       verticalLeft.addListener(() {
+        if(scrollController.offset==100){
+          if(!isListScroll){
+            setState(() {
+              isListScroll=true;
+            });
+          }
+          listViewController.animateTo(listViewController.position.maxScrollExtent,duration: Duration(milliseconds: 200),curve: Curves.easeIn);
+        }
         if(verticalRight.offset!=verticalLeft.offset){
           verticalRight.jumpTo(verticalLeft.offset);
         }
       });
 
       verticalRight.addListener(() {
+        if(scrollController.offset==100){
+          if(!isListScroll){
+            setState(() {
+              isListScroll=true;
+            });
+          }
+          listViewController.animateTo(listViewController.position.maxScrollExtent,duration: Duration(milliseconds: 200),curve: Curves.easeIn);
+        }
         if(verticalLeft.offset!=verticalRight.offset){
           verticalLeft.jumpTo(verticalRight.offset);
         }
@@ -1076,7 +1105,7 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                                                             child: Text("Subtotal: ",style: AppTheme.gridTextColorTS,)
                                                         ),
                                                         Spacer(),
-                                                        Text("${pn.subtotal}  ",style: AppTheme.gridTextColorTS,)
+                                                        Text("${formatCurrency.format(pn.subtotal)}  ",style: AppTheme.gridTextColorTS,)
                                                       ],
                                                     ),
                                                     Row(
@@ -1088,7 +1117,7 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                                                             child: Text("Discount: ",style: AppTheme.gridTextColorTS,)
                                                         ),
                                                         Spacer(),
-                                                        Text("-${pn.discountAmount}  ",style: AppTheme.gridTextColorTS,)
+                                                        Text("-${formatCurrency.format(pn.discountAmount)}  ",style: AppTheme.gridTextColorTS,)
                                                       ],
                                                     ),
                                                     Row(
@@ -1100,7 +1129,7 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                                                             child: Text("GST: ",style: AppTheme.gridTextColorTS,)
                                                         ),
                                                         Spacer(),
-                                                        Text("${pn.taxAmount}  ",style: AppTheme.gridTextColorTS,)
+                                                        Text("${formatCurrency.format(pn.taxAmount)}  ",style: AppTheme.gridTextColorTS,)
                                                       ],
                                                     ),
 
@@ -1113,7 +1142,7 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                                                             child: Text("Other Charges: ",style: AppTheme.gridTextColorTS,)
                                                         ),
                                                         Spacer(),
-                                                        Text("${pn.otherCharges}  ",style: AppTheme.gridTextColorTS,)
+                                                        Text("${formatCurrency.format(pn.otherCharges)}  ",style: AppTheme.gridTextColorTS,)
                                                       ],
                                                     ),
                                                     Row(
@@ -1125,7 +1154,7 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                                                             child: Text("Total: ",style: TextStyle(fontFamily: 'RR',fontSize: 20,color: Colors.green),)
                                                         ),
                                                         Spacer(),
-                                                        Text("${pn.grandTotal}  ",style: TextStyle(fontFamily: 'RR',fontSize: 20,color: Colors.green),)
+                                                        Text("${formatCurrency.format(pn.grandTotal)}  ",style: TextStyle(fontFamily: 'RR',fontSize: 20,color: Colors.green),)
                                                       ],
                                                     ),
                                                   ],
@@ -1556,7 +1585,7 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                                                             child: Text("Subtotal: ",style: AppTheme.gridTextColorTS,)
                                                         ),
                                                         Spacer(),
-                                                        Text("${pn.subtotal}  ",style: AppTheme.gridTextColorTS,)
+                                                        Text("${formatCurrency.format(pn.subtotal)}  ",style: AppTheme.gridTextColorTS,)
                                                       ],
                                                     ),
                                                     Row(
@@ -1568,7 +1597,7 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                                                             child: Text("Discount: ",style: AppTheme.gridTextColorTS,)
                                                         ),
                                                         Spacer(),
-                                                        Text("-${pn.discountAmount}  ",style: AppTheme.gridTextColorTS,)
+                                                        Text("-${formatCurrency.format(pn.discountAmount)}  ",style: AppTheme.gridTextColorTS,)
                                                       ],
                                                     ),
                                                     Row(
@@ -1580,7 +1609,7 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                                                             child: Text("GST: ",style: AppTheme.gridTextColorTS,)
                                                         ),
                                                         Spacer(),
-                                                        Text("${pn.taxAmount}  ",style: AppTheme.gridTextColorTS,)
+                                                        Text("${formatCurrency.format(pn.taxAmount)}  ",style: AppTheme.gridTextColorTS,)
                                                       ],
                                                     ),
 
@@ -1593,7 +1622,7 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                                                             child: Text("Other Charges: ",style: AppTheme.gridTextColorTS,)
                                                         ),
                                                         Spacer(),
-                                                        Text("${pn.otherCharges}  ",style: AppTheme.gridTextColorTS,)
+                                                        Text("${formatCurrency.format(pn.otherCharges)}  ",style: AppTheme.gridTextColorTS,)
                                                       ],
                                                     ),
                                                     Row(
@@ -1605,7 +1634,11 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                                                             child: Text("Total: ",style: TextStyle(fontFamily: 'RR',fontSize: 20,color: Colors.green),)
                                                         ),
                                                         Spacer(),
-                                                        Text("${pn.grandTotal}  ",style: TextStyle(fontFamily: 'RR',fontSize: 20,color: Colors.green),)
+                                                        Container(
+                                                                height:20,
+                                                            width: SizeConfig.screenWidth*0.35,
+                                                            alignment: Alignment.centerRight,
+                                                            child: FittedBox(child: Text("${formatCurrency.format(pn.grandTotal)}  ",style: TextStyle(fontFamily: 'RR',fontSize: 20,color: Colors.green),)))
                                                       ],
                                                     ),
                                                   ],

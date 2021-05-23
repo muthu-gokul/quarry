@@ -1,16 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:intl/intl.dart';
+
 import 'package:provider/provider.dart';
 import 'package:quarry/notifier/productionNotifier.dart';
-import 'package:quarry/notifier/purchaseNotifier.dart';
-import 'package:quarry/notifier/supplierNotifier.dart';
+
 import 'package:quarry/pages/productionDetails/productionDetailsAddNew.dart';
-import 'package:quarry/pages/purchaseDetails/purchaseAddNew.dart';
-import 'package:quarry/pages/sale/saleGrid.dart';
-import 'package:quarry/pages/supplierDetail/supplierAddNew.dart';
+
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';

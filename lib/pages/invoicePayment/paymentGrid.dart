@@ -5,15 +5,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/notifier/paymentNotifier.dart';
-import 'package:quarry/notifier/productionNotifier.dart';
-import 'package:quarry/notifier/purchaseNotifier.dart';
-import 'package:quarry/notifier/supplierNotifier.dart';
+
 import 'package:quarry/pages/invoicePayment/paymentAddNew.dart';
 import 'package:quarry/pages/invoicePayment/paymentEdit.dart';
-import 'package:quarry/pages/productionDetails/productionDetailsAddNew.dart';
-import 'package:quarry/pages/purchaseDetails/purchaseAddNew.dart';
-import 'package:quarry/pages/sale/saleGrid.dart';
-import 'package:quarry/pages/supplierDetail/supplierAddNew.dart';
+
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
@@ -156,7 +151,7 @@ class PaymentGridState extends State<PaymentGrid> with TickerProviderStateMixin{
                           map((i, value) => MapEntry(i,
                               Container(
                                 height: 80,
-                                width: SizeConfig.screenWidth*0.40,
+                                width: SizeConfig.screenWidth*0.41,
                                 margin: EdgeInsets.only(right: SizeConfig.width10),
 
                                 decoration: BoxDecoration(
@@ -173,7 +168,7 @@ class PaymentGridState extends State<PaymentGrid> with TickerProviderStateMixin{
                                       children: [
                                         Container(
                                             height: 18,
-                                            width: SizeConfig.screenWidth*0.40,
+                                            width: SizeConfig.screenWidth*0.41,
                                             alignment: Alignment.center,
                                             padding: EdgeInsets.only(left: 3,right: 3),
                                             child: FittedBox(
@@ -182,7 +177,12 @@ class PaymentGridState extends State<PaymentGrid> with TickerProviderStateMixin{
                                             )
                                         ),
                                         SizedBox(height: 5,),
-                                        Text( '${value.value}',style: TextStyle(fontFamily: 'RR',fontSize: 18,color: AppTheme.yellowColor),),
+                                        Container(
+                                          height: 18,
+                                            width: SizeConfig.screenWidth*0.41,
+                                            alignment: Alignment.center,
+                                            padding: EdgeInsets.only(left: 3,right: 3),
+                                            child: FittedBox(child: Text( '${value.value}',style: TextStyle(fontFamily: 'RR',fontSize: 18,color: AppTheme.yellowColor),))),
 
                                       ],
                                     ),

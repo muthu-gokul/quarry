@@ -1,14 +1,14 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+
 import 'package:provider/provider.dart';
 import 'package:quarry/model/goodsReceivedModel/goodsMaterialListModel.dart';
 import 'package:quarry/notifier/goodsReceivedNotifier.dart';
-import 'package:quarry/notifier/quarryNotifier.dart';
+
 import 'package:quarry/pages/goodsReceived/goodsInGateForm.dart';
 import 'package:quarry/pages/goodsReceived/goodsMaterialTripDetail.dart';
-import 'package:quarry/pages/quarryMaster/plantDetailsAddNew.dart';
+
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
@@ -162,7 +162,7 @@ class GoodsMaterialsListState extends State<GoodsMaterialsList> with TickerProvi
                         width: SizeConfig.screenWidth,
                         padding: EdgeInsets.only(top: 20,bottom: 60),
                         decoration: BoxDecoration(
-                            color: Colors.white,
+                            color: AppTheme.gridbodyBgColor,
                             borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10))
                         ),
                         child: ListView(

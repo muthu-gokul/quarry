@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+
 import 'package:provider/provider.dart';
-import 'package:quarry/notifier/materialNotifier.dart';
-import 'package:quarry/notifier/quarryNotifier.dart';
+
 import 'package:quarry/notifier/vehicleNotifier.dart';
-import 'package:quarry/pages/quarryMaster/quarryLocationAddNew.dart';
 import 'package:quarry/pages/sale/salesDetail.dart';
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
-import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/bottomBarAddButton.dart';
 import 'package:quarry/widgets/customTextField.dart';
 import 'package:quarry/widgets/sidePopUp/sidePopUpWithSearch.dart';

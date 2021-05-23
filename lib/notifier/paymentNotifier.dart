@@ -11,6 +11,7 @@ import 'package:quarry/model/paymentModel/paymentPartyModel.dart';
 import 'package:quarry/model/paymentModel/paymentTypeModel.dart';
 import 'package:quarry/model/plantModel/plantUserModel.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
+import 'package:quarry/styles/constants.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/calculation.dart';
 
@@ -395,10 +396,10 @@ class PaymentNotifier extends ChangeNotifier{
       });
 
       counterList=[
-        InvoiceCounterModel(name: "Receivable Payment",value: "${filterGridPaymentList.length} bill/Rs.$total"),
-        InvoiceCounterModel(name: "Paid Payment",value: "$paidCount bill/Rs.$totalPaid"),
-        InvoiceCounterModel(name: "UnPaid Payment",value: "$unpaidCount bill/Rs.$totalUnPaid"),
-        InvoiceCounterModel(name: "Partially Paid Payment",value: "$partiallyCount bill/Rs.$totalpartiallyPaid"),
+        InvoiceCounterModel(name: "Receivable Payment",value: "${filterGridPaymentList.length} bill / ${formatCurrency.format(total)}"),
+        InvoiceCounterModel(name: "Paid Payment",value: "$paidCount bill / ${formatCurrency.format(totalPaid)}"),
+        InvoiceCounterModel(name: "UnPaid Payment",value: "$unpaidCount bill / ${formatCurrency.format(totalUnPaid)}"),
+        InvoiceCounterModel(name: "Partially Paid Payment",value: "$partiallyCount bill / ${formatCurrency.format(totalpartiallyPaid)}"),
       ];
     }
     else{
@@ -421,10 +422,10 @@ class PaymentNotifier extends ChangeNotifier{
       });
 
       counterList=[
-        InvoiceCounterModel(name: "Payable Payment",value: "${filterGridPaymentList.length} bill/Rs.$total"),
-        InvoiceCounterModel(name: "Paid Payment",value: "$paidCount bill/Rs.$totalPaid"),
-        InvoiceCounterModel(name: "UnPaid Payment",value: "$unpaidCount bill/Rs.$totalUnPaid"),
-        InvoiceCounterModel(name: "Partially Paid Payment",value: "$partiallyCount bill/Rs.$totalpartiallyPaid"),
+        InvoiceCounterModel(name: "Payable Payment",value: "${filterGridPaymentList.length} bill / ${formatCurrency.format(total)}"),
+        InvoiceCounterModel(name: "Paid Payment",value: "$paidCount bill / ${formatCurrency.format(totalPaid)}"),
+        InvoiceCounterModel(name: "UnPaid Payment",value: "$unpaidCount bill / ${formatCurrency.format(totalUnPaid)}"),
+        InvoiceCounterModel(name: "Partially Paid Payment",value: "$partiallyCount bill / ${formatCurrency.format(totalpartiallyPaid)}"),
       ];
     }
     notifyListeners();

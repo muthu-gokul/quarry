@@ -10,7 +10,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
-import 'package:quarry/pages/quarryMaster/plantDetailsGrid.dart';
+import 'package:quarry/pages/settings/quarryMaster/plantDetailsGrid.dart';
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';

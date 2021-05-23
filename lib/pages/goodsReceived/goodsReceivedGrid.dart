@@ -4,15 +4,15 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/services.dart';
+
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/notifier/goodsReceivedNotifier.dart';
-import 'package:quarry/notifier/quarryNotifier.dart';
+
 import 'package:quarry/pages/goodsReceived/goodsMaterialsList.dart';
 import 'package:quarry/pages/goodsReceived/goodsOutGateForm.dart';
 import 'package:quarry/pages/goodsReceived/goodsToInvoice.dart';
-import 'package:quarry/pages/quarryMaster/plantDetailsAddNew.dart';
+
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
@@ -207,10 +207,22 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
                             child: SingleChildScrollView(
                               physics: isListScroll?AlwaysScrollableScrollPhysics():NeverScrollableScrollPhysics(),
                               controller: listViewController,
-                              child: Wrap(
+                              child: gr.goodsGridList.isEmpty?Container(
+                                width: SizeConfig.screenWidth,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    SizedBox(height: 70,),
+                                    Text("No Data Found",style: TextStyle(fontSize: 18,fontFamily:'RMI',color: AppTheme.addNewTextFieldText),),
+                                    SvgPicture.asset("assets/nodata.svg",height: 350,),
+
+                                  ],
+                                ),
+                              ): Wrap(
                                   children: gr.goodsGridList.asMap()
-                                      .map((i, value) => MapEntry(i,
-                                  GestureDetector(
+                                          .map((i, value) => MapEntry(i,
+                                         GestureDetector(
                                     onTap: (){
                                     //  Navigator.push(context, _createRoute());
                                    /*   gr.GetplantDetailDbhit(context, gr.plantGridList[i].plantId);*/
@@ -384,7 +396,7 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
                                     ),
                                   ),
 
-                                  )
+                                      )
                                   ).values.toList()
                               ),
                             ),

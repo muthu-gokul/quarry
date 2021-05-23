@@ -6,10 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/model/supplierDetailModel/SupplierMaterialMappingListModel.dart';
-import 'package:quarry/notifier/machineNotifier.dart';
-import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/notifier/supplierNotifier.dart';
-import 'package:quarry/pages/quarryMaster/quarryLocationAddNew.dart';
 import 'package:quarry/pages/sale/salesDetail.dart';
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
@@ -488,31 +485,42 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                                             GestureDetector(
                                                               onTap: () {
 
+                                                                CustomAlert(
+                                                                  Cancelcallback: (){
+                                                                    Navigator.pop(context);
+                                                                  },
+                                                                  callback: (){
+                                                                    Navigator.pop(context);
+                                                                    Timer(Duration(milliseconds: 200), (){
+                                                                      if (qn.supplierMaterialMappingList[index].isEdit) {
+                                                                        qn.supplierMaterialMappingList[index].scaleController.forward().whenComplete(() {
 
-                                                                  if (qn.supplierMaterialMappingList[index].isEdit) {
-                                                                    qn.supplierMaterialMappingList[index].scaleController.forward().whenComplete(() {
+                                                                          if (this.mounted) {
+                                                                            setState(() {
+                                                                              qn.supplierMaterialMappingList.removeAt(index);
+                                                                            });
+                                                                          }
+                                                                        });
 
-                                                                      if (this.mounted) {
+                                                                      }
+                                                                      else {
                                                                         setState(() {
-                                                                          qn.supplierMaterialMappingList.removeAt(index);
+                                                                          qn.supplierMaterialMappingList[index].isDelete=true;
+                                                                        });
+                                                                        qn.supplierMaterialMappingList[index].scaleController.reverse().whenComplete(() {
+                                                                          if (this.mounted) {
+
+                                                                            setState(() {
+                                                                              qn.supplierMaterialMappingList.removeAt(index);
+                                                                            });
+                                                                          }
                                                                         });
                                                                       }
                                                                     });
-
                                                                   }
-                                                                  else {
-                                                                    setState(() {
-                                                                      qn.supplierMaterialMappingList[index].isDelete=true;
-                                                                    });
-                                                                    qn.supplierMaterialMappingList[index].scaleController.reverse().whenComplete(() {
-                                                                      if (this.mounted) {
+                                                                ).yesOrNoDialog(context, "", "Are you sure want to Delete this Material?");
 
-                                                                        setState(() {
-                                                                          qn.supplierMaterialMappingList.removeAt(index);
-                                                                        });
-                                                                      }
-                                                                    });
-                                                                  }
+
 
 
 

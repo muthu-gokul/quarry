@@ -8,7 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
-import 'package:quarry/pages/quarryMaster/plantDetailsAddNew.dart';
+import 'package:quarry/pages/settings/quarryMaster/plantDetailsAddNew.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/bottomBarAddButton.dart';

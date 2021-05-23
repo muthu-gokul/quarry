@@ -52,7 +52,7 @@ class SupplierNotifier extends ChangeNotifier{
 
   final call=ApiManager();
 
-  SupplierDropDownValues(BuildContext context) async {
+  Future<dynamic> SupplierDropDownValues(BuildContext context) async {
 
     updateSupplierLoader(true);
     var body={

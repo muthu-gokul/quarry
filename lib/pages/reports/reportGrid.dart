@@ -159,7 +159,7 @@ class ReportGridState extends State<ReportGrid> with TickerProviderStateMixin{
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: rn.counterList.asMap().map((i, value) => MapEntry(i, Container(
                           height: 85,
-                          width: SizeConfig.screenWidth*0.37,
+                          width: SizeConfig.screenWidth*0.40,
                           padding: EdgeInsets.only(left: 5,right: 5),
                           margin: EdgeInsets.only(right: 10,),
                           decoration: BoxDecoration(

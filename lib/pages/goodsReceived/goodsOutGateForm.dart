@@ -4,12 +4,9 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:quarry/model/goodsReceivedModel/goodsMaterialListModel.dart';
 import 'package:quarry/notifier/goodsReceivedNotifier.dart';
-import 'package:quarry/notifier/quarryNotifier.dart';
-import 'package:quarry/pages/quarryMaster/plantDetailsAddNew.dart';
-import 'package:quarry/pages/sale/salesDetail.dart';
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
@@ -133,7 +130,8 @@ class GoodsOutGateFormState extends State<GoodsOutGateForm> with TickerProviderS
                           child: ListView(
                             controller: listViewController,
                             children: [
-                              Image.asset("assets/images/inGate.jpg",height: 50,width: 100,),
+                              SvgPicture.asset("assets/goodsIcons/goods-out.svg",height: 40,width: 100,),
+                              SizedBox(height: 10,),
                              gr.OGF_index!=null && gr.OGF_index!=-1? Row(
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 mainAxisAlignment: MainAxisAlignment.center,
