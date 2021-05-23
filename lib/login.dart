@@ -156,7 +156,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
         setState(() {
           isLoading=true;
         });
-
+        var itemsUrl="http://183.82.32.76/restroApi///api/Mobile/GetInvoke";
         var loginurl = 'http://183.82.32.76/restroApi///api/Mobile/GetInvokeforlogin';
         //var loginurl="http://117.247.181.35/restroApi///api/Mobile/GetInvokeforlogin";
         var body = {
@@ -176,12 +176,17 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
               "Type": "String",
               "Value": "${password.text}"
             },
+            {
+              "Key": "database",
+              "Type": "String",
+              "Value": "TetroPOS_TestQMS"
+            },
 
           ]
         };
 
         final response = await http.post(
-            Uri.parse(loginurl), headers: {"Content-Type": "application/json"},
+            Uri.parse(itemsUrl), headers: {"Content-Type": "application/json"},
             body: json.encode(body)
         ).then((value) async {
           var parsed = json.decode(value.body);

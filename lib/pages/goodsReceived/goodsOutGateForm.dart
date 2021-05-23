@@ -372,8 +372,8 @@ class GoodsOutGateFormState extends State<GoodsOutGateForm> with TickerProviderS
                         gr.clearOGFform();
                       },
                     ),
-
-                    Text("${gr.OGF_index!=null && gr.OGF_index!=-1? gr.outGateFormList[gr.OGF_index].purchaseOrderNumber:""} OutGate Form",
+//${gr.OGF_index!=null && gr.OGF_index!=-1? gr.outGateFormList[gr.OGF_index].purchaseOrderNumber:""}
+                    Text("OutGate Form",
                       style: TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 16),
                     ),
 

@@ -189,6 +189,7 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
     SizeConfig().init(context);
     return Scaffold(
         key: scaffoldkey,
+        resizeToAvoidBottomInset: false,
         body: Consumer<PurchaseNotifier>(
             builder: (context,pn,child)=> Stack(
               children: [
@@ -1951,7 +1952,7 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                 PopUpSearchOnly(
 
                   searchController: searchController,
-                searchHintText: "Search Supplier",
+                  searchHintText: "Search Supplier",
                 //  title: "Select Supplier",
                   isOpen: suppliersListOpen,
                 //  isAlwaysShown: true,
@@ -1967,8 +1968,8 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                     setState(() {
                       pn.supplierId=pn.searchFilterSuppliersList[index].supplierId;
                       pn.supplierName=pn.searchFilterSuppliersList[index].supplierName;
-                      if(pn.filterSuppliersList[index].supplierType=='External'){
-                        pn.filterMaterialsList=pn.materialsList.where((element) => element.supplierId==pn.filterSuppliersList[index].supplierId
+                      if(pn.searchFilterSuppliersList[index].supplierType=='External'){
+                        pn.filterMaterialsList=pn.materialsList.where((element) => element.supplierId==pn.searchFilterSuppliersList[index].supplierId
                             && element.SupplierType=='External'
                         ).toList();
                         pn.searchFilterMaterialsList=pn.filterMaterialsList;

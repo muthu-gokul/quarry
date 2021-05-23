@@ -28,7 +28,7 @@ class MaterialDetailsGridState extends State<MaterialDetailsGrid> {
 
   bool showEdit=false;
   int selectedIndex=-1;
-  List<String> gridDataRowList=["MaterialName","UnitName","MaterialUnitPrice","TaxValue","MaterialHSNCode"];
+  List<String> gridDataRowList=["MaterialName","UnitName","MaterialUnitPrice","TaxValue","MaterialCategoryName"];
 
   @override
   void initState() {

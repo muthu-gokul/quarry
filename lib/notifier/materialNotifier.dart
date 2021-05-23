@@ -179,7 +179,7 @@ class MaterialNotifier extends ChangeNotifier{
 
 
 
-  List<String> materialGridCol=["Material Name","Unit","Price","GST","HSN Code"];
+  List<String> materialGridCol=["Material Name","Unit","Price","GST","Category"];
   List<MaterialGridModel> materialGridList=[];
 
 

@@ -653,6 +653,7 @@ class GoodsReceivedNotifier extends ChangeNotifier{
 
 
   List<GoodsReceivedGridModel> goodsGridList=[];
+  List<GoodsReceivedGridModel> goodsAllGridList=[];
   List<GoodsReceivedGridModel> filtergoodsGridList=[];
   List<GoodsMaterialExtraTripModel> GoodsMaterialExtraTripModelDetails=[];
 
@@ -711,6 +712,8 @@ class GoodsReceivedNotifier extends ChangeNotifier{
               var t1=parsed['Table1'] as List;
               var t4=parsed['Table4'] as List;
               print(t1);
+              print(parsed['Table2'] as List);
+              print(parsed['Table3'] as List);
               print(t4);
 
               GINV_Materials=t1.map((e) => GoodsReceivedMaterialListModel.fromJson(e)).toList();

@@ -45,57 +45,33 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
   bool isInvoiceOpen=false;
   bool isInvoice=false;
 
+  bool isCompletedGoods=false;
+
+  AnimationController _controller,goodsAllController,goodsDataController;
+  Animation goodsAllAnimation,goodsDataAnimation;
+
+  int index=1;
+
   @override
   void initState() {
     isEdit=false;
+    index=1;
+    _controller = AnimationController(duration: const Duration(milliseconds: 300), vsync: this,);
+
+    goodsAllController = AnimationController(duration: const Duration(milliseconds: 300), vsync: this,);
+    goodsAllAnimation=Tween(begin: 0.0,end: 1.0).animate(goodsAllController);
+
+    goodsDataController = AnimationController(duration: const Duration(milliseconds: 300), vsync: this,);
+    goodsDataAnimation=Tween<double>(begin: 0.0,end: 1.0).animate(goodsDataController);
+
     WidgetsBinding.instance.addPostFrameCallback((_){
 
+      goodsDataController.forward();
 
       scrollController=new ScrollController();
       listViewController=new ScrollController();
       setState(() {
 
-      });
-      scrollController.addListener(() {
-
-        if(scrollController.offset==100){
-    /*      setState(() {
-            isListScroll=true;
-          });*/
-        }
-        else{
-          /*if(isListScroll){
-            print("ISCROLL");
-            setState(() {
-              isListScroll=false;
-            });
-          }*/
-
-        }
-/*        print("isListScroll$isListScroll");*/
-      });
-
-      listViewController.addListener(() {
-       // print(listViewController.position.userScrollDirection);
-        /*f(listViewController.offset==0){
-
-          scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value) {
-            if(isListScroll){
-              print("ISCROLL");
-              setState(() {
-                isListScroll=false;
-              });
-            }
-          });
-        }*/
-
-
-        /*if(listViewController.offset>20){
-          scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
-        }
-        else if(listViewController.offset==0){
-          scrollController.animateTo(0, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
-        }*/
       });
 
     });
@@ -180,227 +156,415 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
                               color: AppTheme.gridbodyBgColor,
                               borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10))
                           ),
-                          child: NotificationListener<ScrollNotification>(
-                              onNotification: (s){
-                                if(s is ScrollStartNotification){
+                          child: Stack(
+                            children: [
+                              FadeTransition(
+                                opacity: goodsDataAnimation,
+                                child:index==1? NotificationListener<ScrollNotification>(
+                                  onNotification: (s){
+                                    //   print(ScrollStartNotification);
+                                    if(s is ScrollStartNotification){
 
-                                  if(listViewController.offset==0 && isListScroll && scrollController.offset==100 && listViewController.position.userScrollDirection==ScrollDirection.idle){
-                                    Timer(Duration(milliseconds: 100), (){
-                                      if(listViewController.position.userScrollDirection!=ScrollDirection.reverse){
-                                        if(scrollController.position.pixels == scrollController.position.maxScrollExtent){
-                                          scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value) {
-                                            if(isListScroll){
-                                              setState(() {
-                                                isListScroll=false;
+                                      if(listViewController.offset==0 && isListScroll && scrollController.offset==100 && listViewController.position.userScrollDirection==ScrollDirection.idle){
+
+                                        Timer(Duration(milliseconds: 100), (){
+                                          if(listViewController.position.userScrollDirection!=ScrollDirection.reverse){
+
+                                            //if(scrollController.position.pixels == scrollController.position.maxScrollExtent){
+                                            if(listViewController.offset==0){
+
+                                              scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value) {
+                                                if(isListScroll){
+                                                  setState(() {
+                                                    isListScroll=false;
+                                                  });
+                                                }
                                               });
                                             }
-                                          });
-                                        }
 
+                                          }
+                                        });
                                       }
-                                    });
+                                    }
+                                  },
+                                  child: SingleChildScrollView(
+                                    physics: isListScroll?AlwaysScrollableScrollPhysics():NeverScrollableScrollPhysics(),
+                                    controller: listViewController,
+                                    child: gr.goodsGridList.isEmpty?Container(
+                                      width: SizeConfig.screenWidth,
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          SizedBox(height: 70,),
+                                          Text("No Data Found",style: TextStyle(fontSize: 18,fontFamily:'RMI',color: AppTheme.addNewTextFieldText),),
+                                          SvgPicture.asset("assets/nodata.svg",height: 350,),
 
+                                        ],
+                                      ),
+                                    ):
+                                    Wrap(
+                                        children: gr.goodsGridList.asMap()
+                                            .map((i, value) => MapEntry(i,
+                                          GestureDetector(
+                                            onTap: (){
+                                              //  Navigator.push(context, _createRoute());
+                                              /*   gr.GetplantDetailDbhit(context, gr.plantGridList[i].plantId);*/
 
-                                  }
-                                }
-                              },
-                            child: SingleChildScrollView(
-                              physics: isListScroll?AlwaysScrollableScrollPhysics():NeverScrollableScrollPhysics(),
-                              controller: listViewController,
-                              child: gr.goodsGridList.isEmpty?Container(
-                                width: SizeConfig.screenWidth,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    SizedBox(height: 70,),
-                                    Text("No Data Found",style: TextStyle(fontSize: 18,fontFamily:'RMI',color: AppTheme.addNewTextFieldText),),
-                                    SvgPicture.asset("assets/nodata.svg",height: 350,),
+                                            },
+                                            child: ScaleTransition(
+                                              scale: Tween(begin: 1.0, end: 0.0)
+                                                  .animate(new CurvedAnimation(parent: value.controller, curve: Curves.easeInOutBack)),
+                                              child: AnimatedOpacity(
+                                                // opacity: value.isAnimate?0:1,
+                                                opacity: 1,
 
-                                  ],
-                                ),
-                              ): Wrap(
-                                  children: gr.goodsGridList.asMap()
-                                          .map((i, value) => MapEntry(i,
-                                         GestureDetector(
-                                    onTap: (){
-                                    //  Navigator.push(context, _createRoute());
-                                   /*   gr.GetplantDetailDbhit(context, gr.plantGridList[i].plantId);*/
+                                                duration: Duration(milliseconds: 200),
+                                                curve: Curves.easeIn,
+                                                child:Container(
+                                                  //  duration: Duration(milliseconds: 200),
+                                                  //  curve: Curves.easeIn,
+                                                  height: value.isAnimate?0: 200,
+                                                  width:value.isAnimate?0: SizeConfig.screenWidth*0.5,
+                                                  /*height: value.isAnimate?0:200,
+                                            width:  value.isAnimate?0: SizeConfig.screenWidth*0.5,
+                                            transform: Matrix4.translationValues(value.isAnimate?SizeConfig.screenWidth*0.25:0, value.isAnimate?100:0, 0),*/
+                                                  child: FittedBox(
+                                                    fit: BoxFit.contain,
+                                                    child: Container(
+                                                      //  margin: EdgeInsets.only(top: 10),
+                                                      height: 200,
+                                                      // height: SizeConfig.screenWidth*0.5,
+                                                      width: SizeConfig.screenWidth*0.5,
 
-                                    },
-                                    child: ScaleTransition(
-                                      scale: Tween(begin: 1.0, end: 0.0)
-                                          .animate(new CurvedAnimation(parent: value.controller, curve: Curves.easeInOutBack)),
-                                      child: AnimatedOpacity(
-                                       // opacity: value.isAnimate?0:1,
-                                        opacity: 1,
-
-                                        duration: Duration(milliseconds: 200),
-                                        curve: Curves.easeIn,
-                                        child:Container(
-                                        //  duration: Duration(milliseconds: 200),
-                                        //  curve: Curves.easeIn,
-                                         height: value.isAnimate?0: 200,
-                                         width:value.isAnimate?0: SizeConfig.screenWidth*0.5,
-                                          /*height: value.isAnimate?0:200,
-                                          width:  value.isAnimate?0: SizeConfig.screenWidth*0.5,
-                                          transform: Matrix4.translationValues(value.isAnimate?SizeConfig.screenWidth*0.25:0, value.isAnimate?100:0, 0),*/
-                                          child: FittedBox(
-                                            fit: BoxFit.contain,
-                                            child: Container(
-                                            //  margin: EdgeInsets.only(top: 10),
-                                              height: 200,
-                                             // height: SizeConfig.screenWidth*0.5,
-                                              width: SizeConfig.screenWidth*0.5,
-
-                                              decoration: BoxDecoration(
-                                                //  borderRadius: BorderRadius.circular(10),
-                                                color: AppTheme.gridbodyBgColor,
-                                              ),
-                                              child: Center(
-                                                child: Container(
-                                                  height: 160,
-                                                 // height: SizeConfig.screenWidth*0.4,
-                                                  width: SizeConfig.screenWidth*0.4,
-                                                  decoration: BoxDecoration(
-                                                    color: Colors.white,
-                                                    borderRadius: BorderRadius.circular(20),
-                                                     /* boxShadow: [
-                                                        BoxShadow(
-                                                          color: AppTheme.addNewTextFieldText.withOpacity(0.2),
-                                                          spreadRadius: 2,
-                                                          blurRadius: 15,
-                                                          offset: Offset(0, 0), // changes position of shadow
-                                                        )
-                                                      ]*/
-                                                  ),
-                                                  child: Column(
-                                                    mainAxisAlignment: MainAxisAlignment.center,
-                                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                                    children: [
-                                                      value.status!='Not Yet'?Text("${value.grnNumber}",
-                                                      style: TextStyle(fontFamily: 'RM',color: AppTheme.bgColor,fontSize: 16),
-                                                      ):Container(),
-                                                      value.status!='Not Yet'? SizedBox(height: 5,):Container(),
-                                                      Text("${value.purchaseOrderNumber}",
-                                                      style: TextStyle(fontFamily: 'RM',color: value.status!='Not Yet'?AppTheme.gridTextColor: AppTheme.bgColor,
-                                                          fontSize: value.status!='Not Yet'? 12:16),
+                                                      decoration: BoxDecoration(
+                                                        //  borderRadius: BorderRadius.circular(10),
+                                                        color: AppTheme.gridbodyBgColor,
                                                       ),
-                                                      SizedBox(height: 5,),
-                                                      Text("${value.date}",
-                                                        style: TextStyle(fontFamily: 'RR',color: AppTheme.gridTextColor.withOpacity(0.6),fontSize: 14),
-                                                      ),
-                                                      SizedBox(height: 5,),
-                                                      Text("${value.status}",
-                                                        style: TextStyle(fontFamily: 'RR',color: value.status=="Not Yet"? AppTheme.gridTextColor.withOpacity(0.6):
-                                                        value.status=='Completed'?Colors.green:AppTheme.red.withOpacity(0.6)
-                                                            ,fontSize: 14),
-                                                      ),
-                                                      SizedBox(height: 20,),
-                                                      GestureDetector(
-                                                        onTap: (){
-                                                          if(isInvoice){
-                                                            if(value.status!='Not Yet'){
-                                                            gr.GoodsDropDownValues(context);
-                                                            gr.GINV_clear();
-                                                            gr.GPO_clear();
-                                                            gr.GetGoodsDbHit(context, value.goodsReceivedId, value.purchaseOrderId,true,GoodsReceivedGridState());
-                                                            Navigator.push(context, _createRouteGoodsToInvoice());
-
-                                                            gr.goodsGridList.forEach((element) {
-                                                              Timer(Duration(milliseconds: 300), (){
-                                                                if(element.status=="Not Yet"){
-                                                                  setState(() {
-                                                                    element.isAnimate=false;
-                                                                  });
-                                                                  element.controller.reverse().then((value){
-
-                                                                  });
-                                                                }
-                                                              });
-
-                                                            });
-                                                            setState(() {
-                                                              isInvoiceOpen=false;
-                                                              isInvoice=false;
-                                                            });
-
-                                                           /* int i=0;
-                                                            if(mounted){
-                                                              Timer.periodic(Duration(milliseconds: 150),(v){
-                                                                print(i);
-                                                                if(gr.goodsGridList[i].status=="Not Yet"){
-                                                                  if(mounted){
-                                                                    setState(() {
-                                                                      gr.goodsGridList[i].isAnimate=!gr.goodsGridList[i].isAnimate;
-                                                                    });
-                                                                  }
-
-                                                                }
-                                                                i=i+1;
-                                                                if(i==gr.goodsGridList.length){
-                                                                  v.cancel();
-                                                                  if(mounted){
-                                                                    setState(() {
-                                                                      isInvoiceOpen=false;
-                                                                      isInvoice=false;
-                                                                    });
-                                                                  }
-
-                                                                }
-
-                                                              });
-                                                            }*/
-
-                                                            }
-                                                          }
-                                                          else{
-                                                            gr.GoodsDropDownValues(context);
-                                                            gr.GetGoodsDbHit(context, value.goodsReceivedId, value.purchaseOrderId,false,GoodsReceivedGridState());
-                                                            Navigator.push(context, _createRoute());
-                                                          }
-
-                                                        },
+                                                      child: Center(
                                                         child: Container(
-                                                          height: 40,
-                                                          width: SizeConfig.screenWidth*0.3,
+                                                          height: 160,
+                                                          // height: SizeConfig.screenWidth*0.4,
+                                                          width: SizeConfig.screenWidth*0.4,
                                                           decoration: BoxDecoration(
-                                                              borderRadius: BorderRadius.circular(25),
-                                                              color: AppTheme.yellowColor,
-                                                            boxShadow: [
+                                                            color: Colors.white,
+                                                            borderRadius: BorderRadius.circular(20),
+                                                            /* boxShadow: [
                                                           BoxShadow(
-                                                          color: AppTheme.yellowColor.withOpacity(0.4),
-                                                            spreadRadius: 1,
-                                                            blurRadius: 5,
-                                                            offset: Offset(1, 8),
-                                                          )// changes position of shadow
-
-                                                            ]
+                                                            color: AppTheme.addNewTextFieldText.withOpacity(0.2),
+                                                            spreadRadius: 2,
+                                                            blurRadius: 15,
+                                                            offset: Offset(0, 0), // changes position of shadow
+                                                          )
+                                                        ]*/
                                                           ),
-                                                          child: Center(
-                                                            child: Text("View",style:TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 16),),
+                                                          child: Column(
+                                                            mainAxisAlignment: MainAxisAlignment.center,
+                                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                                            children: [
+                                                              value.status!='Not Yet'?Text("${value.grnNumber}",
+                                                                style: TextStyle(fontFamily: 'RM',color: AppTheme.bgColor,fontSize: 16),
+                                                              ):Container(),
+                                                              value.status!='Not Yet'? SizedBox(height: 5,):Container(),
+                                                              Text("${value.purchaseOrderNumber}",
+                                                                style: TextStyle(fontFamily: 'RM',color: value.status!='Not Yet'?AppTheme.gridTextColor: AppTheme.bgColor,
+                                                                    fontSize: value.status!='Not Yet'? 12:16),
+                                                              ),
+                                                              SizedBox(height: 5,),
+                                                              Text("${value.date}",
+                                                                style: TextStyle(fontFamily: 'RR',color: AppTheme.gridTextColor.withOpacity(0.6),fontSize: 14),
+                                                              ),
+                                                              SizedBox(height: 5,),
+                                                              Text("${value.status}",
+                                                                style: TextStyle(fontFamily: 'RR',color: value.status=="Not Yet"? AppTheme.gridTextColor.withOpacity(0.6):
+                                                                value.status=='Completed'?Colors.green:AppTheme.red.withOpacity(0.6)
+                                                                    ,fontSize: 14),
+                                                              ),
+                                                              SizedBox(height: 20,),
+                                                              GestureDetector(
+                                                                onTap: (){
+                                                                  if(isInvoice){
+                                                                    if(value.status!='Not Yet'){
+                                                                      gr.GoodsDropDownValues(context);
+                                                                      gr.GINV_clear();
+                                                                      gr.GPO_clear();
+                                                                      gr.GetGoodsDbHit(context, value.goodsReceivedId, value.purchaseOrderId,true,GoodsReceivedGridState());
+                                                                      Navigator.push(context, _createRouteGoodsToInvoice());
+
+                                                                      gr.goodsGridList.forEach((element) {
+                                                                        Timer(Duration(milliseconds: 300), (){
+                                                                          if(element.status=="Not Yet"){
+                                                                            setState(() {
+                                                                              element.isAnimate=false;
+                                                                            });
+                                                                            element.controller.reverse().then((value){
+
+                                                                            });
+                                                                          }
+                                                                        });
+
+                                                                      });
+                                                                      setState(() {
+                                                                        isInvoiceOpen=false;
+                                                                        isInvoice=false;
+                                                                      });
+
+                                                                      /* int i=0;
+                                                              if(mounted){
+                                                                Timer.periodic(Duration(milliseconds: 150),(v){
+                                                                  print(i);
+                                                                  if(gr.goodsGridList[i].status=="Not Yet"){
+                                                                    if(mounted){
+                                                                      setState(() {
+                                                                        gr.goodsGridList[i].isAnimate=!gr.goodsGridList[i].isAnimate;
+                                                                      });
+                                                                    }
+
+                                                                  }
+                                                                  i=i+1;
+                                                                  if(i==gr.goodsGridList.length){
+                                                                    v.cancel();
+                                                                    if(mounted){
+                                                                      setState(() {
+                                                                        isInvoiceOpen=false;
+                                                                        isInvoice=false;
+                                                                      });
+                                                                    }
+
+                                                                  }
+
+                                                                });
+                                                              }*/
+
+                                                                    }
+                                                                  }
+                                                                  else{
+                                                                    gr.GoodsDropDownValues(context);
+                                                                    gr.GetGoodsDbHit(context, value.goodsReceivedId, value.purchaseOrderId,false,GoodsReceivedGridState());
+                                                                    Navigator.push(context, _createRoute());
+                                                                  }
+
+                                                                },
+                                                                child: Container(
+                                                                  height: 40,
+                                                                  width: SizeConfig.screenWidth*0.3,
+                                                                  decoration: BoxDecoration(
+                                                                      borderRadius: BorderRadius.circular(25),
+                                                                      color: AppTheme.yellowColor,
+                                                                      boxShadow: [
+                                                                        BoxShadow(
+                                                                          color: AppTheme.yellowColor.withOpacity(0.4),
+                                                                          spreadRadius: 1,
+                                                                          blurRadius: 5,
+                                                                          offset: Offset(1, 8),
+                                                                        )// changes position of shadow
+
+                                                                      ]
+                                                                  ),
+                                                                  child: Center(
+                                                                    child: Text("View",style:TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 16),),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ],
                                                           ),
                                                         ),
                                                       ),
-                                                    ],
+
+
+
+                                                    ),
                                                   ),
                                                 ),
                                               ),
-
-
-
                                             ),
                                           ),
-                                        ),
-                                      ),
+
+                                        )
+                                        ).values.toList()
                                     ),
                                   ),
-
-                                      )
-                                  ).values.toList()
+                                ):Container(),
                               ),
-                            ),
-                          ),
+
+
+                              FadeTransition(
+                                opacity: goodsAllAnimation,
+                                child:index==2? NotificationListener<ScrollNotification>(
+                                  onNotification: (s){
+                                    //   print(ScrollStartNotification);
+                                    if(s is ScrollStartNotification){
+
+                                      if(listViewController.offset==0 && isListScroll && scrollController.offset==100 && listViewController.position.userScrollDirection==ScrollDirection.idle){
+
+                                        Timer(Duration(milliseconds: 100), (){
+                                          if(listViewController.position.userScrollDirection!=ScrollDirection.reverse){
+
+                                            //if(scrollController.position.pixels == scrollController.position.maxScrollExtent){
+                                            if(listViewController.offset==0){
+
+                                              scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value) {
+                                                if(isListScroll){
+                                                  setState(() {
+                                                    isListScroll=false;
+                                                  });
+                                                }
+                                              });
+                                            }
+
+                                          }
+                                        });
+                                      }
+                                    }
+                                  },
+                                  child: SingleChildScrollView(
+                                    physics: isListScroll?AlwaysScrollableScrollPhysics():NeverScrollableScrollPhysics(),
+                                    controller: listViewController,
+                                    child: gr.goodsAllGridList.isEmpty?Container(
+                                      width: SizeConfig.screenWidth,
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          SizedBox(height: 70,),
+                                          Text("No Data Found",style: TextStyle(fontSize: 18,fontFamily:'RMI',color: AppTheme.addNewTextFieldText),),
+                                          SvgPicture.asset("assets/nodata.svg",height: 350,),
+
+                                        ],
+                                      ),
+                                    ):
+                                    Wrap(
+                                        children: gr.goodsAllGridList.asMap()
+                                            .map((i, value) => MapEntry(i,
+                                          GestureDetector(
+                                            onTap: (){
+                                              //  Navigator.push(context, _createRoute());
+                                              /*   gr.GetplantDetailDbhit(context, gr.plantGridList[i].plantId);*/
+
+                                            },
+                                            child: ScaleTransition(
+                                              scale: Tween(begin: 1.0, end: 0.0)
+                                                  .animate(new CurvedAnimation(parent: value.controller, curve: Curves.easeInOutBack)),
+                                              child: AnimatedOpacity(
+                                                // opacity: value.isAnimate?0:1,
+                                                opacity: 1,
+
+                                                duration: Duration(milliseconds: 200),
+                                                curve: Curves.easeIn,
+                                                child:Container(
+                                                  //  duration: Duration(milliseconds: 200),
+                                                  //  curve: Curves.easeIn,
+                                                  height: value.isAnimate?0: 200,
+                                                  width:value.isAnimate?0: SizeConfig.screenWidth*0.5,
+                                                  /*height: value.isAnimate?0:200,
+                                            width:  value.isAnimate?0: SizeConfig.screenWidth*0.5,
+                                            transform: Matrix4.translationValues(value.isAnimate?SizeConfig.screenWidth*0.25:0, value.isAnimate?100:0, 0),*/
+                                                  child: FittedBox(
+                                                    fit: BoxFit.contain,
+                                                    child: Container(
+                                                      //  margin: EdgeInsets.only(top: 10),
+                                                      height: 200,
+                                                      // height: SizeConfig.screenWidth*0.5,
+                                                      width: SizeConfig.screenWidth*0.5,
+
+                                                      decoration: BoxDecoration(
+                                                        //  borderRadius: BorderRadius.circular(10),
+                                                        color: AppTheme.gridbodyBgColor,
+                                                      ),
+                                                      child: Center(
+                                                        child: Container(
+                                                          height: 160,
+                                                          // height: SizeConfig.screenWidth*0.4,
+                                                          width: SizeConfig.screenWidth*0.4,
+                                                          decoration: BoxDecoration(
+                                                            color: Colors.white,
+                                                            borderRadius: BorderRadius.circular(20),
+                                                            /* boxShadow: [
+                                                          BoxShadow(
+                                                            color: AppTheme.addNewTextFieldText.withOpacity(0.2),
+                                                            spreadRadius: 2,
+                                                            blurRadius: 15,
+                                                            offset: Offset(0, 0), // changes position of shadow
+                                                          )
+                                                        ]*/
+                                                          ),
+                                                          child: Column(
+                                                            mainAxisAlignment: MainAxisAlignment.center,
+                                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                                            children: [
+                                                              value.status!='Not Yet'?Text("${value.grnNumber}",
+                                                                style: TextStyle(fontFamily: 'RM',color: AppTheme.bgColor,fontSize: 16),
+                                                              ):Container(),
+                                                              value.status!='Not Yet'? SizedBox(height: 5,):Container(),
+                                                              Text("${value.purchaseOrderNumber}",
+                                                                style: TextStyle(fontFamily: 'RM',color: value.status!='Not Yet'?AppTheme.gridTextColor: AppTheme.bgColor,
+                                                                    fontSize: value.status!='Not Yet'? 12:16),
+                                                              ),
+                                                              SizedBox(height: 5,),
+                                                              Text("${value.date}",
+                                                                style: TextStyle(fontFamily: 'RR',color: AppTheme.gridTextColor.withOpacity(0.6),fontSize: 14),
+                                                              ),
+                                                              SizedBox(height: 5,),
+                                                              Text("${value.status}",
+                                                                style: TextStyle(fontFamily: 'RR',color: value.status=="Not Yet"? AppTheme.gridTextColor.withOpacity(0.6):
+                                                                value.status=='Completed'?Colors.green:AppTheme.red.withOpacity(0.6)
+                                                                    ,fontSize: 14),
+                                                              ),
+                                                              SizedBox(height: 20,),
+                                                              GestureDetector(
+                                                                onTap: (){
+
+
+                                                                    gr.GoodsDropDownValues(context);
+                                                                    gr.GetGoodsDbHit(context, value.goodsReceivedId, value.purchaseOrderId,false,GoodsReceivedGridState());
+                                                                    Navigator.push(context, _createRoute());
+
+
+                                                                },
+                                                                child: Container(
+                                                                  height: 40,
+                                                                  width: SizeConfig.screenWidth*0.3,
+                                                                  decoration: BoxDecoration(
+                                                                      borderRadius: BorderRadius.circular(25),
+                                                                      color: AppTheme.yellowColor,
+                                                                      boxShadow: [
+                                                                        BoxShadow(
+                                                                          color: AppTheme.yellowColor.withOpacity(0.4),
+                                                                          spreadRadius: 1,
+                                                                          blurRadius: 5,
+                                                                          offset: Offset(1, 8),
+                                                                        )// changes position of shadow
+
+                                                                      ]
+                                                                  ),
+                                                                  child: Center(
+                                                                    child: Text("View",style:TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 16),),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+
+
+
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+
+                                        )
+                                        ).values.toList()
+                                    ),
+                                  ),
+                                ):Container(),
+                              ),
+
+                            ],
+                          )
                         ),
                       )
                     ],
@@ -451,7 +615,17 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             SvgPicture.asset("assets/bottomIcons/plant-slection.svg",height: 40,width: 40,color: AppTheme.bgColor,),
-                            SvgPicture.asset("assets/bottomIcons/completed-Goods.svg",height: 37,width: 37,),
+                            GestureDetector(
+                                onTap: (){
+                                  setState(() {
+                                    isCompletedGoods=true;
+                                    index=2;
+                                  });
+                                  _controller.forward();
+                                  goodsDataController.reverse();
+                                  goodsAllController.forward();
+                                },
+                                child: SvgPicture.asset("assets/bottomIcons/completed-Goods.svg",height: 37,width: 37,)),
 
 
                             SizedBox(width: SizeConfig.screenWidth*0.25,),
@@ -468,10 +642,11 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
                                 onTap:isInvoiceOpen?null: (){
                                   print(isInvoiceOpen);
                                   print(isInvoice);
-
+                                  _controller.forward();
                                   setState(() {
                                     isInvoiceOpen=true;
-                                    isInvoice=!isInvoice;
+                                   // isInvoice=!isInvoice;
+                                    isInvoice=true;
                                   });
 
 
@@ -502,7 +677,7 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
                                     });
                                   }
                                   else{
-                                    gr.goodsGridList.forEach((element) {
+                                   /* gr.goodsGridList.forEach((element) {
                                       Timer(Duration(milliseconds: 300), (){
                                         if(element.status=="Not Yet"){
                                           setState(() {
@@ -518,14 +693,50 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
                                     setState(() {
                                       isInvoiceOpen=false;
                                       //isInvoice=true;
-                                    });
+                                    });*/
                                   }
                                 },
                              //   child:Icon(Icons.cancel,size: 35,)
-                                child:isInvoice? SvgPicture.asset("assets/bottomIcons/cancel-icon.svg",height: 40,width: 40,color: AppTheme.red,) :
-                                SvgPicture.asset("assets/bottomIcons/convert-invoice.svg",height: 40,width: 40,color: AppTheme.bgColor,)
+                                child: SvgPicture.asset("assets/bottomIcons/convert-invoice.svg",height: 40,width: 40,color: AppTheme.bgColor,)
                             ),
                           ],
+                        ),
+                      ),
+
+                      GestureDetector(
+                        onTap: (){
+                          setState(() {
+                            isCompletedGoods=false;
+                            index=1;
+                          });
+                          _controller.reverse();
+                          goodsDataController.forward();
+                          goodsAllController.reverse();
+
+                          if(isInvoice){
+                            gr.goodsGridList.forEach((element) {
+                              Timer(Duration(milliseconds: 300), (){
+                                if(element.status=="Not Yet"){
+                                  setState(() {
+                                    element.isAnimate=false;
+                                  });
+                                  element.controller.reverse().then((value){
+
+                                  });
+                                }
+                              });
+
+                            });
+                            setState(() {
+                              isInvoiceOpen=false;
+                              isInvoice=false;
+                            });
+                          }
+                        },
+                        child: Container(
+                          height:isCompletedGoods||isInvoice? 70:0,
+                          width: SizeConfig.screenWidth,
+                          color: Colors.transparent,
                         ),
                       )
                     ],
@@ -536,8 +747,67 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
               //Add Button
               Align(
                 alignment: Alignment.bottomCenter,
-                child: AddButton(
-                  image: "assets/svg/plusIcon.svg",
+                child:GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: (){
+
+
+                    setState(() {
+                      isCompletedGoods=false;
+                      index=1;
+                    });
+                    _controller.reverse();
+                    goodsDataController.forward();
+                    goodsAllController.reverse();
+
+
+                    if(isInvoice){
+                      gr.goodsGridList.forEach((element) {
+                        Timer(Duration(milliseconds: 300), (){
+                          if(element.status=="Not Yet"){
+                            setState(() {
+                              element.isAnimate=false;
+                            });
+                            element.controller.reverse().then((value){
+
+                            });
+                          }
+                        });
+
+                      });
+                      setState(() {
+                        isInvoiceOpen=false;
+                        isInvoice=false;
+                      });
+                    }
+
+                  },
+                  child: AnimatedContainer(
+                    duration: Duration(milliseconds: 300),
+                    curve: Curves.easeIn,
+                    height: 65,
+                    width: 65,
+                    margin: EdgeInsets.only(bottom: 25),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color:isCompletedGoods||isInvoice?AppTheme.red.withOpacity(0.9): AppTheme.yellowColor,
+                      boxShadow: [
+                        BoxShadow(
+                          color:isCompletedGoods||isInvoice?AppTheme.red.withOpacity(0.4): AppTheme.yellowColor.withOpacity(0.4),
+                          spreadRadius: 1,
+                          blurRadius: 5,
+                          offset: Offset(1, 8), // changes position of shadow
+                        ),
+                      ],
+                    ),
+                    child: Center(
+                      child: RotationTransition(
+                          turns: Tween(begin: 0.0, end: 0.125).animate(_controller),
+                          child: SvgPicture.asset( "assets/svg/plusIcon.svg",height: 30,width: 30,
+                            color: isCompletedGoods||isInvoice?Colors.white:AppTheme.indicatorColor,)
+                      ),
+                    ),
+                  ),
                 ),
               ),
 
