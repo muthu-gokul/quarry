@@ -12,12 +12,14 @@ class GoodsReceivedGridModel {
     this.plantName,
     this.status,
     this.isAnimate,
-    this.controller
+    this.controller,
+    this.IsVehicleOutPending,
   });
 
   int goodsReceivedId;
   String grnNumber;
   int purchaseOrderId;
+  int IsVehicleOutPending;
   String purchaseOrderNumber;
   String date;
   int plantId;
@@ -36,6 +38,7 @@ class GoodsReceivedGridModel {
     plantId: json["PlantId"],
     plantName: json["PlantName"],
     status: json["Status"],
+      IsVehicleOutPending: json["IsVehicleOutPending"],
     isAnimate: false,
     controller: AnimationController(duration: Duration(milliseconds: 300),vsync: tickerProviderStateMixin)
   );

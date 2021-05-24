@@ -420,6 +420,7 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                                 });
                                               },
                                             ),
+
                                             Container(
                                               margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,top: 10),
                                               height:40,

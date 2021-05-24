@@ -453,7 +453,19 @@ class PaymentGridState extends State<PaymentGrid> with TickerProviderStateMixin{
                           ),
                         ),
 
+                        pn.filterGridPaymentList.isEmpty?Container(
+                          width: SizeConfig.screenWidth,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              SizedBox(height: 70,),
+                              Text("No Data Found",style: TextStyle(fontSize: 18,fontFamily:'RMI',color: AppTheme.addNewTextFieldText),),
+                              SvgPicture.asset("assets/nodata.svg",height: 350,),
 
+                            ],
+                          ),
+                        ):Container()
 
 
                       ],

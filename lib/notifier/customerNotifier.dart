@@ -145,7 +145,8 @@ class CustomerNotifier extends ChangeNotifier {
           if(fromSale){
             var t=parsed['Table'] as List;
             print(t);
-            Provider.of<QuarryNotifier>(context, listen: false).updateSelectCustomerFromAddNew(t[0]['CustomerId'],t[0]['CustomerName']);
+            Provider.of<QuarryNotifier>(context, listen: false).updateSelectCustomerFromAddNew(t[0]['CustomerId'],t[0]['CustomerName'],t[0]['IsCreditCustomer'],
+              t[0]['CustomerCreditLimit'],t[0]['UsedAmount'],t[0]['BalanceAmount'],);
           }
           clearCustomerDetails();
           Navigator.pop(context);

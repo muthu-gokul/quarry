@@ -834,6 +834,7 @@ List<dynamic> vehicleTypeList=[];/* {
             }
             var t1=parsed["Table1"] as List;
             attendanceReportGridList=t1;
+            print(attendanceReportGridList);
             filterAttendanceReport();
           }
           else if(typeName=="DieselPurchaseReport"){
@@ -1687,9 +1688,11 @@ List<dynamic> vehicleTypeList=[];/* {
       }
     });
 
+    print(tempAttendanceReportDesignationFilter);
     employeeShift.forEach((element) {
+
       if(element['IsActive']==1){
-        filterAttendanceReportGridList=tempAttendanceReportDesignationFilter.where((ele) => ele['EmployeeShiftId']==element['EmployeeShiftId']).toList();
+        filterAttendanceReportGridList=filterAttendanceReportGridList+tempAttendanceReportDesignationFilter.where((ele) => ele['EmployeeShiftId']==element['EmployeeShiftId']).toList();
       }
     });
 

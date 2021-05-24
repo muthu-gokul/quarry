@@ -15,12 +15,12 @@ reportView(context,String mailid,int saleIndex) async {
 
   // int saleIndex;
   print(saleIndex);
-  int customerIndex;
+  //int customerIndex;
   var qn=Provider.of<QuarryNotifier>(context,listen: false);
 
-  customerIndex=qn.customersList.indexWhere((element) => element.CustomerId==qn.saleDetailsGrid[saleIndex].CustomerId).toInt();
+ // customerIndex=qn.customersList.indexWhere((element) => element.CustomerId==qn.saleDetailsGrid[saleIndex].CustomerId).toInt();
 
-  print(customerIndex);
+ // print(customerIndex);
 
 
   final pw.Document pdf = pw.Document();

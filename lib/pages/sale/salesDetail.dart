@@ -650,7 +650,141 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                                 : Colors.white,
                                                           ),
                                                         ),
-                                                        SizedBox(height: SizeConfig.height20,),
+                                                        SizedBox(height:20,),
+
+                                                        qn.SS_selectIsCreditCustomer?Column(
+                                                          children: [
+                                                            Container(
+                                                              margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20),
+                                                              height:40,
+                                                              width: SizeConfig.screenWidthM40,
+                                                              decoration: BoxDecoration(
+                                                                  color: tableColor,
+                                                                  borderRadius: BorderRadius.only(topLeft: Radius.circular(3),topRight: Radius.circular(3)),
+                                                                  border: Border.all(color: AppTheme.addNewTextFieldBorder)
+
+                                                              ),
+                                                              child:Row(
+                                                                children: [
+                                                                  Container(
+                                                                      padding: EdgeInsets.only(left: SizeConfig.width10),
+                                                                      width: (SizeConfig.screenWidthM40*0.5)-2,
+                                                                      child: Text("Credit Limit",style: tableTextStyle,)
+                                                                  ),
+
+                                                                  Container(
+                                                                      height: 50,
+                                                                      width: 1,
+                                                                      color: AppTheme.addNewTextFieldBorder
+                                                                  ),
+
+                                                                  Container(
+                                                                    padding: EdgeInsets.only(left: SizeConfig.width10),
+                                                                    height: 16,
+                                                                    alignment: Alignment.centerLeft,
+                                                                    width: (SizeConfig.screenWidthM40*0.5)-1,
+                                                                    child: FittedBox(child: Text("${qn.SS_selectCustomerCreditLimit}",
+
+                                                                      style:tableTextStyle2,
+                                                                    ),
+
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                            Container(
+                                                              margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,),
+                                                              height:40,
+                                                              width: SizeConfig.screenWidthM40,
+                                                              decoration: BoxDecoration(
+                                                                  color: tableColor,
+                                                                  border: Border(left: BorderSide(color: AppTheme.addNewTextFieldBorder),
+                                                                    right: BorderSide(color: AppTheme.addNewTextFieldBorder),bottom: BorderSide(color: AppTheme.addNewTextFieldBorder),
+
+                                                                  )
+
+
+                                                              ),
+                                                              child:Row(
+                                                                children: [
+                                                                  Container(
+                                                                      padding: EdgeInsets.only(left: SizeConfig.width10),
+                                                                      width: (SizeConfig.screenWidthM40*0.5)-2,
+                                                                      child: Text("Used Amount",style: tableTextStyle,)
+                                                                  ),
+
+                                                                  Container(
+                                                                      height: 50,
+                                                                      width: 1,
+                                                                      color: AppTheme.addNewTextFieldBorder
+                                                                  ),
+
+                                                                  Container(
+                                                                    padding: EdgeInsets.only(left: SizeConfig.width10),
+                                                                    height: 16,
+                                                                    alignment: Alignment.centerLeft,
+                                                                    width: (SizeConfig.screenWidthM40*0.5)-1,
+                                                                    child: FittedBox(child: Text("${qn.SS_selectUsedAmount}",
+
+                                                                      style:tableTextStyle2,
+                                                                    ),
+
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                            Container(
+                                                              margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,),
+                                                              height:40,
+                                                              width: SizeConfig.screenWidthM40,
+                                                              decoration: BoxDecoration(
+                                                                  color: tableColor,
+                                                                  border: Border(left: BorderSide(color: AppTheme.addNewTextFieldBorder),
+                                                                    right: BorderSide(color: AppTheme.addNewTextFieldBorder),bottom: BorderSide(color: AppTheme.addNewTextFieldBorder),
+
+                                                                  )
+
+
+                                                              ),
+                                                              child:Row(
+                                                                children: [
+                                                                  Container(
+                                                                      padding: EdgeInsets.only(left: SizeConfig.width10),
+                                                                      width: (SizeConfig.screenWidthM40*0.5)-2,
+                                                                      child: Text("Balance Amount",style: tableTextStyle,)
+                                                                  ),
+
+                                                                  Container(
+                                                                      height: 50,
+                                                                      width: 1,
+                                                                      color: AppTheme.addNewTextFieldBorder
+                                                                  ),
+
+                                                                  Container(
+                                                                    padding: EdgeInsets.only(left: SizeConfig.width10),
+                                                                    height: 16,
+                                                                    alignment: Alignment.centerLeft,
+                                                                    width: (SizeConfig.screenWidthM40*0.5)-1,
+                                                                    child: FittedBox(child: Text("${qn.SS_selectBalanceAmount}",
+
+                                                                      style:tableTextStyle2,
+                                                                    ),
+
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                            SizedBox(height:20),
+                                                          ],
+                                                        ):Container(),
+                                                        
+
+
+
+
                                                         Container(
                                                           height: SizeConfig.height30,
                                                           width: SizeConfig.screenWidth,
@@ -2247,6 +2381,10 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                       isCustomerDetaislOpen=false;
                       qn.SS_selectCustomerId=qn.filterSale_customerList[index].customerId;
                       qn.SS_selectedCustomerName=qn.filterSale_customerList[index].customerName;
+                      qn.SS_selectIsCreditCustomer=qn.filterSale_customerList[index].isCreditCustomer;
+                      qn.SS_selectUsedAmount=qn.filterSale_customerList[index].usedAmount;
+                      qn.SS_selectBalanceAmount=qn.filterSale_customerList[index].balanceAmount;
+                      qn.SS_selectCustomerCreditLimit=qn.filterSale_customerList[index].customerCreditLimit;
                       qn.filterSale_customerList=qn.sale_customerList;
                     });
                     customerSearchController.clear();
@@ -2304,6 +2442,9 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
       },
     );
   }
+  TextStyle tableTextStyle=TextStyle(fontFamily: 'RR',color: AppTheme.bgColor);
+  TextStyle tableTextStyle2=TextStyle(fontFamily: 'RR',color: AppTheme.gridTextColor);
+  Color tableColor=Colors.white;
 }
 
 class SidePopUpParent extends StatelessWidget {

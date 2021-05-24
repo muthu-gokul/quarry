@@ -124,7 +124,9 @@ class GoodsReceivedNotifier extends ChangeNotifier{
   int ML_PorderId=null;
   int ML_GoodsorderId=null;
   String ML_Date=null;
+  String ML_Status=null;
   bool ML_isTax=false;
+  int ML_IsVehicleOutPending;
   List<GoodsReceivedMaterialListModel> ML_Materials=[];
 
   ML_clear(){
@@ -134,6 +136,8 @@ class GoodsReceivedNotifier extends ChangeNotifier{
     ML_PorderId=null;
     ML_GoodsorderId=null;
     ML_isTax=false;
+    ML_Status=null;
+    ML_IsVehicleOutPending=-1;
     IGF_Materials.clear();
     notifyListeners();
   }
@@ -540,6 +544,7 @@ class GoodsReceivedNotifier extends ChangeNotifier{
 
   updateDriverCharge(int index,double otherChargeAmount){
     GINV_OtherChargesList[index].otherChargesAmount=otherChargeAmount;
+    calcToInvoice();
     notifyListeners();
   }
 
@@ -651,6 +656,7 @@ class GoodsReceivedNotifier extends ChangeNotifier{
 
 
 
+
   List<GoodsReceivedGridModel> goodsGridList=[];
   List<GoodsReceivedGridModel> goodsAllGridList=[];
   List<GoodsReceivedGridModel> filtergoodsGridList=[];
@@ -741,6 +747,8 @@ class GoodsReceivedNotifier extends ChangeNotifier{
               ML_GoodsorderId=t[0]['GoodsReceivedId'];
               ML_Date=t[0]['Date'];
               ML_isTax=t[0]['IsTax'];
+              ML_IsVehicleOutPending=t[0]['IsVehicleOutPending'];
+              ML_Status=t[0]['Status'];
               print("ML_PorderId $ML_PorderId");
               var t1=parsed['Table1'] as List;
               print("t1_$t1");
@@ -756,6 +764,7 @@ class GoodsReceivedNotifier extends ChangeNotifier{
               IGf_OtherChargesList =t4.map((e) => GoodsOtherChargesModel.fromJson(e,tickerProviderStateMixin)).toList();
               print("t4_$t4");
 
+
             }
 
 
@@ -764,7 +773,10 @@ class GoodsReceivedNotifier extends ChangeNotifier{
           }
           else{
             print(t);
+            var t1=parsed['Table1'] as List;
+            print("t1_$t1");
             goodsGridList=t.map((e) => GoodsReceivedGridModel.fromJson(e,tickerProviderStateMixin)).toList();
+            goodsAllGridList=t1.map((e) => GoodsReceivedGridModel.fromJson(e,tickerProviderStateMixin)).toList();
            // filtergoodsGridList=List.from(goodsGridList);
           }
         }
@@ -779,6 +791,22 @@ class GoodsReceivedNotifier extends ChangeNotifier{
 
   }
 
+
+  calcToInvoice(){
+    double otherCharges=0.0;
+    GINV_invoiceAmount=0.0;
+    GINV_Materials.forEach((element) {
+      if(element.status=='Completed' || element.status=='Partially Received'){
+        //   GINV_invoiceAmount=GINV_invoiceAmount+element.totalAmount;
+        GINV_invoiceAmount=Calculation().add(GINV_invoiceAmount, element.totalAmount);
+      }
+    });
+    GINV_OtherChargesList.forEach((element) {
+      otherCharges=Calculation().add(otherCharges, element.otherChargesAmount);
+    });
+    GINV_invoiceAmount=Calculation().add(GINV_invoiceAmount, otherCharges);
+    notifyListeners();
+  }
 
  //To invoice Sp
  Future<dynamic>  InsertInvoiceDbHit(BuildContext context,TickerProviderStateMixin tickerProviderStateMixin)  async{

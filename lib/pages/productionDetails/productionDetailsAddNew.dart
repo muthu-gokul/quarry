@@ -508,203 +508,203 @@ class ProductionDetailAddNewState extends State<ProductionDetailAddNew> with Tic
 
 
 
-                                  Stack(
-                                    children: [
-                                      GestureDetector(
-                                        onTap: () {
-                                          node.unfocus();
-                                          if(qn.selectInputTypeName==null){
-                                            CustomAlert().commonErrorAlert(context, "Select Input Material", "");
-                                          }
-                                          else if(qn.materialQuantity.text.isEmpty){
-                                            CustomAlert().commonErrorAlert(context, "Enter Input Material Qty", "");
-                                          }
-                                          else{
-                                            setState(() {
-                                              _keyboardVisible=false;
-                                              productionMaterailOpen = true;
-                                            });
+                                  Container(
+                                    height: 50,
+                                    width: SizeConfig.screenWidth,
+                                    margin: EdgeInsets.only(left: SizeConfig.width20, right: SizeConfig.width10, top: SizeConfig.height20,),
+                                    child: Stack(
+                                      children: [
+                                        GestureDetector(
+                                          onTap: () {
+                                            node.unfocus();
+                                            if(qn.selectInputTypeName==null){
+                                              CustomAlert().commonErrorAlert(context, "Select Input Material", "");
+                                            }
+                                            else if(qn.materialQuantity.text.isEmpty){
+                                              CustomAlert().commonErrorAlert(context, "Enter Input Material Qty", "");
+                                            }
+                                            else{
+                                              setState(() {
+                                                _keyboardVisible=false;
+                                                productionMaterailOpen = true;
+                                              });
 
-                                          }
+                                            }
 
-                                        },
-                                        child: Container(
-                                          margin: EdgeInsets.only(
-                                            left: SizeConfig.width20,
-                                            right: SizeConfig.width10,
-                                            top: SizeConfig.height20,),
-                                          padding: EdgeInsets.only(
-                                              left: SizeConfig.width5,
-                                              right: SizeConfig.width5),
-                                          height: 50,
-                                          width: SizeConfig.width140,
-                                          alignment: Alignment.centerLeft,
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(3),
-                                            border: Border.all(color: AppTheme.addNewTextFieldBorder),
-                                          ),
-                                          child: Row(
-                                            children: [
-                                              Text(qn.productionMaterialName == null ? "Material Name" : qn.productionMaterialName,
-                                                style: TextStyle(fontFamily: 'RR', fontSize: 16,
-                                                  color: qn.productionMaterialName == null ? AppTheme.addNewTextFieldText.withOpacity(0.5) : AppTheme.addNewTextFieldText,),
-                                              ),
-                                              Spacer(),
-                                              Container(
-                                                  height: SizeConfig.height25,
-                                                  width: SizeConfig.height25,
-                                                  decoration: BoxDecoration(
-                                                    shape: BoxShape.circle,
-                                                    color: qn.productionMaterialName == null ? AppTheme.addNewTextFieldText : AppTheme.yellowColor,
-                                                  ),
+                                          },
+                                          child: Container(
+                                           // margin: EdgeInsets.only(left: SizeConfig.width20, right: SizeConfig.width10, top: SizeConfig.height20,),
+                                            padding: EdgeInsets.only(
+                                                left: SizeConfig.width5,
+                                                right: SizeConfig.width5),
+                                            height: 50,
+                                            width: SizeConfig.screenWidthM40*0.5,
+                                            alignment: Alignment.centerLeft,
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(3),
+                                              border: Border.all(color: AppTheme.addNewTextFieldBorder),
+                                            ),
+                                            child: Row(
+                                              children: [
+                                                Text(qn.productionMaterialName == null ? "Material Name" : qn.productionMaterialName,
+                                                  style: TextStyle(fontFamily: 'RR', fontSize: 16,
+                                                    color: qn.productionMaterialName == null ? AppTheme.addNewTextFieldText.withOpacity(0.5) : AppTheme.addNewTextFieldText,),
+                                                ),
+                                                Spacer(),
+                                                Container(
+                                                    height: SizeConfig.height25,
+                                                    width: SizeConfig.height25,
+                                                    decoration: BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      color: qn.productionMaterialName == null ? AppTheme.addNewTextFieldText : AppTheme.yellowColor,
+                                                    ),
 
-                                                  child: Center(child: Icon(
-                                                    Icons.arrow_forward_ios_outlined, color: Colors.white, size: 14,)))
-                                            ],
+                                                    child: Center(child: Icon(
+                                                      Icons.arrow_forward_ios_outlined, color: Colors.white, size: 14,)))
+                                              ],
+                                            ),
                                           ),
                                         ),
-                                      ),
 
-                                      Align(
-                                        alignment: Alignment.centerRight,
-                                        child: Container(
-                                          width: SizeConfig.width130,
-                                          height:50,
-                                          alignment: Alignment.center,
-                                          margin: EdgeInsets.only(
-                                              top: SizeConfig.height20,
-                                              right: SizeConfig.width20),
-                                          child: TextFormField(
-                                            onTap: (){
-                                              setState(() {
-                                                _keyboardVisible=true;
-                                              });
-                                              scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                        Align(
+                                          alignment: Alignment.centerRight,
+                                          child: Container(
+                                            width: SizeConfig.screenWidthM40*0.5,
+                                            height:50,
+                                            alignment: Alignment.center,
+                                          //  margin: EdgeInsets.only(top: SizeConfig.height20, right: SizeConfig.width20),
+                                            child: TextFormField(
+                                              onTap: (){
+                                                setState(() {
+                                                  _keyboardVisible=true;
+                                                });
+                                                scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
 
-                                            },
+                                              },
 
-                                            scrollPadding: EdgeInsets.only(bottom: 100),
-                                            style: TextStyle(fontFamily: 'RR', fontSize: 15,
-                                                color: AppTheme.addNewTextFieldText, letterSpacing: 0.2),
-                                            controller: qn.materialWeight,
-                                            decoration: InputDecoration(
-                                              fillColor: Colors.white,
-                                              filled: true,
-                                              hintStyle: TextStyle(fontFamily: 'RL', fontSize: 15, color: AppTheme.addNewTextFieldText.withOpacity(0.9)),
-                                              border: OutlineInputBorder(borderSide: BorderSide(color: AppTheme.addNewTextFieldBorder)),
-                                              enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: AppTheme.addNewTextFieldBorder)),
-                                              focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: AppTheme.addNewTextFieldFocusBorder)
+                                              scrollPadding: EdgeInsets.only(bottom: 100),
+                                              style: TextStyle(fontFamily: 'RR', fontSize: 15,
+                                                  color: AppTheme.addNewTextFieldText, letterSpacing: 0.2),
+                                              controller: qn.materialWeight,
+                                              decoration: InputDecoration(
+                                                fillColor: Colors.white,
+                                                filled: true,
+                                                hintStyle: TextStyle(fontFamily: 'RL', fontSize: 15, color: AppTheme.addNewTextFieldText.withOpacity(0.9)),
+                                                border: OutlineInputBorder(borderSide: BorderSide(color: AppTheme.addNewTextFieldBorder)),
+                                                enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: AppTheme.addNewTextFieldBorder)),
+                                                focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: AppTheme.addNewTextFieldFocusBorder)
+                                                ),
+                                                hintText: "Weight",
+                                                contentPadding: new EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),
+
                                               ),
-                                              hintText: "Weight",
-                                              contentPadding: new EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),
+                                              maxLines: null,
+                                              keyboardType: TextInputType.number,
+                                              inputFormatters: [
+                                                FilteringTextInputFormatter.allow(RegExp('[0-9.]')),
+                                              ],
+                                              textInputAction: TextInputAction.done,
+                                              onChanged: (v) {
 
+                                              },
+                                              onEditingComplete: (){
+                                                node.unfocus();
+                                                Timer(Duration(milliseconds: 100), (){
+                                                  setState(() {
+                                                    _keyboardVisible=false;
+                                                  });
+                                                });
+                                              },
                                             ),
-                                            maxLines: null,
-                                            keyboardType: TextInputType.number,
-                                            inputFormatters: [
-                                              FilteringTextInputFormatter.allow(RegExp('[0-9.]')),
-                                            ],
-                                            textInputAction: TextInputAction.done,
-                                            onChanged: (v) {
+                                          ),
+                                        ),
 
-                                            },
-                                            onEditingComplete: (){
+                                        Align(
+                                          alignment: Alignment.centerRight,
+                                          child: GestureDetector(
+                                            onTap: () async {
                                               node.unfocus();
                                               Timer(Duration(milliseconds: 100), (){
                                                 setState(() {
                                                   _keyboardVisible=false;
                                                 });
-                                              });
-                                            },
-                                          ),
-                                        ),
-                                      ),
 
-                                      Align(
-                                        alignment: Alignment.centerRight,
-                                        child: GestureDetector(
-                                          onTap: () async {
-                                            node.unfocus();
-                                            Timer(Duration(milliseconds: 100), (){
-                                              setState(() {
-                                                _keyboardVisible=false;
-                                              });
-
-                                              if(qn.productionMaterialId==null){
-                                                CustomAlert().commonErrorAlert(context, "Select Output Material", "");
-                                              }
-                                              else if(qn.materialWeight.text.isEmpty){
-                                                CustomAlert().commonErrorAlert(context, "Enter Output Material Weight", "");
-                                              }
-                                              else{
-                                                qn.totalOutputQty=0.0;
-                                                qn.productionMaterialMappingList.forEach((element) {
-                                                  qn.totalOutputQty=Calculation().add(qn.totalOutputQty, element.OutputMaterialQuantity);
-                                                });
-                                                qn.totalOutputQty=Calculation().add(qn.totalOutputQty, qn.materialWeight.text);
-                                                if(qn.totalOutputQty<double.parse(qn.materialQuantity.text)){
-                                                  Timer(Duration(milliseconds: 300), () {
-                                                    setState(() {
-                                                      qn.productionMaterialMappingList.add(
-                                                          ProductionMaterialMappingListModel(
-                                                              OutputMaterialId: qn.productionMaterialId,
-                                                              MaterialName: qn.productionMaterialName,
-                                                              MaterialUnit: qn.selectInputUnitName,
-                                                              UnitId: qn.selectInputUnitId,
-                                                              OutputMaterialQuantity: qn.materialWeight.text.isEmpty?0.0:double.parse(qn.materialWeight.text),
-
-                                                              IsActive: 1,
-                                                              scaleController: AnimationController(duration: Duration(milliseconds: 300), vsync: this),
-                                                              isEdit: false,
-                                                              isDelete: false
-                                                          )
-                                                      );
-
-                                                      if(qn.productionMaterialName.toString().toLowerCase()=='dust'){
-                                                        qn.dustQty=double.parse(qn.materialWeight.text);
-                                                      }
-
-                                                    });
-
-                                                    listViewController.animateTo(listViewController.position.maxScrollExtent,
-                                                        duration: Duration(milliseconds: 200), curve: Curves.easeIn).then((value) {
-                                                      qn.productionMaterialMappingList[qn.productionMaterialMappingList.length - 1].scaleController
-                                                          .forward().then((value) {
-                                                        listViewController.animateTo(listViewController.position.maxScrollExtent, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
-                                                        qn.clearMappingList();
-                                                      });
-                                                    });
-                                                    qn.wastageCalc();
-                                                  });
+                                                if(qn.productionMaterialId==null){
+                                                  CustomAlert().commonErrorAlert(context, "Select Output Material", "");
+                                                }
+                                                else if(qn.materialWeight.text.isEmpty){
+                                                  CustomAlert().commonErrorAlert(context, "Enter Output Material Weight", "");
                                                 }
                                                 else{
-                                                  CustomAlert().commonErrorAlert(context, "Excess Weight", "Total Output Material Weight should be less than input Material Weight");
+                                                  qn.totalOutputQty=0.0;
+                                                  qn.productionMaterialMappingList.forEach((element) {
+                                                    qn.totalOutputQty=Calculation().add(qn.totalOutputQty, element.OutputMaterialQuantity);
+                                                  });
+                                                  qn.totalOutputQty=Calculation().add(qn.totalOutputQty, qn.materialWeight.text);
+                                                  if(qn.totalOutputQty<double.parse(qn.materialQuantity.text)){
+                                                    Timer(Duration(milliseconds: 300), () {
+                                                      setState(() {
+                                                        qn.productionMaterialMappingList.add(
+                                                            ProductionMaterialMappingListModel(
+                                                                OutputMaterialId: qn.productionMaterialId,
+                                                                MaterialName: qn.productionMaterialName,
+                                                                MaterialUnit: qn.selectInputUnitName,
+                                                                UnitId: qn.selectInputUnitId,
+                                                                OutputMaterialQuantity: qn.materialWeight.text.isEmpty?0.0:double.parse(qn.materialWeight.text),
+
+                                                                IsActive: 1,
+                                                                scaleController: AnimationController(duration: Duration(milliseconds: 300), vsync: this),
+                                                                isEdit: false,
+                                                                isDelete: false
+                                                            )
+                                                        );
+
+                                                        if(qn.productionMaterialName.toString().toLowerCase()=='dust'){
+                                                          qn.dustQty=double.parse(qn.materialWeight.text);
+                                                        }
+
+                                                      });
+
+                                                      listViewController.animateTo(listViewController.position.maxScrollExtent,
+                                                          duration: Duration(milliseconds: 200), curve: Curves.easeIn).then((value) {
+                                                        qn.productionMaterialMappingList[qn.productionMaterialMappingList.length - 1].scaleController
+                                                            .forward().then((value) {
+                                                          listViewController.animateTo(listViewController.position.maxScrollExtent, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                                          qn.clearMappingList();
+                                                        });
+                                                      });
+                                                      qn.wastageCalc();
+                                                    });
+                                                  }
+                                                  else{
+                                                    CustomAlert().commonErrorAlert(context, "Excess Weight", "Total Output Material Weight should be less than input Material Weight");
+                                                  }
+
                                                 }
-
-                                              }
-                                            });
+                                              });
 
 
 
 
-                                          },
-                                          child: Container(
-                                            height: SizeConfig.height40,
-                                            width: SizeConfig.height40,
-                                            margin: EdgeInsets.only(top: SizeConfig.height25, right: SizeConfig.width25),
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: AppTheme.yellowColor,
-                                            ),
-                                            child: Center(
-                                              child: Icon(Icons.add, color: AppTheme.bgColor, size: 30,),
+                                            },
+                                            child: Container(
+                                              height:40,
+                                              width: 40,
+                                             margin: EdgeInsets.only( right: SizeConfig.width5),
+                                              decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: AppTheme.yellowColor,
+                                              ),
+                                              child: Center(
+                                                child: Icon(Icons.add, color: AppTheme.bgColor, size: 30,),
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      )
+                                        )
 
 
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                   SizedBox(height: SizeConfig.height20,),
                                   Align(
@@ -855,9 +855,9 @@ class ProductionDetailAddNewState extends State<ProductionDetailAddNew> with Tic
 
 
                 Container(
-                  height: machineCategoryOpen || inputMaterialOpen || productionMaterailOpen? SizeConfig
+                  height: machineCategoryOpen || inputMaterialOpen || productionMaterailOpen || isPlantOpen? SizeConfig
                       .screenHeight : 0,
-                  width: machineCategoryOpen || inputMaterialOpen || productionMaterailOpen? SizeConfig
+                  width: machineCategoryOpen || inputMaterialOpen || productionMaterailOpen || isPlantOpen? SizeConfig
                       .screenWidth : 0,
                   color: Colors.black.withOpacity(0.5),
                 ),

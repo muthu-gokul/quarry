@@ -16,6 +16,7 @@ import 'package:quarry/pages/goodsReceived/goodsToInvoice.dart';
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
+import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/bottomBarAddButton.dart';
 import 'package:quarry/widgets/navigationBarIcon.dart';
 
@@ -285,56 +286,35 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
                                                                 onTap: (){
                                                                   if(isInvoice){
                                                                     if(value.status!='Not Yet'){
-                                                                      gr.GoodsDropDownValues(context);
-                                                                      gr.GINV_clear();
-                                                                      gr.GPO_clear();
-                                                                      gr.GetGoodsDbHit(context, value.goodsReceivedId, value.purchaseOrderId,true,GoodsReceivedGridState());
-                                                                      Navigator.push(context, _createRouteGoodsToInvoice());
+                                                                      if(value.IsVehicleOutPending==0){
+                                                                        gr.GoodsDropDownValues(context);
+                                                                        gr.GINV_clear();
+                                                                        gr.GPO_clear();
+                                                                        gr.GetGoodsDbHit(context, value.goodsReceivedId, value.purchaseOrderId,true,GoodsReceivedGridState());
+                                                                        Navigator.push(context, _createRouteGoodsToInvoice());
 
-                                                                      gr.goodsGridList.forEach((element) {
-                                                                        Timer(Duration(milliseconds: 300), (){
-                                                                          if(element.status=="Not Yet"){
-                                                                            setState(() {
-                                                                              element.isAnimate=false;
-                                                                            });
-                                                                            element.controller.reverse().then((value){
+                                                                        gr.goodsGridList.forEach((element) {
+                                                                          Timer(Duration(milliseconds: 300), (){
+                                                                            if(element.status=="Not Yet"){
+                                                                              setState(() {
+                                                                                element.isAnimate=false;
+                                                                              });
+                                                                              element.controller.reverse().then((value){
 
-                                                                            });
-                                                                          }
+                                                                              });
+                                                                            }
+                                                                          });
+
                                                                         });
-
-                                                                      });
-                                                                      setState(() {
-                                                                        isInvoiceOpen=false;
-                                                                        isInvoice=false;
-                                                                      });
-
-                                                                      /* int i=0;
-                                                              if(mounted){
-                                                                Timer.periodic(Duration(milliseconds: 150),(v){
-                                                                  print(i);
-                                                                  if(gr.goodsGridList[i].status=="Not Yet"){
-                                                                    if(mounted){
-                                                                      setState(() {
-                                                                        gr.goodsGridList[i].isAnimate=!gr.goodsGridList[i].isAnimate;
-                                                                      });
-                                                                    }
-
-                                                                  }
-                                                                  i=i+1;
-                                                                  if(i==gr.goodsGridList.length){
-                                                                    v.cancel();
-                                                                    if(mounted){
-                                                                      setState(() {
-                                                                        isInvoiceOpen=false;
-                                                                        isInvoice=false;
-                                                                      });
-                                                                    }
-
-                                                                  }
-
-                                                                });
-                                                              }*/
+                                                                        setState(() {
+                                                                          isInvoiceOpen=false;
+                                                                          isInvoice=false;
+                                                                        });
+                                                                        _controller.reverse();
+                                                                      }
+                                                                      else{
+                                                                        CustomAlert().commonErrorAlert(context, "Cant Convert to Invoice", "Complete the Pending InGate Vehicles to raise Invoice");
+                                                                      }
 
                                                                     }
                                                                   }

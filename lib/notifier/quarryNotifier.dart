@@ -11,6 +11,7 @@ import 'package:quarry/model/plantDetailsModel/plantLicenseModel.dart';
 import 'package:quarry/model/plantDetailsModel/plantTypeModel.dart';
 import 'package:quarry/model/plantModel/plantUserModel.dart';
 import 'package:quarry/model/salesVehiclesModel.dart';
+import 'package:quarry/pages/sale/saleGrid.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/calculation.dart';
 import 'package:quarry/widgets/decimal.dart';
@@ -269,8 +270,14 @@ class QuarryNotifier extends ChangeNotifier{
   TextEditingController SS_amount= new TextEditingController(text: '0.00');
   int SS_selectedPaymentTypeId=null;
   String SS_selectedPaymentTypeString=null;
-  int SS_selectedCustomerId=null;
+
+  int SS_selectCustomerId=null;
   String SS_selectedCustomerName=null;
+  bool SS_selectIsCreditCustomer=false;
+  double SS_selectCustomerCreditLimit=0.0;
+  double SS_selectUsedAmount=0.0;
+  double SS_selectBalanceAmount=0.0;
+
   bool isDiscount=false;
   bool isPercentageDiscount=true;
   bool isAmountDiscount=false;
@@ -432,9 +439,15 @@ class QuarryNotifier extends ChangeNotifier{
     SS_selectedVehicleTypeName=null;
     SS_selectedMaterialTypeName=null;
     SS_selectedPaymentTypeString=null;
-     SS_selectedCustomerId=null;
+
     SS_selectedCustomerName=null;
     SS_selectCustomerId=null;
+    SS_selectIsCreditCustomer=false;
+     SS_selectCustomerCreditLimit=0.0;
+     SS_selectUsedAmount=0.0;
+     SS_selectBalanceAmount=0.0;
+
+
     SS_emptyVehicleWeight.clear();
     SS_customerNeedWeight.clear();
     customPriceController.clear();
@@ -464,6 +477,9 @@ class QuarryNotifier extends ChangeNotifier{
   }
 
   List<DateTime> picked=[];
+  List<SaleReportHeaderModel> saleCounterList=[];
+  int open=0;
+  int closed=0;
 
   GetSaleDetailDbhit(BuildContext context) async {
 
@@ -524,17 +540,29 @@ class QuarryNotifier extends ChangeNotifier{
       await call.ApiCallGetInvoke(body,context).then((value) {
         var parsed=json.decode(value);
         saleVehicleNumberList.clear();
+        saleCounterList.clear();
         var t=parsed['Table'] as List;
         var t1=parsed['Table1'] as List;
         var t2=parsed['Table2'] as List;
+        var t3=parsed['Table3'] as List;
+
+
 
 
         saleDetailsGrid=t.map((e) => SaleDetails.fromJson(e)).toList();
-        saleDetailsGrid.forEach((element) {
-          print(element.MaterialUnitPrice);
+
+        saleCounterList.add(SaleReportHeaderModel(title: "Sales",value: t1[0]['Sale'],qty: t1[0]['Total Sale Quantity'],unit: "Ton"));
+        open=t1[0]['Open'];
+        closed=t1[0]['Closed'];
+
+        t2.forEach((element) {
+          saleCounterList.add(SaleReportHeaderModel(title: element['MaterialName'],value: element['Sale'],
+              qty: element['SoldQuantity'],unit: element['UnitName']));
         });
-        saleGridReportList=t1.map((e) => SaleGridReport.fromJson(e)).toList();
-        saleDetailsGridPrintersList=t2.map((e) => SalePrintersList.fromJson(e)).toList();
+
+
+
+        saleDetailsGridPrintersList=t3.map((e) => SalePrintersList.fromJson(e)).toList();
 
         saleDetails=saleDetailsGrid.where((element) => element.SaleStatus=='Open').toList();
 
@@ -546,7 +574,7 @@ class QuarryNotifier extends ChangeNotifier{
 
         clearIsOpen();
         updateInsertSaleLoader(false);
-        GetCustomerDetailDbhit(context);
+    //    GetCustomerDetailDbhit(context);
 
       });
     }
@@ -809,7 +837,7 @@ class QuarryNotifier extends ChangeNotifier{
           var t3=parsed['Table3'] as List;
 
           clearEmptyForm();
-          clearCustomerDetails();
+
           printItemwise(context,t3,t,t2,t1,true);
           updateInsertSaleLoader(false);
           GetSaleDetailDbhit(context);
@@ -1365,11 +1393,6 @@ class QuarryNotifier extends ChangeNotifier{
     final profile = await CapabilityProfile.load();
     final printer = NetworkPrinter(paper, profile);
 
-    int customerIndex;
-
-    customerIndex=customersList.indexWhere((element) => element.CustomerId==saleDetailsGrid[selectedIndex].CustomerId).toInt();
-
-    print(customerIndex);
 
     final address=CD_address.text.toString();
     final splitAddress=address.split(',');
@@ -1609,7 +1632,7 @@ class QuarryNotifier extends ChangeNotifier{
 
           // }
 
-          if(customerIndex!=-1){
+          if(saleDetailsGrid[selectedIndex].CustomerId!=null){
             printer.row([
               PosColumn(text: '', width: 1),
               PosColumn(text: 'Customer Details', width: 11, styles: PosStyles(align: PosAlign.center,bold: true,)),
@@ -1685,11 +1708,11 @@ class QuarryNotifier extends ChangeNotifier{
 
   List<SaleDetails> saleDetails=[];
   List<SaleDetails> saleDetailsGrid=[];
-  List<SaleGridReport> saleGridReportList=[];
+
   List<SalePrintersList> saleDetailsGridPrintersList=[];
   List<String> saleVehicleNumberList=[];
   //List<String> saleDetailsGridCol=['Vehicle Number','Material Type','Required Qty','Output Material Qty','Amount','Status'];
-  List<String> saleDetailsGridCol=['Date','Sale No','Vehicle Number','Material','Amount','Customer Name'];
+  List<String> saleDetailsGridCol=['Date','Sale No','Vehicle Number','Material','Qty','Amount','Customer Name'];
  // List<String> saleDetailsGridCol=["Material Name","Unit","Price","GST","Unit","Price","GST"];
 
 
@@ -1996,6 +2019,11 @@ class QuarryNotifier extends ChangeNotifier{
     SS_MaterialTypeId=null;
     SS_PaymentTypeId=null;
    SS_selectCustomerId=null;
+   SS_selectedCustomerName=null;
+   SS_selectIsCreditCustomer=false;
+    SS_selectCustomerCreditLimit=0.0;
+    SS_selectUsedAmount=0.0;
+    SS_selectBalanceAmount=0.0;
     SS_Amount=0.0;
    OG_TaxValue=0.0;
    OG_discountValue=null;
@@ -2027,7 +2055,7 @@ class QuarryNotifier extends ChangeNotifier{
         }
 
         SalesDropDownValues(context);
-        GetCustomerDetailDbhit(context);
+       // GetCustomerDetailDbhit(context);
       }
 
     });
@@ -2596,26 +2624,20 @@ class QuarryNotifier extends ChangeNotifier{
 
   ///****************************************************     CUSTOMER DETAIL     ****************************************************************/
 
-  TextEditingController customerName=new TextEditingController();
-  TextEditingController customerAddress=new TextEditingController();
-  TextEditingController customerCity=new TextEditingController();
-  TextEditingController customerState=new TextEditingController();
-  TextEditingController customerCountry=new TextEditingController();
-  TextEditingController customerZipcode=new TextEditingController();
-  TextEditingController customerContactNumber=new TextEditingController();
-  TextEditingController customerEmail=new TextEditingController();
-  TextEditingController customerGstNumber=new TextEditingController();
 
 
-  int SS_selectCustomerId=null;
-  String SS_CustomerName;
-  List<CustomerDetails> customersList=[];
-  List<String> customerNameList=[];
-  List<String> customerGridCol=["Name","Contact No","Email","GST No"];
 
-  updateSelectCustomerFromAddNew(int customerId,String customerName){
+
+
+
+
+  updateSelectCustomerFromAddNew(int customerId,String customerName,bool isCredit,double creditLimit,double usedAmount,double balanceAmount){
     SS_selectCustomerId=customerId;
     SS_selectedCustomerName=customerName;
+    SS_selectIsCreditCustomer=isCredit;
+    SS_selectCustomerCreditLimit=creditLimit;
+     SS_selectUsedAmount=usedAmount;
+     SS_selectBalanceAmount=balanceAmount;
     sale_customerList.add(CustomerModel(
       customerId: SS_selectCustomerId,
       customerName: SS_selectedCustomerName
@@ -2624,53 +2646,7 @@ class QuarryNotifier extends ChangeNotifier{
     notifyListeners();
   }
 
-  GetCustomerDetailDbhit(BuildContext context) async {
-    updatecustomerLoader(true);
-    var body={
-      "Fields": [
-        {
-          "Key": "SpName",
-          "Type": "String",
-          "Value": "${Sp.getCustomerDetail}"
-        },
-        {
-          "Key": "LoginUserId",
-          "Type": "int",
-          "Value": UserId
-        },
-        {
-          "Key": "CustomerId",
-          "Type": "int",
-          "Value": null
-        },
-        {
-          "Key": "database",
-          "Type": "String",
-          "Value": DataBaseName
-        }
-      ]
-    };
 
-    try{
-      await call.ApiCallGetInvoke(body,context).then((value) {
-        customerNameList.clear();
-        var parsed=json.decode(value);
-        var t=parsed['Table'] as List;
-
-        customersList=t.map((e) => CustomerDetails.fromJson(e)).toList();
-        customersList.forEach((element) {
-          customerNameList.add(element.CustomerName);
-        });
-
-        updatecustomerLoader(false);
-        notifyListeners();
-      });
-    }
-    catch(e){
-      updatecustomerLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.getCompanyDetail}" , e.toString());
-    }
-  }
 
 
 
@@ -2683,20 +2659,6 @@ class QuarryNotifier extends ChangeNotifier{
   }
 
 
-
-  clearCustomerDetails(){
-     customerName.clear();
-     customerAddress.clear();
-     customerCity.clear();
-     customerState.clear();
-     customerCountry.clear();
-     customerZipcode.clear();
-     customerContactNumber.clear();
-     customerEmail.clear();
-     customerGstNumber.clear();
-     SS_selectCustomerId=null;
-
-  }
 
 
 

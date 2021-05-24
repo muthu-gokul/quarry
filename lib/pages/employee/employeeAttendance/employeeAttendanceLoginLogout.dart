@@ -158,7 +158,7 @@ class _EmployeeAttendanceLoginLogoutState extends State<EmployeeAttendanceLoginL
                                       children: [
                                         GestureDetector(
                                           onTap:() async{
-                                            final DateTime picked = await showDatePicker(
+                                          /*  final DateTime picked = await showDatePicker(
                                               context: context,
                                               initialDate: DateTime.now(), // Refer step 1
                                               firstDate: DateTime(2000),
@@ -167,7 +167,7 @@ class _EmployeeAttendanceLoginLogoutState extends State<EmployeeAttendanceLoginL
                                             if (picked != null)
                                               setState(() {
                                                ean.selectedDate=picked;
-                                              });
+                                              });*/
                                           },
                                           child: Container(
                                             height: 50,
@@ -189,7 +189,7 @@ class _EmployeeAttendanceLoginLogoutState extends State<EmployeeAttendanceLoginL
                                         ),
                                         GestureDetector(
                                           onTap: () async{
-                                            final TimeOfDay picked = await showTimePicker(
+                                           /* final TimeOfDay picked = await showTimePicker(
                                               context: context,
                                               initialTime: ean.selectedTime==null?TimeOfDay.now():ean.selectedTime,
 
@@ -202,7 +202,7 @@ class _EmployeeAttendanceLoginLogoutState extends State<EmployeeAttendanceLoginL
                                                 ean.time = formatDate(
                                                     DateTime(2019, 08, 1, ean.selectedTime.hour, ean.selectedTime.minute),
                                                     [hh, ':', nn, " ", am]).toString();
-                                              });
+                                              });*/
                                           },
                                           child:Container(
                                             height: 50,
@@ -375,7 +375,7 @@ class _EmployeeAttendanceLoginLogoutState extends State<EmployeeAttendanceLoginL
                                       children: [
                                         GestureDetector(
                                           onTap:() async{
-                                            final DateTime picked = await showDatePicker(
+                                          /*  final DateTime picked = await showDatePicker(
                                               context: context,
                                               initialDate: DateTime.now(), // Refer step 1
                                               firstDate: DateTime(2000),
@@ -384,7 +384,7 @@ class _EmployeeAttendanceLoginLogoutState extends State<EmployeeAttendanceLoginL
                                             if (picked != null)
                                               setState(() {
                                                 ean.selectedDate=picked;
-                                              });
+                                              });*/
                                           },
                                           child: Container(
                                             height: 50,
@@ -406,7 +406,7 @@ class _EmployeeAttendanceLoginLogoutState extends State<EmployeeAttendanceLoginL
                                         ),
                                         GestureDetector(
                                           onTap: () async{
-                                            final TimeOfDay picked = await showTimePicker(
+                                         /*   final TimeOfDay picked = await showTimePicker(
                                               context: context,
                                               initialTime: ean.selectedTime==null?TimeOfDay.now():ean.selectedTime,
 
@@ -419,7 +419,7 @@ class _EmployeeAttendanceLoginLogoutState extends State<EmployeeAttendanceLoginL
                                               ean.time = formatDate(
                                                   DateTime(2019, 08, 1, ean.selectedTime.hour, ean.selectedTime.minute),
                                                   [hh, ':', nn, " ", am]).toString();
-                                            });
+                                            });*/
                                           },
                                           child:Container(
                                             height: 50,

@@ -3,6 +3,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:provider/provider.dart';
 
@@ -15,6 +16,7 @@ import 'package:quarry/pages/goodsReceived/goodsToPurchase.dart';
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
+import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/bottomBarAddButton.dart';
 
 
@@ -466,7 +468,7 @@ class GoodsToInvoiceState extends State<GoodsToInvoice> with TickerProviderState
 
                               /////////////  OtherCharges Details List  /////////////////
                               Container(
-
+                                clipBehavior: Clip.antiAlias,
                                 height: gr.GINV_OtherChargesList.length== 0 ? 0 :
                                 ( gr.GINV_OtherChargesList.length * 50.0)+40,
                             //    height: 100,
@@ -782,18 +784,32 @@ class GoodsToInvoiceState extends State<GoodsToInvoice> with TickerProviderState
                                                                       gr.GINV_OtherChargesList[index].isEdit=!gr.GINV_OtherChargesList[index].isEdit;
                                                                     });
                                                                   },
-                                                                  child: Icon(Icons.edit,size: 20,)),
-                                                              SizedBox(width:SizeConfig.screenWidthM0_04*0.01,),
+                                                                  child: SvgPicture.asset("assets/svg/edit.svg",height: 18,width: 18,)
+                                                              ),
+                                                              SizedBox(width:SizeConfig.screenWidthM0_04*0.02,),
                                                               GestureDetector(
                                                                 onTap: (){
-                                                                  gr.GINV_OtherChargesList[index].animationController.forward().whenComplete((){
-                                                                    setState(() {
-                                                                      gr.GINV_OtherChargesList.removeAt(index);
-                                                                    });
 
-                                                                  });
+                                                                  CustomAlert(
+                                                                    Cancelcallback: (){
+                                                                      Navigator.pop(context);
+                                                                    },
+                                                                    callback: (){
+                                                                      Navigator.pop(context);
+                                                                      Timer(Duration(milliseconds: 200),(){
+                                                                        gr.GINV_OtherChargesList[index].animationController.forward().whenComplete((){
+                                                                          setState(() {
+                                                                            gr.GINV_OtherChargesList.removeAt(index);
+                                                                          });
+                                                                          gr.calcToInvoice();
+                                                                        });
+                                                                      });
+                                                                    }
+                                                                  ).yesOrNoDialog(context, "", "Are you sure want to delete this Charge Amount ?");
+
+
                                                                 },
-                                                                  child: Icon(Icons.delete_outline,size: 20,)
+                                                                  child: SvgPicture.asset("assets/svg/delete.svg",height: 20,width: 20,)
                                                               ),
                                                             ],
                                                           )
@@ -837,7 +853,7 @@ class GoodsToInvoiceState extends State<GoodsToInvoice> with TickerProviderState
                               ),
 
 
-                              SizedBox(height: 30,),
+                              SizedBox(height: SizeConfig.height50,),
 
 
 

@@ -8,6 +8,7 @@ import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/pages/sale/salesDetail.dart';
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
+import 'package:quarry/styles/constants.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/bottomBarAddButton.dart';
@@ -139,36 +140,23 @@ class _SaleGridState extends State<SaleGrid> {
                       ),
                       Container(
                         padding: EdgeInsets.only(left: 5,right: 5,),
+                          alignment: Alignment.centerLeft,
+                          child:SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: qn.saleCounterList.asMap().
+                                map((key, value) => MapEntry(key,  SaleReportHeader(
+                                title: value.title,
+                                value: value.value,
+                                qty: value.qty,
+                                unit: value.unit,
 
-                          child:Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
+                              ),)
+                              ).values.toList()
 
-
-                                SaleReportHeader(
-                                  title: 'Sales',
-                                  value: qn.saleGridReportList.isNotEmpty?qn.saleGridReportList[0].Sale??0.00:0.00,
-                                  qty: qn.saleGridReportList.isNotEmpty?qn.saleGridReportList[0].TotalSaleQuantity??0:0,
-                                  unit: "Ton",
-
-                                ),
-                                SaleReportHeader(
-                                  title: 'M Sand',
-                                  value: qn.saleGridReportList.isNotEmpty?qn.saleGridReportList[0].MSand??0.00:0.00,
-                                  qty: qn.saleGridReportList.isNotEmpty?qn.saleGridReportList[0].MSandQuantity??0:0,
-                                  unit: qn.saleGridReportList.isNotEmpty?qn.saleGridReportList[0].MSandUnit??"":"",
-                                ),
-                              SaleReportHeader(
-                                title: 'P Sand',
-                                value: qn.saleGridReportList.isNotEmpty?qn.saleGridReportList[0].PSand??0.00:0.00,
-                                qty: qn.saleGridReportList.isNotEmpty?qn.saleGridReportList[0].PSandQuantity??0:0,
-                                unit: qn.saleGridReportList.isNotEmpty?qn.saleGridReportList[0].PSandUnit??"":"",
-                              ),
-
-
-
-                            ],
+                            ),
                           )
                       )
 
@@ -285,6 +273,13 @@ class _SaleGridState extends State<SaleGrid> {
                                                     width: 150,
                                                     alignment: Alignment.center,
                                                     child: Text("${value.MaterialName}",
+                                                      style: qn.selectedIndex==i?AppTheme.bgColorTS14:AppTheme.gridTextColor14,
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    width: 150,
+                                                    alignment: Alignment.center,
+                                                    child: Text("${value.OutputMaterialQty==null?value.RequiredMaterialQty:value.OutputMaterialQty} ${value.UnitName}",
                                                       style: qn.selectedIndex==i?AppTheme.bgColorTS14:AppTheme.gridTextColor14,
                                                     ),
                                                   ),
@@ -585,7 +580,7 @@ class _SaleGridState extends State<SaleGrid> {
                         children: [
                           Text("  Total Orders: ${qn.saleDetailsGrid.length}",style: TextStyle(fontSize: 16,color: AppTheme.bgColor,fontFamily: 'RR'),),
                           Spacer(),
-                          Text("Open/Closed: ${qn.saleGridReportList.isNotEmpty?qn.saleGridReportList[0].Open:"0"}/${qn.saleGridReportList.isNotEmpty?qn.saleGridReportList[0].Closed:"0"}  ",
+                          Text("Open/Closed: ${qn.open}/${qn.closed}  ",
                             style: TextStyle(fontSize: 16,color: AppTheme.bgColor,fontFamily: 'RR'),),
                         ],
                       ),
@@ -738,8 +733,8 @@ class SaleReportHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 80,
-      width: SizeConfig.screenWidth*0.31,
-      /*argin: EdgeInsets.only(right: SizeConfig.width10),*/
+      width: SizeConfig.screenWidth*0.40,
+      margin: EdgeInsets.only(right: SizeConfig.width10),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
           color: AppTheme.bgColor
@@ -751,14 +746,23 @@ class SaleReportHeader extends StatelessWidget {
           Text(" $title",style: TextStyle(fontFamily: 'RR',fontSize: 16,color: Colors.white,letterSpacing: 0.1),),
           FittedBox(
               fit: BoxFit.contain,
-              child: Text(" ₹ $value",style:TextStyle(fontFamily: 'RR',fontSize: 16,color: AppTheme.yellowColor),)),
+              child: Text(" ₹ ${formatCurrency.format(value)}",style:TextStyle(fontFamily: 'RR',fontSize: 16,color: AppTheme.yellowColor),)),
           Align(
             alignment: Alignment.bottomRight,
-            child:Text(" $qty ${unit??""} ",style:TextStyle(fontFamily: 'RR',fontSize: 14,color: AppTheme.addNewTextFieldBorder),),
+            child:Text(" ${formatCurrency.format(qty)} ${unit??""} ",style:TextStyle(fontFamily: 'RR',fontSize: 14,color: AppTheme.addNewTextFieldBorder),),
 
           )
         ],
       ),
     );
   }
+}
+
+class SaleReportHeaderModel{
+  String title;
+  double value;
+  double qty;
+  String unit;
+
+  SaleReportHeaderModel({this.title,this.value,this.qty,this.unit});
 }

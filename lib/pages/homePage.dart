@@ -183,7 +183,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                             child: ListView(
                               children: [
                                 SizedBox(height: 20,),
-                                DrawerContent(
+                                /*DrawerContent(
                                   delay: 0.1,
                                   height: 50,
                                   image: "assets/svg/drawer/dashboard.svg",
@@ -196,7 +196,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                       scaffoldkey.currentState.openEndDrawer();
                                     });
                                   },
-                                ),
+                                ),*/
                                 DrawerContent(
                                   delay:1,
                                   height: 50,
@@ -213,7 +213,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
 
 
                                     // Provider.of<QuarryNotifier>(context,listen: false).initDropDownValues(context);
-                                    Provider.of<QuarryNotifier>(context,listen: false).GetCustomerDetailDbhit(context);
+                                 //   Provider.of<QuarryNotifier>(context,listen: false).GetCustomerDetailDbhit(context);
                                     Provider.of<QuarryNotifier>(context,listen: false).GetSaleDetailDbhit(context);
                                     Provider.of<QuarryNotifier>(context,listen: false).SalesDropDownValues(context);
                                   },

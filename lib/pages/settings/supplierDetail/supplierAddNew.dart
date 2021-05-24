@@ -551,152 +551,157 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                     ),
                                   ),
 
-                                  qn.supplierCategoryName!='Fuel' && qn.supplierCategoryName!=null? Stack(
-                                    children: [
-                                      GestureDetector(
-                                        onTap: (){
-                                          node.unfocus();
-                                          setState(() {
-                                            supplierMaterialOpen=true;
-                                          });
-                                          SystemChannels.textInput.invokeMethod('TextInput.hide');
-                                        },
-                                        child:Container(
-                                          margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width10,top:SizeConfig.height20,),
-                                          padding: EdgeInsets.only(left:SizeConfig.width5,right:SizeConfig.width5),
-                                          height: 50,
-                                          width: SizeConfig.screenWidthM40*0.48,
-                                          alignment: Alignment.centerLeft,
-                                          decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(3),
-                                              border: Border.all(color: AppTheme.addNewTextFieldBorder),
-                                            color: qn.supplierMaterialName==null?AppTheme.disableColor:Colors.white
-                                          ),
-                                          child: Row(
-                                            children: [
-                                              Text(qn.supplierMaterialName==null? "Select Material":qn.supplierMaterialName,
-                                                style: TextStyle(fontFamily: 'RR',fontSize: 16,
-                                                    color: qn.supplierMaterialName==null? AppTheme.addNewTextFieldText.withOpacity(0.5):AppTheme.addNewTextFieldText,),
-                                              ),
-                                              Spacer(),
-                                              Container(
-                                                  height: 25,
-                                                  width:25,
-                                                  decoration: BoxDecoration(
-                                                      shape: BoxShape.circle,
-                                                      color: qn.supplierMaterialName==null? AppTheme.addNewTextFieldText:AppTheme.yellowColor,
-                                                  ),
-
-                                                  child: Center(child: Icon(Icons.arrow_forward_ios_outlined,color:Colors.white ,size: 14,)))
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-
-                                      Align(
-                                        alignment: Alignment.centerRight,
-                                        child: Container(
-                                          height: 50,
-                                          width: SizeConfig.screenWidthM40*0.48,
-                                          alignment: Alignment.center,
-                                          margin: EdgeInsets.only(top:SizeConfig.height20,right: SizeConfig.width20),
-                                          child: TextFormField(
-                                            onTap: (){
-                                              scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
-                                              setState(() {
-                                                isListScroll=true;
-                                                _keyboardVisible=true;
-                                              });
-                                            },
-                                            scrollPadding: EdgeInsets.only(bottom: 400),
-                                            style:  TextStyle(fontFamily: 'RR',fontSize: 15,color:AppTheme.addNewTextFieldText,letterSpacing: 0.2),
-                                            controller: qn.materialPrice,
-                                            decoration: InputDecoration(
-                                              fillColor:Colors.white,
-                                              filled: true,
-                                              hintStyle: TextStyle(fontFamily: 'RL',fontSize: 15,color: AppTheme.addNewTextFieldText.withOpacity(0.9)),
-                                              border:  OutlineInputBorder(
-                                                  borderSide: BorderSide(color: AppTheme.addNewTextFieldBorder)
-                                              ),
-                                              enabledBorder: OutlineInputBorder(
-                                                  borderSide: BorderSide(color: AppTheme.addNewTextFieldBorder)
-                                              ),
-                                              focusedBorder: OutlineInputBorder(
-                                                  borderSide: BorderSide(color:AppTheme.addNewTextFieldFocusBorder)
-                                              ),
-                                              hintText: "Price",
-                                              contentPadding: new EdgeInsets.symmetric(vertical: 10.0, horizontal: 8.0),
-
-                                            ),
-                                            maxLines: null,
-                                            keyboardType: TextInputType.number,
-                                            inputFormatters: [
-                                              FilteringTextInputFormatter.allow(RegExp('[0-9.]')),
-                                            ],
-                                            textInputAction: TextInputAction.done,
-                                            onEditingComplete: (){
-                                              node.unfocus();
-                                              setState(() {
-                                                _keyboardVisible=false;
-                                              });
-                                            },
-                                            onChanged: (v){
-
-                                            },
-                                          ),
-                                        ),
-                                      ),
-
-                                      Align(
-                                        alignment: Alignment.centerRight,
-                                        child: GestureDetector(
-                                          onTap: () async {
+                                  qn.supplierCategoryName!='Fuel' && qn.supplierCategoryName!=null? Container(
+                                    height: 50,
+                                    width: SizeConfig.screenWidth,
+                                    margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width10,top:SizeConfig.height20,),
+                                    child: Stack(
+                                      children: [
+                                        GestureDetector(
+                                          onTap: (){
                                             node.unfocus();
-
-                                              setState(() {
-                                                _keyboardVisible=false;
-                                                qn.supplierMaterialMappingList.add(
-                                                    SupplierMaterialMappingListModel(
-                                                        MaterialId: qn.supplierMaterialId,
-                                                        MaterialName: qn.supplierMaterialName,
-                                                        MaterialPrice: double.parse(qn.materialPrice.text??"0.0") ,
-                                                        UnitName: qn.supplierMaterialUnitName,
-                                                        SupplierId: null,
-                                                        SupplierMaterialMappingId: null,
-                                                        IsActive: 1,
-                                                        scaleController: AnimationController(duration: Duration(milliseconds: 300), vsync: this),
-                                                        isEdit: false,
-                                                        isDelete: false
-                                                    )
-                                                );
-                                              });
-                                              qn.clearMappingList();
-                                            qn.supplierMaterialMappingList[qn.supplierMaterialMappingList.length-1].scaleController.forward().then((value){
-
+                                            setState(() {
+                                              supplierMaterialOpen=true;
                                             });
-                                             /* listViewController.animateTo(listViewController.position.maxScrollExtent, duration: Duration(milliseconds: 200), curve: Curves.easeIn).then((value) {
-
-                                              });*/
-
+                                            SystemChannels.textInput.invokeMethod('TextInput.hide');
                                           },
-                                          child: Container(
-                                            height:40,
-                                            width: 40,
-                                            margin: EdgeInsets.only(top:SizeConfig.height25,right: SizeConfig.width25),
+                                          child:Container(
 
+                                            padding: EdgeInsets.only(left:SizeConfig.width5,right:SizeConfig.width5),
+                                            height: 50,
+                                            width: SizeConfig.screenWidthM40*0.5,
+                                            alignment: Alignment.centerLeft,
                                             decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color:AppTheme.yellowColor,
+                                                borderRadius: BorderRadius.circular(3),
+                                                border: Border.all(color: AppTheme.addNewTextFieldBorder),
+                                              color: qn.supplierMaterialName==null?AppTheme.disableColor:Colors.white
                                             ),
-                                            child: Center(
-                                              child: Icon(Icons.add,color: AppTheme.bgColor,size: 30,),
+                                            child: Row(
+                                              children: [
+                                                Text(qn.supplierMaterialName==null? "Select Material":qn.supplierMaterialName,
+                                                  style: TextStyle(fontFamily: 'RR',fontSize: 16,
+                                                      color: qn.supplierMaterialName==null? AppTheme.addNewTextFieldText.withOpacity(0.5):AppTheme.addNewTextFieldText,),
+                                                ),
+                                                Spacer(),
+                                                Container(
+                                                    height: 25,
+                                                    width:25,
+                                                    decoration: BoxDecoration(
+                                                        shape: BoxShape.circle,
+                                                        color: qn.supplierMaterialName==null? AppTheme.addNewTextFieldText:AppTheme.yellowColor,
+                                                    ),
+
+                                                    child: Center(child: Icon(Icons.arrow_forward_ios_outlined,color:Colors.white ,size: 14,)))
+                                              ],
                                             ),
                                           ),
                                         ),
-                                      )
+
+                                        Align(
+                                          alignment: Alignment.centerRight,
+                                          child: Container(
+                                            height: 50,
+                                            width: SizeConfig.screenWidthM40*0.5,
+                                            alignment: Alignment.center,
+                                        //    margin: EdgeInsets.only(top:SizeConfig.height20,right: SizeConfig.width20),
+                                            child: TextFormField(
+                                              onTap: (){
+                                                scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                                setState(() {
+                                                  isListScroll=true;
+                                                  _keyboardVisible=true;
+                                                });
+                                              },
+                                              scrollPadding: EdgeInsets.only(bottom: 400),
+                                              style:  TextStyle(fontFamily: 'RR',fontSize: 15,color:AppTheme.addNewTextFieldText,letterSpacing: 0.2),
+                                              controller: qn.materialPrice,
+                                              decoration: InputDecoration(
+                                                fillColor:Colors.white,
+                                                filled: true,
+                                                hintStyle: TextStyle(fontFamily: 'RL',fontSize: 15,color: AppTheme.addNewTextFieldText.withOpacity(0.9)),
+                                                border:  OutlineInputBorder(
+                                                    borderSide: BorderSide(color: AppTheme.addNewTextFieldBorder)
+                                                ),
+                                                enabledBorder: OutlineInputBorder(
+                                                    borderSide: BorderSide(color: AppTheme.addNewTextFieldBorder)
+                                                ),
+                                                focusedBorder: OutlineInputBorder(
+                                                    borderSide: BorderSide(color:AppTheme.addNewTextFieldFocusBorder)
+                                                ),
+                                                hintText: "Price",
+                                                contentPadding: new EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),
+
+                                              ),
+                                              maxLines: null,
+                                              keyboardType: TextInputType.number,
+                                              inputFormatters: [
+                                                FilteringTextInputFormatter.allow(RegExp('[0-9.]')),
+                                              ],
+                                              textInputAction: TextInputAction.done,
+                                              onEditingComplete: (){
+                                                node.unfocus();
+                                                setState(() {
+                                                  _keyboardVisible=false;
+                                                });
+                                              },
+                                              onChanged: (v){
+
+                                              },
+                                            ),
+                                          ),
+                                        ),
+
+                                        Align(
+                                          alignment: Alignment.centerRight,
+                                          child: GestureDetector(
+                                            onTap: () async {
+                                              node.unfocus();
+
+                                                setState(() {
+                                                  _keyboardVisible=false;
+                                                  qn.supplierMaterialMappingList.add(
+                                                      SupplierMaterialMappingListModel(
+                                                          MaterialId: qn.supplierMaterialId,
+                                                          MaterialName: qn.supplierMaterialName,
+                                                          MaterialPrice: double.parse(qn.materialPrice.text??"0.0") ,
+                                                          UnitName: qn.supplierMaterialUnitName,
+                                                          SupplierId: null,
+                                                          SupplierMaterialMappingId: null,
+                                                          IsActive: 1,
+                                                          scaleController: AnimationController(duration: Duration(milliseconds: 300), vsync: this),
+                                                          isEdit: false,
+                                                          isDelete: false
+                                                      )
+                                                  );
+                                                });
+                                                qn.clearMappingList();
+                                              qn.supplierMaterialMappingList[qn.supplierMaterialMappingList.length-1].scaleController.forward().then((value){
+
+                                              });
+                                               /* listViewController.animateTo(listViewController.position.maxScrollExtent, duration: Duration(milliseconds: 200), curve: Curves.easeIn).then((value) {
+
+                                                });*/
+
+                                            },
+                                            child: Container(
+                                              height:40,
+                                              width: 40,
+                                              margin: EdgeInsets.only(right: SizeConfig.width5),
+
+                                              decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color:AppTheme.yellowColor,
+                                              ),
+                                              child: Center(
+                                                child: Icon(Icons.add,color: AppTheme.bgColor,size: 30,),
+                                              ),
+                                            ),
+                                          ),
+                                        )
 
 
-                                    ],
+                                      ],
+                                    ),
                                   ):Container(),
 
                                   //Logo

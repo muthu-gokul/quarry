@@ -104,22 +104,38 @@ class CustomerModel {
   CustomerModel({
     this.customerId,
     this.customerName,
-    this.isActive
+    this.isActive,
+    this.isCreditCustomer,
+    this.customerCreditLimit,
+    this.usedAmount,
+    this.balanceAmount,
   });
 
   int customerId;
   String customerName;
   bool isActive;
+  bool isCreditCustomer;
+  double customerCreditLimit;
+  double usedAmount;
+  double balanceAmount;
 
   factory CustomerModel.fromJson(Map<String, dynamic> json) => CustomerModel(
     customerId: json["CustomerId"],
     customerName: json["CustomerName"],
+      isCreditCustomer: json["IsCreditCustomer"],
+      customerCreditLimit: json["CustomerCreditLimit"],
+      usedAmount: json["UsedAmount"],
+      balanceAmount: json["BalanceAmount"],
     isActive: true
   );
 
   Map<String, dynamic> toJson() => {
     "CustomerId": customerId,
     "CustomerName": customerName,
+    "IsCreditCustomer": isCreditCustomer,
+    "CustomerCreditLimit": customerCreditLimit,
+    "UsedAmount": usedAmount,
+    "BalanceAmount": balanceAmount,
   };
 
   dynamic get(String propertyName) {
@@ -280,38 +296,7 @@ class SaleDetails{
   }
 }
 
-class SaleGridReport{
-  double Sale;
-  double PSand;
-  double MSand;
-  int Open;
-  int Closed;
-  double PSandQuantity;
-  double MSandQuantity;
-  double TotalSaleQuantity;
-  String PSandUnit;
-  String MSandUnit;
 
-  SaleGridReport({this.Sale,this.PSand,this.MSand,this.Open,this.Closed,this.PSandQuantity,this.MSandQuantity,this.TotalSaleQuantity,
-  this.PSandUnit,this.MSandUnit});
-
-  factory SaleGridReport.fromJson(Map<dynamic,dynamic> json){
-    return new SaleGridReport(
-      Sale: json['Sale'],
-      PSand: json['P Sand'],
-      MSand: json['M Sand'],
-      Open: json['Open'],
-      Closed: json['Closed'],
-      PSandQuantity: json['P Sand Quantity'],
-      MSandQuantity: json['M Sand Quantity'],
-      TotalSaleQuantity: json['Total Sale Quantity'],
-      PSandUnit: json['P Sand Unit'],
-      MSandUnit: json['M Sand Unit'],
-    );
-  }
-
-
-}
 
 
 class SalePrintersList{

@@ -187,7 +187,7 @@ class ReportGridState extends State<ReportGrid> with TickerProviderStateMixin{
 
 
                 //dataTable
-                ReportDataTable2(
+               rn.reportHeader!='Attendance Report'? ReportDataTable2(
                   topMargin: 140,
                   gridBodyReduceHeight: 260,
                   selectedIndex: selectedIndex,
@@ -208,7 +208,29 @@ class ReportGridState extends State<ReportGrid> with TickerProviderStateMixin{
                       });
                     }*/
                   },
-                ),
+                ):
+               EmployeeReportDataTable(
+                 topMargin: 140,
+                 gridBodyReduceHeight: 260,
+                 selectedIndex: selectedIndex,
+                 gridData: rn.reportsGridDataList,
+                 gridDataRowList: rn.reportsGridColumnList,
+                 func: (index){
+                   /* if(selectedIndex==index){
+                      setState(() {
+                        selectedIndex=-1;
+                        showEdit=false;
+                      });
+
+                    }
+                    else{
+                      setState(() {
+                        selectedIndex=index;
+                        showEdit=true;
+                      });
+                    }*/
+                 },
+               ),
 
                 //Export Icons
                 GestureDetector(

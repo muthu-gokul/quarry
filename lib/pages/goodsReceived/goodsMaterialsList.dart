@@ -238,38 +238,47 @@ class GoodsMaterialsListState extends State<GoodsMaterialsList> with TickerProvi
                                                           index,InkWell(
                                                         onTap: (){
                                                           if(gr.ML_Materials[index].status!='Completed'){
-                                                            setState(() {
-                                                              gr.IGF_Materials.add(
-                                                                  GoodsReceivedMaterialListModel(
-                                                                    GoodsReceivedMaterialMappingId: gr.ML_Materials[index].GoodsReceivedMaterialMappingId,
-                                                                    goodsReceivedId: gr.ML_Materials[index].goodsReceivedId,
-                                                                    materialId: gr.ML_Materials[index].materialId,
-                                                                    materialName: gr.ML_Materials[index].materialName,
-                                                                    materialPrice: gr.ML_Materials[index].materialPrice,
-                                                                    materialUnitId: gr.ML_Materials[index].materialUnitId,
-                                                                    unitName: gr.ML_Materials[index].unitName,
-                                                                    quantity: gr.ML_Materials[index].quantity,
-                                                                    receivedQuantity: 0.0,
-                                                                    amount: 0.0,
-                                                                    isDiscount: gr.ML_Materials[index].isDiscount,
-                                                                    isPercentage: gr.ML_Materials[index].isPercentage,
-                                                                    isAmount: gr.ML_Materials[index].isAmount,
-                                                                    discountValue: gr.ML_Materials[index].discountValue,
-                                                                    discountAmount: 0.0,
-                                                                    taxValue: gr.ML_Materials[index].taxValue,
-                                                                    taxAmount: 0.0,
-                                                                    totalAmount: 0.0,
-                                                                    vehicleNumber: null,
-                                                                    vehicleTypeId: null,
-                                                                    inwardLoadedVehicleWeight: 0.0,
-                                                                    outwardEmptyVehicleWeight: 0.0,
+                                                            if(gr.ML_Status!='Completed'){
+                                                              setState(() {
+                                                                gr.IGF_Materials.add(
+                                                                    GoodsReceivedMaterialListModel(
+                                                                      GoodsReceivedMaterialMappingId: gr.ML_Materials[index].GoodsReceivedMaterialMappingId,
+                                                                      goodsReceivedId: gr.ML_Materials[index].goodsReceivedId,
+                                                                      materialId: gr.ML_Materials[index].materialId,
+                                                                      materialName: gr.ML_Materials[index].materialName,
+                                                                      materialPrice: gr.ML_Materials[index].materialPrice,
+                                                                      materialUnitId: gr.ML_Materials[index].materialUnitId,
+                                                                      unitName: gr.ML_Materials[index].unitName,
+                                                                      quantity: gr.ML_Materials[index].quantity,
+                                                                      receivedQuantity: 0.0,
+                                                                      amount: 0.0,
+                                                                      isDiscount: gr.ML_Materials[index].isDiscount,
+                                                                      isPercentage: gr.ML_Materials[index].isPercentage,
+                                                                      isAmount: gr.ML_Materials[index].isAmount,
+                                                                      discountValue: gr.ML_Materials[index].discountValue,
+                                                                      discountAmount: 0.0,
+                                                                      taxValue: gr.ML_Materials[index].taxValue,
+                                                                      taxAmount: 0.0,
+                                                                      totalAmount: 0.0,
+                                                                      vehicleNumber: null,
+                                                                      vehicleTypeId: null,
+                                                                      inwardLoadedVehicleWeight: 0.0,
+                                                                      outwardEmptyVehicleWeight: 0.0,
 
-                                                                  )
-                                                              );
-                                                            });
-                                                            Navigator.push(context, _createRoute());
+                                                                    )
+                                                                );
+                                                              });
+                                                              Navigator.push(context, _createRoute());
+                                                            }
+
                                                           }
                                                           else{
+                                                            Navigator.push(context, _createRouteTripList(gr.ML_Materials[index].materialId,
+                                                                gr.ML_Materials[index].materialName,gr.ML_Materials[index].unitName,gr.ML_Materials[index].quantity
+                                                            ));
+                                                          }
+
+                                                          if(gr.ML_Status=='Completed' && gr.ML_Materials[index].status=='Partially Received'){
                                                             Navigator.push(context, _createRouteTripList(gr.ML_Materials[index].materialId,
                                                                 gr.ML_Materials[index].materialName,gr.ML_Materials[index].unitName,gr.ML_Materials[index].quantity
                                                             ));
@@ -392,39 +401,49 @@ class GoodsMaterialsListState extends State<GoodsMaterialsList> with TickerProvi
                                                     map((index, value) => MapEntry(
                                                         index,InkWell(
                                                       onTap: (){
-                                                        if(gr.ML_Materials[index].status!='Completed'){
-                                                          setState(() {
-                                                            gr.IGF_Materials.add(
-                                                                GoodsReceivedMaterialListModel(
-                                                                  GoodsReceivedMaterialMappingId: gr.ML_Materials[index].GoodsReceivedMaterialMappingId,
-                                                                  goodsReceivedId: gr.ML_Materials[index].goodsReceivedId,
-                                                                  materialId: gr.ML_Materials[index].materialId,
-                                                                  materialName: gr.ML_Materials[index].materialName,
-                                                                  materialPrice: gr.ML_Materials[index].materialPrice,
-                                                                  materialUnitId: gr.ML_Materials[index].materialUnitId,
-                                                                  unitName: gr.ML_Materials[index].unitName,
-                                                                  quantity: gr.ML_Materials[index].quantity,
-                                                                  receivedQuantity: 0.0,
-                                                                  amount: 0.0,
-                                                                  isDiscount: gr.ML_Materials[index].isDiscount,
-                                                                  isPercentage: gr.ML_Materials[index].isPercentage,
-                                                                  isAmount: gr.ML_Materials[index].isAmount,
-                                                                  discountValue: gr.ML_Materials[index].discountValue,
-                                                                  discountAmount: 0.0,
-                                                                  taxValue: gr.ML_Materials[index].taxValue,
-                                                                  taxAmount: 0.0,
-                                                                  totalAmount: 0.0,
-                                                                  vehicleNumber: null,
-                                                                  vehicleTypeId: null,
-                                                                  inwardLoadedVehicleWeight: 0.0,
-                                                                  outwardEmptyVehicleWeight: 0.0,
 
-                                                                )
-                                                            );
-                                                          });
-                                                          Navigator.push(context, _createRoute());
+                                                        if(gr.ML_Materials[index].status!='Completed'){
+                                                          if(gr.ML_Status!='Completed'){
+                                                            setState(() {
+                                                              gr.IGF_Materials.add(
+                                                                  GoodsReceivedMaterialListModel(
+                                                                    GoodsReceivedMaterialMappingId: gr.ML_Materials[index].GoodsReceivedMaterialMappingId,
+                                                                    goodsReceivedId: gr.ML_Materials[index].goodsReceivedId,
+                                                                    materialId: gr.ML_Materials[index].materialId,
+                                                                    materialName: gr.ML_Materials[index].materialName,
+                                                                    materialPrice: gr.ML_Materials[index].materialPrice,
+                                                                    materialUnitId: gr.ML_Materials[index].materialUnitId,
+                                                                    unitName: gr.ML_Materials[index].unitName,
+                                                                    quantity: gr.ML_Materials[index].quantity,
+                                                                    receivedQuantity: 0.0,
+                                                                    amount: 0.0,
+                                                                    isDiscount: gr.ML_Materials[index].isDiscount,
+                                                                    isPercentage: gr.ML_Materials[index].isPercentage,
+                                                                    isAmount: gr.ML_Materials[index].isAmount,
+                                                                    discountValue: gr.ML_Materials[index].discountValue,
+                                                                    discountAmount: 0.0,
+                                                                    taxValue: gr.ML_Materials[index].taxValue,
+                                                                    taxAmount: 0.0,
+                                                                    totalAmount: 0.0,
+                                                                    vehicleNumber: null,
+                                                                    vehicleTypeId: null,
+                                                                    inwardLoadedVehicleWeight: 0.0,
+                                                                    outwardEmptyVehicleWeight: 0.0,
+
+                                                                  )
+                                                              );
+                                                            });
+                                                            Navigator.push(context, _createRoute());
+                                                          }
+
                                                         }
                                                         else{
+                                                          Navigator.push(context, _createRouteTripList(gr.ML_Materials[index].materialId,
+                                                              gr.ML_Materials[index].materialName,gr.ML_Materials[index].unitName,gr.ML_Materials[index].quantity
+                                                          ));
+                                                        }
+
+                                                        if(gr.ML_Status=='Completed' && gr.ML_Materials[index].status=='Partially Received'){
                                                           Navigator.push(context, _createRouteTripList(gr.ML_Materials[index].materialId,
                                                               gr.ML_Materials[index].materialName,gr.ML_Materials[index].unitName,gr.ML_Materials[index].quantity
                                                           ));

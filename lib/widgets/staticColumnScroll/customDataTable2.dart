@@ -127,7 +127,7 @@ class _CustomDataTable2State extends State<CustomDataTable2> {
                               padding: value.edgeInsets,
                               width: value.width,
                               constraints: BoxConstraints(
-                                  minWidth: 150,
+                                  minWidth: 100,
                                   maxWidth: 200
                               ),
                               child: FittedBox(child: Text(value.columnName,style: AppTheme.TSWhite166,))
@@ -186,7 +186,7 @@ class _CustomDataTable2State extends State<CustomDataTable2> {
                                             alignment: v.alignment,
                                             padding: v.edgeInsets,
                                             constraints: BoxConstraints(
-                                              minWidth: 150,
+                                              minWidth: 100,
                                               maxWidth: 200
                                             ),
                                             decoration: BoxDecoration(

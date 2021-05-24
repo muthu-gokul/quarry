@@ -34,12 +34,12 @@ class _EmployeeAttendanceGridState extends State<EmployeeAttendanceGrid> {
     GridStyleModel(columnName: "Employee Code"),
     GridStyleModel(columnName: "Name"),
     GridStyleModel(columnName: "Designation"),
-    GridStyleModel(columnName: "Shift"),
-    GridStyleModel(columnName: "Date"),
-    GridStyleModel(columnName: "In Time"),
-    GridStyleModel(columnName: "Out Time"),
-    GridStyleModel(columnName: "Over Time"),
-    GridStyleModel(columnName: "Status"),
+    GridStyleModel(columnName: "Shift",width: 100),
+    GridStyleModel(columnName: "Date",width: 100),
+    GridStyleModel(columnName: "In Time",width: 100),
+    GridStyleModel(columnName: "Out Time",width: 100),
+    GridStyleModel(columnName: "Over Time",width: 100),
+    GridStyleModel(columnName: "Status",alignment: Alignment.centerRight,edgeInsets: EdgeInsets.only(right: 20)),
   ];
 
   @override
