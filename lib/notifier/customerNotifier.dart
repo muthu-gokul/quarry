@@ -24,6 +24,8 @@ class CustomerNotifier extends ChangeNotifier {
   TextEditingController customerGstNumber = new TextEditingController();
   TextEditingController customerType = new TextEditingController();
   TextEditingController customerCreditLimit = new TextEditingController();
+  double usedAmount=0.0;
+  double balanceAmount=0.0;
 
   bool isCreditCustomer = false;
 
@@ -198,7 +200,7 @@ class CustomerNotifier extends ChangeNotifier {
 
         var parsed = json.decode(value);
         var t = parsed['Table'] as List;
-       // print(t);
+        print(t);
         if(customerId!=null){
           editCustomerId=t[0]['CustomerId'];
           customerName.text=t[0]['CustomerName'];
@@ -212,6 +214,10 @@ class CustomerNotifier extends ChangeNotifier {
           customerEmail.text=t[0]['CustomerEmail'];
           customerCreditLimit.text=t[0]['CustomerCreditLimit'].toString();
           isCreditCustomer=t[0]['IsCreditCustomer']==0?false:true;
+          if(isCreditCustomer){
+            usedAmount=t[0]['UsedAmount'];
+            balanceAmount=t[0]['BalanceAmount'];
+          }
 
         }
         else{
@@ -266,6 +272,7 @@ class CustomerNotifier extends ChangeNotifier {
     customerEmail.clear();
     customerGstNumber.clear();
     customerCreditLimit.clear();
-
+    usedAmount=0.0;
+    balanceAmount=0.0;
   }
 }

@@ -9,6 +9,7 @@ import 'package:quarry/notifier/customerNotifier.dart';
 
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
+import 'package:quarry/styles/constants.dart';
 import 'package:quarry/styles/size.dart';
 
 import 'package:quarry/widgets/bottomBarAddButton.dart';
@@ -391,48 +392,118 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                       AnimatedContainer(
                                         duration: Duration(milliseconds: 300),
                                         curve: Curves.easeIn,
-                                        height: qn.isCreditCustomer?50:0,
+                                        height: qn.isCreditCustomer?160:0,
                                         width: SizeConfig.screenWidth,
-                                        margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,top:SizeConfig.height20,),
 
-                                        decoration: BoxDecoration(
-                                          border: Border.all(color: AppTheme.addNewTextFieldBorder),
-                                          borderRadius: BorderRadius.circular(3),
-                                          color: Colors.white
-                                        ),
-                                        child:qn.isCreditCustomer? TextField(
-                                          scrollPadding: EdgeInsets.only(bottom: 400),
-                                          onEditingComplete: (){
-                                            node.unfocus();
-                                            setState(() {
-                                              _keyboardVisible=false;
-                                            });
-                                          },
-                                          onTap: (){
-                                            scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
-                                            setState(() {
-                                              isListScroll=true;
-                                              _keyboardVisible=true;
-                                            });
-                                          },
-                                          style:  TextStyle(fontFamily: 'RR',fontSize: 15,color:AppTheme.addNewTextFieldText,letterSpacing: 0.2),
-                                          controller: qn.customerCreditLimit,
-                                          decoration: InputDecoration(
-                                            fillColor: Colors.white,
-                                            hintText: 'Customer Credit Limit',
-                                            hintStyle: TextStyle(fontFamily: 'RL',fontSize: 15,color: AppTheme.addNewTextFieldText.withOpacity(0.9)),
-                                            border: InputBorder.none,
-                                            focusedBorder: InputBorder.none,
-                                            errorBorder: InputBorder.none,
-                                            enabledBorder: InputBorder.none,
-                                            contentPadding: new EdgeInsets.symmetric(vertical: 10.0, horizontal: 8.0),
-                                          ),
 
-                                          keyboardType: TextInputType.number,
-                                          inputFormatters: [
-                                            FilteringTextInputFormatter.allow(RegExp('[0-9.]')),
+
+                                        child:Column(
+                                          children: [
+                                            AddNewLabelTextField(
+                                              textEditingController: qn.customerCreditLimit,
+                                              labelText: "Credit Limit",
+                                              textInputType: TextInputType.number,
+                                              regExp: decimalReg,
+                                              scrollPadding: 400,
+                                              ontap: (){
+                                                scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                                setState(() {
+                                                  isListScroll=true;
+                                                  _keyboardVisible=true;
+                                                });
+                                              },
+                                              onChange: (v){},
+                                              onEditComplete: (){
+                                                node.unfocus();
+                                                setState(() {
+                                                  _keyboardVisible=false;
+                                                });
+                                              },
+                                            ),
+                                            Container(
+                                              margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,top: 10),
+                                              height:40,
+                                              width: SizeConfig.screenWidthM40,
+                                              decoration: BoxDecoration(
+                                                  color: tableColor,
+                                                  borderRadius: BorderRadius.only(topLeft: Radius.circular(3),topRight: Radius.circular(3)),
+                                                  border: Border.all(color: AppTheme.addNewTextFieldBorder)
+
+                                              ),
+                                              child:Row(
+                                                children: [
+                                                  Container(
+                                                      padding: EdgeInsets.only(left: SizeConfig.width10),
+                                                      width: (SizeConfig.screenWidthM40*0.5)-2,
+                                                      child: Text("Used Amount",style: tableTextStyle,)
+                                                  ),
+
+                                                  Container(
+                                                      height: 50,
+                                                      width: 1,
+                                                      color: AppTheme.addNewTextFieldBorder
+                                                  ),
+
+                                                  Container(
+                                                    padding: EdgeInsets.only(left: SizeConfig.width10),
+                                                    height: 16,
+                                                    alignment: Alignment.centerLeft,
+                                                    width: (SizeConfig.screenWidthM40*0.5)-1,
+                                                    child: FittedBox(child: Text("${qn.usedAmount}",
+
+                                                      style:tableTextStyle2,
+                                                    ),
+
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Container(
+                                              margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,),
+                                              height:40,
+                                              width: SizeConfig.screenWidthM40,
+                                              decoration: BoxDecoration(
+                                                  color: tableColor,
+                                                  border: Border(left: BorderSide(color: AppTheme.addNewTextFieldBorder),
+                                                    right: BorderSide(color: AppTheme.addNewTextFieldBorder),bottom: BorderSide(color: AppTheme.addNewTextFieldBorder),
+
+                                                  )
+
+
+                                              ),
+                                              child:Row(
+                                                children: [
+                                                  Container(
+                                                      padding: EdgeInsets.only(left: SizeConfig.width10),
+                                                      width: (SizeConfig.screenWidthM40*0.5)-2,
+                                                      child: Text("Balance Amount",style: tableTextStyle,)
+                                                  ),
+
+                                                  Container(
+                                                      height: 50,
+                                                      width: 1,
+                                                      color: AppTheme.addNewTextFieldBorder
+                                                  ),
+
+                                                  Container(
+                                                    padding: EdgeInsets.only(left: SizeConfig.width10),
+                                                    height: 16,
+                                                    alignment: Alignment.centerLeft,
+                                                    width: (SizeConfig.screenWidthM40*0.5)-1,
+                                                    child: FittedBox(child: Text("${qn.balanceAmount}",
+
+                                                      style:tableTextStyle2,
+                                                    ),
+
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+
                                           ],
-                                        ):Container(),
+                                        ),
                                       ),
 
                                       SizedBox(height: 20,),
@@ -618,6 +689,9 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
         )
     );
   }
+  TextStyle tableTextStyle=TextStyle(fontFamily: 'RR',color: AppTheme.bgColor);
+  TextStyle tableTextStyle2=TextStyle(fontFamily: 'RR',color: AppTheme.gridTextColor);
+  Color tableColor=Colors.white;
 }
 
 

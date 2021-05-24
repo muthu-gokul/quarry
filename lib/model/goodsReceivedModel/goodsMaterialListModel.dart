@@ -98,6 +98,7 @@ class GoodsReceivedMaterialListModel {
     "MaterialPrice": materialPrice,
     "ExpectedQuantity": quantity,
     "ReceivedQuantity": receivedQuantity,
+    "BalanceQuantity": 0.0,
     "Amount": amount,
     "VehicleTypeId": vehicleTypeId,
     "VehicleNumber": vehicleNumber,

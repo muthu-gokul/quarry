@@ -327,6 +327,7 @@ class GoodsReceivedNotifier extends ChangeNotifier{
         "MaterialPrice":  outGateFormList[OGF_index].materialPrice,
         "ExpectedQuantity":  outGateFormList[OGF_index].expectedQuantity,
         "ReceivedQuantity": OGF_dbReceivedQty,
+        "BalanceQuantity": OGF_BalanceQty>0?OGF_BalanceQty:0.0,
         "Amount":  OGF_amount,
         "VehicleTypeId":  outGateFormList[OGF_index].vehicleTypeId,
         "VehicleNumber": OGF_vehicleNumber,
@@ -341,8 +342,6 @@ class GoodsReceivedNotifier extends ChangeNotifier{
         "TaxAmount":  OGF_taxAmount,
         "TotalAmount":  OGF_TotalAmount,
         "IsActive":1,
-
-
       };
 
       js.add(ma);

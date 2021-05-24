@@ -991,7 +991,6 @@ class _EmployeeMasterViewState extends State<EmployeeMasterView> with TickerProv
   }
 
   TextStyle tableTextStyle=TextStyle(fontFamily: 'RR',color: AppTheme.gridTextColor);
- // Color tableColor=AppTheme.disableColor.withOpacity(0.5);
   Color tableColor=Colors.white;
 
   Route _createRoute() {

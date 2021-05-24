@@ -436,7 +436,7 @@ class GoodsMaterialTripListState extends State<GoodsMaterialTripList> with Ticke
                                    SizedBox(height: 20,),
                                    Align(
                                      alignment: Alignment.center,
-                                     child: Text("So Generate Extra ${GoodsMaterialExtraTripModelDetails[0].balanceQuantity} ${GoodsMaterialExtraTripModelDetails[0].unitName??""} amount for",
+                                     child: Text("So Extra ${GoodsMaterialExtraTripModelDetails[0].balanceQuantity} ${GoodsMaterialExtraTripModelDetails[0].unitName??""} amount of",
                                        style: TextStyle(fontFamily: 'RR',fontSize: 14,color: AppTheme.hintColor),
                                      ),
                                    ),
@@ -455,7 +455,7 @@ class GoodsMaterialTripListState extends State<GoodsMaterialTripList> with Ticke
                                           child: Text("${GoodsMaterialExtraTripModelDetails[0].Amount}"),
                                          ),
                                        ),
-                                       Text("  Your Invoice",
+                                       Text("  is added to your Invoice.",
                                          style: TextStyle(fontFamily: 'RR',fontSize: 14,color: AppTheme.hintColor),
                                        )
                                      ],

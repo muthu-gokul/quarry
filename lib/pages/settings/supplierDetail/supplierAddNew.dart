@@ -596,6 +596,7 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                       Align(
                                         alignment: Alignment.centerRight,
                                         child: Container(
+                                          height: 50,
                                           width: SizeConfig.screenWidthM40*0.48,
                                           alignment: Alignment.center,
                                           margin: EdgeInsets.only(top:SizeConfig.height20,right: SizeConfig.width20),
