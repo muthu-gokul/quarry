@@ -36,12 +36,15 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
 
   ScrollController scrollController;
   ScrollController listViewController;
+
+  bool isPlantOpen=false;
   bool supplierTypeOpen=false;
   bool suppliersListOpen=false;
   bool materialsListOpen=false;
 
   bool supplierType=false;
   bool supplierId=false;
+  bool plant=false;
 
   //for keyboard
   int reorderLevelIndex=-1;
@@ -318,6 +321,38 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                                       )
 
                                     ),
+                                    GestureDetector(
+                                      onTap: (){
+
+                                        if(!pn.isPurchaseEdit){
+                                          if(pn.plantCount!=1){
+                                            node.unfocus();
+
+                                            Timer(Duration(milliseconds: 50), (){
+                                              setState(() {
+                                                _keyboardVisible=false;
+                                              });
+                                            });
+                                            setState(() {
+                                              isPlantOpen=true;
+                                            });
+                                          }
+
+                                        }
+
+
+
+                                      },
+                                      child: SidePopUpParent(
+                                        text: pn.PlantName==null? "Select Plant":pn.PlantName,
+                                        textColor: pn.PlantName==null? AppTheme.addNewTextFieldText.withOpacity(0.5):AppTheme.addNewTextFieldText,
+                                        iconColor: pn.PlantName==null? AppTheme.addNewTextFieldText:AppTheme.yellowColor,
+                                        bgColor: pn.PlantName==null? AppTheme.disableColor:Colors.white,
+
+                                      ),
+                                    ),
+                                    !plant?Container():ValidationErrorText(title: "* Select Plant"),
+
                                     GestureDetector(
                                       onTap: (){
                                         node.unfocus();
@@ -1865,6 +1900,9 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                     ontap: (){
                       if(!pn.isPurchaseView){
                         node.unfocus();
+                        if(pn.PlantId==null || pn.EditPlantId==null){setState(() {plant=true;});}
+                        else{setState(() {plant=false;});}
+
                         if(pn.supplierType==null){setState(() {supplierType=true;});}
                         else{setState(() {supplierType=false;});}
 
@@ -1898,8 +1936,8 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
 
 
                 Container(
-                  height: suppliersListOpen || supplierTypeOpen || materialsListOpen || otherChargeAmountOpen? SizeConfig.screenHeight:0,
-                  width: suppliersListOpen || supplierTypeOpen || materialsListOpen || otherChargeAmountOpen? SizeConfig.screenWidth:0,
+                  height: suppliersListOpen || supplierTypeOpen || materialsListOpen || otherChargeAmountOpen || isPlantOpen? SizeConfig.screenHeight:0,
+                  width: suppliersListOpen || supplierTypeOpen || materialsListOpen || otherChargeAmountOpen || isPlantOpen? SizeConfig.screenWidth:0,
                   color: Colors.black.withOpacity(0.5),
                 ),
                 Container(
@@ -1913,6 +1951,28 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                   ),
                 ),
 
+
+                ///////////////////////////////////////   Plant List    ////////////////////////////////
+                PopUpStatic(
+                  title: "Select Plant",
+                  isOpen: isPlantOpen,
+                  dataList: pn.plantList,
+                  propertyKeyName:"PlantName",
+                  propertyKeyId: "PlantId",
+                  selectedId:pn.PlantId,
+                  itemOnTap: (index){
+                    setState(() {
+                      pn.PlantId=pn.plantList[index].plantId;
+                      pn.PlantName=pn.plantList[index].plantName;
+                      isPlantOpen=false;
+                    });
+                  },
+                  closeOnTap: (){
+                    setState(() {
+                      isPlantOpen=false;
+                    });
+                  },
+                ),
 
 
 

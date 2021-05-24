@@ -230,7 +230,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                       drawer.menuSelected=9;
                                       scaffoldkey.currentState.openEndDrawer();
                                     });
-                                    Provider.of<PurchaseNotifier>(context, listen: false).UserDropDownValues(context);
+
                                     Provider.of<PurchaseNotifier>(context, listen: false).GetPurchaseDbHit(context,null);
 
                                   },
@@ -369,6 +369,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                           GestureDetector(
                             onTap: (){
                               Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>LoginScreen()));
+                              drawer.changeMenu(1);
                             },
                             child: Container(
                               height: 80,

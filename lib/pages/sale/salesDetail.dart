@@ -21,6 +21,7 @@ import 'package:quarry/widgets/decimal.dart';
 import 'package:quarry/widgets/searchdropdownSingleSelect.dart';
 import 'package:quarry/widgets/sidePopUp/sidePopUpWithSearch.dart';
 import 'package:quarry/widgets/sidePopUp/sidePopUpWithoutSearch.dart';
+import 'package:quarry/widgets/validationErrorText.dart';
 
 import '../../notifier/quarryNotifier.dart';
 import '../../styles/app_theme.dart';
@@ -65,6 +66,9 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
   Animation driverArrowAnimation;
   AnimationController driverArrowAnimationController;
   bool driverOpen=false;
+
+  bool isPlantOpen=false;
+  bool plant=false;
 
   @override
   void initState() {
@@ -262,6 +266,38 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                       scrollDirection: Axis.vertical,
                                                       physics: isListScroll?AlwaysScrollableScrollPhysics():NeverScrollableScrollPhysics(),
                                                       children: [
+
+                                                        GestureDetector(
+                                                          onTap: (){
+
+
+                                                              if(qn.plantCount!=1){
+                                                                node.unfocus();
+
+                                                                Timer(Duration(milliseconds: 50), (){
+                                                                  setState(() {
+                                                                    _keyboardVisible=false;
+                                                                  });
+                                                                });
+                                                                setState(() {
+                                                                  isPlantOpen=true;
+                                                                });
+                                                              }
+
+
+
+
+                                                          },
+                                                          child: SidePopUpParent(
+                                                            text: qn.PlantName==null? "Select Plant":qn.PlantName,
+                                                            textColor: qn.PlantName==null? AppTheme.addNewTextFieldText.withOpacity(0.5):AppTheme.addNewTextFieldText,
+                                                            iconColor: qn.PlantName==null? AppTheme.addNewTextFieldText:AppTheme.yellowColor,
+                                                            bgColor: qn.PlantName==null? AppTheme.disableColor:Colors.white,
+
+                                                          ),
+                                                        ),
+                                                        !plant?Container():ValidationErrorText(title: "* Select Plant"),
+
                                                         DropDownField(
 
                                                           add: (){
@@ -1760,6 +1796,9 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                 onTap: (){
                                   node.unfocus();
                                   if(qn.tabController.index==0){
+                                    if(qn.PlantId==null ){setState(() {plant=true;});}
+                                    else{setState(() {plant=false;});}
+
                                     if(qn.SS_vehicleNo.text.isEmpty){
                                       CustomAlert().commonErrorAlert(context, "Enter Vehicle Number", "");
                                     }
@@ -1769,6 +1808,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                     else if(qn.SS_customerNeedWeight.text.isEmpty && qn.SS_customerNeedWeight.text!="0"){
                                       CustomAlert().commonErrorAlert(context, "Enter Customer Need Weight", "");
                                     }
+
                                     else{
                                       qn.InsertSaleDetailDbhit(context);
                                     }
@@ -1908,8 +1948,8 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
 
                 Container(
 
-                  height: isTransportModeOpen || isPaymentTypeOpen || isCustomerDetaislOpen || isMaterialTypeOpen || isAddTransportOpen? SizeConfig.screenHeight:0,
-                  width: isTransportModeOpen || isPaymentTypeOpen || isCustomerDetaislOpen || isMaterialTypeOpen || isAddTransportOpen? SizeConfig.screenWidth:0,
+                  height: isTransportModeOpen || isPaymentTypeOpen || isCustomerDetaislOpen || isMaterialTypeOpen || isAddTransportOpen || isPlantOpen? SizeConfig.screenHeight:0,
+                  width: isTransportModeOpen || isPaymentTypeOpen || isCustomerDetaislOpen || isMaterialTypeOpen || isAddTransportOpen || isPlantOpen? SizeConfig.screenWidth:0,
                   color: Colors.black.withOpacity(0.5),
 
                 ),
@@ -1929,6 +1969,32 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                   ),
 
                 ),
+
+
+///////////////////////////////////////   Plant List    ////////////////////////////////
+                PopUpStatic(
+                  title: "Select Plant",
+                  isOpen: isPlantOpen,
+                  dataList: qn.plantList,
+                  propertyKeyName:"PlantName",
+                  propertyKeyId: "PlantId",
+                  selectedId:qn.PlantId,
+                  itemOnTap: (index){
+                    setState(() {
+                      qn.PlantId=qn.plantList[index].plantId;
+                      qn.PlantName=qn.plantList[index].plantName;
+                      isPlantOpen=false;
+                    });
+                  },
+                  closeOnTap: (){
+                    setState(() {
+                      isPlantOpen=false;
+                    });
+                  },
+                ),
+
+
+
 
 ///////////////////////////////// Transport Type /////////////////////////////////
 

@@ -9,6 +9,7 @@ import 'package:quarry/model/dropDownValues.dart';
 import 'package:quarry/model/plantDetailsModel/plantGridModel.dart';
 import 'package:quarry/model/plantDetailsModel/plantLicenseModel.dart';
 import 'package:quarry/model/plantDetailsModel/plantTypeModel.dart';
+import 'package:quarry/model/plantModel/plantUserModel.dart';
 import 'package:quarry/model/salesVehiclesModel.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/calculation.dart';
@@ -555,11 +556,16 @@ class QuarryNotifier extends ChangeNotifier{
     }
   }
 
-
+  List<PlantUserModel> plantList=[];
+  int plantCount=0;
   int PlantId=null;
-  int EditPlantId=null;
   String PlantName=null;
-  Future<dynamic> UserDropDownValues(BuildContext context) async {
+
+
+
+  Future<dynamic>  PlantUserDropDownValues(BuildContext context) async {
+
+    plantCount=0;
     updateInsertSaleLoader(true);
     var body={
       "Fields": [
@@ -571,7 +577,7 @@ class QuarryNotifier extends ChangeNotifier{
         {
           "Key": "LoginUserId",
           "Type": "int",
-          "Value":UserId
+          "Value": UserId
         },
         {
           "Key": "TypeName",
@@ -582,34 +588,51 @@ class QuarryNotifier extends ChangeNotifier{
           "Key": "database",
           "Type": "String",
           "Value": DataBaseName
-        }
+        },
       ]
     };
-
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
         if(value!=null){
           var parsed=json.decode(value);
+
           var t=parsed['Table'] as List;
           var t1=parsed['Table1'] as List;
+          plantList=t1.map((e) => PlantUserModel.fromJson(e)).toList();
+          plantList.forEach((element) {
+            if(element.userId==UserId){
+              plantCount=plantCount+1;
 
-          t1.forEach((element) {
-            if(element['UserId']==UserId){
-              PlantId=element['PlantId'];
-              PlantName=element['PlantName'];
+                PlantId=element.plantId;
+                PlantName=element.plantName;
+
+
             }
           });
+
+
+            if(plantCount!=1){
+              PlantId=null;
+              PlantName=null;
+              plantList=plantList.where((element) => element.userId==UserId).toList();
+
+
+          }
+
+
+
         }
+        print("plantCount$plantCount");
         updateInsertSaleLoader(false);
       });
+
+
     }
     catch(e){
       updateInsertSaleLoader(false);
       CustomAlert().commonErrorAlert(context, "${Sp.MasterdropDown}" , e.toString());
     }
   }
-  
-  
   
   
   
@@ -1999,6 +2022,11 @@ class QuarryNotifier extends ChangeNotifier{
 
 
       }else if(tabController.index==0){
+        if(PlantId==null){
+          PlantUserDropDownValues(context);
+        }
+
+        SalesDropDownValues(context);
         GetCustomerDetailDbhit(context);
       }
 

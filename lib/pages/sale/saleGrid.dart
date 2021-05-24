@@ -570,7 +570,7 @@ class _SaleGridState extends State<SaleGrid> {
                     ontap: (){
                       qn.clearIsOpen();
                       qn.clearEmptyForm();
-                      qn.UserDropDownValues(context);
+                      qn.PlantUserDropDownValues(context);
                       qn.SalesDropDownValues(context);
                       Navigator.of(context).push(_createRouteFalse());
                     },

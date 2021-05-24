@@ -370,8 +370,9 @@ class InvoiceNotifier extends ChangeNotifier{
       taxAmount=double.parse((Decimal.parse(taxAmount.toString()) + Decimal.parse(element.TaxAmount.toString())).toString());
       discountAmount=double.parse((Decimal.parse(discountAmount.toString()) + Decimal.parse(element.DiscountAmount.toString())).toString());
       discountedSubtotal=double.parse((Decimal.parse(subtotal.toString()) - Decimal.parse(discountedSubtotal.toString())).toString());
-      grandTotal=double.parse((Decimal.parse(grandTotal.toString()) + Decimal.parse(element.TotalAmount.toString()) + Decimal.parse(otherCharges.toString())).toString());
+      grandTotal=double.parse((Decimal.parse(grandTotal.toString()) + Decimal.parse(element.TotalAmount.toString())).toString());
     });
+    grandTotal =Calculation().add(grandTotal, otherCharges);
 
     notifyListeners();
   }

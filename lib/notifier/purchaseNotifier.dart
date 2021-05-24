@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/api/ApiManager.dart';
 import 'package:quarry/api/sp.dart';
+import 'package:quarry/model/plantModel/plantUserModel.dart';
 import 'package:quarry/model/purchaseDetailsModel/PurchaseOrderOtherChargesMappingListModel.dart';
 import 'package:quarry/model/purchaseDetailsModel/purchaseDetailGridModel.dart';
 import 'package:quarry/model/purchaseDetailsModel/purchaseMaterialListModel.dart';
@@ -47,9 +48,11 @@ class PurchaseNotifier extends ChangeNotifier{
   String PlantName=null;
 
   final call=ApiManager();
+  List<PlantUserModel> plantList=[];
+  int plantCount;
+  Future<dynamic>  PlantUserDropDownValues(BuildContext context) async {
 
-  Future<dynamic> UserDropDownValues(BuildContext context) async {
-    print(context);
+    plantCount=0;
     updatePurchaseLoader(true);
     var body={
       "Fields": [
@@ -72,32 +75,49 @@ class PurchaseNotifier extends ChangeNotifier{
           "Key": "database",
           "Type": "String",
           "Value": Provider.of<QuarryNotifier>(context,listen: false).DataBaseName
-        }
+        },
       ]
     };
-
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
         if(value!=null){
           var parsed=json.decode(value);
+
           var t=parsed['Table'] as List;
           var t1=parsed['Table1'] as List;
+          plantList=t1.map((e) => PlantUserModel.fromJson(e)).toList();
+          plantList.forEach((element) {
+            if(element.userId==Provider.of<QuarryNotifier>(context,listen: false).UserId){
+              plantCount=plantCount+1;
+              if(!isPurchaseEdit){
+                PlantId=element.plantId;
+                PlantName=element.plantName;
+              }
 
-          t1.forEach((element) {
-            if(element['UserId']==Provider.of<QuarryNotifier>(context,listen: false).UserId){
-              PlantId=element['PlantId'];
-              PlantName=element['PlantName'];
             }
           });
 
-          print(PlantId);
-          print(PlantName);
+          if(!isPurchaseEdit){
+            if(plantCount!=1){
+              PlantId=null;
+              PlantName=null;
+              plantList=plantList.where((element) => element.userId==Provider.of<QuarryNotifier>(context,listen: false).UserId).toList();
 
+            }
+          }
 
+          if(isPurchaseEdit){
+            PlantId=null;
+            PlantName=null;
+            plantList=plantList.where((element) => element.userId==Provider.of<QuarryNotifier>(context,listen: false).UserId).toList();
+          }
 
         }
+        print("plantCount$plantCount");
         updatePurchaseLoader(false);
       });
+
+
     }
     catch(e){
       updatePurchaseLoader(false);
@@ -341,8 +361,9 @@ class PurchaseNotifier extends ChangeNotifier{
       taxAmount=double.parse((Decimal.parse(taxAmount.toString()) + Decimal.parse(element.TaxAmount.toString())).toString());
       discountAmount=double.parse((Decimal.parse(discountAmount.toString()) + Decimal.parse(element.DiscountAmount.toString())).toString());
       discountedSubtotal=double.parse((Decimal.parse(subtotal.toString()) - Decimal.parse(discountedSubtotal.toString())).toString());
-      grandTotal=double.parse((Decimal.parse(grandTotal.toString()) + Decimal.parse(element.TotalAmount.toString()) + Decimal.parse(otherCharges.toString())).toString());
+      grandTotal=double.parse((Decimal.parse(grandTotal.toString()) + Decimal.parse(element.TotalAmount.toString())).toString());
     });
+    grandTotal=Calculation().add(grandTotal, otherCharges);
 
 
 
@@ -571,6 +592,7 @@ class PurchaseNotifier extends ChangeNotifier{
           }
           else{
             purchaseGridList=t.map((e) => PurchaseOrderGridModel.fromJson(e)).toList();
+            purchaseGridList.sort((a,b)=>b.purchaseOrderId.compareTo(a.purchaseOrderId));
           }
         }
 

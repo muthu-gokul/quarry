@@ -515,6 +515,7 @@ class PurchaseDetailsGridState extends State<PurchaseDetailsGrid> with TickerPro
                     ontap: (){
                       pn.updatePurchaseView(false);
                       pn.updatePurchaseEdit(false);
+                      pn.PlantUserDropDownValues(context);
                       pn.PurchaseDropDownValues(context);
                       pn.insertForm();
                       if(selectedIndex!=-1){
