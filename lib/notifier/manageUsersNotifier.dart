@@ -7,6 +7,7 @@ import 'package:quarry/api/sp.dart';
 import 'package:quarry/model/manageUsersModel/manageUsersGridModel.dart';
 import 'package:quarry/model/manageUsersModel/manageUsersGroupModel.dart';
 import 'package:quarry/model/manageUsersModel/manageUsersPlantModel.dart';
+import 'package:quarry/notifier/profileNotifier.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 
@@ -177,6 +178,8 @@ class ManageUsersNotifier extends ChangeNotifier{
           Navigator.pop(context);
           clearForm();
           GetUserDetailDbHit(context, null);
+          Provider.of<ProfileNotifier>(context, listen: false).GetUserDetailDbHit(context,UserId);
+
 
         }
         updateManageUsersLoader(false);

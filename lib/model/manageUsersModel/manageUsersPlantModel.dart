@@ -6,13 +6,15 @@ class ManageUserPlantModel {
     this.plantName,
     this.UserPlantMappingId,
     this.UserId,
-    this.scaleController
+    this.scaleController,
+    this.isActive
   });
 
   int plantId;
   String plantName;
   int UserPlantMappingId;
   int UserId;
+  bool isActive;
 
   AnimationController scaleController;
 
@@ -20,6 +22,7 @@ class ManageUserPlantModel {
     plantId: json["PlantId"],
     plantName: json["PlantName"],
     UserId: json["UserId"],
+    isActive: true
   );
 
   Map<String, dynamic> toJson() => {

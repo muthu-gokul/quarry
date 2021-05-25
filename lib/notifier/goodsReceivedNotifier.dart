@@ -10,6 +10,7 @@ import 'package:quarry/model/goodsReceivedModel/goodsMaterialListModel.dart';
 import 'package:quarry/model/goodsReceivedModel/goodsMaterialTripModel.dart';
 import 'package:quarry/model/goodsReceivedModel/goodsOutGateModel.dart';
 import 'package:quarry/model/goodsReceivedModel/goodsReceivedGridModel.dart';
+import 'package:quarry/model/manageUsersModel/manageUsersPlantModel.dart';
 import 'package:quarry/model/vehicelDetailsModel/vehicleTypeModel.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/pages/goodsReceived/goodsMaterialsList.dart';
@@ -21,7 +22,7 @@ class GoodsReceivedNotifier extends ChangeNotifier{
 
   final call=ApiManager();
 
-
+  List<ManageUserPlantModel> filterUsersPlantList=[];
 
   List<dynamic> vehicleTypeList=[];
   List<dynamic> filterVehicleTypeList=[];

@@ -1942,6 +1942,9 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                     else if(qn.SS_customerNeedWeight.text.isEmpty && qn.SS_customerNeedWeight.text!="0"){
                                       CustomAlert().commonErrorAlert(context, "Enter Customer Need Weight", "");
                                     }
+                                    else if(double.parse(qn.SS_customerNeedWeight.text)>qn.SS_selectedMaterialStock){
+                                      CustomAlert().commonErrorAlert(context, "Out Of Stock", "Current Stock - ${qn.SS_selectedMaterialStock} Ton");
+                                    }
 
                                     else{
                                       qn.InsertSaleDetailDbhit(context);
@@ -2320,6 +2323,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                       isMaterialTypeOpen=false;
                       qn.SS_selectedMaterialTypeId=qn.sale_materialList[index].MaterialId;
                       qn.SS_selectedMaterialTypeName=qn.sale_materialList[index].MaterialName;
+                      qn.SS_selectedMaterialStock=qn.sale_materialList[index].Stock;
                       qn.SS_Empty_ReqQtyUnit=qn.sale_materialList[index].MaterialUnitName;
                     });
                     qn.weightToAmount();

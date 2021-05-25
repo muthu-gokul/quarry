@@ -7,10 +7,13 @@ import 'package:flutter/rendering.dart';
 
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:quarry/model/manageUsersModel/manageUsersPlantModel.dart';
 import 'package:quarry/notifier/goodsReceivedNotifier.dart';
+import 'package:quarry/notifier/profileNotifier.dart';
 
 import 'package:quarry/pages/goodsReceived/goodsMaterialsList.dart';
 import 'package:quarry/pages/goodsReceived/goodsOutGateForm.dart';
+import 'package:quarry/pages/goodsReceived/goodsPlantList.dart';
 import 'package:quarry/pages/goodsReceived/goodsToInvoice.dart';
 
 import 'package:quarry/references/bottomNavi.dart';
@@ -594,7 +597,43 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
                           crossAxisAlignment: CrossAxisAlignment.end,
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            SvgPicture.asset("assets/bottomIcons/plant-slection.svg",height: 40,width: 40,color: AppTheme.bgColor,),
+                            Consumer<ProfileNotifier>(
+                                builder: (context,pn,child)=> GestureDetector(
+                                  onTap: (){
+                                    if(pn.usersPlantList.length>1){
+                                      if(gr.filterUsersPlantList.isEmpty){
+                                        setState(() {
+                                          pn.usersPlantList.forEach((element) {
+                                            gr.filterUsersPlantList.add(ManageUserPlantModel(
+                                              plantId: element.plantId,
+                                              plantName: element.plantName,
+                                              isActive: element.isActive,
+
+                                            ));
+                                          });
+                                        });
+                                      }
+                                      else if(gr.filterUsersPlantList.length!=pn.usersPlantList.length){
+                                        gr.filterUsersPlantList.clear();
+                                        setState(() {
+                                          pn.usersPlantList.forEach((element) {
+                                            gr.filterUsersPlantList.add(ManageUserPlantModel(
+                                              plantId: element.plantId,
+                                              plantName: element.plantName,
+                                              isActive: element.isActive,
+
+                                            ));
+                                          });
+                                        });
+                                      }
+
+                                      Navigator.push(context, _createRouteGoodsPlant());
+                                    }
+                                  },
+                                  child: SvgPicture.asset("assets/bottomIcons/plant-slection.svg",height: 40,width: 40,
+                                    color: pn.usersPlantList.length<=1?AppTheme.bgColor.withOpacity(0.4):AppTheme.bgColor,),
+                                )
+                            ),
                             GestureDetector(
                                 onTap: (){
                                   setState(() {
@@ -859,6 +898,18 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
 
         return SlideTransition(
           position: Tween<Offset>(begin: Offset(1.0,0.0), end: Offset.zero).animate(animation),
+          child: child,
+        );
+      },
+    );
+  }
+  Route _createRouteGoodsPlant() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => GoodsPlantList(),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+
+        return SlideTransition(
+          position: Tween<Offset>(begin: Offset(-1.0,0.0), end: Offset.zero).animate(animation),
           child: child,
         );
       },

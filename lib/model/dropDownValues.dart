@@ -37,10 +37,11 @@ class MaterialTypelist{
   String MaterialUnitName;
   double MaterialUnitPrice;
   double TaxValue;
+  double Stock;
   String MaterialHSNCode;
 
   MaterialTypelist({this.MaterialId,this.MaterialName,this.MaterialDescription,this.MaterialCode,this.MaterialUnitId,
- this.MaterialUnitPrice,this.MaterialHSNCode,this.MaterialUnitName,this.TaxValue});
+ this.MaterialUnitPrice,this.MaterialHSNCode,this.MaterialUnitName,this.TaxValue,this.Stock});
 
 
   factory MaterialTypelist.fromJson(Map<dynamic, dynamic> json) {
@@ -54,6 +55,7 @@ class MaterialTypelist{
       MaterialUnitPrice: json['MaterialUnitPrice'],
       TaxValue: json['TaxValue'],
       MaterialHSNCode: json['MaterialHSNCode'],
+      Stock: json['Stock'],
     );
   }
 

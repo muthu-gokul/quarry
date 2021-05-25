@@ -52,57 +52,7 @@ class QuarryNotifier extends ChangeNotifier{
   }
 
   final call=ApiManager();
-  initDropDownValues(BuildContext context) async {
-    print("FFF");
-    updatedropDownLoader(true);
-    var body={
-      "Fields": [
-        {
-          "Key": "SpName",
-          "Type": "String",
-          "Value": "${Sp.dropDownValues}"
-        },
-        {
-          "Key": "LoginUserId",
-          "Type": "int",
-          "Value": UserId
-        },
-        {
-          "Key": "database",
-          "Type": "String",
-          "Value": DataBaseName
-        }
-      ]
-    };
 
-    try{
-      await call.ApiCallGetInvoke(body,context).then((value) {
-        var parsed=json.decode(value);
-        var t=parsed['Table'] as List;
-        var t1=parsed['Table1'] as List;
-        var t2=parsed['Table2'] as List;
-        var t3=parsed['Table3'] as List;
-        var t4=parsed['Table4'] as List;
-        var t5=parsed['Table5'] as List;
-        var t6=parsed['Table6'] as List;
-        var t7=parsed['Table7'] as List;
-        var t8=parsed['Table8'] as List;
-        var t10=parsed['Table10'] as List;
-
-        vehicleList=t1.map((e) => VehicleType.fromJson(e)).toList();
-        sale_materialList=t2.map((e) => MaterialTypelist.fromJson(e)).toList();
-        sale_paymentList=t3.map((e) => PaymentType.fromJson(e)).toList();
-        material_TaxList=t5.map((e) => TaxDetails.fromJson(e)).toList();
-        material_UnitsList=t6.map((e) => UnitDetails.fromJson(e)).toList();
-
-        updatedropDownLoader(false);
-      });
-    }
-    catch(e){
-      updatedropDownLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.dropDownValues}" , e.toString());
-    }
-  }
 
   ///****************************************************      Sale DETAIL   ****************************************************************/
 
@@ -266,6 +216,7 @@ class QuarryNotifier extends ChangeNotifier{
   TextEditingController SS_emptyVehicleWeight= new TextEditingController();
   int SS_selectedMaterialTypeId=null;
   String SS_selectedMaterialTypeName=null;
+  double SS_selectedMaterialStock;
   TextEditingController SS_customerNeedWeight= new TextEditingController(text: "0");
   TextEditingController SS_amount= new TextEditingController(text: '0.00');
   int SS_selectedPaymentTypeId=null;
@@ -438,6 +389,7 @@ class QuarryNotifier extends ChangeNotifier{
     SS_selectedPaymentTypeId=null;
     SS_selectedVehicleTypeName=null;
     SS_selectedMaterialTypeName=null;
+    SS_selectedMaterialStock=0.0;
     SS_selectedPaymentTypeString=null;
 
     SS_selectedCustomerName=null;
@@ -547,6 +499,7 @@ class QuarryNotifier extends ChangeNotifier{
         var t3=parsed['Table3'] as List;
 
 
+        print(t1);
 
 
         saleDetailsGrid=t.map((e) => SaleDetails.fromJson(e)).toList();

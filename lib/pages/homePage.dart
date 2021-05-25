@@ -368,7 +368,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
 
                           GestureDetector(
                             onTap: (){
-                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>LoginScreen()));
+                              Navigator.of(context).pushAndRemoveUntil(
+                                  MaterialPageRoute(builder: (c) => LoginScreen()),
+                                      (route) => false);
+                            //  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>LoginScreen()));
                               drawer.changeMenu(1);
                             },
                             child: Container(

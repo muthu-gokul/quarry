@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/api/ApiManager.dart';
 import 'package:quarry/api/sp.dart';
+import 'package:quarry/model/manageUsersModel/manageUsersPlantModel.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 
@@ -114,6 +115,7 @@ class ProfileNotifier extends ChangeNotifier{
 
   }
 
+  List<ManageUserPlantModel> usersPlantList=[];
 
 
   GetUserDetailDbHit(BuildContext context,int userId)  async{
@@ -156,7 +158,7 @@ class ProfileNotifier extends ChangeNotifier{
           if(userId!=null){
             var t1=parsed['Table1'] as List;
             print(t);
-            print(t1);
+            print("t1${t1}");
             UserId=t[0]['UserId'];
             selectedSalutation=t[0]['UserSalutation'];
             UserGroupName=t[0]['UserGroupName'];
@@ -166,6 +168,7 @@ class ProfileNotifier extends ChangeNotifier{
             email.text=t[0]['UserEmail'];
             password.text=t[0]['UserPassword'];
 
+            usersPlantList=t1.map((e) => ManageUserPlantModel.fromJson(e)).toList();
           }
           else{
 
