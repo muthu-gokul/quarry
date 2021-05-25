@@ -16,6 +16,7 @@ import 'package:quarry/widgets/bottomBarAddButton.dart';
 import 'package:quarry/widgets/calculation.dart';
 import 'package:quarry/widgets/customTextField.dart';
 import 'package:quarry/widgets/sidePopUp/sidePopUpWithoutSearch.dart';
+import 'package:quarry/widgets/sidePopUp/sidePopupWithoutModelList.dart';
 import 'package:quarry/widgets/validationErrorText.dart';
 
 
@@ -185,9 +186,27 @@ class ProductionDetailAddNewState extends State<ProductionDetailAddNew> with Tic
                                             _keyboardVisible=false;
                                           });
                                         });
-                                        setState(() {
-                                          isPlantOpen=true;
-                                        });
+                                        if(qn.selectInputTypeId==null){
+                                          setState(() {
+                                            isPlantOpen=true;
+
+                                          });
+                                        }else{
+                                          CustomAlert(
+                                            Cancelcallback: (){
+                                              Navigator.pop(context);
+                                            },
+                                            callback: (){
+                                              qn.selectInputTypeId=null;
+                                              qn.selectInputTypeName=null;
+                                              qn.productionMaterialMappingList.clear();
+                                              qn.wastageCalc();
+                                              Navigator.pop(context);
+                                            }
+                                          ).yesOrNoDialog(context, "", "Do you want to clear Materials ?");
+                                        }
+
+
                                       }
 
 
@@ -223,18 +242,20 @@ class ProductionDetailAddNewState extends State<ProductionDetailAddNew> with Tic
                                   GestureDetector(
                                     onTap: () {
                                       node.unfocus();
-                                      setState(() {
-                                        _keyboardVisible=false;
-                                        inputMaterialOpen = true;
-                                      });
+                                      if(qn.plantId==null){
+                                        CustomAlert().commonErrorAlert(context, "Select Plant", "");
+                                      }else{
+                                        setState(() {
+                                          _keyboardVisible=false;
+                                          inputMaterialOpen = true;
+                                        });
+                                      }
+
                                     },
                                     child: SidePopUpParent(
-                                      text: qn.selectInputTypeName == null ? "Select Input Material"
-                                          : qn.selectInputTypeName,
-                                      textColor: qn.selectInputTypeName == null ? AppTheme.addNewTextFieldText.withOpacity(0.5)
-                                          : AppTheme.addNewTextFieldText,
-                                      iconColor: qn.selectInputTypeName == null ? AppTheme.addNewTextFieldText
-                                          : AppTheme.yellowColor,
+                                      text: qn.selectInputTypeName == null ? "Select Input Material" : qn.selectInputTypeName,
+                                      textColor: qn.selectInputTypeName == null ? AppTheme.addNewTextFieldText.withOpacity(0.5) : AppTheme.addNewTextFieldText,
+                                      iconColor: qn.selectInputTypeName == null ? AppTheme.addNewTextFieldText : AppTheme.yellowColor,
                                     ),
                                   ),
                                   !inputMaterial?Container():ValidationErrorText(title: "* Select Input Material ",),
@@ -242,6 +263,8 @@ class ProductionDetailAddNewState extends State<ProductionDetailAddNew> with Tic
                                     labelText: 'Input Material Quantity',
                                     textEditingController: qn.materialQuantity,
                                     textInputType: TextInputType.number,
+                                    isEnabled: qn.selectInputTypeId==null?false:true,
+                                    regExp: '[0-9.]',
                                     ontap: () {
                                       setState(() {
                                         _keyboardVisible=true;
@@ -249,7 +272,20 @@ class ProductionDetailAddNewState extends State<ProductionDetailAddNew> with Tic
                                       scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                     },
                                     onChange: (v){
-                                      qn.wastageCalc();
+                                      if(v.isNotEmpty){
+                                        if(double.parse(v)<=qn.stock){
+                                          qn.wastageCalc();
+                                        }
+                                        else{
+                                          node.unfocus();
+                                          CustomAlert().commonErrorAlert(context, "Out Of Stock", "Current Stock - ${qn.stock}");
+                                          qn.materialQuantity.clear();
+                                          qn.wastageCalc();
+                                        }
+                                      }else{
+                                        qn.wastageCalc();
+                                      }
+
                                     },
                                     onEditComplete: () {
                                       node.unfocus();
@@ -923,21 +959,25 @@ class ProductionDetailAddNewState extends State<ProductionDetailAddNew> with Tic
 
 
 ///////////////////////////////////////      Input MATERIAL ////////////////////////////////
-                PopUpStatic(
+
+                PopUpStatic2(
                   title: "Select Input Material",
-                  isAlwaysShown: true,
+
                   isOpen: inputMaterialOpen,
                   dataList: qn.inputMaterialList,
                   propertyKeyName:"MaterialName",
                   propertyKeyId: "MaterialId",
-                  selectedId: qn.inputMaterialList,
+                  selectedId: qn.selectInputTypeId,
                   itemOnTap: (index){
                     setState(() {
-                      qn.selectInputTypeId=qn.inputMaterialList[index].materialId;
-                      qn.selectInputTypeName=qn.inputMaterialList[index].materialName;
-                      qn.selectInputUnitId=qn.inputMaterialList[index].MaterialUnitId;
-                      qn.selectInputUnitName=qn.inputMaterialList[index].UnitName;
+                      qn.selectInputTypeId=qn.inputMaterialList[index]['MaterialId'];
+                      qn.selectInputTypeName=qn.inputMaterialList[index]['MaterialName'];
+                      qn.selectInputUnitId=qn.inputMaterialList[index]['MaterialUnitId'];
+                      qn.selectInputUnitName=qn.inputMaterialList[index]['UnitName'];
+                      qn.stock=qn.inputMaterialList[index][qn.plantId.toString()];
                       inputMaterialOpen=false;
+                      print(qn.stock);
+
                     });
                   },
                   closeOnTap: (){

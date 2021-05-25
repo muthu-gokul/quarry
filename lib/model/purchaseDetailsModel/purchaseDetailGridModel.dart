@@ -13,11 +13,15 @@ class PurchaseOrderGridModel {
     this.Subtotal,
     this.supplierName,
     this.status,
+    this.PlantId,
+    this.PlantName,
   });
 
   int purchaseOrderId;
+  int PlantId;
   DateTime expectedDate;
   String purchaseOrderNumber;
+  String PlantName;
   int materialId;
   String materialName;
   String supplierName;
@@ -31,6 +35,8 @@ class PurchaseOrderGridModel {
 
   factory PurchaseOrderGridModel.fromJson(Map<String, dynamic> json) => PurchaseOrderGridModel(
     purchaseOrderId: json["PurchaseOrderId"],
+    PlantId: json["PlantId"],
+    PlantName: json["PlantName"],
     expectedDate:json["ExpectedDate"]!=null? DateTime.parse(json["ExpectedDate"]):null,
     purchaseOrderNumber: json["PurchaseOrderNumber"],
     materialId: json["MaterialId"],

@@ -1,10 +1,13 @@
 
 import 'dart:async';
+import 'dart:io';
 
+import 'package:firebase_ml_vision/firebase_ml_vision.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/notifier/goodsReceivedNotifier.dart';
 import 'package:quarry/references/bottomNavi.dart';
@@ -38,7 +41,7 @@ class GoodsOutGateFormState extends State<GoodsOutGateForm> with TickerProviderS
   bool _keyboardVisible=false;
   bool isVehicleTypeOpen=false;
 
-
+  PickedFile _image;
 
   @override
   void initState() {
@@ -230,11 +233,95 @@ class GoodsOutGateFormState extends State<GoodsOutGateForm> with TickerProviderS
                                 },
 
                               ),
+                              GestureDetector(
+                                onTap: () async{
 
+                                  if(gr.OGF_vehicleNumberController.text.isEmpty){
+                                    CustomAlert().commonErrorAlert(context, "Select Vehicle", "");
+                                  }else{
+                                    setState(() {
+                                      gr.scanWeight="";
+                                    });
+
+                                    final pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
+                                    gr.updateGoodsLoader(true);
+                                    setState(() async {
+                                      if (pickedFile != null) {
+                                        _image = pickedFile;
+                                        final FirebaseVisionImage visionImage = FirebaseVisionImage.fromFile(File(_image.path));
+                                        final TextRecognizer textRecognizer = FirebaseVision.instance.textRecognizer();
+                                        final VisionText visionText = await textRecognizer.processImage(visionImage);
+
+                                        for (TextBlock block in visionText.blocks) {
+                                          for (TextLine line in block.lines) {
+
+                                            if( RegExp(r'^\d+\.?\d').hasMatch(line.text)){
+                                              print(line.text);
+                                              gr.scanWeight += line.text;
+
+                                            }
+
+                                          }
+                                        }
+                                        if(gr.scanWeight.isEmpty){
+                                          gr.scanWeight="ReCapture Clearly";
+                                          gr.OGF_emptyWeightofVehicle.clear();
+                                          gr.updateGoodsLoader(false);
+                                          gr.calc();
+                                        }else{
+                                          gr.OGF_emptyWeightofVehicle.text=gr.scanWeight;
+                                          gr.updateGoodsLoader(false);
+                                          if(gr.OGF_emptyWeightofVehicle.text.isNotEmpty){
+                                            if(int.parse(gr.OGF_emptyWeightofVehicle.text.toString())<gr.OGF_InwardLoadedVehicleWeight){
+                                              gr.calc();
+                                            }
+                                            else{
+                                              setState(() {
+                                                gr.OGF_emptyWeightofVehicle.clear();
+                                              });
+                                              gr.calc();
+                                              CustomAlert().commonErrorAlert(context, "Over Weight", "Empty vehicle weight is higher than Inward Vehicle Weight");
+                                            }
+                                          }
+                                          else{
+                                            gr.calc();
+                                          }
+                                        }
+
+                                      } else {
+                                        gr.updateGoodsLoader(false);
+                                        print('No image selected');
+                                      }
+                                    });
+                                  }
+
+
+                                },
+                                child: Container(
+                                  height: 50,
+                                  margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,top:15,),
+                                  width:SizeConfig.screenWidth,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(3),
+                                      color: Colors.white,
+                                      border: Border.all(color: AppTheme.addNewTextFieldBorder)
+                                  ),
+                                  alignment: Alignment.centerLeft,
+                                  child: Row(
+                                    children: [
+                                      SizedBox(width:10),
+                                      Text("${gr.scanWeight.isEmpty?"Scan Weight of Vehicle":gr.scanWeight}",style: TextStyle(fontFamily: 'RR',fontSize: 15,color: AppTheme.addNewTextFieldText,),),
+                                      Spacer(),
+                                      Icon(Icons.camera_alt_outlined,size: 30,color: AppTheme.addNewTextFieldText,),
+                                      SizedBox(width:10)
+                                    ],
+                                  ),
+                                ),
+                              ),
                               AddNewLabelTextField(
                                 textEditingController: gr.OGF_emptyWeightofVehicle,
                                 labelText: "Empty Vehicle Weight",
-
+                                isEnabled: gr.OGF_vehicleNumberController.text.isEmpty?false:true,
                                 ontap: (){
                                 //  scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                   setState(() {

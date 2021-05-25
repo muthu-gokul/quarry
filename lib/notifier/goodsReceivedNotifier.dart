@@ -162,6 +162,7 @@ class GoodsReceivedNotifier extends ChangeNotifier{
     selectedVehicleTypeName=null;
     IGF_Materials.clear();
     IGf_OtherChargesList.clear();
+    scanWeight="";
     notifyListeners();
   }
 
@@ -297,7 +298,7 @@ class GoodsReceivedNotifier extends ChangeNotifier{
   double OGF_TotalAmount;
   double OGF_discountedSubTotal;
   bool OGF_isTax=false;
-
+  String scanWeight="";
   clearOGFform(){
      OGF_vehicleNumber=null;
      OGF_index=null;
@@ -318,6 +319,7 @@ class GoodsReceivedNotifier extends ChangeNotifier{
      OGF_TotalAmount=0.0;
      OGF_discountedSubTotal=0.0;
      OGF_isTax=false;
+     scanWeight="";
      notifyListeners();
   }
 

@@ -1,11 +1,14 @@
 
 import 'dart:async';
+import 'dart:io';
 
+import 'package:firebase_ml_vision/firebase_ml_vision.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/notifier/goodsReceivedNotifier.dart';
 
@@ -44,7 +47,7 @@ class GoodsInGateFormState extends State<GoodsInGateForm> with TickerProviderSta
   bool isListScroll=false;
 
   TextEditingController searchController = new TextEditingController();
-  
+  PickedFile _image;
 
   @override
   void initState() {
@@ -230,6 +233,75 @@ class GoodsInGateFormState extends State<GoodsInGateForm> with TickerProviderSta
                                       iconColor: gr.selectedVehicleTypeName==null? AppTheme.addNewTextFieldText:AppTheme.yellowColor,
                                       bgColor: gr.selectedVehicleTypeName==null? AppTheme.disableColor:Colors.white,
 
+                                    ),
+                                  ),
+                                  GestureDetector(
+                                    onTap: () async{
+
+
+                                        setState(() {
+                                          gr.scanWeight="";
+                                        });
+
+                                        final pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
+                                        gr.updateGoodsLoader(true);
+                                        setState(() async {
+                                          if (pickedFile != null) {
+                                            _image = pickedFile;
+                                            final FirebaseVisionImage visionImage = FirebaseVisionImage.fromFile(File(_image.path));
+                                            final TextRecognizer textRecognizer = FirebaseVision.instance.textRecognizer();
+                                            final VisionText visionText = await textRecognizer.processImage(visionImage);
+
+                                            for (TextBlock block in visionText.blocks) {
+                                              for (TextLine line in block.lines) {
+
+                                                if( RegExp(r'^\d+\.?\d').hasMatch(line.text)){
+                                                  print(line.text);
+                                                  gr.scanWeight += line.text;
+
+                                                }
+
+                                              }
+                                            }
+                                            if(gr.scanWeight.isEmpty){
+                                              gr.scanWeight="ReCapture Clearly";
+                                              gr.loadedWeight.clear();
+                                              gr.updateGoodsLoader(false);
+
+                                            }else{
+                                              gr.loadedWeight.text=gr.scanWeight;
+                                              gr.updateGoodsLoader(false);
+
+                                            }
+
+                                          } else {
+                                            gr.updateGoodsLoader(false);
+                                            print('No image selected');
+                                          }
+                                        });
+
+
+
+                                    },
+                                    child: Container(
+                                      height: 50,
+                                      margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,top:15,),
+                                      width:SizeConfig.screenWidth,
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(3),
+                                          color: Colors.white,
+                                          border: Border.all(color: AppTheme.addNewTextFieldBorder)
+                                      ),
+                                      alignment: Alignment.centerLeft,
+                                      child: Row(
+                                        children: [
+                                          SizedBox(width:10),
+                                          Text("${gr.scanWeight.isEmpty?"Scan Weight of Vehicle":gr.scanWeight}",style: TextStyle(fontFamily: 'RR',fontSize: 15,color: AppTheme.addNewTextFieldText,),),
+                                          Spacer(),
+                                          Icon(Icons.camera_alt_outlined,size: 30,color: AppTheme.addNewTextFieldText,),
+                                          SizedBox(width:10)
+                                        ],
+                                      ),
                                     ),
                                   ),
                                   AddNewLabelTextField(

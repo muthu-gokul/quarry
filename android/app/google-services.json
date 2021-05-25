@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "649173747928",
+    "project_id": "quarry-651c9",
+    "storage_bucket": "quarry-651c9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:649173747928:android:0dd23e3080e1835216efad",
+        "android_client_info": {
+          "package_name": "com.tetrosoft.quarry"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "649173747928-8a3cn1d4e1iiit5q4t1t4kbjss0he67p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAUST7EzYUBc3VRI_OEVLTGRG9HxMcRqv4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "649173747928-8a3cn1d4e1iiit5q4t1t4kbjss0he67p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

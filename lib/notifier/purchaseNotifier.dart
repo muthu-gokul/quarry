@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/api/ApiManager.dart';
 import 'package:quarry/api/sp.dart';
+import 'package:quarry/model/manageUsersModel/manageUsersPlantModel.dart';
 import 'package:quarry/model/plantModel/plantUserModel.dart';
 import 'package:quarry/model/purchaseDetailsModel/PurchaseOrderOtherChargesMappingListModel.dart';
 import 'package:quarry/model/purchaseDetailsModel/purchaseDetailGridModel.dart';
@@ -12,6 +13,7 @@ import 'package:quarry/model/purchaseDetailsModel/purchaseMaterialListModel.dart
 import 'package:quarry/model/purchaseDetailsModel/purchaseOrderMaterialMappingListModel.dart';
 import 'package:quarry/model/purchaseDetailsModel/purchaseSupplierListModel.dart';
 import 'package:quarry/model/purchaseDetailsModel/purchaseSupplierTypeModel.dart';
+import 'package:quarry/notifier/profileNotifier.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/calculation.dart';
@@ -501,15 +503,31 @@ class PurchaseNotifier extends ChangeNotifier{
 
 
 
-
+  List<DateTime> picked=[];
+  List<ManageUserPlantModel> filterUsersPlantList=[];
 
 
   List<String> purchaseGridCol=["Order Number","Supplier Name","Expected Date","No of Material","Purchase Quantity","Tax Amount","Sub Total","Net Amount","Status"];
   List<PurchaseOrderGridModel> purchaseGridList=[];
+  List<PurchaseOrderGridModel> filterPurchaseGridList=[];
 
 
   GetPurchaseDbHit(BuildContext context,int PurchaseOrderId)  async{
     updatePurchaseLoader(true);
+    String fromDate,toDate;
+
+    if(picked.isEmpty){
+      fromDate=DateFormat("yyyy-MM-dd").format(DateTime.now()).toString();
+      toDate=DateFormat("yyyy-MM-dd").format(DateTime.now()).toString();
+    }
+    else if(picked.length==1){
+      fromDate=DateFormat("yyyy-MM-dd").format(picked[0]).toString();
+      toDate=DateFormat("yyyy-MM-dd").format(picked[0]).toString();
+    }
+    else if(picked.length==2){
+      fromDate=DateFormat("yyyy-MM-dd").format(picked[0]).toString();
+      toDate=DateFormat("yyyy-MM-dd").format(picked[1]).toString();
+    }
 
     var body={
       "Fields": [
@@ -529,6 +547,16 @@ class PurchaseNotifier extends ChangeNotifier{
           "Value": PurchaseOrderId
         },
         {
+          "Key": "FromDate",
+          "Type": "String",
+          "Value": fromDate
+        },
+        {
+          "Key": "ToDate",
+          "Type": "String",
+          "Value":toDate
+        },
+        {
           "Key": "database",
           "Type": "String",
           "Value": Provider.of<QuarryNotifier>(context,listen: false).DataBaseName
@@ -539,6 +567,29 @@ class PurchaseNotifier extends ChangeNotifier{
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
         if(value!=null){
+          if(filterUsersPlantList.isEmpty){
+
+            Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.forEach((element) {
+              filterUsersPlantList.add(ManageUserPlantModel(
+                plantId: element.plantId,
+                plantName: element.plantName,
+                isActive: element.isActive,
+              ));
+            });
+
+          } else if(filterUsersPlantList.length!=Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.length){
+            filterUsersPlantList.clear();
+
+            Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.forEach((element) {
+                filterUsersPlantList.add(ManageUserPlantModel(
+                  plantId: element.plantId,
+                  plantName: element.plantName,
+                  isActive: element.isActive,
+
+                ));
+              });
+
+          }
           var parsed=json.decode(value);
           var t=parsed['Table'] as List;
           if(PurchaseOrderId!=null){
@@ -550,7 +601,9 @@ class PurchaseNotifier extends ChangeNotifier{
 
             PurchaseEditId=t[0]['PurchaseOrderId'];
             EditPlantId=t[0]['PlantId'];
-          
+            PlantId=t[0]['PlantId'];
+            PlantName=t[0]['PlantName'];
+
             supplierType=t[0]['SupplierType'];
             supplierId=t[0]['Supplier'];
             supplierName=t[0]['SupplierName'];
@@ -591,8 +644,10 @@ class PurchaseNotifier extends ChangeNotifier{
             notifyListeners();
           }
           else{
-            purchaseGridList=t.map((e) => PurchaseOrderGridModel.fromJson(e)).toList();
-            purchaseGridList.sort((a,b)=>b.purchaseOrderId.compareTo(a.purchaseOrderId));
+            print(t);
+            filterPurchaseGridList=t.map((e) => PurchaseOrderGridModel.fromJson(e)).toList();
+            filterPurchaseGrid();
+
           }
         }
 
@@ -604,8 +659,18 @@ class PurchaseNotifier extends ChangeNotifier{
       updatePurchaseLoader(false);
       CustomAlert().commonErrorAlert(context, "${Sp.getPurchaseDetail}" , e.toString());
     }
+  }
 
+  filterPurchaseGrid(){
+    purchaseGridList.clear();
+    filterUsersPlantList.forEach((element) {
 
+      if(element.isActive){
+        purchaseGridList=purchaseGridList+filterPurchaseGridList.where((ele) => ele.PlantId==element.plantId).toList();
+      }
+    });
+    purchaseGridList.sort((a,b)=>a.purchaseOrderId.compareTo(b.purchaseOrderId));
+    notifyListeners();
   }
 
 

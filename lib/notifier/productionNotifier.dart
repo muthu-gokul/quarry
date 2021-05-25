@@ -112,8 +112,10 @@ class ProductionNotifier extends ChangeNotifier{
   double wastageQty=0.0;
   double totalOutputQty=0.0;
 
+  double stock=0.0;
+
   List<ProductionMachineListModel> machineCategoryList=[];
-  List<ProductionInputTypeListModel> inputMaterialList=[];
+  List<dynamic> inputMaterialList=[];
   List<ProductionMaterialListModel> MaterialList=[];
   List<ProductionMaterialMappingListModel> productionMaterialMappingList=[];
   List<String> ProductionDetailsGridCol=['ProductionId','MachineId','MachineName','InputMaterialID','InputMaterialName','InputMaterialQuantity','OutputMaterialCount','IsDustWastage','DustQuantity','WastageQuantity'];
@@ -157,7 +159,7 @@ class ProductionNotifier extends ChangeNotifier{
           var t1=parsed['Table1'] as List;
           var t2=parsed['Table2'] as List;
           machineCategoryList=t.map((e) => ProductionMachineListModel.fromJson(e)).toList();
-          inputMaterialList=t1.map((e) => ProductionInputTypeListModel.fromJson(e)).toList();
+          inputMaterialList=t1;
           MaterialList=t2.map((e) => ProductionMaterialListModel.fromJson(e)).toList();
           print(MaterialList.length);
         }
@@ -431,6 +433,7 @@ class ProductionNotifier extends ChangeNotifier{
      wastageQty=0.0;
      dustQty=0.0;
      totalOutputQty=0.0;
+     stock=0.0;
      isWastage=false;
      plantId=null;
      plantName=null;

@@ -2,15 +2,18 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:quarry/api/ApiManager.dart';
 import 'package:quarry/api/sp.dart';
 import 'package:quarry/model/customerDetailsModel.dart';
 import 'package:quarry/model/dropDownValues.dart';
+import 'package:quarry/model/manageUsersModel/manageUsersPlantModel.dart';
 import 'package:quarry/model/plantDetailsModel/plantGridModel.dart';
 import 'package:quarry/model/plantDetailsModel/plantLicenseModel.dart';
 import 'package:quarry/model/plantDetailsModel/plantTypeModel.dart';
 import 'package:quarry/model/plantModel/plantUserModel.dart';
 import 'package:quarry/model/salesVehiclesModel.dart';
+import 'package:quarry/notifier/profileNotifier.dart';
 import 'package:quarry/pages/sale/saleGrid.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/calculation.dart';
@@ -59,7 +62,7 @@ class QuarryNotifier extends ChangeNotifier{
 
   List<VehicleType> vehicleList=[];
   List<VehicleType> filterVehicleTypeList=[];
-  List<MaterialTypelist> sale_materialList=[];
+  List<dynamic> sale_materialList=[];
   List<PaymentType> sale_paymentList=[];
   List<CustomerModel> sale_customerList=[];
   List<CustomerModel> filterSale_customerList=[];
@@ -107,7 +110,7 @@ class QuarryNotifier extends ChangeNotifier{
 
           vehicleList=t.map((e) => VehicleType.fromJson(e)).toList();
           filterVehicleTypeList=t.map((e) => VehicleType.fromJson(e)).toList();
-          sale_materialList=t1.map((e) => MaterialTypelist.fromJson(e)).toList();
+          sale_materialList=t1;
           sale_paymentList=t2.map((e) => PaymentType.fromJson(e)).toList();
           sale_customerList=t3.map((e) => CustomerModel.fromJson(e)).toList();
           filterSale_customerList=t3.map((e) => CustomerModel.fromJson(e)).toList();
@@ -285,10 +288,10 @@ class QuarryNotifier extends ChangeNotifier{
             materialPrice="0.0";
           }
         }else{
-          materialPrice=sale_materialList.where((element) => element.MaterialId==SS_selectedMaterialTypeId).toList()[0].MaterialUnitPrice.toString();
+          materialPrice=sale_materialList.where((element) => element['MaterialId']==SS_selectedMaterialTypeId).toList()[0]['MaterialUnitPrice'].toString();
         }
 
-        taxValue=sale_materialList.where((element) => element.MaterialId==SS_selectedMaterialTypeId).toList()[0].TaxValue.toString();
+        taxValue=sale_materialList.where((element) => element['MaterialId']==SS_selectedMaterialTypeId).toList()[0]['TaxValue'].toString();
 
         if(isDiscount){
           if(isAmountDiscount){
@@ -365,15 +368,20 @@ class QuarryNotifier extends ChangeNotifier{
   }
 
 
-  amountToWeight(){
+  amountToWeight(BuildContext context){
     String materialPrice;
     if(SS_selectedMaterialTypeId!=null){
 
       if(SS_amount.text.isEmpty){
         SS_customerNeedWeight.text="0";
       }else{
-        materialPrice=sale_materialList.where((element) => element.MaterialId==SS_selectedMaterialTypeId).toList()[0].MaterialUnitPrice.toString();
+        materialPrice=sale_materialList.where((element) => element['MaterialId']==SS_selectedMaterialTypeId).toList()[0]['MaterialUnitPrice'].toString();
         SS_customerNeedWeight.text=(Decimal.parse(SS_amount.text)/Decimal.parse((materialPrice))).toString();
+        if(double.parse(SS_customerNeedWeight.text)>SS_selectedMaterialStock){
+          CustomAlert().commonErrorAlert(context, "Out Of Stock", "Current Stock - ${SS_selectedMaterialStock} Ton");
+          SS_customerNeedWeight.clear();
+          SS_amount.clear();
+        }
       }
 
 
@@ -398,6 +406,8 @@ class QuarryNotifier extends ChangeNotifier{
      SS_selectCustomerCreditLimit=0.0;
      SS_selectUsedAmount=0.0;
      SS_selectBalanceAmount=0.0;
+
+    scanWeight="";
 
 
     SS_emptyVehicleWeight.clear();
@@ -430,6 +440,7 @@ class QuarryNotifier extends ChangeNotifier{
 
   List<DateTime> picked=[];
   List<SaleReportHeaderModel> saleCounterList=[];
+  List<ManageUserPlantModel> filterUsersPlantList=[];
   int open=0;
   int closed=0;
 
@@ -493,26 +504,49 @@ class QuarryNotifier extends ChangeNotifier{
         var parsed=json.decode(value);
         saleVehicleNumberList.clear();
         saleCounterList.clear();
+        saleDetailsGrid.clear();
         var t=parsed['Table'] as List;
         var t1=parsed['Table1'] as List;
         var t2=parsed['Table2'] as List;
         var t3=parsed['Table3'] as List;
 
 
-        print(t1);
+       // print(t);
+        if(filterUsersPlantList.isEmpty){
 
+          Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.forEach((element) {
+              filterUsersPlantList.add(ManageUserPlantModel(
+                plantId: element.plantId,
+                plantName: element.plantName,
+                isActive: element.isActive,
+              ));
+            });
 
-        saleDetailsGrid=t.map((e) => SaleDetails.fromJson(e)).toList();
+        }  else if(filterUsersPlantList.length!=Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.length){
+          filterUsersPlantList.clear();
 
-        saleCounterList.add(SaleReportHeaderModel(title: "Sales",value: t1[0]['Sale'],qty: t1[0]['Total Sale Quantity'],unit: "Ton"));
+          Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.forEach((element) {
+              filterUsersPlantList.add(ManageUserPlantModel(
+                plantId: element.plantId,
+                plantName: element.plantName,
+                isActive: element.isActive,
+
+              ));
+            });
+
+        }
+
+        filterSaleDetailsGrid=t.map((e) => SaleDetails.fromJson(e)).toList();
+
+        saleCounterList.add(SaleReportHeaderModel(title: "Sales",value: 0.0,qty: 0.0,unit: "Ton"));
         open=t1[0]['Open'];
         closed=t1[0]['Closed'];
 
         t2.forEach((element) {
-          saleCounterList.add(SaleReportHeaderModel(title: element['MaterialName'],value: element['Sale'],
-              qty: element['SoldQuantity'],unit: element['UnitName']));
+          saleCounterList.add(SaleReportHeaderModel(title: element['MaterialName'],value: 0.0,
+              qty: 0.0,unit: element['UnitName']));
         });
-
+        filterSaleGrid();
 
 
         saleDetailsGridPrintersList=t3.map((e) => SalePrintersList.fromJson(e)).toList();
@@ -535,6 +569,34 @@ class QuarryNotifier extends ChangeNotifier{
       updateInsertSaleLoader(false);
       CustomAlert().commonErrorAlert(context, "USP_GetSaleDetail" , e.toString());
     }
+  }
+
+
+
+  filterSaleGrid(){
+
+    saleDetailsGrid.clear();
+     filterUsersPlantList.forEach((element) {
+       if(element.isActive){
+         saleDetailsGrid=saleDetailsGrid+filterSaleDetailsGrid.where((ele) => ele.PlantId==element.plantId).toList();
+       }
+     });
+
+     saleCounterList.forEach((element) {
+       element.value=0.0;
+       element.qty=0.0;
+       saleDetailsGrid.forEach((ele) {
+         if(ele.SaleStatus=='Closed'){
+           if(element.title==ele.MaterialName){
+             element.value=Calculation().add(element.value,ele.RoundedTotalAmount);
+             element.qty=Calculation().add(element.qty,ele.OutputMaterialQty);
+           }
+         }
+       });
+       saleCounterList[0].value=Calculation().add(saleCounterList[0].value, element.value);
+       saleCounterList[0].qty=Calculation().add(saleCounterList[0].qty, element.qty);
+     });
+     notifyListeners();
   }
 
   List<PlantUserModel> plantList=[];
@@ -793,6 +855,7 @@ class QuarryNotifier extends ChangeNotifier{
 
           printItemwise(context,t3,t,t2,t1,true);
           updateInsertSaleLoader(false);
+          SalesDropDownValues(context);
           GetSaleDetailDbhit(context);
           CustomAlert().billSuccessAlert(context,"","Inward Receipt Successfully Saved","","");
         }
@@ -1661,6 +1724,7 @@ class QuarryNotifier extends ChangeNotifier{
 
   List<SaleDetails> saleDetails=[];
   List<SaleDetails> saleDetailsGrid=[];
+  List<SaleDetails> filterSaleDetailsGrid=[];
 
   List<SalePrintersList> saleDetailsGridPrintersList=[];
   List<String> saleVehicleNumberList=[];
@@ -1716,6 +1780,8 @@ class QuarryNotifier extends ChangeNotifier{
   String returnMoney="";
   int SS_isMaterialReceived;
   Color returnColor;
+
+  String scanWeight;
 
   differWeight(BuildContext context){
     print("SS_MaterialUnitPrice $SS_MaterialUnitPrice");
@@ -1980,6 +2046,7 @@ class QuarryNotifier extends ChangeNotifier{
     SS_Amount=0.0;
    OG_TaxValue=0.0;
    OG_discountValue=null;
+   scanWeight="";
 
     SS_DifferWeight;
 

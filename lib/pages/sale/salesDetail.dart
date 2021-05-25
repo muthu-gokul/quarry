@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -21,8 +22,11 @@ import 'package:quarry/widgets/decimal.dart';
 import 'package:quarry/widgets/searchdropdownSingleSelect.dart';
 import 'package:quarry/widgets/sidePopUp/sidePopUpWithSearch.dart';
 import 'package:quarry/widgets/sidePopUp/sidePopUpWithoutSearch.dart';
+import 'package:quarry/widgets/sidePopUp/sidePopupWithoutModelList.dart';
 import 'package:quarry/widgets/validationErrorText.dart';
 
+import 'package:firebase_ml_vision/firebase_ml_vision.dart';
+import 'package:image_picker/image_picker.dart';
 import '../../notifier/quarryNotifier.dart';
 import '../../styles/app_theme.dart';
 
@@ -69,7 +73,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
 
   bool isPlantOpen=false;
   bool plant=false;
-
+  PickedFile _image;
   @override
   void initState() {
     print("SALE -INIt");
@@ -279,9 +283,34 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                                     _keyboardVisible=false;
                                                                   });
                                                                 });
-                                                                setState(() {
-                                                                  isPlantOpen=true;
-                                                                });
+
+                                                                if(qn.SS_selectedMaterialTypeName==null){
+                                                                  setState(() {
+                                                                    isPlantOpen=true;
+                                                                  });
+                                                                }else{
+                                                                  CustomAlert(
+                                                                    Cancelcallback: (){
+                                                                      Navigator.pop(context);
+                                                                    },
+                                                                    callback: (){
+                                                                      Navigator.pop(context);
+                                                                      qn.SS_selectedMaterialTypeName=null;
+                                                                      qn.SS_selectedMaterialTypeId=null;
+                                                                      qn.SS_MaterialUnitPrice=null;
+                                                                      qn.SS_selectedMaterialStock=0.0;
+                                                                      qn.SS_customerNeedWeight.clear();
+                                                                      qn.SS_amount.clear();
+                                                                      qn.weightToAmount();
+                                                                      setState(() {
+                                                                        isPlantOpen=true;
+                                                                      });
+
+                                                                    }
+                                                                  ).yesOrNoDialog(context, "", "Do you want to clear Material ?");
+                                                                }
+
+
                                                               }
 
 
@@ -363,7 +392,66 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                                 : Colors.white,
                                                           ),
                                                         ),
+                                                        GestureDetector(
+                                                          onTap: () async{
+                                                            setState(() {
+                                                              qn.scanWeight="";
+                                                            });
 
+                                                            final pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
+                                                            qn.updateInsertSaleLoader(true);
+                                                            setState(() async {
+                                                              if (pickedFile != null) {
+                                                                _image = pickedFile;
+                                                                final FirebaseVisionImage visionImage = FirebaseVisionImage.fromFile(File(_image.path));
+                                                                final TextRecognizer textRecognizer = FirebaseVision.instance.textRecognizer();
+                                                                final VisionText visionText = await textRecognizer.processImage(visionImage);
+
+                                                                for (TextBlock block in visionText.blocks) {
+                                                                  for (TextLine line in block.lines) {
+
+                                                                    if( RegExp(r'^\d+\.?\d').hasMatch(line.text)){
+                                                                      print(line.text);
+                                                                      qn.scanWeight += line.text;
+
+                                                                    }
+
+                                                                  }
+                                                                }
+                                                                if(qn.scanWeight.isEmpty){
+                                                                  qn.scanWeight="ReCapture Clearly";
+                                                                  qn.SS_emptyVehicleWeight.clear();
+                                                                }else{
+                                                                  qn.SS_emptyVehicleWeight.text=qn.scanWeight;
+                                                                }
+                                                                qn.updateInsertSaleLoader(false);
+                                                              } else {
+                                                                qn.updateInsertSaleLoader(false);
+                                                                print('No image selected');
+                                                              }
+                                                            });
+                                                          },
+                                                          child: Container(
+                                                            height: 50,
+                                                            margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,top:15,),
+                                                            width:SizeConfig.screenWidth,
+                                                            decoration: BoxDecoration(
+                                                                borderRadius: BorderRadius.circular(3),
+                                                                color: Colors.white,
+                                                                border: Border.all(color: AppTheme.addNewTextFieldBorder)
+                                                            ),
+                                                            alignment: Alignment.centerLeft,
+                                                            child: Row(
+                                                              children: [
+                                                                SizedBox(width:15),
+                                                                Text("${qn.scanWeight.isEmpty?"Scan Empty Weight of Vehicle":qn.scanWeight}",style: TextStyle(fontFamily: 'RR',fontSize: 16,color: AppTheme.addNewTextFieldText,),),
+                                                                Spacer(),
+                                                                Icon(Icons.camera_alt_outlined,size: 30,color: AppTheme.addNewTextFieldText,),
+                                                                SizedBox(width:15)
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ),
                                                         AddNewLabelTextField(
                                                           labelText: 'Empty Vehicle Weight',
                                                           regExp: decimalReg,
@@ -508,6 +596,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
 
 
 
+
                                                         GestureDetector(
                                                           onTap: (){
                                                             node.unfocus();
@@ -533,7 +622,19 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                               });
                                                             },
                                                             onChange: (v){
-                                                              qn.weightToAmount();
+                                                              if(qn.SS_customerNeedWeight.text.isNotEmpty){
+                                                                if(double.parse(qn.SS_customerNeedWeight.text)>qn.SS_selectedMaterialStock){
+                                                                  CustomAlert().commonErrorAlert(context, "Out Of Stock", "Current Stock - ${qn.SS_selectedMaterialStock} Ton");
+                                                                  qn.SS_customerNeedWeight.clear();
+                                                                  qn.weightToAmount();
+                                                                }else{
+                                                                  qn.weightToAmount();
+                                                                }
+                                                              }else{
+                                                                qn.weightToAmount();
+                                                              }
+
+
                                                             },
                                                             onEditComplete: () {
                                                               node.unfocus();
@@ -587,7 +688,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
 
                                                             onChange: (v){
                                                               // qn.weightToAmount();
-                                                              qn.amountToWeight();
+                                                              qn.amountToWeight(context);
                                                             },
                                                             ontap: () {
                                                               if(scrollController.offset==0){
@@ -1782,7 +1883,69 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                           ),
                                                         ),
 
+                                                        GestureDetector(
+                                                          onTap: () async{
+                                                            setState(() {
+                                                              qn.scanWeight="";
+                                                            });
 
+                                                            final pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
+                                                            qn.updateInsertSaleLoader(true);
+                                                            setState(() async {
+                                                              if (pickedFile != null) {
+                                                                _image = pickedFile;
+                                                                final FirebaseVisionImage visionImage = FirebaseVisionImage.fromFile(File(_image.path));
+                                                                final TextRecognizer textRecognizer = FirebaseVision.instance.textRecognizer();
+                                                                final VisionText visionText = await textRecognizer.processImage(visionImage);
+
+                                                                for (TextBlock block in visionText.blocks) {
+                                                                  for (TextLine line in block.lines) {
+
+                                                                    if( RegExp(r'^\d+\.?\d').hasMatch(line.text)){
+                                                                      print(line.text);
+                                                                      qn.scanWeight += line.text;
+
+                                                                    }
+
+                                                                  }
+                                                                }
+                                                                if(qn.scanWeight.isEmpty){
+                                                                  qn.scanWeight="ReCapture Clearly";
+                                                                  qn.SS_DifferWeightController.clear();
+                                                                  qn.updateInsertSaleLoader(false);
+                                                                }else{
+                                                                  qn.SS_DifferWeightController.text=qn.scanWeight;
+                                                                  qn.updateInsertSaleLoader(false);
+                                                                  qn.differWeight(context);
+                                                                }
+
+                                                              } else {
+                                                                qn.updateInsertSaleLoader(false);
+                                                                print('No image selected');
+                                                              }
+                                                            });
+                                                          },
+                                                          child: Container(
+                                                            height: 50,
+                                                            margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,top:15,),
+                                                            width:SizeConfig.screenWidth,
+                                                            decoration: BoxDecoration(
+                                                                borderRadius: BorderRadius.circular(3),
+                                                                color: Colors.white,
+                                                                border: Border.all(color: AppTheme.addNewTextFieldBorder)
+                                                            ),
+                                                            alignment: Alignment.centerLeft,
+                                                            child: Row(
+                                                              children: [
+                                                                SizedBox(width:15),
+                                                                Text("${qn.scanWeight.isEmpty?"Scan Weight of Vehicle":qn.scanWeight}",style: TextStyle(fontFamily: 'RR',fontSize: 16,color: AppTheme.addNewTextFieldText,),),
+                                                                Spacer(),
+                                                                Icon(Icons.camera_alt_outlined,size: 30,color: AppTheme.addNewTextFieldText,),
+                                                                SizedBox(width:15)
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ),
 
 
                                                         AddNewLabelTextField(
@@ -1792,7 +1955,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                           textInputType: TextInputType.number,
                                                           textEditingController: qn.SS_DifferWeightController,
                                                           suffixIcon: Container(
-                                                              height:SizeConfig.height50,
+                                                              height:50,
                                                               width: 50,
                                                               child: Center(child: Text("Ton",style: TextStyle(fontFamily: 'RR',fontSize: 18,color: AppTheme.addNewTextFieldText.withOpacity(0.7)),))
                                                           ),
@@ -1942,9 +2105,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                     else if(qn.SS_customerNeedWeight.text.isEmpty && qn.SS_customerNeedWeight.text!="0"){
                                       CustomAlert().commonErrorAlert(context, "Enter Customer Need Weight", "");
                                     }
-                                    else if(double.parse(qn.SS_customerNeedWeight.text)>qn.SS_selectedMaterialStock){
-                                      CustomAlert().commonErrorAlert(context, "Out Of Stock", "Current Stock - ${qn.SS_selectedMaterialStock} Ton");
-                                    }
+
 
                                     else{
                                       qn.InsertSaleDetailDbhit(context);
@@ -2310,7 +2471,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
 
 ///////////////////////////////// Material  Type //////////////////////////////////
 
-                PopUpStatic(
+                /*PopUpStatic(
                   title: "Select Material",
                   isAlwaysShown: true,
                   isOpen: isMaterialTypeOpen,
@@ -2333,9 +2494,32 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                       isMaterialTypeOpen=false;
                     });
                   },
+                ),*/
+
+                PopUpStatic2(
+                  title: "Select Material",
+
+                  isOpen: isMaterialTypeOpen,
+                  dataList: qn.sale_materialList,
+                  propertyKeyName:"MaterialName",
+                  propertyKeyId: "MaterialId",
+                  selectedId: qn.SS_selectedMaterialTypeId,
+                  itemOnTap: (index){
+                    setState(() {
+                      qn.SS_selectedMaterialTypeId=qn.sale_materialList[index]['MaterialId'];
+                      qn.SS_selectedMaterialTypeName=qn.sale_materialList[index]['MaterialName'];
+                      qn.SS_selectedMaterialStock=qn.sale_materialList[index][qn.PlantId.toString()];
+                      isMaterialTypeOpen=false;
+                      print(qn.SS_selectedMaterialStock);
+
+                    });
+                  },
+                  closeOnTap: (){
+                    setState(() {
+                      isMaterialTypeOpen=false;
+                    });
+                  },
                 ),
-
-
 
 
 ///////////////////////////////// Payment Type //////////////////////////////////

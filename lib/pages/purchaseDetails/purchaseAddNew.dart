@@ -1241,6 +1241,22 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                                     ),
                                     GestureDetector(
                                       onTap: (){
+
+
+
+
+
+                                      },
+                                      child: SidePopUpParent(
+                                        text: pn.PlantName==null? "Select Plant":pn.PlantName,
+                                        textColor: pn.PlantName==null? AppTheme.addNewTextFieldText.withOpacity(0.5):AppTheme.addNewTextFieldText,
+                                        iconColor: pn.PlantName==null? AppTheme.addNewTextFieldText:AppTheme.yellowColor,
+                                        bgColor: pn.PlantName==null? AppTheme.disableColor:Colors.white,
+
+                                      ),
+                                    ),
+                                    GestureDetector(
+                                      onTap: (){
                                       },
                                       child: SidePopUpParent(
                                         text: pn.supplierType==null? "Select Supplier Type":pn.supplierType,

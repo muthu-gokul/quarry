@@ -3,9 +3,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:quarry/model/manageUsersModel/manageUsersPlantModel.dart';
+import 'package:quarry/notifier/profileNotifier.dart';
 import 'package:quarry/notifier/purchaseNotifier.dart';
-import 'package:quarry/notifier/supplierNotifier.dart';
+import 'package:quarry/widgets/dateRangePicker.dart' as DateRagePicker;
 import 'package:quarry/pages/purchaseDetails/purchaseAddNew.dart';
+import 'package:quarry/pages/purchaseDetails/purchasePlantList.dart';
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
@@ -426,6 +429,92 @@ class PurchaseDetailsGridState extends State<PurchaseDetailsGrid> with TickerPro
 
                             children: [
 
+                              AnimatedPositioned(
+                                bottom:showEdit?-60:0,
+                                duration: Duration(milliseconds: 300,),
+                                curve: Curves.bounceOut,
+                                child: Container(
+                                  height: 80,
+                                  width: SizeConfig.screenWidth,
+                                  padding: EdgeInsets.only(bottom: 12),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      SizedBox(width: 10,),
+                                      Consumer<ProfileNotifier>(
+                                          builder: (context,pro,child)=> GestureDetector(
+                                            onTap: (){
+                                              if(pro.usersPlantList.length>1){
+                                                if(pn.filterUsersPlantList.isEmpty){
+                                                  setState(() {
+                                                    pro.usersPlantList.forEach((element) {
+                                                      pn.filterUsersPlantList.add(ManageUserPlantModel(
+                                                        plantId: element.plantId,
+                                                        plantName: element.plantName,
+                                                        isActive: element.isActive,
+
+                                                      ));
+                                                    });
+                                                  });
+                                                }
+                                                else if(pn.filterUsersPlantList.length!=pro.usersPlantList.length){
+                                                  pn.filterUsersPlantList.clear();
+                                                  setState(() {
+                                                    pro.usersPlantList.forEach((element) {
+                                                      pn.filterUsersPlantList.add(ManageUserPlantModel(
+                                                        plantId: element.plantId,
+                                                        plantName: element.plantName,
+                                                        isActive: element.isActive,
+
+                                                      ));
+                                                    });
+                                                  });
+                                                }
+
+                                                Navigator.push(context, _createRouteGoodsPlant());
+                                              }
+                                            },
+                                            child: SvgPicture.asset("assets/bottomIcons/plant-slection.svg",height: 35,width: 35,
+                                              color: pro.usersPlantList.length<=1?AppTheme.bgColor.withOpacity(0.4):AppTheme.bgColor,),
+                                          )
+                                      ),
+                                      Spacer(),
+                                      GestureDetector(
+                                        onTap: () async{
+                                          final List<DateTime>  picked1 = await DateRagePicker.showDatePicker(
+                                              context: context,
+                                              initialFirstDate: new DateTime.now(),
+                                              initialLastDate: (new DateTime.now()),
+                                              firstDate: DateTime.parse('2021-01-01'),
+                                              lastDate: (new DateTime.now())
+                                          );
+                                          if (picked1 != null && picked1.length == 2) {
+                                            setState(() {
+                                              pn.picked=picked1;
+                                              pn.GetPurchaseDbHit(context,null);
+                                            });
+                                          }
+                                          else if(picked1!=null && picked1.length ==1){
+                                            setState(() {
+                                              pn.picked=picked1;
+                                              pn.GetPurchaseDbHit(context,null);
+                                            });
+                                          }
+
+                                        },
+                                        child: SvgPicture.asset("assets/svg/calender.svg",width: 27,height: 27,color: AppTheme.bgColor,
+                                          //    color: qn.selectedIndex==-1? AppTheme.bgColor.withOpacity(0.5):isOpen?AppTheme.bgColor:AppTheme.bgColor.withOpacity(0.5),
+                                        ),
+                                      ),
+                                      SizedBox(width: 20,)
+
+
+                                    ],
+                                  ),
+                                ),
+                              ),
+
                               EditDelete(
                                 showEdit: showEdit,
                                 editTap: (){
@@ -559,6 +648,18 @@ class PurchaseDetailsGridState extends State<PurchaseDetailsGrid> with TickerPro
 
         return FadeTransition(
           opacity: Tween(begin: 0.0, end: 1.0).animate(animation),
+          child: child,
+        );
+      },
+    );
+  }
+  Route _createRouteGoodsPlant() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => PurchasePlantList(),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+
+        return SlideTransition(
+          position: Tween<Offset>(begin: Offset(-1.0,0.0), end: Offset.zero).animate(animation),
           child: child,
         );
       },

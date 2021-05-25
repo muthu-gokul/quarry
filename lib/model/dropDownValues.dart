@@ -155,6 +155,8 @@ class CustomerModel {
 class SaleDetails{
   int SaleId;
   String SaleNumber;
+  int PlantId;
+  String PlantName;
   int VehicleTypeId;
   int MaterialId;
   int PaymentCategoryId;
@@ -206,7 +208,7 @@ class SaleDetails{
  this.RequiredMaterialQty, this.LoadWeightOfVehicle,this.Amount,this.PaymentCategoryId,this.MaterialUnitPrice,
   this.PaymentCategoryName,this.CustomerId,this.CustomerName,this.SaleStatus,this.AmountInWords,this.RoundOffAmount,
   this.SaleDate,this.UnitName,this.OutputMaterialQty,this.OutputQtyAmount,this.TaxPercentage,this.TaxAmount,this.TotalAmount,this.isDiscount,this.isAmount,this.isPercentage,
-  this.discountAmount,this.discountValue,this.DiscountedOutputQtyAmount,this.DiscountedRequiredQtyAmount,
+  this.discountAmount,this.discountValue,this.DiscountedOutputQtyAmount,this.DiscountedRequiredQtyAmount,this.PlantId,this.PlantName,
     this.customerId,
     this.customerName,
     this.customerAddress,
@@ -227,6 +229,8 @@ class SaleDetails{
     return new SaleDetails(
       SaleId: json['SaleId'],
       SaleNumber: json['SaleNumber'],
+      PlantId: json['PlantId'],
+      PlantName: json['PlantName'],
       VehicleNumber: json['VehicleNumber'],
       VehicleTypeId: json['VehicleTypeId'],
       VehicleTypeName: json['VehicleTypeName'],
