@@ -108,7 +108,7 @@ class GoodsMaterialsListState extends State<GoodsMaterialsList> with TickerProvi
     super.initState();
   }
 
-  List<String> gridcol=["Material","Qty","Received Qty","Per Ton","Tax","Amount","Status"];
+  List<String> gridcol=["Material","Qty","Received Qty","Per Ton","Sub Total","Tax","Total","Status"];
 
   @override
   Widget build(BuildContext context) {
@@ -316,6 +316,22 @@ class GoodsMaterialsListState extends State<GoodsMaterialsList> with TickerProvi
                                                                 alignment: Alignment.center,
                                                                 child: Text("${value.materialPrice}",
                                                                   style:AppTheme.ML_bgCT,
+                                                                ),
+                                                              ),
+                                                              Container(
+                                                                alignment: Alignment.center,
+                                                                width: valueContainerWidth,
+                                                                child: Column(
+                                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                                  children: [
+                                                                    Text("${value.amount}",
+                                                                      style:AppTheme.ML_bgCT,
+                                                                    ),
+                                                                    value.isDiscount==1?SizedBox(height: 3,):Container(),
+                                                                    value.isDiscount==1?Text(" ${value.discountValue} ${value.isPercentage==1?"%":"Rs"}",
+                                                                      style:TextStyle(fontFamily: 'RR',fontSize: 12,color: AppTheme.addNewTextFieldText),
+                                                                    ):Container(),
+                                                                  ],
                                                                 ),
                                                               ),
                                                               Container(

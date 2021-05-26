@@ -12,6 +12,7 @@ import 'package:quarry/model/goodsReceivedModel/goodsOutGateModel.dart';
 import 'package:quarry/model/goodsReceivedModel/goodsReceivedGridModel.dart';
 import 'package:quarry/model/manageUsersModel/manageUsersPlantModel.dart';
 import 'package:quarry/model/vehicelDetailsModel/vehicleTypeModel.dart';
+import 'package:quarry/notifier/profileNotifier.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/pages/goodsReceived/goodsMaterialsList.dart';
 import 'package:quarry/widgets/alertDialog.dart';
@@ -658,18 +659,34 @@ class GoodsReceivedNotifier extends ChangeNotifier{
   }
 
 
+  List<DateTime> picked=[];
 
 
   List<GoodsReceivedGridModel> goodsGridList=[];
   List<GoodsReceivedGridModel> goodsAllGridList=[];
-  List<GoodsReceivedGridModel> filtergoodsGridList=[];
+  List<GoodsReceivedGridModel> filterGoodsGridList=[];
+  List<GoodsReceivedGridModel> filterGoodsAllGridList=[];
+
   List<GoodsMaterialExtraTripModel> GoodsMaterialExtraTripModelDetails=[];
 
   GetGoodsDbHit(BuildContext context,int goodsReceivedId,int purchaseOrderId,bool ToInvoice,TickerProviderStateMixin tickerProviderStateMixin)  async{
 
     print("GREC__${goodsReceivedId} ${purchaseOrderId} ${goodsReceivedId==0?null:goodsReceivedId}");
     updateGoodsLoader(true);
+    String fromDate,toDate;
 
+    if(picked.isEmpty){
+      fromDate=DateFormat("yyyy-MM-dd").format(DateTime.now()).toString();
+      toDate=DateFormat("yyyy-MM-dd").format(DateTime.now()).toString();
+    }
+    else if(picked.length==1){
+      fromDate=DateFormat("yyyy-MM-dd").format(picked[0]).toString();
+      toDate=DateFormat("yyyy-MM-dd").format(picked[0]).toString();
+    }
+    else if(picked.length==2){
+      fromDate=DateFormat("yyyy-MM-dd").format(picked[0]).toString();
+      toDate=DateFormat("yyyy-MM-dd").format(picked[1]).toString();
+    }
     var body={
       "Fields": [
         {
@@ -693,6 +710,16 @@ class GoodsReceivedNotifier extends ChangeNotifier{
           "Value": purchaseOrderId
         },
         {
+          "Key": "FromDate",
+          "Type": "String",
+          "Value": fromDate
+        },
+        {
+          "Key": "ToDate",
+          "Type": "String",
+          "Value":toDate
+        },
+        {
           "Key": "database",
           "Type": "String",
           "Value": Provider.of<QuarryNotifier>(context,listen: false).DataBaseName
@@ -704,6 +731,29 @@ class GoodsReceivedNotifier extends ChangeNotifier{
 
       await call.ApiCallGetInvoke(body,context).then((value) {
         if(value!=null){
+
+          if(filterUsersPlantList.isEmpty){
+
+            Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.forEach((element) {
+              filterUsersPlantList.add(ManageUserPlantModel(
+                plantId: element.plantId,
+                plantName: element.plantName,
+                isActive: element.isActive,
+              ));
+            });
+
+          } else if(filterUsersPlantList.length!=Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.length){
+            filterUsersPlantList.clear();
+
+            Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.forEach((element) {
+              filterUsersPlantList.add(ManageUserPlantModel(
+                plantId: element.plantId,
+                plantName: element.plantName,
+                isActive: element.isActive,
+
+              ));
+            });
+          }
           var parsed=json.decode(value);
           var t=parsed['Table'] as List;
           if(goodsReceivedId!=null || purchaseOrderId!=null){
@@ -778,8 +828,9 @@ class GoodsReceivedNotifier extends ChangeNotifier{
             print(t);
             var t1=parsed['Table1'] as List;
             print("t1_$t1");
-            goodsGridList=t.map((e) => GoodsReceivedGridModel.fromJson(e,tickerProviderStateMixin)).toList();
-            goodsAllGridList=t1.map((e) => GoodsReceivedGridModel.fromJson(e,tickerProviderStateMixin)).toList();
+            filterGoodsGridList=t.map((e) => GoodsReceivedGridModel.fromJson(e,tickerProviderStateMixin)).toList();
+            filterGoodsAllGridList=t1.map((e) => GoodsReceivedGridModel.fromJson(e,tickerProviderStateMixin)).toList();
+            filterGoodsGrid();
            // filtergoodsGridList=List.from(goodsGridList);
           }
         }
@@ -790,8 +841,21 @@ class GoodsReceivedNotifier extends ChangeNotifier{
       updateGoodsLoader(false);
       CustomAlert().commonErrorAlert(context, "${Sp.getGoodsReceivedDetail}" , e.toString());
     }
+  }
 
+  filterGoodsGrid(){
+    goodsGridList.clear();
+    goodsAllGridList.clear();
+    filterUsersPlantList.forEach((element) {
 
+      if(element.isActive){
+        goodsGridList=goodsGridList+filterGoodsGridList.where((ele) => ele.plantId==element.plantId).toList();
+        goodsAllGridList=goodsAllGridList+filterGoodsAllGridList.where((ele) => ele.plantId==element.plantId).toList();
+      }
+    });
+    goodsGridList.sort((a,b)=>a.purchaseOrderId.compareTo(b.purchaseOrderId));
+    goodsAllGridList.sort((a,b)=>a.goodsReceivedId.compareTo(b.goodsReceivedId));
+    notifyListeners();
   }
 
 

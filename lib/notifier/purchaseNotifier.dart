@@ -588,8 +588,8 @@ class PurchaseNotifier extends ChangeNotifier{
 
                 ));
               });
-
           }
+
           var parsed=json.decode(value);
           var t=parsed['Table'] as List;
           if(PurchaseOrderId!=null){

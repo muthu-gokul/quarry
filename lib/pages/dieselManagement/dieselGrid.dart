@@ -7,9 +7,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:quarry/model/manageUsersModel/manageUsersPlantModel.dart';
 import 'package:quarry/notifier/dieselNotifier.dart';
 import 'package:quarry/notifier/productionNotifier.dart';
+import 'package:quarry/notifier/profileNotifier.dart';
 import 'package:quarry/pages/dieselManagement/dieselIssueAddNew.dart';
+import 'package:quarry/pages/dieselManagement/dieselPlantList.dart';
 import 'package:quarry/pages/productionDetails/productionDetailsAddNew.dart';
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
@@ -18,7 +21,7 @@ import 'package:quarry/widgets/bottomBarAddButton.dart';
 import 'package:quarry/widgets/editDelete.dart';
 import 'package:quarry/widgets/navigationBarIcon.dart';
 import 'package:quarry/widgets/staticColumnScroll/customDataTable2.dart';
-
+import 'package:quarry/widgets/dateRangePicker.dart' as DateRagePicker;
 import 'dieselPurchaseAddNew.dart';
 
 
@@ -459,7 +462,45 @@ class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
                                     child: Row(
                                       crossAxisAlignment: CrossAxisAlignment.end,
                                       children: [
-                                        SizedBox(width: SizeConfig.width20,),
+                                        SizedBox(width: 15,),
+                                        Consumer<ProfileNotifier>(
+                                            builder: (context,pro,child)=> GestureDetector(
+                                              onTap: (){
+                                                if(pro.usersPlantList.length>1){
+                                                  if(dn.filterUsersPlantList.isEmpty){
+                                                    setState(() {
+                                                      pro.usersPlantList.forEach((element) {
+                                                        dn.filterUsersPlantList.add(ManageUserPlantModel(
+                                                          plantId: element.plantId,
+                                                          plantName: element.plantName,
+                                                          isActive: element.isActive,
+
+                                                        ));
+                                                      });
+                                                    });
+                                                  }
+                                                  else if(dn.filterUsersPlantList.length!=pro.usersPlantList.length){
+                                                    dn.filterUsersPlantList.clear();
+                                                    setState(() {
+                                                      pro.usersPlantList.forEach((element) {
+                                                        dn.filterUsersPlantList.add(ManageUserPlantModel(
+                                                          plantId: element.plantId,
+                                                          plantName: element.plantName,
+                                                          isActive: element.isActive,
+
+                                                        ));
+                                                      });
+                                                    });
+                                                  }
+
+                                                  Navigator.push(context, _createRouteDieselPlant());
+                                                }
+                                              },
+                                              child: SvgPicture.asset("assets/bottomIcons/plant-slection.svg",height: 45,width: 35,
+                                                color: pro.usersPlantList.length<=1?AppTheme.bgColor.withOpacity(0.4):AppTheme.bgColor,),
+                                            )
+                                        ),
+                                     //   SizedBox(width: 20,),
                                         GestureDetector(
                                           onTap: (){
                                             dn.GetDieselPurchaseDbHit(context, null);
@@ -484,7 +525,7 @@ class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
                                           child: Container(
                                             width: 70,
                                              height: 40,
-                                            margin: EdgeInsets.only(bottom: 5),
+                                            margin: EdgeInsets.only(bottom: 5,right: 10),
                                             child:Opacity(
                                                 opacity: pageIndex==1?1:0.5,
                                                 child: SvgPicture.asset(pageIndex==1?"assets/bottomIcons/diesel-out.svg":
@@ -492,7 +533,46 @@ class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
                                             ),
                                           ),
                                         ),
-                                        SizedBox(width: SizeConfig.width20,),
+                                        GestureDetector(
+                                          onTap: () async{
+                                            final List<DateTime>  picked1 = await DateRagePicker.showDatePicker(
+                                                context: context,
+                                                initialFirstDate: new DateTime.now(),
+                                                initialLastDate: (new DateTime.now()),
+                                                firstDate: DateTime.parse('2021-01-01'),
+                                                lastDate: (new DateTime.now())
+                                            );
+                                            if (picked1 != null && picked1.length == 2) {
+                                              setState(() {
+                                                dn.picked=picked1;
+                                                if(pageIndex==0){
+                                                  dn.GetDieselPurchaseDbHit(context,null);
+                                                }else{
+                                                  dn.GetDieselIssueDbHit(context,null);
+                                                }
+
+                                              });
+                                            }
+                                            else if(picked1!=null && picked1.length ==1){
+                                              setState(() {
+                                                dn.picked=picked1;
+                                                if(pageIndex==0){
+                                                  dn.GetDieselPurchaseDbHit(context,null);
+                                                }else{
+                                                  dn.GetDieselIssueDbHit(context,null);
+                                                }
+                                              });
+                                            }
+
+                                          },
+                                          child: Padding(
+                                            padding:  EdgeInsets.only(bottom: 10),
+                                            child: SvgPicture.asset("assets/svg/calender.svg",width: 27,height: 30,color: AppTheme.bgColor,
+                                              //    color: qn.selectedIndex==-1? AppTheme.bgColor.withOpacity(0.5):isOpen?AppTheme.bgColor:AppTheme.bgColor.withOpacity(0.5),
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(width:20,),
                                       ],
                                     )
                                 ),
@@ -624,6 +704,18 @@ class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
 
         return FadeTransition(
           opacity: Tween(begin: 0.0, end: 1.0).animate(animation),
+          child: child,
+        );
+      },
+    );
+  }
+  Route _createRouteDieselPlant() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => DieselPlantList(pageIndex),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+
+        return SlideTransition(
+          position: Tween<Offset>(begin: Offset(-1.0,0.0), end: Offset.zero).animate(animation),
           child: child,
         );
       },

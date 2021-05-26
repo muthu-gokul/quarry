@@ -47,6 +47,7 @@ class _MachineManagementAddNewState extends State<MachineManagementAddNew> {
   bool outtime=false;
   bool machine=false;
   bool loanAmount=false;
+  bool plant=false;
 
   @override
   void initState() {
@@ -202,7 +203,7 @@ class _MachineManagementAddNewState extends State<MachineManagementAddNew> {
 
                                       ),
                                     ),
-
+                                    plant?ValidationErrorText(title: "* Select Plant",):Container(),
 
                                     GestureDetector(
                                       onTap: () {
@@ -548,6 +549,9 @@ class _MachineManagementAddNewState extends State<MachineManagementAddNew> {
                   child: AddButton(
                     ontap: (){
                       node.unfocus();
+                      if( mmn.PlantId==null) {setState(() {plant = true;});}
+                      else{setState(() {plant=false;});}
+
                       if(mmn.selectedMachineId==null){setState(() {machine=true;});}
                       else{setState(() {machine=false;});}
 
@@ -564,7 +568,7 @@ class _MachineManagementAddNewState extends State<MachineManagementAddNew> {
 
                       }
                       else{
-                        if(!machine && !intime){
+                        if(!machine && !intime && !plant){
                           mmn.InsertMachineManagementDbHit(context);
                         }
                       }

@@ -12,9 +12,12 @@ import 'package:quarry/model/dieselModel/dieselPurchaseGridModel.dart';
 import 'package:quarry/model/dieselModel/dieselVehicleModel.dart';
 import 'package:quarry/model/dieselModel/fuelPurchaserModel.dart';
 import 'package:quarry/model/dieselModel/fuelSupplierModel.dart';
+import 'package:quarry/model/manageUsersModel/manageUsersPlantModel.dart';
 import 'package:quarry/model/plantModel/plantUserModel.dart';
+import 'package:quarry/notifier/profileNotifier.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/widgets/alertDialog.dart';
+import 'package:quarry/widgets/calculation.dart';
 import 'package:quarry/widgets/decimal.dart';
 
 class DieselNotifier extends ChangeNotifier{
@@ -443,17 +446,33 @@ double totalAmount=0.0;
 
 
 
-
+  List<DateTime> picked=[];
+  List<ManageUserPlantModel> filterUsersPlantList=[];
 
 
   List<String> dieselPurchaseGridCol=["Bill Number","Purchaser Name","Location","Contact Number","Diesel Quantity","Diesel Rate","Amount","Date"];
   List<DieselPurchaseGridModel> dieselPurchaseGridList=[];
+  List<DieselPurchaseGridModel> filterDieselPurchaseGridList=[];
   var dieselPurchaseGridOverAllHeader={};
+  List<dynamic> dbCounterValues=[];
 
   GetDieselPurchaseDbHit(BuildContext context,int dieselPurchaseId)  async{
 
     updateDieselLoader(true);
+    String fromDate,toDate;
 
+    if(picked.isEmpty){
+      fromDate=DateFormat("yyyy-MM-dd").format(DateTime.now()).toString();
+      toDate=DateFormat("yyyy-MM-dd").format(DateTime.now()).toString();
+    }
+    else if(picked.length==1){
+      fromDate=DateFormat("yyyy-MM-dd").format(picked[0]).toString();
+      toDate=DateFormat("yyyy-MM-dd").format(picked[0]).toString();
+    }
+    else if(picked.length==2){
+      fromDate=DateFormat("yyyy-MM-dd").format(picked[0]).toString();
+      toDate=DateFormat("yyyy-MM-dd").format(picked[1]).toString();
+    }
     var body={
       "Fields": [
         {
@@ -471,7 +490,16 @@ double totalAmount=0.0;
           "Type": "int",
           "Value": dieselPurchaseId
         },
-
+        {
+          "Key": "FromDate",
+          "Type": "String",
+          "Value": fromDate
+        },
+        {
+          "Key": "ToDate",
+          "Type": "String",
+          "Value":toDate
+        },
         {
           "Key": "database",
           "Type": "String",
@@ -483,6 +511,28 @@ double totalAmount=0.0;
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
         if(value!=null){
+          if(filterUsersPlantList.isEmpty){
+
+            Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.forEach((element) {
+              filterUsersPlantList.add(ManageUserPlantModel(
+                plantId: element.plantId,
+                plantName: element.plantName,
+                isActive: element.isActive,
+              ));
+            });
+
+          } else if(filterUsersPlantList.length!=Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.length){
+            filterUsersPlantList.clear();
+
+            Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.forEach((element) {
+              filterUsersPlantList.add(ManageUserPlantModel(
+                plantId: element.plantId,
+                plantName: element.plantName,
+                isActive: element.isActive,
+
+              ));
+            });
+          }
           var parsed=json.decode(value);
           var t=parsed['Table'] as List;
           if(dieselPurchaseId!=null ){
@@ -510,9 +560,11 @@ double totalAmount=0.0;
           }
           else{
             print(t);
+            print(parsed['Table1']);
 
-            dieselPurchaseGridOverAllHeader=parsed['Table1'][0];
-            dieselPurchaseGridList=t.map((e) => DieselPurchaseGridModel.fromJson(e)).toList();
+            dbCounterValues=parsed['Table1'] as List;
+            filterDieselPurchaseGridList=t.map((e) => DieselPurchaseGridModel.fromJson(e)).toList();
+            filterDieselPurchaseGrid();
           }
         }
 
@@ -522,10 +574,39 @@ double totalAmount=0.0;
       updateDieselLoader(false);
       CustomAlert().commonErrorAlert(context, "${Sp.getDieselDetail}" , e.toString());
     }
-
-
   }
+  filterDieselPurchaseGrid(){
 
+    double totalPurchase=0.0;
+    double totalIssue=0.0;
+    double totalBalance=0.0;
+
+    dieselPurchaseGridList.clear();
+    dieselPurchaseGridOverAllHeader.clear();
+
+    filterUsersPlantList.forEach((element) {
+      if(element.isActive){
+        dieselPurchaseGridList=dieselPurchaseGridList+filterDieselPurchaseGridList.where((ele) => ele.PlantId==element.plantId).toList();
+
+        dbCounterValues.forEach((element2) {
+          if(element2['PlantId']==element.plantId){
+            totalPurchase=Calculation().add(totalPurchase, element2['TotalPurchaseDiesel']);
+            totalIssue=Calculation().add(totalIssue, element2['TotalIssueDiesel']);
+          }
+        });
+
+      }
+    });
+
+
+      totalBalance=Calculation().sub(totalPurchase, totalIssue);
+
+    dieselPurchaseGridOverAllHeader["Total Purchase Diesel"]="$totalPurchase Ltr";
+    dieselPurchaseGridOverAllHeader["Total Issue Diesel"]="$totalIssue Ltr";
+    dieselPurchaseGridOverAllHeader["Total Balance Diesel"]="$totalBalance Ltr";
+
+    notifyListeners();
+  }
 
 
 
@@ -668,14 +749,28 @@ double totalAmount=0.0;
 
 
   List<DieselIssueGridModel> dieselIssueGridList=[];
+  List<DieselIssueGridModel> filterDieselIssueGridList=[];
   List<String> dieselIssueGridCol=["Date","Type","Machine/Vehicle","Fuel Reading","Issued By","Diesel Quantity"];
   var dieselIssueGridOverAllHeader={};
-
+  List<dynamic> dbIssueCounterValues=[];
 
   GetDieselIssueDbHit(BuildContext context,int dieselIssueId)  async{
 
     updateDieselLoader(true);
+    String fromDate,toDate;
 
+    if(picked.isEmpty){
+      fromDate=DateFormat("yyyy-MM-dd").format(DateTime.now()).toString();
+      toDate=DateFormat("yyyy-MM-dd").format(DateTime.now()).toString();
+    }
+    else if(picked.length==1){
+      fromDate=DateFormat("yyyy-MM-dd").format(picked[0]).toString();
+      toDate=DateFormat("yyyy-MM-dd").format(picked[0]).toString();
+    }
+    else if(picked.length==2){
+      fromDate=DateFormat("yyyy-MM-dd").format(picked[0]).toString();
+      toDate=DateFormat("yyyy-MM-dd").format(picked[1]).toString();
+    }
     var body={
       "Fields": [
         {
@@ -693,7 +788,16 @@ double totalAmount=0.0;
           "Type": "int",
           "Value": dieselIssueId
         },
-
+        {
+          "Key": "FromDate",
+          "Type": "String",
+          "Value": fromDate
+        },
+        {
+          "Key": "ToDate",
+          "Type": "String",
+          "Value":toDate
+        },
         {
           "Key": "database",
           "Type": "String",
@@ -733,8 +837,10 @@ double totalAmount=0.0;
 
           }
           else{
-            dieselIssueGridOverAllHeader=parsed['Table1'][0];
-            dieselIssueGridList=t.map((e) => DieselIssueGridModel.fromJson(e)).toList();
+            dbIssueCounterValues=parsed['Table1'] as List;
+            print(dbIssueCounterValues);
+            filterDieselIssueGridList=t.map((e) => DieselIssueGridModel.fromJson(e)).toList();
+            filterDieselIssueGrid();
           }
         }
 
@@ -744,8 +850,51 @@ double totalAmount=0.0;
       updateDieselLoader(false);
       CustomAlert().commonErrorAlert(context, "${Sp.getDieselIssueDetail}" , e.toString());
     }
+  }
+  filterDieselIssueGrid(){
+
+    int totalMachine=0;
+    int totalVehicle=0;
+
+    double totalMachineIssue=0.0;
+    double totalVehicleIssue=0.0;
+    double totalBalance=0.0;
 
 
+    dieselIssueGridList.clear();
+    dieselIssueGridOverAllHeader.clear();
+
+    filterUsersPlantList.forEach((element) {
+      if(element.isActive){
+        dieselIssueGridList=dieselIssueGridList+filterDieselIssueGridList.where((ele) => ele.plantId==element.plantId).toList();
+
+        dbIssueCounterValues.forEach((element2) {
+          if(element2['PlantId']==element.plantId){
+            totalBalance=Calculation().add(totalBalance, element2['Total Balance Diesel']);
+          }
+        });
+
+      }
+    });
+
+    dieselIssueGridList.forEach((element) {
+      if(element.Type=='Machine'){
+        totalMachine=totalMachine+1;
+        totalMachineIssue=Calculation().add(totalMachineIssue, element.dieselIssuedQuantity);
+      }else if(element.Type=='Vehicle'){
+        totalVehicle=totalVehicle+1;
+        totalVehicleIssue=Calculation().add(totalVehicleIssue, element.dieselIssuedQuantity);
+      }
+    });
+
+
+
+
+    dieselIssueGridOverAllHeader["Total Machine/Vehicle"]="$totalMachine / $totalVehicle";
+    dieselIssueGridOverAllHeader["Issue Diesel Machine/Vehicle"]="$totalMachineIssue / $totalVehicleIssue Ltr";
+    dieselIssueGridOverAllHeader["Total Balance Diesel"]="$totalBalance Ltr";
+
+    notifyListeners();
   }
 
   DeleteDieselIssueDbHit(BuildContext context,int DieselIssueId)  async{

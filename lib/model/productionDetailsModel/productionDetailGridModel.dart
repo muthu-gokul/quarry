@@ -13,10 +13,14 @@ class ProductionDetailGridModel {
     this.isDustWastage,
     this.dustQuantity,
     this.wastageQuantity,
+    this.plantId,
+    this.plantName
   });
 
   int productionId;
   int machineId;
+  int plantId;
+  String plantName;
   String machineName;
   int unitId;
   String unitName;
@@ -32,6 +36,8 @@ class ProductionDetailGridModel {
   factory ProductionDetailGridModel.fromJson(Map<String, dynamic> json) => ProductionDetailGridModel(
     productionId: json["ProductionId"],
     machineId: json["MachineId"],
+    plantId: json["PlantId"],
+    plantName: json["PlantName"],
     machineName: json["MachineName"],
     unitId: json["UnitId"],
     unitName: json["UnitName"],

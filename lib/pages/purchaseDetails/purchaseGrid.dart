@@ -441,7 +441,7 @@ class PurchaseDetailsGridState extends State<PurchaseDetailsGrid> with TickerPro
                                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: [
-                                      SizedBox(width: 10,),
+                                      Spacer(),
                                       Consumer<ProfileNotifier>(
                                           builder: (context,pro,child)=> GestureDetector(
                                             onTap: (){
@@ -479,7 +479,7 @@ class PurchaseDetailsGridState extends State<PurchaseDetailsGrid> with TickerPro
                                               color: pro.usersPlantList.length<=1?AppTheme.bgColor.withOpacity(0.4):AppTheme.bgColor,),
                                           )
                                       ),
-                                      Spacer(),
+                                      SizedBox(width: SizeConfig.screenWidth*0.6,),
                                       GestureDetector(
                                         onTap: () async{
                                           final List<DateTime>  picked1 = await DateRagePicker.showDatePicker(
@@ -507,7 +507,7 @@ class PurchaseDetailsGridState extends State<PurchaseDetailsGrid> with TickerPro
                                           //    color: qn.selectedIndex==-1? AppTheme.bgColor.withOpacity(0.5):isOpen?AppTheme.bgColor:AppTheme.bgColor.withOpacity(0.5),
                                         ),
                                       ),
-                                      SizedBox(width: 20,)
+                                      Spacer(),
 
 
                                     ],

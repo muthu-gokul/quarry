@@ -12,11 +12,15 @@ class DieselPurchaseGridModel {
     this.dieselRate,
     this.totalAmount,
     this.billDate,
-    this.supplierName
+    this.supplierName,
+    this.PlantId,
+    this.PlantName,
   });
 
   int dieselPurchaseId;
+  int PlantId;
   String billNumber;
+  String PlantName;
   int employeeId;
   String purchaserName;
   String supplierName;
@@ -29,6 +33,8 @@ class DieselPurchaseGridModel {
 
   factory DieselPurchaseGridModel.fromJson(Map<String, dynamic> json) => DieselPurchaseGridModel(
     dieselPurchaseId: json["DieselPurchaseId"],
+    PlantId: json["PlantId"],
+    PlantName: json["PlantName"],
     billNumber: json["BillNumber"],
     employeeId: json["EmployeeId"],
     purchaserName: json["PurchaserName"],

@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/api/ApiManager.dart';
 import 'package:quarry/api/sp.dart';
+import 'package:quarry/model/manageUsersModel/manageUsersPlantModel.dart';
 import 'package:quarry/model/plantModel/plantUserModel.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/widgets/alertDialog.dart';
@@ -305,6 +306,8 @@ class MachineManagementNotifier extends ChangeNotifier{
 
   ];
   List<dynamic> gridData=[];
+  List<DateTime> picked=[];
+  List<ManageUserPlantModel> filterUsersPlantList=[];
   GetMachineManagementDbHit(BuildContext context,int MachineManagementId,int MachineId)  async{
 
 

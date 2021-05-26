@@ -1,9 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/api/ApiManager.dart';
 import 'package:quarry/api/sp.dart';
+import 'package:quarry/model/manageUsersModel/manageUsersPlantModel.dart';
 import 'package:quarry/model/plantModel/plantUserModel.dart';
 import 'package:quarry/model/productionDetailsModel/productionDetailGridModel.dart';
 import 'package:quarry/model/productionDetailsModel/productionGridHeaderModel.dart';
@@ -13,6 +15,9 @@ import 'package:quarry/model/productionDetailsModel/productionMaterialListModel.
 import 'package:quarry/model/productionDetailsModel/productionMaterialMappingListModel.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/widgets/alertDialog.dart';
+import 'package:quarry/widgets/calculation.dart';
+
+import 'profileNotifier.dart';
 
 class ProductionNotifier extends ChangeNotifier{
 
@@ -317,17 +322,33 @@ class ProductionNotifier extends ChangeNotifier{
 
   }
 
-
+  List<DateTime> picked=[];
+  List<ManageUserPlantModel> filterUsersPlantList=[];
 
   List<ProductionGridHeaderModel> gridOverAllHeader=[];
   List<String> productionGridCol=["Machine Name","Input Material","Input Material Qty","Output Material Count","Output Material Qty"];
   List<ProductionDetailGridModel> productionGridValues=[];
+  List<ProductionDetailGridModel> filterProductionGridValues=[];
 
   GetProductionDbHit(BuildContext context,int productionId,TickerProviderStateMixin tickerProviderStateMixin)  async{
 
     print(tickerProviderStateMixin);
     print(productionId);
     updateProductionLoader(true);
+    String fromDate,toDate;
+
+    if(picked.isEmpty){
+      fromDate=DateFormat("yyyy-MM-dd").format(DateTime.now()).toString();
+      toDate=DateFormat("yyyy-MM-dd").format(DateTime.now()).toString();
+    }
+    else if(picked.length==1){
+      fromDate=DateFormat("yyyy-MM-dd").format(picked[0]).toString();
+      toDate=DateFormat("yyyy-MM-dd").format(picked[0]).toString();
+    }
+    else if(picked.length==2){
+      fromDate=DateFormat("yyyy-MM-dd").format(picked[0]).toString();
+      toDate=DateFormat("yyyy-MM-dd").format(picked[1]).toString();
+    }
 
     var body={
       "Fields": [
@@ -347,6 +368,16 @@ class ProductionNotifier extends ChangeNotifier{
           "Value": productionId
         },
         {
+          "Key": "FromDate",
+          "Type": "String",
+          "Value": fromDate
+        },
+        {
+          "Key": "ToDate",
+          "Type": "String",
+          "Value":toDate
+        },
+        {
           "Key": "database",
           "Type": "String",
           "Value": Provider.of<QuarryNotifier>(context,listen: false).DataBaseName
@@ -354,9 +385,34 @@ class ProductionNotifier extends ChangeNotifier{
       ]
     };
 
-    try{
-      await call.ApiCallGetInvoke(body,context).then((value) {
+   // try{
+    updateProductionLoader(false);
+
+    await call.ApiCallGetInvoke(body,context).then((value) {
         if(value!=null){
+          if(filterUsersPlantList.isEmpty){
+
+            Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.forEach((element) {
+              filterUsersPlantList.add(ManageUserPlantModel(
+                plantId: element.plantId,
+                plantName: element.plantName,
+                isActive: element.isActive,
+              ));
+            });
+
+          } else if(filterUsersPlantList.length!=Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.length){
+            filterUsersPlantList.clear();
+
+            Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.forEach((element) {
+              filterUsersPlantList.add(ManageUserPlantModel(
+                plantId: element.plantId,
+                plantName: element.plantName,
+                isActive: element.isActive,
+
+              ));
+            });
+          }
+
           var parsed=json.decode(value);
           var t=parsed['Table'] as List;
 
@@ -390,8 +446,10 @@ class ProductionNotifier extends ChangeNotifier{
           }
           else{
             var t1=parsed['Table1'] as List;
+            print(t);
               gridOverAllHeader=t.map((e) => ProductionGridHeaderModel.fromJson(e)).toList();
-              productionGridValues=t1.map((e) => ProductionDetailGridModel.fromJson(e)).toList();
+            filterProductionGridValues=t1.map((e) => ProductionDetailGridModel.fromJson(e)).toList();
+            filterProductionGrid();
           }
         }
 
@@ -399,12 +457,47 @@ class ProductionNotifier extends ChangeNotifier{
 
         updateProductionLoader(false);
       });
-    }catch(e){
+  /*  }catch(e){
       updateProductionLoader(false);
       CustomAlert().commonErrorAlert(context, "${Sp.getProductionDetail}" , e.toString());
-    }
+    }*/
+  }
 
 
+  Map<String,ProductionGridHeaderModel> gridCounter={};
+
+  filterProductionGrid(){
+    productionGridValues.clear();
+    gridCounter.clear();
+
+    filterUsersPlantList.forEach((element) {
+      if(element.isActive){
+        productionGridValues=productionGridValues+filterProductionGridValues.where((ele) => ele.plantId==element.plantId).toList();
+
+        gridOverAllHeader.forEach((element2) {
+          print(element2.materialName);
+          if(element2.PlantId==element.plantId){
+            if(gridCounter.containsKey(element2.materialName)){
+              gridCounter[element2.materialName].totalQuantity=Calculation().add(gridCounter[element2.materialName].totalQuantity, element2.totalQuantity);
+            }else{
+
+              gridCounter[element2.materialName]=ProductionGridHeaderModel(
+                materialId: element2.materialId,
+                materialName: element2.materialName,
+                totalQuantity: element2.totalQuantity,
+                unitName: element2.unitName,
+                materialType: element2.materialType,
+                PlantId: element2.PlantId
+              );
+
+            }
+          }
+
+        });
+      }
+    });
+
+    notifyListeners();
   }
 
   updateEdit(int index){

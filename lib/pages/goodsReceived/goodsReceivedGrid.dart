@@ -20,7 +20,7 @@ import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/alertDialog.dart';
-import 'package:quarry/widgets/bottomBarAddButton.dart';
+import 'package:quarry/widgets/dateRangePicker.dart' as DateRagePicker;
 import 'package:quarry/widgets/navigationBarIcon.dart';
 
 import '../../styles/size.dart';
@@ -847,7 +847,35 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
                     Text("Goods Received",
                       style: TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 16),
                     ),
+                    Spacer(),
+                    GestureDetector(
+                      onTap: () async{
+                        final List<DateTime>  picked1 = await DateRagePicker.showDatePicker(
+                            context: context,
+                            initialFirstDate: new DateTime.now(),
+                            initialLastDate: (new DateTime.now()),
+                            firstDate: DateTime.parse('2000-01-01'),
+                            lastDate: (new DateTime.now())
+                        );
+                        if (picked1 != null && picked1.length == 2) {
+                          setState(() {
+                            gr.picked=picked1;
+                            gr.GetGoodsDbHit(context,null,null,false,this);
+                          });
+                        }
+                        else if(picked1!=null && picked1.length ==1){
+                          setState(() {
+                            gr.picked=picked1;
+                            gr.GetGoodsDbHit(context,null,null,false,this);
+                          });
+                        }
 
+                      },
+                      child: SvgPicture.asset("assets/svg/calender.svg",width: 27,height: 27,color: AppTheme.bgColor,
+                        //    color: qn.selectedIndex==-1? AppTheme.bgColor.withOpacity(0.5):isOpen?AppTheme.bgColor:AppTheme.bgColor.withOpacity(0.5),
+                      ),
+                    ),
+                    SizedBox(width: 20,)
                   ],
                 ),
               ),

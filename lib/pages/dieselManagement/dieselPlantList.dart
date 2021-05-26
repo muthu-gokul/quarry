@@ -6,9 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:quarry/notifier/dieselNotifier.dart';
 import 'package:quarry/notifier/goodsReceivedNotifier.dart';
 import 'package:quarry/notifier/manageUsersNotifier.dart';
+import 'package:quarry/notifier/productionNotifier.dart';
 import 'package:quarry/notifier/profileNotifier.dart';
+import 'package:quarry/notifier/purchaseNotifier.dart';
+import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/references/bottomNavi.dart';
 
 import 'package:quarry/styles/app_theme.dart';
@@ -21,14 +25,14 @@ import 'package:quarry/widgets/bottomBarAddButton.dart';
 
 
 
-class GoodsPlantList extends StatefulWidget {
-  VoidCallback drawerCallback;
-  GoodsPlantList({this.drawerCallback});
+class DieselPlantList extends StatefulWidget {
+  int pageIndex;
+  DieselPlantList(this.pageIndex);
   @override
-  GoodsPlantListState createState() => GoodsPlantListState();
+  DieselPlantListState createState() => DieselPlantListState();
 }
 
-class GoodsPlantListState extends State<GoodsPlantList> with TickerProviderStateMixin{
+class DieselPlantListState extends State<DieselPlantList> with TickerProviderStateMixin{
 
 
 
@@ -58,8 +62,8 @@ class GoodsPlantListState extends State<GoodsPlantList> with TickerProviderState
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return Scaffold(
-      body: Consumer<GoodsReceivedNotifier>(
-          builder: (context,gr,child)=> Stack(
+      body: Consumer<DieselNotifier>(
+          builder: (context,dn,child)=> Stack(
             children: [
 
 
@@ -169,51 +173,51 @@ class GoodsPlantListState extends State<GoodsPlantList> with TickerProviderState
 
                                 SingleChildScrollView(
                                   child: Wrap(
-                                      children: gr.filterUsersPlantList.asMap()
+                                      children: dn.filterUsersPlantList.asMap()
                                           .map((i, value) => MapEntry(i,
-                                      GestureDetector(
-                                        onTap: (){
-                                          setState(() {
-                                            value.isActive=!value.isActive;
-                                          });
-                                        },
-                                        child: Container(
-                                          height: 200,
-                                          width: SizeConfig.screenWidth*0.5,
-                                          color: Colors.white,
-                                          child: AnimatedOpacity(
-                                            duration: Duration(milliseconds: 300),
-                                            curve: Curves.easeIn,
-                                            opacity: value.isActive?1:0.5,
-                                            child: Column(
-                                              mainAxisAlignment: MainAxisAlignment.center,
-                                              children: [
-                                                SizedBox(height: 50,),
-                                                Container(
-                                                  height: 80,
-                                                  width: 80,
-                                                  decoration: BoxDecoration(
-                                                      shape: BoxShape.circle,
-                                                      border: Border.all(color: AppTheme.uploadColor,width: 2)
+                                        GestureDetector(
+                                          onTap: (){
+                                            setState(() {
+                                              value.isActive=!value.isActive;
+                                            });
+                                          },
+                                          child: Container(
+                                            height: 200,
+                                            width: SizeConfig.screenWidth*0.5,
+                                            color: Colors.white,
+                                            child: AnimatedOpacity(
+                                              duration: Duration(milliseconds: 300),
+                                              curve: Curves.easeIn,
+                                              opacity: value.isActive?1:0.3,
+                                              child: Column(
+                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                children: [
+                                                  SizedBox(height: 50,),
+                                                  Container(
+                                                    height: 80,
+                                                    width: 80,
+                                                    decoration: BoxDecoration(
+                                                        shape: BoxShape.circle,
+                                                        border: Border.all(color: AppTheme.uploadColor,width: 2)
+                                                    ),
+                                                    child: Center(
+                                                      child: SvgPicture.asset("assets/svg/Planticon.svg",height: 40,width: 40,),
+                                                    ),
                                                   ),
-                                                  child: Center(
-                                                    child: SvgPicture.asset("assets/svg/Planticon.svg",height: 40,width: 40,),
-                                                  ),
-                                                ),
 
-                                                SizedBox(height: 20,),
-                                                Text("${value.plantName}  ",
-                                                  style: TextStyle(color: AppTheme.bgColor,fontFamily: 'RM',fontSize: 14),
-                                                ),
-                                                SizedBox(height: 3,),
-                                                /*Text("${value.}  ",
+                                                  SizedBox(height: 20,),
+                                                  Text("${value.plantName}  ",
+                                                    style: TextStyle(color: AppTheme.bgColor,fontFamily: 'RM',fontSize: 14),
+                                                  ),
+                                                  SizedBox(height: 3,),
+                                                  /*Text("${value.}  ",
                                                   style: TextStyle(color: AppTheme.bgColor,fontFamily: 'RR',fontSize: 12),
                                                 ),*/
-                                              ],
+                                                ],
+                                              ),
                                             ),
                                           ),
                                         ),
-                                      ),
 
                                       )
                                       ).values.toList()
@@ -266,8 +270,12 @@ class GoodsPlantListState extends State<GoodsPlantList> with TickerProviderState
                         child: GestureDetector(
                           behavior: HitTestBehavior.translucent,
                           onTap: (){
-                            gr.filterGoodsGrid();
                             Navigator.pop(context);
+                            if(widget.pageIndex==0){
+                              dn.filterDieselPurchaseGrid();
+                            }else if(widget.pageIndex==1){
+                              dn.filterDieselIssueGrid();
+                            }
                           },
                           child: Container(
 
@@ -316,7 +324,11 @@ class GoodsPlantListState extends State<GoodsPlantList> with TickerProviderState
                   children: [
                     CancelButton(
                       ontap: (){
-                        gr.filterGoodsGrid();
+                        if(widget.pageIndex==0){
+                          dn.filterDieselPurchaseGrid();
+                        } else if(widget.pageIndex==1){
+                          dn.filterDieselIssueGrid();
+                        }
                         Navigator.pop(context);
                       },
                     ),
