@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:quarry/model/manageUsersModel/manageUsersPlantModel.dart';
 import 'package:quarry/notifier/employeeAttendanceNotifier.dart';
 import 'package:quarry/notifier/employeeSalaryNotifier.dart';
 import 'package:quarry/notifier/machineManagementNotifier.dart';
+import 'package:quarry/notifier/profileNotifier.dart';
 import 'package:quarry/pages/employee/employeeSalary/employeeSalaryAddNew.dart';
 import 'package:quarry/pages/machineManagement/machineManagementAddNew.dart';
+import 'package:quarry/pages/machineManagement/machineManagementPlantList.dart';
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
@@ -172,7 +175,91 @@ class _MachineManagementGridState extends State<MachineManagementGrid> {
                               child: Stack(
 
                                 children: [
+                                  AnimatedPositioned(
+                                    bottom:showEdit?-60:0,
+                                    duration: Duration(milliseconds: 300,),
+                                    curve: Curves.bounceOut,
+                                    child: Container(
+                                      height: 80,
+                                      width: SizeConfig.screenWidth,
+                                      padding: EdgeInsets.only(bottom: 12),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                        crossAxisAlignment: CrossAxisAlignment.end,
+                                        children: [
+                                          Spacer(),
+                                          Consumer<ProfileNotifier>(
+                                              builder: (context,pro,child)=> GestureDetector(
+                                                onTap: (){
+                                                  if(pro.usersPlantList.length>1){
+                                                    if(mmn.filterUsersPlantList.isEmpty){
+                                                      setState(() {
+                                                        pro.usersPlantList.forEach((element) {
+                                                          mmn.filterUsersPlantList.add(ManageUserPlantModel(
+                                                            plantId: element.plantId,
+                                                            plantName: element.plantName,
+                                                            isActive: element.isActive,
 
+                                                          ));
+                                                        });
+                                                      });
+                                                    }
+                                                    else if(mmn.filterUsersPlantList.length!=pro.usersPlantList.length){
+                                                      mmn.filterUsersPlantList.clear();
+                                                      setState(() {
+                                                        pro.usersPlantList.forEach((element) {
+                                                          mmn.filterUsersPlantList.add(ManageUserPlantModel(
+                                                            plantId: element.plantId,
+                                                            plantName: element.plantName,
+                                                            isActive: element.isActive,
+
+                                                          ));
+                                                        });
+                                                      });
+                                                    }
+
+                                                    Navigator.push(context, _createRouteMachinePlant());
+                                                  }
+                                                },
+                                                child: SvgPicture.asset("assets/bottomIcons/plant-slection.svg",height: 35,width: 35,
+                                                  color: pro.usersPlantList.length<=1?AppTheme.bgColor.withOpacity(0.4):AppTheme.bgColor,),
+                                              )
+                                          ),
+                                          SizedBox(width: SizeConfig.screenWidth*0.6,),
+                                          GestureDetector(
+                                            onTap: () async{
+                                              final List<DateTime>  picked1 = await DateRagePicker.showDatePicker(
+                                                  context: context,
+                                                  initialFirstDate: new DateTime.now(),
+                                                  initialLastDate: (new DateTime.now()),
+                                                  firstDate: DateTime.parse('2021-01-01'),
+                                                  lastDate: (new DateTime.now())
+                                              );
+                                              if (picked1 != null && picked1.length == 2) {
+                                                setState(() {
+                                                  mmn.picked=picked1;
+                                                  mmn.GetMachineManagementDbHit(context,null,null);
+                                                });
+                                              }
+                                              else if(picked1!=null && picked1.length ==1){
+                                                setState(() {
+                                                  mmn.picked=picked1;
+                                                  mmn.GetMachineManagementDbHit(context,null,null);
+                                                });
+                                              }
+
+                                            },
+                                            child: SvgPicture.asset("assets/svg/calender.svg",width: 27,height: 27,color: AppTheme.bgColor,
+                                              //    color: qn.selectedIndex==-1? AppTheme.bgColor.withOpacity(0.5):isOpen?AppTheme.bgColor:AppTheme.bgColor.withOpacity(0.5),
+                                            ),
+                                          ),
+                                          Spacer(),
+
+
+                                        ],
+                                      ),
+                                    ),
+                                  ),
 
                                   EditDelete(
                                     showEdit: showEdit,
@@ -310,6 +397,18 @@ class _MachineManagementGridState extends State<MachineManagementGrid> {
 
         return FadeTransition(
           opacity: Tween(begin: 0.0, end: 1.0).animate(animation),
+          child: child,
+        );
+      },
+    );
+  }
+  Route _createRouteMachinePlant() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => MachineManagementPlantList(),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+
+        return SlideTransition(
+          position: Tween<Offset>(begin: Offset(-1.0,0.0), end: Offset.zero).animate(animation),
           child: child,
         );
       },

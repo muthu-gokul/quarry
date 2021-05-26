@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:quarry/notifier/invoiceNotifier.dart';
 import 'package:quarry/notifier/machineManagementNotifier.dart';
 import 'package:quarry/notifier/productionNotifier.dart';
 import 'package:quarry/references/bottomNavi.dart';
@@ -20,14 +21,14 @@ import 'package:quarry/widgets/bottomBarAddButton.dart';
 
 
 
-class MachineManagementPlantList extends StatefulWidget {
+class InvoicePlantList extends StatefulWidget {
   VoidCallback drawerCallback;
-  MachineManagementPlantList({this.drawerCallback});
+  InvoicePlantList({this.drawerCallback});
   @override
-  MachineManagementPlantListState createState() => MachineManagementPlantListState();
+  InvoicePlantListState createState() => InvoicePlantListState();
 }
 
-class MachineManagementPlantListState extends State<MachineManagementPlantList> with TickerProviderStateMixin{
+class InvoicePlantListState extends State<InvoicePlantList> with TickerProviderStateMixin{
 
 
 
@@ -57,8 +58,8 @@ class MachineManagementPlantListState extends State<MachineManagementPlantList> 
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return Scaffold(
-      body: Consumer<MachineManagementNotifier>(
-          builder: (context,mmn,child)=> Stack(
+      body: Consumer<InvoiceNotifier>(
+          builder: (context,inv,child)=> Stack(
             children: [
 
 
@@ -168,7 +169,7 @@ class MachineManagementPlantListState extends State<MachineManagementPlantList> 
 
                                 SingleChildScrollView(
                                   child: Wrap(
-                                      children: mmn.filterUsersPlantList.asMap()
+                                      children: inv.filterUsersPlantList.asMap()
                                           .map((i, value) => MapEntry(i,
                                         GestureDetector(
                                           onTap: (){
@@ -266,7 +267,7 @@ class MachineManagementPlantListState extends State<MachineManagementPlantList> 
                           behavior: HitTestBehavior.translucent,
                           onTap: (){
                             Navigator.pop(context);
-                            mmn.filterMachineGrid();
+                            inv.filterGridValues();
                           },
                           child: Container(
 
@@ -315,7 +316,7 @@ class MachineManagementPlantListState extends State<MachineManagementPlantList> 
                   children: [
                     CancelButton(
                       ontap: (){
-                        mmn.filterMachineGrid();
+                        inv.filterGridValues();
                         Navigator.pop(context);
                       },
                     ),

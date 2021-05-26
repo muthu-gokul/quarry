@@ -432,6 +432,7 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
                                     left: SizeConfig.width20,
                                     right: SizeConfig.width20,
                                     top: SizeConfig.height20,),
+                                  clipBehavior: Clip.antiAlias,
                                   decoration: BoxDecoration(
                                       color: Colors.white,
                                       borderRadius: BorderRadius.circular(5),
@@ -533,32 +534,42 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
                                                           GestureDetector(
                                                             onTap: () {
 
-                                                              if(isEdit){
-                                                                if (qn.PO_PlantLicenseList[index].isEdit) {
-                                                                  qn.PO_PlantLicenseList[index].scaleController.forward().whenComplete(() {
-                                                                    print("EIT");
-                                                                    if (this.mounted) {
+                                                              CustomAlert(Cancelcallback: (){
+                                                                Navigator.pop(context);
+                                                              },
+                                                              callback: (){
+                                                                Navigator.pop(context);
+                                                                Timer(Duration(milliseconds: 200), (){
+                                                                  if(isEdit){
+                                                                    if (qn.PO_PlantLicenseList[index].isEdit) {
+                                                                      qn.PO_PlantLicenseList[index].scaleController.forward().whenComplete(() {
+                                                                        print("EIT");
+                                                                        if (this.mounted) {
+                                                                          setState(() {
+                                                                            qn.PO_PlantLicenseList.removeAt(index);
+                                                                          });
+                                                                        }
+                                                                      });
+
+                                                                    }
+                                                                    else {
                                                                       setState(() {
-                                                                        qn.PO_PlantLicenseList.removeAt(index);
+                                                                        qn.PO_PlantLicenseList[index].isDelete=true;
+                                                                      });
+                                                                      qn.PO_PlantLicenseList[index].scaleController.reverse().whenComplete(() {
+                                                                        if (this.mounted) {
+
+                                                                          setState(() {
+                                                                            qn.PO_PlantLicenseList.removeAt(index);
+                                                                          });
+                                                                        }
                                                                       });
                                                                     }
-                                                                  });
+                                                                  }
+                                                                });
+                                                              }).yesOrNoDialog(context, "", "Are you sure want to delete this License Details ?");
 
-                                                                }
-                                                                else {
-                                                                  setState(() {
-                                                                    qn.PO_PlantLicenseList[index].isDelete=true;
-                                                                  });
-                                                                  qn.PO_PlantLicenseList[index].scaleController.reverse().whenComplete(() {
-                                                                    if (this.mounted) {
 
-                                                                      setState(() {
-                                                                        qn.PO_PlantLicenseList.removeAt(index);
-                                                                      });
-                                                                    }
-                                                                  });
-                                                                }
-                                                              }
 
 
 

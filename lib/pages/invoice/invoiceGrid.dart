@@ -4,15 +4,18 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:quarry/model/manageUsersModel/manageUsersPlantModel.dart';
 import 'package:quarry/notifier/invoiceNotifier.dart';
+import 'package:quarry/notifier/profileNotifier.dart';
 import 'package:quarry/pages/invoice/invoiceAddnew.dart';
 import 'package:quarry/pages/invoice/invoicePdf.dart';
+import 'package:quarry/pages/invoice/invoicePlantList.dart';
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/editDelete.dart';
 import 'package:quarry/widgets/navigationBarIcon.dart';
-
+import 'package:quarry/widgets/dateRangePicker.dart' as DateRagePicker;
 
 
 class InvoiceGrid extends StatefulWidget {
@@ -484,16 +487,75 @@ class InvoiceGridState extends State<InvoiceGrid> with TickerProviderStateMixin{
                                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
-                                      Container(
-                                        height: 50,
-                                        width: 50,
+                                      Consumer<ProfileNotifier>(
+                                          builder: (context,pro,child)=> GestureDetector(
+                                            onTap: (){
+                                              if(pro.usersPlantList.length>1){
+                                                if(inv.filterUsersPlantList.isEmpty){
+                                                  setState(() {
+                                                    pro.usersPlantList.forEach((element) {
+                                                      inv.filterUsersPlantList.add(ManageUserPlantModel(
+                                                        plantId: element.plantId,
+                                                        plantName: element.plantName,
+                                                        isActive: element.isActive,
+
+                                                      ));
+                                                    });
+                                                  });
+                                                }
+                                                else if(inv.filterUsersPlantList.length!=pro.usersPlantList.length){
+                                                  inv.filterUsersPlantList.clear();
+                                                  setState(() {
+                                                    pro.usersPlantList.forEach((element) {
+                                                      inv.filterUsersPlantList.add(ManageUserPlantModel(
+                                                        plantId: element.plantId,
+                                                        plantName: element.plantName,
+                                                        isActive: element.isActive,
+
+                                                      ));
+                                                    });
+                                                  });
+                                                }
+
+                                                Navigator.push(context, _createRouteInvoicePlant());
+                                              }
+                                            },
+                                            child: SvgPicture.asset("assets/bottomIcons/plant-slection.svg",height: 40,width: 35,
+                                              color: pro.usersPlantList.length<=1?AppTheme.bgColor.withOpacity(0.4):AppTheme.bgColor,),
+                                          )
                                       ),
-                                      Container(
-                                        height: 50,
-                                        width: 50,
+                                      GestureDetector(
+                                        onTap: () async{
+                                          final List<DateTime>  picked1 = await DateRagePicker.showDatePicker(
+                                              context: context,
+                                              initialFirstDate: new DateTime.now(),
+                                              initialLastDate: (new DateTime.now()),
+                                              firstDate: DateTime.parse('2021-01-01'),
+                                              lastDate: (new DateTime.now())
+                                          );
+                                          if (picked1 != null && picked1.length == 2) {
+                                            setState(() {
+                                              inv.picked=picked1;
+                                              inv.GetInvoiceDbHit(context,null);
+                                            });
+                                          }
+                                          else if(picked1!=null && picked1.length ==1){
+                                            setState(() {
+                                              inv.picked=picked1;
+                                              inv.GetInvoiceDbHit(context,null);
+                                            });
+                                          }
+
+                                        },
+                                        child: Padding(
+                                          padding:  EdgeInsets.only(top: 10),
+                                          child: SvgPicture.asset("assets/svg/calender.svg",width: 27,height: 30,color: AppTheme.bgColor,
+                                            //    color: qn.selectedIndex==-1? AppTheme.bgColor.withOpacity(0.5):isOpen?AppTheme.bgColor:AppTheme.bgColor.withOpacity(0.5),
+                                          ),
+                                        ),
                                       ),
 
-                                      SizedBox(width: SizeConfig.width50,),
+                                      SizedBox(width: SizeConfig.screenWidth*0.25,),
                                       Container(
                                         height: 50,
                                         width: 50,
@@ -513,7 +575,7 @@ class InvoiceGridState extends State<InvoiceGrid> with TickerProviderStateMixin{
                                           width:40,
                                           margin: EdgeInsets.only(top: 10),
                                           child: Center(
-                                            child: SvgPicture.asset("assets/bottomIcons/add-new-icon.svg",height: 40,width: 40,color: AppTheme.bgColor,),
+                                            child: SvgPicture.asset("assets/bottomIcons/add-new-icon.svg",height: 32,width: 40,color: AppTheme.bgColor,),
                                           ),
                                         ),
                                       ),
@@ -737,6 +799,18 @@ class InvoiceGridState extends State<InvoiceGrid> with TickerProviderStateMixin{
 
         return FadeTransition(
           opacity: Tween(begin: 0.0, end: 1.0).animate(animation),
+          child: child,
+        );
+      },
+    );
+  }
+  Route _createRouteInvoicePlant() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => InvoicePlantList(),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+
+        return SlideTransition(
+          position: Tween<Offset>(begin: Offset(-1.0,0.0), end: Offset.zero).animate(animation),
           child: child,
         );
       },

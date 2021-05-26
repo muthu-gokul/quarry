@@ -9,9 +9,13 @@ class InvoiceGridModel {
     this.partyName,
     this.grandTotalAmount,
     this.status,
+    this.plantId,
+    this.plantName
   });
 
   int invoiceId;
+  int plantId;
+  String plantName;
   String invoiceNumber;
   String invoiceType;
   DateTime invoiceDate;
@@ -22,6 +26,8 @@ class InvoiceGridModel {
 
   factory InvoiceGridModel.fromJson(Map<String, dynamic> json) => InvoiceGridModel(
     invoiceId: json["InvoiceId"],
+    plantId: json["PlantId"],
+    plantName: json["PlantName"],
     invoiceNumber: json["InvoiceNumber"],
     invoiceType: json["InvoiceType"],
     invoiceDate:json["InvoiceDate"]!=null? DateTime.parse(json["InvoiceDate"]):null,

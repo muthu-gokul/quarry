@@ -13,6 +13,8 @@ import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/calculation.dart';
 import 'package:quarry/widgets/staticColumnScroll/customDataTableWithoutModel.dart';
 
+import 'profileNotifier.dart';
+
 class MachineManagementNotifier extends ChangeNotifier{
 
   final call=ApiManager();
@@ -306,13 +308,27 @@ class MachineManagementNotifier extends ChangeNotifier{
 
   ];
   List<dynamic> gridData=[];
+  List<dynamic> filterGridData=[];
   List<DateTime> picked=[];
   List<ManageUserPlantModel> filterUsersPlantList=[];
   GetMachineManagementDbHit(BuildContext context,int MachineManagementId,int MachineId)  async{
 
 
     updateMachineManagementLoader(true);
+    String fromDate,toDate;
 
+    if(picked.isEmpty){
+      fromDate=DateFormat("yyyy-MM-dd").format(DateTime.now()).toString();
+      toDate=DateFormat("yyyy-MM-dd").format(DateTime.now()).toString();
+    }
+    else if(picked.length==1){
+      fromDate=DateFormat("yyyy-MM-dd").format(picked[0]).toString();
+      toDate=DateFormat("yyyy-MM-dd").format(picked[0]).toString();
+    }
+    else if(picked.length==2){
+      fromDate=DateFormat("yyyy-MM-dd").format(picked[0]).toString();
+      toDate=DateFormat("yyyy-MM-dd").format(picked[1]).toString();
+    }
     var body={
       "Fields": [
         {
@@ -335,7 +351,16 @@ class MachineManagementNotifier extends ChangeNotifier{
           "Type": "int",
           "Value": MachineId
         },
-
+        {
+          "Key": "FromDate",
+          "Type": "String",
+          "Value": fromDate
+        },
+        {
+          "Key": "ToDate",
+          "Type": "String",
+          "Value":toDate
+        },
         {
           "Key": "database",
           "Type": "String",
@@ -348,6 +373,28 @@ class MachineManagementNotifier extends ChangeNotifier{
 
       await call.ApiCallGetInvoke(body,context).then((value) {
         if(value!=null){
+          if(filterUsersPlantList.isEmpty){
+
+            Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.forEach((element) {
+              filterUsersPlantList.add(ManageUserPlantModel(
+                plantId: element.plantId,
+                plantName: element.plantName,
+                isActive: element.isActive,
+              ));
+            });
+
+          } else if(filterUsersPlantList.length!=Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.length){
+            filterUsersPlantList.clear();
+
+            Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.forEach((element) {
+              filterUsersPlantList.add(ManageUserPlantModel(
+                plantId: element.plantId,
+                plantName: element.plantName,
+                isActive: element.isActive,
+
+              ));
+            });
+          }
           var parsed=json.decode(value);
           var t=parsed['Table'] as List;
           print(t);
@@ -375,7 +422,8 @@ class MachineManagementNotifier extends ChangeNotifier{
 
           }
           else{
-            gridData=t;
+            filterGridData=t;
+            filterMachineGrid();
 
           }
         }
@@ -386,8 +434,18 @@ class MachineManagementNotifier extends ChangeNotifier{
       updateMachineManagementLoader(false);
       CustomAlert().commonErrorAlert(context, "${Sp.getMachineManagementDetail}" , e.toString());
     }
+  }
 
+  filterMachineGrid(){
+    gridData.clear();
 
+    filterUsersPlantList.forEach((element) {
+      if(element.isActive){
+        gridData=gridData+filterGridData.where((ele) => ele['PlantId']==element.plantId).toList();
+      }
+    });
+
+    notifyListeners();
   }
   
   

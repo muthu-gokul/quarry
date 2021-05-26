@@ -377,6 +377,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                 Provider.of<GoodsReceivedNotifier>(context, listen: false).filterUsersPlantList.clear();
                                 Provider.of<DieselNotifier>(context, listen: false).filterUsersPlantList.clear();
                                 Provider.of<ProductionNotifier>(context, listen: false).filterUsersPlantList.clear();
+                                Provider.of<MachineManagementNotifier>(context, listen: false).filterUsersPlantList.clear();
+                                Provider.of<InvoiceNotifier>(context, listen: false).filterUsersPlantList.clear();
+                                Provider.of<PaymentNotifier>(context, listen: false).filterUsersPlantList.clear();
                               });
                             //  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>LoginScreen()));
                               drawer.changeMenu(1);

@@ -2154,6 +2154,7 @@ class QuarryNotifier extends ChangeNotifier{
   TextEditingController CD_address= new TextEditingController();
   TextEditingController CD_city= new TextEditingController();
   TextEditingController CD_state= new TextEditingController();
+  TextEditingController CD_country= new TextEditingController();
   TextEditingController CD_zipcode= new TextEditingController();
   TextEditingController CD_gstno= new TextEditingController();
   TextEditingController CD_Panno= new TextEditingController();
@@ -2194,12 +2195,14 @@ class QuarryNotifier extends ChangeNotifier{
 
 
           var t1=parsed['Table'] as List;
+          print("t1$t1");
 
           CD_quarryname.text= t1[0]['CompanyName'];
           CD_contactNo.text= t1[0]['CompanyContactNumber'];
           CD_address.text= t1[0]['CompanyAddress'];
           CD_city.text= t1[0]['CompanyCity'];
           CD_state.text= t1[0]['CompanyState'];
+          CD_country.text= t1[0]['CompanyCountry'];
           CD_zipcode.text= t1[0]['CompanyZipCode'];
           CD_gstno.text= t1[0]['CompanyGSTNumber'];
           CD_Panno.text= t1[0]['CompanyPANNumber'];
@@ -2255,6 +2258,11 @@ class QuarryNotifier extends ChangeNotifier{
           "Key": "CompanyState",
           "Type": "String",
           "Value": CD_state.text
+        },
+        {
+          "Key": "CompanyCountry",
+          "Type": "String",
+          "Value": CD_country.text
         },
         {
           "Key": "CompanyZipCode",

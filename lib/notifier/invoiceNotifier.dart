@@ -11,18 +11,14 @@ import 'package:quarry/model/invoiceModel/invMaterialMappingModel.dart';
 import 'package:quarry/model/invoiceModel/invOtherChargesMappingModel.dart';
 import 'package:quarry/model/invoiceModel/invSupplierModel.dart';
 import 'package:quarry/model/invoiceModel/invTypeModel.dart';
+import 'package:quarry/model/manageUsersModel/manageUsersPlantModel.dart';
 import 'package:quarry/model/plantModel/plantUserModel.dart';
-import 'package:quarry/model/purchaseDetailsModel/PurchaseOrderOtherChargesMappingListModel.dart';
-import 'package:quarry/model/purchaseDetailsModel/purchaseDetailGridModel.dart';
-import 'package:quarry/model/purchaseDetailsModel/purchaseMaterialListModel.dart';
-import 'package:quarry/model/purchaseDetailsModel/purchaseOrderMaterialMappingListModel.dart';
-import 'package:quarry/model/purchaseDetailsModel/purchaseSupplierListModel.dart';
-import 'package:quarry/model/purchaseDetailsModel/purchaseSupplierTypeModel.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
-import 'package:quarry/pages/invoice/invoiceGrid.dart';
+
 import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/calculation.dart';
 import '../widgets/decimal.dart';
+import 'profileNotifier.dart';
 
 class InvoiceNotifier extends ChangeNotifier{
 
@@ -538,6 +534,7 @@ class InvoiceNotifier extends ChangeNotifier{
 
   List<InvoiceGridModel> invoiceGridList=[];
   List<InvoiceGridModel> filterInvoiceGridList=[];
+  List<InvoiceGridModel> filterInvoiceGridList2=[];
   List<InvoiceCounterModel> counterList=[];
 
 
@@ -545,12 +542,28 @@ class InvoiceNotifier extends ChangeNotifier{
   List<dynamic> pdfMaterial=[];
   List<dynamic> pdfOtherCharges=[];
 
+  List<DateTime> picked=[];
+  List<ManageUserPlantModel> filterUsersPlantList=[];
+
  Future<dynamic> GetInvoiceDbHit(BuildContext context,int InvoiceId)  async{
     updateInvoiceLoader(true);
     pdfHeader.clear();
     pdfMaterial.clear();
     pdfOtherCharges.clear();
+    String fromDate,toDate;
 
+    if(picked.isEmpty){
+      fromDate=DateFormat("yyyy-MM-dd").format(DateTime.now()).toString();
+      toDate=DateFormat("yyyy-MM-dd").format(DateTime.now()).toString();
+    }
+    else if(picked.length==1){
+      fromDate=DateFormat("yyyy-MM-dd").format(picked[0]).toString();
+      toDate=DateFormat("yyyy-MM-dd").format(picked[0]).toString();
+    }
+    else if(picked.length==2){
+      fromDate=DateFormat("yyyy-MM-dd").format(picked[0]).toString();
+      toDate=DateFormat("yyyy-MM-dd").format(picked[1]).toString();
+    }
     var body={
       "Fields": [
         {
@@ -569,19 +582,51 @@ class InvoiceNotifier extends ChangeNotifier{
           "Value": InvoiceId
         },
         {
+          "Key": "FromDate",
+          "Type": "String",
+          "Value": fromDate
+        },
+        {
+          "Key": "ToDate",
+          "Type": "String",
+          "Value":toDate
+        },
+        {
           "Key": "database",
           "Type": "String",
           "Value": Provider.of<QuarryNotifier>(context,listen: false).DataBaseName
         }
       ]
     };
-    updateInvoiceLoader(false);
- //   try{
+
+
+    try{
       await call.ApiCallGetInvoke(body,context).then((value) {
         if(value!=null){
           var parsed=json.decode(value);
           var t=parsed['Table'] as List;
+          if(filterUsersPlantList.isEmpty){
 
+            Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.forEach((element) {
+              filterUsersPlantList.add(ManageUserPlantModel(
+                plantId: element.plantId,
+                plantName: element.plantName,
+                isActive: element.isActive,
+              ));
+            });
+
+          } else if(filterUsersPlantList.length!=Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.length){
+            filterUsersPlantList.clear();
+
+            Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.forEach((element) {
+              filterUsersPlantList.add(ManageUserPlantModel(
+                plantId: element.plantId,
+                plantName: element.plantName,
+                isActive: element.isActive,
+
+              ));
+            });
+          }
           if(InvoiceId!=null){
             print(t);
             var t1=parsed['Table1'] as List;
@@ -647,8 +692,9 @@ class InvoiceNotifier extends ChangeNotifier{
             notifyListeners();
           }
           else{
+            print(t);
             invoiceGridList=t.map((e) => InvoiceGridModel.fromJson(e)).toList();
-            filterInvoiceGridList=t.map((e) => InvoiceGridModel.fromJson(e)).toList();
+          //  filterInvoiceGridList=t.map((e) => InvoiceGridModel.fromJson(e)).toList();
             filterGridValues();
 
           }
@@ -658,10 +704,10 @@ class InvoiceNotifier extends ChangeNotifier{
 
         updateInvoiceLoader(false);
       });
-  /*  }catch(e){
+    }catch(e){
       updateInvoiceLoader(false);
       CustomAlert().commonErrorAlert(context, "${Sp.getInvoiceDetail}" , e.toString());
-    }*/
+    }
 
 
   }
@@ -704,13 +750,22 @@ class InvoiceNotifier extends ChangeNotifier{
 
 
   filterGridValues(){
-
+    filterInvoiceGridList.clear();
+    filterInvoiceGridList2.clear();
     int paid=0;
     int unpaid=0;
     int partially=0;
     if(isInvoiceReceivable){
       invoiceGridCol=["Invoice Number","Date","Customer Name","Gross Amount","Status"];
-      filterInvoiceGridList=invoiceGridList.where((element) => element.invoiceType=="Receivable").toList();
+      filterInvoiceGridList2=invoiceGridList.where((element) => element.invoiceType=="Receivable").toList();
+
+      filterUsersPlantList.forEach((element) {
+        if(element.isActive){
+          filterInvoiceGridList=filterInvoiceGridList+filterInvoiceGridList2.where((ele) => ele.plantId==element.plantId).toList();
+        }
+      });
+
+     // filterInvoiceGridList=invoiceGridList.where((element) => element.invoiceType=="Receivable").toList();
       paid=filterInvoiceGridList.where((element) => element.status=='Paid').toList().length;
       unpaid=filterInvoiceGridList.where((element) => element.status=='Unpaid').toList().length;
       partially=filterInvoiceGridList.where((element) => element.status=='Partially Paid').toList().length;
@@ -723,7 +778,14 @@ class InvoiceNotifier extends ChangeNotifier{
     }
     else{
       invoiceGridCol=["Invoice Number","Date","Supplier Name","Gross Amount","Status"];
-      filterInvoiceGridList=invoiceGridList.where((element) => element.invoiceType=="Payable").toList();
+      filterInvoiceGridList2=invoiceGridList.where((element) => element.invoiceType=="Payable").toList();
+
+      filterUsersPlantList.forEach((element) {
+        if(element.isActive){
+          filterInvoiceGridList=filterInvoiceGridList+filterInvoiceGridList2.where((ele) => ele.plantId==element.plantId).toList();
+        }
+      });
+    //  filterInvoiceGridList=invoiceGridList.where((element) => element.invoiceType=="Payable").toList();
       paid=filterInvoiceGridList.where((element) => element.status=='Paid').toList().length;
       unpaid=filterInvoiceGridList.where((element) => element.status=='Unpaid').toList().length;
       partially=filterInvoiceGridList.where((element) => element.status=='Partially Paid').toList().length;

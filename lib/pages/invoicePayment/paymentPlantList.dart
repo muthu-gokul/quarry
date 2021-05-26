@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:quarry/notifier/invoiceNotifier.dart';
 import 'package:quarry/notifier/machineManagementNotifier.dart';
+import 'package:quarry/notifier/paymentNotifier.dart';
 import 'package:quarry/notifier/productionNotifier.dart';
 import 'package:quarry/references/bottomNavi.dart';
 
@@ -20,14 +22,14 @@ import 'package:quarry/widgets/bottomBarAddButton.dart';
 
 
 
-class MachineManagementPlantList extends StatefulWidget {
+class PaymentPlantList extends StatefulWidget {
   VoidCallback drawerCallback;
-  MachineManagementPlantList({this.drawerCallback});
+  PaymentPlantList({this.drawerCallback});
   @override
-  MachineManagementPlantListState createState() => MachineManagementPlantListState();
+  PaymentPlantListState createState() => PaymentPlantListState();
 }
 
-class MachineManagementPlantListState extends State<MachineManagementPlantList> with TickerProviderStateMixin{
+class PaymentPlantListState extends State<PaymentPlantList> with TickerProviderStateMixin{
 
 
 
@@ -57,8 +59,8 @@ class MachineManagementPlantListState extends State<MachineManagementPlantList> 
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return Scaffold(
-      body: Consumer<MachineManagementNotifier>(
-          builder: (context,mmn,child)=> Stack(
+      body: Consumer<PaymentNotifier>(
+          builder: (context,pay,child)=> Stack(
             children: [
 
 
@@ -168,7 +170,7 @@ class MachineManagementPlantListState extends State<MachineManagementPlantList> 
 
                                 SingleChildScrollView(
                                   child: Wrap(
-                                      children: mmn.filterUsersPlantList.asMap()
+                                      children: pay.filterUsersPlantList.asMap()
                                           .map((i, value) => MapEntry(i,
                                         GestureDetector(
                                           onTap: (){
@@ -266,7 +268,7 @@ class MachineManagementPlantListState extends State<MachineManagementPlantList> 
                           behavior: HitTestBehavior.translucent,
                           onTap: (){
                             Navigator.pop(context);
-                            mmn.filterMachineGrid();
+                            pay.filterGridValues();
                           },
                           child: Container(
 
@@ -315,7 +317,7 @@ class MachineManagementPlantListState extends State<MachineManagementPlantList> 
                   children: [
                     CancelButton(
                       ontap: (){
-                        mmn.filterMachineGrid();
+                        pay.filterGridValues();
                         Navigator.pop(context);
                       },
                     ),

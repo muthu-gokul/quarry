@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/api/ApiManager.dart';
 import 'package:quarry/api/sp.dart';
+import 'package:quarry/model/manageUsersModel/manageUsersPlantModel.dart';
 import 'package:quarry/model/paymentModel/paymentGridModel.dart';
 import 'package:quarry/model/paymentModel/paymentMappingModel.dart';
 import 'package:quarry/model/paymentModel/paymentPartyModel.dart';
@@ -16,6 +17,7 @@ import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/calculation.dart';
 
 import 'invoiceNotifier.dart';
+import 'profileNotifier.dart';
 
 class PaymentNotifier extends ChangeNotifier{
 
@@ -169,6 +171,7 @@ class PaymentNotifier extends ChangeNotifier{
   List<String> gridCol=[];
   List<PaymentGridModel> gridPaymentList=[];
   List<PaymentGridModel> filterGridPaymentList=[];
+  List<PaymentGridModel> filterGridPaymentList2=[];
   List<InvoiceCounterModel> counterList=[];
 
 
@@ -287,12 +290,27 @@ class PaymentNotifier extends ChangeNotifier{
 
   }
 
+  List<DateTime> picked=[];
+  List<ManageUserPlantModel> filterUsersPlantList=[];
 
   GetPaymentDbHit(BuildContext context,int invoiceId,TickerProviderStateMixin tickerProviderStateMixin)  async{
 
 
     updatePaymentLoader(true);
+    String fromDate,toDate;
 
+    if(picked.isEmpty){
+      fromDate=DateFormat("yyyy-MM-dd").format(DateTime.now()).toString();
+      toDate=DateFormat("yyyy-MM-dd").format(DateTime.now()).toString();
+    }
+    else if(picked.length==1){
+      fromDate=DateFormat("yyyy-MM-dd").format(picked[0]).toString();
+      toDate=DateFormat("yyyy-MM-dd").format(picked[0]).toString();
+    }
+    else if(picked.length==2){
+      fromDate=DateFormat("yyyy-MM-dd").format(picked[0]).toString();
+      toDate=DateFormat("yyyy-MM-dd").format(picked[1]).toString();
+    }
     var body={
       "Fields": [
         {
@@ -311,6 +329,16 @@ class PaymentNotifier extends ChangeNotifier{
           "Value": invoiceId
         },
         {
+          "Key": "FromDate",
+          "Type": "String",
+          "Value": fromDate
+        },
+        {
+          "Key": "ToDate",
+          "Type": "String",
+          "Value":toDate
+        },
+        {
           "Key": "database",
           "Type": "String",
           "Value": Provider.of<QuarryNotifier>(context,listen: false).DataBaseName
@@ -322,6 +350,28 @@ class PaymentNotifier extends ChangeNotifier{
   //  try{
       await call.ApiCallGetInvoke(body,context).then((value) {
         if(value!=null){
+          if(filterUsersPlantList.isEmpty){
+
+            Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.forEach((element) {
+              filterUsersPlantList.add(ManageUserPlantModel(
+                plantId: element.plantId,
+                plantName: element.plantName,
+                isActive: element.isActive,
+              ));
+            });
+
+          } else if(filterUsersPlantList.length!=Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.length){
+            filterUsersPlantList.clear();
+
+            Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.forEach((element) {
+              filterUsersPlantList.add(ManageUserPlantModel(
+                plantId: element.plantId,
+                plantName: element.plantName,
+                isActive: element.isActive,
+
+              ));
+            });
+          }
           var parsed=json.decode(value);
           var t=parsed['Table'] as List;
           if(invoiceId!=null){
@@ -348,7 +398,7 @@ class PaymentNotifier extends ChangeNotifier{
           else{
             print(t);
                 gridPaymentList=t.map((e) => PaymentGridModel.fromJson(e)).toList();
-                filterGridPaymentList=t.map((e) => PaymentGridModel.fromJson(e)).toList();
+
                 filterGridValues();
           }
         }
@@ -367,6 +417,9 @@ class PaymentNotifier extends ChangeNotifier{
 
   filterGridValues(){
 
+    filterGridPaymentList.clear();
+    filterGridPaymentList2.clear();
+
     double total=0.0;
     int paidCount=0;
     double totalPaid=0.0;
@@ -377,7 +430,14 @@ class PaymentNotifier extends ChangeNotifier{
 
     if(isPaymentReceivable){
       gridCol=["Payment No","Received On Date","Customer Name","Gross Amount","Received Amount","Balance Amount","Status"];
-      filterGridPaymentList=gridPaymentList.where((element) => element.invoiceType=="Receivable").toList();
+      filterGridPaymentList2=gridPaymentList.where((element) => element.invoiceType=="Receivable").toList();
+
+
+      filterUsersPlantList.forEach((element) {
+        if(element.isActive){
+          filterGridPaymentList=filterGridPaymentList+filterGridPaymentList2.where((ele) => ele.plantId==element.plantId).toList();
+        }
+      });
 
       filterGridPaymentList.forEach((element) {
         total=Calculation().add(total, element.grandTotalAmount);
@@ -404,7 +464,14 @@ class PaymentNotifier extends ChangeNotifier{
     }
     else{
       gridCol=["Payment No","Received On Date","Supplier Name","Gross Amount","Paid Amount","Balance Amount","Status"];
-      filterGridPaymentList=gridPaymentList.where((element) => element.invoiceType=="Payable").toList();
+      filterGridPaymentList2=gridPaymentList.where((element) => element.invoiceType=="Payable").toList();
+
+      filterUsersPlantList.forEach((element) {
+        if(element.isActive){
+          filterGridPaymentList=filterGridPaymentList+filterGridPaymentList2.where((ele) => ele.plantId==element.plantId).toList();
+        }
+      });
+
       filterGridPaymentList.forEach((element) {
         total=Calculation().add(total, element.grandTotalAmount);
         if(element.status=='Paid'){

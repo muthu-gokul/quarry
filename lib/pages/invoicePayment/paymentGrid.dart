@@ -4,10 +4,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:quarry/model/manageUsersModel/manageUsersPlantModel.dart';
 import 'package:quarry/notifier/paymentNotifier.dart';
+import 'package:quarry/notifier/profileNotifier.dart';
 
 import 'package:quarry/pages/invoicePayment/paymentAddNew.dart';
 import 'package:quarry/pages/invoicePayment/paymentEdit.dart';
+import 'package:quarry/pages/invoicePayment/paymentPlantList.dart';
+import 'package:quarry/widgets/dateRangePicker.dart' as DateRagePicker;
 
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
@@ -528,16 +532,75 @@ class PaymentGridState extends State<PaymentGrid> with TickerProviderStateMixin{
                                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
-                                      Container(
-                                        height: 50,
-                                        width: 50,
+                                      Consumer<ProfileNotifier>(
+                                          builder: (context,pro,child)=> GestureDetector(
+                                            onTap: (){
+                                              if(pro.usersPlantList.length>1){
+                                                if(pn.filterUsersPlantList.isEmpty){
+                                                  setState(() {
+                                                    pro.usersPlantList.forEach((element) {
+                                                      pn.filterUsersPlantList.add(ManageUserPlantModel(
+                                                        plantId: element.plantId,
+                                                        plantName: element.plantName,
+                                                        isActive: element.isActive,
+
+                                                      ));
+                                                    });
+                                                  });
+                                                }
+                                                else if(pn.filterUsersPlantList.length!=pro.usersPlantList.length){
+                                                  pn.filterUsersPlantList.clear();
+                                                  setState(() {
+                                                    pro.usersPlantList.forEach((element) {
+                                                      pn.filterUsersPlantList.add(ManageUserPlantModel(
+                                                        plantId: element.plantId,
+                                                        plantName: element.plantName,
+                                                        isActive: element.isActive,
+
+                                                      ));
+                                                    });
+                                                  });
+                                                }
+
+                                                Navigator.push(context, _createRoutePaymentPlant());
+                                              }
+                                            },
+                                            child: SvgPicture.asset("assets/bottomIcons/plant-slection.svg",height: 40,width: 35,
+                                              color: pro.usersPlantList.length<=1?AppTheme.bgColor.withOpacity(0.4):AppTheme.bgColor,),
+                                          )
                                       ),
-                                      Container(
-                                        height: 50,
-                                        width: 50,
+                                      GestureDetector(
+                                        onTap: () async{
+                                          final List<DateTime>  picked1 = await DateRagePicker.showDatePicker(
+                                              context: context,
+                                              initialFirstDate: new DateTime.now(),
+                                              initialLastDate: (new DateTime.now()),
+                                              firstDate: DateTime.parse('2021-01-01'),
+                                              lastDate: (new DateTime.now())
+                                          );
+                                          if (picked1 != null && picked1.length == 2) {
+                                            setState(() {
+                                              pn.picked=picked1;
+                                              pn.GetPaymentDbHit(context,null,PaymentEditFormState());
+                                            });
+                                          }
+                                          else if(picked1!=null && picked1.length ==1){
+                                            setState(() {
+                                              pn.picked=picked1;
+                                              pn.GetPaymentDbHit(context,null,PaymentEditFormState());
+                                            });
+                                          }
+
+                                        },
+                                        child: Padding(
+                                          padding:  EdgeInsets.only(top: 10),
+                                          child: SvgPicture.asset("assets/svg/calender.svg",width: 27,height: 30,color: AppTheme.bgColor,
+                                            //    color: qn.selectedIndex==-1? AppTheme.bgColor.withOpacity(0.5):isOpen?AppTheme.bgColor:AppTheme.bgColor.withOpacity(0.5),
+                                          ),
+                                        ),
                                       ),
 
-                                      SizedBox(width: SizeConfig.width50,),
+                                      SizedBox(width: SizeConfig.screenWidth*0.25,),
                                       Container(
                                         height: 50,
                                         width: 50,
@@ -558,7 +621,7 @@ class PaymentGridState extends State<PaymentGrid> with TickerProviderStateMixin{
                                           width:40,
                                           margin: EdgeInsets.only(top: 10),
                                           child: Center(
-                                            child: SvgPicture.asset("assets/bottomIcons/add-new-icon.svg",height: 40,width: 40,color: AppTheme.bgColor,),
+                                            child: SvgPicture.asset("assets/bottomIcons/add-new-icon.svg",height: 32,width: 40,color: AppTheme.bgColor,),
                                           ),
                                         ),
                                       ),
@@ -759,6 +822,18 @@ class PaymentGridState extends State<PaymentGrid> with TickerProviderStateMixin{
 
         return FadeTransition(
           opacity: Tween(begin: 0.0, end: 1.0).animate(animation),
+          child: child,
+        );
+      },
+    );
+  }
+  Route _createRoutePaymentPlant() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => PaymentPlantList(),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+
+        return SlideTransition(
+          position: Tween<Offset>(begin: Offset(-1.0,0.0), end: Offset.zero).animate(animation),
           child: child,
         );
       },

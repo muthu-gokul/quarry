@@ -326,6 +326,29 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                          },
                                        ),
                                        AddNewLabelTextField(
+                                         labelText: 'Country',
+                                         isEnabled: isEdit,
+                                         regExp: '[A-Za-z  ]',
+                                         scrollPadding: 200,
+                                         textEditingController: qn.CD_country,
+                                         onChange: (v){},
+                                         ontap: (){
+                                           scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+                                           setState(() {
+                                             _keyboardVisible=true;
+                                             isListScroll=true;
+                                           });
+                                         },
+                                         onEditComplete: (){
+                                           node.unfocus();
+                                           Timer(Duration(milliseconds: 50), (){
+                                             setState(() {
+                                               _keyboardVisible=false;
+                                             });
+                                           });
+                                         },
+                                       ),
+                                       AddNewLabelTextField(
                                          labelText: 'ZipCode',
                                          textLength: 6,
                                          regExp: '[0-9]',

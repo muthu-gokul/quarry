@@ -12,9 +12,13 @@ class PaymentGridModel {
     this.status,
     this.balanceAmount,
     this.DBInvoiceNumber,
+    this.plantId,
+    this.plantName
   });
 
   int invoiceId;
+  int plantId;
+  String plantName;
   int DBInvoiceNumber;
   String invoiceNumber;
   String invoicePaymentNumber;
@@ -29,6 +33,8 @@ class PaymentGridModel {
 
   factory PaymentGridModel.fromJson(Map<String, dynamic> json) => PaymentGridModel(
     invoiceId: json["InvoiceId"],
+    plantId: json["PlantId"],
+    plantName: json["PlantName"],
     DBInvoiceNumber: json["DBInvoiceNumber"],
     invoiceNumber: json["InvoiceNumber"],
     invoicePaymentNumber: json["InvoicePaymentNumber"],
