@@ -48,6 +48,8 @@ class _MachineManagementAddNewState extends State<MachineManagementAddNew> {
   bool machine=false;
   bool loanAmount=false;
   bool plant=false;
+  bool operatorName=false;
+  bool operatorNo=false;
 
   @override
   void initState() {
@@ -260,6 +262,7 @@ class _MachineManagementAddNewState extends State<MachineManagementAddNew> {
                                       onChange: (v){},
 
                                     ),
+                                    operatorName?ValidationErrorText(title: "* Enter Operator Name",):Container(),
                                     AddNewLabelTextField(
                                       textEditingController: mmn.operatorNo,
                                       labelText: "Operator Contact Number",
@@ -285,6 +288,7 @@ class _MachineManagementAddNewState extends State<MachineManagementAddNew> {
                                       onChange: (v){},
 
                                     ),
+                                    operatorNo?ValidationErrorText(title: "* Enter Operator Contact Number",):Container(),
 
 
                                     GestureDetector(
@@ -558,17 +562,23 @@ class _MachineManagementAddNewState extends State<MachineManagementAddNew> {
                       if(mmn.InTime==null){setState(() {intime=true;});}
                       else{setState(() {intime=false;});}
 
+                      if(mmn.operatorName.text.isEmpty){setState(() {operatorName=true;});}
+                      else{setState(() {operatorName=false;});}
+
+                      if(mmn.operatorNo.text.isEmpty){setState(() {operatorNo=true;});}
+                      else{setState(() {operatorNo=false;});}
+
                       if(mmn.machineManagementEdit){
                         if(mmn.OutTime==null){setState(() {outtime=true;});}
                         else{setState(() {outtime=false;});}
 
-                        if(!machine && !intime && !outtime){
+                        if(!machine && !intime && !outtime && !operatorName && !operatorNo){
                           mmn.InsertMachineManagementDbHit(context);
                         }
 
                       }
                       else{
-                        if(!machine && !intime && !plant){
+                        if(!machine && !intime && !plant && !operatorName && !operatorNo){
                           mmn.InsertMachineManagementDbHit(context);
                         }
                       }
