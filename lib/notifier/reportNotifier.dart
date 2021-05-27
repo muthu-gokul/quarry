@@ -1871,10 +1871,10 @@ List<dynamic> vehicleTypeList=[];/* {
       filterDieselIssueReportGridList.sort((a,b)=>b['Date'].compareTo(a['Date']));
       reportsGridDataList=filterDieselIssueReportGridList;
       notifyListeners();
-    }catch(e,s){
+   }catch(e,s){
 
-      CustomAlert().commonErrorAlert(context, e.toString(), s.toString());
-    }
+     CustomAlert().commonErrorAlert(context, e.toString(), s.toString());
+   }
   }
   searchDieselIssueReport(String v){
     if(v.isEmpty){

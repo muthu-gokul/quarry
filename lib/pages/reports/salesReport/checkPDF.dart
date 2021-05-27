@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/widgets.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/widgets/alertDialog.dart';
@@ -248,16 +249,20 @@ checkpdf(context,String title,dynamic fromDate,dynamic toDate,List<dynamic> head
 
 
 
-  final String dirr ='/storage/emulated/0/quarry/reports';
+  final String dirr ='/storage/emulated/0/Download/quarry/reports';
+  var status = await Permission.storage.status;
+  if (!status.isGranted) {
+    await Permission.storage.request();
+  }
 
   String filename="$title";
-  await Directory('/storage/emulated/0/quarry/reports').create(recursive: true);
+  await Directory('/storage/emulated/0/Download/quarry/reports').create(recursive: true);
   final String path = '$dirr/$filename.pdf';
 
 
   final File file = File(path);
   await file.writeAsBytes(await pdf.save()).then((value) async {
-    CustomAlert().billSuccessAlert(context, "", "Successfully Downloaded @ \n\n Internal Storage/quarry/reports/$filename.pdf", "", "");
+    CustomAlert().billSuccessAlert(context, "", "Successfully Downloaded @ \n\n Internal Storage/Download/quarry/reports/$filename.pdf", "", "");
   });
 
 }

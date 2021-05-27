@@ -48,7 +48,7 @@ dependencies:
   share_extend:
   open_file:
   firebase_ml_vision: ^0.9.10
-  firebase_core:
+  firebase_core: ^1.2.0
 
 
 dev_dependencies:

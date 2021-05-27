@@ -287,17 +287,17 @@ class ReportGridState extends State<ReportGrid> with TickerProviderStateMixin{
 
 
 
-                      final String dirr ='/storage/emulated/0/quarry/reports';
+                      final String dirr ='/storage/emulated/0/Download/quarry/reports';
 
                       String filename="${rn.reportHeader}";
-                      await Directory('/storage/emulated/0/quarry/reports').create(recursive: true);
+                      await Directory('/storage/emulated/0/Download/quarry/reports').create(recursive: true);
                       final String path = '$dirr/$filename.xlsx';
 
 
                       final File file = File(path);
 
                       await file.writeAsBytes(await excel.encode()).then((value) async {
-                        CustomAlert().billSuccessAlert(context, "", "Successfully Downloaded @ \n\n Internal Storage/quarry/reports/$filename.xlsx", "", "");
+                        CustomAlert().billSuccessAlert(context, "", "Successfully Downloaded @ \n\n Internal Storage/Download/quarry/reports/$filename.xlsx", "", "");
                       });
                     },
                     child: AnimatedContainer(

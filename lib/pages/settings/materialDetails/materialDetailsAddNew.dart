@@ -167,7 +167,7 @@ class MaterialDetailAddNewState extends State<MaterialDetailAddNew> with TickerP
                                   SizedBox(height:15,),
                                   AddNewLabelTextField(
                                     labelText: 'Material Name',
-                                    regExp: '[A-Za-z  ]',
+                                    regExp: '[A-Za-z0-9-, ]',
                                     textEditingController: qn.materialName,
                                     onEditComplete: (){
                                       node.unfocus();

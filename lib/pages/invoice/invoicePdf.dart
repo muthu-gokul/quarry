@@ -362,10 +362,10 @@ invoicePdf(context,bool view) async {
   );
 
 
-  final String dirr ='/storage/emulated/0/quarry/invoice';
+  final String dirr ='/storage/emulated/0/Download/quarry/invoice';
 
   String filename="${inv.pdfHeader[0]['InvoiceNumber']}";
-  await Directory('/storage/emulated/0/quarry/invoice').create(recursive: true);
+  await Directory('/storage/emulated/0/Download/quarry/invoice').create(recursive: true);
   final String path = '$dirr/$filename.pdf';
 
 
@@ -375,7 +375,7 @@ invoicePdf(context,bool view) async {
       OpenFile.open(path);
 
     }else{
-      CustomAlert().billSuccessAlert(context, "", "Successfully Downloaded @ \n\n Internal Storage/quarry/invoice/$filename.pdf", "", "");
+      CustomAlert().billSuccessAlert(context, "", "Successfully Downloaded @ \n\n Internal Storage/Download/quarry/invoice/$filename.pdf", "", "");
     }
 
 
