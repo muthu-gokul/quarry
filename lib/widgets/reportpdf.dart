@@ -396,7 +396,7 @@ reportView(context,String mailid,int saleIndex) async {
                                         border: pw.Border(right: pw.BorderSide(color: PdfColors.black))
                                     ),
                                     child: pw.Center(
-                                        child: pw.Text('${qn.sale_materialList.where((element) => element.MaterialId==qn.saleDetailsGrid[saleIndex].MaterialId).toList()[0].MaterialUnitPrice}')
+                                        child: pw.Text('${qn.sale_materialList.where((element) => element['MaterialId']==qn.saleDetailsGrid[saleIndex].MaterialId).toList()[0]['MaterialUnitPrice']}')
                                     )
                                 ),
                                 pw.Container(
@@ -665,22 +665,22 @@ reportView(context,String mailid,int saleIndex) async {
 
   );
 
- final String dir = (await getApplicationDocumentsDirectory()).path;
+
  //final String dirr = (await  getExternalStorageDirectory()).path;
- final String dirr ='/storage/emulated/0/quarry';
+ final String dirr ='/storage/emulated/0/Download/quarry';
 // final String path = '$dir/report.pdf';
   print(dirr);
   String filename="INV_${qn.saleDetailsGrid[saleIndex].SaleNumber}";
-  await Directory('/storage/emulated/0/quarry').create(recursive: true);
+  await Directory('/storage/emulated/0/Download/quarry').create(recursive: true);
   final String path = '$dirr/$filename.pdf';
 // final String path = '/storage/emulated/0/Download/report.pdf';
 
    final File file = File(path);
   await file.writeAsBytes(await pdf.save()).then((value) async {
-    CustomAlert().billSuccessAlert(context, "", "Successfully Downloaded @ \n\n Internal Storage/quarry/$filename.pdf", "", "");
+    CustomAlert().billSuccessAlert(context, "", "Successfully Downloaded @ \n\n Internal Storage/Download/quarry/$filename.pdf", "", "");
    // print(path);
 /*    String username = 'muthugokul103031@gmail.com';
-    String password = 'Pearl@3010';
+
 
     final smtpServer = gmail(username, password);
     final message = Message()
