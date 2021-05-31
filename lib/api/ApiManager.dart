@@ -13,8 +13,8 @@ class ApiManager{
 
   Future< String> ApiCallGetInvoke(var body,BuildContext context) async {
     try{
-      var itemsUrl="http://183.82.32.76/restroApi///api/Mobile/GetInvoke";
-     // var itemsUrl="http://117.247.181.35/restroApi///api/Mobile/GetInvoke";
+    //  var itemsUrl="http://183.82.32.76/restroApi///api/Mobile/GetInvoke";
+      var itemsUrl="http://117.247.181.35/restroApi///api/Mobile/GetInvoke";
       final response = await http.post(Uri.parse(itemsUrl),
           headers: {"Content-Type": "application/json"},
           body: json.encode(body)

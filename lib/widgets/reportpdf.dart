@@ -369,9 +369,9 @@ reportView(context,String mailid,int saleIndex) async {
                                 pw.Container(
                                     width: 80,
                                     height: 70,
-
+//Material HSN
                                     child: pw.Center(
-                                        child: pw.Text('Material HSN')
+                                        child: pw.Text('${qn.saleDetailsGrid[saleIndex].MaterialHSNCode}')
                                     )
                                 ),
                               ]
@@ -396,7 +396,7 @@ reportView(context,String mailid,int saleIndex) async {
                                         border: pw.Border(right: pw.BorderSide(color: PdfColors.black))
                                     ),
                                     child: pw.Center(
-                                        child: pw.Text('${qn.sale_materialList.where((element) => element['MaterialId']==qn.saleDetailsGrid[saleIndex].MaterialId).toList()[0]['MaterialUnitPrice']}')
+                                        child: pw.Text('${qn.saleDetailsGrid[saleIndex].MaterialUnitPrice}')
                                     )
                                 ),
                                 pw.Container(

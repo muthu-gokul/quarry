@@ -167,6 +167,7 @@ class SaleDetails{
   String MaterialName;
   String RequiredMaterialQty;
   String OutputMaterialQty;
+  String MaterialHSNCode;
   double Amount;
   double MaterialUnitPrice;
   double OutputQtyAmount;
@@ -221,7 +222,8 @@ class SaleDetails{
     this.customerGstNumber,
     this.driverName,
     this.driverContactNumber,
-    this.RoundedTotalAmount
+    this.RoundedTotalAmount,
+    this.MaterialHSNCode
   });
 
 
@@ -237,6 +239,7 @@ class SaleDetails{
       EmptyWeightOfVehicle: json['EmptyWeightOfVehicle'],
       MaterialId: json['MaterialId'],
       MaterialName: json['MaterialName'],
+      MaterialHSNCode: json['MaterialHSNCode'],
       UnitName: json['UnitName'],
       MaterialUnitPrice: json['MaterialUnitPrice'],
       RequiredMaterialQty: json['RequiredMaterialQty'],
