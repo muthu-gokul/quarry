@@ -156,8 +156,8 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
         setState(() {
           isLoading=true;
         });
-    //    var itemsUrl="http://183.82.32.76/restroApi///api/Mobile/GetInvoke";
-        var itemsUrl="http://117.247.181.35/restroApi///api/Mobile/GetInvoke";
+            var itemsUrl="http://183.82.32.76/restroApi///api/Mobile/GetInvoke";
+        //var itemsUrl="http://117.247.181.35/restroApi///api/Mobile/GetInvoke";
        // var loginurl = 'http://183.82.32.76/restroApi///api/Mobile/GetInvokeforlogin';
         //var loginurl="http://117.247.181.35/restroApi///api/Mobile/GetInvokeforlogin";
         var body = {
@@ -199,6 +199,8 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
 
             if (loginNotifier.userDetail.loginTblOutput[0].Status == 'True') {
               if(prefEmail.isEmpty && prefPassword.isEmpty){
+                _setCredentials(username.text, password.text);
+              }else if(prefEmail!=username.text){
                 _setCredentials(username.text, password.text);
               }
               quarryNotifier.initUserDetail(loginNotifier.userDetail.loginTable[0].UserId,
