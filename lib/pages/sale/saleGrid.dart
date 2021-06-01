@@ -587,11 +587,12 @@ class _SaleGridState extends State<SaleGrid> {
                                     }
                                   },
                                   child: Opacity(
-                                    opacity: qn.selectedIndex==-1? 0.5:1,
-                                    child: SvgPicture.asset( qn.selectedIndex==-1?"assets/bottomIcons/pdf-inactive.svg":
+                                    opacity: qn.selectedIndex==-1? 0.3:1,
+                                      child: SvgPicture.asset("assets/svg/pdfView.svg",width: 30,height: 30,),
+                                   /* child: SvgPicture.asset( qn.selectedIndex==-1?"assets/bottomIcons/pdf-inactive.svg":
                                     "assets/bottomIcons/pdf-active.svg",width: 30,height: 30,
                                       //color: qn.selectedIndex==-1? AppTheme.bgColor.withOpacity(0.5):isOpen?AppTheme.bgColor.withOpacity(0.5):AppTheme.bgColor,
-                                    ),
+                                    ),*/
                                   ),
 
                                 ),

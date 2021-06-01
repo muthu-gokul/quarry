@@ -334,7 +334,7 @@ List<dynamic> vehicleTypeList=[];/* {
 
       reportHeader="Purchase Audit Report";
       reportsGridColumnList=purchaseAuditReportGridCol;
-      counterList.add(ReportCounterModel(title: "Total Sales",value: 0));
+      counterList.add(ReportCounterModel(title: "Total Purchase",value: 0));
       counterList.add(ReportCounterModel(title: "GST Amount",value: 0.0));
       counterList.add(ReportCounterModel(title: "Discount Amount",value: 0.0));
       counterList.add(ReportCounterModel(title: "Grand Total",value: 0.0));
@@ -995,6 +995,7 @@ List<dynamic> vehicleTypeList=[];/* {
     });
 
 
+
     materialList.forEach((element) {
       if(element['IsActive']==1){
         tempPurchaseMaterialFilter=tempPurchaseMaterialFilter+tempPurchasePlantFilter.where((ele) => ele['MaterialId']==element['MaterialId']).toList();
@@ -1003,8 +1004,11 @@ List<dynamic> vehicleTypeList=[];/* {
 
 
     supplierList.forEach((element) {
+      print(element['SupplierId']);
+      print(element['SupplierName']);
       if(element['IsActive']==1){
-        filterPurchaseReportGridList=filterPurchaseReportGridList+tempPurchaseMaterialFilter.where((ele) => ele['Supplier']==element['SupplierId']).toList();
+        filterPurchaseReportGridList=filterPurchaseReportGridList+tempPurchaseMaterialFilter.where((ele) => ele['Supplier']==element['SupplierId']&&
+            ele['SupplierType']==element['SupplierType']).toList();
       }
     });
 
@@ -1185,7 +1189,8 @@ List<dynamic> vehicleTypeList=[];/* {
 
     supplierList.forEach((element) {
       if(element['IsActive']==1){
-        filterSupplierPurchaseReportGridList=filterSupplierPurchaseReportGridList+tempSupplierPurchaseMaterialFilter.where((ele) => ele['Supplier']==element['SupplierId']).toList();
+        filterSupplierPurchaseReportGridList=filterSupplierPurchaseReportGridList+tempSupplierPurchaseMaterialFilter.where((ele) => ele['Supplier']==element['SupplierId']
+            && ele['SupplierType']==element['SupplierType']).toList();
       }
     });
 
@@ -2071,7 +2076,8 @@ List<dynamic> vehicleTypeList=[];/* {
     });
     supplierList.forEach((element) {
       if(element['IsActive']==1){
-        filterPurchaseAuditReportGridList=filterPurchaseAuditReportGridList+tempPurchaseAuditReportPlantFilter.where((ele) => ele['SupplierId']==element['SupplierId']).toList();
+        filterPurchaseAuditReportGridList=filterPurchaseAuditReportGridList+tempPurchaseAuditReportPlantFilter.where((ele) => ele['SupplierId']==element['SupplierId']
+            && ele['SupplierType']==element['SupplierType']).toList();
       }
     });
 

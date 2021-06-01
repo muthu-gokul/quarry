@@ -16,6 +16,7 @@ import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/dateRangePicker.dart' as DateRagePicker;
+import 'package:quarry/widgets/decimal.dart';
 import 'package:quarry/widgets/navigationBarIcon.dart';
 import 'package:quarry/widgets/staticColumnScroll/reportDataTableWithoutModel.dart';
 
@@ -478,6 +479,7 @@ class ReportGridState extends State<ReportGrid> with TickerProviderStateMixin{
                                   padding: EdgeInsets.only(top: 10),
                                   child: GestureDetector(
                                     onTap: (){
+
                                       Navigator.push(context, _createRouteReportSettings());
                                     },
                                     child: SvgPicture.asset("assets/bottomIcons/settings-icon.svg",height: 30,width: 30,color: AppTheme.bgColor,),

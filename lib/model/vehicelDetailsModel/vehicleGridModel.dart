@@ -36,7 +36,7 @@ class VehicleGridModel{
     "VehicleTypeId": VehicleTypeId,
     "VehicleTypeName": VehicleTypeName,
     "VehicleModel": VehicleModel,
-    "EmptyWeightOfVehicle": EmptyWeight,
+    "EmptyWeightOfVehicle": "$EmptyWeight Ton",
   };
 
   dynamic get(String propertyName) {

@@ -13,6 +13,7 @@ import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/pages/sale/salesDetail.dart';
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
+import 'package:quarry/styles/constants.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/bottomBarAddButton.dart';
@@ -50,6 +51,7 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
   bool plantName=false;
   bool plantType=false;
   bool contactNo=false;
+  bool address=false;
 
 
 
@@ -212,6 +214,7 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
                                 AddNewLabelTextField(
                                   labelText: 'Address',
                                   isEnabled: isEdit,
+                                  regExp: addressReg,
                                   onEditComplete: (){
                                     node.unfocus();
                                     setState(() {
@@ -231,6 +234,7 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
                                   scrollPadding: 200,
                                   textEditingController: qn.PD_address,
                                 ),
+                                !address?Container():ValidationErrorText(title: "* Enter Address",),
                                 AddNewLabelTextField(
                                   labelText: 'City',
                                   regExp: '[A-Za-z  ]',
@@ -420,7 +424,7 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
                                   //  duration: Duration(milliseconds: 300),
                                   // curve: Curves.easeIn,
                                   height: qn.PO_PlantLicenseList.length == 0 ? 0 :
-                                  ( qn.PO_PlantLicenseList.length * 50.0)+40,
+                                  ( qn.PO_PlantLicenseList.length * 60.0)+40,
                                   constraints: BoxConstraints(
                                       maxHeight: 300
                                   ),
@@ -897,13 +901,18 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
                         if(qn.PD_contactNo.text.isEmpty){setState(() {contactNo=true;});}
                         else{setState(() {contactNo=false;});}
 
+                        if(qn.PD_address.text.isEmpty){setState(() {address=true;});}
+                        else{setState(() {address=false;});}
+
                         if(qn.PD_plantTypeName==null){setState(() {plantType=true;});}
                         else{setState(() {plantType=false;});}
 
 
 
 
-                        if(emailValid && !plantName && !contactNo && !plantType){
+
+
+                        if(emailValid && !plantName && !contactNo && !plantType && !address){
                           setState(() {
                             isEdit=false;
                           });
@@ -930,13 +939,16 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
                       if(qn.PD_contactNo.text.isEmpty){setState(() {contactNo=true;});}
                       else{setState(() {contactNo=false;});}
 
+                      if(qn.PD_address.text.isEmpty){setState(() {address=true;});}
+                      else{setState(() {address=false;});}
+
                       if(qn.PD_plantTypeName==null){setState(() {plantType=true;});}
                       else{setState(() {plantType=false;});}
 
 
 
 
-                      if(emailValid && !plantName && !contactNo && !plantType){
+                      if(emailValid && !plantName && !contactNo && !plantType && !address){
                         qn.InsertPlantDetailDbhit(context,this);
                       }
 

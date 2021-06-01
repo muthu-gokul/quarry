@@ -2,6 +2,7 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server/gmail.dart';
+import 'package:open_file/open_file.dart';
 import 'package:pdf/pdf.dart';
 import 'dart:io';
 import 'package:pdf/widgets.dart' as pw;
@@ -600,7 +601,7 @@ reportView(context,String mailid,int saleIndex) async {
                                               width: 70,
                                               // padding: pw.EdgeInsets.only(right: 10),
                                               alignment: pw.Alignment.centerRight,
-                                              child: pw.Text("${qn.saleDetailsGrid[saleIndex].TotalAmount}",style: pw.TextStyle(fontWeight: pw.FontWeight.bold))
+                                              child: pw.Text("${qn.saleDetailsGrid[saleIndex].TotalAmount.round()}",style: pw.TextStyle(fontWeight: pw.FontWeight.bold))
                                           )
 
                                         ]
@@ -677,7 +678,15 @@ reportView(context,String mailid,int saleIndex) async {
 
    final File file = File(path);
   await file.writeAsBytes(await pdf.save()).then((value) async {
-    CustomAlert().billSuccessAlert(context, "", "Successfully Downloaded @ \n\n Internal Storage/Download/quarry/$filename.pdf", "", "");
+
+    OpenFile.open(path);
+
+
+  //  CustomAlert().billSuccessAlert(context, "", "Successfully Downloaded @ \n\n Internal Storage/Download/quarry/$filename.pdf", "", "");
+
+
+
+
    // print(path);
 /*    String username = 'muthugokul103031@gmail.com';
 

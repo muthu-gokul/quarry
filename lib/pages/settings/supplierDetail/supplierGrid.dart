@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:excel/excel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
@@ -7,6 +10,7 @@ import 'package:quarry/notifier/supplierNotifier.dart';
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
+import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/bottomBarAddButton.dart';
 import 'package:quarry/widgets/editDelete.dart';
 import 'package:quarry/widgets/navigationBarIcon.dart';
@@ -133,233 +137,7 @@ class SupplierDetailsGridState extends State<SupplierDetailsGrid> with TickerPro
                   },
                 ),
 
-                /*Container(
-                    height: SizeConfig.screenHeight-50,
-                    width: SizeConfig.screenWidth,
-                    margin: EdgeInsets.only(top: 50),
-                    clipBehavior: Clip.antiAlias,
-                    decoration: BoxDecoration(
-                        color: AppTheme.gridbodyBgColor,
-                        borderRadius: AppTheme.gridTopBorder
-                    ),
-                    child: Stack(
-                      children: [
 
-                        //Scrollable
-                        Positioned(
-                          left:149,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Container(
-                                height: 50,
-                                width: SizeConfig.screenWidth-149,
-                                color: showShadow? AppTheme.bgColor.withOpacity(0.8):AppTheme.bgColor,
-                                child: SingleChildScrollView(
-                                  controller: header,
-                                  scrollDirection: Axis.horizontal,
-                                  child: Row(
-                                      children: sn.supplierGridCol.asMap().
-                                      map((i, value) => MapEntry(i, i==0?Container():
-                                      Container(
-                                          alignment: Alignment.center,
-                                          width: 150,
-                                          child: Text(value,style: AppTheme.TSWhite166,)
-                                      )
-                                      )).values.toList()
-                                  ),
-                                ),
-
-                              ),
-                              Container(
-                                height: SizeConfig.screenHeight-140,
-                                width: SizeConfig.screenWidth-149,
-                                alignment: Alignment.topCenter,
-                                color: AppTheme.gridbodyBgColor,
-                                child: SingleChildScrollView(
-                                  controller: body,
-                                  scrollDirection: Axis.horizontal,
-                                  child: Container(
-                                    height: SizeConfig.screenHeight-140,
-                                    alignment: Alignment.topCenter,
-                                    color: AppTheme.gridbodyBgColor,
-
-                                    child: SingleChildScrollView(
-                                      controller: verticalRight,
-                                      scrollDirection: Axis.vertical,
-                                      child: Column(
-                                          children:sn.supplierGridList.asMap().
-                                          map((i, value) => MapEntry(
-                                              i,InkWell(
-                                            onTap: (){
-                                              setState(() {
-
-                                                if(selectedIndex==i){
-                                                  selectedIndex=-1;
-                                                  showEdit=false;
-                                                } else{
-                                                  selectedIndex=i;
-                                                  showEdit=true;
-                                                }
-
-
-                                              });
-                                            },
-                                            child: Container(
-
-                                              decoration: BoxDecoration(
-                                                border: AppTheme.gridBottomborder,
-                                                color: selectedIndex==i?AppTheme.yellowColor:AppTheme.gridbodyBgColor,
-                                              ),
-                                              height: 50,
-                                              // padding: EdgeInsets.only(top: 20,bottom: 20),
-                                              child: Row(
-                                                children: [
-
-
-                                                  Container(
-                                                    alignment: Alignment.centerLeft,
-                                                    padding: EdgeInsets.only(left: 2,right: 2),
-                                                    width: 150,
-
-                                                    child: FittedBox(
-                                                      child: Text("${value.supplierCategoryName}",
-                                                        style:selectedIndex==i?AppTheme.bgColorTS14:AppTheme.gridTextColor14,
-                                                      ),
-                                                    ),
-
-                                                  ),
-                                                  Container(
-                                                    padding: EdgeInsets.only(left: 5),
-                                                    alignment: Alignment.center,
-                                                    width: 150,
-                                                    child: Text("${value.location}",
-                                                      style:selectedIndex==i?AppTheme.bgColorTS14:AppTheme.gridTextColor14,
-                                                    ),
-                                                  ),
-
-                                                  Container(
-                                                    width: 150,
-                                                    padding: EdgeInsets.only(right: 15),
-                                                    alignment: Alignment.centerRight,
-                                                    child: Text("${value.supplierContactNumber}",
-                                                      style:selectedIndex==i?AppTheme.bgColorTS14:AppTheme.gridTextColor14,
-                                                    ),
-                                                  ),
-
-
-                                                ],
-                                              ),
-                                            ),
-                                          )
-                                          )
-                                          ).values.toList()
-                                      ),
-                                    ),
-
-
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-
-
-                        //not Scrollable
-                        Positioned(
-                          left: 0,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Container(
-                                height: 50,
-                                width: 150,
-                                color: AppTheme.bgColor,
-                                alignment: Alignment.center,
-                                child: Text("${sn.supplierGridCol[0]}",style: AppTheme.TSWhite166,),
-
-                              ),
-                              Container(
-                                height: SizeConfig.screenHeight-140,
-                                alignment: Alignment.topCenter,
-                                decoration: BoxDecoration(
-                                    color: AppTheme.gridbodyBgColor,
-                                    boxShadow: [
-                                      showShadow?  BoxShadow(
-                                        color: AppTheme.addNewTextFieldText.withOpacity(0.1),
-                                        spreadRadius: 0,
-                                        blurRadius: 15,
-                                        offset: Offset(0, -8), // changes position of shadow
-                                      ):BoxShadow(color: Colors.transparent)
-                                    ]
-                                ),
-                                child: Container(
-                                  height: SizeConfig.screenHeight-140,
-                                  alignment: Alignment.topCenter,
-
-                                  child: SingleChildScrollView(
-                                    controller: verticalLeft,
-                                    scrollDirection: Axis.vertical,
-                                    child: Column(
-                                        children: sn.supplierGridList.asMap().
-                                        map((i, value) => MapEntry(
-                                            i,InkWell(
-                                          onTap: (){
-                                            setState(() {
-
-                                              if(selectedIndex==i){
-                                                selectedIndex=-1;
-                                                showEdit=false;
-                                              } else{
-                                                selectedIndex=i;
-                                                showEdit=true;
-                                              }
-
-
-                                            });
-                                          },
-                                          child:  Container(
-                                            alignment: Alignment.center,
-                                            decoration: BoxDecoration(
-                                              border: AppTheme.gridBottomborder,
-                                              color: selectedIndex==i?AppTheme.yellowColor:AppTheme.gridbodyBgColor,
-                                            ),
-                                            height: 50,
-                                            width: 150,
-                                            child: Container(
-                                              padding: EdgeInsets.only(left: 10,right: 10,top: 3,bottom: 3),
-                                              decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.circular(50),
-                                                //color:value.invoiceType=='Receivable'? Colors.green:AppTheme.red,
-                                              ),
-                                              child: FittedBox(
-                                                fit: BoxFit.contain,
-                                                child: Text("${value.supplierName}",
-                                                  //  style:selectedIndex==i?AppTheme.bgColorTS14:AppTheme.gridTextColorTS,
-                                                  style:selectedIndex==i?AppTheme.bgColorTS14:AppTheme.gridTextColor14,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        )
-                                        )
-                                        ).values.toList()
-
-
-                                    ),
-                                  ),
-
-
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-
-                      ],
-                    )
-                ),*/
 
 
                 //bottomNav
@@ -398,6 +176,80 @@ class SupplierDetailsGridState extends State<SupplierDetailsGrid> with TickerPro
                           child: Stack(
 
                             children: [
+
+                              AnimatedPositioned(
+                                bottom:showEdit?-60:0,
+                                duration: Duration(milliseconds: 300,),
+                                curve: Curves.bounceOut,
+                                child: Container(
+                                  height: 80,
+                                  width: SizeConfig.screenWidth,
+                                  padding: EdgeInsets.only(bottom: 12),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Spacer(),
+
+
+                                      GestureDetector(
+                                        onTap: () async{
+
+                                          var excel = Excel.createExcel();
+                                          Sheet sheetObject = excel['Supplier Details'];
+                                          excel.delete('Sheet1');
+
+                                          CellStyle cellStyle = CellStyle( fontFamily : getFontFamily(FontFamily.Calibri),bold: true);
+
+
+                                          List<String> header=[];
+                                          int ascii=65;
+                                          sn.supplierGridCol.forEach((element) {
+                                            var cell = sheetObject.cell(CellIndex.indexByString("${String.fromCharCode(ascii)}1"));
+                                            cell.cellStyle = cellStyle;
+                                            ascii++;
+                                            header.add(element);
+
+                                          });
+                                          sheetObject.insertRowIterables(header, 0,);
+
+                                          List<String> body=[];
+                                          for(int i=0;i<sn.supplierGridList.length;i++){
+                                            body.clear();
+                                            gridDataRowList.forEach((element) {
+                                              body.add(sn.supplierGridList[i].get(element)==null?"":sn.supplierGridList[i].get(element).toString());
+
+                                            });
+                                            sheetObject.insertRowIterables(body, i+1,);
+                                          }
+
+
+
+                                          final String dirr ='/storage/emulated/0/Download/Quarry/Masters';
+
+                                          String filename="Supplier Details";
+                                          await Directory('/storage/emulated/0/Download/Quarry/Masters').create(recursive: true);
+                                          final String path = '$dirr/$filename.xlsx';
+
+
+                                          final File file = File(path);
+
+                                          await file.writeAsBytes(await excel.encode()).then((value) async {
+                                            //  OpenFile.open(path);
+                                            CustomAlert().billSuccessAlert(context, "", "Successfully Downloaded @ \n\n Internal Storage/Download/Quarry/Masters/$filename.xlsx", "", "");
+                                          });
+
+                                        },
+                                        child: SvgPicture.asset("assets/svg/excel.svg",width: 30,height: 30,),                                          //    color: qn.selectedIndex==-1? AppTheme.bgColor.withOpacity(0.5):isOpen?AppTheme.bgColor:AppTheme.bgColor.withOpacity(0.5),
+                                      ),
+                                      SizedBox(width: 20,)
+
+
+
+                                    ],
+                                  ),
+                                ),
+                              ),
 
                               EditDelete(
                                 showEdit: showEdit,

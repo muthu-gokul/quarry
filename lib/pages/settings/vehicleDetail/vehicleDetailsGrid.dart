@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:excel/excel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -7,6 +10,7 @@ import 'package:quarry/notifier/vehicleNotifier.dart';
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
+import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/bottomBarAddButton.dart';
 import 'package:quarry/widgets/editDelete.dart';
 import 'package:quarry/widgets/navigationBarIcon.dart';
@@ -134,7 +138,79 @@ class VehicleDetailsGridState extends State<VehicleDetailsGrid> {
                           child: Stack(
 
                             children: [
+                              AnimatedPositioned(
+                                bottom:showEdit?-60:0,
+                                duration: Duration(milliseconds: 300,),
+                                curve: Curves.bounceOut,
+                                child: Container(
+                                  height: 80,
+                                  width: SizeConfig.screenWidth,
+                                  padding: EdgeInsets.only(bottom: 12),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Spacer(),
 
+
+                                      GestureDetector(
+                                        onTap: () async{
+
+                                          var excel = Excel.createExcel();
+                                          Sheet sheetObject = excel['Vehicle Details'];
+                                          excel.delete('Sheet1');
+
+                                          CellStyle cellStyle = CellStyle( fontFamily : getFontFamily(FontFamily.Calibri),bold: true);
+
+
+                                          List<String> header=[];
+                                          int ascii=65;
+                                          mn.VehicleGridCol.forEach((element) {
+                                            var cell = sheetObject.cell(CellIndex.indexByString("${String.fromCharCode(ascii)}1"));
+                                            cell.cellStyle = cellStyle;
+                                            ascii++;
+                                            header.add(element);
+
+                                          });
+                                          sheetObject.insertRowIterables(header, 0,);
+
+                                          List<String> body=[];
+                                          for(int i=0;i<mn.vehicleGridList.length;i++){
+                                            body.clear();
+                                            gridDataRowList.forEach((element) {
+                                              body.add(mn.vehicleGridList[i].get(element)==null?"":mn.vehicleGridList[i].get(element).toString());
+
+                                            });
+                                            sheetObject.insertRowIterables(body, i+1,);
+                                          }
+
+
+
+                                          final String dirr ='/storage/emulated/0/Download/Quarry/Masters';
+
+                                          String filename="Vehicle Details";
+                                          await Directory('/storage/emulated/0/Download/Quarry/Masters').create(recursive: true);
+                                          final String path = '$dirr/$filename.xlsx';
+
+
+                                          final File file = File(path);
+
+                                          await file.writeAsBytes(await excel.encode()).then((value) async {
+                                            //  OpenFile.open(path);
+                                            CustomAlert().billSuccessAlert(context, "", "Successfully Downloaded @ \n\n Internal Storage/Download/Quarry/Masters/$filename.xlsx", "", "");
+                                          });
+
+                                        },
+                                        child: SvgPicture.asset("assets/svg/excel.svg",width: 30,height: 30,),                                          //    color: qn.selectedIndex==-1? AppTheme.bgColor.withOpacity(0.5):isOpen?AppTheme.bgColor:AppTheme.bgColor.withOpacity(0.5),
+                                      ),
+                                      SizedBox(width: 20,)
+
+
+
+                                    ],
+                                  ),
+                                ),
+                              ),
 
                               EditDelete(
                                 showEdit: showEdit,
