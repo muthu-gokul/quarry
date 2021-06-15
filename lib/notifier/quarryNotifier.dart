@@ -1161,8 +1161,8 @@ class QuarryNotifier extends ChangeNotifier{
         ]);
         printer.emptyLines(1);
         printer.row([
-          PosColumn(text: ' Sale No: ${sales[0]['SaleNumber']??""}', width: 5, styles: PosStyles(align: PosAlign.left,bold: true)),
-          PosColumn(text: 'Date: ${sales[0]['DateTime']??""}', width: 7, styles: PosStyles(align: PosAlign.right)),
+          PosColumn(text: ' SaleNo: ${sales[0]['SaleNumber']??""}', width: 6, styles: PosStyles(align: PosAlign.left,bold: true)),
+          PosColumn(text: 'Date:${sales[0]['DateTime']??""}', width: 6, styles: PosStyles(align: PosAlign.right)),
         ]);
         printer.emptyLines(1);
         printer.row([
@@ -1490,8 +1490,8 @@ class QuarryNotifier extends ChangeNotifier{
           ]);
           printer.emptyLines(1);
           printer.row([
-            PosColumn(text: ' Sale No: ${saleDetailsGrid[selectedIndex].SaleNumber??""}', width: 5, styles: PosStyles(align: PosAlign.left,bold: true)),
-            PosColumn(text: 'Date: ${saleDetailsGrid[selectedIndex].SaleDate??""}', width: 7, styles: PosStyles(align: PosAlign.right)),
+            PosColumn(text: ' SaleNo: ${saleDetailsGrid[selectedIndex].SaleNumber??""}', width: 6, styles: PosStyles(align: PosAlign.left,bold: true)),
+            PosColumn(text: 'Date:${saleDetailsGrid[selectedIndex].SaleDate??""}', width: 6, styles: PosStyles(align: PosAlign.right)),
           ]);
           printer.emptyLines(1);
           printer.row([
