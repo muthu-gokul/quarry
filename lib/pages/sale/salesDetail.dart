@@ -422,7 +422,8 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                                   qn.scanWeight="ReCapture Clearly";
                                                                   qn.SS_emptyVehicleWeight.clear();
                                                                 }else{
-                                                                  qn.SS_emptyVehicleWeight.text=qn.scanWeight;
+                                                               //   qn.SS_emptyVehicleWeight.text=qn.scanWeight;
+                                                                  qn.SS_emptyVehicleWeight.text=(double.parse(qn.scanWeight)/1000).toString();
                                                                 }
                                                                 qn.updateInsertSaleLoader(false);
                                                               } else {
@@ -1914,7 +1915,9 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                                   qn.SS_DifferWeightController.clear();
                                                                   qn.updateInsertSaleLoader(false);
                                                                 }else{
-                                                                  qn.SS_DifferWeightController.text=qn.scanWeight;
+                                                                //  qn.SS_DifferWeightController.text=qn.scanWeight;
+                                                                  qn.SS_DifferWeightController.text=(double.parse(qn.scanWeight)/1000).toString();
+
                                                                   qn.updateInsertSaleLoader(false);
                                                                   qn.differWeight(context);
                                                                 }

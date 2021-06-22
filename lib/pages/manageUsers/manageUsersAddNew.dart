@@ -748,7 +748,7 @@ class ManageUsersAddNewState extends State<ManageUsersAddNew> {
                                 height:mun.plantList.length*60.0,
                                 constraints: BoxConstraints(
                                     minHeight: 60,
-                                    maxHeight: SizeConfig.screenHeight*0.63-70
+                                    maxHeight: SizeConfig.screenHeight*0.55-70
                                 ),
                                 decoration: BoxDecoration(
                                   color: Colors.white,

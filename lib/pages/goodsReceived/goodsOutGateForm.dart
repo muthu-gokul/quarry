@@ -269,7 +269,8 @@ class GoodsOutGateFormState extends State<GoodsOutGateForm> with TickerProviderS
                                           gr.updateGoodsLoader(false);
                                           gr.calc();
                                         }else{
-                                          gr.OGF_emptyWeightofVehicle.text=gr.scanWeight;
+                                        //  gr.OGF_emptyWeightofVehicle.text=gr.scanWeight;
+                                          gr.OGF_emptyWeightofVehicle.text=(double.parse(gr.scanWeight)/1000).toString();
                                           gr.updateGoodsLoader(false);
                                           if(gr.OGF_emptyWeightofVehicle.text.isNotEmpty){
                                             if(int.parse(gr.OGF_emptyWeightofVehicle.text.toString())<gr.OGF_InwardLoadedVehicleWeight){

@@ -125,6 +125,7 @@ flutter:
     - assets/bottomIcons/completed-Goods.svg
     - assets/goodsIcons/goods-in.svg
     - assets/goodsIcons/goods-out.svg
+    - assets/images/qms.png
 
 
 

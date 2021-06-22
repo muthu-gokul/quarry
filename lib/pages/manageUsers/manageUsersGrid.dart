@@ -10,6 +10,7 @@ import 'package:quarry/notifier/manageUsersNotifier.dart';
 
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
+import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/bottomBarAddButton.dart';
 
 import 'manageUsersAddNew.dart';
@@ -214,6 +215,16 @@ class ManageUsersGridState extends State<ManageUsersGrid> with TickerProviderSta
 
 
                                         },
+                                        onLongPress: (){
+                                          CustomAlert(
+                                            callback: (){
+
+                                            },
+                                            Cancelcallback: (){
+                                              Navigator.pop(context);
+                                            }
+                                          ).yesOrNoDialog(context, "", "Are you sure want to delete this user ?");
+                                        },
                                         child: Container(
                                           height: 200,
                                           width: SizeConfig.screenWidth*0.5,
@@ -231,6 +242,9 @@ class ManageUsersGridState extends State<ManageUsersGrid> with TickerProviderSta
                                                 decoration: BoxDecoration(
                                                     shape: BoxShape.circle,
                                                     border: Border.all(color: AppTheme.uploadColor,width: 2)
+                                                ),
+                                                child: Center(
+                                                  child: Image.asset("assets/svg/drawer/avatar.png"),
                                                 ),
                                               ),
 
@@ -282,6 +296,16 @@ class ManageUsersGridState extends State<ManageUsersGrid> with TickerProviderSta
                                                   mun.UserDropDownValues(context);
                                                   mun.GetUserDetailDbHit(context,mun.usersList[i].userId);
                                                 },
+                                                onLongPress: (){
+                                                  CustomAlert(
+                                                      callback: (){
+
+                                                      },
+                                                      Cancelcallback: (){
+                                                        Navigator.pop(context);
+                                                      }
+                                                  ).yesOrNoDialog(context, "", "Are you sure want to delete this user ?");
+                                                },
                                                 child: Container(
                                                   height: 80,
                                                   width: 80,
@@ -289,7 +313,11 @@ class ManageUsersGridState extends State<ManageUsersGrid> with TickerProviderSta
                                                       shape: BoxShape.circle,
                                                       border: Border.all(color: AppTheme.uploadColor,width: 2)
                                                   ),
+                                                  child: Center(
+                                                    child: Image.asset("assets/svg/drawer/avatar.png"),
+                                                  ),
                                                 ),
+
                                               ),
 
                                               SizedBox(height: 20,),

@@ -269,7 +269,8 @@ class GoodsInGateFormState extends State<GoodsInGateForm> with TickerProviderSta
                                               gr.updateGoodsLoader(false);
 
                                             }else{
-                                              gr.loadedWeight.text=gr.scanWeight;
+                                            //  gr.loadedWeight.text=gr.scanWeight;
+                                              gr.loadedWeight.text=(double.parse(gr.scanWeight)/1000).toString();
                                               gr.updateGoodsLoader(false);
 
                                             }
