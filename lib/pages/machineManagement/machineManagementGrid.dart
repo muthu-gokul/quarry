@@ -2,11 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/model/manageUsersModel/manageUsersPlantModel.dart';
-import 'package:quarry/notifier/employeeAttendanceNotifier.dart';
-import 'package:quarry/notifier/employeeSalaryNotifier.dart';
 import 'package:quarry/notifier/machineManagementNotifier.dart';
 import 'package:quarry/notifier/profileNotifier.dart';
-import 'package:quarry/pages/employee/employeeSalary/employeeSalaryAddNew.dart';
 import 'package:quarry/pages/machineManagement/machineManagementAddNew.dart';
 import 'package:quarry/pages/machineManagement/machineManagementPlantList.dart';
 import 'package:quarry/references/bottomNavi.dart';
@@ -15,7 +12,6 @@ import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/bottomBarAddButton.dart';
 import 'package:quarry/widgets/editDelete.dart';
 import 'package:quarry/widgets/navigationBarIcon.dart';
-import 'package:quarry/widgets/staticColumnScroll/customDataTable2.dart';
 import 'package:quarry/widgets/dateRangePicker.dart' as DateRagePicker;
 import 'package:quarry/widgets/staticColumnScroll/customDataTableWithoutModel.dart';
 
@@ -35,9 +31,6 @@ class _MachineManagementGridState extends State<MachineManagementGrid> {
   bool showEdit=false;
   int selectedIndex;
 
-
-
-  DateTime dateTime=DateTime.parse('2021-01-01');
 
   @override
   Widget build(BuildContext context) {

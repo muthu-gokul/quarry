@@ -2134,6 +2134,7 @@ class QuarryNotifier extends ChangeNotifier{
     SS_TotalWeight=(Decimal.parse(SS_EmptyWeightOfVehicle)+Decimal.parse((SS_RequiredMaterialQty))).toString();
     SS_MaterialUnitPrice=saleDetails[selectedIndex].MaterialUnitPrice;
     OG_isTax=saleDetails[selectedIndex].TaxAmount>0?true:false;
+    scanWeight="";
     notifyListeners();
     print(SS_GrandTotalAmount);
   }

@@ -240,6 +240,7 @@ class GoodsMaterialsListState extends State<GoodsMaterialsList> with TickerProvi
                                                           if(gr.ML_Materials[index].status!='Completed'){
                                                             if(gr.ML_Status!='Completed'){
                                                               setState(() {
+                                                                gr.scanWeight="";
                                                                 gr.IGF_Materials.add(
                                                                     GoodsReceivedMaterialListModel(
                                                                       GoodsReceivedMaterialMappingId: gr.ML_Materials[index].GoodsReceivedMaterialMappingId,
@@ -421,6 +422,7 @@ class GoodsMaterialsListState extends State<GoodsMaterialsList> with TickerProvi
                                                         if(gr.ML_Materials[index].status!='Completed'){
                                                           if(gr.ML_Status!='Completed'){
                                                             setState(() {
+                                                              gr.scanWeight="";
                                                               gr.IGF_Materials.add(
                                                                   GoodsReceivedMaterialListModel(
                                                                     GoodsReceivedMaterialMappingId: gr.ML_Materials[index].GoodsReceivedMaterialMappingId,
