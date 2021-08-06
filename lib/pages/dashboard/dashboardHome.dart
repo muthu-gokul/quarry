@@ -1,4 +1,4 @@
-import 'dart:async';
+/*import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -65,24 +65,78 @@ class _DashBoardHomeState extends State<DashBoardHome> with TickerProviderStateM
     SizeConfig().init(context);
 
 return Scaffold(
-body: WebView(
-initialUrl: 'https://s3.amazonaws.com/qmsadminpanel.com/Quarry/Views/Dashboard/dashboard.html',
-javascriptMode: JavascriptMode.unrestricted,
-),
-);
+        body: WebView(
+        initialUrl: 'https://s3.amazonaws.com/qmsadminpanel.com/Quarry/Views/Dashboard/dashboard.html',
+        javascriptMode: JavascriptMode.unrestricted,
+        ),
+        );
   }
+}*/
 
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
+import 'package:quarry/notifier/dashboardNotifier.dart';
+import 'package:quarry/pages/dashboard/salesDashBoard.dart';
+import 'package:quarry/styles/app_theme.dart';
+import 'package:quarry/styles/size.dart';
+import 'package:quarry/widgets/navigationBarIcon.dart';
+import 'package:quarry/widgets/dateRangePicker.dart' as DateRagePicker;
 
+class DashBoardHome extends StatefulWidget {
 
-
+  VoidCallback drawerCallback;
+  DashBoardHome({this.drawerCallback});
+  @override
+  _DashBoardHomeState createState() => _DashBoardHomeState();
 }
 
+class _DashBoardHomeState extends State<DashBoardHome> {
 
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Consumer<DashboardNotifier>(
+        builder:(ctx,db,c)=> Container(
+          height: SizeConfig.screenHeight,
+          width: SizeConfig.screenWidth,
+          child: Column(
+            children: [
+              Container(
+                height: 50,
+                child: Row(
+                  children: [
+                    GestureDetector(
+                      onTap: widget.drawerCallback,
+                      child: NavBarIcon(),
+                    ),
+                    Text("Dashboard",
+                        style: AppTheme.appBarTS
+                    ),
+                    Spacer(),
 
-/*
-return Scaffold(
-body: WebView(
-initialUrl: 'https://www.google.com/',
-javascriptMode: JavascriptMode.unrestricted,
-),
-);*/
+                    SizedBox(width: 20,)
+                  ],
+                ),
+              ),
+              Expanded(
+                child: ListView.builder(
+                    itemCount: 3,
+                    itemBuilder: (ctx,i){
+                  return InkWell(
+                    onTap: (){
+                      if(i==0){
+                        Navigator.push(context, MaterialPageRoute(builder: (ctx)=>SalesDashBoard()));
+                      }
+                    },
+                    child: Text("dgdg"),
+                  );
+                }),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
