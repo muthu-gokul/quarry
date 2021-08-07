@@ -1,77 +1,3 @@
-/*import 'dart:async';
-import 'dart:io';
-
-import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:provider/provider.dart';
-import 'package:quarry/notifier/dashboardNotifier.dart';
-import 'package:quarry/notifier/quarryNotifier.dart';
-import 'package:quarry/styles/app_theme.dart';
-import 'package:quarry/styles/size.dart';
-import 'package:quarry/widgets/navigationBarIcon.dart';
-
-import 'package:webview_flutter/webview_flutter.dart';
-
-
-class DashBoardHome extends StatefulWidget {
-  VoidCallback drawerCallback;
-  DashBoardHome({this.drawerCallback});
-
-  @override
-  _DashBoardHomeState createState() => _DashBoardHomeState();
-}
-
-class _DashBoardHomeState extends State<DashBoardHome> with TickerProviderStateMixin{
-  bool isEdit=false;
-  bool isListScroll=false;
-
-
-  ScrollController scrollController;
-  ScrollController listViewController;
-
-  int selectedIndex=-1;
-
-
-  List<Color> gradientColors = [
-    const Color(0xFFFFC010),
-    const Color(0xFFc99e28),
-  ];
-
-
-  @override
-  void initState() {
-    isEdit=false;
-    WidgetsBinding.instance.addPostFrameCallback((_){
-
-
-      scrollController=new ScrollController();
-      listViewController=new ScrollController();
-      setState(() {
-
-      });
-      if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
-
-
-
-
-    });
-    super.initState();
-  }
-
-
-  @override
-  Widget build(BuildContext context) {
-    SizeConfig().init(context);
-
-return Scaffold(
-        body: WebView(
-        initialUrl: 'https://s3.amazonaws.com/qmsadminpanel.com/Quarry/Views/Dashboard/dashboard.html',
-        javascriptMode: JavascriptMode.unrestricted,
-        ),
-        );
-  }
-}*/
 
 import 'dart:async';
 
@@ -84,30 +10,31 @@ import 'package:quarry/pages/dashboard/saleDashBoard/salesDashBoard.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/constants.dart';
 import 'package:quarry/styles/size.dart';
-import 'package:quarry/widgets/animation/animePageRoutes.dart';
+import 'package:quarry/widgets/arrowBack.dart';
+import 'package:quarry/widgets/bottomBarAddButton.dart';
 import 'package:quarry/widgets/charts/highChart/high_chart.dart';
 import 'package:quarry/widgets/fittedText.dart';
 import 'package:quarry/widgets/loader.dart';
 import 'package:quarry/widgets/navigationBarIcon.dart';
 import 'package:quarry/widgets/dateRangePicker.dart' as DateRagePicker;
 
-class DashBoardHome extends StatefulWidget {
+class DashBoardTemplate extends StatefulWidget {
 
   VoidCallback drawerCallback;
-  DashBoardHome({this.drawerCallback});
+  DashBoardTemplate({this.drawerCallback});
   @override
-  _DashBoardHomeState createState() => _DashBoardHomeState();
+  _DashBoardTemplateState createState() => _DashBoardTemplateState();
 }
 
-class _DashBoardHomeState extends State<DashBoardHome> {
+class _DashBoardTemplateState extends State<DashBoardTemplate> {
   ScrollController silverController;
   double silverBodyTopMargin=0;
-
+  List<DateTime> picked=[];
   int selIndex=-1;
 
   @override
   void initState() {
-    Provider.of<DashboardNotifier>(context,listen: false).currentSaleDbHit(context,
+    Provider.of<DashboardNotifier>(context,listen: false).DashBoardDbHit(context,
         "Sale",
         DateFormat("yyyy-MM-dd").format(DateTime.now().subtract(Duration(days: 6))).toString(),
         DateFormat("yyyy-MM-dd").format(DateTime.now()).toString()
@@ -160,6 +87,16 @@ class _DashBoardHomeState extends State<DashBoardHome> {
                         width:SizeConfig.screenWidth,
                         child: Row(
                           children: [
+                            CancelButton(
+                              ontap: (){
+                                Navigator.pop(context);
+                              },
+                            ),
+                            ArrowBack(
+                              ontap: (){
+                                Navigator.pop(context);
+                              },
+                            ),
                             GestureDetector(
                               onTap: widget.drawerCallback,
                               child: Container(
@@ -215,8 +152,8 @@ class _DashBoardHomeState extends State<DashBoardHome> {
                               width: SizeConfig.screenWidth*0.57,
                               padding:EdgeInsets.only(left: 10,right: 10),
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(25),
-                                color: AppTheme.yellowColor
+                                  borderRadius: BorderRadius.circular(25),
+                                  color: AppTheme.yellowColor
                               ),
                               child: Row(
                                 children: [
@@ -224,8 +161,8 @@ class _DashBoardHomeState extends State<DashBoardHome> {
                                     height: 30,
                                     width: 30,
                                     decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Colors.white
+                                        shape: BoxShape.circle,
+                                        color: Colors.white
                                     ),
                                   ),
                                   Column(
@@ -249,7 +186,7 @@ class _DashBoardHomeState extends State<DashBoardHome> {
                                         text: "${formatCurrency.format(db.currentSaleT['TotalSale']??0.0)}",
                                         textStyle: TextStyle(fontFamily: 'RM',fontSize: 14,color: AppTheme.bgColor),
                                       ),
-                                     // Text("${db.currentSaleT['TotalSale']}",style: TextStyle(fontFamily: 'RM',fontSize: 14,color: AppTheme.bgColor),),
+                                      // Text("${db.currentSaleT['TotalSale']}",style: TextStyle(fontFamily: 'RM',fontSize: 14,color: AppTheme.bgColor),),
                                       SizedBox(height: 2,),
                                       Text("${db.currentSaleT['TotalQuantity']} ${db.currentSaleT['UnitName']}",style: TextStyle(fontFamily: 'RM',fontSize: 9,color: AppTheme.bgColor),),
                                     ],
@@ -258,7 +195,38 @@ class _DashBoardHomeState extends State<DashBoardHome> {
                               ),
                             ),
                             Spacer(),
+                            GestureDetector(
+                                onTap: () async{
+                                  final List<DateTime>  picked1 = await DateRagePicker.showDatePicker(
+                                      context: context,
+                                      initialFirstDate: new DateTime.now(),
+                                      initialLastDate: (new DateTime.now()),
+                                      firstDate: db.dateTime,
+                                      lastDate: (new DateTime.now())
+                                  );
+                                  if (picked1 != null && picked1.length == 2) {
+                                    setState(() {
+                                      picked=picked1;
+                                    });
+                                    db.DashBoardDbHit(context,
+                                        "Sale",
+                                        DateFormat("yyyy-MM-dd").format(picked[0]).toString(),
+                                        DateFormat("yyyy-MM-dd").format(picked[1]).toString()
+                                    );
+                                  }
+                                  else if(picked1!=null && picked1.length ==1){
+                                    setState(() {
+                                      picked=picked1;
+                                    });
+                                    db.DashBoardDbHit(context,
+                                        "Sale",
+                                        DateFormat("yyyy-MM-dd").format(picked[0]).toString(),
+                                        DateFormat("yyyy-MM-dd").format(picked[0]).toString()
+                                    );
+                                  }
 
+                                },
+                                child: SvgPicture.asset("assets/svg/calender.svg",width: 27,height: 27,color: AppTheme.bgColor,)),
                             SizedBox(width: 20,)
                           ],
                         ),
@@ -283,56 +251,15 @@ class _DashBoardHomeState extends State<DashBoardHome> {
                 ];
               },
               body: Container(
-                width: SizeConfig.screenWidth,
+                  width: SizeConfig.screenWidth,
                   clipBehavior: Clip.antiAlias,
                   margin: EdgeInsets.only(top: silverBodyTopMargin),
                   padding: EdgeInsets.only(top: 30,bottom: 30),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10)),
-                  color: Color(0xFFF6F7F9),
-                ),
-                child: SingleChildScrollView(
-                  child: Wrap(
-                    alignment: WrapAlignment.center,
-                    runSpacing: 30,
-                    spacing: 30,
-                    children: db.menu.asMap().map((i, value) => MapEntry(i, GestureDetector(
-                      onTap:selIndex==i?null: (){
-                        setState(() {
-                          selIndex=i;
-                        });
-                        Timer(Duration(milliseconds: 500), (){
-                          setState(() {
-                            selIndex=-1;
-                          });
-                        });
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>SalesDashBoard()));
-                      },
-                      child: Container(
-                        height: 130,
-                        width: 130,
-                        decoration: selIndex==i? BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color:selIndex==i?AppTheme.yellowColor: Colors.white,
-                          boxShadow: [
-                            AppTheme.yellowShadow
-                          ]
-                        ):BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.white
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SvgPicture.asset(value.image,height: 45,),
-                            SizedBox(height: 10,),
-                            Text("${value.title}",style:selIndex==i? AppTheme.bgColorTS14:AppTheme.gridTextColor14,)
-                          ],
-                        ),
-                      ),
-                    ))).values.toList(),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10)),
+                    color: Color(0xFFF6F7F9),
                   ),
-                )
+
 
               ),
             ),
@@ -345,17 +272,5 @@ class _DashBoardHomeState extends State<DashBoardHome> {
       ),
     );
   }
-  Route _createRoute() {
-    return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => SalesDashBoard(),
-      //pageBuilder: (context, animation, secondaryAnimation) => QuaryAddNew(),
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
 
-        return FadeTransition(
-          opacity: Tween(begin: 0.0, end: 1.0).animate(animation),
-          child: child,
-        );
-      },
-    );
-  }
 }
