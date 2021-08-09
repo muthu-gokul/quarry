@@ -49,6 +49,7 @@ dependencies:
   open_file:
   firebase_ml_vision: ^0.9.10
   firebase_core: ^1.2.0
+  modal_progress_hud:
 
 
 dev_dependencies:
@@ -126,6 +127,7 @@ flutter:
     - assets/goodsIcons/goods-in.svg
     - assets/goodsIcons/goods-out.svg
     - assets/images/qms.png
+    - assets/images/dashboard.jpeg
 
 
 

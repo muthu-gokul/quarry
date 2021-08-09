@@ -91,4 +91,8 @@ static BoxShadow yellowShadow=  BoxShadow(
   static const Color srollBarColor=Colors.grey;
   static const double scrollBarRadius=5.0;
   static const double scrollBarThickness=4.0;
+
+
+  //DashBoard
+  static const Color dashCalendar=Color(0xFFCDCDCD);
 }

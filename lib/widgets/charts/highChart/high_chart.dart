@@ -3,6 +3,7 @@ import 'dart:io' show Platform;
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter/foundation.dart';
+import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:quarry/widgets/charts/apexChart/apexChartScript.dart';
 import 'package:quarry/widgets/charts/highChart/variable_pie_script.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -10,10 +11,11 @@ import 'package:webview_flutter/webview_flutter.dart';
 import 'highChartSCript2.dart';
 
 class HighCharts extends StatefulWidget {
-  HighCharts({Key key,  this.data,this.isHighChart,this.isLoad}) : super(key: key);
+  HighCharts({Key key,  this.data,this.isHighChart,this.isLoad,this.isHighChartExtraParam=false}) : super(key: key);
   final String data;
   bool isHighChart;
   bool isLoad;
+  bool isHighChartExtraParam;
   @override
   _HighChartsState createState() => _HighChartsState();
 }
@@ -31,11 +33,12 @@ class _HighChartsState extends State<HighCharts> {
   WebViewController _controller;
 
   double _opacity = Platform.isAndroid ? 0.0 : 1.0;
-
+  bool load;
   @override
   void initState() {
     super.initState();
     _currentData = widget.data;
+    load=true;
   }
 
   @override
@@ -49,8 +52,35 @@ class _HighChartsState extends State<HighCharts> {
     }
     super.didUpdateWidget(oldWidget);
   }
-
   void init() async {
+    if(widget.isHighChart){
+      if(widget.isHighChartExtraParam){
+        await _controller?.evaluateJavascript('''
+      $highChartScript2
+      $variablePieScript
+        var a= scutisoft(`$_currentData`);
+    ''');
+      }
+      else{
+        await _controller?.evaluateJavascript('''
+      $highChartScript2
+      $variablePieScript
+        var a= scutisoft(`Highcharts.chart('chart',
+        $_currentData
+        )`);
+    ''');
+      }
+    }
+    else{
+      await _controller?.evaluateJavascript('''
+      $apexChartScript
+      var a=scutisoft(`$_currentData`);
+    ''');
+    }
+  }
+
+
+  /*void init() async {
     if(widget.isHighChart){
       await _controller?.evaluateJavascript('''
       $highChartScript2
@@ -66,21 +96,30 @@ class _HighChartsState extends State<HighCharts> {
       var a=scutisoft(`$_currentData`);
     ''');
     }
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
-    return WebView(
+    return ModalProgressHUD(
+      inAsyncCall: load,
 
-      initialUrl: highChartHtml,
-      javascriptMode: JavascriptMode.unrestricted,
-      onWebViewCreated: (WebViewController webViewController) {
-        _controller = webViewController;
-      },
-      onPageFinished: (String url) {
-        init();
-      },
+      child: WebView(
+        initialUrl: highChartHtml,
+        javascriptMode: JavascriptMode.unrestricted,
+        onWebViewCreated: (WebViewController webViewController) {
+          _controller = webViewController;
+        },
+        onPageStarted: (String url){
+          init();
+        },
+        onPageFinished: (String url) {
+          setState(() {
+            load=false;
+          });
+        //  init();
+        },
 
+      ),
     );
   }
 }

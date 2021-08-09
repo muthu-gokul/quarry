@@ -128,7 +128,7 @@ List<DateTime> picked=[];
                                   );
                                 }
                              },
-                            child: SvgPicture.asset("assets/svg/calender.svg",width: 25,height: 25,color: AppTheme.addNewTextFieldBorder,)
+                            child: SvgPicture.asset("assets/svg/calender.svg",width: 25,height: 25,color: AppTheme.dashCalendar,)
                           ),
                           SizedBox(width: 20,)
                           ],
@@ -140,7 +140,6 @@ List<DateTime> picked=[];
                     pinned: true,
                     flexibleSpace: FlexibleSpaceBar(
                         background: Container(
-                          color: Color(0XFF353535),
                           width: SizeConfig.screenWidth,
                           margin:EdgeInsets.only(top: 55),
                           child: HighCharts(
@@ -214,7 +213,7 @@ List<DateTime> picked=[];
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Container(
-                                    width:(SizeConfig.screenWidth*0.95)-100,
+                                    width:(SizeConfig.screenWidth*0.95)-80,
                                     child: Row(
                                       crossAxisAlignment: CrossAxisAlignment.end,
                                       children: [
@@ -234,7 +233,7 @@ List<DateTime> picked=[];
                                   ),
                                   SizedBox(height: 5,),
                                   LinearPercentIndicator(
-                                    width:(SizeConfig.screenWidth*0.95)-100,
+                                    width:(SizeConfig.screenWidth*0.95)-80,
                                     animation: true,
                                     lineHeight: 8.0,
                                     animationDuration: 1000,

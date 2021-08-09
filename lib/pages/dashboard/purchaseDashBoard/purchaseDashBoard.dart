@@ -18,15 +18,15 @@ import 'package:quarry/widgets/loader.dart';
 import 'package:quarry/widgets/navigationBarIcon.dart';
 import 'package:quarry/widgets/dateRangePicker.dart' as DateRagePicker;
 
-class DashBoardTemplate extends StatefulWidget {
+class PurchaseDashBoard extends StatefulWidget {
 
   VoidCallback drawerCallback;
-  DashBoardTemplate({this.drawerCallback});
+  PurchaseDashBoard({this.drawerCallback});
   @override
-  _DashBoardTemplateState createState() => _DashBoardTemplateState();
+  _PurchaseDashBoardState createState() => _PurchaseDashBoardState();
 }
 
-class _DashBoardTemplateState extends State<DashBoardTemplate> {
+class _PurchaseDashBoardState extends State<PurchaseDashBoard> {
   ScrollController silverController;
   double silverBodyTopMargin=0;
   List<DateTime> picked=[];
@@ -35,8 +35,8 @@ class _DashBoardTemplateState extends State<DashBoardTemplate> {
   @override
   void initState() {
     Provider.of<DashboardNotifier>(context,listen: false).DashBoardDbHit(context,
-        "Sale",
-        DateFormat("yyyy-MM-dd").format(DateTime.now().subtract(Duration(days: 6))).toString(),
+        "Purchase",
+        DateFormat("yyyy-MM-dd").format(DateTime.now().subtract(Duration(days: 90))).toString(),
         DateFormat("yyyy-MM-dd").format(DateTime.now()).toString()
     );
     WidgetsBinding.instance.addPostFrameCallback((_){
@@ -92,61 +92,7 @@ class _DashBoardTemplateState extends State<DashBoardTemplate> {
                                 Navigator.pop(context);
                               },
                             ),
-                            ArrowBack(
-                              ontap: (){
-                                Navigator.pop(context);
-                              },
-                            ),
-                            GestureDetector(
-                              onTap: widget.drawerCallback,
-                              child: Container(
-                                height: 25,
-                                width: 22,
-                                color: Colors.transparent,
-                                margin: EdgeInsets.only(left: 20,right: 10),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SizedBox(height: 6,),
-                                    Container(
-                                      height: 2.2,
-                                      width: 25,
-                                      decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(50),
-                                          color: Colors.white
-                                      ),
-                                    ),
-                                    SizedBox(height: 2,),
-                                    Container(
-                                      height: 2.2,
-                                      width: 17,
-                                      decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(50),
-                                          color: AppTheme.grey
-                                      ),
-                                    ),
-                                    SizedBox(height: 2,),
-                                    Container(
-                                      height: 2.2,
-                                      width: 25,
-                                      decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(50),
-                                          color: Colors.white
-                                      ),
-                                    ),
-                                    SizedBox(height: 2,),
-                                    Container(
-                                      height: 2.2,
-                                      width: 17,
-                                      decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(50),
-                                          color: AppTheme.grey
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
+
                             Container(
                               height: 40,
                               width: SizeConfig.screenWidth*0.57,
@@ -165,13 +111,14 @@ class _DashBoardTemplateState extends State<DashBoardTemplate> {
                                         color: Colors.white
                                     ),
                                   ),
+                                  SizedBox(width: 5,),
                                   Column(
                                     mainAxisAlignment:MainAxisAlignment.center,
                                     crossAxisAlignment:CrossAxisAlignment.start,
                                     children: [
-                                      Text("    LAST 7 DAYS",style: TextStyle(fontFamily: 'RR',fontSize: 8,color: AppTheme.bgColor),),
-                                      SizedBox(height: 2,),
-                                      Text("    All Product Sale",style: TextStyle(fontFamily: 'RR',fontSize: 10,color: AppTheme.bgColor),),
+                                      Text("Purchase & \nReceived",style: TextStyle(fontFamily: 'RM',fontSize: 10,color: AppTheme.bgColor),),
+                                     // SizedBox(height: 2,),
+                                     // Text("    All Product Sale",style: TextStyle(fontFamily: 'RR',fontSize: 10,color: AppTheme.bgColor),),
                                     ],
                                   ),
                                   Spacer(),
@@ -209,7 +156,7 @@ class _DashBoardTemplateState extends State<DashBoardTemplate> {
                                       picked=picked1;
                                     });
                                     db.DashBoardDbHit(context,
-                                        "Sale",
+                                        "Purchase",
                                         DateFormat("yyyy-MM-dd").format(picked[0]).toString(),
                                         DateFormat("yyyy-MM-dd").format(picked[1]).toString()
                                     );
@@ -219,7 +166,7 @@ class _DashBoardTemplateState extends State<DashBoardTemplate> {
                                       picked=picked1;
                                     });
                                     db.DashBoardDbHit(context,
-                                        "Sale",
+                                        "Purchase",
                                         DateFormat("yyyy-MM-dd").format(picked[0]).toString(),
                                         DateFormat("yyyy-MM-dd").format(picked[0]).toString()
                                     );
@@ -251,14 +198,14 @@ class _DashBoardTemplateState extends State<DashBoardTemplate> {
                 ];
               },
               body: Container(
-                  width: SizeConfig.screenWidth,
-                  clipBehavior: Clip.antiAlias,
-                  margin: EdgeInsets.only(top: silverBodyTopMargin),
-                  padding: EdgeInsets.only(top: 30,bottom: 30),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10)),
-                    color: Color(0xFFF6F7F9),
-                  ),
+                width: SizeConfig.screenWidth,
+                clipBehavior: Clip.antiAlias,
+                margin: EdgeInsets.only(top: silverBodyTopMargin),
+                padding: EdgeInsets.only(top: 30,bottom: 30),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10)),
+                  color: Color(0xFFF6F7F9),
+                ),
 
 
               ),

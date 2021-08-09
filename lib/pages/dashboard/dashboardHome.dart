@@ -80,6 +80,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/notifier/dashboardNotifier.dart';
+import 'package:quarry/pages/dashboard/productionDashBoard/productionDashBoard.dart';
+import 'package:quarry/pages/dashboard/purchaseDashBoard/purchaseDashBoard.dart';
 import 'package:quarry/pages/dashboard/saleDashBoard/salesDashBoard.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/constants.dart';
@@ -212,7 +214,7 @@ class _DashBoardHomeState extends State<DashBoardHome> {
                             ),
                             Container(
                               height: 40,
-                              width: SizeConfig.screenWidth*0.57,
+                              width: SizeConfig.screenWidth*0.6,
                               padding:EdgeInsets.only(left: 10,right: 10),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(25),
@@ -306,11 +308,21 @@ class _DashBoardHomeState extends State<DashBoardHome> {
                             selIndex=-1;
                           });
                         });
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>SalesDashBoard()));
+                        if(i==0){
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>SalesDashBoard()));
+                        }
+                        else if(i==1){
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>PurchaseDashBoard()));
+                        }
+                        else if(i==2){
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>ProductionDashBoard()));
+                        }
+
                       },
                       child: Container(
                         height: 130,
                         width: 130,
+                        padding: EdgeInsets.only(left: 10,right: 10),
                         decoration: selIndex==i? BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           color:selIndex==i?AppTheme.yellowColor: Colors.white,
@@ -326,7 +338,7 @@ class _DashBoardHomeState extends State<DashBoardHome> {
                           children: [
                             SvgPicture.asset(value.image,height: 45,),
                             SizedBox(height: 10,),
-                            Text("${value.title}",style:selIndex==i? AppTheme.bgColorTS14:AppTheme.gridTextColor14,)
+                            Text("${value.title}",style:selIndex==i? AppTheme.bgColorTS14:AppTheme.gridTextColor14,textAlign: TextAlign.center,)
                           ],
                         ),
                       ),

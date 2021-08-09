@@ -8,10 +8,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/notifier/dashboardNotifier.dart';
+import 'package:quarry/pages/dashboard/saleDashBoard/salesCustomer.dart';
 import 'package:quarry/pages/dashboard/saleDashBoard/salesDashBoard.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/constants.dart';
 import 'package:quarry/styles/size.dart';
+import 'package:quarry/widgets/animation/animePageRoutes.dart';
 import 'package:quarry/widgets/arrowBack.dart';
 import 'package:quarry/widgets/bottomBarAddButton.dart';
 import 'package:quarry/widgets/charts/highChart/high_chart.dart';
@@ -45,7 +47,7 @@ class _SalesMaterialState extends State<SalesMaterial> {
   void initState() {
     Provider.of<DashboardNotifier>(context,listen: false).getSaleMaterialDetail(
         widget.weekList.map((e) => e['TotalSale']).toList(),
-        json.encode(widget.weekList.map((e) => e['WeekDay']).toList()),
+        json.encode(widget.weekList.map((e) => e['WeekDay'].toString().substring(0,3)).toList()),
     );
     WidgetsBinding.instance.addPostFrameCallback((_){
       silverController=new ScrollController();
@@ -85,6 +87,7 @@ class _SalesMaterialState extends State<SalesMaterial> {
         builder:(ctx,db,c)=> Stack(
           children: [
             NestedScrollView(
+
               controller: silverController,
               headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
                 return <Widget>[
@@ -189,21 +192,20 @@ class _SalesMaterialState extends State<SalesMaterial> {
                                   });
                                   db.getSaleMaterialDetail(
                                     widget.weekList.map((e) => e['TotalSale']).toList(),
-                                    json.encode(widget.weekList.map((e) => e['WeekDay']).toList()),
+                                    json.encode(widget.weekList.map((e) => e['WeekDay'].toString().substring(0,3)).toList()),
                                   );
                                 },
                                 child: Container(
                                   width: tabWidth*0.33,
                                   height: 50,
                                   child: Center(
-                                      child: Text("Week",style: TextStyle(fontFamily: 'RR',fontSize: 14,color: Colors.grey),)
+                                      child: Text("Week",style: TextStyle(fontFamily: 'RR',fontSize: 14,color:position==5?AppTheme.bgColor: Colors.grey),)
 
                                   ),
                                 ),
                               ),
                               InkWell(
                                 onTap:(){
-
                                   setState(() {
                                     position=tabWidth*0.33;
                                   });
@@ -216,15 +218,13 @@ class _SalesMaterialState extends State<SalesMaterial> {
                                   width: tabWidth*0.33,
                                   height: 50,
                                   child: Center(
-                                      child: Text("Month",style: TextStyle(fontFamily: 'RR',fontSize: 14,color: Colors.grey),)
+                                      child: Text("Month",style: TextStyle(fontFamily: 'RR',fontSize: 14,color:position==tabWidth*0.33?AppTheme.bgColor:  Colors.grey),)
                                   ),
                                 ),
                               ),
                               InkWell(
                                 onTap:(){
-
                                   setState(() {
-
                                     position=tabWidth*0.66;
                                   });
                                   db.getSaleMaterialDetail(
@@ -236,7 +236,7 @@ class _SalesMaterialState extends State<SalesMaterial> {
                                   width: tabWidth*0.33,
                                   height: 50,
                                   child: Center(
-                                      child: Text("Year",style: TextStyle(fontFamily: 'RR',fontSize: 14,color: Colors.grey),)
+                                      child: Text("Year",style: TextStyle(fontFamily: 'RR',fontSize: 14,color:position==tabWidth*0.66?AppTheme.bgColor: Colors.grey),)
                                   ),
                                 ),
                               ),
@@ -251,11 +251,95 @@ class _SalesMaterialState extends State<SalesMaterial> {
                       height: 250,
                       color: Color(0XFFFFFFFF),
                       width: SizeConfig.screenWidth,
-                      margin:EdgeInsets.only(top: 55),
+                      margin:EdgeInsets.only(top: 10,bottom: 20),
                       child: HighCharts(
-                        data: db.salesMaterialApex,
-                        isHighChart: false,
+                        data: db.salesMaterialHighChart,
+                        isHighChart: true,
+                        isHighChartExtraParam: true,
                         isLoad: db.isSaleMaterialChartLoad,
+                      ),
+                    ),
+
+                    Container(
+                      height: (db.salePaymentCategoryT6.length)*100.0,
+                      child: ListView.builder(
+                        itemCount: db.salePaymentCategoryT6.length,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemBuilder: (ctx,i){
+                          return GestureDetector(
+                            onTap: (){
+                              Navigator.push(context, fadeRoute(SalesCustomer(
+                                paymentType: db.salePaymentCategoryT6[i]['PaymentCategoryName']??"Other",
+                                totalAmount: db.salePaymentCategoryT6[i]['GrandTotalAmount'],
+                                customerList: db.salePaymentCustomerT7.where((element) => element['PaymentCategoryId']==db.salePaymentCategoryT6[i]['PaymentCategoryId']).toList(),
+                                color:db.salePaymentCategoryT6[i]['PaymentCategoryName']=='Cash'?Color(0xFFF4C246):
+                                db.salePaymentCategoryT6[i]['PaymentCategoryName']=='Cheque'?Color(0xFF69CA9D):
+                                db.salePaymentCategoryT6[i]['PaymentCategoryName']=='Credit'?Color(0xFF4662C2):
+                                Colors.red,
+                              )));
+
+                            },
+                            child: Container(
+                              height: 80,
+                              width: SizeConfig.screenWidth,
+                              margin: EdgeInsets.only(left: 10,right: 10,bottom: 10),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(7)
+                              ),
+                              clipBehavior: Clip.antiAlias,
+                              child: Row(
+                                children: [
+                                  Container(
+                                    height: 80,
+                                    width: 5,
+                                    color:db.salePaymentCategoryT6[i]['PaymentCategoryName']=='Cash'?Color(0xFFF4C246):
+                                    db.salePaymentCategoryT6[i]['PaymentCategoryName']=='Cheque'?Color(0xFF69CA9D):
+                                    db.salePaymentCategoryT6[i]['PaymentCategoryName']=='Credit'?Color(0xFF4662C2):
+                                    Colors.red,
+                                  ),
+                                  SizedBox(width: 20,),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text("${db.salePaymentCategoryT6[i]['GrandTotalAmount']}",style: TextStyle(fontFamily: 'RM',color:Color(0xFF737373),fontSize: 15),),
+                                      SizedBox(height: 5,),
+                                      Text("${db.salePaymentCategoryT6[i]['PaymentCategoryName']??"Other"} Payment",
+                                        style: TextStyle(fontFamily: 'RR',color:db.salePaymentCategoryT6[i]['PaymentCategoryName']=='Cash'?Color(0xFFF4C246):
+                                        db.salePaymentCategoryT6[i]['PaymentCategoryName']=='Cheque'?Color(0xFF69CA9D):
+                                        db.salePaymentCategoryT6[i]['PaymentCategoryName']=='Credit'?Color(0xFF4662C2):
+                                        Colors.red,fontSize: 11),
+                                      ),
+                                    ],
+                                  ),
+                                  Spacer(),
+                                  /*Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                          width:70,
+                                          height: 20,
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(25),
+                                            color: Colors.orange
+                                          ),
+                                          alignment: Alignment.center,
+                                          child: Text("Completed",style: TextStyle(fontFamily: 'RR',color:Color(0xFF737373),fontSize: 10),)
+                                      ),
+                                      SizedBox(height: 5,),
+                                     // Text("23,344,434",style: TextStyle(fontFamily: 'RR',color:Color(0xFF737373),fontSize: 10),),
+                                    ],
+                                  ),*/
+                                  SizedBox(width: 15,),
+                                  Icon(Icons.arrow_forward_ios_rounded,color: Colors.grey,size: 18,),
+                                  SizedBox(width: 15,),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
                       ),
                     )
                   ],

@@ -10,6 +10,7 @@ import 'package:quarry/api/sp.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/styles/constants.dart';
 import 'package:quarry/widgets/alertDialog.dart';
+import 'package:quarry/widgets/calculation.dart';
 
 class DashboardNotifier extends ChangeNotifier{
   final call=ApiManager();
@@ -19,7 +20,7 @@ class DashboardNotifier extends ChangeNotifier{
 
   List<MenuModel> menu=[
   MenuModel(title:"Sale",image: "assets/svg/drawer/sales-form.svg"),
-  MenuModel(title:"Purchase",image: "assets/svg/drawer/purchase.svg"),
+  MenuModel(title:"Purchase & Received",image: "assets/svg/drawer/purchase.svg"),
   MenuModel(title:"Production",image: "assets/svg/drawer/production.svg"),
   MenuModel(title:"Attendance",image: "assets/svg/drawer/employee/employeeAttendance.svg"),
   MenuModel(title:"Counters",image: "assets/svg/drawer/settings/customer.svg"),
@@ -272,7 +273,27 @@ class DashboardNotifier extends ChangeNotifier{
             saleMaterialWeeklyT3=parsed['Table3'] as List;
             saleMaterialMonthlyT4=parsed['Table4'] as List;
             saleMaterialYearT5=parsed['Table5'] as List;
+            salePaymentCategoryT6=parsed['Table6'] as List;
+            salePaymentCustomerT7=parsed['Table7'] as List;
             getSaleDetail();
+          }
+          else if(typeName=='Purchase'){
+            updateisLoad(false);
+          }
+          else if(typeName=='Production'){
+            totalProductionQty=0.0;
+            productionInputMaterialsT=parsed['Table'] as List;
+            productionOutPutMaterialsT1=parsed['Table1'] as List;
+            productionInputMaterialsT.forEach((element) {
+              totalProductionQty=Calculation().add(totalProductionQty, element['InputMaterialQuantity']);
+            });
+            if(productionInputMaterialsT.isNotEmpty){
+              getProduction(0);
+            }
+            else{
+              updateisLoad(false);
+            }
+
           }
 
         }
@@ -297,8 +318,10 @@ List<dynamic> saleT2=[];
 List<dynamic> saleMaterialWeeklyT3=[];
 List<dynamic> saleMaterialMonthlyT4=[];
 List<dynamic> saleMaterialYearT5=[];
+List<dynamic> salePaymentCategoryT6=[];
+List<dynamic> salePaymentCustomerT7=[];
 String salesApex='';
-String salesMaterialApex='';
+String salesMaterialHighChart='';
 getSaleDetail(){
    salesApex='''
        var options = {
@@ -424,8 +447,8 @@ getSaleDetail(){
     var chart = new ApexCharts(document.querySelector("#chart"), options);
     chart.render();
   ''';
-   updateisLoad(false);
    updateisChartLoad(true);
+   updateisLoad(false);
    Timer(Duration(milliseconds: 500), (){
      updateisChartLoad(false);
    });
@@ -435,107 +458,237 @@ getSaleDetail(){
 getSaleMaterialDetail(List<dynamic> data,String date,){
   print(data);
   print(date);
-  salesMaterialApex='''
-  var options = {
-          series: [{
-          name: 'Sale',
-          type: 'column',
-          data: $data
-        }, {
-          name: 'Sale',
-          type: 'line',
-          data:  $data
-        }],
-        legend: {
-            show: false
-           },
-        chart: {
-            background: '#ffffff',
-            type: 'area',
-            foreColor: '#9a9797',
-            height: 250,
-            toolbar: {
-                show: false,
-            },
-            
-          zoom: {
-              enabled: false
-          },
-          dropShadow: {
-              enabled: false,
-              top: 3,
-              left: 14,
-              blur: 4,
-              opacity: 0.12,
-              color: '#FEBF10',
-            },
-          sparkline: {
-              enabled: false
-           }
-         },
-        stroke: {
-          width: [0, 4],
-          curve:'smooth'
-        },
-        title: {
-          text: ''
-        },
-        dataLabels: {
-          enabled: false,
-          enabledOnSeries: [1]
-        },
-        plotOptions: {
-            bar: {
-                horizontal: false,
-                columnWidth: '45%',
-                endingShape: 'rounded'
-            },
-        },
-        fill: {
-        type: 'gradient',
-        gradient: {
-            shade: 'light',
-            type: 'vertical',
-            shadeIntensity: 0.5,
-            gradientToColors: ['#CACACA'],
-            inverseColors: false,
-            opacityFrom: 0.5,
-            opacityTo: 0.7,
-            stops: [0, 50],
-            colorStops: []
-          }
-        },
-       colors: ["#FEBF10"],
-       grid: {
-            show: false,
-            borderColor: '#ededed',
-            //strokeDashArray: 4,
-        },
-        labels: $date,
-        xaxis: {
-         
-        },
-        yaxis: [],
-        tooltip: {
-            theme: 'dark',
-            y: {
-                formatter: function(val) {
-                    return val
-                }
-            },
-        }
-        };
+  salesMaterialHighChart='''
+      Highcharts.chart('chart', {
+    chart:{
+      height:250,
+    },
+    title: {
+        text: ''
+    },
+    xAxis: {
+        categories: $date,
+        gridLineWidth: 0,
+    },
+      yAxis: {
+        gridLineWidth: 0,
+            gridLineColor: 'transparent',
+            gridTextColor: '#ffffff',
+            lineColor: 'transparent',
+            tickColor: 'transparent',
+            showEmpty: false,
+            title:{
+                text:'',
+            }
+    },
+   
+    labels: {
+        items: [{
+            html: '',
+            style: {
+                left: '50px',
+                top: '18px',
+                color: ( // theme
+                    Highcharts.defaultOptions.title.style &&
+                    Highcharts.defaultOptions.title.style.color
+                ) || 'black'
+            }
+        }]
+    },
     
-
-        var chart = new ApexCharts(document.querySelector("#chart"), options);
-        chart.render();
+    legend: {
+            enabled: false
+        },
+       
+        plotOptions: {
+          
+            column: {
+                borderRadiusTopLeft: 10,
+            	borderRadiusTopRight: 10,
+                grouping: false,
+            },
+        
+        },
+         tooltip: {
+        pointFormat: '<span style="color:#F8C85A">\u25CF</span> {series.name}: <b>{point.y}</b><br/>',
+        useHTML: true,
+        backgroundColor: '#000000',
+        style:{color:'#ffffff'},
+        borderWidth: 0,
+        shadow: false,
+    },
+    series: [{
+        type: 'column',
+        name: 'Sales',
+        data: $data,
+        color: {
+                    linearGradient: { x1: 0, x2: 0, y1: 0, y2: 1 },
+                    stops: [
+                        [0, '#FAFAFA'],
+                        [1, '#D7D7D7']
+                    ]
+                }
+      } ,
+     {
+        type: 'spline',
+        name: 'Sales',
+        data: $data,
+         color: '#F8C85A',
+        marker: {
+            lineWidth: 2,
+            lineColor: Highcharts.getOptions().colors[3],
+            fillColor: 'white'
+        }
+    },  ]
+});
      
   ''';
-  notifyListeners();
   updateisSaleMaterialChartLoad(true);
   Timer(Duration(milliseconds: 500), (){
     updateisSaleMaterialChartLoad(false);
   });
+}
+
+
+
+
+//Production DashBoard
+List<dynamic> productionInputMaterialsT=[];
+List<dynamic> productionOutPutMaterialsT1=[];
+List<dynamic> filterProductionOutPutMaterialsT=[];
+double totalProductionQty=0.0;
+String apexProduction='';
+String apexProductionOutputMaterial='';
+getProduction(int index){
+  double value=0.0;
+  value=( productionInputMaterialsT[index]['InputMaterialQuantity']/totalProductionQty)*100;
+   apexProduction='''
+  var options = {
+    chart: {
+        background:'#F6F7F9',
+        height: 290,
+        type: "radialBar"
+    },
+
+    series: [$value],
+    colors: ['#FEA902'],
+   
+    plotOptions: {
+        radialBar: {
+            hollow: {
+               
+                size: "75%",
+                boxShadow: {
+                       enabled: true,
+                       top: -3,
+                       left: 0,
+                       blur: 4,
+                       color: 'rgba(0, 169, 255, 0.85)',
+                       opacity: 0.65
+                   }
+            },
+            track: {
+                background: '#E1E1E1',
+                strokeWidth: '50%',
+            },
+
+            dataLabels: {
+                showOn: "false",
+                name: {
+                    offsetY: -20,
+                    show: true,
+                    color: "#000",
+                    fontSize: "13px"
+                },
+                value: {
+                    color: "#000",
+                    fontSize: "0px",
+                    show: true
+                }
+            }
+        }
+    },
+
+    stroke: {
+        lineCap: "round",
+    },
+    labels: [""]
+};
+
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+  ''';
+   updateisProductionChartLoad(true);
+   updateisLoad(false);
+   Timer(Duration(milliseconds: 500), (){
+     updateisProductionChartLoad(false);
+   });
+}
+getProductionOutPutMaterial(double value){
+
+  apexProductionOutputMaterial='''
+  var options = {
+    chart: {
+        background:'#F6F7F9',
+        height: 110,
+        type: "radialBar"
+    },
+
+    series: [$value],
+    colors: ['#FEA902'],
+   
+    plotOptions: {
+        radialBar: {
+            hollow: {
+               
+                size: "50%",
+                boxShadow: {
+                       enabled: true,
+                       top: -3,
+                       left: 0,
+                       blur: 4,
+                       color: 'rgba(0, 169, 255, 0.85)',
+                       opacity: 0.65
+                   }
+            },
+            track: {
+                background: '#E1E1E1',
+                strokeWidth: '57%',
+            },
+
+            dataLabels: {
+                showOn: "always",
+                name: {
+                    offsetY: -5,
+                    show: true,
+                    color: "#000",
+                    fontSize: "13px"
+                },
+                value: {
+                    color: "#000",
+                    fontSize: "13px",
+                    show: true,
+                    offsetY: -11,
+                }
+            }
+        }
+    },
+
+    stroke: {
+        lineCap: "round",
+    },
+    labels: [""]
+};
+
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+  ''';
+/*   updateisProductionChartLoad(true);
+   updateisLoad(false);
+   Timer(Duration(milliseconds: 500), (){
+     updateisProductionChartLoad(false);
+   });*/
+   return apexProductionOutputMaterial;
 }
 
 
@@ -558,6 +711,14 @@ getSaleMaterialDetail(List<dynamic> data,String date,){
  bool isSaleMaterialChartLoad=false;
  updateisSaleMaterialChartLoad(bool value){
    isSaleMaterialChartLoad=value;
+   WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+     notifyListeners();
+   });
+ }
+
+ bool isProductionChartLoad=false;
+ updateisProductionChartLoad(bool value){
+   isProductionChartLoad=value;
    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
      notifyListeners();
    });
