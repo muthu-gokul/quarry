@@ -289,11 +289,15 @@ class DashboardNotifier extends ChangeNotifier{
             });
             if(productionInputMaterialsT.isNotEmpty){
               getProduction(0);
+              updateisLoad(false);
             }
             else{
               updateisLoad(false);
             }
-
+          }
+          else if(typeName=='Counter'){
+            counterList=parsed['Table'] as List;
+            updateisLoad(false);
           }
 
         }
@@ -557,139 +561,17 @@ List<dynamic> productionInputMaterialsT=[];
 List<dynamic> productionOutPutMaterialsT1=[];
 List<dynamic> filterProductionOutPutMaterialsT=[];
 double totalProductionQty=0.0;
-String apexProduction='';
-String apexProductionOutputMaterial='';
-getProduction(int index){
-  double value=0.0;
-  value=( productionInputMaterialsT[index]['InputMaterialQuantity']/totalProductionQty)*100;
-   apexProduction='''
-  var options = {
-    chart: {
-        background:'#F6F7F9',
-        height: 290,
-        type: "radialBar"
-    },
 
-    series: [$value],
-    colors: ['#FEA902'],
-   
-    plotOptions: {
-        radialBar: {
-            hollow: {
-               
-                size: "75%",
-                boxShadow: {
-                       enabled: true,
-                       top: -3,
-                       left: 0,
-                       blur: 4,
-                       color: 'rgba(0, 169, 255, 0.85)',
-                       opacity: 0.65
-                   }
-            },
-            track: {
-                background: '#E1E1E1',
-                strokeWidth: '50%',
-            },
+  List<dynamic> outputMaterials=[];
+  getProduction(int i){
+    outputMaterials=productionOutPutMaterialsT1.where((element) => element['InputMaterialId']==productionInputMaterialsT[i]['InputMaterialId']).toList();
+    notifyListeners();
+  }
 
-            dataLabels: {
-                showOn: "false",
-                name: {
-                    offsetY: -20,
-                    show: true,
-                    color: "#000",
-                    fontSize: "13px"
-                },
-                value: {
-                    color: "#000",
-                    fontSize: "0px",
-                    show: true
-                }
-            }
-        }
-    },
 
-    stroke: {
-        lineCap: "round",
-    },
-    labels: [""]
-};
+  //Counter DashBoard
+  List<dynamic> counterList=[];
 
-var chart = new ApexCharts(document.querySelector("#chart"), options);
-chart.render();
-  ''';
-   updateisProductionChartLoad(true);
-   updateisLoad(false);
-   Timer(Duration(milliseconds: 500), (){
-     updateisProductionChartLoad(false);
-   });
-}
-getProductionOutPutMaterial(double value){
-
-  apexProductionOutputMaterial='''
-  var options = {
-    chart: {
-        background:'#F6F7F9',
-        height: 110,
-        type: "radialBar"
-    },
-
-    series: [$value],
-    colors: ['#FEA902'],
-   
-    plotOptions: {
-        radialBar: {
-            hollow: {
-               
-                size: "50%",
-                boxShadow: {
-                       enabled: true,
-                       top: -3,
-                       left: 0,
-                       blur: 4,
-                       color: 'rgba(0, 169, 255, 0.85)',
-                       opacity: 0.65
-                   }
-            },
-            track: {
-                background: '#E1E1E1',
-                strokeWidth: '57%',
-            },
-
-            dataLabels: {
-                showOn: "always",
-                name: {
-                    offsetY: -5,
-                    show: true,
-                    color: "#000",
-                    fontSize: "13px"
-                },
-                value: {
-                    color: "#000",
-                    fontSize: "13px",
-                    show: true,
-                    offsetY: -11,
-                }
-            }
-        }
-    },
-
-    stroke: {
-        lineCap: "round",
-    },
-    labels: [""]
-};
-
-var chart = new ApexCharts(document.querySelector("#chart"), options);
-chart.render();
-  ''';
-/*   updateisProductionChartLoad(true);
-   updateisLoad(false);
-   Timer(Duration(milliseconds: 500), (){
-     updateisProductionChartLoad(false);
-   });*/
-   return apexProductionOutputMaterial;
-}
 
 
  bool isLoad=false;
@@ -716,13 +598,6 @@ chart.render();
    });
  }
 
- bool isProductionChartLoad=false;
- updateisProductionChartLoad(bool value){
-   isProductionChartLoad=value;
-   WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-     notifyListeners();
-   });
- }
 
 
 }

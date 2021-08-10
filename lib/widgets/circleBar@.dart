@@ -8,11 +8,15 @@ class CircleProgressBar extends StatefulWidget {
   final Color backgroundColor;
   final Color foregroundColor;
   final double value;
+  final double extraStrokeWidth;
+  final double innerStrokeWidth;
 
   const CircleProgressBar({
     Key key,
     this.animationDuration,
     this.backgroundColor,
+    this.extraStrokeWidth=3.0,
+    this.innerStrokeWidth=3.0,
     @required this.foregroundColor,
     @required this.value,
   }) : super(key: key);
@@ -120,6 +124,8 @@ class CircleProgressBarState extends State<CircleProgressBar> with SingleTickerP
               backgroundColor: backgroundColor,
               foregroundColor: foregroundColor,
               percentage: this.valueTween.evaluate(this.curve),
+              extraStrokeWidth: widget.extraStrokeWidth,
+              innerStrokeWidth: widget.innerStrokeWidth
             ),
           );
         },
@@ -132,11 +138,14 @@ class CircleProgressBarState extends State<CircleProgressBar> with SingleTickerP
 class CircleProgressBarPainter extends CustomPainter {
   final double percentage;
   final double strokeWidth;
+  final double extraStrokeWidth;
   final Color backgroundColor;
   final Color foregroundColor;
-
+  final double innerStrokeWidth;
   CircleProgressBarPainter({
     this.backgroundColor,
+    this.extraStrokeWidth,
+    this.innerStrokeWidth,
     @required this.foregroundColor,
     @required this.percentage,
     double strokeWidth,
@@ -151,7 +160,7 @@ class CircleProgressBarPainter extends CustomPainter {
     Math.min(constrainedSize.width, constrainedSize.height);
     final foregroundPaint = Paint()
       ..color = this.foregroundColor
-      ..strokeWidth = this.strokeWidth+3
+      ..strokeWidth = this.strokeWidth+this.extraStrokeWidth
       ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.stroke;
     final radius = (shortestSide / 2);
@@ -164,7 +173,7 @@ class CircleProgressBarPainter extends CustomPainter {
     if (this.backgroundColor != null) {
       final backgroundPaint = Paint()
         ..color = this.backgroundColor
-        ..strokeWidth = this.strokeWidth
+        ..strokeWidth = this.innerStrokeWidth
         ..style = PaintingStyle.stroke;
       canvas.drawCircle(center, radius, backgroundPaint);
     }
@@ -180,6 +189,7 @@ class CircleProgressBarPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(CustomPainter oldDelegate) {
+   // return true;
     final oldPainter = (oldDelegate as CircleProgressBarPainter);
     return oldPainter.percentage != this.percentage ||
         oldPainter.backgroundColor != this.backgroundColor ||

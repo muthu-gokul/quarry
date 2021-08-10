@@ -67,7 +67,7 @@ class _ProductionDashBoardState extends State<ProductionDashBoard> {
     super.initState();
   }
 
-  List<dynamic> outputMaterials=[];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -99,7 +99,9 @@ class _ProductionDashBoardState extends State<ProductionDashBoard> {
                         ),
                         Align(
                           alignment: Alignment.bottomCenter,
-                          child: Text("09-89-=88",style: TextStyle(fontSize: 16,fontFamily: 'RR',),),
+                          child: Text(picked.length==1?"${DateFormat("dd/MM/yyyy").format(picked[0])}":
+                          picked.length==2?"${DateFormat("dd/MM/yyyy").format(picked[0])} - ${DateFormat("dd/MM/yyyy").format(picked[1])}":"Today",
+                            style: TextStyle(fontSize: 12,fontFamily: 'RR',color: Color(0xFF8E9090)),),
                         ),
                         Align(
                           alignment: Alignment.centerRight,
@@ -147,7 +149,6 @@ class _ProductionDashBoardState extends State<ProductionDashBoard> {
                   Container(
                     height: 40,
                     width: SizeConfig.screenWidth,
-                 //   color: Colors.red,
                    margin: EdgeInsets.only(top: 20),
                     padding: EdgeInsets.only(left: 10,right: 10),
                     child: ListView.builder(
@@ -158,22 +159,23 @@ class _ProductionDashBoardState extends State<ProductionDashBoard> {
                           onTap: (){
                             setState(() {
                               selIndex=i;
-                              outputMaterials=db.productionOutPutMaterialsT1.where((element) => element['InputMaterialId']==db.productionInputMaterialsT[i]['InputMaterialId']).toList();
+                              db.getProduction(i);
                             });
-                           // db.getProduction(selIndex);
                           },
                           child: Container(
                             height: 40,
                             decoration:selIndex==i? BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(50),
-                              border: Border.all(color: Colors.grey)
+                              border: Border.all(color: Color(0xFFd7d7d7))
                             ):BoxDecoration(
                               color: Colors.transparent
                             ),
                             alignment: Alignment.center,
                             padding: EdgeInsets.only(left: 30,right: 30),
-                            child: Text("${db.productionInputMaterialsT[i]['MaterialName']}"),
+                            child: Text("${db.productionInputMaterialsT[i]['MaterialName']}",
+                            style: TextStyle(color:selIndex==i?AppTheme.yellowColor: Color(0xFF8E9090),fontFamily: 'RR',fontSize: 14),
+                            ),
                           ),
                         );
                       },
@@ -183,8 +185,6 @@ class _ProductionDashBoardState extends State<ProductionDashBoard> {
                   db.productionInputMaterialsT.isEmpty?Container():Container(
                     width: SizeConfig.screenWidth,
                     height: 275,
-             //       color: AppTheme.red,
-                  //  margin:EdgeInsets.only(top: 55),
                     child: Stack(
                       children: [
                         Align(
@@ -192,6 +192,8 @@ class _ProductionDashBoardState extends State<ProductionDashBoard> {
                           child: Container(
                             height:180,
                             child: CircleProgressBar(
+                              extraStrokeWidth: 4,
+                              innerStrokeWidth: 4,
                               backgroundColor: Color(0xFFd7d7d7),
                               foregroundColor: Color(0xFFF1B240),
                               value: (( db.productionInputMaterialsT[selIndex]['InputMaterialQuantity']/db.totalProductionQty)),
@@ -199,37 +201,6 @@ class _ProductionDashBoardState extends State<ProductionDashBoard> {
                           ),
                         ),
 
-
-                        /*CircularPercentIndicator(
-                          addAutomaticKeepAlive: false,
-                          animationDuration: 5000,
-                          radius: 80.0,
-                          lineWidth: 5.0,
-                          animation: true,
-                          percent: (( db.productionInputMaterialsT[selIndex]['InputMaterialQuantity']/db.totalProductionQty)),
-                          center:Container(
-                            height: 50,
-                            width: 50,
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.transparent
-                            ),
-                            child: Center(
-                              child: Text("${( db.productionInputMaterialsT[selIndex]['InputMaterialQuantity']/db.totalProductionQty)*100}"),
-                              //  child: SvgPicture.asset("assets/feedbackIcons/${value['Img']}.svg",width: 40,height: 40,),
-                            ),
-                          ),
-                          circularStrokeCap: CircularStrokeCap.round,
-                          progressColor:Colors.red,
-                        ),*/
-                        /*Container(
-                          height: 275,
-                          child: HighCharts(
-                            data: db.apexProduction,
-                            isHighChart: false,
-                            isLoad: db.isProductionChartLoad,
-                          ),
-                        ),*/
                         Align(
                           alignment: Alignment.center,
                           child: Column(
@@ -264,13 +235,49 @@ class _ProductionDashBoardState extends State<ProductionDashBoard> {
                     child: SingleChildScrollView(
                       child: Wrap(
                         children: [
-                          for(int i=0;i<outputMaterials.length;i++)
+                          for(int i=0;i<db.outputMaterials.length;i++)
                             Container(
-                              height:100,
-                              child: CircleProgressBar(
-                                backgroundColor: Color(0xFFd7d7d7),
-                                foregroundColor: Color(0xFFF1B240),
-                                value: (( outputMaterials[i]['OutputMaterialPercentage'])/100),
+                              height:120,
+                              width: 90,
+                             // color: Colors.red,
+                            //  margin: EdgeInsets.only(right: 20),
+                              child: Column(
+                                children: [
+                                  Stack(
+                                    children: [
+                                      Container(
+                                        height:70,
+                                        margin: EdgeInsets.only(bottom: 5),
+                                      //  color: i==0?Colors.red:Colors.transparent,
+                                        child: CircleProgressBar(
+                                          extraStrokeWidth: -0.9,
+                                          backgroundColor: Color(0xFFd7d7d7),
+                                          foregroundColor: Color(0xFFF1B240),
+                                          value: (( db.outputMaterials[i]['OutputMaterialPercentage'])/100),
+                                        ),
+                                      ),
+                                      Positioned(
+                                        right: 7,
+                                        top: 6,
+                                        child: Container(
+                                            height:57,
+                                            width: 57,
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: Colors.white,
+                                            ),
+                                            alignment: Alignment.center,
+
+                                            child: Text("${db.outputMaterials[i]['OutputMaterialPercentage']}%",style: TextStyle(fontSize: 12,fontFamily: 'RM',color: AppTheme.bgColor),textAlign: TextAlign.center,)),
+                                      )
+                                    ],
+                                  ),
+                                  Text("${db.outputMaterials[i]['MaterialName']}",style: TextStyle(fontSize: 12,fontFamily: 'RM',color: AppTheme.bgColor),textAlign: TextAlign.center,),
+                                  SizedBox(height: 3,),
+                                  Text("${db.outputMaterials[i]['OutputMaterialQuantity']} ${db.outputMaterials[i]['UnitName']}",
+                                    style: TextStyle(fontSize: 10,fontFamily: 'RM',color: Color(0xFF8E9090)),textAlign: TextAlign.center,
+                                  ),
+                                ],
                               ),
                             )
 

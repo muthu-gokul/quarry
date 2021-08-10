@@ -80,6 +80,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/notifier/dashboardNotifier.dart';
+import 'package:quarry/pages/dashboard/counterDashBoard/counterDashBoard.dart';
 import 'package:quarry/pages/dashboard/productionDashBoard/productionDashBoard.dart';
 import 'package:quarry/pages/dashboard/purchaseDashBoard/purchaseDashBoard.dart';
 import 'package:quarry/pages/dashboard/saleDashBoard/salesDashBoard.dart';
@@ -316,6 +317,12 @@ class _DashBoardHomeState extends State<DashBoardHome> {
                         }
                         else if(i==2){
                           Navigator.push(context, MaterialPageRoute(builder: (context)=>ProductionDashBoard()));
+                        }
+                        else if(i==3){
+                         // Navigator.push(context, MaterialPageRoute(builder: (context)=>ProductionDashBoard()));
+                        }
+                        else if(i==4){
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>CounterDashBoard()));
                         }
 
                       },
