@@ -160,12 +160,12 @@ class _CounterDashBoardState extends State<CounterDashBoard> {
                   runSpacing: 30,
                   spacing: 30,
                   children: [
-                    counter(Color(0xFF4E57DD),"Customers",db.counterList[0]['TotalCustomers']),
-                    counter(Color(0xFFE35A87),"Employee",db.counterList[0]['TotalEmployee']),
-                    counter(Color(0xFFE35A87),"Employee",db.counterList[0]['TotalEmployee']),
-                    counter(AppTheme.yellowColor,"Machine",db.counterList[0]['TotalMachine']),
-                    counter(Color(0xFFE35A87),"Input Material",db.counterList[0]['TotalInputMaterial']),
-                    counter(Color(0xFFE35A87),"Output Material",db.counterList[0]['TotalOutputMaterial']),
+                    counter(Color(0xFF4E57DD),"Customers",db.counterList[0]['TotalCustomers'],"assets/svg/drawer/settings/customer.svg"),
+                    counter(Color(0xFF67CBA9),"Supplier",db.counterList[0]['TotalSupplier'],"assets/svg/drawer/settings/supplier.svg"),
+                    counter(Color(0xFFE35A87),"Employee",db.counterList[0]['TotalEmployee'],"assets/svg/drawer/employee-details.svg"),
+                    counter(AppTheme.yellowColor,"Machine",db.counterList[0]['TotalMachine'],"assets/svg/drawer/machineManagement.svg"),
+                    counter(Color(0xFFE35A87),"Input Material",db.counterList[0]['TotalInputMaterial'],"assets/svg/drawer/settings/material.svg"),
+                    counter(Color(0xFFE35A87),"Output Material",db.counterList[0]['TotalOutputMaterial'],"assets/svg/drawer/settings/material.svg"),
                   ],
                 ),
               ),
@@ -177,7 +177,6 @@ class _CounterDashBoardState extends State<CounterDashBoard> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   SizedBox(height: 70,),
-
                   SvgPicture.asset("assets/nodata.svg",height: 350,),
                   SizedBox(height: 30,),
                   Text("No Data Found",style: TextStyle(fontSize: 18,fontFamily:'RMI',color: AppTheme.addNewTextFieldText),),
@@ -195,7 +194,7 @@ class _CounterDashBoardState extends State<CounterDashBoard> {
   }
 
 
-  counter(Color color,String title,dynamic value){
+  counter(Color color,String title,dynamic value,String img){
     return  Container(
       height: SizeConfig.screenWidth*0.4,
       width: SizeConfig.screenWidth*0.4,
@@ -221,6 +220,9 @@ class _CounterDashBoardState extends State<CounterDashBoard> {
                     offset: Offset(1, 8), // changes position of shadow
                   )
                 ]
+            ),
+            child: Center(
+              child: SvgPicture.asset(img,color: Colors.white,height: 40,),
             ),
           ),
           //    SvgPicture.asset(value.image,height: 45,),

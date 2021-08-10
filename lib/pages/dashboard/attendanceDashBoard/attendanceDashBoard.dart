@@ -17,7 +17,7 @@ import 'package:quarry/widgets/fittedText.dart';
 import 'package:quarry/widgets/loader.dart';
 import 'package:quarry/widgets/navigationBarIcon.dart';
 import 'package:quarry/widgets/dateRangePicker.dart' as DateRagePicker;
-
+import 'package:charts_flutter/flutter.dart' as charts;
 class AttendanceDashBoard extends StatefulWidget {
 
   VoidCallback drawerCallback;
@@ -64,9 +64,11 @@ class _AttendanceDashBoardState extends State<AttendanceDashBoard> {
     });
     super.initState();
   }
-
+  double tabWidth;
+  double position=5;
   @override
   Widget build(BuildContext context) {
+    tabWidth=SizeConfig.screenWidth-40;
     return Scaffold(
       backgroundColor: AppTheme.yellowColor,
       body: Consumer<DashboardNotifier>(
@@ -151,12 +153,128 @@ class _AttendanceDashBoardState extends State<AttendanceDashBoard> {
                 width: SizeConfig.screenWidth,
                 clipBehavior: Clip.antiAlias,
                 margin: EdgeInsets.only(top: silverBodyTopMargin),
-                padding: EdgeInsets.only(top: 30,bottom: 30),
+               // padding: EdgeInsets.only(top: 30,bottom: 30),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10)),
                   color: Color(0xFFF6F7F9),
                 ),
+                child: ListView(
+                  children: [
+                    Container(
+                      height: 50,
+                      width: tabWidth*0.99,
+                      margin: EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(35),
+                          color: Color(0xFFE6E6E6)
+                      ),
+                      child: Stack(
+                        children: [
+                          AnimatedPositioned(
+                            left: position,
+                            duration: Duration(milliseconds: 300),
+                            curve: Curves.easeIn,
+                            child: Container(
+                              width: tabWidth*0.33,
+                              height: 35,
+                              margin: EdgeInsets.only(top: 7),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(35),
+                                color: AppTheme.yellowColor,
+                                boxShadow: [
+                                  AppTheme.yellowShadow
+                                ],
+                              ),
+                            ),
+                          ),
+                          Row(
+                            children: [
+                              InkWell(
+                                onTap:(){
+                                  setState(() {
+                                    position=5;
+                                  });
 
+                                },
+                                child: Container(
+                                  width: tabWidth*0.33,
+                                  height: 50,
+                                  color: Colors.transparent,
+                                  child: Center(
+                                      child: Text("Week",style: TextStyle(fontFamily: 'RR',fontSize: 14,color:position==5?AppTheme.bgColor: Colors.grey),)
+
+                                  ),
+                                ),
+                              ),
+                              InkWell(
+                                onTap:(){
+                                  setState(() {
+                                    position=tabWidth*0.33;
+                                  });
+
+                                },
+                                child: Container(
+                                  width: tabWidth*0.33,
+                                  height: 50,
+                                  color: Colors.transparent,
+                                  child: Center(
+                                      child: Text("Month",style: TextStyle(fontFamily: 'RR',fontSize: 14,color:position==tabWidth*0.33?AppTheme.bgColor:  Colors.grey),)
+                                  ),
+                                ),
+                              ),
+                              InkWell(
+                                onTap:(){
+                                  setState(() {
+                                    position=tabWidth*0.66;
+                                  });
+
+                                },
+                                child: Container(
+                                  width: tabWidth*0.33,
+                                  height: 50,
+                                  color: Colors.transparent,
+                                  child: Center(
+                                      child: Text("Year",style: TextStyle(fontFamily: 'RR',fontSize: 14,color:position==tabWidth*0.66?AppTheme.bgColor: Colors.grey),)
+                                  ),
+                                ),
+                              ),
+
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.center,
+                      child: Container(
+                        height: 200,
+                        width: 200,
+                 //       color: Colors.red,
+                        child: charts.PieChart(db.attendanceSeriesList,
+                            animate: true,
+                            defaultRenderer: new charts.ArcRendererConfig(arcWidth: 10),
+
+                        ),
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.center,
+                      child: RichText(
+                        text: TextSpan(
+                          text: 'Present : ',
+                          style: TextStyle(fontFamily:'RM',fontSize: 13,color: Color(0xFF9B9C9F)),
+                          children: <TextSpan>[
+                            TextSpan(text: '${db.totalPresent}', style: TextStyle(fontFamily:'RM',fontSize: 15,color: Color(0xFF51A17C))),
+                            TextSpan(text: ' / Absent : ', style: TextStyle(fontFamily:'RM',fontSize: 13,color: Color(0xFF9B9C9F))),
+                            TextSpan(text: '${db.totalAbsent}', style: TextStyle(fontFamily:'RM',fontSize: 15,color: Color(0xFFDA4F48))),
+                          ],
+                        ),
+                      ),
+                    )
+
+
+                  ],
+                ),
               ),
             ),
             db.counterList.isEmpty?Container(

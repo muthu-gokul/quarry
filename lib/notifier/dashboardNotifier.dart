@@ -203,10 +203,11 @@ class DashboardNotifier extends ChangeNotifier{
     var chart = new ApexCharts(document.querySelector("#chart"), options);
     chart.render();
   ''';
-            updateisLoad(false);
+
             updateisChartLoad(true);
             Timer(Duration(milliseconds: 500), (){
               updateisChartLoad(false);
+              updateisLoad(false);
             });
           }
 
@@ -296,8 +297,20 @@ class DashboardNotifier extends ChangeNotifier{
             }
           }
           else if(typeName=='Attendance'){
-
+            totalAbsent=0;
+            totalPresent=0;
+            totalEmployee=parsed['Table'][0]['TotalEmployee'];
+            var t1=parsed['Table1'] as List;
+            t1.forEach((element) {
+              if(element['Status']==0){
+                    totalAbsent=element['TotalCount'];
+                }
+              else if(element['Status']==1){
+                totalPresent=element['TotalCount'];
+              }
+              });
             updateisLoad(false);
+            updateAttendanceChart();
           }
           else if(typeName=='Counter'){
             counterList=parsed['Table'] as List;
@@ -480,9 +493,10 @@ getSaleDetail(){
     chart.render();
   ''';
    updateisChartLoad(true);
-   updateisLoad(false);
+
    Timer(Duration(milliseconds: 500), (){
      updateisChartLoad(false);
+     updateisLoad(false);
    });
 
  }
@@ -640,33 +654,27 @@ Map totalDiesel={};
     voidCallback();
   }
 
-updateSeriesList(){
-  print("FDfdfdfdfdf");
-  seriesList=[];
-   List<charts.Series<GaugeSegment, String>> _createSampleData2() {
-    double low= ((totalDiesel['TotalQuantity']??0.0)/5000.0);
-    double high=5000-low;
-    print("low$low");
-    final data = [
-      new GaugeSegment('Low', 75,'#F8C85A'),
-      new GaugeSegment('high', 25,'#CACACA'),
+//Attendance DashBoard
+  int totalEmployee,totalPresent,totalAbsent=0;
+  List<charts.Series> attendanceSeriesList=[];
+  updateAttendanceChart(){
+      attendanceSeriesList=[
+        new charts.Series<LinearSales, int>(
+          id: 'Sales',
+          domainFn: (LinearSales sales, _) => sales.year,
+          measureFn: (LinearSales sales, _) => sales.sales,
+          colorFn: (LinearSales sales, _) => charts.Color.fromHex(code: sales.hex),
+          data: [
+            new LinearSales(0, totalAbsent,"#DA4F48"),
+            new LinearSales(1, totalPresent,"#51A17C"),
 
-    ];
-
-    return [
-      new charts.Series<GaugeSegment, String>(
-        id: 'Segments',
-        domainFn: (GaugeSegment segment, _) => segment.segment,
-        measureFn: (GaugeSegment segment, _) => segment.size,
-        colorFn: (GaugeSegment sales, _) => charts.Color.fromHex(code: sales.hex),
-        data: data,
-      )
-    ];
+          ],
+        )
+      ];
+      Timer(Duration(milliseconds: 500), (){
+      //  notifyListeners();
+      });
   }
-  seriesList=_createSampleData2();
-   print(seriesList);
-   notifyListeners();
-}
 
 
  bool isLoad=false;
@@ -711,4 +719,11 @@ class GaugeSegment {
   String hex;
 
   GaugeSegment(this.segment, this.size,this.hex);
+}
+class LinearSales {
+  final int year;
+  final int sales;
+  String hex;
+
+  LinearSales(this.year, this.sales,this.hex);
 }

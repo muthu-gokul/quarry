@@ -112,15 +112,21 @@ class _DashBoardHomeState extends State<DashBoardHome> {
   int selIndex=-1;
 
   @override
+  void didChangeDependencies() {
+    Provider.of<DashboardNotifier>(context,listen: false).currentSaleDbHit(context,
+        "Sale",
+        DateFormat("yyyy-MM-dd").format(DateTime.now().subtract(Duration(days: 6))).toString(),
+        DateFormat("yyyy-MM-dd").format(DateTime.now()).toString()
+    );
+    super.didChangeDependencies();
+  }
+
+  @override
   void initState() {
 
     WidgetsBinding.instance.addPostFrameCallback((_){
       silverController=new ScrollController();
-      Provider.of<DashboardNotifier>(context,listen: false).currentSaleDbHit(context,
-          "Sale",
-          DateFormat("yyyy-MM-dd").format(DateTime.now().subtract(Duration(days: 6))).toString(),
-          DateFormat("yyyy-MM-dd").format(DateTime.now()).toString()
-      );
+
       setState(() {
         silverBodyTopMargin=0;
       });
@@ -233,6 +239,9 @@ class _DashBoardHomeState extends State<DashBoardHome> {
                                       shape: BoxShape.circle,
                                       color: Colors.white
                                     ),
+                                    child: Center(
+                                      child: SvgPicture.asset("assets/svg/drawer/sales-form.svg"),
+                                    ),
                                   ),
                                   Column(
                                     mainAxisAlignment:MainAxisAlignment.center,
@@ -264,7 +273,13 @@ class _DashBoardHomeState extends State<DashBoardHome> {
                               ),
                             ),
                             Spacer(),
-
+                            IconButton(onPressed: (){
+                              db.currentSaleDbHit(context,
+                                  "Sale",
+                                  DateFormat("yyyy-MM-dd").format(DateTime.now().subtract(Duration(days: 6))).toString(),
+                                  DateFormat("yyyy-MM-dd").format(DateTime.now()).toString()
+                              );
+                            }, icon: Icon(Icons.refresh,color: AppTheme.dashCalendar,)),
                             SizedBox(width: 20,)
                           ],
                         ),
@@ -300,8 +315,8 @@ class _DashBoardHomeState extends State<DashBoardHome> {
                 child: SingleChildScrollView(
                   child: Wrap(
                     alignment: WrapAlignment.center,
-                    runSpacing: 30,
-                    spacing: 30,
+                    runSpacing: 20,
+                    spacing: 20,
                     children: db.menu.asMap().map((i, value) => MapEntry(i, GestureDetector(
                       onTap:selIndex==i?null: (){
                         setState(() {
@@ -336,8 +351,8 @@ class _DashBoardHomeState extends State<DashBoardHome> {
 
                       },
                       child: Container(
-                        height: 130,
-                        width: 130,
+                        height: SizeConfig.screenWidth*0.27,
+                        width: SizeConfig.screenWidth*0.27,
                         padding: EdgeInsets.only(left: 10,right: 10),
                         decoration: selIndex==i? BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
@@ -352,9 +367,15 @@ class _DashBoardHomeState extends State<DashBoardHome> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            SvgPicture.asset(value.image,height: 45,),
+                            Container(
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: AppTheme.yellowColor
+                                ),
+                                child: SvgPicture.asset(value.image,height: 45,)
+                            ),
                             SizedBox(height: 10,),
-                            Text("${value.title}",style:selIndex==i? AppTheme.bgColorTS14:AppTheme.gridTextColor14,textAlign: TextAlign.center,)
+                            Text("${value.title}",style:selIndex==i? AppTheme.bgColorTS14:TextStyle(fontFamily: 'RR',color: AppTheme.gridTextColor,fontSize: 13),textAlign: TextAlign.center,)
                           ],
                         ),
                       ),

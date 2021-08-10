@@ -53,6 +53,9 @@ class _HighChartsState extends State<HighCharts> {
     super.didUpdateWidget(oldWidget);
   }
   void init() async {
+    setState(() {
+      load=true;
+    });
     if(widget.isHighChart){
       if(widget.isHighChartExtraParam){
         await _controller?.evaluateJavascript('''
@@ -104,10 +107,12 @@ class _HighChartsState extends State<HighCharts> {
       inAsyncCall: load,
 
       child: WebView(
+
         initialUrl: highChartHtml,
         javascriptMode: JavascriptMode.unrestricted,
         onWebViewCreated: (WebViewController webViewController) {
           _controller = webViewController;
+        //  WebView.platform = SurfaceAndroidWebView();
         },
         onPageStarted: (String url){
           init();

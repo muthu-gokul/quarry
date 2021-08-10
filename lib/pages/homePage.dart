@@ -63,10 +63,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
 
   GlobalKey <ScaffoldState> scaffoldkey=new GlobalKey<ScaffoldState>();
   var inn;
-
-
-
-
   bool isSettingsOpen=false;
 
 
@@ -522,7 +518,14 @@ class DrawerContent extends StatelessWidget {
               Hero(
 
                   tag: tag,
-                  child: SvgPicture.asset(image,width: 30,)),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: AppTheme.yellowColor
+                    ),
+                      child: SvgPicture.asset(image,width: 30,)
+                  )
+              ),
               SizedBox(width: 10,),
               Container(
                 height: 20,
@@ -552,7 +555,7 @@ class DrawerContent extends StatelessWidget {
 
 
 class DrawerNotifier extends ChangeNotifier{
-  int menuSelected=1;
+  int menuSelected=22;
   Future<dynamic> changeMenu(int index) async{
     menuSelected=index;
     notifyListeners();

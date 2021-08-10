@@ -4,6 +4,11 @@
     <item android:drawable="@android:color/white" />
 
     <!-- You can insert your own image assets here -->
+    <item>
+        <bitmap
+
+            android:src="@drawable/bg" />
+    </item>
     <!-- <item>
         <bitmap
             android:gravity="center"
