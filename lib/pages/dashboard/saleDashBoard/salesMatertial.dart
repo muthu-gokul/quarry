@@ -48,6 +48,7 @@ class _SalesMaterialState extends State<SalesMaterial> {
     Provider.of<DashboardNotifier>(context,listen: false).getSaleMaterialDetail(
         widget.weekList.map((e) => e['TotalSale']).toList(),
         json.encode(widget.weekList.map((e) => e['WeekDay'].toString().substring(0,3)).toList()),
+      context
     );
     WidgetsBinding.instance.addPostFrameCallback((_){
       silverController=new ScrollController();
@@ -193,6 +194,7 @@ class _SalesMaterialState extends State<SalesMaterial> {
                                   db.getSaleMaterialDetail(
                                     widget.weekList.map((e) => e['TotalSale']).toList(),
                                     json.encode(widget.weekList.map((e) => e['WeekDay'].toString().substring(0,3)).toList()),
+                                    context
                                   );
                                 },
                                 child: Container(
@@ -213,6 +215,7 @@ class _SalesMaterialState extends State<SalesMaterial> {
                                   db.getSaleMaterialDetail(
                                     widget.monthList.map((e) => e['TotalSale']).toList(),
                                     json.encode(widget.monthList.map((e) => e['MName']).toList()),
+                                    context
                                   );
                                 },
                                 child: Container(
@@ -232,6 +235,7 @@ class _SalesMaterialState extends State<SalesMaterial> {
                                   db.getSaleMaterialDetail(
                                     widget.yearList.map((e) => e['TotalSale']).toList(),
                                     json.encode(widget.yearList.map((e) => e['Year']).toList()),
+                                    context
                                   );
                                 },
                                 child: Container(

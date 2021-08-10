@@ -1,5 +1,6 @@
 
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -13,14 +14,14 @@ import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/arrowBack.dart';
 import 'package:quarry/widgets/bottomBarAddButton.dart';
 import 'package:quarry/widgets/charts/highChart/high_chart.dart';
-import 'package:quarry/widgets/circleBar@.dart';
+import 'package:quarry/widgets/circleProgressBar.dart';
 import 'package:quarry/widgets/circularBar.dart';
 import 'package:quarry/widgets/fittedText.dart';
 import 'package:quarry/widgets/loader.dart';
 import 'package:quarry/widgets/navigationBarIcon.dart';
 import 'package:quarry/widgets/dateRangePicker.dart' as DateRagePicker;
 import 'package:quarry/widgets/waveIndicator/liquid_circular_progress_indicator.dart';
-
+import 'package:charts_flutter/flutter.dart' as charts;
 class DieselDashBoard extends StatefulWidget {
 
   VoidCallback drawerCallback;
@@ -40,7 +41,14 @@ class _DieselDashBoardState extends State<DieselDashBoard> {
     Provider.of<DashboardNotifier>(context,listen: false).DashBoardDbHit(context,
         "Diesel",
         DateFormat("yyyy-MM-dd").format(DateTime.now()).toString(),
-        DateFormat("yyyy-MM-dd").format(DateTime.now()).toString()
+        DateFormat("yyyy-MM-dd").format(DateTime.now()).toString(),
+        voidCallback: (){
+          Timer(Duration(milliseconds: 500), (){
+            setState(() {
+              seriesList= Provider.of<DashboardNotifier>(context,listen: false).seriesList;
+            });
+          });
+        }
     );
     WidgetsBinding.instance.addPostFrameCallback((_){
       silverController=new ScrollController();
@@ -68,7 +76,7 @@ class _DieselDashBoardState extends State<DieselDashBoard> {
     super.initState();
   }
 
-
+  List<charts.Series> seriesList=[];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -128,7 +136,14 @@ class _DieselDashBoardState extends State<DieselDashBoard> {
                                   db.DashBoardDbHit(context,
                                       "Diesel",
                                       DateFormat("yyyy-MM-dd").format(picked[0]).toString(),
-                                      DateFormat("yyyy-MM-dd").format(picked[1]).toString()
+                                      DateFormat("yyyy-MM-dd").format(picked[1]).toString(),
+                                      voidCallback: (){
+                                        Timer(Duration(milliseconds: 500), (){
+                                          setState(() {
+                                            seriesList= db.seriesList;
+                                          });
+                                        });
+                                      }
                                   );
                                 }
                                 else if(picked1!=null && picked1.length ==1){
@@ -139,7 +154,14 @@ class _DieselDashBoardState extends State<DieselDashBoard> {
                                   db.DashBoardDbHit(context,
                                       "Diesel",
                                       DateFormat("yyyy-MM-dd").format(picked[0]).toString(),
-                                      DateFormat("yyyy-MM-dd").format(picked[0]).toString()
+                                      DateFormat("yyyy-MM-dd").format(picked[0]).toString(),
+                                    voidCallback: (){
+                                      Timer(Duration(milliseconds: 500), (){
+                                        setState(() {
+                                          seriesList= db.seriesList;
+                                        });
+                                      });
+                                    }
                                   );
                                 }
                               },
@@ -180,8 +202,8 @@ class _DieselDashBoardState extends State<DieselDashBoard> {
                         Align(
                           alignment: Alignment.center,
                           child: Container(
-                            height:160,
-                            width: 160,
+                            height:220,
+                            width: 220,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               boxShadow: [
@@ -195,11 +217,18 @@ class _DieselDashBoardState extends State<DieselDashBoard> {
                             ),
                             child: Stack(
                               children: [
-                                Align(
+
+                               /* Align(
                                   alignment: Alignment.center,
                                   child: Container(
                                     height:180,
-                                    child: Transform.rotate(
+                                   child: charts.PieChart(
+                                       db.seriesList,
+                                       animate: true,
+                                       defaultRenderer: new charts.ArcRendererConfig(
+                                           arcWidth: 30, startAngle: 4 / 5 * pi, arcLength: 7 / 5 * pi)
+                                   ),
+                                   *//* child: Transform.rotate(
                                       angle: 110,
                                       child: CircleProgressBar(
                                         extraStrokeWidth: 10,
@@ -208,9 +237,9 @@ class _DieselDashBoardState extends State<DieselDashBoard> {
                                         foregroundColor: AppTheme.yellowColor,
                                         value: (db.totalDiesel['TotalQuantity']??0.0)/5000.0,
                                       ),
-                                    ),
+                                    ),*//*
                                   ),
-                                ),
+                                ),*/
                                 Align(
                                   alignment: Alignment.center,
                                   child: Container(
@@ -220,16 +249,16 @@ class _DieselDashBoardState extends State<DieselDashBoard> {
                                       shape: BoxShape.circle,
                                       color: Colors.white,
                                         boxShadow: [
-                                          /*BoxShadow(
+                                          BoxShadow(
                                             color: AppTheme.yellowColor.withOpacity(0.4),
                                             spreadRadius: 1,
                                             blurRadius: 7,
-                                            offset: Offset(1, 13), // changes position of shadow
-                                          )*/
+                                            offset: Offset(0, 13), // changes position of shadow
+                                          )
                                         ]
                                     ),
                                     child: LiquidCircularProgressIndicator(
-                                      value: (db.totalDiesel['TotalQuantity']??0.0)/5000.0,
+                                      value:db.low,
                                       backgroundColor: Colors.white,
                                       valueColor: AlwaysStoppedAnimation(Color(0xFFF3C253).withOpacity(0.5)),
                                       borderColor: Colors.transparent,
@@ -247,13 +276,25 @@ class _DieselDashBoardState extends State<DieselDashBoard> {
                                         color: Colors.white
                                     ),
                                     child: LiquidCircularProgressIndicator(
-                                      value: (db.totalDiesel['TotalQuantity']??0.0)/5000.0,
+                                      value:db.low,
                                       backgroundColor: Colors.transparent,
                                       valueColor: AlwaysStoppedAnimation(Color(0xFFF3C253)),
                                       borderColor: Colors.transparent,
                                       borderWidth: 0.0,
                                       center: Text("${db.totalDiesel['TotalQuantity']??0.0} Ltr", style:  TextStyle(fontSize: 18,color: Color(0xFF676767),fontFamily: 'RM'),
                                       ),
+                                    ),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.center,
+                                  child:Container(
+                                    height:220,
+                                    child: charts.PieChart(
+                                        seriesList,
+                                        animate: true,
+                                        defaultRenderer: new charts.ArcRendererConfig(
+                                            arcWidth: 20, startAngle: 4 / 5 * pi, arcLength: 7 / 5 * pi)
                                     ),
                                   ),
                                 ),
@@ -337,27 +378,15 @@ class _DieselDashBoardState extends State<DieselDashBoard> {
                         ),
                       ],
                     ),
-                  )
+                  ),
+
+
 
                 ],
               ),
             ),
 
-            !db.productionInputMaterialsT.isEmpty?Container(
-              width: SizeConfig.screenWidth,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(height: 70,),
 
-                  SvgPicture.asset("assets/nodata.svg",height: 350,),
-                  SizedBox(height: 30,),
-                  Text("No Data Found",style: TextStyle(fontSize: 18,fontFamily:'RMI',color: AppTheme.addNewTextFieldText),),
-
-                ],
-              ),
-            ):Container(),
             Loader(
               isLoad: db.isLoad,
             )

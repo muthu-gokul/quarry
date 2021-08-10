@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
-
+import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -222,7 +222,7 @@ class DashboardNotifier extends ChangeNotifier{
     }
   }
 
-  Future<dynamic> DashBoardDbHit(BuildContext context,String typeName,String fromDate,String toDate) async {
+  Future<dynamic> DashBoardDbHit(BuildContext context,String typeName,String fromDate,String toDate, {VoidCallback voidCallback}) async {
   updateisLoad(true);
 
     var body={
@@ -295,6 +295,10 @@ class DashboardNotifier extends ChangeNotifier{
               updateisLoad(false);
             }
           }
+          else if(typeName=='Attendance'){
+
+            updateisLoad(false);
+          }
           else if(typeName=='Counter'){
             counterList=parsed['Table'] as List;
             updateisLoad(false);
@@ -318,7 +322,10 @@ class DashboardNotifier extends ChangeNotifier{
             }else{
               balanceDiesel={};
             }
+
+           // updateSeriesList();
             updateisLoad(false);
+            sl(voidCallback);
           }
 
         }
@@ -480,10 +487,11 @@ getSaleDetail(){
 
  }
 
-getSaleMaterialDetail(List<dynamic> data,String date,){
+getSaleMaterialDetail(List<dynamic> data,String date,BuildContext context){
   print(data);
   print(date);
-  salesMaterialHighChart='''
+  try{
+    salesMaterialHighChart='''
       Highcharts.chart('chart', {
     chart:{
       height:250,
@@ -568,6 +576,10 @@ getSaleMaterialDetail(List<dynamic> data,String date,){
 });
      
   ''';
+  }catch(e,t){
+  //  CustomAlert().commonErrorAlert2(context, e, t.toString());
+  }
+
   updateisSaleMaterialChartLoad(true);
   Timer(Duration(milliseconds: 500), (){
     updateisSaleMaterialChartLoad(false);
@@ -597,6 +609,65 @@ double totalProductionQty=0.0;
 Map issueDiesel={};
 Map balanceDiesel={};
 Map totalDiesel={};
+
+  List<charts.Series> seriesList=[];
+  double low,high;
+  sl(VoidCallback voidCallback){
+     low= ((totalDiesel['TotalQuantity']??0.0)/5000.0);
+     high=1-low;
+    if(high<0){
+      double temp=low;
+      low=-1*high;
+      high=temp;
+    }
+ /*   print((totalDiesel['TotalQuantity']??0.0)/5000.0);
+    print(low);
+    print(high);*/
+    seriesList= [
+      new charts.Series<GaugeSegment, String>(
+        id: 'Segments',
+        domainFn: (GaugeSegment segment, _) => segment.segment,
+        measureFn: (GaugeSegment segment, _) => segment.size,
+        colorFn: (GaugeSegment sales, _) => charts.Color.fromHex(code: sales.hex),
+        data:  [
+          //F3C253
+          new GaugeSegment('Low', low,'#F1AC3D'),
+          new GaugeSegment('high', high,'#CACACA'),
+
+        ],
+      )
+    ];
+    voidCallback();
+  }
+
+updateSeriesList(){
+  print("FDfdfdfdfdf");
+  seriesList=[];
+   List<charts.Series<GaugeSegment, String>> _createSampleData2() {
+    double low= ((totalDiesel['TotalQuantity']??0.0)/5000.0);
+    double high=5000-low;
+    print("low$low");
+    final data = [
+      new GaugeSegment('Low', 75,'#F8C85A'),
+      new GaugeSegment('high', 25,'#CACACA'),
+
+    ];
+
+    return [
+      new charts.Series<GaugeSegment, String>(
+        id: 'Segments',
+        domainFn: (GaugeSegment segment, _) => segment.segment,
+        measureFn: (GaugeSegment segment, _) => segment.size,
+        colorFn: (GaugeSegment sales, _) => charts.Color.fromHex(code: sales.hex),
+        data: data,
+      )
+    ];
+  }
+  seriesList=_createSampleData2();
+   print(seriesList);
+   notifyListeners();
+}
+
 
  bool isLoad=false;
  updateisLoad(bool value){
@@ -631,4 +702,13 @@ class MenuModel{
   String image;
   MenuModel({this.image="assets/svg/Planticon.svg",this.title});
 
+}
+
+
+class GaugeSegment {
+  final String segment;
+  final double size;
+  String hex;
+
+  GaugeSegment(this.segment, this.size,this.hex);
 }

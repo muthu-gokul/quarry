@@ -13,7 +13,7 @@ import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/arrowBack.dart';
 import 'package:quarry/widgets/bottomBarAddButton.dart';
 import 'package:quarry/widgets/charts/highChart/high_chart.dart';
-import 'package:quarry/widgets/circleBar@.dart';
+import 'package:quarry/widgets/circleProgressBar.dart';
 import 'package:quarry/widgets/circularBar.dart';
 import 'package:quarry/widgets/fittedText.dart';
 import 'package:quarry/widgets/loader.dart';

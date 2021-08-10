@@ -84,7 +84,7 @@ class MyApp extends StatelessWidget {
 
 /*import 'package:flutter/material.dart';
 
-import 'widgets/circleBar@.dart';
+import 'widgets/circleProgressBar.dart';
 
 void main() => runApp(MyApp());
 

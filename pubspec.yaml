@@ -50,7 +50,7 @@ dependencies:
   firebase_ml_vision: ^0.9.10
   firebase_core: ^1.2.0
   modal_progress_hud:
-
+  charts_flutter:
 
 dev_dependencies:
   flutter_test:
