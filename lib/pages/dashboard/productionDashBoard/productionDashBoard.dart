@@ -94,6 +94,16 @@ class _ProductionDashBoardState extends State<ProductionDashBoard> {
                     child: Stack(
                       children: [
                         Align(
+                          alignment: Alignment.centerLeft,
+                          child: CancelButton(
+                            bgColor: AppTheme.bgColor,
+                            iconColor: Colors.white,
+                            ontap: (){
+                              Navigator.pop(context);
+                            },
+                          ),
+                        ),
+                        Align(
                           alignment: Alignment.center,
                           child: Text("Production",style: TextStyle(fontSize: 18,fontFamily: 'RR',),),
                         ),

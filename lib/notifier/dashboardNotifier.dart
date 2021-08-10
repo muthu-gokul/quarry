@@ -299,6 +299,27 @@ class DashboardNotifier extends ChangeNotifier{
             counterList=parsed['Table'] as List;
             updateisLoad(false);
           }
+          else if(typeName=='Diesel'){
+            var t3=parsed['Table3'] as List;
+            var t4=parsed['Table4'] as List;
+            var t5=parsed['Table5'] as List;
+            if(t3.isNotEmpty){
+              totalDiesel=t3[0];
+            }else{
+              totalDiesel={};
+            }
+            if(t4.isNotEmpty){
+              issueDiesel=t4[0];
+            }else{
+              issueDiesel={};
+            }
+            if(t5.isNotEmpty){
+              balanceDiesel=t5[0];
+            }else{
+              balanceDiesel={};
+            }
+            updateisLoad(false);
+          }
 
         }
         else{
@@ -572,7 +593,10 @@ double totalProductionQty=0.0;
   //Counter DashBoard
   List<dynamic> counterList=[];
 
-
+//Diesel DashBoard
+Map issueDiesel={};
+Map balanceDiesel={};
+Map totalDiesel={};
 
  bool isLoad=false;
  updateisLoad(bool value){

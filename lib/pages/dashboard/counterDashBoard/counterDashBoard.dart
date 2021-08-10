@@ -68,7 +68,7 @@ class _CounterDashBoardState extends State<CounterDashBoard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.bgColor,
+      backgroundColor: AppTheme.yellowColor,
       body: Consumer<DashboardNotifier>(
         builder:(ctx,db,c)=> Stack(
           children: [

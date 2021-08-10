@@ -94,6 +94,8 @@ import 'package:quarry/widgets/loader.dart';
 import 'package:quarry/widgets/navigationBarIcon.dart';
 import 'package:quarry/widgets/dateRangePicker.dart' as DateRagePicker;
 
+import 'dieselDashBoard/dieselDashBoard.dart';
+
 class DashBoardHome extends StatefulWidget {
 
   VoidCallback drawerCallback;
@@ -110,14 +112,14 @@ class _DashBoardHomeState extends State<DashBoardHome> {
 
   @override
   void initState() {
-    Provider.of<DashboardNotifier>(context,listen: false).currentSaleDbHit(context,
-        "Sale",
-        DateFormat("yyyy-MM-dd").format(DateTime.now().subtract(Duration(days: 6))).toString(),
-        DateFormat("yyyy-MM-dd").format(DateTime.now()).toString()
-    );
+
     WidgetsBinding.instance.addPostFrameCallback((_){
       silverController=new ScrollController();
-
+      Provider.of<DashboardNotifier>(context,listen: false).currentSaleDbHit(context,
+          "Sale",
+          DateFormat("yyyy-MM-dd").format(DateTime.now().subtract(Duration(days: 6))).toString(),
+          DateFormat("yyyy-MM-dd").format(DateTime.now()).toString()
+      );
       setState(() {
         silverBodyTopMargin=0;
       });
@@ -323,6 +325,12 @@ class _DashBoardHomeState extends State<DashBoardHome> {
                         }
                         else if(i==4){
                           Navigator.push(context, MaterialPageRoute(builder: (context)=>CounterDashBoard()));
+                        }
+                        else if(i==5){
+                     //     Navigator.push(context, MaterialPageRoute(builder: (context)=>CounterDashBoard()));
+                        }
+                        else if(i==6){
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>DieselDashBoard()));
                         }
 
                       },

@@ -41,7 +41,9 @@ class AddButton extends StatelessWidget {
 
 class CancelButton extends StatelessWidget {
   VoidCallback ontap;
-  CancelButton({this.ontap});
+  Color bgColor;
+  Color iconColor;
+  CancelButton({this.ontap,this.bgColor=Colors.white,this.iconColor=AppTheme.addNewTextFieldFocusBorder});
 
   @override
   Widget build(BuildContext context) {
@@ -55,10 +57,10 @@ class CancelButton extends StatelessWidget {
         margin: EdgeInsets.only(left: 20,right: 10),
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: Colors.white,
+          color: bgColor,
         ),
         child: Center(
-          child: Icon(Icons.clear,color: AppTheme.addNewTextFieldFocusBorder,size: 18,),
+          child: Icon(Icons.clear,color: iconColor,size: 18,),
         ),
       ),
     );;
