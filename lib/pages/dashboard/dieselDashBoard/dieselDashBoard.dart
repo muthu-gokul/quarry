@@ -14,8 +14,8 @@ import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/arrowBack.dart';
 import 'package:quarry/widgets/bottomBarAddButton.dart';
 import 'package:quarry/widgets/charts/highChart/high_chart.dart';
-import 'package:quarry/widgets/circleProgressBar.dart';
-import 'package:quarry/widgets/circularBar.dart';
+import 'package:quarry/widgets/circularProgress/circleProgressBar.dart';
+import 'package:quarry/widgets/circularProgress/circularBar.dart';
 import 'package:quarry/widgets/fittedText.dart';
 import 'package:quarry/widgets/loader.dart';
 import 'package:quarry/widgets/navigationBarIcon.dart';
@@ -228,7 +228,8 @@ class _DieselDashBoardState extends State<DieselDashBoard> {
                                        defaultRenderer: new charts.ArcRendererConfig(
                                            arcWidth: 30, startAngle: 4 / 5 * pi, arcLength: 7 / 5 * pi)
                                    ),
-                                   *//* child: Transform.rotate(
+                                   */
+                                /* child: Transform.rotate(
                                       angle: 110,
                                       child: CircleProgressBar(
                                         extraStrokeWidth: 10,
@@ -252,8 +253,8 @@ class _DieselDashBoardState extends State<DieselDashBoard> {
                                           BoxShadow(
                                             color: AppTheme.yellowColor.withOpacity(0.4),
                                             spreadRadius: 1,
-                                            blurRadius: 7,
-                                            offset: Offset(0, 13), // changes position of shadow
+                                            blurRadius: 20,
+                                            offset: Offset(5, 10), // changes position of shadow
                                           )
                                         ]
                                     ),

@@ -266,7 +266,7 @@ class DashboardNotifier extends ChangeNotifier{
       await call.ApiCallGetInvoke(body,context).then((value) {
         if(value!=null){
           var parsed=json.decode(value);
-          log("$value");
+         // log("$value");
           if(typeName=='Sale'){
             saleT=parsed['Table'][0];
             saleData=parsed['Table1'] as List;
@@ -299,7 +299,11 @@ class DashboardNotifier extends ChangeNotifier{
           else if(typeName=='Attendance'){
             totalAbsent=0;
             totalPresent=0;
+            totalEmployee=1;
             totalEmployee=parsed['Table'][0]['TotalEmployee'];
+            if(totalEmployee<=0){
+              totalEmployee=1;
+            }
             var t1=parsed['Table1'] as List;
             t1.forEach((element) {
               if(element['Status']==0){
@@ -309,8 +313,8 @@ class DashboardNotifier extends ChangeNotifier{
                 totalPresent=element['TotalCount'];
               }
               });
+            todayAttendanceListT2=parsed['Table2'] as List;
             updateisLoad(false);
-            updateAttendanceChart();
           }
           else if(typeName=='Counter'){
             counterList=parsed['Table'] as List;
@@ -502,11 +506,12 @@ getSaleDetail(){
  }
 
 getSaleMaterialDetail(List<dynamic> data,String date,BuildContext context){
-  print(data);
-  print(date);
-  try{
+ // print(data);
+ // print(date);
+   try{
     salesMaterialHighChart='''
-      Highcharts.chart('chart', {
+
+      {
     chart:{
       height:250,
     },
@@ -587,17 +592,25 @@ getSaleMaterialDetail(List<dynamic> data,String date,BuildContext context){
             fillColor: 'white'
         }
     },  ]
-});
+}
+
      
   ''';
-  }catch(e,t){
-  //  CustomAlert().commonErrorAlert2(context, e, t.toString());
+    updateisSaleMaterialChartLoad(true);
+    Timer(Duration(milliseconds: 500), (){
+      updateisSaleMaterialChartLoad(false);
+    });
+  }
+  catch(e,t){
+
+    /* updateisSaleMaterialChartLoad(true);
+     Timer(Duration(milliseconds: 500), (){
+       updateisSaleMaterialChartLoad(false);
+     });
+    CustomAlert().commonErrorAlert2(context, e, t.toString());*/
   }
 
-  updateisSaleMaterialChartLoad(true);
-  Timer(Duration(milliseconds: 500), (){
-    updateisSaleMaterialChartLoad(false);
-  });
+
 }
 
 
@@ -655,26 +668,9 @@ Map totalDiesel={};
   }
 
 //Attendance DashBoard
-  int totalEmployee,totalPresent,totalAbsent=0;
-  List<charts.Series> attendanceSeriesList=[];
-  updateAttendanceChart(){
-      attendanceSeriesList=[
-        new charts.Series<LinearSales, int>(
-          id: 'Sales',
-          domainFn: (LinearSales sales, _) => sales.year,
-          measureFn: (LinearSales sales, _) => sales.sales,
-          colorFn: (LinearSales sales, _) => charts.Color.fromHex(code: sales.hex),
-          data: [
-            new LinearSales(0, totalAbsent,"#DA4F48"),
-            new LinearSales(1, totalPresent,"#51A17C"),
-
-          ],
-        )
-      ];
-      Timer(Duration(milliseconds: 500), (){
-      //  notifyListeners();
-      });
-  }
+  int totalEmployee=1;
+  int  totalPresent,totalAbsent=0;
+  List<dynamic> todayAttendanceListT2=[];
 
 
  bool isLoad=false;

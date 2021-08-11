@@ -95,4 +95,5 @@ static BoxShadow yellowShadow=  BoxShadow(
 
   //DashBoard
   static const Color dashCalendar=Color(0xFFCDCDCD);
+  static const Color attendanceDashText1=Color(0xFF949494);
 }

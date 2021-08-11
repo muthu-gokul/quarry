@@ -184,7 +184,7 @@ class _SalesMaterialState extends State<SalesMaterial> {
                               ),
                             ),
                           ),
-                          Row(
+                          /*Row(
                             children: [
                               InkWell(
                                 onTap:(){
@@ -200,7 +200,7 @@ class _SalesMaterialState extends State<SalesMaterial> {
                                 child: Container(
                                   width: tabWidth*0.33,
                                   height: 50,
-                                  color: Colors.transparent,
+                                  color: Colors.red,
                                   child: Center(
                                       child: Text("Week",style: TextStyle(fontFamily: 'RR',fontSize: 14,color:position==5?AppTheme.bgColor: Colors.grey),)
 
@@ -221,7 +221,7 @@ class _SalesMaterialState extends State<SalesMaterial> {
                                 child: Container(
                                   width: tabWidth*0.33,
                                   height: 50,
-                                  color: Colors.transparent,
+                                  color: Colors.yellow,
                                   child: Center(
                                       child: Text("Month",style: TextStyle(fontFamily: 'RR',fontSize: 14,color:position==tabWidth*0.33?AppTheme.bgColor:  Colors.grey),)
                                   ),
@@ -229,6 +229,75 @@ class _SalesMaterialState extends State<SalesMaterial> {
                               ),
                               InkWell(
                                 onTap:(){
+                                  setState(() {
+                                    position=tabWidth*0.66;
+                                  });
+                                  db.getSaleMaterialDetail(
+                                    widget.yearList.map((e) => e['TotalSale']).toList(),
+                                    json.encode(widget.yearList.map((e) => e['Year']).toList()),
+                                    context
+                                  );
+                                },
+                                child: Container(
+                                  width: tabWidth*0.33,
+                                  height: 50,
+                                  color: Colors.green,
+                                  child: Center(
+                                      child: Text("Year",style: TextStyle(fontFamily: 'RR',fontSize: 14,color:position==tabWidth*0.66?AppTheme.bgColor: Colors.grey),)
+                                  ),
+                                ),
+                              ),
+
+                            ],
+                          ),*/
+                          Row(
+                            children: [
+                              GestureDetector(
+                                behavior:HitTestBehavior.translucent,
+                                onTap:db.isSaleMaterialChartLoad?null:(){
+                                  setState(() {
+                                    position=5;
+                                  });
+                                  db.getSaleMaterialDetail(
+                                    widget.weekList.map((e) => e['TotalSale']).toList(),
+                                    json.encode(widget.weekList.map((e) => e['WeekDay'].toString().substring(0,3)).toList()),
+                                    context
+                                  );
+                                },
+                                child: Container(
+                                  width: tabWidth*0.33,
+                                  height: 50,
+                                  color: Colors.transparent,
+                                  child: Center(
+                                      child: Text("Week",style: TextStyle(fontFamily: 'RR',fontSize: 14,color:position==5?AppTheme.bgColor: Colors.grey),)
+
+                                  ),
+                                ),
+                              ),
+                              GestureDetector(
+                                behavior:HitTestBehavior.translucent,
+                                onTap:db.isSaleMaterialChartLoad?null:(){
+                                  setState(() {
+                                    position=tabWidth*0.33;
+                                  });
+                                  db.getSaleMaterialDetail(
+                                    widget.monthList.map((e) => e['TotalSale']).toList(),
+                                    json.encode(widget.monthList.map((e) => e['MName']).toList()),
+                                    context
+                                  );
+                                },
+                                child: Container(
+                                  width: tabWidth*0.33,
+                                  height: 50,
+                                  color: Colors.transparent,
+                                  child: Center(
+                                      child: Text("Month",style: TextStyle(fontFamily: 'RR',fontSize: 14,color:position==tabWidth*0.33?AppTheme.bgColor:  Colors.grey),)
+                                  ),
+                                ),
+                              ),
+                              GestureDetector(
+                                behavior:HitTestBehavior.translucent,
+                                onTap:db.isSaleMaterialChartLoad?null:(){
                                   setState(() {
                                     position=tabWidth*0.66;
                                   });
@@ -262,7 +331,7 @@ class _SalesMaterialState extends State<SalesMaterial> {
                       child: HighCharts(
                         data: db.salesMaterialHighChart,
                         isHighChart: true,
-                        isHighChartExtraParam: true,
+                        isHighChartExtraParam: false,
                         isLoad: db.isSaleMaterialChartLoad,
                       ),
                     ),

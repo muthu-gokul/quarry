@@ -1,5 +1,6 @@
 
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -13,6 +14,8 @@ import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/arrowBack.dart';
 import 'package:quarry/widgets/bottomBarAddButton.dart';
 import 'package:quarry/widgets/charts/highChart/high_chart.dart';
+import 'package:quarry/widgets/circularProgress/circleProgressBar.dart';
+import 'package:quarry/widgets/circularProgress/circleProgressBar2.dart';
 import 'package:quarry/widgets/fittedText.dart';
 import 'package:quarry/widgets/loader.dart';
 import 'package:quarry/widgets/navigationBarIcon.dart';
@@ -31,7 +34,7 @@ class _AttendanceDashBoardState extends State<AttendanceDashBoard> {
   double silverBodyTopMargin=0;
   List<DateTime> picked=[];
   int selIndex=-1;
-
+  List<charts.Series> seriesList=[];
   @override
   void initState() {
     Provider.of<DashboardNotifier>(context,listen: false).DashBoardDbHit(context,
@@ -39,6 +42,20 @@ class _AttendanceDashBoardState extends State<AttendanceDashBoard> {
         DateFormat("yyyy-MM-dd").format(DateTime.now().subtract(Duration(days: 6))).toString(),
         DateFormat("yyyy-MM-dd").format(DateTime.now()).toString()
     );
+    setState(() {
+      seriesList=[
+        new charts.Series<GaugeSegment, String>(
+          id: 'Segments',
+          domainFn: (GaugeSegment segment, _) => segment.segment,
+          measureFn: (GaugeSegment segment, _) => segment.size,
+          colorFn: (GaugeSegment sales, _) => charts.Color.fromHex(code: sales.hex),
+          data:  [
+            new GaugeSegment('Low', 75,'#F8C85A'),
+            new GaugeSegment('high', 25,'#CACACA'),
+          ],
+        )
+      ];
+    });
     WidgetsBinding.instance.addPostFrameCallback((_){
       silverController=new ScrollController();
 
@@ -151,6 +168,7 @@ class _AttendanceDashBoardState extends State<AttendanceDashBoard> {
               },
               body: Container(
                 width: SizeConfig.screenWidth,
+                height: SizeConfig.screenHeight,
                 clipBehavior: Clip.antiAlias,
                 margin: EdgeInsets.only(top: silverBodyTopMargin),
                // padding: EdgeInsets.only(top: 30,bottom: 30),
@@ -158,7 +176,7 @@ class _AttendanceDashBoardState extends State<AttendanceDashBoard> {
                   borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10)),
                   color: Color(0xFFF6F7F9),
                 ),
-                child: ListView(
+                child: Column(
                   children: [
                     Container(
                       height: 50,
@@ -244,19 +262,36 @@ class _AttendanceDashBoardState extends State<AttendanceDashBoard> {
                         ],
                       ),
                     ),
+
                     Align(
                       alignment: Alignment.center,
                       child: Container(
-                        height: 200,
-                        width: 200,
-                 //       color: Colors.red,
-                        child: charts.PieChart(db.attendanceSeriesList,
-                            animate: true,
-                            defaultRenderer: new charts.ArcRendererConfig(arcWidth: 10),
-
+                        height:180,
+                        child: CircleProgressBar2(
+                          extraStrokeWidth: 4,
+                          innerStrokeWidth: 4,
+                          backgroundColor: Color(0xFFd7d7d7),
+                        //  foregroundColor: Color(0xFFF1B240),
+                          foregroundColor: Colors.red,
+                    //    value: 0.00,
+                     //   value2: 0.6,
+                          value: (db.totalPresent/db.totalEmployee).toDouble(),
+                          value2: (db.totalAbsent/db.totalEmployee).toDouble(),
+                          center: Container(
+                            alignment: Alignment.center,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text("${db.totalEmployee} Staff",style: TextStyle(fontFamily: 'RM',color: AppTheme.attendanceDashText1,fontSize: 14),)
+                              ],
+                            ),
+                          ),
                         ),
                       ),
                     ),
+                    SizedBox(height: 20,),
+
+
                     Align(
                       alignment: Alignment.center,
                       child: RichText(
@@ -270,14 +305,70 @@ class _AttendanceDashBoardState extends State<AttendanceDashBoard> {
                           ],
                         ),
                       ),
-                    )
-
-
+                    ),
+                    SizedBox(height: 10,),
+                    Expanded(
+                    //  height: (db.todayAttendanceListT2.length)*60.0,
+                    //  width: double.maxFinite,
+                      child: ListView.builder(
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: db.todayAttendanceListT2.length,
+                        itemBuilder: (ctx,i){
+                          return Container(
+                           // height: 50,
+                            margin: EdgeInsets.only(left: 10,right: 10,top: 10),
+                            padding: EdgeInsets.only(left: 10,right: 10,top: 7,bottom: 7),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: Colors.white
+                            ),
+                            child: Row(
+                              children: [
+                                Container(
+                                  height: 35,
+                                  width: 35,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                   //   color: Colors.red
+                                  ),
+                                  child: Image.asset("assets/svg/drawer/avatar.png",fit: BoxFit.cover),
+                                ),
+                                SizedBox(width: 10,),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                        width:(SizeConfig.screenWidth-40)*0.6,
+                                        child: Text("${db.todayAttendanceListT2[i]['Employee']}",
+                                          style: TextStyle(fontSize: 12,color: AppTheme.attendanceDashText1,fontFamily: 'RM'),
+                                        )
+                                    ),
+                                    SizedBox(height: 3,),
+                                    Row(
+                                      children: [
+                                        SvgPicture.asset("assets/svg/drawer/reports/receivablePayment.svg",height: 15,),
+                                        Text("  ${db.todayAttendanceListT2[i]['PerdaySalary']}",
+                                          style: TextStyle(fontSize: 12,color: AppTheme.attendanceDashText1,fontFamily: 'RR'),
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                )
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                    SizedBox(height: 20,),
                   ],
                 ),
               ),
             ),
-            db.counterList.isEmpty?Container(
+
+
+           /* db.counterList.isEmpty?Container(
               width: SizeConfig.screenWidth,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -291,7 +382,7 @@ class _AttendanceDashBoardState extends State<AttendanceDashBoard> {
 
                 ],
               ),
-            ):Container(),
+            ):Container(),*/
             Loader(
               isLoad: db.isLoad,
             )
