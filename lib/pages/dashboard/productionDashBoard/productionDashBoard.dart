@@ -207,6 +207,7 @@ class _ProductionDashBoardState extends State<ProductionDashBoard> {
                               backgroundColor: Color(0xFFd7d7d7),
                               foregroundColor: Color(0xFFF1B240),
                               value: (( db.productionInputMaterialsT[selIndex]['InputMaterialQuantity']/db.totalProductionQty)),
+                              center: Container(),
                             ),
                           ),
                         ),
@@ -264,6 +265,7 @@ class _ProductionDashBoardState extends State<ProductionDashBoard> {
                                           backgroundColor: Color(0xFFd7d7d7),
                                           foregroundColor: Color(0xFFF1B240),
                                           value: (( db.outputMaterials[i]['OutputMaterialPercentage'])/100),
+                                          center: Container(),
                                         ),
                                       ),
                                       Positioned(

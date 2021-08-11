@@ -34,7 +34,7 @@ class _AttendanceDashBoardState extends State<AttendanceDashBoard> {
   double silverBodyTopMargin=0;
   List<DateTime> picked=[];
   int selIndex=-1;
-  List<charts.Series> seriesList=[];
+
   @override
   void initState() {
     Provider.of<DashboardNotifier>(context,listen: false).DashBoardDbHit(context,
@@ -42,20 +42,7 @@ class _AttendanceDashBoardState extends State<AttendanceDashBoard> {
         DateFormat("yyyy-MM-dd").format(DateTime.now().subtract(Duration(days: 6))).toString(),
         DateFormat("yyyy-MM-dd").format(DateTime.now()).toString()
     );
-    setState(() {
-      seriesList=[
-        new charts.Series<GaugeSegment, String>(
-          id: 'Segments',
-          domainFn: (GaugeSegment segment, _) => segment.segment,
-          measureFn: (GaugeSegment segment, _) => segment.size,
-          colorFn: (GaugeSegment sales, _) => charts.Color.fromHex(code: sales.hex),
-          data:  [
-            new GaugeSegment('Low', 75,'#F8C85A'),
-            new GaugeSegment('high', 25,'#CACACA'),
-          ],
-        )
-      ];
-    });
+
     WidgetsBinding.instance.addPostFrameCallback((_){
       silverController=new ScrollController();
 

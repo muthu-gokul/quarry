@@ -10,6 +10,7 @@ class CircleProgressBar extends StatefulWidget {
   final double value;
   final double extraStrokeWidth;
   final double innerStrokeWidth;
+  final Widget center;
 
   const CircleProgressBar({
     Key key,
@@ -17,6 +18,7 @@ class CircleProgressBar extends StatefulWidget {
     this.backgroundColor,
     this.extraStrokeWidth=3.0,
     this.innerStrokeWidth=3.0,
+    this.center,
     @required this.foregroundColor,
     @required this.value,
   }) : super(key: key);
@@ -113,7 +115,7 @@ class CircleProgressBarState extends State<CircleProgressBar> with SingleTickerP
       aspectRatio: 1,
       child: AnimatedBuilder(
         animation: this.curve,
-        child: Container(),
+        child: widget.center,
         builder: (context, child) {
           final backgroundColor = this.backgroundColorTween?.evaluate(this.curve) ?? this.widget.backgroundColor;
           final foregroundColor = this.foregroundColorTween?.evaluate(this.curve) ?? this.widget.foregroundColor;

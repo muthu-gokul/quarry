@@ -82,6 +82,7 @@ import 'package:provider/provider.dart';
 import 'package:quarry/notifier/dashboardNotifier.dart';
 import 'package:quarry/pages/dashboard/attendanceDashBoard/attendanceDashBoard.dart';
 import 'package:quarry/pages/dashboard/counterDashBoard/counterDashBoard.dart';
+import 'package:quarry/pages/dashboard/invoiceDashBoard/invoiceDashBoard.dart';
 import 'package:quarry/pages/dashboard/productionDashBoard/productionDashBoard.dart';
 import 'package:quarry/pages/dashboard/purchaseDashBoard/purchaseDashBoard.dart';
 import 'package:quarry/pages/dashboard/saleDashBoard/salesDashBoard.dart';
@@ -349,7 +350,7 @@ class _DashBoardHomeState extends State<DashBoardHome> {
                           Navigator.push(context, MaterialPageRoute(builder: (context)=>DieselDashBoard()));
                         }
                         else if(i==7){
-
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>InvoiceDashBoard()));
                         }
 
                       },
