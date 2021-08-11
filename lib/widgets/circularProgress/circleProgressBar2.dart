@@ -117,30 +117,6 @@ class CircleProgressBarState2 extends State<CircleProgressBar2> with TickerProvi
         },
       ),
     );
-    return AspectRatio(
-      aspectRatio: 1,
-      child: AnimatedBuilder(
-        animation: this.curve,
-        child: Container(),
-        builder: (context, child) {
-          final backgroundColor = this.backgroundColorTween?.evaluate(this.curve) ?? this.widget.backgroundColor;
-          final foregroundColor = this.foregroundColorTween?.evaluate(this.curve) ?? this.widget.foregroundColor;
-
-          return CustomPaint(
-            child: child,
-            foregroundPainter: CircleProgressBarPainter(
-                backgroundColor: backgroundColor,
-                foregroundColor: foregroundColor,
-                percentage: this.valueTween.evaluate(this.curve),
-                extraStrokeWidth: widget.extraStrokeWidth,
-                innerStrokeWidth: widget.innerStrokeWidth,
-                percentage2: widget.value2
-               // percentage2:this.valueTween2.evaluate(this.curve2),
-            ),
-          );
-        },
-      ),
-    );
   }
 }
 
@@ -162,7 +138,9 @@ class CircleProgressBarPainter extends CustomPainter {
     @required this.percentage2,
     double strokeWidth,
   }) : this.strokeWidth = strokeWidth ?? 6;
-
+  static double convertRadiusToSigma(double radius) {
+    return radius * 0.57735 + 0.5;
+  }
   @override
   void paint(Canvas canvas, Size size) {
     final Offset center = size.center(Offset.zero);
@@ -174,13 +152,17 @@ class CircleProgressBarPainter extends CustomPainter {
       ..color = Colors.green
       ..strokeWidth = this.strokeWidth+this.extraStrokeWidth
       ..strokeCap = StrokeCap.round
-      ..style = PaintingStyle.stroke;
+      ..style = PaintingStyle.stroke
+      ..maskFilter=MaskFilter.blur(BlurStyle.solid, convertRadiusToSigma(4))
+    ;
 
     final foregroundPaint2 = Paint()
       ..color = Colors.red
       ..strokeWidth = this.strokeWidth+this.extraStrokeWidth
       ..strokeCap = StrokeCap.round
-      ..style = PaintingStyle.stroke;
+      ..style = PaintingStyle.stroke
+      ..maskFilter=MaskFilter.blur(BlurStyle.solid, convertRadiusToSigma(4))
+    ;
 
     final radius = (shortestSide / 2);
 
@@ -226,5 +208,24 @@ class CircleProgressBarPainter extends CustomPainter {
         oldPainter.backgroundColor != this.backgroundColor ||
         oldPainter.foregroundColor != this.foregroundColor ||
         oldPainter.strokeWidth != this.strokeWidth;
+  }
+}
+
+class BoxShadowPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    Path path = Path();
+    // here are my custom shapes
+    path.moveTo(size.width, size.height * 0.14);
+    path.lineTo(size.width, size.height * 1.0);
+    path.lineTo(size.width - (size.width  *0.99) , size.height);
+    path.close();
+
+    canvas.drawShadow(path, Colors.black45, 3.0, false);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) {
+    return true;
   }
 }

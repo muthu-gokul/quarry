@@ -266,7 +266,7 @@ class DashboardNotifier extends ChangeNotifier{
       await call.ApiCallGetInvoke(body,context).then((value) {
         if(value!=null){
           var parsed=json.decode(value);
-         // log("$value");
+        //  log("$value");
           if(typeName=='Sale'){
             saleT=parsed['Table'][0];
             saleData=parsed['Table1'] as List;
@@ -343,6 +343,9 @@ class DashboardNotifier extends ChangeNotifier{
            // updateSeriesList();
             updateisLoad(false);
             sl(voidCallback);
+          }
+          else{
+            updateisLoad(false);
           }
 
         }

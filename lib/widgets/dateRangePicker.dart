@@ -5,6 +5,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:quarry/styles/constants.dart';
 
 
 
@@ -24,15 +25,15 @@ enum DatePickerMode {
   year,
 }
 
-const double _kDatePickerHeaderPortraitHeight = 72.0;
+const double _kDatePickerHeaderPortraitHeight = 55.0;
 const double _kDatePickerHeaderLandscapeWidth = 168.0;
 
 const Duration _kMonthScrollDuration = Duration(milliseconds: 200);
-const double _kDayPickerRowHeight = 42.0;
+const double _kDayPickerRowHeight = 40.0;
 const int _kMaxDayPickerRowCount = 6; // A 31 day month that starts on Saturday.
 // Two extra rows: one for the day-of-week header and one for the month header.
 const double _kMaxDayPickerHeight =
-    _kDayPickerRowHeight * (_kMaxDayPickerRowCount + 2);
+    (_kDayPickerRowHeight * (_kMaxDayPickerRowCount + 2));
 
 const double _kMonthPickerPortraitWidth = 330.0;
 const double _kMonthPickerLandscapeWidth = 344.0;
@@ -85,17 +86,17 @@ class _DatePickerHeader extends StatelessWidget {
         break;
     }
     final TextStyle dayStyle =
-    headerTextTheme.display1.copyWith(color: dayColor, height: 1.4);
+    headerTextTheme.display1.copyWith(color: headerText,fontSize: 30);
     final TextStyle yearStyle =
-    headerTextTheme.subhead.copyWith(color: yearColor, height: 1.4);
+    headerTextTheme.subhead.copyWith(color: headerText.withOpacity(0.9),fontSize: 13 );
 
     Color backgroundColor;
     switch (themeData.brightness) {
       case Brightness.light:
-        backgroundColor = themeData.primaryColor;
+        backgroundColor = headerBg;
         break;
       case Brightness.dark:
-        backgroundColor = themeData.backgroundColor;
+        backgroundColor = headerBg;
         break;
     }
 
@@ -106,7 +107,7 @@ class _DatePickerHeader extends StatelessWidget {
       case Orientation.portrait:
         width = _kMonthPickerPortraitWidth;
         height = _kDatePickerHeaderPortraitHeight;
-        padding = const EdgeInsets.symmetric(horizontal: 8.0);
+        padding = const EdgeInsets.symmetric(horizontal: 8.0,vertical: 8);
         break;
       case Orientation.landscape:
         height = _kDatePickerLandscapeHeight;
@@ -153,6 +154,7 @@ class _DatePickerHeader extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         renderYearButton(selectedFirstDate),
+        SizedBox(height: 2,),
         renderDayButton(selectedFirstDate),
       ],
     );
@@ -161,6 +163,7 @@ class _DatePickerHeader extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.end,
       children: <Widget>[
         renderYearButton(selectedLastDate),
+        SizedBox(height: 2,),
         renderDayButton(selectedLastDate),
       ],
     )
@@ -444,7 +447,7 @@ class DayPicker extends StatelessWidget {
             (selectableDayPredicate != null &&
                 !selectableDayPredicate(dayToBuild));
         BoxDecoration decoration;
-        TextStyle itemStyle = themeData.textTheme.body1;
+        TextStyle itemStyle = TextStyle(color: dayColor);
         final bool isSelectedFirstDay = selectedFirstDate.year == year &&
             selectedFirstDate.month == month &&
             selectedFirstDate.day == day;
@@ -459,42 +462,41 @@ class DayPicker extends StatelessWidget {
             : null;
         if (isSelectedFirstDay &&
             (isSelectedLastDay == null || isSelectedLastDay)) {
-          itemStyle = themeData.accentTextTheme.body2;
+          itemStyle = TextStyle(color: dayColor);
           decoration = new BoxDecoration(
-              color: themeData.accentColor, shape: BoxShape.circle);
+              color:selectedDay, shape: BoxShape.circle);
         } else if (isSelectedFirstDay) {
           // The selected day gets a circle background highlight, and a contrasting text color.
-          itemStyle = themeData.accentTextTheme.body2;
+          itemStyle =  TextStyle(color: dayColor);
           decoration = new BoxDecoration(
-              color: themeData.accentColor,
+              color: selectedDay,
               borderRadius: BorderRadius.only(
                 topLeft: new Radius.circular(50.0),
                 bottomLeft: new Radius.circular(50.0),
               ));
         } else if (isSelectedLastDay != null && isSelectedLastDay) {
-          itemStyle = themeData.accentTextTheme.body2;
+          itemStyle =  TextStyle(color: dayColor);
           decoration = new BoxDecoration(
-              color: themeData.accentColor,
+              color: selectedDay,
               borderRadius: BorderRadius.only(
                 topRight: new Radius.circular(50.0),
                 bottomRight: new Radius.circular(50.0),
               ));
         } else if (isInRange != null && isInRange) {
           decoration = new BoxDecoration(
-              color: themeData.accentColor.withOpacity(0.1),
+              color: selectedDay.withOpacity(0.1),
               shape: BoxShape.rectangle);
         } else if (disabled) {
-          itemStyle = themeData.textTheme.body1
-              .copyWith(color: themeData.disabledColor);
+          itemStyle =  TextStyle(color: dayColor.withOpacity(0.3));
         } else if (currentDate.year == year &&
             currentDate.month == month &&
             currentDate.day == day) {
           // The current day gets a different text color.
-          itemStyle =
-              themeData.textTheme.body2.copyWith(color: themeData.accentColor);
+          itemStyle = TextStyle(color: dayColor);
         }
 
         Widget dayWidget = new Container(
+
           decoration: decoration,
           child: new Center(
             child: new Semantics(
@@ -1141,22 +1143,25 @@ class _DatePickerDialogState extends State<_DatePickerDialog> {
         child: _buildPicker(),
       ),
     );
-    final Widget actions = new ButtonTheme(
+    final Widget actions = SizedBox(
+      height: 50,
       child: new ButtonBar(
         children: <Widget>[
           new FlatButton(
-
-            child: new Text(localizations.cancelButtonLabel),
+            child: new Text("Cancel",style: TextStyle(color: actionText,fontSize: 15,letterSpacing: 0.2),),
             onPressed: _handleCancel,
           ),
           new FlatButton(
-            child: new Text(localizations.okButtonLabel),
+            child: new Text("Ok",style: TextStyle(color: actionText,fontSize: 15,letterSpacing: 0.2)),
             onPressed: _handleOk,
           ),
         ],
       ),
     );
-    final Dialog dialog = new Dialog(child: new OrientationBuilder(
+    final Dialog dialog = new Dialog(
+        clipBehavior: Clip.antiAlias,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+        child: new OrientationBuilder(
         builder: (BuildContext context, Orientation orientation) {
           assert(orientation != null);
           final Widget header = new _DatePickerHeader(

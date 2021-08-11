@@ -348,6 +348,9 @@ class _DashBoardHomeState extends State<DashBoardHome> {
                         else if(i==6){
                           Navigator.push(context, MaterialPageRoute(builder: (context)=>DieselDashBoard()));
                         }
+                        else if(i==7){
+
+                        }
 
                       },
                       child: Container(

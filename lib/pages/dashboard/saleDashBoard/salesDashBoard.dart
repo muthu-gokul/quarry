@@ -105,7 +105,8 @@ List<DateTime> picked=[];
                                     initialFirstDate: new DateTime.now(),
                                     initialLastDate: (new DateTime.now()),
                                     firstDate: db.dateTime,
-                                    lastDate: (new DateTime.now())
+                                    lastDate: (new DateTime.now()),
+
                                 );
                                 if (picked1 != null && picked1.length == 2) {
                                   setState(() {

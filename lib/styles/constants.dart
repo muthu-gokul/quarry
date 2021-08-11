@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 int phoneNoLength=10;
@@ -7,3 +8,12 @@ var formatCurrency = NumberFormat.currency(locale: 'HI',name: "");
 RegExp regEx = RegExp('[0-9.]');
 
 String addressReg='[A-Za-z0-9,-_@ ]';
+
+
+
+//Multi Date Selector Color
+Color headerBg=Color(0xFFFFC010);
+Color headerText=Color(0xFF3B3B3D);
+Color actionText=Color(0xFF979797);
+Color selectedDay=Color(0xFFFFC010);
+Color dayColor=Colors.grey[700];
