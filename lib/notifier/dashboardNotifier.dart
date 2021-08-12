@@ -32,7 +32,7 @@ class DashboardNotifier extends ChangeNotifier{
 
   //Current Sales Dashboard
   Map? currentSaleT={};
-  List<dynamic>? currentSaleData;
+  List<dynamic> currentSaleData=[];
   String currentSalesApex='';
   Future<dynamic> currentSaleDbHit(BuildContext context,String typeName,String fromDate,String toDate) async {
     updateisLoad(true);
@@ -77,12 +77,12 @@ class DashboardNotifier extends ChangeNotifier{
           var parsed=json.decode(value);
           if(typeName=='Sale'){
             currentSaleT=parsed['Table'][0];
-            currentSaleData=parsed['Table1'] as List?;
+            currentSaleData=parsed['Table1'] as List;
             currentSalesApex='''
        var options = {
         series: [{
             name: 'Sales',
-            data: ${currentSaleData!.map((e) => e['TotalSale']).toList()}
+            data: ${currentSaleData.map((e) => e['TotalSale']).toList()}
         }],
          title: {
               text: 'Sale',
@@ -203,13 +203,14 @@ class DashboardNotifier extends ChangeNotifier{
     var chart = new ApexCharts(document.querySelector("#chart"), options);
     chart.render();
   ''';
+            updateisLoad(false);
 
-            updateisChartLoad(true);
+           /* updateisChartLoad(true);
             Timer(Duration(milliseconds: 500), (){
               updateisChartLoad(false);
               updateisLoad(false);
             });
-            currentSaleReload();
+            currentSaleReload();*/
           }
 
         }
@@ -360,7 +361,7 @@ class DashboardNotifier extends ChangeNotifier{
 
   Future<dynamic> DashBoardDbHit(BuildContext context,String typeName,String fromDate,String toDate, {VoidCallback? voidCallback}) async {
   updateisLoad(true);
-
+  saleData.clear();
     var body={
       "Fields": [
         {
@@ -404,14 +405,15 @@ class DashboardNotifier extends ChangeNotifier{
         //  log("$value");
           if(typeName=='Sale'){
             saleT=parsed['Table'][0];
-            saleData=parsed['Table1'] as List?;
+            saleData=parsed['Table1'] as List;
             saleT2=parsed['Table2'] as List?;
             saleMaterialWeeklyT3=parsed['Table3'] as List?;
             saleMaterialMonthlyT4=parsed['Table4'] as List?;
             saleMaterialYearT5=parsed['Table5'] as List?;
             salePaymentCategoryT6=parsed['Table6'] as List?;
             salePaymentCustomerT7=parsed['Table7'] as List?;
-            getSaleDetail();
+            updateisLoad(false);
+          //  getSaleDetail();
           }
           else if(typeName=='Purchase'){
             updateisLoad(false);
@@ -500,7 +502,7 @@ class DashboardNotifier extends ChangeNotifier{
 
 //Sales Dashboard
 Map? saleT={};
-List<dynamic>? saleData=[];
+List<dynamic> saleData=[];
 List<dynamic>? saleT2=[];
 List<dynamic>? saleMaterialWeeklyT3=[];
 List<dynamic>? saleMaterialMonthlyT4=[];
@@ -514,7 +516,7 @@ getSaleDetail(){
        var options = {
         series: [{
             name: 'Sales',
-            data: ${saleData!.map((e) => e['TotalSale']).toList()}
+            data: ${saleData.map((e) => e['TotalSale']).toList()}
         }],
          title: {
               text: 'Sale',
@@ -618,7 +620,7 @@ getSaleDetail(){
             },
         },
          xaxis: {
-          categories: ${json.encode(saleData!.map((e) => DateFormat("MMMd").format(DateTime.parse(e['Date']))).toList())}
+          categories: ${json.encode(saleData.map((e) => DateFormat("MMMd").format(DateTime.parse(e['Date']))).toList())}
         },
        
 
@@ -735,7 +737,7 @@ getSaleMaterialDetail(List<dynamic> data,String date,BuildContext context){
      
   ''';
     updateisSaleMaterialChartLoad(true);
-    Timer(Duration(milliseconds: 500), (){
+    Timer(Duration(milliseconds: 300), (){
       updateisSaleMaterialChartLoad(false);
     });
   }

@@ -1,77 +1,3 @@
-/*import 'dart:async';
-import 'dart:io';
-
-import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:provider/provider.dart';
-import 'package:quarry/notifier/dashboardNotifier.dart';
-import 'package:quarry/notifier/quarryNotifier.dart';
-import 'package:quarry/styles/app_theme.dart';
-import 'package:quarry/styles/size.dart';
-import 'package:quarry/widgets/navigationBarIcon.dart';
-
-import 'package:webview_flutter/webview_flutter.dart';
-
-
-class DashBoardHome extends StatefulWidget {
-  VoidCallback drawerCallback;
-  DashBoardHome({this.drawerCallback});
-
-  @override
-  _DashBoardHomeState createState() => _DashBoardHomeState();
-}
-
-class _DashBoardHomeState extends State<DashBoardHome> with TickerProviderStateMixin{
-  bool isEdit=false;
-  bool isListScroll=false;
-
-
-  ScrollController scrollController;
-  ScrollController listViewController;
-
-  int selectedIndex=-1;
-
-
-  List<Color> gradientColors = [
-    const Color(0xFFFFC010),
-    const Color(0xFFc99e28),
-  ];
-
-
-  @override
-  void initState() {
-    isEdit=false;
-    WidgetsBinding.instance.addPostFrameCallback((_){
-
-
-      scrollController=new ScrollController();
-      listViewController=new ScrollController();
-      setState(() {
-
-      });
-      if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
-
-
-
-
-    });
-    super.initState();
-  }
-
-
-  @override
-  Widget build(BuildContext context) {
-    SizeConfig().init(context);
-
-return Scaffold(
-        body: WebView(
-        initialUrl: 'https://s3.amazonaws.com/qmsadminpanel.com/Quarry/Views/Dashboard/dashboard.html',
-        javascriptMode: JavascriptMode.unrestricted,
-        ),
-        );
-  }
-}*/
 
 import 'dart:async';
 
@@ -95,6 +21,7 @@ import 'package:quarry/widgets/fittedText.dart';
 import 'package:quarry/widgets/loader.dart';
 import 'package:quarry/widgets/navigationBarIcon.dart';
 import 'package:quarry/widgets/dateRangePicker.dart' as DateRagePicker;
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 import 'dieselDashBoard/dieselDashBoard.dart';
 
@@ -118,13 +45,16 @@ class _DashBoardHomeState extends State<DashBoardHome> {
         "Sale",
         DateFormat("yyyy-MM-dd").format(DateTime.now().subtract(Duration(days: 6))).toString(),
         DateFormat("yyyy-MM-dd").format(DateTime.now()).toString()
-    );
+    ).then((value){
+      Timer(Duration(milliseconds: 600),(){
+        chartSeriesController?.animate();
+      });
+    });
     super.didChangeDependencies();
   }
 
   @override
   void initState() {
-
     WidgetsBinding.instance!.addPostFrameCallback((_){
       silverController=new ScrollController();
 
@@ -149,6 +79,15 @@ class _DashBoardHomeState extends State<DashBoardHome> {
       });
     });
     super.initState();
+  }
+  ChartSeriesController? chartSeriesController;
+
+  @override
+  void didUpdateWidget(covariant DashBoardHome oldWidget) {
+    Timer(Duration(milliseconds: 300),(){
+      chartSeriesController?.animate();
+    });
+    super.didUpdateWidget(oldWidget);
   }
 
   @override
@@ -279,7 +218,11 @@ class _DashBoardHomeState extends State<DashBoardHome> {
                                   "Sale",
                                   DateFormat("yyyy-MM-dd").format(DateTime.now().subtract(Duration(days: 6))).toString(),
                                   DateFormat("yyyy-MM-dd").format(DateTime.now()).toString()
-                              );
+                              ).then((value){
+                                Timer(Duration(milliseconds: 100),(){
+                                  chartSeriesController?.animate();
+                                });
+                              });
                             }, icon: Icon(Icons.refresh,color: AppTheme.dashCalendar,)),
                             SizedBox(width: 20,)
                           ],
@@ -294,11 +237,58 @@ class _DashBoardHomeState extends State<DashBoardHome> {
                           color: Color(0XFF353535),
                           width: SizeConfig.screenWidth,
                           margin:EdgeInsets.only(top: 55),
-                          child: HighCharts(
+                          child: SfCartesianChart(
+                            legend: Legend(isVisible: false, opacity: 0.7),
+                            title: ChartTitle(text: ''),
+                            plotAreaBorderWidth: 0,
+                            primaryXAxis: CategoryAxis(
+                                interval: 1,
+                                majorGridLines: const MajorGridLines(width: 0),
+                              //  minorGridLines: const MinorGridLines(width: 1,color: Colors.white),
+                                axisLine:const AxisLine(width: 1),
+                                edgeLabelPlacement: EdgeLabelPlacement.shift
+                            ),
+                            primaryYAxis: NumericAxis(
+                              labelFormat: '{value}',
+                              axisLine: const AxisLine(width: 0),
+                              majorTickLines: const MajorTickLines(size: 0),
+                              majorGridLines: const MajorGridLines(width: 0),
+                          //    minorGridLines: const MinorGridLines(width: 1,color: Colors.white),
+                            ),
+                            series:[
+                              SplineAreaSeries<dynamic, String>(
+                                animationDuration:2000,
+                                onRendererCreated: (ChartSeriesController c){
+                                  chartSeriesController=c;
+                                },
+                                dataSource: db.currentSaleData,
+                                borderColor: Color(0xFFFEBF10),
+                                borderWidth: 3,
+                                gradient: LinearGradient(
+                                  colors: [Color(0xFF343434),Color(0xFFFEBF10).withOpacity(0.5)],
+                                  begin: Alignment.bottomCenter,
+                                  end: Alignment.topCenter,
+                                //  stops: [0,30]
+                                ),
+                                name: 'Sales',
+                                xValueMapper: (dynamic sales, _) =>DateFormat("MMMd").format(DateTime.parse(sales['Date'])),
+                                yValueMapper: (dynamic sales, _) => sales['TotalSale'],
+                              ),
+                            ],
+                            tooltipBehavior: TooltipBehavior(
+                                enable: true,
+                                duration: 10000,
+                                format: "point.x : point.y",
+
+                            ),
+                          ),
+
+
+                        /*  child: HighCharts(
                             data: db.currentSalesApex,
                             isHighChart: false,
                             isLoad: db.isChartLoad,
-                          ),
+                          ),*/
                         )
                     ),
                   ),
@@ -398,17 +388,5 @@ class _DashBoardHomeState extends State<DashBoardHome> {
       ),
     );
   }
-  Route _createRoute() {
-    return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => SalesDashBoard(),
-      //pageBuilder: (context, animation, secondaryAnimation) => QuaryAddNew(),
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
 
-        return FadeTransition(
-          opacity: Tween(begin: 0.0, end: 1.0).animate(animation),
-          child: child,
-        );
-      },
-    );
-  }
 }

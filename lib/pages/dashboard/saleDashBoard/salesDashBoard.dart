@@ -21,6 +21,7 @@ import 'package:quarry/widgets/linearProgressBar.dart';
 import 'package:quarry/widgets/loader.dart';
 import 'package:quarry/widgets/navigationBarIcon.dart';
 import 'package:quarry/widgets/dateRangePicker.dart' as DateRagePicker;
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 class SalesDashBoard extends StatefulWidget {
 
@@ -42,7 +43,11 @@ class _SalesDashBoardState extends State<SalesDashBoard> {
         "Sale",
         DateFormat("yyyy-MM-dd").format(DateTime.now().subtract(Duration(days: 6))).toString(),
         DateFormat("yyyy-MM-dd").format(DateTime.now()).toString()
-    );
+    ).then((value){
+      Timer(Duration(milliseconds: 100),(){
+        chartSeriesController?.animate();
+      });
+    });
     WidgetsBinding.instance!.addPostFrameCallback((_){
       silverController=new ScrollController();
 
@@ -68,6 +73,9 @@ class _SalesDashBoardState extends State<SalesDashBoard> {
     });
     super.initState();
   }
+
+  ChartSeriesController? chartSeriesController;
+
 List<DateTime?> picked=[];
   @override
   Widget build(BuildContext context) {
@@ -111,22 +119,34 @@ List<DateTime?> picked=[];
                                 if (picked1 != null && picked1.length == 2) {
                                   setState(() {
                                     picked=picked1;
+                                  //  db.saleData.clear();
                                   });
+
                                   db.DashBoardDbHit(context,
                                       "Sale",
                                       DateFormat("yyyy-MM-dd").format(picked[0]!).toString(),
                                       DateFormat("yyyy-MM-dd").format(picked[1]!).toString()
-                                  );
+                                  ).then((value){
+                                    Timer(Duration(milliseconds: 100),(){
+                                      chartSeriesController?.animate();
+                                    });
+                                  });
                                 }
                                 else if(picked1!=null && picked1.length ==1){
                                   setState(() {
                                     picked=picked1;
+                                  //  db.saleData.clear();
                                   });
+
                                   db.DashBoardDbHit(context,
                                       "Sale",
                                       DateFormat("yyyy-MM-dd").format(picked[0]!).toString(),
                                       DateFormat("yyyy-MM-dd").format(picked[0]!).toString()
-                                  );
+                                  ).then((value){
+                                    Timer(Duration(milliseconds: 100),(){
+                                      chartSeriesController?.animate();
+                                    });
+                                  });
                                 }
                              },
                             child: SvgPicture.asset("assets/svg/calender.svg",width: 25,height: 25,color: AppTheme.dashCalendar,)
@@ -143,11 +163,58 @@ List<DateTime?> picked=[];
                         background: Container(
                           width: SizeConfig.screenWidth,
                           margin:EdgeInsets.only(top: 55),
-                          child: HighCharts(
+                          child: SfCartesianChart(
+                            legend: Legend(isVisible: false, opacity: 0.7),
+                            title: ChartTitle(text: ''),
+                            plotAreaBorderWidth: 0,
+                            primaryXAxis: CategoryAxis(
+                                interval: 1,
+                                majorGridLines: const MajorGridLines(width: 0),
+                                //  minorGridLines: const MinorGridLines(width: 1,color: Colors.white),
+                                axisLine:const AxisLine(width: 1),
+                                edgeLabelPlacement: EdgeLabelPlacement.shift
+                            ),
+                            primaryYAxis: NumericAxis(
+                              labelFormat: '{value}',
+                              axisLine: const AxisLine(width: 0),
+                              majorTickLines: const MajorTickLines(size: 0),
+                              majorGridLines: const MajorGridLines(width: 0),
+                              //    minorGridLines: const MinorGridLines(width: 1,color: Colors.white),
+                            ),
+                            series:[
+                              SplineAreaSeries<dynamic, String>(
+                                animationDuration:2000,
+
+                                onRendererCreated: (ChartSeriesController c){
+                                  chartSeriesController=c;
+                                },
+                                dataSource: db.saleData,
+                                borderColor: Color(0xFFFEBF10),
+                                borderWidth: 3,
+                                gradient: LinearGradient(
+                                  colors: [Color(0xFF343434),Color(0xFFFEBF10).withOpacity(0.5)],
+                                  begin: Alignment.bottomCenter,
+                                  end: Alignment.topCenter,
+                                  //  stops: [0,30]
+                                ),
+                                name: 'Sales',
+                                xValueMapper: (dynamic sales, _) =>DateFormat("MMMd").format(DateTime.parse(sales['Date'])),
+                                yValueMapper: (dynamic sales, _) => sales['TotalSale'],
+                              ),
+                            ],
+                            tooltipBehavior: TooltipBehavior(
+                                enable: true,
+                                duration: 10000,
+                                format: "point.x : point.y"
+                            ),
+                          ),
+
+
+                         /* child: HighCharts(
                             data: db.salesApex,
                             isHighChart: false,
                             isLoad: db.isChartLoad,
-                          ),
+                          ),*/
                         )
                     ),
                   ),

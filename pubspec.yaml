@@ -50,6 +50,8 @@ dependencies:
   google_ml_kit:
   firebase_core: ^1.4.0
   charts_flutter: ^0.11.0
+  syncfusion_flutter_charts:
+    path: ./syncfusion_flutter_charts
 
 dev_dependencies:
   flutter_test:

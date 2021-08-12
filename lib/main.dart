@@ -72,12 +72,11 @@ class MyApp extends StatelessWidget {
 
         debugShowCheckedModeBanner: false,
         home: LoginScreen(),
-        // home: MyHomePage(),
+
       ),
     );
   }
 }
-
 
 
 

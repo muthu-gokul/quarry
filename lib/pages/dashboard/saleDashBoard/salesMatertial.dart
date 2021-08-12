@@ -22,6 +22,7 @@ import 'package:quarry/widgets/linearProgressBar.dart';
 import 'package:quarry/widgets/loader.dart';
 import 'package:quarry/widgets/navigationBarIcon.dart';
 import 'package:quarry/widgets/dateRangePicker.dart' as DateRagePicker;
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 class SalesMaterial extends StatefulWidget {
 
@@ -72,12 +73,28 @@ class _SalesMaterialState extends State<SalesMaterial> {
           });
         }
       });
+
     });
     super.initState();
   }
   List<DateTime> picked=[];
   late double tabWidth;
   double position=5;
+  ChartSeriesController? chartSeriesController;
+
+  @override
+  void didChangeDependencies() {
+    Timer(Duration(milliseconds: 400),(){
+      chartSeriesController?.animate();
+    });
+    super.didChangeDependencies();
+  }
+
+  @override
+  void dispose() {
+
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -123,11 +140,56 @@ class _SalesMaterialState extends State<SalesMaterial> {
                           color: Color(0XFF353535),
                           width: SizeConfig.screenWidth,
                           margin:EdgeInsets.only(top: 55),
-                          child: HighCharts(
+                          child: SfCartesianChart(
+                            legend: Legend(isVisible: false, opacity: 0.7),
+                            title: ChartTitle(text: ''),
+                            plotAreaBorderWidth: 0,
+                            primaryXAxis: CategoryAxis(
+                                interval: 1,
+                                majorGridLines: const MajorGridLines(width: 0),
+                                //  minorGridLines: const MinorGridLines(width: 1,color: Colors.white),
+                                axisLine:const AxisLine(width: 1),
+                                edgeLabelPlacement: EdgeLabelPlacement.shift
+                            ),
+                            primaryYAxis: NumericAxis(
+                              labelFormat: '{value}',
+                              axisLine: const AxisLine(width: 0),
+                              majorTickLines: const MajorTickLines(size: 0),
+                              majorGridLines: const MajorGridLines(width: 0),
+                              //    minorGridLines: const MinorGridLines(width: 1,color: Colors.white),
+                            ),
+                            series:[
+                              SplineAreaSeries<dynamic, String>(
+                                animationDuration:2000,
+                                onRendererCreated: (ChartSeriesController c){
+                                  chartSeriesController=c;
+                                },
+                                dataSource: db.saleData,
+                                borderColor: Color(0xFFFEBF10),
+                                borderWidth: 3,
+                                gradient: LinearGradient(
+                                  colors: [Color(0xFF343434),Color(0xFFFEBF10).withOpacity(0.5)],
+                                  begin: Alignment.bottomCenter,
+                                  end: Alignment.topCenter,
+                                  //  stops: [0,30]
+                                ),
+                                name: 'Sales',
+                                xValueMapper: (dynamic sales, _) =>DateFormat("MMMd").format(DateTime.parse(sales['Date'])),
+                                yValueMapper: (dynamic sales, _) => sales['TotalSale'],
+                              ),
+                            ],
+                            tooltipBehavior: TooltipBehavior(
+                                enable: true,
+                                duration: 10000,
+                                format: "point.x : point.y"
+                            ),
+                          ),
+
+                         /* child: HighCharts(
                             data: db.salesApex,
                             isHighChart: false,
                             isLoad: db.isChartLoad,
-                          ),
+                          ),*/
                         )
                     ),
                   ),

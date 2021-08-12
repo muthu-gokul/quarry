@@ -281,8 +281,6 @@ class GoodsInGateFormState extends State<GoodsInGateForm> with TickerProviderSta
                                           }
                                         });
 
-
-
                                     },
                                     child: Container(
                                       height: 50,
