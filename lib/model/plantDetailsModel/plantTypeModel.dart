@@ -1,6 +1,6 @@
 class PlantTypeModel{
-  int PlantTypeId;
-  String PlantTypeName;
+  int? PlantTypeId;
+  String? PlantTypeName;
 
   PlantTypeModel({this.PlantTypeId, this.PlantTypeName});
 

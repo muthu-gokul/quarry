@@ -3,15 +3,15 @@ import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
 
 class ExpectedDateContainer extends StatelessWidget {
-  String text;
-  Color textColor;
-  Color iconColor;
+  String? text;
+  Color? textColor;
+  Color? iconColor;
   ExpectedDateContainer({this.text,this.textColor,this.iconColor});
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,top:15,),
-      padding: EdgeInsets.only(left:SizeConfig.width10,right:SizeConfig.width10),
+      margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!,top:15,),
+      padding: EdgeInsets.only(left:SizeConfig.width10!,right:SizeConfig.width10!),
       height:50,
       width: double.maxFinite,
       alignment: Alignment.centerLeft,
@@ -22,7 +22,7 @@ class ExpectedDateContainer extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Text(text,style: TextStyle(fontFamily: 'RR',fontSize: 16,color: textColor),),
+          Text(text!,style: TextStyle(fontFamily: 'RR',fontSize: 16,color: textColor),),
           Spacer(),
           Container(
               height: SizeConfig.height25,

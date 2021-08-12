@@ -27,7 +27,7 @@ import 'dieselPurchaseAddNew.dart';
 
 
 class DieselGrid extends StatefulWidget {
-  VoidCallback drawerCallback;
+  VoidCallback? drawerCallback;
   DieselGrid({this.drawerCallback});
   @override
   DieselGridState createState() => DieselGridState();
@@ -36,9 +36,9 @@ class DieselGrid extends StatefulWidget {
 class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
 
   bool showEdit=false;
-  int selectedIndex;
+  int? selectedIndex;
 
-  PageController pageController;
+  PageController? pageController;
 
   ScrollController header=new ScrollController();
   ScrollController body=new ScrollController();
@@ -198,8 +198,8 @@ class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
                                   map((i, value) => MapEntry(i,
                                       Container(
                                         height: 80,
-                                        width: SizeConfig.screenWidth*0.35,
-                                        margin: EdgeInsets.only(right: SizeConfig.width10),
+                                        width: SizeConfig.screenWidth!*0.35,
+                                        margin: EdgeInsets.only(right: SizeConfig.width10!),
                                         //padding: EdgeInsets.only(right: SizeConfig.width10),
                                         decoration: BoxDecoration(
                                             borderRadius: BorderRadius.circular(5),
@@ -216,13 +216,13 @@ class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
                                                 Container(
                                                     padding: EdgeInsets.only(left: 5,right: 5),
                                                     height: 15,
-                                                    width: SizeConfig.screenWidth*0.35,
+                                                    width: SizeConfig.screenWidth!*0.35,
                                                     child: FittedBox(child: Text("$i",style: TextStyle(fontFamily: 'RR',fontSize: 14,color: Colors.white),))),
                                                 SizedBox(height: 5,),
                                                 Container(
                                                   height: 25,
                                                   padding: EdgeInsets.only(left: 5,right: 5),
-                                                  width: SizeConfig.screenWidth*0.35,
+                                                  width: SizeConfig.screenWidth!*0.35,
                                                   child: FittedBox(
 
                                                     child:Text("${value??"0.0"}",style: TextStyle(fontFamily: 'RM',fontSize: 16,color: AppTheme.yellowColor,letterSpacing: 0.1),),
@@ -333,8 +333,8 @@ class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
                                   map((i, value) => MapEntry(i,
                                       Container(
                                         height: 80,
-                                        width: SizeConfig.screenWidth*0.38,
-                                        margin: EdgeInsets.only(right: SizeConfig.width10),
+                                        width: SizeConfig.screenWidth!*0.38,
+                                        margin: EdgeInsets.only(right: SizeConfig.width10!),
                                         //padding: EdgeInsets.only(right: SizeConfig.width10),
                                         decoration: BoxDecoration(
                                             borderRadius: BorderRadius.circular(5),
@@ -351,13 +351,13 @@ class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
                                                 Container(
                                                     height: 16,
                                                     padding: EdgeInsets.only(left: 5,right: 5),
-                                                    width: SizeConfig.screenWidth*0.35,
+                                                    width: SizeConfig.screenWidth!*0.35,
                                                     child: FittedBox(child: Text("$i",style: TextStyle(fontFamily: 'RR',fontSize: 14,color: Colors.white),))),
                                                 SizedBox(height: 5,),
                                                 Container(
                                                   height: 23,
                                                   padding: EdgeInsets.only(left: 5,right: 5),
-                                                  width: SizeConfig.screenWidth*0.35,
+                                                  width: SizeConfig.screenWidth!*0.35,
                                                   child: FittedBox(
 
                                                     child:Text("$value",style: TextStyle(fontFamily: 'RM',fontSize: 16,color: AppTheme.yellowColor,letterSpacing: 0.1),),
@@ -439,7 +439,7 @@ class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
                           ),
                           margin:EdgeInsets.only(top: 0),
                           child: CustomPaint(
-                            size: Size( SizeConfig.screenWidth, 65),
+                            size: Size( SizeConfig.screenWidth!, 65),
                             //  painter: RPSCustomPainter(),
                             painter: RPSCustomPainter3(),
                           ),
@@ -504,7 +504,7 @@ class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
                                         GestureDetector(
                                           onTap: (){
                                             dn.GetDieselPurchaseDbHit(context, null);
-                                            pageController.animateToPage(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+                                            pageController!.animateToPage(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
                                           },
                                           child: Container(
                                             width: 70,
@@ -519,7 +519,7 @@ class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
                                         Spacer(),
                                         GestureDetector(
                                           onTap: (){
-                                            pageController.animateToPage(1, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+                                            pageController!.animateToPage(1, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
                                             dn.GetDieselIssueDbHit(context, null);
                                           },
                                           child: Container(
@@ -535,7 +535,7 @@ class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
                                         ),
                                         GestureDetector(
                                           onTap: () async{
-                                            final List<DateTime>  picked1 = await DateRagePicker.showDatePicker(
+                                            final List<DateTime?>?  picked1 = await DateRagePicker.showDatePicker(
                                                 context: context,
                                                 initialFirstDate: new DateTime.now(),
                                                 initialLastDate: (new DateTime.now()),
@@ -586,7 +586,7 @@ class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
                                     dn.updateDieselEdit(true);
                                     dn.PlantUserDropDownValues(context).then((value) {
                                       dn.DieselDropDownValues(context);
-                                      dn.GetDieselPurchaseDbHit(context, dn.dieselPurchaseGridList[selectedIndex].dieselPurchaseId);
+                                      dn.GetDieselPurchaseDbHit(context, dn.dieselPurchaseGridList[selectedIndex!].dieselPurchaseId);
                                       setState(() {
                                         selectedIndex=-1;
                                         showEdit=false;
@@ -599,7 +599,7 @@ class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
                                     dn.updateDieselIssueEdit(true);
                                     dn.PlantUserDropDownValues(context).then((value) {
                                       dn.DieselDropDownValues(context);
-                                      dn.GetDieselIssueDbHit(context, dn.dieselIssueGridList[selectedIndex].dieselIssueId);
+                                      dn.GetDieselIssueDbHit(context, dn.dieselIssueGridList[selectedIndex!].dieselIssueId);
                                       setState(() {
                                         selectedIndex=-1;
                                         showEdit=false;

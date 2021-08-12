@@ -1,12 +1,11 @@
 
 import 'dart:async';
 import 'dart:io';
-
-import 'package:firebase_ml_vision/firebase_ml_vision.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/notifier/goodsReceivedNotifier.dart';
@@ -35,18 +34,18 @@ class GoodsOutGateFormState extends State<GoodsOutGateForm> with TickerProviderS
   bool isEdit=false;
 
 
-  ScrollController scrollController;
-  ScrollController listViewController;
+  ScrollController? scrollController;
+  ScrollController? listViewController;
 
   bool _keyboardVisible=false;
   bool isVehicleTypeOpen=false;
 
-  PickedFile _image;
+  late PickedFile _image;
 
   @override
   void initState() {
     isEdit=false;
-    WidgetsBinding.instance.addPostFrameCallback((_){
+    WidgetsBinding.instance!.addPostFrameCallback((_){
 
 
       scrollController=new ScrollController();
@@ -56,15 +55,15 @@ class GoodsOutGateFormState extends State<GoodsOutGateForm> with TickerProviderS
       });
 
 
-      listViewController.addListener(() {
-        if(listViewController.offset>10){
-          if(scrollController.offset==0){
-            scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+      listViewController!.addListener(() {
+        if(listViewController!.offset>10){
+          if(scrollController!.offset==0){
+            scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
           }
 
         }
-        else if(listViewController.offset==0){
-          scrollController.animateTo(0, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+        else if(listViewController!.offset==0){
+          scrollController!.animateTo(0, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
         }
       });
 
@@ -123,7 +122,7 @@ class GoodsOutGateFormState extends State<GoodsOutGateForm> with TickerProviderS
                     children: [
                       SizedBox(height: 160,),
                       Container(
-                          height: SizeConfig.screenHeight-60,
+                          height: SizeConfig.screenHeight!-60,
                           width: SizeConfig.screenWidth,
                           padding: EdgeInsets.only(top: 20,bottom: 60),
                           decoration: BoxDecoration(
@@ -139,13 +138,13 @@ class GoodsOutGateFormState extends State<GoodsOutGateForm> with TickerProviderS
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Text("${gr.outGateFormList[gr.OGF_index].materialName} - ${gr.outGateFormList[gr.OGF_index].expectedQuantity}",
+                                  Text("${gr.outGateFormList[gr.OGF_index!].materialName} - ${gr.outGateFormList[gr.OGF_index!].expectedQuantity}",
                                     style: TextStyle(fontFamily: 'RM',color: AppTheme.bgColor,fontSize: 20),
                                     textAlign: TextAlign.center,
                                   ),
                                   Padding(
                                     padding:  EdgeInsets.only(bottom: 2),
-                                    child: Text(" ${gr.outGateFormList[gr.OGF_index].unitName}",
+                                    child: Text(" ${gr.outGateFormList[gr.OGF_index!].unitName}",
                                       style: TextStyle(fontFamily: 'RR',color: AppTheme.hintColor,fontSize: 14),
                                       textAlign: TextAlign.center,
                                     ),
@@ -154,7 +153,7 @@ class GoodsOutGateFormState extends State<GoodsOutGateForm> with TickerProviderS
                               ):Container(),
                               DropDownField(
                                 ontap: (){
-                                   scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                   scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                   setState(() {
                                     _keyboardVisible=true;
                                   });
@@ -168,12 +167,12 @@ class GoodsOutGateFormState extends State<GoodsOutGateForm> with TickerProviderS
                                   });
                                   setState(() {
                                     gr.OGF_vehicleNumber=gr.OGF_vehicleNumberController.text;
-                                    gr.OGF_index=gr.outGateFormList.indexWhere((element) => element.vehicleNumber.toLowerCase()==gr.OGF_vehicleNumber.toString().toLowerCase()).toInt();
+                                    gr.OGF_index=gr.outGateFormList.indexWhere((element) => element.vehicleNumber!.toLowerCase()==gr.OGF_vehicleNumber.toString().toLowerCase()).toInt();
                                     if(gr.OGF_index!=-1){
-                                      gr.OGF_UnitName=gr.outGateFormList[gr.OGF_index].unitName;
-                                      gr.OGF_ReceivedQty=gr.outGateFormList[gr.OGF_index].receivedQuantity;
-                                      gr.OGF_InwardLoadedVehicleWeight=gr.outGateFormList[gr.OGF_index].inwardLoadedVehicleWeight;
-                                      gr.OGF_OutwardEmptyVehicleWeight=gr.outGateFormList[gr.OGF_index].outwardEmptyVehicleWeight;
+                                      gr.OGF_UnitName=gr.outGateFormList[gr.OGF_index!].unitName;
+                                      gr.OGF_ReceivedQty=gr.outGateFormList[gr.OGF_index!].receivedQuantity;
+                                      gr.OGF_InwardLoadedVehicleWeight=gr.outGateFormList[gr.OGF_index!].inwardLoadedVehicleWeight;
+                                      gr.OGF_OutwardEmptyVehicleWeight=gr.outGateFormList[gr.OGF_index!].outwardEmptyVehicleWeight;
                                       gr.OGF_BalanceQty=0.0;
                                       gr.OGF_amount=0.0;
                                       gr.OGF_taxAmount=0.0;
@@ -218,13 +217,13 @@ class GoodsOutGateFormState extends State<GoodsOutGateForm> with TickerProviderS
                                   node.unfocus();
                                   setState(() {
                                     gr.OGF_vehicleNumber=v;
-                                    gr.OGF_index=gr.outGateFormList.indexWhere((element) => element.vehicleNumber.toLowerCase()==v.toString().toLowerCase()).toInt();
+                                    gr.OGF_index=gr.outGateFormList.indexWhere((element) => element.vehicleNumber!.toLowerCase()==v.toString().toLowerCase()).toInt();
 
-                                    gr.OGF_UnitName=gr.outGateFormList[gr.OGF_index].unitName;
-                                    gr.OGF_ExpectedQty=gr.outGateFormList[gr.OGF_index].expectedQuantity;
-                                    gr.OGF_ReceivedQty=gr.outGateFormList[gr.OGF_index].receivedQuantity;
-                                    gr.OGF_InwardLoadedVehicleWeight=gr.outGateFormList[gr.OGF_index].inwardLoadedVehicleWeight;
-                                    gr.OGF_OutwardEmptyVehicleWeight=gr.outGateFormList[gr.OGF_index].outwardEmptyVehicleWeight;
+                                    gr.OGF_UnitName=gr.outGateFormList[gr.OGF_index!].unitName;
+                                    gr.OGF_ExpectedQty=gr.outGateFormList[gr.OGF_index!].expectedQuantity;
+                                    gr.OGF_ReceivedQty=gr.outGateFormList[gr.OGF_index!].receivedQuantity;
+                                    gr.OGF_InwardLoadedVehicleWeight=gr.outGateFormList[gr.OGF_index!].inwardLoadedVehicleWeight;
+                                    gr.OGF_OutwardEmptyVehicleWeight=gr.outGateFormList[gr.OGF_index!].outwardEmptyVehicleWeight;
                                     gr.OGF_BalanceQty=0.0;
                                     gr.OGF_showReceivedQty=0.0;
                                     _keyboardVisible=false;
@@ -248,16 +247,19 @@ class GoodsOutGateFormState extends State<GoodsOutGateForm> with TickerProviderS
                                     setState(() async {
                                       if (pickedFile != null) {
                                         _image = pickedFile;
-                                        final FirebaseVisionImage visionImage = FirebaseVisionImage.fromFile(File(_image.path));
-                                        final TextRecognizer textRecognizer = FirebaseVision.instance.textRecognizer();
-                                        final VisionText visionText = await textRecognizer.processImage(visionImage);
+                                        final inputImage = InputImage.fromFilePath(_image.path);
+                                        TextDetector textDetector = GoogleMlKit.vision.textDetector();
+                                        final recognisedText = await textDetector.processImage(inputImage);
+                                     //   final FirebaseVisionImage visionImage = FirebaseVisionImage.fromFile(File(_image.path));
+                                     //   final TextRecognizer textRecognizer = FirebaseVision.instance.textRecognizer();
+                                     //   final VisionText visionText = await textRecognizer.processImage(visionImage);
 
-                                        for (TextBlock block in visionText.blocks) {
+                                        for (TextBlock block in recognisedText.blocks) {
                                           for (TextLine line in block.lines) {
 
-                                            if( RegExp(r'^\d+\.?\d').hasMatch(line.text)){
+                                            if( RegExp(r'^\d+\.?\d').hasMatch(line.text!)){
                                               print(line.text);
-                                              gr.scanWeight += line.text;
+                                              gr.scanWeight += line.text!;
 
                                             }
 
@@ -273,7 +275,7 @@ class GoodsOutGateFormState extends State<GoodsOutGateForm> with TickerProviderS
                                           gr.OGF_emptyWeightofVehicle.text=(double.parse(gr.scanWeight)/1000).toString();
                                           gr.updateGoodsLoader(false);
                                           if(gr.OGF_emptyWeightofVehicle.text.isNotEmpty){
-                                            if(int.parse(gr.OGF_emptyWeightofVehicle.text.toString())<gr.OGF_InwardLoadedVehicleWeight){
+                                            if(int.parse(gr.OGF_emptyWeightofVehicle.text.toString())<gr.OGF_InwardLoadedVehicleWeight!){
                                               gr.calc();
                                             }
                                             else{
@@ -300,7 +302,7 @@ class GoodsOutGateFormState extends State<GoodsOutGateForm> with TickerProviderS
                                 },
                                 child: Container(
                                   height: 50,
-                                  margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,top:15,),
+                                  margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!,top:15,),
                                   width:SizeConfig.screenWidth,
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(3),
@@ -339,7 +341,7 @@ class GoodsOutGateFormState extends State<GoodsOutGateForm> with TickerProviderS
                                 },
                                 onChange: (v){
                                   if(v.isNotEmpty){
-                                    if(int.parse(v.toString())<gr.OGF_InwardLoadedVehicleWeight){
+                                    if(int.parse(v.toString())<gr.OGF_InwardLoadedVehicleWeight!){
                                       gr.calc();
                                     }
                                     else{
@@ -358,19 +360,19 @@ class GoodsOutGateFormState extends State<GoodsOutGateForm> with TickerProviderS
                               ),
                               SizedBox(height: 20,),
 
-                              gr.OGF_showReceivedQty.toInt()>0 || gr.OGF_BalanceQty.toInt()>0?  Align(
+                              gr.OGF_showReceivedQty!.toInt()>0 || gr.OGF_BalanceQty!.toInt()>0?  Align(
                                 alignment: Alignment.center,
                                 child: Container(
                                   height: 50,
-                                  width: SizeConfig.screenWidth*0.8,
+                                  width: SizeConfig.screenWidth!*0.8,
                                   decoration: BoxDecoration(
                                     color: AppTheme.red,
                                     borderRadius: BorderRadius.circular(25)
                                   ),
                                   child: Center(
-                                    child:gr.OGF_BalanceQty>0? Text("${gr.OGF_showReceivedQty??0.0} ${gr.OGF_UnitName??""} Received, Balance ${gr.OGF_BalanceQty} ${gr.OGF_UnitName??""}",
+                                    child:gr.OGF_BalanceQty!>0? Text("${gr.OGF_showReceivedQty??0.0} ${gr.OGF_UnitName??""} Received, Balance ${gr.OGF_BalanceQty} ${gr.OGF_UnitName??""}",
                                     style: TextStyle(fontFamily: 'RR',fontSize: 16,color: Colors.white),
-                                    ):Text("${gr.OGF_showReceivedQty??0.0} ${gr.OGF_UnitName??""} Received, Extra ${-1*(gr.OGF_BalanceQty)} ${gr.OGF_UnitName??""}",
+                                    ):Text("${gr.OGF_showReceivedQty??0.0} ${gr.OGF_UnitName??""} Received, Extra ${-1*gr.OGF_BalanceQty!} ${gr.OGF_UnitName??""}",
                                     style: TextStyle(fontFamily: 'RR',fontSize: 16,color: Colors.white),
                                     ),
                                   ),
@@ -408,7 +410,7 @@ class GoodsOutGateFormState extends State<GoodsOutGateForm> with TickerProviderS
 
                     children: [
                       CustomPaint(
-                        size: Size( SizeConfig.screenWidth, 65),
+                        size: Size( SizeConfig.screenWidth!, 65),
                         painter: RPSCustomPainter3(),
                       ),
 

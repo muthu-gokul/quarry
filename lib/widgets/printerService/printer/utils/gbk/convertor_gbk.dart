@@ -39,11 +39,11 @@ class gbk_bytesEncoder extends Converter<String, List<int>> {
 }
 
 List<int> gbk_bytesEncode(String input) {
-  List<int> ret =new List<int>();
+  List<int> ret =[];
   input.codeUnits.forEach( (charCode) {
     String char = String.fromCharCode(charCode);
     //print(char);
-    int gbkCode = _char_to_gbkCode[char];
+    int? gbkCode = _char_to_gbkCode[char];
     //print('$char  = ${gbkCode.toRadixString(16)}');
     if (gbkCode != null ) {
       //split to two bytes
@@ -70,7 +70,7 @@ class gbk_bytesDecoder extends Converter<List<int>, String> {
 
 String gbk_bytesDecode(List<int> input) {
   String ret = '';
-  List<int> combined = new List<int>();
+  List<int> combined = [];
   int id= 0;
   while(id<input.length) {
     int charCode = input[id];
@@ -84,7 +84,7 @@ String gbk_bytesDecode(List<int> input) {
     }
   }
   combined.forEach((charCode) {
-    String char = _gbkCode_to_char[charCode];
+    String? char = _gbkCode_to_char[charCode];
     if (char != null) ret += char;
     else ret += String.fromCharCode(charCode);
     //print(ret);

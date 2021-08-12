@@ -4,8 +4,8 @@ class SupplierCategoryModel {
     this.supplierCategoryName,
   });
 
-  int supplierCategoryId;
-  String supplierCategoryName;
+  int? supplierCategoryId;
+  String? supplierCategoryName;
 
   factory SupplierCategoryModel.fromJson(Map<String, dynamic> json) => SupplierCategoryModel(
     supplierCategoryId: json["SupplierCategoryId"],

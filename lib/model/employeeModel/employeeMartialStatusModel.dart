@@ -4,8 +4,8 @@ class EmployeeMartialStatusModel {
     this.employeeMartialStatusName,
   });
 
-  int employeeMartialStatusId;
-  String employeeMartialStatusName;
+  int? employeeMartialStatusId;
+  String? employeeMartialStatusName;
 
   factory EmployeeMartialStatusModel.fromJson(Map<String, dynamic> json) => EmployeeMartialStatusModel(
     employeeMartialStatusId: json["EmployeeMaritalStatusId"],

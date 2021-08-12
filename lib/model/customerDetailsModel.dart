@@ -1,20 +1,20 @@
 class CustomerDetails{
-  int CustomerId;
-  String CustomerName;
-  String CustomerCode;
-  String CustomerContactNumber;
-  String CustomerEmail;
-  String CustomerAddress;
-  String CustomerCity;
-  String CustomerState;
-  String CustomerCountry;
-  String CustomerZipCode;
-  String CustomerGSTNumber;
-  String CustomerLogoFileName;
-  String CustomerLogoFolderName;
-  double CustomerCreditLimit;
+  int? CustomerId;
+  String? CustomerName;
+  String? CustomerCode;
+  String? CustomerContactNumber;
+  String? CustomerEmail;
+  String? CustomerAddress;
+  String? CustomerCity;
+  String? CustomerState;
+  String? CustomerCountry;
+  String? CustomerZipCode;
+  String? CustomerGSTNumber;
+  String? CustomerLogoFileName;
+  String? CustomerLogoFolderName;
+  double? CustomerCreditLimit;
 
-  String Location;
+  String? Location;
 
   CustomerDetails({this.CustomerId,this.CustomerName,this.CustomerCode,this.CustomerContactNumber,this.CustomerEmail,
   this.CustomerAddress,this.CustomerCity,this.CustomerState,this.CustomerCountry,this.CustomerZipCode,this.CustomerGSTNumber,

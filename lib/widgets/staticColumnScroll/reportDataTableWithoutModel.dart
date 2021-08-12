@@ -6,7 +6,7 @@ import '../../styles/app_theme.dart';
 import '../../styles/size.dart';
 
 class ReportGridStyleModel2{
-  String columnName;
+  String? columnName;
   double width;
   Alignment alignment;
   EdgeInsets edgeInsets;
@@ -33,14 +33,14 @@ class ReportGridStyleModel2{
 
 class ReportDataTable2 extends StatefulWidget {
 
-  List<ReportGridStyleModel2> gridDataRowList=[];
-  List<dynamic> gridData=[];
+  List<ReportGridStyleModel2>? gridDataRowList=[];
+  List<dynamic>? gridData=[];
 
-  int selectedIndex;
-  VoidCallback voidCallback;
-  Function(int) func;
-  double topMargin;//70 || 50
-  double gridBodyReduceHeight;// 260  // 140
+  int? selectedIndex;
+  VoidCallback? voidCallback;
+  Function(int)? func;
+  double? topMargin;//70 || 50
+  double? gridBodyReduceHeight;// 260  // 140
 
   ReportDataTable2({this.gridDataRowList,this.gridData,this.selectedIndex,this.voidCallback,this.func,this.topMargin,this.gridBodyReduceHeight});
   @override
@@ -111,9 +111,9 @@ class _ReportDataTable2State extends State<ReportDataTable2> {
     // print(gridCol);
     // print(widget.selectedIndex);
     return Container(
-        height: SizeConfig.screenHeight-widget.topMargin,
+        height: SizeConfig.screenHeight!-widget.topMargin!,
         width: SizeConfig.screenWidth,
-        margin: EdgeInsets.only(top: widget.topMargin),
+        margin: EdgeInsets.only(top: widget.topMargin!),
         clipBehavior: Clip.antiAlias,
         decoration: BoxDecoration(
             color:AppTheme.gridbodyBgColor,
@@ -131,14 +131,14 @@ class _ReportDataTable2State extends State<ReportDataTable2> {
                 children: [
                   Container(
                     height: 50,
-                    width: SizeConfig.screenWidth-149,
+                    width: SizeConfig.screenWidth!-149,
                     color: showShadow? AppTheme.bgColor.withOpacity(0.8):AppTheme.bgColor,
                     child: SingleChildScrollView(
                       controller: header,
                       scrollDirection: Axis.horizontal,
                       physics: ClampingScrollPhysics(),
                       child: Row(
-                          children: widget.gridDataRowList.asMap().
+                          children: widget.gridDataRowList!.asMap().
                           map((i, value) => MapEntry(i, i==0?Container():
                           value.isActive?Container(
                               alignment: value.alignment,
@@ -149,7 +149,7 @@ class _ReportDataTable2State extends State<ReportDataTable2> {
                                   minWidth: 100,
                                   maxWidth: 200
                               ),
-                              child: FittedBox(child: Text(value.columnName,style: AppTheme.TSWhite166,))
+                              child: FittedBox(child: Text(value.columnName!,style: AppTheme.TSWhite166,))
                           ):Container()
                           ))
                               .values.toList()
@@ -158,8 +158,8 @@ class _ReportDataTable2State extends State<ReportDataTable2> {
 
                   ),
                   Container(
-                    height: SizeConfig.screenHeight-widget.gridBodyReduceHeight,
-                    width: SizeConfig.screenWidth-149,
+                    height: SizeConfig.screenHeight!-widget.gridBodyReduceHeight!,
+                    width: SizeConfig.screenWidth!-149,
                     alignment: Alignment.topLeft,
                     color: AppTheme.gridbodyBgColor,
                     child: SingleChildScrollView(
@@ -167,7 +167,7 @@ class _ReportDataTable2State extends State<ReportDataTable2> {
                       scrollDirection: Axis.horizontal,
                       physics: ClampingScrollPhysics(),
                       child: Container(
-                        height: SizeConfig.screenHeight-widget.gridBodyReduceHeight,
+                        height: SizeConfig.screenHeight!-widget.gridBodyReduceHeight!,
                         alignment: Alignment.topCenter,
                         color:AppTheme.gridbodyBgColor,
                         child: SingleChildScrollView(
@@ -176,12 +176,12 @@ class _ReportDataTable2State extends State<ReportDataTable2> {
                           physics: ClampingScrollPhysics(),
                           child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children:widget.gridData.asMap().
+                              children:widget.gridData!.asMap().
                               map((i, value) => MapEntry(
                                   i,InkWell(
                                 //   onTap: widget.voidCallback,
                                 onTap: (){
-                                  widget.func(i);
+                                  widget.func!(i);
                                   //setState(() {});
                                 },
                                 child: Container(
@@ -191,11 +191,11 @@ class _ReportDataTable2State extends State<ReportDataTable2> {
                                     color: widget.selectedIndex==i?AppTheme.yellowColor:AppTheme.gridbodyBgColor,
                                   ),
                                   height: 50,
-                                  margin: EdgeInsets.only(bottom:i==widget.gridData.length-1?70: 0),
+                                  margin: EdgeInsets.only(bottom:i==widget.gridData!.length-1?70: 0),
                                   child: Row(
                                       mainAxisAlignment: MainAxisAlignment.start,
 
-                                      children: widget.gridDataRowList.asMap().map((j, v) {
+                                      children: widget.gridDataRowList!.asMap().map((j, v) {
 
 
                                         if(!v.isDate){
@@ -266,20 +266,20 @@ class _ReportDataTable2State extends State<ReportDataTable2> {
             //not Scrollable
             Positioned(
               left: 0,
-              child:widget.gridDataRowList.isEmpty?Container(): Column(
+              child:widget.gridDataRowList!.isEmpty?Container(): Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Container(
                     height: 50,
                     width: 150,
                     color: AppTheme.bgColor,
-                    padding: widget.gridDataRowList[0].edgeInsets,
-                    alignment: widget.gridDataRowList[0].alignment,
-                    child: FittedBox(child: Text("${widget.gridDataRowList[0].columnName}",style: AppTheme.TSWhite166,)),
+                    padding: widget.gridDataRowList![0].edgeInsets,
+                    alignment: widget.gridDataRowList![0].alignment,
+                    child: FittedBox(child: Text("${widget.gridDataRowList![0].columnName}",style: AppTheme.TSWhite166,)),
 
                   ),
                   Container(
-                    height: SizeConfig.screenHeight-widget.gridBodyReduceHeight,
+                    height: SizeConfig.screenHeight!-widget.gridBodyReduceHeight!,
                     alignment: Alignment.topCenter,
                     decoration: BoxDecoration(
                         color:showShadow? AppTheme.gridbodyBgColor:Colors.transparent,
@@ -293,24 +293,24 @@ class _ReportDataTable2State extends State<ReportDataTable2> {
                         ]
                     ),
                     child: Container(
-                      height: SizeConfig.screenHeight-widget.gridBodyReduceHeight,
+                      height: SizeConfig.screenHeight!-widget.gridBodyReduceHeight!,
                       alignment: Alignment.topCenter,
 
                       child: SingleChildScrollView(
                         controller: verticalLeft,
                         scrollDirection: Axis.vertical,
                         child: Column(
-                            children: widget.gridData.asMap().
+                            children: widget.gridData!.asMap().
                             map((i, value) => MapEntry(
                                 i,InkWell(
                               onTap: (){
-                                widget.func(i);
+                                widget.func!(i);
                                 //setState(() {});
                               },
                               child:  Container(
-                                alignment:widget.gridDataRowList[0].alignment,
-                                padding: widget.gridDataRowList[0].edgeInsets,
-                                margin: EdgeInsets.only(bottom:i==widget.gridData.length-1?70: 0),
+                                alignment:widget.gridDataRowList![0].alignment,
+                                padding: widget.gridDataRowList![0].edgeInsets,
+                                margin: EdgeInsets.only(bottom:i==widget.gridData!.length-1?70: 0),
                                 decoration: BoxDecoration(
                                   border: AppTheme.gridBottomborder,
                                   color: widget.selectedIndex==i?AppTheme.yellowColor:AppTheme.gridbodyBgColor,
@@ -327,11 +327,11 @@ class _ReportDataTable2State extends State<ReportDataTable2> {
                                   ),
                                   child: FittedBox(
                                     fit: BoxFit.contain,
-                                    child: !widget.gridDataRowList[0].isDate? Text("${value[widget.gridDataRowList[0].columnName]}",
+                                    child: !widget.gridDataRowList![0].isDate? Text("${value[widget.gridDataRowList![0].columnName]}",
                                       style:widget.selectedIndex==i?AppTheme.bgColorTS14:AppTheme.gridTextColor14,
                                     ):
-                                    widget.gridDataRowList[0].columnName!=null?Text("${widget.gridDataRowList[0].columnName.toString().isNotEmpty?widget.gridDataRowList[0].columnName!=null?
-                                    DateFormat('dd-MM-yyyy').format(DateTime.parse(value[widget.gridDataRowList[0].columnName])):" ":" "}",
+                                    widget.gridDataRowList![0].columnName!=null?Text("${widget.gridDataRowList![0].columnName.toString().isNotEmpty?widget.gridDataRowList![0].columnName!=null?
+                                    DateFormat('dd-MM-yyyy').format(DateTime.parse(value[widget.gridDataRowList![0].columnName])):" ":" "}",
                                       style:widget.selectedIndex==i?AppTheme.bgColorTS14:AppTheme.gridTextColor14,
                                     ):Container(),
                                   ),
@@ -354,7 +354,7 @@ class _ReportDataTable2State extends State<ReportDataTable2> {
             ),
 
 
-            widget.gridData.isEmpty?Container(
+            widget.gridData!.isEmpty?Container(
               width: SizeConfig.screenWidth,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -381,14 +381,14 @@ class _ReportDataTable2State extends State<ReportDataTable2> {
 
 class EmployeeReportDataTable extends StatefulWidget {
 
-  List<ReportGridStyleModel2> gridDataRowList=[];
-  List<dynamic> gridData=[];
+  List<ReportGridStyleModel2>? gridDataRowList=[];
+  List<dynamic>? gridData=[];
 
-  int selectedIndex;
-  VoidCallback voidCallback;
-  Function(int) func;
-  double topMargin;//70 || 50
-  double gridBodyReduceHeight;// 260  // 140
+  int? selectedIndex;
+  VoidCallback? voidCallback;
+  Function(int)? func;
+  double? topMargin;//70 || 50
+  double? gridBodyReduceHeight;// 260  // 140
 
   EmployeeReportDataTable({this.gridDataRowList,this.gridData,this.selectedIndex,this.voidCallback,this.func,this.topMargin,this.gridBodyReduceHeight});
   @override
@@ -459,9 +459,9 @@ class _EmployeeReportDataTableState extends State<EmployeeReportDataTable> {
     // print(gridCol);
     // print(widget.selectedIndex);
     return Container(
-        height: SizeConfig.screenHeight-widget.topMargin,
+        height: SizeConfig.screenHeight!-widget.topMargin!,
         width: SizeConfig.screenWidth,
-        margin: EdgeInsets.only(top: widget.topMargin),
+        margin: EdgeInsets.only(top: widget.topMargin!),
         clipBehavior: Clip.antiAlias,
         decoration: BoxDecoration(
             color:AppTheme.gridbodyBgColor,
@@ -479,14 +479,14 @@ class _EmployeeReportDataTableState extends State<EmployeeReportDataTable> {
                 children: [
                   Container(
                     height: 50,
-                    width: SizeConfig.screenWidth-149,
+                    width: SizeConfig.screenWidth!-149,
                     color: showShadow? AppTheme.bgColor.withOpacity(0.8):AppTheme.bgColor,
                     child: SingleChildScrollView(
                       controller: header,
                       scrollDirection: Axis.horizontal,
                       physics: ClampingScrollPhysics(),
                       child: Row(
-                          children: widget.gridDataRowList.asMap().
+                          children: widget.gridDataRowList!.asMap().
                           map((i, value) => MapEntry(i, i==0?Container():
                           value.isActive?Container(
                               alignment: value.alignment,
@@ -497,7 +497,7 @@ class _EmployeeReportDataTableState extends State<EmployeeReportDataTable> {
                                   minWidth: 50,
                                   maxWidth: 200
                               ),
-                              child: FittedBox(child: Text(value.columnName,style: AppTheme.TSWhite166,))
+                              child: FittedBox(child: Text(value.columnName!,style: AppTheme.TSWhite166,))
                           ):Container()
                           ))
                               .values.toList()
@@ -506,8 +506,8 @@ class _EmployeeReportDataTableState extends State<EmployeeReportDataTable> {
 
                   ),
                   Container(
-                    height: SizeConfig.screenHeight-widget.gridBodyReduceHeight,
-                    width: SizeConfig.screenWidth-149,
+                    height: SizeConfig.screenHeight!-widget.gridBodyReduceHeight!,
+                    width: SizeConfig.screenWidth!-149,
                     alignment: Alignment.topLeft,
                     color: AppTheme.gridbodyBgColor,
                     child: SingleChildScrollView(
@@ -515,7 +515,7 @@ class _EmployeeReportDataTableState extends State<EmployeeReportDataTable> {
                       scrollDirection: Axis.horizontal,
                       physics: ClampingScrollPhysics(),
                       child: Container(
-                        height: SizeConfig.screenHeight-widget.gridBodyReduceHeight,
+                        height: SizeConfig.screenHeight!-widget.gridBodyReduceHeight!,
                         alignment: Alignment.topCenter,
                         color:AppTheme.gridbodyBgColor,
                         child: SingleChildScrollView(
@@ -524,12 +524,12 @@ class _EmployeeReportDataTableState extends State<EmployeeReportDataTable> {
                           physics: ClampingScrollPhysics(),
                           child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children:widget.gridData.asMap().
+                              children:widget.gridData!.asMap().
                               map((i, value) => MapEntry(
                                   i,InkWell(
                                 //   onTap: widget.voidCallback,
                                 onTap: (){
-                                  widget.func(i);
+                                  widget.func!(i);
                                   //setState(() {});
                                 },
                                 child: Container(
@@ -539,11 +539,11 @@ class _EmployeeReportDataTableState extends State<EmployeeReportDataTable> {
                                     color: widget.selectedIndex==i?AppTheme.yellowColor:AppTheme.gridbodyBgColor,
                                   ),
                                   height: 50,
-                                  margin: EdgeInsets.only(bottom:i==widget.gridData.length-1?70: 0),
+                                  margin: EdgeInsets.only(bottom:i==widget.gridData!.length-1?70: 0),
                                   child: Row(
                                       mainAxisAlignment: MainAxisAlignment.start,
 
-                                      children: widget.gridDataRowList.asMap().map((j, v) {
+                                      children: widget.gridDataRowList!.asMap().map((j, v) {
 
 
                                         if(!v.isDate){
@@ -619,20 +619,20 @@ class _EmployeeReportDataTableState extends State<EmployeeReportDataTable> {
             //not Scrollable
             Positioned(
               left: 0,
-              child:widget.gridDataRowList.isEmpty?Container(): Column(
+              child:widget.gridDataRowList!.isEmpty?Container(): Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Container(
                     height: 50,
                     width: 150,
                     color: AppTheme.bgColor,
-                    padding: widget.gridDataRowList[0].edgeInsets,
-                    alignment: widget.gridDataRowList[0].alignment,
-                    child: FittedBox(child: Text("${widget.gridDataRowList[0].columnName}",style: AppTheme.TSWhite166,)),
+                    padding: widget.gridDataRowList![0].edgeInsets,
+                    alignment: widget.gridDataRowList![0].alignment,
+                    child: FittedBox(child: Text("${widget.gridDataRowList![0].columnName}",style: AppTheme.TSWhite166,)),
 
                   ),
                   Container(
-                    height: SizeConfig.screenHeight-widget.gridBodyReduceHeight,
+                    height: SizeConfig.screenHeight!-widget.gridBodyReduceHeight!,
                     alignment: Alignment.topCenter,
                     decoration: BoxDecoration(
                         color:showShadow? AppTheme.gridbodyBgColor:Colors.transparent,
@@ -646,24 +646,24 @@ class _EmployeeReportDataTableState extends State<EmployeeReportDataTable> {
                         ]
                     ),
                     child: Container(
-                      height: SizeConfig.screenHeight-widget.gridBodyReduceHeight,
+                      height: SizeConfig.screenHeight!-widget.gridBodyReduceHeight!,
                       alignment: Alignment.topCenter,
 
                       child: SingleChildScrollView(
                         controller: verticalLeft,
                         scrollDirection: Axis.vertical,
                         child: Column(
-                            children: widget.gridData.asMap().
+                            children: widget.gridData!.asMap().
                             map((i, value) => MapEntry(
                                 i,InkWell(
                               onTap: (){
-                                widget.func(i);
+                                widget.func!(i);
                                 //setState(() {});
                               },
                               child:  Container(
-                                alignment:widget.gridDataRowList[0].alignment,
-                                padding: widget.gridDataRowList[0].edgeInsets,
-                                margin: EdgeInsets.only(bottom:i==widget.gridData.length-1?70: 0),
+                                alignment:widget.gridDataRowList![0].alignment,
+                                padding: widget.gridDataRowList![0].edgeInsets,
+                                margin: EdgeInsets.only(bottom:i==widget.gridData!.length-1?70: 0),
                                 decoration: BoxDecoration(
                                   border: AppTheme.gridBottomborder,
                                   color: widget.selectedIndex==i?AppTheme.yellowColor:AppTheme.gridbodyBgColor,
@@ -680,11 +680,11 @@ class _EmployeeReportDataTableState extends State<EmployeeReportDataTable> {
                                   ),
                                   child: FittedBox(
                                     fit: BoxFit.contain,
-                                    child: !widget.gridDataRowList[0].isDate? Text("${value[widget.gridDataRowList[0].columnName]}",
+                                    child: !widget.gridDataRowList![0].isDate? Text("${value[widget.gridDataRowList![0].columnName]}",
                                       style:widget.selectedIndex==i?AppTheme.bgColorTS14:AppTheme.gridTextColor14,
                                     ):
-                                    widget.gridDataRowList[0].columnName!=null?Text("${widget.gridDataRowList[0].columnName.toString().isNotEmpty?widget.gridDataRowList[0].columnName!=null?
-                                    DateFormat('dd-MM-yyyy').format(DateTime.parse(value[widget.gridDataRowList[0].columnName])):" ":" "}",
+                                    widget.gridDataRowList![0].columnName!=null?Text("${widget.gridDataRowList![0].columnName.toString().isNotEmpty?widget.gridDataRowList![0].columnName!=null?
+                                    DateFormat('dd-MM-yyyy').format(DateTime.parse(value[widget.gridDataRowList![0].columnName])):" ":" "}",
                                       style:widget.selectedIndex==i?AppTheme.bgColorTS14:AppTheme.gridTextColor14,
                                     ):Container(),
                                   ),
@@ -707,7 +707,7 @@ class _EmployeeReportDataTableState extends State<EmployeeReportDataTable> {
             ),
 
 
-            widget.gridData.isEmpty?Container(
+            widget.gridData!.isEmpty?Container(
               width: SizeConfig.screenWidth,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,

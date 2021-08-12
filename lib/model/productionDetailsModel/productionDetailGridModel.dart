@@ -17,21 +17,21 @@ class ProductionDetailGridModel {
     this.plantName
   });
 
-  int productionId;
-  int machineId;
-  int plantId;
-  String plantName;
-  String machineName;
-  int unitId;
-  String unitName;
-  int inputMaterialId;
-  String inputMaterialName;
-  double inputMaterialQuantity;
-  int outputMaterialCount;
-  double outPutMaterialQuantity;
-  int isDustWastage;
-  double dustQuantity;
-  double wastageQuantity;
+  int? productionId;
+  int? machineId;
+  int? plantId;
+  String? plantName;
+  String? machineName;
+  int? unitId;
+  String? unitName;
+  int? inputMaterialId;
+  String? inputMaterialName;
+  double? inputMaterialQuantity;
+  int? outputMaterialCount;
+  double? outPutMaterialQuantity;
+  int? isDustWastage;
+  double? dustQuantity;
+  double? wastageQuantity;
 
   factory ProductionDetailGridModel.fromJson(Map<String, dynamic> json) => ProductionDetailGridModel(
     productionId: json["ProductionId"],

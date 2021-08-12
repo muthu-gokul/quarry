@@ -16,17 +16,17 @@ class PlantLicenseModel{
     this.isDelete
   });
 
-  int plantId;
-  int plantLicenseId;
-  String licenseNumber;
-  String licenseDescription;
-  DateTime fromDate;
-  DateTime toDate;
-  String documentFileName;
-  String documentFolderName;
-  AnimationController scaleController;
-  bool isEdit;
-  bool isDelete;
+  int? plantId;
+  int? plantLicenseId;
+  String? licenseNumber;
+  String? licenseDescription;
+  DateTime? fromDate;
+  DateTime? toDate;
+  String? documentFileName;
+  String? documentFolderName;
+  AnimationController? scaleController;
+  bool? isEdit;
+  bool? isDelete;
 
   factory PlantLicenseModel.fromJson(Map<String, dynamic> json,TickerProviderStateMixin tickerProviderStateMixin) => PlantLicenseModel(
     plantId: json["PlantId"],
@@ -47,8 +47,8 @@ class PlantLicenseModel{
     "PlantLicenseId": plantLicenseId,
     "LicenseNumber": licenseNumber,
     "LicenseDescription": licenseDescription,
-    "FromDate":fromDate!=null? DateFormat("yyyy-MM-dd").format(fromDate):"",
-    "ToDate": toDate != null? DateFormat("yyyy-MM-dd").format(toDate):"",
+    "FromDate":fromDate!=null? DateFormat("yyyy-MM-dd").format(fromDate!):"",
+    "ToDate": toDate != null? DateFormat("yyyy-MM-dd").format(toDate!):"",
     "DocumentFileName": documentFileName,
     "DocumentFolderName": documentFolderName,
     'IsActice':1

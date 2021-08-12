@@ -20,10 +20,10 @@ import 'package:quarry/widgets/bottomBarAddButton.dart';
 
 class GoodsMaterialTripList extends StatefulWidget {
 
-  int MaterialId;
-  String MaterialName;
-  String UnitName;
-  double ExpectedQty;
+  int? MaterialId;
+  String? MaterialName;
+  String? UnitName;
+  double? ExpectedQty;
   GoodsMaterialTripList(this.MaterialId,this.MaterialName,this.UnitName,this.ExpectedQty);
 
   @override
@@ -35,8 +35,8 @@ class GoodsMaterialTripListState extends State<GoodsMaterialTripList> with Ticke
   bool isEdit=false;
 
 
-  ScrollController scrollController;
-  ScrollController listViewController;
+  ScrollController? scrollController;
+  ScrollController? listViewController;
 
   List<GoodsMaterialTripDetailsModel> materialTripList=[];
   List<GoodsMaterialExtraTripModel> GoodsMaterialExtraTripModelDetails=[];
@@ -60,7 +60,7 @@ class GoodsMaterialTripListState extends State<GoodsMaterialTripList> with Ticke
 
     materialTripList=Provider.of<GoodsReceivedNotifier>(context,listen: false).materialTripList.where((element) => element.materialId==widget.MaterialId).toList();
     GoodsMaterialExtraTripModelDetails=Provider.of<GoodsReceivedNotifier>(context,listen: false).GoodsMaterialExtraTripModelDetails.where((element) => element.materialId==widget.MaterialId).toList();
-    WidgetsBinding.instance.addPostFrameCallback((_){
+    WidgetsBinding.instance!.addPostFrameCallback((_){
 
 
 
@@ -72,15 +72,15 @@ class GoodsMaterialTripListState extends State<GoodsMaterialTripList> with Ticke
       });
 
 
-      listViewController.addListener(() {
-        if(listViewController.offset>10){
-          if(scrollController.offset==0){
-            scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+      listViewController!.addListener(() {
+        if(listViewController!.offset>10){
+          if(scrollController!.offset==0){
+            scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
           }
 
         }
-        else if(listViewController.offset==0){
-          scrollController.animateTo(0, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+        else if(listViewController!.offset==0){
+          scrollController!.animateTo(0, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
         }
       });
 
@@ -173,7 +173,7 @@ class GoodsMaterialTripListState extends State<GoodsMaterialTripList> with Ticke
                     children: [
                       SizedBox(height: 160,),
                       Container(
-                          height: SizeConfig.screenHeight-60,
+                          height: SizeConfig.screenHeight!-60,
                           width: SizeConfig.screenWidth,
                           padding: EdgeInsets.only(top: 5,bottom: 60),
                           decoration: BoxDecoration(
@@ -208,7 +208,7 @@ class GoodsMaterialTripListState extends State<GoodsMaterialTripList> with Ticke
                                   height: dataTableheight,
                                   width: SizeConfig.screenWidth,
                                   clipBehavior: Clip.antiAlias,
-                                  margin: EdgeInsets.only(left:SizeConfig.screenWidth*0.02,right:SizeConfig.screenWidth*0.02),
+                                  margin: EdgeInsets.only(left:SizeConfig.screenWidth!*0.02,right:SizeConfig.screenWidth!*0.02),
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(10),
                                       color: Colors.white,
@@ -232,7 +232,7 @@ class GoodsMaterialTripListState extends State<GoodsMaterialTripList> with Ticke
                                           children: [
                                             Container(
                                               height: 50,
-                                              width: SizeConfig.screenWidth-valueContainerWidth-SizeConfig.screenWidth*0.04,
+                                              width: SizeConfig.screenWidth!-valueContainerWidth-SizeConfig.screenWidth!*0.04,
                                               color: showShadow? AppTheme.f737373.withOpacity(0.8):AppTheme.f737373,
                                               child: SingleChildScrollView(
                                                 controller: header,
@@ -253,7 +253,7 @@ class GoodsMaterialTripListState extends State<GoodsMaterialTripList> with Ticke
                                             ),
                                             Container(
                                               height: dataTableBodyheight,
-                                              width: SizeConfig.screenWidth-valueContainerWidth-SizeConfig.screenWidth*0.04,
+                                              width: SizeConfig.screenWidth!-valueContainerWidth-SizeConfig.screenWidth!*0.04,
                                               alignment: Alignment.topCenter,
                                               color: Colors.white,
                                               child: SingleChildScrollView(
@@ -421,7 +421,7 @@ class GoodsMaterialTripListState extends State<GoodsMaterialTripList> with Ticke
                                      alignment: Alignment.center,
                                      child: Container(
                                        height: 50,
-                                       width: SizeConfig.screenWidth*0.8,
+                                       width: SizeConfig.screenWidth!*0.8,
                                        decoration: BoxDecoration(
                                            color: AppTheme.red,
                                            borderRadius: BorderRadius.circular(25)
@@ -494,7 +494,7 @@ class GoodsMaterialTripListState extends State<GoodsMaterialTripList> with Ticke
 
                     children: [
                       CustomPaint(
-                        size: Size( SizeConfig.screenWidth, 55),
+                        size: Size( SizeConfig.screenWidth!, 55),
                         painter: RPSCustomPainter(),
                       ),
 

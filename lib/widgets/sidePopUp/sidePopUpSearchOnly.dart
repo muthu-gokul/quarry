@@ -5,22 +5,22 @@ import 'package:quarry/styles/size.dart';
 
 class PopUpSearchOnly extends StatefulWidget {
 
-  bool isOpen;
+  bool? isOpen;
   TextEditingController searchController;
-  String searchHintText;
+  String? searchHintText;
 
 
-  List<dynamic> dataList;
-  String propertyKeyName;
-  String propertyKeyId;
-  int selectedId;
+  List<dynamic>? dataList;
+  String? propertyKeyName;
+  String? propertyKeyId;
+  int? selectedId;
 
   Function(String) searchOnchange;
-  Function(int) itemOnTap;
-  VoidCallback closeOnTap;
+  Function(int)? itemOnTap;
+  VoidCallback? closeOnTap;
   //VoidCallback addNewOnTap;
 
-  PopUpSearchOnly({this.isOpen,@required this.searchController,@required this.searchOnchange,this.itemOnTap,this.dataList,
+  PopUpSearchOnly({this.isOpen,required this.searchController,required this.searchOnchange,this.itemOnTap,this.dataList,
     this.propertyKeyName,this.propertyKeyId,this.selectedId,this.closeOnTap,this.searchHintText});
 
   @override
@@ -46,17 +46,17 @@ class _PopUpSearchOnlyState extends State<PopUpSearchOnly> {
         ),
         clipBehavior: Clip.antiAlias,
         padding: EdgeInsets.only(top: 20,bottom: 20,),
-        margin: EdgeInsets.only(left: SizeConfig.width25,right: SizeConfig.width25),
-        transform: Matrix4.translationValues(widget.isOpen?0:SizeConfig.screenWidth, 0, 0),
+        margin: EdgeInsets.only(left: SizeConfig.width25!,right: SizeConfig.width25!),
+        transform: Matrix4.translationValues(widget.isOpen!?0:SizeConfig.screenWidth!, 0, 0),
         child: Stack(
           children: [
 
             Container(
 
-              height: SizeConfig.screenHeight*0.63,
+              height: SizeConfig.screenHeight!*0.63,
 
               width: SizeConfig.screenWidth,
-              margin: EdgeInsets.only(left: SizeConfig.width16,right: SizeConfig.width16,top: 10),
+              margin: EdgeInsets.only(left: SizeConfig.width16!,right: SizeConfig.width16!,top: 10),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   color: Colors.white
@@ -66,7 +66,7 @@ class _PopUpSearchOnlyState extends State<PopUpSearchOnly> {
                   Container(
                     height: 50,
                     width: SizeConfig.screenWidth,
-                    margin: EdgeInsets.only(left: SizeConfig.width20,right: SizeConfig.width20,top: 25,bottom: 20),
+                    margin: EdgeInsets.only(left: SizeConfig.width20!,right: SizeConfig.width20!,top: 25,bottom: 20),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(50),
                         color: Colors.white,
@@ -85,7 +85,7 @@ class _PopUpSearchOnlyState extends State<PopUpSearchOnly> {
                         Icon(Icons.search,color: AppTheme.hintColor,),
                         SizedBox(width: SizeConfig.width10,),
                         Container(
-                          width: SizeConfig.screenWidth*0.45,
+                          width: SizeConfig.screenWidth!*0.45,
                           child: TextField(
                             controller: widget.searchController,
                             scrollPadding: EdgeInsets.only(bottom: 400),
@@ -109,20 +109,20 @@ class _PopUpSearchOnlyState extends State<PopUpSearchOnly> {
                     ),
                   ),
                   Container(
-                    height: SizeConfig.screenHeight*0.63- 120,
-                    width: SizeConfig.screenWidth-SizeConfig.width60,
+                    height: SizeConfig.screenHeight!*0.63- 120,
+                    width: SizeConfig.screenWidth!-SizeConfig.width60!,
                     color: Colors.white,
                     padding: EdgeInsets.only(right: 5,left: 5),
-                    child:widget.dataList.isEmpty?Container(
-                      width: SizeConfig.screenWidth*0.8,
-                      height: SizeConfig.screenHeight*0.2,
+                    child:widget.dataList!.isEmpty?Container(
+                      width: SizeConfig.screenWidth!*0.8,
+                      height: SizeConfig.screenHeight!*0.2,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
 
                           Text("No Data Found",style: TextStyle(fontSize: 18,fontFamily:'RMI',color: AppTheme.addNewTextFieldText),),
-                          SvgPicture.asset("assets/nodata.svg",height:SizeConfig.screenHeight*0.3 ,),
+                          SvgPicture.asset("assets/nodata.svg",height:SizeConfig.screenHeight!*0.3 ,),
 
                         ],
                       ),
@@ -134,18 +134,18 @@ class _PopUpSearchOnlyState extends State<PopUpSearchOnly> {
                       controller: listController,
                       child: ListView.builder(
                           physics: BouncingScrollPhysics(),
-                          itemCount: widget.dataList.length,
+                          itemCount: widget.dataList!.length,
                           controller: listController,
                           itemBuilder: (context,index){
                             return GestureDetector(
                               onTap: (){
-                                widget.itemOnTap(index);
+                                widget.itemOnTap!(index);
 
 
 
                               },
                               child: Container(
-                                margin: EdgeInsets.only(left: SizeConfig.width40,right:  SizeConfig.width40,top: 20),
+                                margin: EdgeInsets.only(left: SizeConfig.width40!,right:  SizeConfig.width40!,top: 20),
                                 padding: EdgeInsets.only(left:5,right:5),
 
                                 height: 40,
@@ -153,13 +153,13 @@ class _PopUpSearchOnlyState extends State<PopUpSearchOnly> {
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(5),
                                     border: Border.all(color: AppTheme.addNewTextFieldBorder),
-                                    color: widget.selectedId==null ?Color(0xFFf8f8f8):widget.selectedId==widget.dataList[index].get(widget.propertyKeyId)?AppTheme.bgColor:Colors.white
+                                    color: widget.selectedId==null ?Color(0xFFf8f8f8):widget.selectedId==widget.dataList![index].get(widget.propertyKeyId)?AppTheme.bgColor:Colors.white
                                 ),
                                 child: Center(
                                   child: FittedBox(
                                     fit: BoxFit.contain,
-                                    child: Text("${widget.dataList[index].get(widget.propertyKeyName)}",style: TextStyle(fontFamily: 'RR',fontSize: 16,
-                                        color: widget.selectedId==null ?AppTheme.bgColor:widget.selectedId==widget.dataList[index].get(widget.propertyKeyId)?Colors.white:AppTheme.bgColor
+                                    child: Text("${widget.dataList![index].get(widget.propertyKeyName)}",style: TextStyle(fontFamily: 'RR',fontSize: 16,
+                                        color: widget.selectedId==null ?AppTheme.bgColor:widget.selectedId==widget.dataList![index].get(widget.propertyKeyId)?Colors.white:AppTheme.bgColor
 
                                     ),),
                                   ),
@@ -179,7 +179,7 @@ class _PopUpSearchOnlyState extends State<PopUpSearchOnly> {
               right: 8,
               child: GestureDetector(
                 onTap: (){
-                  widget.closeOnTap();
+                  widget.closeOnTap!();
 
                 },
                 child: Container(

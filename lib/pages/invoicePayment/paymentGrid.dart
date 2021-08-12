@@ -23,7 +23,7 @@ import 'package:quarry/widgets/navigationBarIcon.dart';
 
 
 class PaymentGrid extends StatefulWidget {
-  VoidCallback drawerCallback;
+  VoidCallback? drawerCallback;
   PaymentGrid({this.drawerCallback});
   @override
   PaymentGridState createState() => PaymentGridState();
@@ -32,7 +32,7 @@ class PaymentGrid extends StatefulWidget {
 class PaymentGridState extends State<PaymentGrid> with TickerProviderStateMixin{
 
   bool showEdit=false;
-  int selectedIndex;
+  int? selectedIndex;
 
 
   ScrollController header=new ScrollController();
@@ -155,8 +155,8 @@ class PaymentGridState extends State<PaymentGrid> with TickerProviderStateMixin{
                           map((i, value) => MapEntry(i,
                               Container(
                                 height: 80,
-                                width: SizeConfig.screenWidth*0.41,
-                                margin: EdgeInsets.only(right: SizeConfig.width10),
+                                width: SizeConfig.screenWidth!*0.41,
+                                margin: EdgeInsets.only(right: SizeConfig.width10!),
 
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(5),
@@ -172,18 +172,18 @@ class PaymentGridState extends State<PaymentGrid> with TickerProviderStateMixin{
                                       children: [
                                         Container(
                                             height: 18,
-                                            width: SizeConfig.screenWidth*0.41,
+                                            width: SizeConfig.screenWidth!*0.41,
                                             alignment: Alignment.center,
                                             padding: EdgeInsets.only(left: 3,right: 3),
                                             child: FittedBox(
-                                              child: Text(value.name,style: TextStyle(fontFamily: 'RR',fontSize: 16,color: Colors.white,letterSpacing: 0.1),
+                                              child: Text(value.name!,style: TextStyle(fontFamily: 'RR',fontSize: 16,color: Colors.white,letterSpacing: 0.1),
                                               ),
                                             )
                                         ),
                                         SizedBox(height: 5,),
                                         Container(
                                           height: 18,
-                                            width: SizeConfig.screenWidth*0.41,
+                                            width: SizeConfig.screenWidth!*0.41,
                                             alignment: Alignment.center,
                                             padding: EdgeInsets.only(left: 3,right: 3),
                                             child: FittedBox(child: Text( '${value.value}',style: TextStyle(fontFamily: 'RR',fontSize: 18,color: AppTheme.yellowColor),))),
@@ -203,7 +203,7 @@ class PaymentGridState extends State<PaymentGrid> with TickerProviderStateMixin{
 
 
                 Container(
-                    height: SizeConfig.screenHeight-140,
+                    height: SizeConfig.screenHeight!-140,
                     width: SizeConfig.screenWidth,
                     margin: EdgeInsets.only(top: 140),
                     clipBehavior: Clip.antiAlias,
@@ -222,7 +222,7 @@ class PaymentGridState extends State<PaymentGrid> with TickerProviderStateMixin{
                             children: [
                               Container(
                                 height: 50,
-                                width: SizeConfig.screenWidth-149,
+                                width: SizeConfig.screenWidth!-149,
                                 color: showShadow? AppTheme.bgColor.withOpacity(0.8):AppTheme.bgColor,
                                 child: SingleChildScrollView(
                                   controller: header,
@@ -241,15 +241,15 @@ class PaymentGridState extends State<PaymentGrid> with TickerProviderStateMixin{
 
                               ),
                               Container(
-                                height: SizeConfig.screenHeight-260,
-                                width: SizeConfig.screenWidth-149,
+                                height: SizeConfig.screenHeight!-260,
+                                width: SizeConfig.screenWidth!-149,
                                 alignment: Alignment.topCenter,
                                 color: AppTheme.gridbodyBgColor,
                                 child: SingleChildScrollView(
                                   controller: body,
                                   scrollDirection: Axis.horizontal,
                                   child: Container(
-                                    height: SizeConfig.screenHeight-260,
+                                    height: SizeConfig.screenHeight!-260,
                                     alignment: Alignment.topCenter,
                                     color: AppTheme.gridbodyBgColor,
                                     child: SingleChildScrollView(
@@ -290,7 +290,7 @@ class PaymentGridState extends State<PaymentGrid> with TickerProviderStateMixin{
                                                     alignment: Alignment.centerLeft,
                                                     // padding: EdgeInsets.only(left: 20,right: 20),
                                                     width: 150,
-                                                    child: Text("${DateFormat.yMMMd().format(value.invoiceDate)}",
+                                                    child: Text("${DateFormat.yMMMd().format(value.invoiceDate!)}",
                                                       style:selectedIndex==i?AppTheme.TSWhiteML:AppTheme.gridTextColor14,
                                                     ),
 
@@ -369,7 +369,7 @@ class PaymentGridState extends State<PaymentGrid> with TickerProviderStateMixin{
 
                               ),
                               Container(
-                                height: SizeConfig.screenHeight-260,
+                                height: SizeConfig.screenHeight!-260,
                                 width: 150,
                                 alignment: Alignment.topCenter,
                                 decoration: BoxDecoration(
@@ -384,7 +384,7 @@ class PaymentGridState extends State<PaymentGrid> with TickerProviderStateMixin{
                                     ]
                                 ),
                                 child: Container(
-                                  height: SizeConfig.screenHeight-260,
+                                  height: SizeConfig.screenHeight!-260,
                                   alignment: Alignment.topCenter,
 
                                   child: SingleChildScrollView(
@@ -509,7 +509,7 @@ class PaymentGridState extends State<PaymentGrid> with TickerProviderStateMixin{
                         Container(
                           margin:EdgeInsets.only(top: 0),
                           child: CustomPaint(
-                            size: Size( SizeConfig.screenWidth, 65),
+                            size: Size( SizeConfig.screenWidth!, 65),
                             painter: RPSCustomPainter3(),
                           ),
                         ),
@@ -571,7 +571,7 @@ class PaymentGridState extends State<PaymentGrid> with TickerProviderStateMixin{
                                       ),
                                       GestureDetector(
                                         onTap: () async{
-                                          final List<DateTime>  picked1 = await DateRagePicker.showDatePicker(
+                                          final List<DateTime?>?  picked1 = await DateRagePicker.showDatePicker(
                                               context: context,
                                               initialFirstDate: new DateTime.now(),
                                               initialLastDate: (new DateTime.now()),
@@ -600,7 +600,7 @@ class PaymentGridState extends State<PaymentGrid> with TickerProviderStateMixin{
                                         ),
                                       ),
 
-                                      SizedBox(width: SizeConfig.screenWidth*0.25,),
+                                      SizedBox(width: SizeConfig.screenWidth!*0.25,),
                                       Container(
                                         height: 50,
                                         width: 50,
@@ -634,10 +634,10 @@ class PaymentGridState extends State<PaymentGrid> with TickerProviderStateMixin{
                               EditDelete(
                                 showEdit: showEdit,
                                 editTap: (){
-                                  if(pn.filterGridPaymentList[selectedIndex].DBInvoiceNumber!=0){
+                                  if(pn.filterGridPaymentList[selectedIndex!].DBInvoiceNumber!=0){
                                     pn.updatePaymentEdit(true);
                                     pn.PaymentDropDownValues(context);
-                                    pn.GetPaymentDbHit(context, pn.filterGridPaymentList[selectedIndex].invoiceId,PaymentEditFormState());
+                                    pn.GetPaymentDbHit(context, pn.filterGridPaymentList[selectedIndex!].invoiceId,PaymentEditFormState());
                                     Navigator.push(context, _createRoute());
                                     setState(() {
                                       selectedIndex=-1;

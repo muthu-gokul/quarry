@@ -27,7 +27,7 @@ import 'styles/size.dart';
 
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key key}) : super(key: key);
+  const LoginScreen({Key? key}) : super(key: key);
 
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -41,10 +41,10 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
 
   TextEditingController jfdgj=new TextEditingController();
 
-  bool passwordvisible;
-  bool loginvalidation;
-  AnimationController shakecontroller;
-  Animation<double> offsetAnimation;
+  late bool passwordvisible;
+  late bool loginvalidation;
+  late AnimationController shakecontroller;
+  late Animation<double> offsetAnimation;
   bool isLoading=false;
   bool isVisible=false;
   bool isEmailInvalid=false;
@@ -54,9 +54,9 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
   bool passwordGlow=false;
   bool emailGlow=false;
 
-  String prefEmail;
-  String prefPassword;
-  SharedPreferences _Loginprefs;
+  String? prefEmail;
+  String? prefPassword;
+  late SharedPreferences _Loginprefs;
   static const String useremail = 'email';
   static const String passwordd = 'password';
 
@@ -66,13 +66,13 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
       this.prefEmail = this._Loginprefs.getString(useremail) ?? "";
       this.prefPassword = this._Loginprefs.getString(passwordd) ?? "";
     });
-    if(prefEmail.isNotEmpty&&prefPassword.isNotEmpty){
+    if(prefEmail!.isNotEmpty&&prefPassword!.isNotEmpty){
       setState(() {
-        username.text=prefEmail;
-        password.text=prefPassword;
+        username.text=prefEmail!;
+        password.text=prefPassword!;
       });
     }
-    print(prefEmail.isEmpty);
+    print(prefEmail!.isEmpty);
     print(prefPassword);
 
   }
@@ -152,7 +152,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
     print(SizeConfig.screenHeight);
     print(SizeConfig.screenWidth);
     func() async {
-      if(_loginFormKey.currentState.validate() && !isEmailInvalid && !ispasswordInvalid){
+      if(_loginFormKey.currentState!.validate() && !isEmailInvalid && !ispasswordInvalid){
         setState(() {
           isLoading=true;
         });
@@ -188,7 +188,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
           ]
         };
 
-        final response = await http.post(
+        final dynamic response = await http.post(
             Uri.parse(itemsUrl), headers: {"Content-Type": "application/json"},
             body: json.encode(body)
         ).then((value) async {
@@ -199,18 +199,18 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
           if (parsed["Table"] != null) {
             loginNotifier.fetchUserDetails(parsed);
 
-            if (loginNotifier.userDetail.loginTblOutput[0].Status == 'True') {
-              if(prefEmail.isEmpty && prefPassword.isEmpty){
+            if (loginNotifier.userDetail.loginTblOutput![0].Status == 'True') {
+              if(prefEmail!.isEmpty && prefPassword!.isEmpty){
                 _setCredentials(username.text, password.text);
               }else if(prefEmail!=username.text){
                 _setCredentials(username.text, password.text);
               }
-              quarryNotifier.initUserDetail(loginNotifier.userDetail.loginTable[0].UserId,
-                  loginNotifier.userDetail.loginTable[0].UserName,
-                  loginNotifier.userDetail.loginTable[0].DataBaseName,context);
+              quarryNotifier.initUserDetail(loginNotifier.userDetail.loginTable![0].UserId,
+                  loginNotifier.userDetail.loginTable![0].UserName,
+                  loginNotifier.userDetail.loginTable![0].DataBaseName,context);
               Provider.of<QuarryNotifier>(context,listen: false).GetQuarryDetailDbhit(context);
               Provider.of<QuarryNotifier>(context,listen: false).GetplantDetailDbhit(context,null,this);
-              Provider.of<ProfileNotifier>(context, listen: false).GetUserDetailDbHit(context,loginNotifier.userDetail.loginTable[0].UserId);
+              Provider.of<ProfileNotifier>(context, listen: false).GetUserDetailDbHit(context,loginNotifier.userDetail.loginTable![0].UserId);
 
               Navigator.of(context).pushReplacement(PageRouteBuilder(
                 pageBuilder: (context, animation, secondaryAnimation) =>HomePage(),
@@ -308,7 +308,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
 
                                         width: SizeConfig.screenWidth,
                                         alignment: Alignment.bottomCenter,
-                                        margin: EdgeInsets.only(left: SizeConfig.width25,right: SizeConfig.width25,top: 280),
+                                        margin: EdgeInsets.only(left: SizeConfig.width25!,right: SizeConfig.width25!,top: 280),
                                         decoration: BoxDecoration(
                                           borderRadius: BorderRadius.circular(15),
                                           color: AppTheme.yellowColor
@@ -336,13 +336,13 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                                           Align(
                                               alignment: Alignment.centerLeft,
                                               child: Padding(
-                                                padding:  EdgeInsets.only(left: SizeConfig.width30,),
+                                                padding:  EdgeInsets.only(left: SizeConfig.width30!,),
                                                 child: Text("User Email",style: TextStyle(fontSize: 16,fontFamily: 'RR',color: AppTheme.grey),),
                                               )),
                                           Container(
                                             height: 50,
                                             width: SizeConfig.screenWidth,
-                                            margin: EdgeInsets.only(left: SizeConfig.width20,right: SizeConfig.width20,top: 10,bottom: 20),
+                                            margin: EdgeInsets.only(left: SizeConfig.width20!,right: SizeConfig.width20!,top: 10,bottom: 20),
                                             decoration: BoxDecoration(
                                                 borderRadius: BorderRadius.circular(50),
                                                 color: Colors.white,
@@ -357,7 +357,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                                                 ]
                                             ),
                                             child: Container(
-                                              width: SizeConfig.screenWidth*0.45,
+                                              width: SizeConfig.screenWidth!*0.45,
                                               padding: EdgeInsets.only(left: 20),
                                               child: TextFormField(
                                                 onTap: (){
@@ -385,8 +385,8 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
 
                                                   Pattern pattern =
                                                       r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-                                                  RegExp regex = new RegExp(pattern);
-                                                  if (!regex.hasMatch(value)) {
+                                                  RegExp regex = new RegExp(pattern as String);
+                                                  if (!regex.hasMatch(value!)) {
                                                     setState(() {
                                                       isEmailInvalid=true;
                                                     });
@@ -410,7 +410,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                                           ),
 
                                           isEmailInvalid?Container(
-                                              margin: EdgeInsets.only(left:SizeConfig.width10,right:SizeConfig.width10,),
+                                              margin: EdgeInsets.only(left:SizeConfig.width10!,right:SizeConfig.width10!,),
                                               alignment: Alignment.centerLeft,
                                               child: Text("* Email format is Invalid",style: TextStyle(color: Colors.red,fontSize: 18,fontFamily: 'RR'),textAlign: TextAlign.left,)
                                           ):Container(height: 0,width: 0,),
@@ -419,13 +419,13 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                                           Align(
                                               alignment: Alignment.centerLeft,
                                               child: Padding(
-                                                padding:  EdgeInsets.only(left: SizeConfig.width30,),
+                                                padding:  EdgeInsets.only(left: SizeConfig.width30!,),
                                                 child: Text("Password",style: TextStyle(fontSize: 16,fontFamily: 'RR',color: AppTheme.grey),),
                                               )),
                                           Container(
                                             height: 50,
                                             width: SizeConfig.screenWidth,
-                                            margin: EdgeInsets.only(left: SizeConfig.width20,right: SizeConfig.width20,top: 10,bottom: 20),
+                                            margin: EdgeInsets.only(left: SizeConfig.width20!,right: SizeConfig.width20!,top: 10,bottom: 20),
                                             decoration: BoxDecoration(
                                                 borderRadius: BorderRadius.circular(50),
                                                 border: Border.all(color:passwordGlow? AppTheme.yellowColor:Colors.transparent),
@@ -440,7 +440,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                                                 ]
                                             ),
                                             child: Container(
-                                              width: SizeConfig.screenWidth*0.45,
+                                              width: SizeConfig.screenWidth!*0.45,
                                               padding: EdgeInsets.only(left: 20),
                                               child: TextFormField(
                                                 onTap: (){
@@ -477,7 +477,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                                                 keyboardType: TextInputType.emailAddress,
 
                                                   validator:(value){
-                                                    if(value.isEmpty){
+                                                    if(value!.isEmpty){
                                                       setState(() {
                                                         ispasswordInvalid=true;
                                                       });
@@ -500,7 +500,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                                           ),
 
                                           ispasswordInvalid?Container(
-                                              margin: EdgeInsets.only(left:SizeConfig.width10,right:SizeConfig.width10,),
+                                              margin: EdgeInsets.only(left:SizeConfig.width10!,right:SizeConfig.width10!,),
                                               alignment: Alignment.centerLeft,
                                               child: Text("* Password is required",style: TextStyle(color: Colors.red,fontSize: 18,fontFamily: 'RR'),textAlign: TextAlign.left,)
                                           ):Container(height: 0,width: 0,),
@@ -581,7 +581,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
   bool validateEmail(String value) {
     Pattern pattern =
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-    RegExp regex = new RegExp(pattern);
+    RegExp regex = new RegExp(pattern as String);
     return (!regex.hasMatch(value)) ? false : true;
   }
 

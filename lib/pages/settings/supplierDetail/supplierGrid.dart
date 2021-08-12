@@ -19,7 +19,7 @@ import 'supplierAddNew.dart';
 
 
 class SupplierDetailsGrid extends StatefulWidget {
-  VoidCallback drawerCallback;
+  VoidCallback? drawerCallback;
   SupplierDetailsGrid({this.drawerCallback});
   @override
   SupplierDetailsGridState createState() => SupplierDetailsGridState();
@@ -28,7 +28,7 @@ class SupplierDetailsGrid extends StatefulWidget {
 class SupplierDetailsGridState extends State<SupplierDetailsGrid> with TickerProviderStateMixin{
 
   bool showEdit=false;
-  int selectedIndex;
+  int? selectedIndex;
 
   List<String> gridDataRowList=["SupplierName","SupplierCategoryName","Location","SupplierContactNumber"];
 
@@ -164,7 +164,7 @@ class SupplierDetailsGridState extends State<SupplierDetailsGrid> with TickerPro
                         Container(
                           margin:EdgeInsets.only(top: 0),
                           child: CustomPaint(
-                            size: Size( SizeConfig.screenWidth, 65),
+                            size: Size( SizeConfig.screenWidth!, 65),
                             painter: RPSCustomPainter3(),
                           ),
                         ),
@@ -234,7 +234,7 @@ class SupplierDetailsGridState extends State<SupplierDetailsGrid> with TickerPro
 
                                           final File file = File(path);
 
-                                          await file.writeAsBytes(await excel.encode()).then((value) async {
+                                          await file.writeAsBytes(await excel.encode()!).then((value) async {
                                             //  OpenFile.open(path);
                                             CustomAlert().billSuccessAlert(context, "", "Successfully Downloaded @ \n\n Internal Storage/Download/Quarry/Masters/$filename.xlsx", "", "");
                                           });
@@ -257,7 +257,7 @@ class SupplierDetailsGridState extends State<SupplierDetailsGrid> with TickerPro
                                   sn.updateSupplierEdit(true);
                                   sn.clearForm();
                                   sn.SupplierDropDownValues(context).then((value){
-                                    sn.GetSupplierDbHit(context, sn.supplierGridList[selectedIndex].supplierId,SupplierDetailAddNewState());
+                                    sn.GetSupplierDbHit(context, sn.supplierGridList[selectedIndex!].supplierId,SupplierDetailAddNewState());
                                     setState(() {
                                       showEdit=false;
                                       selectedIndex=-1;

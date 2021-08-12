@@ -24,16 +24,16 @@ import 'package:quarry/widgets/waveIndicator/liquid_circular_progress_indicator.
 import 'package:charts_flutter/flutter.dart' as charts;
 class DieselDashBoard extends StatefulWidget {
 
-  VoidCallback drawerCallback;
+  VoidCallback? drawerCallback;
   DieselDashBoard({this.drawerCallback});
   @override
   _DieselDashBoardState createState() => _DieselDashBoardState();
 }
 
 class _DieselDashBoardState extends State<DieselDashBoard> {
-  ScrollController silverController;
+  late ScrollController silverController;
   double silverBodyTopMargin=0;
-  List<DateTime> picked=[];
+  List<DateTime?> picked=[];
   int selIndex=0;
 
   @override
@@ -50,7 +50,7 @@ class _DieselDashBoardState extends State<DieselDashBoard> {
           });
         }
     );
-    WidgetsBinding.instance.addPostFrameCallback((_){
+    WidgetsBinding.instance!.addPostFrameCallback((_){
       silverController=new ScrollController();
 
       setState(() {
@@ -121,7 +121,7 @@ class _DieselDashBoardState extends State<DieselDashBoard> {
                           alignment: Alignment.centerRight,
                           child: GestureDetector(
                               onTap: () async{
-                                final List<DateTime>  picked1 = await DateRagePicker.showDatePicker(
+                                final List<DateTime?>?  picked1 = await DateRagePicker.showDatePicker(
                                     context: context,
                                     initialFirstDate: new DateTime.now(),
                                     initialLastDate: (new DateTime.now()),
@@ -135,8 +135,8 @@ class _DieselDashBoardState extends State<DieselDashBoard> {
                                   });
                                   db.DashBoardDbHit(context,
                                       "Diesel",
-                                      DateFormat("yyyy-MM-dd").format(picked[0]).toString(),
-                                      DateFormat("yyyy-MM-dd").format(picked[1]).toString(),
+                                      DateFormat("yyyy-MM-dd").format(picked[0]!).toString(),
+                                      DateFormat("yyyy-MM-dd").format(picked[1]!).toString(),
                                       voidCallback: (){
                                         Timer(Duration(milliseconds: 500), (){
                                           setState(() {
@@ -153,8 +153,8 @@ class _DieselDashBoardState extends State<DieselDashBoard> {
                                   });
                                   db.DashBoardDbHit(context,
                                       "Diesel",
-                                      DateFormat("yyyy-MM-dd").format(picked[0]).toString(),
-                                      DateFormat("yyyy-MM-dd").format(picked[0]).toString(),
+                                      DateFormat("yyyy-MM-dd").format(picked[0]!).toString(),
+                                      DateFormat("yyyy-MM-dd").format(picked[0]!).toString(),
                                     voidCallback: (){
                                       Timer(Duration(milliseconds: 500), (){
                                         setState(() {
@@ -186,8 +186,8 @@ class _DieselDashBoardState extends State<DieselDashBoard> {
                       ),
                       alignment: Alignment.center,
                       padding: EdgeInsets.only(left: 10,right: 10),
-                      child: Text(picked.length==1?"${DateFormat("dd/MM/yyyy").format(picked[0])}":
-                      picked.length==2?"${DateFormat("dd/MM/yyyy").format(picked[0])} - ${DateFormat("dd/MM/yyyy").format(picked[1])}":"Today",
+                      child: Text(picked.length==1?"${DateFormat("dd/MM/yyyy").format(picked[0]!)}":
+                      picked.length==2?"${DateFormat("dd/MM/yyyy").format(picked[0]!)} - ${DateFormat("dd/MM/yyyy").format(picked[1]!)}":"Today",
                         style: TextStyle(color:AppTheme.yellowColor,fontFamily: 'RM',fontSize: 14),
                       ),
                     ),
@@ -287,7 +287,7 @@ class _DieselDashBoardState extends State<DieselDashBoard> {
                                     ),
                                   ),
                                 ),
-                                Align(
+                              /*  Align(
                                   alignment: Alignment.center,
                                   child:Container(
                                     height:220,
@@ -298,7 +298,7 @@ class _DieselDashBoardState extends State<DieselDashBoard> {
                                             arcWidth: 20, startAngle: 4 / 5 * pi, arcLength: 7 / 5 * pi)
                                     ),
                                   ),
-                                ),
+                                ),*/
                               ],
                             )
                           ),

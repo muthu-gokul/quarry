@@ -6,9 +6,9 @@ class PurchaseSupplierList {
     this.supplierType,
   });
 
-  int supplierId;
-  String supplierName;
-  String supplierType;
+  int? supplierId;
+  String? supplierName;
+  String? supplierType;
 
   factory PurchaseSupplierList.fromJson(Map<String, dynamic> json) => PurchaseSupplierList(
     supplierId: json["SupplierId"],

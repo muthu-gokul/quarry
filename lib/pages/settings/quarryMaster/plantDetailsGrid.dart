@@ -18,7 +18,7 @@ import 'package:quarry/widgets/bottomBarAddButton.dart';
 
 
 class PlantDetailsGrid extends StatefulWidget {
-  VoidCallback drawerCallback;
+  VoidCallback? drawerCallback;
   PlantDetailsGrid({this.drawerCallback});
   @override
   PlantDetailsGridState createState() => PlantDetailsGridState();
@@ -30,15 +30,15 @@ class PlantDetailsGridState extends State<PlantDetailsGrid> with TickerProviderS
   bool isListScroll=false;
 
 
-  ScrollController scrollController;
-  ScrollController listViewController;
+  ScrollController? scrollController;
+  ScrollController? listViewController;
 
 
 
   @override
   void initState() {
     isEdit=false;
-    WidgetsBinding.instance.addPostFrameCallback((_){
+    WidgetsBinding.instance!.addPostFrameCallback((_){
 
 
       scrollController=new ScrollController();
@@ -106,7 +106,7 @@ class PlantDetailsGridState extends State<PlantDetailsGrid> with TickerProviderS
 
                           int sensitivity = 5;
                           if (details.delta.dy > sensitivity) {
-                            scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
+                            scrollController!.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
                               if(isListScroll){
                                 setState(() {
                                   isListScroll=false;
@@ -115,7 +115,7 @@ class PlantDetailsGridState extends State<PlantDetailsGrid> with TickerProviderS
                             });
 
                           } else if(details.delta.dy < -sensitivity){
-                            scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
+                            scrollController!.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
 
                               if(!isListScroll){
                                 setState(() {
@@ -126,7 +126,7 @@ class PlantDetailsGridState extends State<PlantDetailsGrid> with TickerProviderS
                           }
                         },
                         child: Container(
-                          height: SizeConfig.screenHeight-60,
+                          height: SizeConfig.screenHeight!-60,
                           width: SizeConfig.screenWidth,
 
                           decoration: BoxDecoration(
@@ -138,15 +138,15 @@ class PlantDetailsGridState extends State<PlantDetailsGrid> with TickerProviderS
                               //   print(ScrollStartNotification);
                               if(s is ScrollStartNotification){
 
-                                if(listViewController.offset==0 && isListScroll && scrollController.offset==100 && listViewController.position.userScrollDirection==ScrollDirection.idle){
+                                if(listViewController!.offset==0 && isListScroll && scrollController!.offset==100 && listViewController!.position.userScrollDirection==ScrollDirection.idle){
 
                                   Timer(Duration(milliseconds: 100), (){
-                                    if(listViewController.position.userScrollDirection!=ScrollDirection.reverse){
+                                    if(listViewController!.position.userScrollDirection!=ScrollDirection.reverse){
 
                                       //if(scrollController.position.pixels == scrollController.position.maxScrollExtent){
-                                      if(listViewController.offset==0){
+                                      if(listViewController!.offset==0){
 
-                                        scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value) {
+                                        scrollController!.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value) {
                                           if(isListScroll){
                                             setState(() {
                                               isListScroll=false;
@@ -159,7 +159,8 @@ class PlantDetailsGridState extends State<PlantDetailsGrid> with TickerProviderS
                                   });
                                 }
                               }
-                            },
+                              return true;
+                            } ,
                             child: ListView(
                               controller: listViewController,
                               scrollDirection: Axis.vertical,
@@ -176,7 +177,7 @@ class PlantDetailsGridState extends State<PlantDetailsGrid> with TickerProviderS
                                     children: [
                                       Container(
                                         height: 200,
-                                        width: SizeConfig.screenWidth*0.5,
+                                        width: SizeConfig.screenWidth!*0.5,
                                         decoration: BoxDecoration(
                                             color: Colors.white,
                                             borderRadius: BorderRadius.only(topLeft: Radius.circular(10))
@@ -222,7 +223,7 @@ class PlantDetailsGridState extends State<PlantDetailsGrid> with TickerProviderS
                                         },
                                         child: Container(
                                           height: 200,
-                                          width: SizeConfig.screenWidth*0.5,
+                                          width: SizeConfig.screenWidth!*0.5,
                                           decoration: BoxDecoration(
                                               color: Colors.white,
                                               borderRadius: BorderRadius.only(topRight: Radius.circular(10))
@@ -256,7 +257,7 @@ class PlantDetailsGridState extends State<PlantDetailsGrid> with TickerProviderS
                                         ),
                                       ):Container(
                                         height: 200,
-                                        width: SizeConfig.screenWidth*0.5,
+                                        width: SizeConfig.screenWidth!*0.5,
                                         color: Colors.white,
                                       ),
                                     ],
@@ -279,7 +280,7 @@ class PlantDetailsGridState extends State<PlantDetailsGrid> with TickerProviderS
                                         },
                                         child: Container(
                                           height: 200,
-                                          width: SizeConfig.screenWidth*0.5,
+                                          width: SizeConfig.screenWidth!*0.5,
                                           color: Colors.white,
                                           child: Column(
                                             mainAxisAlignment: MainAxisAlignment.center,

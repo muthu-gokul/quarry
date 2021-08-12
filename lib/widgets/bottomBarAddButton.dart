@@ -3,7 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:quarry/styles/app_theme.dart';
 
 class AddButton extends StatelessWidget {
-  VoidCallback ontap;
+  VoidCallback? ontap;
   String image;
   AddButton({this.ontap,this.image="assets/svg/tick.svg"});
 
@@ -40,7 +40,7 @@ class AddButton extends StatelessWidget {
 
 
 class CancelButton extends StatelessWidget {
-  VoidCallback ontap;
+  VoidCallback? ontap;
   Color bgColor;
   Color iconColor;
   CancelButton({this.ontap,this.bgColor=Colors.white,this.iconColor=AppTheme.addNewTextFieldFocusBorder});

@@ -4,7 +4,7 @@ import 'package:quarry/widgets/animation/controlanim.dart';
 import 'package:quarry/widgets/animation/multiTrack.dart';
 
 class FadeAnimation extends StatelessWidget {
-  final double delay;
+  final double? delay;
   final Widget child;
 
   FadeAnimation(this.delay, this.child);
@@ -19,11 +19,11 @@ class FadeAnimation extends StatelessWidget {
     ]);
 
     return ControlledAnimation(
-      delay: Duration(milliseconds: (200 * delay).round()),
+      delay: Duration(milliseconds: (200 * delay!).round()),
       duration: tween.duration,
       tween: tween,
       child: child,
-      builderWithChild: (context, child, animation) => Opacity(
+      builderWithChild: (context, child, dynamic animation) => Opacity(
         opacity: animation["opacity"],
         child: Transform.translate(
             offset: Offset(0, animation["translateY"]),

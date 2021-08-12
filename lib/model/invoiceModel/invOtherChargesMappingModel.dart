@@ -1,10 +1,10 @@
 class InvoiceOtherChargesMappingList{
 
-  int  InvoiceOtherChargesMappingId;
-  int InvoiceId;
-  String  OtherChargesName;
-  double OtherChargesAmount;
-  int IsActive;
+  int?  InvoiceOtherChargesMappingId;
+  int? InvoiceId;
+  String?  OtherChargesName;
+  double? OtherChargesAmount;
+  int? IsActive;
 
   InvoiceOtherChargesMappingList({
     this.InvoiceOtherChargesMappingId,

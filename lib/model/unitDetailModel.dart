@@ -1,6 +1,6 @@
 class UnitDetailModel{
-  int UnitId;
-  String UnitName;
+  int? UnitId;
+  String? UnitName;
 
   UnitDetailModel({this.UnitId, this.UnitName});
 

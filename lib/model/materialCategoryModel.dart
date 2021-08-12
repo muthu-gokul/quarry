@@ -1,6 +1,6 @@
 class MaterialCategoryModel{
-  int MaterialCategoryId;
-  String MaterialCategoryName;
+  int? MaterialCategoryId;
+  String? MaterialCategoryName;
 
   MaterialCategoryModel(
   {this.MaterialCategoryId, this.MaterialCategoryName});

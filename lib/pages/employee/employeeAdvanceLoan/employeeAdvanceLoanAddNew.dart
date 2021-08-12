@@ -17,7 +17,7 @@ import 'package:quarry/widgets/sidePopUp/sidePopupWithoutModelList.dart';
 import 'package:quarry/widgets/validationErrorText.dart';
 
 class EmployeeAdvanceAddNew extends StatefulWidget {
-  VoidCallback drawerCallback;
+  VoidCallback? drawerCallback;
   bool fromsaleGrid;
   EmployeeAdvanceAddNew({this.drawerCallback,this.fromsaleGrid:false});
 
@@ -27,8 +27,8 @@ class EmployeeAdvanceAddNew extends StatefulWidget {
 
 class _EmployeeAdvanceAddNewState extends State<EmployeeAdvanceAddNew> {
 
-  ScrollController scrollController;
-  ScrollController listViewController;
+  ScrollController? scrollController;
+  ScrollController? listViewController;
   bool _keyboardVisible=false;
   bool isListScroll=false;
   bool isAmountTypeOpen=false;
@@ -90,7 +90,7 @@ class _EmployeeAdvanceAddNewState extends State<EmployeeAdvanceAddNew> {
 
                 //Form
                 Container(
-                  height: SizeConfig.screenHeight-70,
+                  height: SizeConfig.screenHeight!-70,
                   // color: Colors.transparent,
                   child: SingleChildScrollView(
                     physics: NeverScrollableScrollPhysics(),
@@ -111,7 +111,7 @@ class _EmployeeAdvanceAddNewState extends State<EmployeeAdvanceAddNew> {
 
                               int sensitivity = 5;
                               if (details.delta.dy > sensitivity) {
-                                scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
+                                scrollController!.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
                                   if(isListScroll){
                                     setState(() {
                                       isListScroll=false;
@@ -120,7 +120,7 @@ class _EmployeeAdvanceAddNewState extends State<EmployeeAdvanceAddNew> {
                                 });
 
                               } else if(details.delta.dy < -sensitivity){
-                                scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
+                                scrollController!.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
 
                                   if(!isListScroll){
                                     setState(() {
@@ -145,15 +145,15 @@ class _EmployeeAdvanceAddNewState extends State<EmployeeAdvanceAddNew> {
                                   //   print(ScrollStartNotification);
                                   if(s is ScrollStartNotification){
 
-                                    if(listViewController.offset==0 && isListScroll && scrollController.offset==100 && listViewController.position.userScrollDirection==ScrollDirection.idle){
+                                    if(listViewController!.offset==0 && isListScroll && scrollController!.offset==100 && listViewController!.position.userScrollDirection==ScrollDirection.idle){
 
                                       Timer(Duration(milliseconds: 100), (){
-                                        if(listViewController.position.userScrollDirection!=ScrollDirection.reverse){
+                                        if(listViewController!.position.userScrollDirection!=ScrollDirection.reverse){
 
                                           //if(scrollController.position.pixels == scrollController.position.maxScrollExtent){
-                                          if(listViewController.offset==0){
+                                          if(listViewController!.offset==0){
 
-                                            scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value) {
+                                            scrollController!.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value) {
                                               if(isListScroll){
                                                 setState(() {
                                                   isListScroll=false;
@@ -166,7 +166,8 @@ class _EmployeeAdvanceAddNewState extends State<EmployeeAdvanceAddNew> {
                                       });
                                     }
                                   }
-                                },
+                                  return true;
+                                } ,
                                 child: ListView(
                                   controller: listViewController,
                                   scrollDirection: Axis.vertical,
@@ -183,7 +184,7 @@ class _EmployeeAdvanceAddNewState extends State<EmployeeAdvanceAddNew> {
                                         setState(() {
                                           _keyboardVisible=true;
                                         });
-                                        scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                        scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                       },
                                       value: eal.employeeCodeController.text,
                                       controller: eal.employeeCodeController,
@@ -199,7 +200,7 @@ class _EmployeeAdvanceAddNewState extends State<EmployeeAdvanceAddNew> {
                                         setState(() {
                                           eal.selectedEmployeeCode=v;
                                           int index;
-                                          index=eal.empList.indexWhere((element) => "${element.employeeName}  -  ${element.employeePrefix+element.employeeCode}"==v.toString()).toInt();
+                                          index=eal.empList.indexWhere((element) => "${element.employeeName}  -  ${element.employeePrefix!+element.employeeCode!}"==v.toString()).toInt();
                                           eal.showEmpName=eal.empList[index].employeeName;
                                           eal.showEmpDesg=eal.empList[index].employeeDesignationName;
                                           eal.showEmpWorkingDays=eal.empList[index].workingDays;
@@ -331,7 +332,7 @@ class _EmployeeAdvanceAddNewState extends State<EmployeeAdvanceAddNew> {
                                               _keyboardVisible=true;
                                               isListScroll=true;
                                             });
-                                            scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                            scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                           },
 
                                           onEditComplete: () {
@@ -353,7 +354,7 @@ class _EmployeeAdvanceAddNewState extends State<EmployeeAdvanceAddNew> {
                                               _keyboardVisible=true;
                                               isListScroll=true;
                                             });
-                                            scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                            scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                           },
 
                                           onEditComplete: () {
@@ -379,7 +380,7 @@ class _EmployeeAdvanceAddNewState extends State<EmployeeAdvanceAddNew> {
                                               _keyboardVisible=true;
                                               isListScroll=true;
                                             });
-                                            scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                            scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                           },
                                           onChange: (v){
                                             eal.emiCalc();
@@ -423,7 +424,7 @@ class _EmployeeAdvanceAddNewState extends State<EmployeeAdvanceAddNew> {
                                             borderRadius: BorderRadius.circular(3),
                                             color: AppTheme.disableColor
                                           ),
-                                          child: Text(eal.emiAmount>0?"${eal.emiAmount}":"EMI/Month",style: TextStyle(fontFamily: 'RR',fontSize: 15,color:AppTheme.addNewTextFieldText,letterSpacing: 0.2),),
+                                          child: Text(eal.emiAmount!>0?"${eal.emiAmount}":"EMI/Month",style: TextStyle(fontFamily: 'RR',fontSize: 15,color:AppTheme.addNewTextFieldText,letterSpacing: 0.2),),
                                         ),
                                         AddNewLabelTextField(
                                           labelText: 'Reason',
@@ -434,7 +435,7 @@ class _EmployeeAdvanceAddNewState extends State<EmployeeAdvanceAddNew> {
                                               _keyboardVisible=true;
                                               isListScroll=true;
                                             });
-                                            scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                            scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                           },
 
                                           onEditComplete: () {
@@ -455,7 +456,7 @@ class _EmployeeAdvanceAddNewState extends State<EmployeeAdvanceAddNew> {
 
 
 
-                                    SizedBox(height: _keyboardVisible? SizeConfig.screenHeight*0.6:200,)
+                                    SizedBox(height: _keyboardVisible? SizeConfig.screenHeight!*0.6:200,)
                                   ],
                                 ),
                               ),
@@ -514,7 +515,7 @@ class _EmployeeAdvanceAddNewState extends State<EmployeeAdvanceAddNew> {
                         Container(
                           margin:EdgeInsets.only(top: 0),
                           child: CustomPaint(
-                            size: Size( SizeConfig.screenWidth, 65),
+                            size: Size( SizeConfig.screenWidth!, 65),
                             painter: RPSCustomPainter3(),
                           ),
                         ),

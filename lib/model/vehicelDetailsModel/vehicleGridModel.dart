@@ -1,17 +1,17 @@
 class VehicleGridModel{
-  int VehicleId;
-  String VehicleNo;
-  String VehicleModel;
-  int VehicleTypeId;
-  String VehicleTypeName;
+  int? VehicleId;
+  String? VehicleNo;
+  String? VehicleModel;
+  int? VehicleTypeId;
+  String? VehicleTypeName;
 
-  String OwnerName;
-  String TypeID;
-  String RegNo;
-  String EngineNo;
-  String VehicleDescript;
+  String? OwnerName;
+  String? TypeID;
+  String? RegNo;
+  String? EngineNo;
+  String? VehicleDescript;
 
-  String EmptyWeight;
+  String? EmptyWeight;
 
 
   VehicleGridModel({this.VehicleId,this.VehicleNo,this.VehicleModel,this.OwnerName,this.VehicleTypeId,this.TypeID,

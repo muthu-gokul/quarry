@@ -23,7 +23,7 @@ import 'vehicleDetailsAddNew.dart';
 
 
 class VehicleDetailsGrid extends StatefulWidget {
-  VoidCallback drawerCallback;
+  VoidCallback? drawerCallback;
   VehicleDetailsGrid({this.drawerCallback});
   @override
   VehicleDetailsGridState createState() => VehicleDetailsGridState();
@@ -32,7 +32,7 @@ class VehicleDetailsGrid extends StatefulWidget {
 class VehicleDetailsGridState extends State<VehicleDetailsGrid> {
 
   bool showEdit=false;
-  int selectedIndex;
+  int? selectedIndex;
 
   List<String> gridDataRowList=["VehicleNumber","VehicleTypeName","VehicleModel","EmptyWeightOfVehicle","VehicleDescription"];
 
@@ -126,7 +126,7 @@ class VehicleDetailsGridState extends State<VehicleDetailsGrid> {
                         Container(
                           margin:EdgeInsets.only(top: 0),
                           child: CustomPaint(
-                            size: Size( SizeConfig.screenWidth, 65),
+                            size: Size( SizeConfig.screenWidth!, 65),
                             painter: RPSCustomPainter3(),
                           ),
                         ),
@@ -195,7 +195,7 @@ class VehicleDetailsGridState extends State<VehicleDetailsGrid> {
 
                                           final File file = File(path);
 
-                                          await file.writeAsBytes(await excel.encode()).then((value) async {
+                                          await file.writeAsBytes(await excel.encode()!).then((value) async {
                                             //  OpenFile.open(path);
                                             CustomAlert().billSuccessAlert(context, "", "Successfully Downloaded @ \n\n Internal Storage/Download/Quarry/Masters/$filename.xlsx", "", "");
                                           });
@@ -217,7 +217,7 @@ class VehicleDetailsGridState extends State<VehicleDetailsGrid> {
                                 editTap: (){
                                   mn.updateVehicleEdit(true);
                                   mn.vehicleDropDownValues(context).then((value){
-                                    mn.GetVehicleDbHit(context, mn.vehicleGridList[selectedIndex].VehicleId);
+                                    mn.GetVehicleDbHit(context, mn.vehicleGridList[selectedIndex!].VehicleId);
                                     setState(() {
                                       showEdit=false;
                                       selectedIndex=-1;

@@ -16,18 +16,18 @@ class GoodsReceivedGridModel {
     this.IsVehicleOutPending,
   });
 
-  int goodsReceivedId;
-  String grnNumber;
-  int purchaseOrderId;
-  int IsVehicleOutPending;
-  String purchaseOrderNumber;
-  String date;
-  int plantId;
-  String plantName;
-  String status;
-  AnimationController controller;
+  int? goodsReceivedId;
+  String? grnNumber;
+  int? purchaseOrderId;
+  int? IsVehicleOutPending;
+  String? purchaseOrderNumber;
+  String? date;
+  int? plantId;
+  String? plantName;
+  String? status;
+  AnimationController? controller;
 
-  bool isAnimate;
+  bool? isAnimate;
 
   factory GoodsReceivedGridModel.fromJson(Map<String, dynamic> json,TickerProviderStateMixin tickerProviderStateMixin) => GoodsReceivedGridModel(
     goodsReceivedId: json["GoodsReceivedId"],

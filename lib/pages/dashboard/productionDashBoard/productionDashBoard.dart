@@ -22,16 +22,16 @@ import 'package:quarry/widgets/dateRangePicker.dart' as DateRagePicker;
 
 class ProductionDashBoard extends StatefulWidget {
 
-  VoidCallback drawerCallback;
+  VoidCallback? drawerCallback;
   ProductionDashBoard({this.drawerCallback});
   @override
   _ProductionDashBoardState createState() => _ProductionDashBoardState();
 }
 
 class _ProductionDashBoardState extends State<ProductionDashBoard> {
-  ScrollController silverController;
+  late ScrollController silverController;
   double silverBodyTopMargin=0;
-  List<DateTime> picked=[];
+  List<DateTime?> picked=[];
   int selIndex=0;
 
   @override
@@ -41,7 +41,7 @@ class _ProductionDashBoardState extends State<ProductionDashBoard> {
         DateFormat("yyyy-MM-dd").format(DateTime.now().subtract(Duration(days: 6))).toString(),
         DateFormat("yyyy-MM-dd").format(DateTime.now()).toString()
     );
-    WidgetsBinding.instance.addPostFrameCallback((_){
+    WidgetsBinding.instance!.addPostFrameCallback((_){
       silverController=new ScrollController();
 
       setState(() {
@@ -109,15 +109,15 @@ class _ProductionDashBoardState extends State<ProductionDashBoard> {
                         ),
                         Align(
                           alignment: Alignment.bottomCenter,
-                          child: Text(picked.length==1?"${DateFormat("dd/MM/yyyy").format(picked[0])}":
-                          picked.length==2?"${DateFormat("dd/MM/yyyy").format(picked[0])} - ${DateFormat("dd/MM/yyyy").format(picked[1])}":"Today",
+                          child: Text(picked.length==1?"${DateFormat("dd/MM/yyyy").format(picked[0]!)}":
+                          picked.length==2?"${DateFormat("dd/MM/yyyy").format(picked[0]!)} - ${DateFormat("dd/MM/yyyy").format(picked[1]!)}":"Today",
                             style: TextStyle(fontSize: 12,fontFamily: 'RR',color: Color(0xFF8E9090)),),
                         ),
                         Align(
                           alignment: Alignment.centerRight,
                           child: GestureDetector(
                               onTap: () async{
-                                final List<DateTime>  picked1 = await DateRagePicker.showDatePicker(
+                                final List<DateTime?>?  picked1 = await DateRagePicker.showDatePicker(
                                     context: context,
                                     initialFirstDate: new DateTime.now(),
                                     initialLastDate: (new DateTime.now()),
@@ -131,8 +131,8 @@ class _ProductionDashBoardState extends State<ProductionDashBoard> {
                                   });
                                   db.DashBoardDbHit(context,
                                       "Production",
-                                      DateFormat("yyyy-MM-dd").format(picked[0]).toString(),
-                                      DateFormat("yyyy-MM-dd").format(picked[1]).toString()
+                                      DateFormat("yyyy-MM-dd").format(picked[0]!).toString(),
+                                      DateFormat("yyyy-MM-dd").format(picked[1]!).toString()
                                   );
                                 }
                                 else if(picked1!=null && picked1.length ==1){
@@ -142,8 +142,8 @@ class _ProductionDashBoardState extends State<ProductionDashBoard> {
                                   });
                                   db.DashBoardDbHit(context,
                                       "Production",
-                                      DateFormat("yyyy-MM-dd").format(picked[0]).toString(),
-                                      DateFormat("yyyy-MM-dd").format(picked[0]).toString()
+                                      DateFormat("yyyy-MM-dd").format(picked[0]!).toString(),
+                                      DateFormat("yyyy-MM-dd").format(picked[0]!).toString()
                                   );
                                 }
                               },
@@ -162,7 +162,7 @@ class _ProductionDashBoardState extends State<ProductionDashBoard> {
                    margin: EdgeInsets.only(top: 20),
                     padding: EdgeInsets.only(left: 10,right: 10),
                     child: ListView.builder(
-                      itemCount: db.productionInputMaterialsT.length,
+                      itemCount: db.productionInputMaterialsT!.length,
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (ctx,i){
                         return GestureDetector(
@@ -183,7 +183,7 @@ class _ProductionDashBoardState extends State<ProductionDashBoard> {
                             ),
                             alignment: Alignment.center,
                             padding: EdgeInsets.only(left: 30,right: 30),
-                            child: Text("${db.productionInputMaterialsT[i]['MaterialName']}",
+                            child: Text("${db.productionInputMaterialsT![i]['MaterialName']}",
                             style: TextStyle(color:selIndex==i?AppTheme.yellowColor: Color(0xFF8E9090),fontFamily: 'RR',fontSize: 14),
                             ),
                           ),
@@ -192,7 +192,7 @@ class _ProductionDashBoardState extends State<ProductionDashBoard> {
                     ),
                   ),
                   SizedBox(height: 20,),
-                  db.productionInputMaterialsT.isEmpty?Container():Container(
+                  db.productionInputMaterialsT!.isEmpty?Container():Container(
                     width: SizeConfig.screenWidth,
                     height: 275,
                     child: Stack(
@@ -206,7 +206,7 @@ class _ProductionDashBoardState extends State<ProductionDashBoard> {
                               innerStrokeWidth: 4,
                               backgroundColor: Color(0xFFd7d7d7),
                               foregroundColor: Color(0xFFF1B240),
-                              value: (( db.productionInputMaterialsT[selIndex]['InputMaterialQuantity']/db.totalProductionQty)),
+                              value:  db.productionInputMaterialsT![selIndex]['InputMaterialQuantity']/db.totalProductionQty,
                               center: Container(),
                             ),
                           ),
@@ -225,16 +225,16 @@ class _ProductionDashBoardState extends State<ProductionDashBoard> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
-                                    Text("${db.productionInputMaterialsT[selIndex]['InputMaterialQuantity']}",style: TextStyle(fontFamily: 'RM',color: Color(0xFF656565),fontSize: 25),),
+                                    Text("${db.productionInputMaterialsT![selIndex]['InputMaterialQuantity']}",style: TextStyle(fontFamily: 'RM',color: Color(0xFF656565),fontSize: 25),),
                                     Padding(
                                       padding: EdgeInsets.only(bottom: 3),
-                                      child: Text("  ${db.productionInputMaterialsT[selIndex]['UnitName']}",style: TextStyle(fontFamily: 'RR',color: Color(0xFF656565),fontSize: 10)),
+                                      child: Text("  ${db.productionInputMaterialsT![selIndex]['UnitName']}",style: TextStyle(fontFamily: 'RR',color: Color(0xFF656565),fontSize: 10)),
                                     ),
                                   ],
                                 ),
                               ),
                               SizedBox(height: 5,),
-                              Text("${db.productionInputMaterialsT[selIndex]['MaterialName']}",style: TextStyle(fontFamily: 'RR',color: Color(0xFF8E9090),fontSize: 14),),
+                              Text("${db.productionInputMaterialsT![selIndex]['MaterialName']}",style: TextStyle(fontFamily: 'RR',color: Color(0xFF8E9090),fontSize: 14),),
                             ],
                           ),
                         ),
@@ -242,7 +242,7 @@ class _ProductionDashBoardState extends State<ProductionDashBoard> {
                     ),
                   ),
 
-                  db.productionInputMaterialsT.isEmpty?Container():Expanded(
+                  db.productionInputMaterialsT!.isEmpty?Container():Expanded(
                     child: SingleChildScrollView(
                       child: Wrap(
                         children: [
@@ -302,7 +302,7 @@ class _ProductionDashBoardState extends State<ProductionDashBoard> {
               ),
             ),
 
-            db.productionInputMaterialsT.isEmpty?Container(
+            db.productionInputMaterialsT!.isEmpty?Container(
               width: SizeConfig.screenWidth,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,

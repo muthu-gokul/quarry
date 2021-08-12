@@ -18,15 +18,15 @@ import 'package:quarry/widgets/singleDatePicker.dart';
 import 'package:quarry/widgets/validationErrorText.dart';
 
 class EmployeeMasterAddNew extends StatefulWidget {
-  const EmployeeMasterAddNew({Key key}) : super(key: key);
+  const EmployeeMasterAddNew({Key? key}) : super(key: key);
 
   @override
   _EmployeeMasterAddNewState createState() => _EmployeeMasterAddNewState();
 }
 
 class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with TickerProviderStateMixin{
-  ScrollController scrollController;
-  ScrollController listViewController;
+  ScrollController? scrollController;
+  ScrollController? listViewController;
   bool isListScroll=false;
   bool _keyboardVisible=false;
   bool salutationOpen=false;
@@ -40,16 +40,16 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
   bool isPaymentTypeOpen=false;
 
 
-  Animation contactArrowAnimation;
-  AnimationController contactArrowAnimationController;
+  late Animation contactArrowAnimation;
+  late AnimationController contactArrowAnimationController;
   bool contactOpen=false;
 
-  Animation otherDetailsArrowAnimation;
-  AnimationController otherDetailsArrowAnimationController;
+  late Animation otherDetailsArrowAnimation;
+  late AnimationController otherDetailsArrowAnimationController;
   bool otherDetailsOpen=false;
 
-  Animation BankDetailsArrowAnimation;
-  AnimationController BankDetailsArrowAnimationController;
+  late Animation BankDetailsArrowAnimation;
+  late AnimationController BankDetailsArrowAnimationController;
   bool BankDetailsOpen=false;
 
 
@@ -121,7 +121,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
 
                 //FORM
                 Container(
-                  height: SizeConfig.screenHeight-(65),
+                  height: SizeConfig.screenHeight!-(65),
                   // color: Colors.transparent,
                   child: SingleChildScrollView(
                     physics: NeverScrollableScrollPhysics(),
@@ -144,7 +144,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
 
                                   int sensitivity = 5;
                                   if (details.delta.dy > sensitivity) {
-                                    scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
+                                    scrollController!.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
                                       if(isListScroll){
                                         setState(() {
                                           isListScroll=false;
@@ -153,7 +153,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                     });
 
                                   } else if(details.delta.dy < -sensitivity){
-                                    scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
+                                    scrollController!.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
 
                                       if(!isListScroll){
                                         setState(() {
@@ -175,32 +175,40 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                           topRight: Radius.circular(10))
                                   ),
                                   child: NotificationListener<ScrollNotification>(
-                                    onNotification: (s){
+                                    onNotification: (s) {
                                       //   print(ScrollStartNotification);
-                                      if(s is ScrollStartNotification){
-
-                                        if(listViewController.offset==0 && isListScroll && scrollController.offset==100 && listViewController.position.userScrollDirection==ScrollDirection.idle){
-
-                                          Timer(Duration(milliseconds: 100), (){
-                                            if(listViewController.position.userScrollDirection!=ScrollDirection.reverse){
-
+                                      if (s is ScrollStartNotification) {
+                                        if (listViewController!.offset == 0 &&
+                                            isListScroll &&
+                                            scrollController!.offset == 100 &&
+                                            listViewController!.position
+                                                .userScrollDirection ==
+                                                ScrollDirection.idle) {
+                                          Timer(
+                                              Duration(milliseconds: 100), () {
+                                            if (listViewController!.position
+                                                .userScrollDirection !=
+                                                ScrollDirection.reverse) {
                                               //if(scrollController.position.pixels == scrollController.position.maxScrollExtent){
-                                              if(listViewController.offset==0){
-
-                                                scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value) {
-                                                  if(isListScroll){
+                                              if (listViewController!.offset ==
+                                                  0) {
+                                                scrollController!.animateTo(0,
+                                                    duration: Duration(
+                                                        milliseconds: 300),
+                                                    curve: Curves.easeIn).then((
+                                                    value) {
+                                                  if (isListScroll) {
                                                     setState(() {
-                                                      isListScroll=false;
+                                                      isListScroll = false;
                                                     });
                                                   }
                                                 });
                                               }
-
                                             }
                                           });
                                         }
                                       }
-
+                                      return true;
                                     },
                                     child: ListView(
                                       controller: listViewController,
@@ -236,8 +244,8 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                                 alignment: Alignment.center,
                                                 child: Container(
 
-                                                  margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20),
-                                                  padding: EdgeInsets.only(left:SizeConfig.width60,),
+                                                  margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!),
+                                                  padding: EdgeInsets.only(left:SizeConfig.width60!,),
                                                   decoration: BoxDecoration(
                                                     borderRadius: BorderRadius.circular(3),
                                                     border: Border.all(color: AppTheme.addNewTextFieldBorder),
@@ -249,7 +257,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                                   child:  TextFormField(
                                                     controller: en.employeeFirstName,
                                                     onTap: (){
-                                                      scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                                      scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                                       setState(() {
                                                         _keyboardVisible=true;
                                                       });
@@ -292,7 +300,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                                   width: 60,
                                                   duration: Duration(milliseconds: 300),
                                                   curve: Curves.easeIn,
-                                                  margin: EdgeInsets.only(left: SizeConfig.width30),
+                                                  margin: EdgeInsets.only(left: SizeConfig.width30!),
                                                   decoration: BoxDecoration(
                                                       color: AppTheme.yellowColor,
                                                       borderRadius: BorderRadius.circular(salutationOpen?5:15)
@@ -371,7 +379,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                               _keyboardVisible=true;
                                               isListScroll=true;
                                             });
-                                            scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                            scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                           },
 
                                           onEditComplete: () {
@@ -452,7 +460,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                                 alignment: Alignment.centerLeft,
                                                 child: Container(
 
-                                                  margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20),
+                                                  margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!),
                                                  // padding: EdgeInsets.only(left:SizeConfig.width20,),
                                                   decoration: BoxDecoration(
                                                     borderRadius: BorderRadius.circular(3),
@@ -466,7 +474,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                                     controller: en.employeeSalary,
                                                     scrollPadding: EdgeInsets.only(bottom: 400),
                                                     onTap: (){
-                                                      scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                                      scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                                       setState(() {
                                                         _keyboardVisible=true;
                                                         isListScroll=true;
@@ -511,7 +519,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                                   width: 60,
                                                   duration: Duration(milliseconds: 300),
                                                   curve: Curves.easeIn,
-                                                  margin: EdgeInsets.only(right: SizeConfig.width30),
+                                                  margin: EdgeInsets.only(right: SizeConfig.width30!),
                                                   decoration: BoxDecoration(
                                                       color: AppTheme.yellowColor,
                                                       borderRadius: BorderRadius.circular(salaryTypeOpen?5:15)
@@ -570,12 +578,12 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                         GestureDetector(
                                           onTap: () async{
                                             node.unfocus();
-                                            final DateTime picked = await showDatePicker2(
+                                            final DateTime? picked = await showDatePicker2(
                                                 context: context,
-                                                initialDate:  en.joiningDate==null?DateTime.now():en.joiningDate, // Refer step 1
+                                                initialDate:  en.joiningDate==null?DateTime.now():en.joiningDate!, // Refer step 1
                                                 firstDate: DateTime(1950),
                                                 lastDate: DateTime(2100),
-                                                builder: (BuildContext context,Widget child){
+                                                builder: (BuildContext context,Widget? child){
                                                   return Theme(
                                                     data: Theme.of(context).copyWith(
                                                       colorScheme: ColorScheme.light(
@@ -585,7 +593,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                                       ),
 
                                                     ),
-                                                    child: child,
+                                                    child: child!,
                                                   );
                                                 });
                                             if (picked != null)
@@ -595,8 +603,8 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
 
                                           },
                                           child: Container(
-                                            margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,top:15,),
-                                            padding: EdgeInsets.only(left:SizeConfig.width10,right:SizeConfig.width10),
+                                            margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!,top:15,),
+                                            padding: EdgeInsets.only(left:SizeConfig.width10!,right:SizeConfig.width10!),
                                             height:50,
                                             width: double.maxFinite,
                                             alignment: Alignment.centerLeft,
@@ -607,7 +615,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                             ),
                                             child: Row(
                                               children: [
-                                                Text(en.joiningDate==null?"Date of joining":DateFormat("dd-MM-yyyy").format(en.joiningDate),
+                                                Text(en.joiningDate==null?"Date of joining":DateFormat("dd-MM-yyyy").format(en.joiningDate!),
                                                   style: TextStyle(fontFamily: 'RR',fontSize: 16,color: AppTheme.hintColor),),
                                                 Spacer(),
                                                 Icon(Icons.calendar_today,color:Colors.grey ,size: 20,),
@@ -629,7 +637,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                             });
                                             if(contactOpen){
                                               Timer(Duration(milliseconds: 300), (){
-                                                listViewController.animateTo(listViewController.offset+ 350, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+                                                listViewController!.animateTo(listViewController!.offset+ 350, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
 
                                               });
                                             }
@@ -638,9 +646,9 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                             alignment: Alignment.centerRight,
                                             child: Container(
                                               height: 40,
-                                              width: SizeConfig.screenWidth*0.40,
-                                              margin: EdgeInsets.only(left: SizeConfig.width20,right: SizeConfig.width20,top: 20),
-                                              padding: EdgeInsets.only(left: SizeConfig.width10,right: SizeConfig.width10),
+                                              width: SizeConfig.screenWidth!*0.40,
+                                              margin: EdgeInsets.only(left: SizeConfig.width20!,right: SizeConfig.width20!,top: 20),
+                                              padding: EdgeInsets.only(left: SizeConfig.width10!,right: SizeConfig.width10!),
                                               decoration: BoxDecoration(
                                                 borderRadius: BorderRadius.circular(25),
                                                 color: AppTheme.yellowColor,
@@ -693,7 +701,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                                   setState(() {
                                                     _keyboardVisible=true;
                                                   });
-                                                  scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                                  scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                                 },
 
                                                 onEditComplete: () {
@@ -715,7 +723,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                                   setState(() {
                                                     _keyboardVisible=true;
                                                   });
-                                                  scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                                  scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                                 },
 
                                                 onEditComplete: () {
@@ -737,7 +745,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                                   setState(() {
                                                     _keyboardVisible=true;
                                                   });
-                                                  scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                                  scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                                 },
 
                                                 onEditComplete: () {
@@ -759,7 +767,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                                   setState(() {
                                                     _keyboardVisible=true;
                                                   });
-                                                  scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                                  scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                                 },
 
                                                 onEditComplete: () {
@@ -781,7 +789,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                                   setState(() {
                                                     _keyboardVisible=true;
                                                   });
-                                                  scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                                  scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                                 },
 
                                                 onEditComplete: () {
@@ -802,7 +810,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                                   setState(() {
                                                     _keyboardVisible=true;
                                                   });
-                                                  scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                                  scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                                 },
 
                                                 onEditComplete: () {
@@ -825,7 +833,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                                   setState(() {
                                                     _keyboardVisible=true;
                                                   });
-                                                  scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                                  scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                                 },
 
                                                 onEditComplete: () {
@@ -853,7 +861,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                             });
                                             if(otherDetailsOpen){
                                               Timer(Duration(milliseconds: 300), (){
-                                                listViewController.animateTo(listViewController.offset+ 450, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+                                                listViewController!.animateTo(listViewController!.offset+ 450, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
 
                                               });
                                             }
@@ -862,9 +870,9 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                             alignment: Alignment.centerRight,
                                             child: Container(
                                               height: 40,
-                                              width: SizeConfig.screenWidth*0.37,
-                                              margin: EdgeInsets.only(left: SizeConfig.width20,right: SizeConfig.width20,top: 20),
-                                              padding: EdgeInsets.only(left: SizeConfig.width10,right: SizeConfig.width10),
+                                              width: SizeConfig.screenWidth!*0.37,
+                                              margin: EdgeInsets.only(left: SizeConfig.width20!,right: SizeConfig.width20!,top: 20),
+                                              padding: EdgeInsets.only(left: SizeConfig.width10!,right: SizeConfig.width10!),
                                               decoration: BoxDecoration(
                                                 borderRadius: BorderRadius.circular(25),
                                                 color: AppTheme.yellowColor,
@@ -908,12 +916,12 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                             children: [
                                               GestureDetector(
                                                 onTap: () async{
-                                                  final DateTime picked = await showDatePicker2(
+                                                  final DateTime? picked = await showDatePicker2(
                                                       context: context,
-                                                      initialDate: en.dob==null?DateTime.now():en.dob,
+                                                      initialDate: en.dob==null?DateTime.now():en.dob!,
                                                       firstDate: DateTime(1950),
                                                       lastDate: DateTime(2100),
-                                                      builder: (BuildContext context,Widget child){
+                                                      builder: (BuildContext context,Widget? child){
                                                         return Theme(
                                                           data: Theme.of(context).copyWith(
                                                             colorScheme: ColorScheme.light(
@@ -923,7 +931,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                                             ),
 
                                                           ),
-                                                          child: child,
+                                                          child: child!,
                                                         );
                                                       });
                                                   if (picked != null)
@@ -933,8 +941,8 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
 
                                                 },
                                                 child: Container(
-                                                  margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,top:15,),
-                                                  padding: EdgeInsets.only(left:SizeConfig.width10,right:SizeConfig.width10),
+                                                  margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!,top:15,),
+                                                  padding: EdgeInsets.only(left:SizeConfig.width10!,right:SizeConfig.width10!),
                                                   height:50,
                                                   width: double.maxFinite,
                                                   alignment: Alignment.centerLeft,
@@ -945,7 +953,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                                   ),
                                                   child: Row(
                                                     children: [
-                                                      Text(en.dob==null?"Date of Birth":DateFormat("dd-MM-yyyy").format(en.dob),
+                                                      Text(en.dob==null?"Date of Birth":DateFormat("dd-MM-yyyy").format(en.dob!),
                                                         style: TextStyle(fontFamily: 'RR',fontSize: 16,color: AppTheme.hintColor),),
                                                       Spacer(),
                                                       Icon(Icons.calendar_today,color:Colors.grey ,size: 20,),
@@ -999,7 +1007,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                                   setState(() {
                                                     _keyboardVisible=true;
                                                   });
-                                                  scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                                  scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                                 },
 
                                                 onEditComplete: () {
@@ -1020,7 +1028,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                                   setState(() {
                                                     _keyboardVisible=true;
                                                   });
-                                                  scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                                  scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                                 },
 
                                                 onEditComplete: () {
@@ -1043,7 +1051,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                                   setState(() {
                                                     _keyboardVisible=true;
                                                   });
-                                                  scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                                  scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                                 },
 
                                                 onEditComplete: () {
@@ -1066,7 +1074,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                                   setState(() {
                                                     _keyboardVisible=true;
                                                   });
-                                                  scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                                  scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                                 },
 
                                                 onEditComplete: () {
@@ -1112,7 +1120,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                             });
                                             if(BankDetailsOpen){
                                               Timer(Duration(milliseconds: 300), (){
-                                                listViewController.animateTo(listViewController.offset+ 350, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+                                                listViewController!.animateTo(listViewController!.offset+ 350, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
 
                                               });
                                             }
@@ -1121,9 +1129,9 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                             alignment: Alignment.centerRight,
                                             child: Container(
                                               height: 40,
-                                              width: SizeConfig.screenWidth*0.37,
-                                              margin: EdgeInsets.only(left: SizeConfig.width20,right: SizeConfig.width20,top: 20),
-                                              padding: EdgeInsets.only(left: SizeConfig.width10,right: SizeConfig.width10),
+                                              width: SizeConfig.screenWidth!*0.37,
+                                              margin: EdgeInsets.only(left: SizeConfig.width20!,right: SizeConfig.width20!,top: 20),
+                                              padding: EdgeInsets.only(left: SizeConfig.width10!,right: SizeConfig.width10!),
                                               decoration: BoxDecoration(
                                                 borderRadius: BorderRadius.circular(25),
                                                 color: AppTheme.yellowColor,
@@ -1175,7 +1183,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                                   setState(() {
                                                     _keyboardVisible=true;
                                                   });
-                                                  scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                                  scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                                 },
 
                                                 onEditComplete: () {
@@ -1196,7 +1204,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                                   setState(() {
                                                     _keyboardVisible=true;
                                                   });
-                                                  scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                                  scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                                 },
 
                                                 onEditComplete: () {
@@ -1218,7 +1226,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                                   setState(() {
                                                     _keyboardVisible=true;
                                                   });
-                                                  scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                                  scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                                 },
 
                                                 onEditComplete: () {
@@ -1239,7 +1247,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                                   setState(() {
                                                     _keyboardVisible=true;
                                                   });
-                                                  scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                                  scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                                 },
 
                                                 onEditComplete: () {
@@ -1260,7 +1268,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                                   setState(() {
                                                     _keyboardVisible=true;
                                                   });
-                                                  scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                                  scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                                 },
 
                                                 onEditComplete: () {
@@ -1277,7 +1285,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                           ),
                                         ),
 
-                                        SizedBox(height: _keyboardVisible? SizeConfig.screenHeight*0.6:200,)
+                                        SizedBox(height: _keyboardVisible? SizeConfig.screenHeight!*0.6:200,)
                                       ],
                                     ),
                                   ),
@@ -1372,7 +1380,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                           ),
                           margin:EdgeInsets.only(top: 0),
                           child: CustomPaint(
-                            size: Size( SizeConfig.screenWidth, 65),
+                            size: Size( SizeConfig.screenWidth!, 65),
                             painter: RPSCustomPainter3(),
                           ),
                         ),

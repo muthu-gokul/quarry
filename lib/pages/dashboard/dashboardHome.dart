@@ -100,14 +100,14 @@ import 'dieselDashBoard/dieselDashBoard.dart';
 
 class DashBoardHome extends StatefulWidget {
 
-  VoidCallback drawerCallback;
+  VoidCallback? drawerCallback;
   DashBoardHome({this.drawerCallback});
   @override
   _DashBoardHomeState createState() => _DashBoardHomeState();
 }
 
 class _DashBoardHomeState extends State<DashBoardHome> {
-  ScrollController silverController;
+  ScrollController? silverController;
   double silverBodyTopMargin=0;
 
   int selIndex=-1;
@@ -125,23 +125,23 @@ class _DashBoardHomeState extends State<DashBoardHome> {
   @override
   void initState() {
 
-    WidgetsBinding.instance.addPostFrameCallback((_){
+    WidgetsBinding.instance!.addPostFrameCallback((_){
       silverController=new ScrollController();
 
       setState(() {
         silverBodyTopMargin=0;
       });
 
-      silverController.addListener(() {
-        if(silverController.offset>250){
+      silverController!.addListener(() {
+        if(silverController!.offset>250){
           setState(() {
-            silverBodyTopMargin=50-(-(silverController.offset-300));
+            silverBodyTopMargin=50-(-(silverController!.offset-300));
             if(silverBodyTopMargin<0){
               silverBodyTopMargin=0;
             }
           });
         }
-        else if(silverController.offset<270){
+        else if(silverController!.offset<270){
           setState(() {
             silverBodyTopMargin=0;
           });
@@ -225,7 +225,7 @@ class _DashBoardHomeState extends State<DashBoardHome> {
                             ),
                             Container(
                               height: 40,
-                              width: SizeConfig.screenWidth*0.6,
+                              width: SizeConfig.screenWidth!*0.6,
                               padding:EdgeInsets.only(left: 10,right: 10),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(25),
@@ -260,14 +260,14 @@ class _DashBoardHomeState extends State<DashBoardHome> {
                                     children: [
                                       FittedText(
                                         height: 15,
-                                        width: SizeConfig.screenWidth*0.23,
+                                        width: SizeConfig.screenWidth!*0.23,
                                         alignment: Alignment.centerRight,
-                                        text: "${formatCurrency.format(db.currentSaleT['TotalSale']??0.0)}",
+                                        text: "${formatCurrency.format(db.currentSaleT!['TotalSale']??0.0)}",
                                         textStyle: TextStyle(fontFamily: 'RM',fontSize: 14,color: AppTheme.bgColor),
                                       ),
                                      // Text("${db.currentSaleT['TotalSale']}",style: TextStyle(fontFamily: 'RM',fontSize: 14,color: AppTheme.bgColor),),
                                       SizedBox(height: 2,),
-                                      Text("${db.currentSaleT['TotalQuantity']} ${db.currentSaleT['UnitName']}",style: TextStyle(fontFamily: 'RM',fontSize: 9,color: AppTheme.bgColor),),
+                                      Text("${db.currentSaleT!['TotalQuantity']} ${db.currentSaleT!['UnitName']}",style: TextStyle(fontFamily: 'RM',fontSize: 9,color: AppTheme.bgColor),),
                                     ],
                                   ),
                                 ],
@@ -355,8 +355,8 @@ class _DashBoardHomeState extends State<DashBoardHome> {
 
                       },
                       child: Container(
-                        height: SizeConfig.screenWidth*0.27,
-                        width: SizeConfig.screenWidth*0.27,
+                        height: SizeConfig.screenWidth!*0.27,
+                        width: SizeConfig.screenWidth!*0.27,
                         padding: EdgeInsets.only(left: 10,right: 10),
                         decoration: selIndex==i? BoxDecoration(
                           borderRadius: BorderRadius.circular(10),

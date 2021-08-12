@@ -3,7 +3,7 @@ class PurchaseSupplierType {
     this.supplierType,
   });
 
-  String supplierType;
+  String? supplierType;
 
   factory PurchaseSupplierType.fromJson(Map<String, dynamic> json) => PurchaseSupplierType(
     supplierType: json["SupplierType"],

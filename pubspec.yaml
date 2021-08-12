@@ -18,7 +18,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: '>=2.12.0 <3.0.0'
 
 dependencies:
   flutter:
@@ -27,30 +27,29 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.2
-  flutter_svg:
-  circular_reveal_animation:
-  provider:
-  pdf:
-  path_provider:
-  mailer:
-  http:
-  permission_handler:
-  intl:
-  rational:
-  shared_preferences:
-  date_format:
-  excel:
-  webview_flutter:
-  month_picker_dialog:
-  image_cropper:
-  image_picker:
-  share_extend:
-  open_file:
-  firebase_ml_vision: ^0.9.10
-  firebase_core: ^1.2.0
-  modal_progress_hud:
-  charts_flutter:
+  cupertino_icons: ^1.0.3
+  flutter_svg: ^0.22.0
+  circular_reveal_animation: ^2.0.0
+  provider: ^5.0.0
+  pdf: ^3.4.2
+  path_provider: ^2.0.2
+  mailer: ^5.0.1
+  http: ^0.13.3
+  permission_handler: ^8.1.4+2
+  intl: ^0.17.0
+  rational: ^1.2.1
+  shared_preferences: ^2.0.6
+  date_format: ^2.0.4
+  excel: ^2.0.0-null-safety-3
+  webview_flutter: ^2.0.12
+  month_picker_dialog: ^0.4.0
+  image_cropper: ^1.4.1
+  image_picker: ^0.8.3+2
+  share_extend: ^2.0.0
+  open_file: ^3.2.1
+  google_ml_kit:
+  firebase_core: ^1.4.0
+  charts_flutter: ^0.11.0
 
 dev_dependencies:
   flutter_test:

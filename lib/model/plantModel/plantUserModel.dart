@@ -6,10 +6,10 @@ class PlantUserModel {
     this.isActive
   });
 
-  int userId;
-  int plantId;
-  String plantName;
-  bool isActive;
+  int? userId;
+  int? plantId;
+  String? plantName;
+  bool? isActive;
 
   factory PlantUserModel.fromJson(Map<String, dynamic> json) => PlantUserModel(
     userId: json["UserId"],

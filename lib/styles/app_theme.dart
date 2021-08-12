@@ -80,7 +80,7 @@ static BoxShadow yellowShadow=  BoxShadow(
   ]*/
 
  static EdgeInsets gridAppBarPadding=EdgeInsets.only(bottom: 15);
- static EdgeInsets leftRightMargin20=EdgeInsets.only(left: SizeConfig.width20,right: SizeConfig.width20);
+ static EdgeInsets leftRightMargin20=EdgeInsets.only(left: SizeConfig.width20!,right: SizeConfig.width20!);
  static BorderRadius gridTopBorder=BorderRadius.only(topLeft: Radius.circular(15),topRight: Radius.circular(15));
 
 

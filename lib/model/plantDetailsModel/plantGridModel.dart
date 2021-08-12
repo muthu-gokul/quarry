@@ -8,12 +8,12 @@ class PlantGridModel{
     this.plantEmail,
   });
 
-  int plantId;
-  String plantName;
-  String location;
-  String plantContactPersonName;
-  String plantContactNumber;
-  String plantEmail;
+  int? plantId;
+  String? plantName;
+  String? location;
+  String? plantContactPersonName;
+  String? plantContactNumber;
+  String? plantEmail;
 
 
 

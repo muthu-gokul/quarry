@@ -9,13 +9,13 @@ class SupplierGridModel {
     this.supplierEmail,
   });
 
-  int supplierId;
-  String supplierName;
-  int supplierCategoryId;
-  String supplierCategoryName;
-  String location;
-  String supplierContactNumber;
-  String supplierEmail;
+  int? supplierId;
+  String? supplierName;
+  int? supplierCategoryId;
+  String? supplierCategoryName;
+  String? location;
+  String? supplierContactNumber;
+  String? supplierEmail;
 
   factory SupplierGridModel.fromJson(Map<String, dynamic> json) => SupplierGridModel(
     supplierId: json["SupplierId"],

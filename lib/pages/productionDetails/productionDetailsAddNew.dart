@@ -30,8 +30,8 @@ class ProductionDetailAddNewState extends State<ProductionDetailAddNew> with Tic
   GlobalKey <ScaffoldState> scaffoldkey = new GlobalKey<ScaffoldState>();
 
 
-  ScrollController scrollController;
-  ScrollController listViewController;
+  ScrollController? scrollController;
+  ScrollController? listViewController;
 
   bool _keyboardVisible = false;
 
@@ -48,7 +48,7 @@ class ProductionDetailAddNewState extends State<ProductionDetailAddNew> with Tic
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       scrollController = new ScrollController();
       listViewController = new ScrollController();
       setState(() {
@@ -67,23 +67,23 @@ class ProductionDetailAddNewState extends State<ProductionDetailAddNew> with Tic
         }
       });*/
 
-      listViewController.addListener(() {
-        if(listViewController.position.userScrollDirection == ScrollDirection.forward){
+      listViewController!.addListener(() {
+        if(listViewController!.position.userScrollDirection == ScrollDirection.forward){
           print("Down");
         } else
-        if(listViewController.position.userScrollDirection == ScrollDirection.reverse){
+        if(listViewController!.position.userScrollDirection == ScrollDirection.reverse){
           print("Up");
-          scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+          scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
         }
-        print("LISt-${listViewController.offset}");
-        if(listViewController.offset>20){
+        print("LISt-${listViewController!.offset}");
+        if(listViewController!.offset>20){
 
-          scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+          scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
 
 
         }
-        else if(listViewController.offset==0){
-          scrollController.animateTo(0, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+        else if(listViewController!.offset==0){
+          scrollController!.animateTo(0, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
         }
       });
 
@@ -142,7 +142,7 @@ class ProductionDetailAddNewState extends State<ProductionDetailAddNew> with Tic
                       children: [
                         SizedBox(height: 160,),
                         Container(
-                          height: SizeConfig.screenHeight - 60,
+                          height: SizeConfig.screenHeight! - 60,
                           width: SizeConfig.screenWidth,
                           alignment: Alignment.topCenter,
                           decoration: BoxDecoration(
@@ -154,14 +154,14 @@ class ProductionDetailAddNewState extends State<ProductionDetailAddNew> with Tic
                               int sensitivity = 5;
 
                               if (details.delta.dy > sensitivity) {
-                                scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+                                scrollController!.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
 
                               } else if(details.delta.dy < -sensitivity){
-                                scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+                                scrollController!.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
                               }
                             },
                             child: Container(
-                              height: _keyboardVisible ? SizeConfig.screenHeight * 0.5 : SizeConfig.screenHeight - 100,
+                              height: _keyboardVisible ? SizeConfig.screenHeight! * 0.5 : SizeConfig.screenHeight! - 100,
                               width: SizeConfig.screenWidth,
 
                               decoration: BoxDecoration(
@@ -269,11 +269,11 @@ class ProductionDetailAddNewState extends State<ProductionDetailAddNew> with Tic
                                       setState(() {
                                         _keyboardVisible=true;
                                       });
-                                      scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                      scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                     },
                                     onChange: (v){
                                       if(v.isNotEmpty){
-                                        if(double.parse(v)<=qn.stock){
+                                        if(double.parse(v)<=qn.stock!){
                                           qn.wastageCalc();
                                         }
                                         else{
@@ -329,9 +329,9 @@ class ProductionDetailAddNewState extends State<ProductionDetailAddNew> with Tic
                                     width: SizeConfig.screenWidth,
 
                                     margin: EdgeInsets.only(
-                                      left: SizeConfig.width20,
-                                      right: SizeConfig.width20,
-                                      top: SizeConfig.height20,),
+                                      left: SizeConfig.width20!,
+                                      right: SizeConfig.width20!,
+                                      top: SizeConfig.height20!,),
                                     decoration: BoxDecoration(
                                         color: Colors.white,
                                         borderRadius: BorderRadius.circular(5),
@@ -351,9 +351,9 @@ class ProductionDetailAddNewState extends State<ProductionDetailAddNew> with Tic
                                           child: Row(
                                             //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: [
-                                              Container(width: SizeConfig.screenWidthM40*0.35,child: Text("Material Name")),
-                                              Container(padding: EdgeInsets.only(left: 10),alignment: Alignment.centerLeft, width: SizeConfig.screenWidthM40*0.3,child: Text("Quantity")),
-                                              Container(padding: EdgeInsets.only(left: 10), width: SizeConfig.screenWidthM40*0.2,child: Text("Unit")),
+                                              Container(width: SizeConfig.screenWidthM40!*0.35,child: Text("Material Name")),
+                                              Container(padding: EdgeInsets.only(left: 10),alignment: Alignment.centerLeft, width: SizeConfig.screenWidthM40!*0.3,child: Text("Quantity")),
+                                              Container(padding: EdgeInsets.only(left: 10), width: SizeConfig.screenWidthM40!*0.2,child: Text("Unit")),
 
                                             ],
 
@@ -365,16 +365,16 @@ class ProductionDetailAddNewState extends State<ProductionDetailAddNew> with Tic
                                             itemCount: qn.productionMaterialMappingList.length,
                                             itemBuilder: (context, index) {
                                               return SlideTransition(
-                                                position: Tween<Offset>(begin: Offset(qn.productionMaterialMappingList[index].isEdit ? 0.0 :
-                                                qn.productionMaterialMappingList[index].isDelete ?1.0:0.0,
-                                                    qn.productionMaterialMappingList[index].isEdit ? 0.0 :qn.productionMaterialMappingList[index].isDelete ?0.0: 1.0),
-                                                    end:qn.productionMaterialMappingList[index].isEdit ?Offset(1, 0): Offset.zero)
-                                                    .animate(qn.productionMaterialMappingList[index].scaleController),
+                                                position: Tween<Offset>(begin: Offset(qn.productionMaterialMappingList[index].isEdit! ? 0.0 :
+                                                qn.productionMaterialMappingList[index].isDelete! ?1.0:0.0,
+                                                    qn.productionMaterialMappingList[index].isEdit! ? 0.0 :qn.productionMaterialMappingList[index].isDelete! ?0.0: 1.0),
+                                                    end:qn.productionMaterialMappingList[index].isEdit! ?Offset(1, 0): Offset.zero)
+                                                    .animate(qn.productionMaterialMappingList[index].scaleController!),
 
                                                 child: FadeTransition(
-                                                  opacity: Tween(begin: qn.productionMaterialMappingList[index].isEdit ? 1.0 : 0.0,
-                                                      end: qn.productionMaterialMappingList[index].isEdit ? 0.0 : 1.0)
-                                                      .animate(qn.productionMaterialMappingList[index].scaleController),
+                                                  opacity: Tween(begin: qn.productionMaterialMappingList[index].isEdit! ? 1.0 : 0.0,
+                                                      end: qn.productionMaterialMappingList[index].isEdit! ? 0.0 : 1.0)
+                                                      .animate(qn.productionMaterialMappingList[index].scaleController!),
                                                   child: Container(
                                                     height: 50,
                                                     padding: EdgeInsets.only(left: 10,right: 10),
@@ -390,9 +390,9 @@ class ProductionDetailAddNewState extends State<ProductionDetailAddNew> with Tic
                                                         Row(
                                                           crossAxisAlignment: CrossAxisAlignment.center,
                                                           children: [
-                                                            qn.productionMaterialMappingList[index].MaterialName.toLowerCase()!='dust'?
+                                                            qn.productionMaterialMappingList[index].MaterialName!.toLowerCase()!='dust'?
                                                             Container(
-                                                              width: SizeConfig.screenWidthM40*0.35,
+                                                              width: SizeConfig.screenWidthM40!*0.35,
                                                               alignment:Alignment.centerLeft,
 
                                                               child: Text("${qn.productionMaterialMappingList[index].MaterialName}",
@@ -400,7 +400,7 @@ class ProductionDetailAddNewState extends State<ProductionDetailAddNew> with Tic
                                                               ),
                                                             ):
                                                             Container(
-                                                              width: SizeConfig.screenWidthM40*0.35,
+                                                              width: SizeConfig.screenWidthM40!*0.35,
                                                               alignment:Alignment.centerLeft,
                                                               child: Row(
                                                                 children: [
@@ -438,7 +438,7 @@ class ProductionDetailAddNewState extends State<ProductionDetailAddNew> with Tic
                                                               padding: EdgeInsets.only(left: 10),
                                                               alignment: Alignment.centerLeft,
 
-                                                              width: SizeConfig.screenWidthM40*0.3,
+                                                              width: SizeConfig.screenWidthM40!*0.3,
                                                               child: FittedBox(
                                                                 child: Text("${qn.productionMaterialMappingList[index].OutputMaterialQuantity}",
                                                                   style: TextStyle(fontSize: 14, fontFamily: 'RR', color: AppTheme.gridTextColor, letterSpacing: 0.2),
@@ -447,7 +447,7 @@ class ProductionDetailAddNewState extends State<ProductionDetailAddNew> with Tic
                                                             ),
                                                             Container(
                                                               alignment: Alignment.centerLeft,
-                                                              width:SizeConfig.screenWidthM40*0.2,
+                                                              width:SizeConfig.screenWidthM40!*0.2,
                                                               padding: EdgeInsets.only(left: 10),
 
 
@@ -466,10 +466,10 @@ class ProductionDetailAddNewState extends State<ProductionDetailAddNew> with Tic
                                                                   callback: (){
                                                                     Navigator.pop(context);
                                                                     Timer(Duration(milliseconds: 200), (){
-                                                                      if (qn.productionMaterialMappingList[index].isEdit) {
-                                                                        qn.productionMaterialMappingList[index].scaleController.forward().whenComplete(() {
+                                                                      if (qn.productionMaterialMappingList[index].isEdit!) {
+                                                                        qn.productionMaterialMappingList[index].scaleController!.forward().whenComplete(() {
                                                                           if (this.mounted) {
-                                                                            if(qn.productionMaterialMappingList[index].MaterialName.toLowerCase()=='dust'){
+                                                                            if(qn.productionMaterialMappingList[index].MaterialName!.toLowerCase()=='dust'){
                                                                               setState(() {
                                                                                 qn.dustQty=0.0;
                                                                                 qn.isWastage=false;
@@ -487,9 +487,9 @@ class ProductionDetailAddNewState extends State<ProductionDetailAddNew> with Tic
                                                                         setState(() {
                                                                           qn.productionMaterialMappingList[index].isDelete=true;
                                                                         });
-                                                                        qn.productionMaterialMappingList[index].scaleController.reverse().whenComplete(() {
+                                                                        qn.productionMaterialMappingList[index].scaleController!.reverse().whenComplete(() {
                                                                           if (this.mounted) {
-                                                                            if(qn.productionMaterialMappingList[index].MaterialName.toLowerCase()=='dust'){
+                                                                            if(qn.productionMaterialMappingList[index].MaterialName!.toLowerCase()=='dust'){
                                                                               setState(() {
                                                                                 qn.dustQty=0.0;
                                                                                 qn.isWastage=false;
@@ -522,7 +522,7 @@ class ProductionDetailAddNewState extends State<ProductionDetailAddNew> with Tic
 
                                                           ],
                                                         ),
-                                                        qn.productionMaterialMappingList[index].MaterialName.toLowerCase()!='dust'?Container():
+                                                        qn.productionMaterialMappingList[index].MaterialName!.toLowerCase()!='dust'?Container():
                                                         Text("Do you want to add this product to Wastage?",
                                                           style: TextStyle(fontSize: 12,fontFamily: 'RR',color: AppTheme.hintColor),
                                                         )
@@ -547,7 +547,7 @@ class ProductionDetailAddNewState extends State<ProductionDetailAddNew> with Tic
                                   Container(
                                     height: 50,
                                     width: SizeConfig.screenWidth,
-                                    margin: EdgeInsets.only(left: SizeConfig.width20, right: SizeConfig.width10, top: SizeConfig.height20,),
+                                    margin: EdgeInsets.only(left: SizeConfig.width20!, right: SizeConfig.width10!, top: SizeConfig.height20!,),
                                     child: Stack(
                                       children: [
                                         GestureDetector(
@@ -571,10 +571,10 @@ class ProductionDetailAddNewState extends State<ProductionDetailAddNew> with Tic
                                           child: Container(
                                            // margin: EdgeInsets.only(left: SizeConfig.width20, right: SizeConfig.width10, top: SizeConfig.height20,),
                                             padding: EdgeInsets.only(
-                                                left: SizeConfig.width5,
-                                                right: SizeConfig.width5),
+                                                left: SizeConfig.width5!,
+                                                right: SizeConfig.width5!),
                                             height: 50,
-                                            width: SizeConfig.screenWidthM40*0.5,
+                                            width: SizeConfig.screenWidthM40!*0.5,
                                             alignment: Alignment.centerLeft,
                                             decoration: BoxDecoration(
                                               borderRadius: BorderRadius.circular(3),
@@ -605,7 +605,7 @@ class ProductionDetailAddNewState extends State<ProductionDetailAddNew> with Tic
                                         Align(
                                           alignment: Alignment.centerRight,
                                           child: Container(
-                                            width: SizeConfig.screenWidthM40*0.5,
+                                            width: SizeConfig.screenWidthM40!*0.5,
                                             height:50,
                                             alignment: Alignment.center,
                                           //  margin: EdgeInsets.only(top: SizeConfig.height20, right: SizeConfig.width20),
@@ -614,7 +614,7 @@ class ProductionDetailAddNewState extends State<ProductionDetailAddNew> with Tic
                                                 setState(() {
                                                   _keyboardVisible=true;
                                                 });
-                                                scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                                scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
 
                                               },
 
@@ -701,11 +701,11 @@ class ProductionDetailAddNewState extends State<ProductionDetailAddNew> with Tic
 
                                                       });
 
-                                                      listViewController.animateTo(listViewController.position.maxScrollExtent,
+                                                      listViewController!.animateTo(listViewController!.position.maxScrollExtent,
                                                           duration: Duration(milliseconds: 200), curve: Curves.easeIn).then((value) {
-                                                        qn.productionMaterialMappingList[qn.productionMaterialMappingList.length - 1].scaleController
+                                                        qn.productionMaterialMappingList[qn.productionMaterialMappingList.length - 1].scaleController!
                                                             .forward().then((value) {
-                                                          listViewController.animateTo(listViewController.position.maxScrollExtent, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                                          listViewController!.animateTo(listViewController!.position.maxScrollExtent, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                                           qn.clearMappingList();
                                                         });
                                                       });
@@ -726,7 +726,7 @@ class ProductionDetailAddNewState extends State<ProductionDetailAddNew> with Tic
                                             child: Container(
                                               height:40,
                                               width: 40,
-                                             margin: EdgeInsets.only( right: SizeConfig.width5),
+                                             margin: EdgeInsets.only( right: SizeConfig.width5!),
                                               decoration: BoxDecoration(
                                                 shape: BoxShape.circle,
                                                 color: AppTheme.yellowColor,
@@ -745,11 +745,11 @@ class ProductionDetailAddNewState extends State<ProductionDetailAddNew> with Tic
                                   SizedBox(height: SizeConfig.height20,),
                                   Align(
                                       alignment: Alignment.center,
-                                      child:qn.wastageQty.toInt()==0?Container(): Container(
+                                      child:qn.wastageQty!.toInt()==0?Container(): Container(
 
                                         width: SizeConfig.screenWidth,
                                         alignment: Alignment.center,
-                                        padding: EdgeInsets.only(left: SizeConfig.screenWidth*0.4),
+                                        padding: EdgeInsets.only(left: SizeConfig.screenWidth!*0.4),
                                         child: Column(
                                           crossAxisAlignment: CrossAxisAlignment.start,
 
@@ -836,7 +836,7 @@ class ProductionDetailAddNewState extends State<ProductionDetailAddNew> with Tic
                         Container(
                           margin:EdgeInsets.only(top: 0),
                           child: CustomPaint(
-                            size: Size( SizeConfig.screenWidth, 55),
+                            size: Size( SizeConfig.screenWidth!, 55),
                             painter: RPSCustomPainter(),
                           ),
                         ),
@@ -970,11 +970,11 @@ class ProductionDetailAddNewState extends State<ProductionDetailAddNew> with Tic
                   selectedId: qn.selectInputTypeId,
                   itemOnTap: (index){
                     setState(() {
-                      qn.selectInputTypeId=qn.inputMaterialList[index]['MaterialId'];
-                      qn.selectInputTypeName=qn.inputMaterialList[index]['MaterialName'];
-                      qn.selectInputUnitId=qn.inputMaterialList[index]['MaterialUnitId'];
-                      qn.selectInputUnitName=qn.inputMaterialList[index]['UnitName'];
-                      qn.stock=qn.inputMaterialList[index][qn.plantId.toString()];
+                      qn.selectInputTypeId=qn.inputMaterialList![index]['MaterialId'];
+                      qn.selectInputTypeName=qn.inputMaterialList![index]['MaterialName'];
+                      qn.selectInputUnitId=qn.inputMaterialList![index]['MaterialUnitId'];
+                      qn.selectInputUnitName=qn.inputMaterialList![index]['UnitName'];
+                      qn.stock=qn.inputMaterialList![index][qn.plantId.toString()];
                       inputMaterialOpen=false;
                       print(qn.stock);
 
@@ -997,11 +997,11 @@ class ProductionDetailAddNewState extends State<ProductionDetailAddNew> with Tic
                   propertyKeyId: "MaterialId",
                   selectedId: qn.productionMaterialId,
                   itemOnTap: (index){
-                    if(qn.productionMaterialMappingList.any((element) => element.MaterialName.toLowerCase()==qn.MaterialList[index].materialName.toLowerCase())){
+                    if(qn.productionMaterialMappingList.any((element) => element.MaterialName!.toLowerCase()==qn.MaterialList[index].materialName!.toLowerCase())){
                       CustomAlert().commonErrorAlert(context, "Material Already Added","");
                     }
                     else{
-                      if(qn.MaterialList[index].materialName.toLowerCase()!='dust'){
+                      if(qn.MaterialList[index].materialName!.toLowerCase()!='dust'){
                         setState(() {
                           qn.productionMaterialId=qn.MaterialList[index].materialId;
                           qn.productionMaterialName=qn.MaterialList[index].materialName;
@@ -1009,7 +1009,7 @@ class ProductionDetailAddNewState extends State<ProductionDetailAddNew> with Tic
                         });
                       }
                       else{
-                        if(qn.productionMaterialMappingList.any((element) => element.MaterialName.toLowerCase()=='dust')){
+                        if(qn.productionMaterialMappingList.any((element) => element.MaterialName!.toLowerCase()=='dust')){
                           CustomAlert().commonErrorAlert(context, "Dust Already Added", "You cant add Extra Dust");
                         }
                         else{

@@ -27,31 +27,31 @@ class GoodsOutGateModel {
     this.IsTax
   });
 
-  int GoodsReceivedMaterialMappingId;
-  int goodsReceivedId;
-  int purchaseOrderId;
-  int purchaseOrderNumber;
-  int materialId;
-  String materialName;
-  double materialPrice;
-  String unitName;
-  double taxValue;
-  double taxAmount;
-  double expectedQuantity;
-  double receivedQuantity;
-  double amount;
-  int isDiscount;
-  int isPercentage;
-  int isAmount;
-  double discountValue;
-  double discountAmount;
-  double discountedSubtotal;
-  double grandTotal;
-  int vehicleTypeId;
-  String vehicleNumber;
-  double inwardLoadedVehicleWeight;
-  double outwardEmptyVehicleWeight;
-  bool IsTax;
+  int? GoodsReceivedMaterialMappingId;
+  int? goodsReceivedId;
+  int? purchaseOrderId;
+  int? purchaseOrderNumber;
+  int? materialId;
+  String? materialName;
+  double? materialPrice;
+  String? unitName;
+  double? taxValue;
+  double? taxAmount;
+  double? expectedQuantity;
+  double? receivedQuantity;
+  double? amount;
+  int? isDiscount;
+  int? isPercentage;
+  int? isAmount;
+  double? discountValue;
+  double? discountAmount;
+  double? discountedSubtotal;
+  double? grandTotal;
+  int? vehicleTypeId;
+  String? vehicleNumber;
+  double? inwardLoadedVehicleWeight;
+  double? outwardEmptyVehicleWeight;
+  bool? IsTax;
 
   factory GoodsOutGateModel.fromJson(Map<String, dynamic> json) => GoodsOutGateModel(
     GoodsReceivedMaterialMappingId: json["GoodsReceivedMaterialMappingId"],

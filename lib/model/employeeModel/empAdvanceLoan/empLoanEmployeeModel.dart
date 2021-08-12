@@ -11,15 +11,15 @@ class EmpLoanEmployeeModel {
     this.netPay,
   });
 
-  int employeeId;
-  String employeePrefix;
-  String employeeCode;
-  String employeeName;
-  int employeeDesignationId;
-  String employeeDesignationName;
-  String workingDays;
-  String leaveDays;
-  double netPay;
+  int? employeeId;
+  String? employeePrefix;
+  String? employeeCode;
+  String? employeeName;
+  int? employeeDesignationId;
+  String? employeeDesignationName;
+  String? workingDays;
+  String? leaveDays;
+  double? netPay;
 
   factory EmpLoanEmployeeModel.fromJson(Map<String, dynamic> json) => EmpLoanEmployeeModel(
     employeeId: json["EmployeeId"],

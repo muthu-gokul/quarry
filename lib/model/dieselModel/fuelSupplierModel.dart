@@ -4,8 +4,8 @@ class FuelSupplierModel {
     this.supplierName,
   });
 
-  int supplierId;
-  String supplierName;
+  int? supplierId;
+  String? supplierName;
 
   factory FuelSupplierModel.fromJson(Map<String, dynamic> json) => FuelSupplierModel(
     supplierId: json["SupplierId"],

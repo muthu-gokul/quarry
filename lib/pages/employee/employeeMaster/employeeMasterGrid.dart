@@ -13,7 +13,7 @@ import 'package:quarry/widgets/staticColumnScroll/customDataTable2.dart';
 import 'employeeMasterAddNew.dart';
 
 class EmployeeMasterGrid extends StatefulWidget {
-  VoidCallback drawerCallback;
+  VoidCallback? drawerCallback;
   EmployeeMasterGrid({this.drawerCallback});
 
 
@@ -23,7 +23,7 @@ class EmployeeMasterGrid extends StatefulWidget {
 
 class _EmployeeMasterGridState extends State<EmployeeMasterGrid> {
   bool showEdit=false;
-  int selectedIndex;
+  int? selectedIndex;
   List<GridStyleModel> gridDataRowListEmployee=[
     GridStyleModel(columnName: "Employee Code"),
     GridStyleModel(columnName: "Name"),
@@ -114,7 +114,7 @@ class _EmployeeMasterGridState extends State<EmployeeMasterGrid> {
                   Container(
                     margin:EdgeInsets.only(top: 0),
                     child: CustomPaint(
-                      size: Size( SizeConfig.screenWidth, 65),
+                      size: Size( SizeConfig.screenWidth!, 65),
                       painter: RPSCustomPainter3(),
                     ),
                   ),

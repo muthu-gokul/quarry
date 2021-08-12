@@ -25,7 +25,7 @@ import 'reportSettings.dart';
 
 
 class ReportGrid extends StatefulWidget {
-  VoidCallback drawerCallback;
+  VoidCallback? drawerCallback;
   ReportGrid({this.drawerCallback});
   @override
   ReportGridState createState() => ReportGridState();
@@ -34,8 +34,8 @@ class ReportGrid extends StatefulWidget {
 class ReportGridState extends State<ReportGrid> with TickerProviderStateMixin{
 
   bool showEdit=false;
-  int selectedIndex;
-  DateTime selectedDate;
+  int? selectedIndex;
+  DateTime? selectedDate;
 
   bool exportOpen=false;
   bool searchMargin=false;
@@ -108,7 +108,7 @@ class ReportGridState extends State<ReportGrid> with TickerProviderStateMixin{
                       Container(
                         alignment: Alignment.centerLeft,
                         height: 20,
-                        width: SizeConfig.screenWidth*0.38,
+                        width: SizeConfig.screenWidth!*0.38,
                         child: FittedBox(
                           child: Text("${rn.reportHeader}",
                             style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize:16),
@@ -131,7 +131,7 @@ class ReportGridState extends State<ReportGrid> with TickerProviderStateMixin{
                           children: [
                             Icon(Icons.calendar_today_rounded,color: AppTheme.bgColor,size: 14,),
                             SizedBox(width: 5,),
-                            rn.picked.isNotEmpty?Text("${DateFormat('dd-MM-yyyy').format(rn.picked[0])} - ${DateFormat('dd-MM-yyyy').format(rn.picked[1])}",
+                            rn.picked.isNotEmpty?Text("${DateFormat('dd-MM-yyyy').format(rn.picked[0]!)} - ${DateFormat('dd-MM-yyyy').format(rn.picked[1]!)}",
                               style: TextStyle(fontFamily: 'RR',fontSize: 12,color: AppTheme.bgColor),
                             ):Container(),
                           ],
@@ -160,7 +160,7 @@ class ReportGridState extends State<ReportGrid> with TickerProviderStateMixin{
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: rn.counterList.asMap().map((i, value) => MapEntry(i, Container(
                           height: 85,
-                          width: SizeConfig.screenWidth*0.40,
+                          width: SizeConfig.screenWidth!*0.40,
                           padding: EdgeInsets.only(left: 5,right: 5),
                           margin: EdgeInsets.only(right: 10,),
                           decoration: BoxDecoration(
@@ -259,9 +259,9 @@ class ReportGridState extends State<ReportGrid> with TickerProviderStateMixin{
                       var excel = Excel.createExcel();
                       Sheet sheetObject = excel['${rn.reportHeader}'];
                       excel.delete('Sheet1');
-                      List<String> dataList = ["${DateFormat('dd-MM-yyyy').format(rn.picked[0])} to ${DateFormat('dd-MM-yyyy').format(rn.picked[1])}",];
+                      List<String> dataList = ["${DateFormat('dd-MM-yyyy').format(rn.picked[0]!)} to ${DateFormat('dd-MM-yyyy').format(rn.picked[1]!)}",];
                       sheetObject.insertRowIterables(dataList, 0,);
-                      List<String> header=[];
+                      List<String?> header=[];
                       rn.reportsGridColumnList.forEach((element) {
                         if(element.isActive){
                           header.add(element.columnName);
@@ -297,7 +297,7 @@ class ReportGridState extends State<ReportGrid> with TickerProviderStateMixin{
 
                       final File file = File(path);
 
-                      await file.writeAsBytes(await excel.encode()).then((value) async {
+                      await file.writeAsBytes(await excel.encode()!).then((value) async {
                         CustomAlert().billSuccessAlert(context, "", "Successfully Downloaded @ \n\n Internal Storage/Download/quarry/reports/$filename.xlsx", "", "");
                       });
                     },
@@ -332,7 +332,7 @@ class ReportGridState extends State<ReportGrid> with TickerProviderStateMixin{
                       setState(() {
                         exportOpen=false;
                       });
-                     checkpdf(context,rn.reportHeader,DateFormat('dd-MM-yyyy').format(rn.picked[0]),DateFormat('dd-MM-yyyy').format(rn.picked[1]),rn.reportsGridColumnList,rn.reportsGridDataList);
+                     checkpdf(context,rn.reportHeader,DateFormat('dd-MM-yyyy').format(rn.picked[0]!),DateFormat('dd-MM-yyyy').format(rn.picked[1]!),rn.reportsGridColumnList,rn.reportsGridDataList);
 
                     },
                     child: AnimatedContainer(
@@ -386,7 +386,7 @@ class ReportGridState extends State<ReportGrid> with TickerProviderStateMixin{
                             ),
                             margin:EdgeInsets.only(top: 0),
                             child: CustomPaint(
-                              size: Size( SizeConfig.screenWidth, 65),
+                              size: Size( SizeConfig.screenWidth!, 65),
                               //  painter: RPSCustomPainter(),
                               painter: RPSCustomPainter3(),
                             ),
@@ -441,7 +441,7 @@ class ReportGridState extends State<ReportGrid> with TickerProviderStateMixin{
                                     }
                                     else{
                                       //Date Picker
-                                      final List<DateTime>  picked1 = await DateRagePicker.showDatePicker(
+                                      final List<DateTime?>?  picked1 = await DateRagePicker.showDatePicker(
                                           context: context,
                                           initialFirstDate: new DateTime.now(),
                                           initialLastDate: (new DateTime.now()),
@@ -474,7 +474,7 @@ class ReportGridState extends State<ReportGrid> with TickerProviderStateMixin{
                                     )
                                   ),
                                 ),
-                                SizedBox(width: SizeConfig.screenWidth*0.27,),
+                                SizedBox(width: SizeConfig.screenWidth!*0.27,),
                                 Padding(
                                   padding: EdgeInsets.only(top: 10),
                                   child: GestureDetector(
@@ -568,7 +568,7 @@ class ReportGridState extends State<ReportGrid> with TickerProviderStateMixin{
                       Row(
                         children: [
                           Container(
-                            width: SizeConfig.screenWidth-60,
+                            width: SizeConfig.screenWidth!-60,
                             height: 50,
                             padding: EdgeInsets.only(left: 10),
                             margin: EdgeInsets.only(left: 10),
@@ -746,7 +746,7 @@ class ReportGridState extends State<ReportGrid> with TickerProviderStateMixin{
 }
 
 class ReportHeader extends StatelessWidget {
-  String title;
+  String? title;
   dynamic value;
 /*  double qty;
   String unit;*/
@@ -757,7 +757,7 @@ class ReportHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 85,
-      width: SizeConfig.screenWidth*0.31,
+      width: SizeConfig.screenWidth!*0.31,
       padding: EdgeInsets.only(left: 5,right: 5),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),

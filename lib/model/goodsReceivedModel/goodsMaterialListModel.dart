@@ -32,35 +32,35 @@ class GoodsReceivedMaterialListModel {
 
   });
 
-  int goodsReceivedId;
-  int purchaseOrderId;
-  int materialId;
-  String materialName;
-  String unitName;
-  int materialUnitId;
-  double materialPrice;
-  double quantity;
-  double receivedQuantity;
-  double balanceQuantity;
-  double amount;
+  int? goodsReceivedId;
+  int? purchaseOrderId;
+  int? materialId;
+  String? materialName;
+  String? unitName;
+  int? materialUnitId;
+  double? materialPrice;
+  double? quantity;
+  double? receivedQuantity;
+  double? balanceQuantity;
+  double? amount;
 
-  int isDiscount;
-  int isPercentage;
-  int isAmount;
-  double discountValue;
-  double discountAmount;
-  double taxValue;
-  double taxAmount;
-  double totalAmount;
+  int? isDiscount;
+  int? isPercentage;
+  int? isAmount;
+  double? discountValue;
+  double? discountAmount;
+  double? taxValue;
+  double? taxAmount;
+  double? totalAmount;
 
-  int vehicleTypeId;
-  String vehicleNumber;
-  double inwardLoadedVehicleWeight;
-  double outwardEmptyVehicleWeight;
-  String status;
+  int? vehicleTypeId;
+  String? vehicleNumber;
+  double? inwardLoadedVehicleWeight;
+  double? outwardEmptyVehicleWeight;
+  String? status;
 
   
-  int GoodsReceivedMaterialMappingId;
+  int? GoodsReceivedMaterialMappingId;
 
   
   factory GoodsReceivedMaterialListModel.fromJson(Map<String, dynamic> json) => GoodsReceivedMaterialListModel(
@@ -91,7 +91,7 @@ class GoodsReceivedMaterialListModel {
     status: json["Status"],
   );
 
-  Map<String, dynamic> toJsonInWard(int vehicleTypeId,String vehicleNumber,double inwardWeight) => {
+  Map<String, dynamic> toJsonInWard(int? vehicleTypeId,String vehicleNumber,double inwardWeight) => {
     "GoodsReceivedMaterialMappingId": GoodsReceivedMaterialMappingId,
     "GoodsReceivedId": goodsReceivedId,
     "MaterialId": materialId,
@@ -127,7 +127,7 @@ class GoodsReceivedMaterialListModel {
     "IsAmount":isAmount,
     'DiscountValue':discountValue,
     "DiscountAmount":discountAmount,
-    "DiscountedSubTotal":amount-discountAmount,
+    "DiscountedSubTotal":amount!-discountAmount!,
     "TaxValue":taxValue,
     "TaxAmount":taxAmount,
     "TotalAmount":totalAmount,
@@ -167,14 +167,14 @@ class GoodsOtherChargesModel {
     this.isEdit
   });
 
-  int purchaseOrderId;
-  int GoodsReceivedOtherChargesMappingId;
-  int GoodsReceivedId;
-  String otherChargesName;
-  double otherChargesAmount;
+  int? purchaseOrderId;
+  int? GoodsReceivedOtherChargesMappingId;
+  int? GoodsReceivedId;
+  String? otherChargesName;
+  double? otherChargesAmount;
 
-  AnimationController animationController;
-  bool isEdit;
+  AnimationController? animationController;
+  bool? isEdit;
 
   factory GoodsOtherChargesModel.fromJson(Map<String, dynamic> json,TickerProviderStateMixin tickerProviderStateMixin) => GoodsOtherChargesModel(
     purchaseOrderId: json["PurchaseOrderId"],

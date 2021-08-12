@@ -33,9 +33,9 @@ class QuarryNotifier extends ChangeNotifier{
 
   ///****************************************************       DB HIT        ****************************************************************/
 
-  int UserId;
-  String Name;
-  String DataBaseName;
+  int? UserId;
+  String? Name;
+  String? DataBaseName;
 
 
 
@@ -43,7 +43,7 @@ class QuarryNotifier extends ChangeNotifier{
   List<TaxDetails> material_TaxList=[];
   List<UnitDetails> material_UnitsList=[];
 
-  initUserDetail(int userid,String name, String dbname,BuildContext context){
+  initUserDetail(int? userid,String? name, String? dbname,BuildContext context){
     UserId=userid;
     Name=name;
     DataBaseName=dbname;
@@ -62,12 +62,12 @@ class QuarryNotifier extends ChangeNotifier{
 
   List<VehicleType> vehicleList=[];
   List<VehicleType> filterVehicleTypeList=[];
-  List<dynamic> sale_materialList=[];
+  List<dynamic>? sale_materialList=[];
   List<PaymentType> sale_paymentList=[];
   List<CustomerModel> sale_customerList=[];
   List<CustomerModel> filterSale_customerList=[];
   List<SalesVehiclesModel> sales_vehiclesList=[];
-  List<String> filtersales_vehiclesList=[];
+  List<String?> filtersales_vehiclesList=[];
 
   Future<dynamic> SalesDropDownValues(BuildContext context) async {
     filtersales_vehiclesList.clear();
@@ -102,7 +102,7 @@ class QuarryNotifier extends ChangeNotifier{
         if(value!=null){
           var parsed=json.decode(value);
           var t=parsed['Table'] as List;
-          var t1=parsed['Table1'] as List;
+          var t1=parsed['Table1'] as List?;
           var t2=parsed['Table2'] as List;
           var t3=parsed['Table3'] as List;
           var t4=parsed['Table4'] as List;
@@ -137,7 +137,7 @@ class QuarryNotifier extends ChangeNotifier{
       filterSale_customerList=sale_customerList;
     }
     else{
-      filterSale_customerList=sale_customerList.where((element) => element.customerName.toLowerCase().contains(value.toLowerCase())).toList();
+      filterSale_customerList=sale_customerList.where((element) => element.customerName!.toLowerCase().contains(value.toLowerCase())).toList();
     }
     notifyListeners();
   }
@@ -208,31 +208,31 @@ class QuarryNotifier extends ChangeNotifier{
       filterVehicleTypeList=vehicleList;
     }
     else{
-      filterVehicleTypeList=vehicleList.where((element) => element.VehicleTypeName.toLowerCase().contains(value.toLowerCase())).toList();
+      filterVehicleTypeList=vehicleList.where((element) => element.VehicleTypeName!.toLowerCase().contains(value.toLowerCase())).toList();
     }
     notifyListeners();
   }
 
   TextEditingController SS_vehicleNo= new TextEditingController();
-  int SS_selectedVehicleTypeId;
-  String SS_selectedVehicleTypeName;
+  int? SS_selectedVehicleTypeId;
+  String? SS_selectedVehicleTypeName;
   TextEditingController SS_emptyVehicleWeight= new TextEditingController();
-  int SS_selectedMaterialTypeId=null;
-  String SS_selectedMaterialTypeName=null;
-  double SS_selectedMaterialStock;
+  int? SS_selectedMaterialTypeId=null;
+  String? SS_selectedMaterialTypeName=null;
+  double? SS_selectedMaterialStock;
   TextEditingController SS_customerNeedWeight= new TextEditingController(text: "0");
   TextEditingController SS_amount= new TextEditingController(text: '0.00');
-  int SS_selectedPaymentTypeId=null;
-  String SS_selectedPaymentTypeString=null;
+  int? SS_selectedPaymentTypeId=null;
+  String? SS_selectedPaymentTypeString=null;
 
-  int SS_selectCustomerId=null;
-  String SS_selectedCustomerName=null;
-  bool SS_selectIsCreditCustomer=false;
-  double SS_selectCustomerCreditLimit=0.0;
-  double SS_selectUsedAmount=0.0;
-  double SS_selectBalanceAmount=0.0;
+  int? SS_selectCustomerId=null;
+  String? SS_selectedCustomerName=null;
+  bool? SS_selectIsCreditCustomer=false;
+  double? SS_selectCustomerCreditLimit=0.0;
+  double? SS_selectUsedAmount=0.0;
+  double? SS_selectBalanceAmount=0.0;
 
-  bool isDiscount=false;
+  bool? isDiscount=false;
   bool isPercentageDiscount=true;
   bool isAmountDiscount=false;
   double DiscountValue=0.0;
@@ -250,7 +250,7 @@ class QuarryNotifier extends ChangeNotifier{
   TextEditingController driverContactNumber=new TextEditingController();
   TextEditingController driverBeta=new TextEditingController();
 
-  bool isTax=false;
+  bool? isTax=false;
   updateIsTax(bool value){
     isTax=value;
     notifyListeners();
@@ -265,12 +265,12 @@ class QuarryNotifier extends ChangeNotifier{
 
 
   TextEditingController customPriceController = new TextEditingController();
-  bool isCustomPrice=false;
+  bool? isCustomPrice=false;
   updateCustomPrice(bool value){
     isCustomPrice=value;
     notifyListeners();
   }
-  String materialPrice;
+  late String materialPrice;
 
   weightToAmount(){
 
@@ -281,19 +281,19 @@ class QuarryNotifier extends ChangeNotifier{
         SS_amount.text="0.00";
       }
       else{
-        if(isCustomPrice){
+        if(isCustomPrice!){
           if(customPriceController.text.isNotEmpty){
             materialPrice=customPriceController.text;
           }else{
             materialPrice="0.0";
           }
         }else{
-          materialPrice=sale_materialList.where((element) => element['MaterialId']==SS_selectedMaterialTypeId).toList()[0]['MaterialUnitPrice'].toString();
+          materialPrice=sale_materialList!.where((element) => element['MaterialId']==SS_selectedMaterialTypeId).toList()[0]['MaterialUnitPrice'].toString();
         }
 
-        taxValue=sale_materialList.where((element) => element['MaterialId']==SS_selectedMaterialTypeId).toList()[0]['TaxValue'].toString();
+        taxValue=sale_materialList!.where((element) => element['MaterialId']==SS_selectedMaterialTypeId).toList()[0]['TaxValue'].toString();
 
-        if(isDiscount){
+        if(isDiscount!){
           if(isAmountDiscount){
 
 
@@ -301,7 +301,7 @@ class QuarryNotifier extends ChangeNotifier{
             DiscountAmount=DiscountValue;
             DiscountedSubTotal=double.parse((Decimal.parse(SubTotal.toString())-Decimal.parse((DiscountAmount.toString()))).toString());
             TaxValue=double.parse(taxValue);
-            if(!isTax){
+            if(!isTax!){
               TaxAmount=0.0;
             }
             else{
@@ -322,7 +322,7 @@ class QuarryNotifier extends ChangeNotifier{
             DiscountAmount=double.parse(((Decimal.parse(SubTotal.toString())*Decimal.parse((DiscountValue.toString())))/Decimal.parse("100")).toString());
             DiscountedSubTotal=double.parse((Decimal.parse(SubTotal.toString())-Decimal.parse((DiscountAmount.toString()))).toString());
             TaxValue=double.parse(taxValue);
-            if(!isTax){
+            if(!isTax!){
               TaxAmount=0.0;
             }
             else{
@@ -342,7 +342,7 @@ class QuarryNotifier extends ChangeNotifier{
 
           SubTotal=double.parse((Decimal.parse(SS_customerNeedWeight.text)*Decimal.parse((materialPrice))).toString());
           TaxValue=double.parse(taxValue);
-          if(!isTax){
+          if(!isTax!){
             TaxAmount=0.0;
           }
           else{
@@ -375,9 +375,9 @@ class QuarryNotifier extends ChangeNotifier{
       if(SS_amount.text.isEmpty){
         SS_customerNeedWeight.text="0";
       }else{
-        materialPrice=sale_materialList.where((element) => element['MaterialId']==SS_selectedMaterialTypeId).toList()[0]['MaterialUnitPrice'].toString();
+        materialPrice=sale_materialList!.where((element) => element['MaterialId']==SS_selectedMaterialTypeId).toList()[0]['MaterialUnitPrice'].toString();
         SS_customerNeedWeight.text=(Decimal.parse(SS_amount.text)/Decimal.parse((materialPrice))).toString();
-        if(double.parse(SS_customerNeedWeight.text)>SS_selectedMaterialStock){
+        if(double.parse(SS_customerNeedWeight.text)>SS_selectedMaterialStock!){
           CustomAlert().commonErrorAlert(context, "Out Of Stock", "Current Stock - ${SS_selectedMaterialStock} Ton");
           SS_customerNeedWeight.clear();
           SS_amount.clear();
@@ -388,7 +388,7 @@ class QuarryNotifier extends ChangeNotifier{
       notifyListeners();
     }
   }
-  String SS_Empty_ReqQtyUnit="";
+  String? SS_Empty_ReqQtyUnit="";
 
   clearEmptyForm(){
     SS_vehicleNo.clear();
@@ -438,27 +438,27 @@ class QuarryNotifier extends ChangeNotifier{
      notifyListeners();
   }
 
-  List<DateTime> picked=[];
+  List<DateTime?> picked=[];
   List<SaleReportHeaderModel> saleCounterList=[];
   List<ManageUserPlantModel> filterUsersPlantList=[];
-  int open=0;
-  int closed=0;
+  int? open=0;
+  int? closed=0;
 
   GetSaleDetailDbhit(BuildContext context) async {
 
-    String fromDate,toDate;
+    String? fromDate,toDate;
 
     if(picked.isEmpty){
       fromDate=DateFormat("yyyy-MM-dd").format(DateTime.now()).toString();
       toDate=DateFormat("yyyy-MM-dd").format(DateTime.now()).toString();
     }
     else if(picked.length==1){
-      fromDate=DateFormat("yyyy-MM-dd").format(picked[0]).toString();
-      toDate=DateFormat("yyyy-MM-dd").format(picked[0]).toString();
+      fromDate=DateFormat("yyyy-MM-dd").format(picked[0]!).toString();
+      toDate=DateFormat("yyyy-MM-dd").format(picked[0]!).toString();
     }
     else if(picked.length==2){
-      fromDate=DateFormat("yyyy-MM-dd").format(picked[0]).toString();
-      toDate=DateFormat("yyyy-MM-dd").format(picked[1]).toString();
+      fromDate=DateFormat("yyyy-MM-dd").format(picked[0]!).toString();
+      toDate=DateFormat("yyyy-MM-dd").format(picked[1]!).toString();
     }
 
 
@@ -577,7 +577,7 @@ class QuarryNotifier extends ChangeNotifier{
 
     saleDetailsGrid.clear();
      filterUsersPlantList.forEach((element) {
-       if(element.isActive){
+       if(element.isActive!){
          saleDetailsGrid=saleDetailsGrid+filterSaleDetailsGrid.where((ele) => ele.PlantId==element.plantId).toList();
        }
      });
@@ -601,8 +601,8 @@ class QuarryNotifier extends ChangeNotifier{
 
   List<PlantUserModel> plantList=[];
   int plantCount=0;
-  int PlantId=null;
-  String PlantName=null;
+  int? PlantId=null;
+  String? PlantName=null;
 
 
 
@@ -639,7 +639,7 @@ class QuarryNotifier extends ChangeNotifier{
         if(value!=null){
           var parsed=json.decode(value);
 
-          var t=parsed['Table'] as List;
+          var t=parsed['Table'] as List?;
           var t1=parsed['Table1'] as List;
           plantList=t1.map((e) => PlantUserModel.fromJson(e)).toList();
           plantList.forEach((element) {
@@ -787,7 +787,7 @@ class QuarryNotifier extends ChangeNotifier{
         {
           "Key": "IsDiscount",
           "Type": "int",
-          "Value": isDiscount?1:0
+          "Value": isDiscount!?1:0
         }, 
         {
           "Key": "IsPercentage",
@@ -848,7 +848,7 @@ class QuarryNotifier extends ChangeNotifier{
 
           var t=parsed['Table'] as List;
           var t1=parsed['Table1'] as List;
-          var t2=parsed['Table2'] as List;
+          var t2=parsed['Table2'] as List?;
           var t3=parsed['Table3'] as List;
 
           clearEmptyForm();
@@ -877,12 +877,12 @@ class QuarryNotifier extends ChangeNotifier{
 
 
 
-  double UpdateDiscountAmount=0.0;
-  double UpdateOutputQtyAmount=0.0;
-  double UpdateDiscountedOutputQtyAmount=0.0;
-  double UpdateTaxAmount=0.0;
-  double UpdateRoundOffAmount=0.0;
-  double UpdateGrandTotalAmount=0.0;
+  double? UpdateDiscountAmount=0.0;
+  double? UpdateOutputQtyAmount=0.0;
+  double? UpdateDiscountedOutputQtyAmount=0.0;
+  double? UpdateTaxAmount=0.0;
+  double? UpdateRoundOffAmount=0.0;
+  double? UpdateGrandTotalAmount=0.0;
 
 
 
@@ -901,7 +901,7 @@ class QuarryNotifier extends ChangeNotifier{
 
 
 
-  UpdateSaleDetailDbhit(BuildContext context,int UpdateIsMaterialReceived,String UpdateReason) async {
+  UpdateSaleDetailDbhit(BuildContext context,int? UpdateIsMaterialReceived,String UpdateReason) async {
   /*  print("UpdateIsMaterialReceived$UpdateIsMaterialReceived");
     print("UPDATE SALE-$SS_selectCustomerId");*/
     print("UPDATE UpdateRoundOffAmount-$UpdateRoundOffAmount");
@@ -1010,7 +1010,7 @@ class QuarryNotifier extends ChangeNotifier{
 
         var t=parsed['Table'] as List;
         var t1=parsed['Table1'] as List;
-        var t2=parsed['Table2'] as List;
+        var t2=parsed['Table2'] as List?;
         var t3=parsed['Table3'] as List;
         //notifyListeners();
         updateInsertSaleLoader(false);
@@ -1091,7 +1091,7 @@ class QuarryNotifier extends ChangeNotifier{
         i:splitAddress[i]
     };
 
-     Map<int,String > Customervalues;
+     Map<int,String >? Customervalues;
     if(customer.isNotEmpty){
       if(customer[0]['CustomerAddress']!=null){
         final customeraddress=customer[0]['CustomerAddress'].toString();
@@ -1418,7 +1418,7 @@ class QuarryNotifier extends ChangeNotifier{
         i:splitAddress[i]
     };
 
-     Map<int,String > Customervalues;
+     Map<int,String >? Customervalues;
     if(saleDetailsGrid[selectedIndex].CustomerId!=null){
       if(saleDetailsGrid[selectedIndex].customerAddress!=null){
         final customeraddress=saleDetailsGrid[selectedIndex].customerAddress.toString();
@@ -1496,7 +1496,7 @@ class QuarryNotifier extends ChangeNotifier{
           printer.emptyLines(1);
           printer.row([
             PosColumn(text: 'Vehicle Number: ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
-            PosColumn(text: '${saleDetailsGrid[selectedIndex].VehicleNumber.toUpperCase()??""}', width: 6, styles: PosStyles(align: PosAlign.right)),
+            PosColumn(text: '${saleDetailsGrid[selectedIndex].VehicleNumber!.toUpperCase()??""}', width: 6, styles: PosStyles(align: PosAlign.right)),
           ]);
           printer.row([
             PosColumn(text: 'Vehicle Type: ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
@@ -1591,14 +1591,14 @@ class QuarryNotifier extends ChangeNotifier{
             PosColumn(text: '${saleDetailsGrid[selectedIndex].OutputQtyAmount??""}', width: 6, styles: PosStyles(align: PosAlign.right)),
           ]);
           if(saleDetailsGrid[selectedIndex].discountAmount!=null && saleDetailsGrid[selectedIndex].discountValue!=null){
-            if(saleDetailsGrid[selectedIndex].discountValue>0){
+            if(saleDetailsGrid[selectedIndex].discountValue!>0){
               printer.row([
                 PosColumn(text: 'Discount (${saleDetailsGrid[selectedIndex].isPercentage==1?saleDetailsGrid[selectedIndex].discountValue:""} ${saleDetailsGrid[selectedIndex].isPercentage==1?"%":"Rs"})', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
                 PosColumn(text: '-${saleDetailsGrid[selectedIndex].discountAmount??""}', width: 6, styles: PosStyles(align: PosAlign.right)),
               ]);
             }
           }
-          if(saleDetailsGrid[selectedIndex].TaxAmount>0){
+          if(saleDetailsGrid[selectedIndex].TaxAmount!>0){
             printer.row([
               PosColumn(text: 'GST (${saleDetailsGrid[selectedIndex].TaxPercentage??""}%): ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
               PosColumn(text: '${saleDetailsGrid[selectedIndex].TaxAmount??""}', width: 6, styles: PosStyles(align: PosAlign.right)),
@@ -1609,7 +1609,7 @@ class QuarryNotifier extends ChangeNotifier{
 
 
           if(saleDetailsGrid[selectedIndex].RoundOffAmount!=null){
-            if(saleDetailsGrid[selectedIndex].RoundOffAmount>0 || saleDetailsGrid[selectedIndex].RoundOffAmount<0){
+            if(saleDetailsGrid[selectedIndex].RoundOffAmount!>0 || saleDetailsGrid[selectedIndex].RoundOffAmount!<0){
               printer.row([
                 PosColumn(text: 'RoundOff: ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
                 PosColumn(text: '${saleDetailsGrid[selectedIndex].RoundOffAmount??""}', width: 6, styles: PosStyles(align: PosAlign.right)),
@@ -1638,7 +1638,7 @@ class QuarryNotifier extends ChangeNotifier{
             printer.row([
               PosColumn(text: '', width: 1),
               // PosColumn(text: 'Total: ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
-              PosColumn(text: 'Total: ${saleDetailsGrid[selectedIndex].TotalAmount.round()??""}', width: 11,
+              PosColumn(text: 'Total: ${saleDetailsGrid[selectedIndex].TotalAmount!.round()??""}', width: 11,
                   styles: PosStyles(align: PosAlign.center,height: PosTextSize.size2,width: PosTextSize.size2)),
             ]);
             printer.emptyLines(1);
@@ -1727,7 +1727,7 @@ class QuarryNotifier extends ChangeNotifier{
   List<SaleDetails> filterSaleDetailsGrid=[];
 
   List<SalePrintersList> saleDetailsGridPrintersList=[];
-  List<String> saleVehicleNumberList=[];
+  List<String?> saleVehicleNumberList=[];
   //List<String> saleDetailsGridCol=['Vehicle Number','Material Type','Required Qty','Output Material Qty','Amount','Status'];
   List<String> saleDetailsGridCol=['Date','Sale No','Vehicle Number','Material','Qty','Amount','Customer Name'];
  // List<String> saleDetailsGridCol=["Material Name","Unit","Price","GST","Unit","Price","GST"];
@@ -1735,53 +1735,53 @@ class QuarryNotifier extends ChangeNotifier{
 
  TextEditingController searchVehicleNo =new TextEditingController();
  TextEditingController SS_DifferWeightController =new TextEditingController();
-  var SS_LoadedVehicleNo=null;
+  dynamic SS_LoadedVehicleNo=null;
 
 
-  String SS_EmptyWeightOfVehicle;
-  String SS_VehicleTypeName;
-  String SS_MaterialName;
-  String SS_RequiredMaterialQty;
-  String SS_RequiredMaterialQtyUnit;
-  String SS_PaymentCategoryName;
-  String SS_TotalWeight;
-  int SS_VehicleTypeId;
-  int SS_MaterialTypeId;
-  int SS_PaymentTypeId;
-  int SS_UpdateSaleId;
-  String SS_UpdateSaleNo;
+  String? SS_EmptyWeightOfVehicle;
+  String? SS_VehicleTypeName;
+  String? SS_MaterialName;
+  String? SS_RequiredMaterialQty;
+  String? SS_RequiredMaterialQtyUnit;
+  String? SS_PaymentCategoryName;
+  String? SS_TotalWeight;
+  int? SS_VehicleTypeId;
+  int? SS_MaterialTypeId;
+  int? SS_PaymentTypeId;
+  int? SS_UpdateSaleId;
+  String? SS_UpdateSaleNo;
 
-  double SS_Amount;
-  double SS_DiscountAmount;
-  double SS_DiscountedOutputQtyAmount;
-  double SS_TaxAmount;
-  double SS_RoundOffAmount;
-  double SS_GrandTotalAmount;
+  double? SS_Amount;
+  double? SS_DiscountAmount;
+  double? SS_DiscountedOutputQtyAmount;
+  double? SS_TaxAmount;
+  double? SS_RoundOffAmount;
+  double? SS_GrandTotalAmount;
 
 
-  double OG_discountValue;
-  double OG_TaxValue;
-  double OG_TaxAmount;
-  double OG_DiscountAmount;
-  double OG_SubTotal;
-  double OG_DiscountedSubTotal;
-  double OG_GrandTotal;
-  double OG_RoundOffAmount;
-  int OG_isPercentage;
-  int OG_isDiscount;
-  bool OG_isTax;
+  double? OG_discountValue;
+  double? OG_TaxValue;
+  double? OG_TaxAmount;
+  double? OG_DiscountAmount;
+  double? OG_SubTotal;
+  double? OG_DiscountedSubTotal;
+  double? OG_GrandTotal;
+  double? OG_RoundOffAmount;
+  int? OG_isPercentage;
+  int? OG_isDiscount;
+  late bool OG_isTax;
 
-  String SS_DifferWeight;
+  String? SS_DifferWeight;
 
-  double SS_MaterialUnitPrice;
-  String SS_UpdatecustomerNeedWeight;
-  String SS_UpdateAmount;
+  double? SS_MaterialUnitPrice;
+  String? SS_UpdatecustomerNeedWeight;
+  String? SS_UpdateAmount;
   String msg="";
   String returnMoney="";
-  int SS_isMaterialReceived;
-  Color returnColor;
+  int? SS_isMaterialReceived;
+  Color? returnColor;
 
-  String scanWeight;
+  late String scanWeight;
 
   differWeight(BuildContext context){
     print("SS_MaterialUnitPrice $SS_MaterialUnitPrice");
@@ -1800,7 +1800,7 @@ class QuarryNotifier extends ChangeNotifier{
        OG_SubTotal=0.0;
        OG_GrandTotal=0.0;
     }
-    else if(double.parse(SS_EmptyWeightOfVehicle)==double.parse(SS_DifferWeightController.text.toString())){
+    else if(double.parse(SS_EmptyWeightOfVehicle!)==double.parse(SS_DifferWeightController.text.toString())){
       msg="";
       returnMoney="";
       SS_UpdatecustomerNeedWeight="0.0";
@@ -1812,24 +1812,24 @@ class QuarryNotifier extends ChangeNotifier{
       UpdateDiscountedOutputQtyAmount=0.0;
       UpdateRoundOffAmount=0.0;
     }
-    else if(double.parse(SS_TotalWeight)>double.parse(SS_DifferWeightController.text.toString())){
-      SS_DifferWeight=(Decimal.parse(SS_TotalWeight)-Decimal.parse((SS_DifferWeightController.text))).toString();
+    else if(double.parse(SS_TotalWeight!)>double.parse(SS_DifferWeightController.text.toString())){
+      SS_DifferWeight=(Decimal.parse(SS_TotalWeight!)-Decimal.parse((SS_DifferWeightController.text))).toString();
       msg="Material Low ${SS_DifferWeight}. So You need to Return";
-      returnMoney=(Decimal.parse(SS_MaterialUnitPrice.toString()??"0")*Decimal.parse((SS_DifferWeight))).toString();
-      SS_UpdatecustomerNeedWeight=(Decimal.parse(SS_RequiredMaterialQty)-Decimal.parse(SS_DifferWeight)).toString();
+      returnMoney=(Decimal.parse(SS_MaterialUnitPrice.toString()??"0")*Decimal.parse(SS_DifferWeight!)).toString();
+      SS_UpdatecustomerNeedWeight=(Decimal.parse(SS_RequiredMaterialQty!)-Decimal.parse(SS_DifferWeight!)).toString();
       SS_UpdateAmount=(Decimal.parse(SS_Amount.toString())-Decimal.parse(returnMoney)).toString();
       returnColor=Colors.red;
-      print("__________${double.parse(returnMoney.toString()) > SS_Amount}");
+      print("__________${double.parse(returnMoney.toString()) > SS_Amount!}");
 
 
 
       if(OG_isDiscount==1){
         if(OG_isPercentage==0){
 
-          SS_DifferWeight=(Decimal.parse(SS_TotalWeight)-Decimal.parse((SS_DifferWeightController.text))).toString();
+          SS_DifferWeight=(Decimal.parse(SS_TotalWeight!)-Decimal.parse((SS_DifferWeightController.text))).toString();
           msg="Material Low ${SS_DifferWeight}. So You need to Return";
 
-          SS_UpdatecustomerNeedWeight=(Decimal.parse(SS_RequiredMaterialQty)-Decimal.parse(SS_DifferWeight)).toString();
+          SS_UpdatecustomerNeedWeight=(Decimal.parse(SS_RequiredMaterialQty!)-Decimal.parse(SS_DifferWeight!)).toString();
           SS_UpdateAmount=Calculation().mul(SS_UpdatecustomerNeedWeight, SS_MaterialUnitPrice).toString();
           UpdateDiscountAmount=SS_DiscountAmount;
           UpdateOutputQtyAmount=Calculation().mul(SS_UpdatecustomerNeedWeight, SS_MaterialUnitPrice);
@@ -1842,7 +1842,7 @@ class QuarryNotifier extends ChangeNotifier{
           }
 
           UpdateGrandTotalAmount=Calculation().add(UpdateDiscountedOutputQtyAmount, UpdateTaxAmount);
-          UpdateRoundOffAmount=Calculation().sub(UpdateGrandTotalAmount.round(), UpdateGrandTotalAmount);
+          UpdateRoundOffAmount=Calculation().sub(UpdateGrandTotalAmount!.round(), UpdateGrandTotalAmount);
 
         }
         else if(OG_isPercentage==1){
@@ -1852,10 +1852,10 @@ class QuarryNotifier extends ChangeNotifier{
 
 
 
-          SS_DifferWeight=(Decimal.parse(SS_TotalWeight)-Decimal.parse((SS_DifferWeightController.text))).toString();
+          SS_DifferWeight=(Decimal.parse(SS_TotalWeight!)-Decimal.parse((SS_DifferWeightController.text))).toString();
           msg="Material Low ${SS_DifferWeight}. So You need to Return";
 
-          SS_UpdatecustomerNeedWeight=(Decimal.parse(SS_RequiredMaterialQty)-Decimal.parse(SS_DifferWeight)).toString();
+          SS_UpdatecustomerNeedWeight=(Decimal.parse(SS_RequiredMaterialQty!)-Decimal.parse(SS_DifferWeight!)).toString();
           SS_UpdateAmount=Calculation().mul(SS_UpdatecustomerNeedWeight, SS_MaterialUnitPrice).toString();
           UpdateDiscountAmount=Calculation().discountAmount(discountValue:OG_discountValue,amount: SS_UpdateAmount );
           UpdateOutputQtyAmount=Calculation().mul(SS_UpdatecustomerNeedWeight, SS_MaterialUnitPrice);
@@ -1868,7 +1868,7 @@ class QuarryNotifier extends ChangeNotifier{
           }
 
           UpdateGrandTotalAmount=Calculation().add(UpdateDiscountedOutputQtyAmount, UpdateTaxAmount);
-          UpdateRoundOffAmount=Calculation().sub(UpdateGrandTotalAmount.round(), UpdateGrandTotalAmount);
+          UpdateRoundOffAmount=Calculation().sub(UpdateGrandTotalAmount!.round(), UpdateGrandTotalAmount);
 
         }
       }
@@ -1877,7 +1877,7 @@ class QuarryNotifier extends ChangeNotifier{
         OG_DiscountedSubTotal=0.0;
 
 
-        SS_UpdatecustomerNeedWeight=(Decimal.parse(SS_RequiredMaterialQty)-Decimal.parse(SS_DifferWeight)).toString();
+        SS_UpdatecustomerNeedWeight=(Decimal.parse(SS_RequiredMaterialQty!)-Decimal.parse(SS_DifferWeight!)).toString();
         SS_UpdateAmount=Calculation().mul(SS_UpdatecustomerNeedWeight, SS_MaterialUnitPrice.toString()).toString();
         UpdateDiscountAmount=0.0;
         UpdateOutputQtyAmount=Calculation().mul(SS_UpdatecustomerNeedWeight, SS_MaterialUnitPrice);
@@ -1889,7 +1889,7 @@ class QuarryNotifier extends ChangeNotifier{
           UpdateTaxAmount=0.0;
         }
         UpdateGrandTotalAmount=Calculation().add(UpdateOutputQtyAmount, UpdateTaxAmount);
-        UpdateRoundOffAmount=Calculation().sub(UpdateGrandTotalAmount.round(), UpdateGrandTotalAmount);
+        UpdateRoundOffAmount=Calculation().sub(UpdateGrandTotalAmount!.round(), UpdateGrandTotalAmount);
 
 
       }
@@ -1898,11 +1898,11 @@ class QuarryNotifier extends ChangeNotifier{
 
       notifyListeners();
     }
-    else if(double.parse(SS_TotalWeight)<double.parse(SS_DifferWeightController.text.toString())){
-      SS_DifferWeight=(Decimal.parse(SS_DifferWeightController.text)-Decimal.parse((SS_TotalWeight))).toString();
+    else if(double.parse(SS_TotalWeight!)<double.parse(SS_DifferWeightController.text.toString())){
+      SS_DifferWeight=(Decimal.parse(SS_DifferWeightController.text)-Decimal.parse(SS_TotalWeight!)).toString();
       msg="Material High ${SS_DifferWeight}. So Customer Need To Pay";
-      returnMoney=(Decimal.parse(SS_MaterialUnitPrice.toString()??"0")*Decimal.parse((SS_DifferWeight))).toString();
-      SS_UpdatecustomerNeedWeight=(Decimal.parse(SS_RequiredMaterialQty)+Decimal.parse(SS_DifferWeight)).toString();
+      returnMoney=(Decimal.parse(SS_MaterialUnitPrice.toString()??"0")*Decimal.parse(SS_DifferWeight!)).toString();
+      SS_UpdatecustomerNeedWeight=(Decimal.parse(SS_RequiredMaterialQty!)+Decimal.parse(SS_DifferWeight!)).toString();
       SS_UpdateAmount=(Decimal.parse(SS_Amount.toString())+Decimal.parse(returnMoney)).toString();
       returnColor=Colors.green;
 
@@ -1911,10 +1911,10 @@ class QuarryNotifier extends ChangeNotifier{
       if(OG_isDiscount==1){
         if(OG_isPercentage==0){
 
-          SS_DifferWeight=(Decimal.parse(SS_DifferWeightController.text)-Decimal.parse((SS_TotalWeight))).toString();
+          SS_DifferWeight=(Decimal.parse(SS_DifferWeightController.text)-Decimal.parse(SS_TotalWeight!)).toString();
           msg="Material High ${SS_DifferWeight}. So Customer Need To Pay";
 
-          SS_UpdatecustomerNeedWeight=(Decimal.parse(SS_RequiredMaterialQty)+Decimal.parse(SS_DifferWeight)).toString();
+          SS_UpdatecustomerNeedWeight=(Decimal.parse(SS_RequiredMaterialQty!)+Decimal.parse(SS_DifferWeight!)).toString();
           SS_UpdateAmount=Calculation().mul(SS_UpdatecustomerNeedWeight, SS_MaterialUnitPrice).toString();
           UpdateDiscountAmount=SS_DiscountAmount;
           UpdateOutputQtyAmount=Calculation().mul(SS_UpdatecustomerNeedWeight, SS_MaterialUnitPrice);
@@ -1926,7 +1926,7 @@ class QuarryNotifier extends ChangeNotifier{
             UpdateTaxAmount=0.0;
           }
           UpdateGrandTotalAmount=Calculation().add(UpdateDiscountedOutputQtyAmount, UpdateTaxAmount);
-          UpdateRoundOffAmount=Calculation().sub(UpdateGrandTotalAmount.round(), UpdateGrandTotalAmount);
+          UpdateRoundOffAmount=Calculation().sub(UpdateGrandTotalAmount!.round(), UpdateGrandTotalAmount);
 
 
 
@@ -1940,11 +1940,11 @@ class QuarryNotifier extends ChangeNotifier{
 
 
 
-          SS_DifferWeight=(Decimal.parse(SS_DifferWeightController.text)-Decimal.parse((SS_TotalWeight))).toString();
+          SS_DifferWeight=(Decimal.parse(SS_DifferWeightController.text)-Decimal.parse(SS_TotalWeight!)).toString();
           msg="Material High ${SS_DifferWeight}. So Customer Need To Pay";
 
 
-          SS_UpdatecustomerNeedWeight=(Decimal.parse(SS_RequiredMaterialQty)+Decimal.parse(SS_DifferWeight)).toString();
+          SS_UpdatecustomerNeedWeight=(Decimal.parse(SS_RequiredMaterialQty!)+Decimal.parse(SS_DifferWeight!)).toString();
           SS_UpdateAmount=Calculation().mul(SS_UpdatecustomerNeedWeight, SS_MaterialUnitPrice).toString();
           UpdateDiscountAmount=Calculation().discountAmount(discountValue:OG_discountValue,amount: SS_UpdateAmount );
           UpdateOutputQtyAmount=Calculation().mul(SS_UpdatecustomerNeedWeight, SS_MaterialUnitPrice);
@@ -1956,7 +1956,7 @@ class QuarryNotifier extends ChangeNotifier{
             UpdateTaxAmount=0.0;
           }
           UpdateGrandTotalAmount=Calculation().add(UpdateDiscountedOutputQtyAmount, UpdateTaxAmount);
-          UpdateRoundOffAmount=Calculation().sub(UpdateGrandTotalAmount.round(), UpdateGrandTotalAmount);
+          UpdateRoundOffAmount=Calculation().sub(UpdateGrandTotalAmount!.round(), UpdateGrandTotalAmount);
 
         }
       }
@@ -1964,9 +1964,9 @@ class QuarryNotifier extends ChangeNotifier{
         OG_DiscountAmount=0.0;
         OG_DiscountedSubTotal=0.0;
 
-        SS_DifferWeight=(Decimal.parse(SS_DifferWeightController.text)-Decimal.parse((SS_TotalWeight))).toString();
+        SS_DifferWeight=(Decimal.parse(SS_DifferWeightController.text)-Decimal.parse(SS_TotalWeight!)).toString();
 
-        SS_UpdatecustomerNeedWeight=(Decimal.parse(SS_RequiredMaterialQty)+Decimal.parse(SS_DifferWeight)).toString();
+        SS_UpdatecustomerNeedWeight=(Decimal.parse(SS_RequiredMaterialQty!)+Decimal.parse(SS_DifferWeight!)).toString();
         SS_UpdateAmount=Calculation().mul(SS_UpdatecustomerNeedWeight, SS_MaterialUnitPrice).toString();
         UpdateDiscountAmount=0.0;
         UpdateOutputQtyAmount=Calculation().mul(SS_UpdatecustomerNeedWeight, SS_MaterialUnitPrice);
@@ -1978,7 +1978,7 @@ class QuarryNotifier extends ChangeNotifier{
           UpdateTaxAmount=0.0;
         }
         UpdateGrandTotalAmount=Calculation().add(UpdateOutputQtyAmount, UpdateTaxAmount);
-        UpdateRoundOffAmount=Calculation().sub(UpdateGrandTotalAmount.round(), UpdateGrandTotalAmount);
+        UpdateRoundOffAmount=Calculation().sub(UpdateGrandTotalAmount!.round(), UpdateGrandTotalAmount);
 
       }
 
@@ -2058,18 +2058,18 @@ class QuarryNotifier extends ChangeNotifier{
   notifyListeners();
  }
 
-  TabController tabController;
+  TabController? tabController;
   initTabController(TickerProviderStateMixin tickerProviderStateMixin,BuildContext context,bool fromsaleGrid){
     tabController=new TabController(length: 2, vsync: tickerProviderStateMixin);
-    tabController.addListener(() {
-      if(tabController.index==1){
+    tabController!.addListener(() {
+      if(tabController!.index==1){
         if(!fromsaleGrid){
           GetSaleDetailDbhit(context);
         }
 
 
 
-      }else if(tabController.index==0){
+      }else if(tabController!.index==0){
         if(PlantId==null){
           PlantUserDropDownValues(context);
         }
@@ -2080,14 +2080,14 @@ class QuarryNotifier extends ChangeNotifier{
 
     });
     if(fromsaleGrid){
-      tabController.animateTo(1,duration: Duration(milliseconds: 300),curve: Curves.easeIn);
+      tabController!.animateTo(1,duration: Duration(milliseconds: 300),curve: Curves.easeIn);
     }
 
   }
 
   editLoader(){
     SS_LoadedVehicleNo=saleDetails[selectedIndex].VehicleNumber;
-    searchVehicleNo.text=saleDetails[selectedIndex].VehicleNumber;
+    searchVehicleNo.text=saleDetails[selectedIndex].VehicleNumber!;
 
     SS_EmptyWeightOfVehicle=saleDetails[selectedIndex].EmptyWeightOfVehicle;
     SS_VehicleTypeName=saleDetails[selectedIndex].VehicleTypeName;
@@ -2102,7 +2102,7 @@ class QuarryNotifier extends ChangeNotifier{
     SS_UpdateSaleId=saleDetails[selectedIndex].SaleId;
     SS_UpdateSaleNo=saleDetails[selectedIndex].SaleNumber;
     SS_selectCustomerId=saleDetails[selectedIndex].CustomerId;
-    SS_TotalWeight=(Decimal.parse(SS_EmptyWeightOfVehicle)+Decimal.parse((SS_RequiredMaterialQty))).toString();
+    SS_TotalWeight=(Decimal.parse(SS_EmptyWeightOfVehicle!)+Decimal.parse(SS_RequiredMaterialQty!)).toString();
    // SS_MaterialUnitPrice=sale_materialList.where((element) => element.MaterialId==saleDetails[selectedIndex].MaterialId).toList()[0].MaterialUnitPrice;
     SS_MaterialUnitPrice=saleDetails[selectedIndex].MaterialUnitPrice;
 
@@ -2131,9 +2131,9 @@ class QuarryNotifier extends ChangeNotifier{
     OG_TaxValue=saleDetails[selectedIndex].TaxPercentage;
     OG_isPercentage=saleDetails[selectedIndex].isPercentage;
     OG_isDiscount=saleDetails[selectedIndex].isDiscount;
-    SS_TotalWeight=(Decimal.parse(SS_EmptyWeightOfVehicle)+Decimal.parse((SS_RequiredMaterialQty))).toString();
+    SS_TotalWeight=(Decimal.parse(SS_EmptyWeightOfVehicle!)+Decimal.parse(SS_RequiredMaterialQty!)).toString();
     SS_MaterialUnitPrice=saleDetails[selectedIndex].MaterialUnitPrice;
-    OG_isTax=saleDetails[selectedIndex].TaxAmount>0?true:false;
+    OG_isTax=saleDetails[selectedIndex].TaxAmount!>0?true:false;
     scanWeight="";
     notifyListeners();
     print(SS_GrandTotalAmount);
@@ -2387,7 +2387,7 @@ class QuarryNotifier extends ChangeNotifier{
 
   List<PlantGridModel> plantGridList=[];
 
-  GetplantDetailDbhit(BuildContext context,int plantId,TickerProviderStateMixin tickerProviderStateMixin) async {
+  GetplantDetailDbhit(BuildContext context,int? plantId,TickerProviderStateMixin tickerProviderStateMixin) async {
     updateInsertCompanyLoader(true);
     var body={
       "Fields": [
@@ -2420,12 +2420,12 @@ class QuarryNotifier extends ChangeNotifier{
         if(value!=null){
           var parsed=json.decode(value);
           print(parsed);
-          var t=parsed['Table'] as List;
+          var t=parsed['Table'] as List?;
 
 
           if(plantId!=null){
             var t1=parsed['Table1'] as List;
-            PD_plantTypeId=t[0]['PlantTypeId'];
+            PD_plantTypeId=t![0]['PlantTypeId'];
             PD_plantTypeName=t[0]['PlantTypeName'];
             editPlantId=t[0]['PlantId'];
 
@@ -2446,7 +2446,7 @@ class QuarryNotifier extends ChangeNotifier{
             updatePlantDetailEdit(true);
           }
           else{
-            plantGridList=t.map((e) => PlantGridModel.fromJson(e)).toList();
+            plantGridList=t!.map((e) => PlantGridModel.fromJson(e)).toList();
           }
 
         }
@@ -2479,13 +2479,13 @@ class QuarryNotifier extends ChangeNotifier{
 
   TextEditingController PD_LicenseNo= new TextEditingController();
   TextEditingController PD_LicenseDesc= new TextEditingController();
- DateTime PD_fromDate;
- DateTime PD_toDate;
+ DateTime? PD_fromDate;
+ DateTime? PD_toDate;
 
-  int PD_plantTypeId=null;
-  String PD_plantTypeName=null;
+  int? PD_plantTypeId=null;
+  String? PD_plantTypeName=null;
 
-  int editPlantId=null;
+  int? editPlantId=null;
 
   List<PlantLicenseModel> PO_PlantLicenseList=[];
 
@@ -2660,7 +2660,7 @@ class QuarryNotifier extends ChangeNotifier{
 
 
 
-  updateSelectCustomerFromAddNew(int customerId,String customerName,bool isCredit,double creditLimit,double usedAmount,double balanceAmount){
+  updateSelectCustomerFromAddNew(int? customerId,String? customerName,bool? isCredit,double? creditLimit,double? usedAmount,double? balanceAmount){
     SS_selectCustomerId=customerId;
     SS_selectedCustomerName=customerName;
     SS_selectIsCreditCustomer=isCredit;
@@ -2721,7 +2721,7 @@ class QuarryNotifier extends ChangeNotifier{
 
   bool insertCompanyLoader=false;
   void updateInsertCompanyLoader(bool value){
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       insertCompanyLoader=value;
       notifyListeners();
 
@@ -2751,7 +2751,7 @@ class QuarryNotifier extends ChangeNotifier{
 }
 
 class SelectTaxMapping{
-  int TaxId;
-  String TaxName;
+  int? TaxId;
+  String? TaxName;
   SelectTaxMapping({this.TaxId,this.TaxName});
 }

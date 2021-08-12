@@ -4,8 +4,8 @@ class EmployeePaymentTypeModel {
     this.employeePaymentTypeName,
   });
 
-  int employeePaymentTypeId;
-  String employeePaymentTypeName;
+  int? employeePaymentTypeId;
+  String? employeePaymentTypeName;
 
   factory EmployeePaymentTypeModel.fromJson(Map<String, dynamic> json) => EmployeePaymentTypeModel(
     employeePaymentTypeId: json["EmployeeSalaryModeId"],

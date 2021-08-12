@@ -58,7 +58,7 @@ class EmployeeAdvanceLoanNotifier extends ChangeNotifier{
         if(value!=null){
           var parsed=json.decode(value);
 
-          var t=parsed['Table'] as List;
+          var t=parsed['Table'] as List?;
           var t1=parsed['Table1'] as List;
           plantList=t1.map((e) => PlantUserModel.fromJson(e)).toList();
           plantList.forEach((element) {
@@ -147,7 +147,7 @@ class EmployeeAdvanceLoanNotifier extends ChangeNotifier{
 
         empList=t.map((e) => EmpLoanEmployeeModel.fromJson(e)).toList();
         empList.forEach((element) {
-          searchEmpList.add("${element.employeeName}  -  ${element.employeePrefix+element.employeeCode}");
+          searchEmpList.add("${element.employeeName}  -  ${element.employeePrefix!+element.employeeCode!}");
         });
 
 
@@ -170,8 +170,8 @@ class EmployeeAdvanceLoanNotifier extends ChangeNotifier{
 
   TextEditingController loanReasonController=new TextEditingController();
   TextEditingController loanAmountController=new TextEditingController();
-  int selectedMonthDue=null;
-  double emiAmount=0.0;
+  int? selectedMonthDue=null;
+  double? emiAmount=0.0;
 
   List<dynamic> monthList=[{"Due":2},{"Due":3},{"Due":4},{"Due":5},{"Due":6},{"Due":7},{"Due":8},{"Due":9},{"Due":10},{"Due":11},{"Due":12}];
 
@@ -199,22 +199,22 @@ class EmployeeAdvanceLoanNotifier extends ChangeNotifier{
   }
 
 
-  String showEmpName="";
-  String showEmpDesg="";
+  String? showEmpName="";
+  String? showEmpDesg="";
   String showEmpLoginInTime="";
-  String showEmpWorkingDays="";
-  String showEmpLeaveDays="";
-  double showEmpNetPay=0.0;
-  int showEmpId;
+  String? showEmpWorkingDays="";
+  String? showEmpLeaveDays="";
+  double? showEmpNetPay=0.0;
+  int? showEmpId;
 
-  DateTime selectedDate;
-  TimeOfDay selectedTime;
-  String  time;
+  DateTime? selectedDate;
+  late TimeOfDay selectedTime;
+  String?  time;
 
 
-  int logoutAttendanceId=null;
+  int? logoutAttendanceId=null;
 
-  String selectedAmountType=null;
+  String? selectedAmountType=null;
 
   clearinsertForm(){
     selectedEmployeeCode=null;
@@ -340,7 +340,7 @@ class EmployeeAdvanceLoanNotifier extends ChangeNotifier{
   }
 
 
-  DateTime reportDate=null;
+  DateTime? reportDate=null;
 
   int totalEmployee=0;
   int totalPresent=0;
@@ -357,9 +357,9 @@ class EmployeeAdvanceLoanNotifier extends ChangeNotifier{
     GridStyleModel3(columnName: "AmountType"),
     GridStyleModel3(columnName: "Amount",edgeInsets: EdgeInsets.only(left: 0),width: 180),
   ];
-  List<dynamic> gridData=[];
+  List<dynamic>? gridData=[];
 
-  GetEmployeeAttendanceLoanDbHit(BuildContext context,int EmployeeId)  async{
+  GetEmployeeAttendanceLoanDbHit(BuildContext context,int? EmployeeId)  async{
 
     updateEmployeeAttendanceLoader(true);
 
@@ -393,10 +393,10 @@ class EmployeeAdvanceLoanNotifier extends ChangeNotifier{
       await call.ApiCallGetInvoke(body,context).then((value) {
         if(value!=null){
           var parsed=json.decode(value);
-          var t=parsed['Table'] as List;
+          var t=parsed['Table'] as List?;
 
           if(EmployeeId!=null ){
-            showEmpId=t[0]['EmployeeId'];
+            showEmpId=t![0]['EmployeeId'];
             selectedEmployeeCode="${t[0]['Name']} - ${t[0]['Employee Code']}";
             employeeCodeController.text="${t[0]['Name']} - ${t[0]['Employee Code']}";
             showEmpDesg=t[0]['Designation'];

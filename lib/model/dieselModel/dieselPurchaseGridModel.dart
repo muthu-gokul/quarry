@@ -17,19 +17,19 @@ class DieselPurchaseGridModel {
     this.PlantName,
   });
 
-  int dieselPurchaseId;
-  int PlantId;
-  String billNumber;
-  String PlantName;
-  int employeeId;
-  String purchaserName;
-  String supplierName;
-  String dieselBunkLocation;
-  String dieselBunkContactNumber;
-  double dieselQuantity;
-  double dieselRate;
-  double totalAmount;
-  DateTime billDate;
+  int? dieselPurchaseId;
+  int? PlantId;
+  String? billNumber;
+  String? PlantName;
+  int? employeeId;
+  String? purchaserName;
+  String? supplierName;
+  String? dieselBunkLocation;
+  String? dieselBunkContactNumber;
+  double? dieselQuantity;
+  double? dieselRate;
+  double? totalAmount;
+  DateTime? billDate;
 
   factory DieselPurchaseGridModel.fromJson(Map<String, dynamic> json) => DieselPurchaseGridModel(
     dieselPurchaseId: json["DieselPurchaseId"],
@@ -57,7 +57,7 @@ class DieselPurchaseGridModel {
     "DieselQuantity": dieselQuantity,
     "DieselRate": dieselRate,
     "TotalAmount": totalAmount,
-    "BillDate": billDate.toIso8601String(),
+    "BillDate": billDate!.toIso8601String(),
   };
 
   Map<String, dynamic> toGridJson() => {
@@ -71,7 +71,7 @@ class DieselPurchaseGridModel {
     "Quantity": dieselQuantity,
     "Diesel Price": dieselRate,
     "Total Price": totalAmount,
-    "Date": billDate!=null?DateFormat.yMMMd().format(billDate):" ",
+    "Date": billDate!=null?DateFormat.yMMMd().format(billDate!):" ",
   };
 
   dynamic get(String propertyName) {

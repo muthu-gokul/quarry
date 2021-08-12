@@ -106,8 +106,8 @@ class MultiTrackTween extends Animatable<Map<String, dynamic>> {
   Map<String, dynamic> transform(double t) {
     final Map<String, dynamic> result = Map();
     _tracksToTween.forEach((name, tweenData) {
-      final double tTween = max(0, min(t, tweenData.maxTime - 0.0001));
-      result[name] = tweenData.tween.transform(tTween);
+      final double tTween = max(0, min(t, tweenData.maxTime! - 0.0001));
+      result[name] = tweenData.tween!.transform(tTween);
     });
     return result;
   }
@@ -127,7 +127,7 @@ class Track<T> {
   ///
   /// Optionally you can set a named parameter [curve] that applies an easing
   /// curve to the tween.
-  Track<T> add(Duration duration, Animatable<T> tween, {Curve curve}) {
+  Track<T> add(Duration duration, Animatable<T> tween, {Curve? curve}) {
     items.add(_TrackItem(duration, tween, curve: curve));
     return this;
   }
@@ -135,9 +135,9 @@ class Track<T> {
 
 class _TrackItem<T> {
   final Duration duration;
-  Animatable<T> tween;
+  late Animatable<T> tween;
 
-  _TrackItem(this.duration, Animatable<T> _tween, {Curve curve})
+  _TrackItem(this.duration, Animatable<T> _tween, {Curve? curve})
       : assert(duration != null, "Please set a duration."),
         assert(_tween != null, "Please set a tween.") {
     if (curve != null) {
@@ -149,8 +149,8 @@ class _TrackItem<T> {
 }
 
 class _TweenData<T> {
-  final Animatable<T> tween;
-  final double maxTime;
+  final Animatable<T>? tween;
+  final double? maxTime;
 
   _TweenData({this.tween, this.maxTime});
 }

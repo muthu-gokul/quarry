@@ -25,20 +25,20 @@ import 'package:quarry/widgets/dateRangePicker.dart' as DateRagePicker;
 
 class SalesMaterial extends StatefulWidget {
 
-  String materialName;
-  double materialPrice;
-  double materialQty;
-  String materialUnit;
-  List<dynamic> weekList;
-  List<dynamic> monthList;
-  List<dynamic> yearList;
+  String? materialName;
+  double? materialPrice;
+  double? materialQty;
+  String? materialUnit;
+  List<dynamic>? weekList;
+  List<dynamic>? monthList;
+  List<dynamic>? yearList;
   SalesMaterial({this.materialName,this.materialPrice,this.materialQty,this.materialUnit,this.weekList,this.monthList,this.yearList});
   @override
   _SalesMaterialState createState() => _SalesMaterialState();
 }
 
 class _SalesMaterialState extends State<SalesMaterial> {
-  ScrollController silverController;
+  ScrollController? silverController;
   double silverBodyTopMargin=0;
 
   int selIndex=-1;
@@ -46,27 +46,27 @@ class _SalesMaterialState extends State<SalesMaterial> {
   @override
   void initState() {
     Provider.of<DashboardNotifier>(context,listen: false).getSaleMaterialDetail(
-        widget.weekList.map((e) => e['TotalSale']).toList(),
-        json.encode(widget.weekList.map((e) => e['WeekDay'].toString().substring(0,3)).toList()),
+        widget.weekList!.map((e) => e['TotalSale']).toList(),
+        json.encode(widget.weekList!.map((e) => e['WeekDay'].toString().substring(0,3)).toList()),
       context
     );
-    WidgetsBinding.instance.addPostFrameCallback((_){
+    WidgetsBinding.instance!.addPostFrameCallback((_){
       silverController=new ScrollController();
 
       setState(() {
         silverBodyTopMargin=0;
       });
 
-      silverController.addListener(() {
-        if(silverController.offset>250){
+      silverController!.addListener(() {
+        if(silverController!.offset>250){
           setState(() {
-            silverBodyTopMargin=50-(-(silverController.offset-300));
+            silverBodyTopMargin=50-(-(silverController!.offset-300));
             if(silverBodyTopMargin<0){
               silverBodyTopMargin=0;
             }
           });
         }
-        else if(silverController.offset<270){
+        else if(silverController!.offset<270){
           setState(() {
             silverBodyTopMargin=0;
           });
@@ -76,12 +76,12 @@ class _SalesMaterialState extends State<SalesMaterial> {
     super.initState();
   }
   List<DateTime> picked=[];
-  double tabWidth;
+  late double tabWidth;
   double position=5;
 
   @override
   Widget build(BuildContext context) {
-    tabWidth=SizeConfig.screenWidth-40;
+    tabWidth=SizeConfig.screenWidth!-40;
     return Scaffold(
       backgroundColor: AppTheme.bgColor,
       body: Consumer<DashboardNotifier>(
@@ -259,8 +259,8 @@ class _SalesMaterialState extends State<SalesMaterial> {
                                     position=5;
                                   });
                                   db.getSaleMaterialDetail(
-                                    widget.weekList.map((e) => e['TotalSale']).toList(),
-                                    json.encode(widget.weekList.map((e) => e['WeekDay'].toString().substring(0,3)).toList()),
+                                    widget.weekList!.map((e) => e['TotalSale']).toList(),
+                                    json.encode(widget.weekList!.map((e) => e['WeekDay'].toString().substring(0,3)).toList()),
                                     context
                                   );
                                 },
@@ -281,8 +281,8 @@ class _SalesMaterialState extends State<SalesMaterial> {
                                     position=tabWidth*0.33;
                                   });
                                   db.getSaleMaterialDetail(
-                                    widget.monthList.map((e) => e['TotalSale']).toList(),
-                                    json.encode(widget.monthList.map((e) => e['MName']).toList()),
+                                    widget.monthList!.map((e) => e['TotalSale']).toList(),
+                                    json.encode(widget.monthList!.map((e) => e['MName']).toList()),
                                     context
                                   );
                                 },
@@ -302,8 +302,8 @@ class _SalesMaterialState extends State<SalesMaterial> {
                                     position=tabWidth*0.66;
                                   });
                                   db.getSaleMaterialDetail(
-                                    widget.yearList.map((e) => e['TotalSale']).toList(),
-                                    json.encode(widget.yearList.map((e) => e['Year']).toList()),
+                                    widget.yearList!.map((e) => e['TotalSale']).toList(),
+                                    json.encode(widget.yearList!.map((e) => e['Year']).toList()),
                                     context
                                   );
                                 },
@@ -337,20 +337,20 @@ class _SalesMaterialState extends State<SalesMaterial> {
                     ),
 
                     Container(
-                      height: (db.salePaymentCategoryT6.length)*100.0,
+                      height: (db.salePaymentCategoryT6!.length)*100.0,
                       child: ListView.builder(
-                        itemCount: db.salePaymentCategoryT6.length,
+                        itemCount: db.salePaymentCategoryT6!.length,
                         physics: NeverScrollableScrollPhysics(),
                         itemBuilder: (ctx,i){
                           return GestureDetector(
                             onTap: (){
                               Navigator.push(context, fadeRoute(SalesCustomer(
-                                paymentType: db.salePaymentCategoryT6[i]['PaymentCategoryName']??"Other",
-                                totalAmount: db.salePaymentCategoryT6[i]['GrandTotalAmount'],
-                                customerList: db.salePaymentCustomerT7.where((element) => element['PaymentCategoryId']==db.salePaymentCategoryT6[i]['PaymentCategoryId']).toList(),
-                                color:db.salePaymentCategoryT6[i]['PaymentCategoryName']=='Cash'?Color(0xFFF4C246):
-                                db.salePaymentCategoryT6[i]['PaymentCategoryName']=='Cheque'?Color(0xFF69CA9D):
-                                db.salePaymentCategoryT6[i]['PaymentCategoryName']=='Credit'?Color(0xFF4662C2):
+                                paymentType: db.salePaymentCategoryT6![i]['PaymentCategoryName']??"Other",
+                                totalAmount: db.salePaymentCategoryT6![i]['GrandTotalAmount'],
+                                customerList: db.salePaymentCustomerT7!.where((element) => element['PaymentCategoryId']==db.salePaymentCategoryT6![i]['PaymentCategoryId']).toList(),
+                                color:db.salePaymentCategoryT6![i]['PaymentCategoryName']=='Cash'?Color(0xFFF4C246):
+                                db.salePaymentCategoryT6![i]['PaymentCategoryName']=='Cheque'?Color(0xFF69CA9D):
+                                db.salePaymentCategoryT6![i]['PaymentCategoryName']=='Credit'?Color(0xFF4662C2):
                                 Colors.red,
                               )));
 
@@ -369,9 +369,9 @@ class _SalesMaterialState extends State<SalesMaterial> {
                                   Container(
                                     height: 80,
                                     width: 5,
-                                    color:db.salePaymentCategoryT6[i]['PaymentCategoryName']=='Cash'?Color(0xFFF4C246):
-                                    db.salePaymentCategoryT6[i]['PaymentCategoryName']=='Cheque'?Color(0xFF69CA9D):
-                                    db.salePaymentCategoryT6[i]['PaymentCategoryName']=='Credit'?Color(0xFF4662C2):
+                                    color:db.salePaymentCategoryT6![i]['PaymentCategoryName']=='Cash'?Color(0xFFF4C246):
+                                    db.salePaymentCategoryT6![i]['PaymentCategoryName']=='Cheque'?Color(0xFF69CA9D):
+                                    db.salePaymentCategoryT6![i]['PaymentCategoryName']=='Credit'?Color(0xFF4662C2):
                                     Colors.red,
                                   ),
                                   SizedBox(width: 20,),
@@ -379,12 +379,12 @@ class _SalesMaterialState extends State<SalesMaterial> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Text("${db.salePaymentCategoryT6[i]['GrandTotalAmount']}",style: TextStyle(fontFamily: 'RM',color:Color(0xFF737373),fontSize: 15),),
+                                      Text("${db.salePaymentCategoryT6![i]['GrandTotalAmount']}",style: TextStyle(fontFamily: 'RM',color:Color(0xFF737373),fontSize: 15),),
                                       SizedBox(height: 5,),
-                                      Text("${db.salePaymentCategoryT6[i]['PaymentCategoryName']??"Other"} Payment",
-                                        style: TextStyle(fontFamily: 'RR',color:db.salePaymentCategoryT6[i]['PaymentCategoryName']=='Cash'?Color(0xFFF4C246):
-                                        db.salePaymentCategoryT6[i]['PaymentCategoryName']=='Cheque'?Color(0xFF69CA9D):
-                                        db.salePaymentCategoryT6[i]['PaymentCategoryName']=='Credit'?Color(0xFF4662C2):
+                                      Text("${db.salePaymentCategoryT6![i]['PaymentCategoryName']??"Other"} Payment",
+                                        style: TextStyle(fontFamily: 'RR',color:db.salePaymentCategoryT6![i]['PaymentCategoryName']=='Cash'?Color(0xFFF4C246):
+                                        db.salePaymentCategoryT6![i]['PaymentCategoryName']=='Cheque'?Color(0xFF69CA9D):
+                                        db.salePaymentCategoryT6![i]['PaymentCategoryName']=='Credit'?Color(0xFF4662C2):
                                         Colors.red,fontSize: 11),
                                       ),
                                     ],

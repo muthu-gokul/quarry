@@ -10,14 +10,14 @@ class EmployeeGridModel {
     this.employeeCode,
   });
 
-  int employeeId;
-  String employeeName;
-  String employeePrefix;
-  String employeeCode;
-  int employeeDesignationId;
-  String employeeDesignationName;
-  String phoneNumber;
-  String email;
+  int? employeeId;
+  String? employeeName;
+  String? employeePrefix;
+  String? employeeCode;
+  int? employeeDesignationId;
+  String? employeeDesignationName;
+  String? phoneNumber;
+  String? email;
 
   factory EmployeeGridModel.fromJson(Map<String, dynamic> json) => EmployeeGridModel(
     employeeId: json["EmployeeId"],
@@ -32,7 +32,7 @@ class EmployeeGridModel {
   );
 
   Map<String, dynamic> toGridJson() => {
-    "Employee Code": employeePrefix+employeeCode,
+    "Employee Code": employeePrefix!+employeeCode!,
     "Name": employeeName,
     "EmployeeDesignationId": employeeDesignationId,
     "Designation": employeeDesignationName,

@@ -35,8 +35,8 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
   bool isListScroll=false;
   bool discountValueError=false;
 
-  ScrollController scrollController;
-  ScrollController listViewController;
+  ScrollController? scrollController;
+  ScrollController? listViewController;
 
   bool isPlantOpen=false;
   bool supplierTypeOpen=false;
@@ -47,7 +47,7 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
   List<String> numbers = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "X", "0", "."];
   String indentQty="";
   String disValue="";
-  bool discountKeyPad=false;
+  bool? discountKeyPad=false;
 
   TextEditingController otherChargeName=new TextEditingController();
   TextEditingController otherChargeAmount=new TextEditingController();
@@ -79,7 +79,7 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
   @override
   void initState() {
 
-    WidgetsBinding.instance.addPostFrameCallback((_){
+    WidgetsBinding.instance!.addPostFrameCallback((_){
 
 
       scrollController=new ScrollController();
@@ -187,7 +187,7 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
 
                               int sensitivity = 5;
                               if (details.delta.dy > sensitivity) {
-                                scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
+                                scrollController!.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
                                   if(isListScroll){
                                     setState(() {
                                       isListScroll=false;
@@ -196,7 +196,7 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
                                 });
 
                               } else if(details.delta.dy < -sensitivity){
-                                scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
+                                scrollController!.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
 
                                   if(!isListScroll){
                                     setState(() {
@@ -207,7 +207,7 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
                               }
                             },
                             child: Container(
-                              height:SizeConfig.screenHeight-100,
+                              height:SizeConfig.screenHeight!-100,
                               width: SizeConfig.screenWidth,
 
                               decoration: BoxDecoration(
@@ -218,15 +218,15 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
                                 onNotification: (s){
                                   if(s is ScrollStartNotification){
 
-                                    if(listViewController.offset==0 && isListScroll && scrollController.offset==100 && listViewController.position.userScrollDirection==ScrollDirection.idle){
+                                    if(listViewController!.offset==0 && isListScroll && scrollController!.offset==100 && listViewController!.position.userScrollDirection==ScrollDirection.idle){
 
                                       Timer(Duration(milliseconds: 100), (){
-                                        if(listViewController.position.userScrollDirection!=ScrollDirection.reverse){
+                                        if(listViewController!.position.userScrollDirection!=ScrollDirection.reverse){
 
                                           //if(scrollController.position.pixels == scrollController.position.maxScrollExtent){
-                                          if(listViewController.offset==0){
+                                          if(listViewController!.offset==0){
 
-                                            scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value) {
+                                            scrollController!.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value) {
                                               if(isListScroll){
                                                 setState(() {
                                                   isListScroll=false;
@@ -239,7 +239,8 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
                                       });
                                     }
                                   }
-                                },
+                                  return true;
+                                } ,
                                 child: ListView(
                                   controller: listViewController,
                                   scrollDirection: Axis.vertical,
@@ -247,8 +248,8 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
                                   children: [
                                     Container(
 
-                                        margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,top:SizeConfig.height20,),
-                                        padding: EdgeInsets.only(left:SizeConfig.width10,),
+                                        margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!,top:SizeConfig.height20!,),
+                                        padding: EdgeInsets.only(left:SizeConfig.width10!,),
                                         height: 50,
                                         alignment: Alignment.centerLeft,
                                         decoration: BoxDecoration(
@@ -344,12 +345,12 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
 
                                     GestureDetector(
                                       onTap: () async{
-                                        final DateTime picked = await showDatePicker2(
+                                        final DateTime? picked = await showDatePicker2(
                                             context: context,
-                                            initialDate:  pn.expectedDate==null?DateTime.now():pn.expectedDate, // Refer step 1
+                                            initialDate:  pn.expectedDate==null?DateTime.now():pn.expectedDate!, // Refer step 1
                                             firstDate: DateTime.now(),
                                             lastDate: DateTime(2100),
-                                            builder: (BuildContext context,Widget child){
+                                            builder: (BuildContext context,Widget? child){
                                               return Theme(
                                                 data: Theme.of(context).copyWith(
                                                   colorScheme: ColorScheme.light(
@@ -359,7 +360,7 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
                                                   ),
 
                                                 ),
-                                                child: child,
+                                                child: child!,
                                               );
                                             });
                                         if (picked != null)
@@ -368,7 +369,7 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
                                           });
                                       },
                                       child: ExpectedDateContainer(
-                                        text: pn.expectedDate==null?"Expected Date":"${DateFormat.yMMMd().format(pn.expectedDate)}",
+                                        text: pn.expectedDate==null?"Expected Date":"${DateFormat.yMMMd().format(pn.expectedDate!)}",
                                         textColor: pn.expectedDate==null? AppTheme.addNewTextFieldText.withOpacity(0.5):AppTheme.addNewTextFieldText,
                                       ),
                                     ),
@@ -376,7 +377,7 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
                                     Container(
                                       height: 30,
                                       width: SizeConfig.screenWidth,
-                                      padding: EdgeInsets.only(left: SizeConfig.width10,right: SizeConfig.width20),
+                                      padding: EdgeInsets.only(left: SizeConfig.width10!,right: SizeConfig.width20!),
                                       child: Row(
                                         children: [
 
@@ -390,7 +391,7 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
                                                   pn.IsTax=v;
                                                 });
                                                 for(int i=0;i<pn.invoiceMaterialMappingList.length;i++)
-                                                  pn.purchaseOrdersCalc(i, pn.invoiceMaterialMappingList[i].purchaseQty.text);
+                                                  pn.purchaseOrdersCalc(i, pn.invoiceMaterialMappingList[i].purchaseQty!.text);
 
                                               }
                                           ),
@@ -443,7 +444,7 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
 
                                           },
                                           child: Container(
-                                            margin: EdgeInsets.only(left: SizeConfig.width90,right:  SizeConfig.width90,),
+                                            margin: EdgeInsets.only(left: SizeConfig.width90!,right:  SizeConfig.width90!,),
                                             height:45,
                                             decoration: BoxDecoration(
                                               borderRadius: BorderRadius.circular(25.0),
@@ -469,7 +470,7 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
                                         height: dataTableheight+150,
                                         width: SizeConfig.screenWidth,
                                         clipBehavior: Clip.antiAlias,
-                                        margin: EdgeInsets.only(left:SizeConfig.screenWidth*0.02,right:SizeConfig.screenWidth*0.02),
+                                        margin: EdgeInsets.only(left:SizeConfig.screenWidth!*0.02,right:SizeConfig.screenWidth!*0.02),
                                         decoration: BoxDecoration(
                                             borderRadius: BorderRadius.circular(10),
                                             color: Colors.white,
@@ -493,7 +494,7 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
                                                 children: [
                                                   Container(
                                                     height: 50,
-                                                    width: SizeConfig.screenWidth-valueContainerWidth-SizeConfig.screenWidth*0.04,
+                                                    width: SizeConfig.screenWidth!-valueContainerWidth-SizeConfig.screenWidth!*0.04,
                                                     color: showShadow? AppTheme.f737373.withOpacity(0.8):AppTheme.f737373,
                                                     child: SingleChildScrollView(
                                                       controller: header,
@@ -514,7 +515,7 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
                                                   ),
                                                   Container(
                                                     height: dataTableBodyheight,
-                                                    width: SizeConfig.screenWidth-valueContainerWidth-SizeConfig.screenWidth*0.04,
+                                                    width: SizeConfig.screenWidth!-valueContainerWidth-SizeConfig.screenWidth!*0.04,
                                                     alignment: Alignment.topCenter,
                                                     color: Colors.white,
                                                     child: SingleChildScrollView(
@@ -563,8 +564,8 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
                                                                             child: GestureDetector(
                                                                               onTap: (){
                                                                                 setState(() {
-                                                                                  indentQty=value.purchaseQty.text;
-                                                                                  disValue=value.DiscountValue>0?value.DiscountValue.toString():'';
+                                                                                  indentQty=value.purchaseQty!.text;
+                                                                                  disValue=value.DiscountValue!>0?value.DiscountValue.toString():'';
                                                                                   discountKeyPad=false;
                                                                                   pn.isDiscountPercentage=value.IsDiscount==1?value.IsPercentage==1?true:false:true;
 
@@ -580,9 +581,9 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
                                                                                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10), ),
 
                                                                                               child: Container(
-                                                                                                height: SizeConfig.screenHeight*0.85,
+                                                                                                height: SizeConfig.screenHeight!*0.85,
 
-                                                                                                width: SizeConfig.screenWidth*0.9,
+                                                                                                width: SizeConfig.screenWidth!*0.9,
                                                                                                 decoration: BoxDecoration(
                                                                                                     borderRadius: BorderRadius.circular(10),
                                                                                                     color: Colors.white
@@ -594,7 +595,7 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
                                                                                                     Text("${value.materialName??""}",
                                                                                                       style: TextStyle(fontFamily: 'RR',fontSize: 18,color: AppTheme.gridTextColor),textAlign: TextAlign.center,),
                                                                                                     SizedBox(height: 10,),
-                                                                                                    discountKeyPad?
+                                                                                                    discountKeyPad!?
                                                                                                     Row(
                                                                                                       mainAxisAlignment: MainAxisAlignment.center,
                                                                                                       children: [
@@ -667,7 +668,7 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
                                                                                                     ):Container(),
                                                                                                     Container(
                                                                                                         margin: EdgeInsets.only(top: 20),
-                                                                                                        width: SizeConfig.screenWidth*0.8,
+                                                                                                        width: SizeConfig.screenWidth!*0.8,
                                                                                                         child: Wrap(
                                                                                                             spacing: 10,
                                                                                                             runSpacing: 10,
@@ -680,7 +681,7 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
                                                                                                                     setState(() {
                                                                                                                       if (numbers[i] == 'X') {
 
-                                                                                                                        if(!discountKeyPad){
+                                                                                                                        if(!discountKeyPad!){
                                                                                                                           indentQty = indentQty.substring(0, indentQty.length - 1);
                                                                                                                         } else{
                                                                                                                           disValue = disValue.substring(0, disValue.length - 1);
@@ -691,7 +692,7 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
                                                                                                                       else if (numbers[i] == '.') {
 
 
-                                                                                                                        if(!discountKeyPad){
+                                                                                                                        if(!discountKeyPad!){
                                                                                                                           if(indentQty.length<6 && indentQty.length>=1){
                                                                                                                             if(indentQty.contains('.')){}
                                                                                                                             else{
@@ -716,7 +717,7 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
                                                                                                                       }
                                                                                                                       else {
 
-                                                                                                                        if(!discountKeyPad){
+                                                                                                                        if(!discountKeyPad!){
                                                                                                                           if(indentQty.isEmpty && numbers[i]=='0'){}
                                                                                                                           else{
                                                                                                                             setState(() {
@@ -753,8 +754,8 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
                                                                                                                     });
                                                                                                                   },
                                                                                                                   child: AnimatedContainer(
-                                                                                                                      height: SizeConfig.screenWidth*0.19,
-                                                                                                                      width: SizeConfig.screenWidth*0.19,
+                                                                                                                      height: SizeConfig.screenWidth!*0.19,
+                                                                                                                      width: SizeConfig.screenWidth!*0.19,
                                                                                                                       duration: Duration(milliseconds: 200),
                                                                                                                       curve: Curves.easeIn,
                                                                                                                       decoration: BoxDecoration(
@@ -881,7 +882,7 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
                                                                                 child: Center(
                                                                                   child: FittedBox(
                                                                                     fit: BoxFit.contain,
-                                                                                    child: Text("${value.purchaseQty.text.toString()}",
+                                                                                    child: Text("${value.purchaseQty!.text.toString()}",
                                                                                       //style:AppTheme.ML_bgCT,
                                                                                     ),
                                                                                   ),
@@ -1052,7 +1053,7 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
                                               child: Container(
                                                 height: 150,
                                                 width: SizeConfig.screenWidth,
-                                                padding: EdgeInsets.only(right: SizeConfig.screenWidth*0.04),
+                                                padding: EdgeInsets.only(right: SizeConfig.screenWidth!*0.04),
                                                 decoration: BoxDecoration(
                                                   color: Colors.white,
                                                     border: Border(top: BorderSide(color: AppTheme.gridTextColor.withOpacity(0.3)))
@@ -1064,7 +1065,7 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
                                                       children: [
                                                         Container(
                                                             height:25,
-                                                            width: SizeConfig.screenWidth*0.6,
+                                                            width: SizeConfig.screenWidth!*0.6,
                                                             alignment: Alignment.centerRight,
                                                             child: Text("Subtotal: ",style: AppTheme.gridTextColorTS,)
                                                         ),
@@ -1076,7 +1077,7 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
                                                       children: [
                                                         Container(
                                                             height:25,
-                                                            width: SizeConfig.screenWidth*0.6,
+                                                            width: SizeConfig.screenWidth!*0.6,
                                                             alignment: Alignment.centerRight,
                                                             child: Text("Discount: ",style: AppTheme.gridTextColorTS,)
                                                         ),
@@ -1088,7 +1089,7 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
                                                       children: [
                                                         Container(
                                                             height:25,
-                                                            width: SizeConfig.screenWidth*0.6,
+                                                            width: SizeConfig.screenWidth!*0.6,
                                                             alignment: Alignment.centerRight,
                                                             child: Text("GST: ",style: AppTheme.gridTextColorTS,)
                                                         ),
@@ -1101,7 +1102,7 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
                                                       children: [
                                                         Container(
                                                             height:25,
-                                                            width: SizeConfig.screenWidth*0.6,
+                                                            width: SizeConfig.screenWidth!*0.6,
                                                             alignment: Alignment.centerRight,
                                                             child: Text("Other Charges: ",style: AppTheme.gridTextColorTS,)
                                                         ),
@@ -1113,7 +1114,7 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
                                                       children: [
                                                         Container(
                                                             height:25,
-                                                            width: SizeConfig.screenWidth*0.6,
+                                                            width: SizeConfig.screenWidth!*0.6,
                                                             alignment: Alignment.centerRight,
                                                             child: Text("Total: ",style: AppTheme.bgColorTS,)
                                                         ),
@@ -1153,7 +1154,7 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
                                           isListScroll=true;
                                           _keyboardVisible=true;
                                         });
-                                        scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                        scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
 
                                       },
                                       onEditComplete: (){
@@ -1178,7 +1179,7 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
                                           isListScroll=true;
                                           _keyboardVisible=true;
                                         });
-                                        scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                        scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
 
                                       },
                                       onEditComplete: (){
@@ -1197,7 +1198,7 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
 
 
 
-                                    SizedBox(height:_keyboardVisible?SizeConfig.screenHeight*0.5: SizeConfig.height100,)
+                                    SizedBox(height:_keyboardVisible?SizeConfig.screenHeight!*0.5: SizeConfig.height100,)
                                   ],
                                 ),
                               ),
@@ -1273,7 +1274,7 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
                           ),
                           margin:EdgeInsets.only(top: 0),
                           child: CustomPaint(
-                            size: Size( SizeConfig.screenWidth, 65),
+                            size: Size( SizeConfig.screenWidth!, 65),
                             //  painter: RPSCustomPainter(),
                             painter: RPSCustomPainter3(),
                           ),
@@ -1596,7 +1597,7 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
                   itemOnTap: (index){
                     setState(() {
                       pn.selectedInvoiceType= pn.invoiceTypeList[index].invoiceType;
-                      pn.filterInvoiceSupplierList=pn.invoiceSupplierList.where((element) => element.supplierType.toLowerCase()==pn.selectedInvoiceType.toLowerCase()).toList();
+                      pn.filterInvoiceSupplierList=pn.invoiceSupplierList.where((element) => element.supplierType!.toLowerCase()==pn.selectedInvoiceType!.toLowerCase()).toList();
                       if(pn.selectedPartyId!=null){
                         pn.selectedPartyName=null;
                         pn.selectedPartyId=null;
@@ -1666,15 +1667,15 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
                         color: Colors.transparent,
                       ),
                       clipBehavior: Clip.antiAlias,
-                      margin: EdgeInsets.only(left: SizeConfig.width25,right: SizeConfig.width25),
-                      transform: Matrix4.translationValues(materialsListOpen?0:SizeConfig.screenWidth, 0, 0),
+                      margin: EdgeInsets.only(left: SizeConfig.width25!,right: SizeConfig.width25!),
+                      transform: Matrix4.translationValues(materialsListOpen?0:SizeConfig.screenWidth!, 0, 0),
                       alignment: Alignment.topCenter,
                       child:Stack(
                         children: [
                           Container(
                             height: 380,
                             width: SizeConfig.screenWidth,
-                            margin: EdgeInsets.only(left: SizeConfig.width16,right: SizeConfig.width16,top: 10),
+                            margin: EdgeInsets.only(left: SizeConfig.width16!,right: SizeConfig.width16!,top: 10),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20),
                               color: Colors.white,
@@ -1684,7 +1685,7 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
                                 Container(
                                   height: 50,
                                   width: SizeConfig.screenWidth,
-                                  margin: EdgeInsets.only(left: SizeConfig.width20,right: SizeConfig.width20,top: 20),
+                                  margin: EdgeInsets.only(left: SizeConfig.width20!,right: SizeConfig.width20!,top: 20),
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(25),
                                       color: Colors.white,
@@ -1703,7 +1704,7 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
                                       Icon(Icons.search,color: AppTheme.hintColor,),
                                       SizedBox(width: SizeConfig.width10,),
                                       Container(
-                                        width: SizeConfig.screenWidth*0.45,
+                                        width: SizeConfig.screenWidth!*0.45,
                                         child: TextField(
                                           style:  TextStyle(fontFamily: 'RR',fontSize: 15,color:AppTheme.addNewTextFieldText,letterSpacing: 0.2),
                                           decoration: InputDecoration(
@@ -1728,7 +1729,7 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
                                   height: 250,
                                   width: SizeConfig.screenWidth,
 
-                                  margin: EdgeInsets.only(left: SizeConfig.width20,right: SizeConfig.width20,top: 15),
+                                  margin: EdgeInsets.only(left: SizeConfig.width20!,right: SizeConfig.width20!,top: 15),
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(3),
                                       color: Colors.white,
@@ -1785,8 +1786,8 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
                                                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10), ),
 
                                                           child: Container(
-                                                            height: SizeConfig.screenHeight*0.85,
-                                                            width: SizeConfig.screenWidth*0.9,
+                                                            height: SizeConfig.screenHeight!*0.85,
+                                                            width: SizeConfig.screenWidth!*0.9,
                                                             decoration: BoxDecoration(
                                                                 borderRadius: BorderRadius.circular(10),
                                                                 color: Colors.white
@@ -1797,7 +1798,7 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
                                                                 Text("${pn.invoiceMaterialMappingList[pn.invoiceMaterialMappingList.length-1].materialName??""}",
                                                                   style: TextStyle(fontFamily: 'RR',fontSize: 18,color: AppTheme.gridTextColor),textAlign: TextAlign.center,),
                                                                 SizedBox(height: 10,),
-                                                                discountKeyPad?
+                                                                discountKeyPad!?
                                                                 Row(
                                                                   mainAxisAlignment: MainAxisAlignment.center,
                                                                   children: [
@@ -1869,7 +1870,7 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
 
                                                                 Container(
                                                                     margin: EdgeInsets.only(top: 20),
-                                                                    width: SizeConfig.screenWidth*0.8,
+                                                                    width: SizeConfig.screenWidth!*0.8,
                                                                     child: Wrap(
                                                                         spacing: 10,
                                                                         runSpacing: 10,
@@ -1882,7 +1883,7 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
                                                                                 setState(() {
                                                                                   if (numbers[i] == 'X') {
 
-                                                                                    if(!discountKeyPad){
+                                                                                    if(!discountKeyPad!){
                                                                                       indentQty = indentQty.substring(0, indentQty.length - 1);
                                                                                     } else{
                                                                                       disValue = disValue.substring(0, disValue.length - 1);
@@ -1893,7 +1894,7 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
                                                                                   else if (numbers[i] == '.') {
 
 
-                                                                                    if(!discountKeyPad){
+                                                                                    if(!discountKeyPad!){
                                                                                       if(indentQty.length<6 && indentQty.length>=1){
                                                                                         if(indentQty.contains('.')){}
                                                                                         else{
@@ -1918,7 +1919,7 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
                                                                                   }
                                                                                   else {
 
-                                                                                    if(!discountKeyPad){
+                                                                                    if(!discountKeyPad!){
                                                                                       if(indentQty.isEmpty && numbers[i]=='0'){}
                                                                                       else{
                                                                                         setState(() {
@@ -1955,8 +1956,8 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
                                                                                 });
                                                                               },
                                                                               child: AnimatedContainer(
-                                                                                  height: SizeConfig.screenWidth*0.19,
-                                                                                  width: SizeConfig.screenWidth*0.19,
+                                                                                  height: SizeConfig.screenWidth!*0.19,
+                                                                                  width: SizeConfig.screenWidth!*0.19,
                                                                                   duration: Duration(milliseconds: 200),
                                                                                   curve: Curves.easeIn,
                                                                                   decoration: BoxDecoration(
@@ -2061,7 +2062,7 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
                                           height: 40,
                                           width: SizeConfig.screenWidth,
                                           alignment: Alignment.centerLeft,
-                                          padding: EdgeInsets.only(left: SizeConfig.width10),
+                                          padding: EdgeInsets.only(left: SizeConfig.width10!),
                                           decoration: BoxDecoration(
                                               border: Border(bottom: BorderSide(color: AppTheme.addNewTextFieldBorder))
                                           ),
@@ -2105,7 +2106,7 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
                                 setState(() {
                                   materialsListOpen=false;
                                 });
-                                listViewController.jumpTo(listViewController.position.maxScrollExtent);
+                                listViewController!.jumpTo(listViewController!.position.maxScrollExtent);
                               },
                               child: Container(
                                 height: 70,
@@ -2161,8 +2162,8 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
                         color: Colors.white,
                       ),
                       clipBehavior: Clip.antiAlias,
-                      margin: EdgeInsets.only(left: SizeConfig.width30,right: SizeConfig.width30),
-                      transform: Matrix4.translationValues(otherChargeAmountOpen?0:SizeConfig.screenWidth, 0, 0),
+                      margin: EdgeInsets.only(left: SizeConfig.width30!,right: SizeConfig.width30!),
+                      transform: Matrix4.translationValues(otherChargeAmountOpen?0:SizeConfig.screenWidth!, 0, 0),
 
                       child:Container(
                         height:250,
@@ -2181,7 +2182,7 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
                                       child:Container(
                                         height: 50,
                                         width: SizeConfig.screenWidth,
-                                        margin: EdgeInsets.only(left: SizeConfig.width20,right: SizeConfig.width20),
+                                        margin: EdgeInsets.only(left: SizeConfig.width20!,right: SizeConfig.width20!),
                                         decoration: BoxDecoration(
                                             borderRadius: BorderRadius.circular(25),
                                             /*      border: Border.all(color: AppTheme.addNewTextFieldBorder),*/
@@ -2199,7 +2200,7 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
                                           children: [
                                             Container(
                                               padding: EdgeInsets.only(left: 20),
-                                              width: SizeConfig.screenWidth*0.52,
+                                              width: SizeConfig.screenWidth!*0.52,
                                               child: TextField(
                                                 controller: otherChargesTextFieldOpen?otherChargeAmount:otherChargeName,
                                                 style:  TextStyle(fontFamily: 'RR',fontSize: 15,color:AppTheme.addNewTextFieldText,letterSpacing: 0.2),

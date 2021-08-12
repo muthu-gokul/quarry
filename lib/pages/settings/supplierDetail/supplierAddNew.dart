@@ -29,8 +29,8 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
   GlobalKey <ScaffoldState> scaffoldkey=new GlobalKey<ScaffoldState>();
   bool _keyboardVisible = false;
 
-  ScrollController scrollController;
-  ScrollController listViewController;
+  ScrollController? scrollController;
+  ScrollController? listViewController;
   bool supplierCategoryOpen=false;
   bool supplierMaterialOpen=false;
 
@@ -46,7 +46,7 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
   @override
   void initState() {
 
-    WidgetsBinding.instance.addPostFrameCallback((_){
+    WidgetsBinding.instance!.addPostFrameCallback((_){
 
 
       scrollController=new ScrollController();
@@ -111,7 +111,7 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
 
                             int sensitivity = 5;
                             if (details.delta.dy > sensitivity) {
-                              scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
+                              scrollController!.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
                                 if(isListScroll){
                                   setState(() {
                                     isListScroll=false;
@@ -120,7 +120,7 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                               });
 
                             } else if(details.delta.dy < -sensitivity){
-                              scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
+                              scrollController!.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
 
                                 if(!isListScroll){
                                   setState(() {
@@ -131,7 +131,7 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                             }
                           },
                           child: Container(
-                            height: SizeConfig.screenHeight-60,
+                            height: SizeConfig.screenHeight!-60,
                             width: SizeConfig.screenWidth,
 
                             decoration: BoxDecoration(
@@ -143,15 +143,15 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                               onNotification: (s){
                                 if(s is ScrollStartNotification){
 
-                                  if(listViewController.offset==0 && isListScroll && scrollController.offset==100 && listViewController.position.userScrollDirection==ScrollDirection.idle){
+                                  if(listViewController!.offset==0 && isListScroll && scrollController!.offset==100 && listViewController!.position.userScrollDirection==ScrollDirection.idle){
 
                                     Timer(Duration(milliseconds: 100), (){
-                                      if(listViewController.position.userScrollDirection!=ScrollDirection.reverse){
+                                      if(listViewController!.position.userScrollDirection!=ScrollDirection.reverse){
 
                                         //if(scrollController.position.pixels == scrollController.position.maxScrollExtent){
-                                        if(listViewController.offset==0){
+                                        if(listViewController!.offset==0){
 
-                                          scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value) {
+                                          scrollController!.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value) {
                                             if(isListScroll){
                                               setState(() {
                                                 isListScroll=false;
@@ -164,7 +164,8 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                     });
                                   }
                                 }
-                              },
+                                return true;
+                              } ,
                               child: ListView(
                                 controller: listViewController,
                                 scrollDirection: Axis.vertical,
@@ -183,7 +184,7 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                       });
                                     },
                                     ontap: (){
-                                      scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                      scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                       setState(() {
                                         _keyboardVisible=true;
                                       });
@@ -211,7 +212,7 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                   !supplierCategory?Container():ValidationErrorText(title: "* Select Category"),
                                   AddNewLabelTextField(
                                     ontap: (){
-                                      scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                      scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                         setState(() {
                                           _keyboardVisible=true;
                                          // isListScroll=true;
@@ -230,7 +231,7 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                   !supplierAddress?Container():ValidationErrorText(title: "* Enter Address",),
                                   AddNewLabelTextField(
                                     ontap: (){
-                                      scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                      scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                       setState(() {
                                         _keyboardVisible=true;
                                        // isListScroll=true;
@@ -250,7 +251,7 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
 
                                   AddNewLabelTextField(
                                     ontap: (){
-                                      scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                      scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                       setState(() {
                                         _keyboardVisible=true;
                                         isListScroll=true;
@@ -270,7 +271,7 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                   ),
                                   AddNewLabelTextField(
                                     ontap: (){
-                                      scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                      scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                       setState(() {
                                         isListScroll=true;
                                         _keyboardVisible=true;
@@ -290,7 +291,7 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                   ),
                                   AddNewLabelTextField(
                                     ontap: (){
-                                      scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                      scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                       setState(() {
                                         isListScroll=true;
                                         _keyboardVisible=true;
@@ -325,7 +326,7 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                       });
                                     },
                                     ontap: (){
-                                      scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                      scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                       setState(() {
                                         isListScroll=true;
                                         _keyboardVisible=true;
@@ -346,7 +347,7 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                       });
                                     },
                                     ontap: (){
-                                      scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                      scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                       setState(() {
                                         isListScroll=true;
                                         _keyboardVisible=true;
@@ -367,7 +368,7 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                       });
                                     },
                                     ontap: (){
-                                      scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                      scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                       setState(() {
                                         isListScroll=true;
                                         _keyboardVisible=true;
@@ -393,9 +394,9 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                     width: SizeConfig.screenWidth,
 
                                     margin: EdgeInsets.only(
-                                      left: SizeConfig.width20,
-                                      right: SizeConfig.width20,
-                                      top: SizeConfig.height20,),
+                                      left: SizeConfig.width20!,
+                                      right: SizeConfig.width20!,
+                                      top: SizeConfig.height20!,),
                                     decoration: BoxDecoration(
                                         color: Colors.white,
                                         borderRadius: BorderRadius.circular(5),
@@ -415,9 +416,9 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                           child: Row(
                                             //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: [
-                                              Container(width: SizeConfig.screenWidthM40*0.35,child: Text("Material Name")),
-                                              Container(padding: EdgeInsets.only(left: 10),alignment: Alignment.centerLeft, width: SizeConfig.screenWidthM40*0.25,child: Text("Price")),
-                                              Container(padding: EdgeInsets.only(left: 10), width: SizeConfig.screenWidthM40*0.25,child: Text("Unit")),
+                                              Container(width: SizeConfig.screenWidthM40!*0.35,child: Text("Material Name")),
+                                              Container(padding: EdgeInsets.only(left: 10),alignment: Alignment.centerLeft, width: SizeConfig.screenWidthM40!*0.25,child: Text("Price")),
+                                              Container(padding: EdgeInsets.only(left: 10), width: SizeConfig.screenWidthM40!*0.25,child: Text("Unit")),
 
                                             ],
 
@@ -429,16 +430,16 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                             itemCount: qn.supplierMaterialMappingList.length,
                                             itemBuilder: (context, index) {
                                               return SlideTransition(
-                                                position: Tween<Offset>(begin: Offset(qn.supplierMaterialMappingList[index].isEdit ? 0.0 :
-                                                qn.supplierMaterialMappingList[index].isDelete ?1.0:0.0,
-                                                    qn.supplierMaterialMappingList[index].isEdit ? 0.0 :qn.supplierMaterialMappingList[index].isDelete ?0.0: 1.0),
-                                                    end:qn.supplierMaterialMappingList[index].isEdit ?Offset(1, 0): Offset.zero)
-                                                    .animate(qn.supplierMaterialMappingList[index].scaleController),
+                                                position: Tween<Offset>(begin: Offset(qn.supplierMaterialMappingList[index].isEdit! ? 0.0 :
+                                                qn.supplierMaterialMappingList[index].isDelete! ?1.0:0.0,
+                                                    qn.supplierMaterialMappingList[index].isEdit! ? 0.0 :qn.supplierMaterialMappingList[index].isDelete! ?0.0: 1.0),
+                                                    end:qn.supplierMaterialMappingList[index].isEdit! ?Offset(1, 0): Offset.zero)
+                                                    .animate(qn.supplierMaterialMappingList[index].scaleController!),
 
                                                 child: FadeTransition(
-                                                  opacity: Tween(begin: qn.supplierMaterialMappingList[index].isEdit ? 1.0 : 0.0,
-                                                      end: qn.supplierMaterialMappingList[index].isEdit ? 0.0 : 1.0)
-                                                      .animate(qn.supplierMaterialMappingList[index].scaleController),
+                                                  opacity: Tween(begin: qn.supplierMaterialMappingList[index].isEdit! ? 1.0 : 0.0,
+                                                      end: qn.supplierMaterialMappingList[index].isEdit! ? 0.0 : 1.0)
+                                                      .animate(qn.supplierMaterialMappingList[index].scaleController!),
                                                   child: Container(
                                                     height: 40,
                                                     padding: EdgeInsets.only(top: 10, bottom: 0,left: 10,right: 10),
@@ -455,7 +456,7 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                                           children: [
 
                                                             Container(
-                                                              width: SizeConfig.screenWidthM40*0.35,
+                                                              width: SizeConfig.screenWidthM40!*0.35,
                                                               alignment:Alignment.centerLeft,
 
                                                               child: Text("${qn.supplierMaterialMappingList[index].MaterialName}",
@@ -466,14 +467,14 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                                               padding: EdgeInsets.only(left: 10),
                                                               alignment: Alignment.centerLeft,
 
-                                                              width: SizeConfig.screenWidthM40*0.25,
+                                                              width: SizeConfig.screenWidthM40!*0.25,
                                                               child: Text("${qn.supplierMaterialMappingList[index].MaterialPrice}",
                                                                 style: TextStyle(fontSize: 14, fontFamily: 'RR', color: AppTheme.gridTextColor, letterSpacing: 0.2),
                                                               ),
                                                             ),
                                                             Container(
                                                               alignment: Alignment.centerLeft,
-                                                              width:SizeConfig.screenWidthM40*0.25,
+                                                              width:SizeConfig.screenWidthM40!*0.25,
                                                               padding: EdgeInsets.only(left: 10),
 
 
@@ -492,8 +493,8 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                                                   callback: (){
                                                                     Navigator.pop(context);
                                                                     Timer(Duration(milliseconds: 200), (){
-                                                                      if (qn.supplierMaterialMappingList[index].isEdit) {
-                                                                        qn.supplierMaterialMappingList[index].scaleController.forward().whenComplete(() {
+                                                                      if (qn.supplierMaterialMappingList[index].isEdit!) {
+                                                                        qn.supplierMaterialMappingList[index].scaleController!.forward().whenComplete(() {
 
                                                                           if (this.mounted) {
                                                                             setState(() {
@@ -507,7 +508,7 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                                                         setState(() {
                                                                           qn.supplierMaterialMappingList[index].isDelete=true;
                                                                         });
-                                                                        qn.supplierMaterialMappingList[index].scaleController.reverse().whenComplete(() {
+                                                                        qn.supplierMaterialMappingList[index].scaleController!.reverse().whenComplete(() {
                                                                           if (this.mounted) {
 
                                                                             setState(() {
@@ -554,7 +555,7 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                   qn.supplierCategoryName!='Fuel' && qn.supplierCategoryName!=null? Container(
                                     height: 50,
                                     width: SizeConfig.screenWidth,
-                                    margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width10,top:SizeConfig.height20,),
+                                    margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width10!,top:SizeConfig.height20!,),
                                     child: Stack(
                                       children: [
                                         GestureDetector(
@@ -567,9 +568,9 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                           },
                                           child:Container(
 
-                                            padding: EdgeInsets.only(left:SizeConfig.width5,right:SizeConfig.width5),
+                                            padding: EdgeInsets.only(left:SizeConfig.width5!,right:SizeConfig.width5!),
                                             height: 50,
-                                            width: SizeConfig.screenWidthM40*0.5,
+                                            width: SizeConfig.screenWidthM40!*0.5,
                                             alignment: Alignment.centerLeft,
                                             decoration: BoxDecoration(
                                                 borderRadius: BorderRadius.circular(3),
@@ -601,12 +602,12 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                           alignment: Alignment.centerRight,
                                           child: Container(
                                             height: 50,
-                                            width: SizeConfig.screenWidthM40*0.5,
+                                            width: SizeConfig.screenWidthM40!*0.5,
                                             alignment: Alignment.center,
                                         //    margin: EdgeInsets.only(top:SizeConfig.height20,right: SizeConfig.width20),
                                             child: TextFormField(
                                               onTap: (){
-                                                scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                                scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                                 setState(() {
                                                   isListScroll=true;
                                                   _keyboardVisible=true;
@@ -675,7 +676,7 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                                   );
                                                 });
                                                 qn.clearMappingList();
-                                              qn.supplierMaterialMappingList[qn.supplierMaterialMappingList.length-1].scaleController.forward().then((value){
+                                              qn.supplierMaterialMappingList[qn.supplierMaterialMappingList.length-1].scaleController!.forward().then((value){
 
                                               });
                                                /* listViewController.animateTo(listViewController.position.maxScrollExtent, duration: Duration(milliseconds: 200), curve: Curves.easeIn).then((value) {
@@ -686,7 +687,7 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                             child: Container(
                                               height:40,
                                               width: 40,
-                                              margin: EdgeInsets.only(right: SizeConfig.width5),
+                                              margin: EdgeInsets.only(right: SizeConfig.width5!),
 
                                               decoration: BoxDecoration(
                                                 shape: BoxShape.circle,
@@ -727,7 +728,7 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                   SizedBox(height: 10,),
                                   Container(
 
-                                    margin: EdgeInsets.only(left: SizeConfig.width90,right:  SizeConfig.width90,),
+                                    margin: EdgeInsets.only(left: SizeConfig.width90!,right:  SizeConfig.width90!,),
                                     height:45,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(25.0),
@@ -750,7 +751,7 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                   ),
 
 
-                                  SizedBox(height: _keyboardVisible? SizeConfig.screenHeight*0.5:200,)
+                                  SizedBox(height: _keyboardVisible? SizeConfig.screenHeight!*0.5:200,)
                                 ],
                               ),
                             ),
@@ -811,7 +812,7 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                           ),
                           margin:EdgeInsets.only(top: 0),
                           child: CustomPaint(
-                            size: Size( SizeConfig.screenWidth, 65),
+                            size: Size( SizeConfig.screenWidth!, 65),
                             painter: RPSCustomPainter3(),
                           ),
                         ),

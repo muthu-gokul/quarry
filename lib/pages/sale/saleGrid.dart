@@ -23,7 +23,7 @@ import 'package:quarry/widgets/staticColumnScroll/customDataTable.dart';
 
 
 class SaleGrid extends StatefulWidget {
-  VoidCallback drawerCallback;
+  VoidCallback? drawerCallback;
   SaleGrid({this.drawerCallback});
   @override
   _SaleGridState createState() => _SaleGridState();
@@ -140,7 +140,7 @@ class _SaleGridState extends State<SaleGrid> {
                             Spacer(),
                             GestureDetector(
                               onTap: () async{
-                                final List<DateTime>  picked1 = await DateRagePicker.showDatePicker(
+                                final List<DateTime?>?  picked1 = await DateRagePicker.showDatePicker(
                                     context: context,
                                     initialFirstDate: new DateTime.now(),
                                     initialLastDate: (new DateTime.now()),
@@ -202,7 +202,7 @@ class _SaleGridState extends State<SaleGrid> {
 
 
                 Container(
-                    height: SizeConfig.screenHeight-140,
+                    height: SizeConfig.screenHeight!-140,
                     width: SizeConfig.screenWidth,
                     margin: EdgeInsets.only(top: 140),
                     clipBehavior: Clip.antiAlias,
@@ -221,7 +221,7 @@ class _SaleGridState extends State<SaleGrid> {
                             children: [
                               Container(
                                 height: 50,
-                                width: SizeConfig.screenWidth-149,
+                                width: SizeConfig.screenWidth!-149,
                                 color: showShadow? AppTheme.bgColor.withOpacity(0.8):AppTheme.bgColor,
                                 child: SingleChildScrollView(
                                   controller: header,
@@ -240,15 +240,15 @@ class _SaleGridState extends State<SaleGrid> {
 
                               ),
                               Container(
-                                height: SizeConfig.screenHeight-260,
-                                width: SizeConfig.screenWidth-149,
+                                height: SizeConfig.screenHeight!-260,
+                                width: SizeConfig.screenWidth!-149,
                                 alignment: Alignment.topCenter,
                                 color: AppTheme.gridbodyBgColor,
                                 child: SingleChildScrollView(
                                   controller: body,
                                   scrollDirection: Axis.horizontal,
                                   child: Container(
-                                    height: SizeConfig.screenHeight-260,
+                                    height: SizeConfig.screenHeight!-260,
                                     alignment: Alignment.topCenter,
                                     color: AppTheme.gridbodyBgColor,
                                     child: SingleChildScrollView(
@@ -368,7 +368,7 @@ class _SaleGridState extends State<SaleGrid> {
 
                               ),
                               Container(
-                                height: SizeConfig.screenHeight-260,
+                                height: SizeConfig.screenHeight!-260,
                                 alignment: Alignment.topCenter,
                                 decoration: BoxDecoration(
                                     color: AppTheme.gridbodyBgColor,
@@ -382,7 +382,7 @@ class _SaleGridState extends State<SaleGrid> {
                                     ]
                                 ),
                                 child: Container(
-                                  height: SizeConfig.screenHeight-260,
+                                  height: SizeConfig.screenHeight!-260,
                                   alignment: Alignment.topCenter,
 
                                   child: SingleChildScrollView(
@@ -493,7 +493,7 @@ class _SaleGridState extends State<SaleGrid> {
                             ),
                             margin:EdgeInsets.only(top: 0),
                             child: CustomPaint(
-                              size: Size( SizeConfig.screenWidth, 65),
+                              size: Size( SizeConfig.screenWidth!, 65),
                               painter: RPSCustomPainter3(),
                             ),
                           ),
@@ -551,7 +551,7 @@ class _SaleGridState extends State<SaleGrid> {
                                       Navigator.of(context).push(_createRoute());
                                       qn.editLoader();
                                       Timer(Duration(milliseconds: 300), (){
-                                        qn.tabController.animateTo(1,duration: Duration(milliseconds: 300),curve: Curves.easeIn);
+                                        qn.tabController!.animateTo(1,duration: Duration(milliseconds: 300),curve: Curves.easeIn);
                                       });
 
 
@@ -565,7 +565,7 @@ class _SaleGridState extends State<SaleGrid> {
                                 ),
 
 
-                                SizedBox(width: SizeConfig.screenWidth*0.27,),
+                                SizedBox(width: SizeConfig.screenWidth!*0.27,),
 
                                 GestureDetector(
                                   onTap: (){
@@ -782,10 +782,10 @@ class _SaleGridState extends State<SaleGrid> {
 }
 
 class SaleReportHeader extends StatelessWidget {
-  String title;
-  double value;
-  double qty;
-  String unit;
+  String? title;
+  double? value;
+  double? qty;
+  String? unit;
 
   SaleReportHeader({this.title,this.value,this.qty,this.unit});
 
@@ -793,8 +793,8 @@ class SaleReportHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 80,
-      width: SizeConfig.screenWidth*0.40,
-      margin: EdgeInsets.only(right: SizeConfig.width10),
+      width: SizeConfig.screenWidth!*0.40,
+      margin: EdgeInsets.only(right: SizeConfig.width10!),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
           color: AppTheme.bgColor
@@ -819,10 +819,10 @@ class SaleReportHeader extends StatelessWidget {
 }
 
 class SaleReportHeaderModel{
-  String title;
-  double value;
-  double qty;
-  String unit;
+  String? title;
+  double? value;
+  double? qty;
+  String? unit;
 
   SaleReportHeaderModel({this.title,this.value,this.qty,this.unit});
 }

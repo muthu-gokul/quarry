@@ -40,8 +40,8 @@ class DieselIssueFormState extends State<DieselIssueForm> with TickerProviderSta
   bool isEdit=false;
 
 
-  ScrollController scrollController;
-  ScrollController listViewController;
+  ScrollController? scrollController;
+  ScrollController? listViewController;
 
   bool _keyboardVisible=false;
   bool isListScroll=false;
@@ -67,7 +67,7 @@ class DieselIssueFormState extends State<DieselIssueForm> with TickerProviderSta
   @override
   void initState() {
     isEdit=false;
-    WidgetsBinding.instance.addPostFrameCallback((_){
+    WidgetsBinding.instance!.addPostFrameCallback((_){
 
 
       scrollController=new ScrollController();
@@ -145,7 +145,7 @@ class DieselIssueFormState extends State<DieselIssueForm> with TickerProviderSta
 
                             int sensitivity = 5;
                             if (details.delta.dy > sensitivity) {
-                              scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
+                              scrollController!.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
                                 if(isListScroll){
                                   setState(() {
                                     isListScroll=false;
@@ -154,7 +154,7 @@ class DieselIssueFormState extends State<DieselIssueForm> with TickerProviderSta
                               });
 
                             } else if(details.delta.dy < -sensitivity){
-                              scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
+                              scrollController!.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
 
                                 if(!isListScroll){
                                   setState(() {
@@ -166,7 +166,7 @@ class DieselIssueFormState extends State<DieselIssueForm> with TickerProviderSta
                           },
                           child: Container(
 
-                            height:SizeConfig.screenHeight-100,
+                            height:SizeConfig.screenHeight!-100,
                             width: SizeConfig.screenWidth,
 
                             decoration: BoxDecoration(
@@ -177,15 +177,15 @@ class DieselIssueFormState extends State<DieselIssueForm> with TickerProviderSta
                               onNotification: (s){
                                 if(s is ScrollStartNotification){
 
-                                  if(listViewController.offset==0 && isListScroll && scrollController.offset==100 && listViewController.position.userScrollDirection==ScrollDirection.idle){
+                                  if(listViewController!.offset==0 && isListScroll && scrollController!.offset==100 && listViewController!.position.userScrollDirection==ScrollDirection.idle){
 
                                     Timer(Duration(milliseconds: 100), (){
-                                      if(listViewController.position.userScrollDirection!=ScrollDirection.reverse){
+                                      if(listViewController!.position.userScrollDirection!=ScrollDirection.reverse){
 
                                         //if(scrollController.position.pixels == scrollController.position.maxScrollExtent){
-                                        if(listViewController.offset==0){
+                                        if(listViewController!.offset==0){
 
-                                          scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value) {
+                                          scrollController!.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value) {
                                             if(isListScroll){
                                               setState(() {
                                                 isListScroll=false;
@@ -198,7 +198,8 @@ class DieselIssueFormState extends State<DieselIssueForm> with TickerProviderSta
                                     });
                                   }
                                 }
-                              },
+                                return true;
+                              } ,
                               child: ListView(
                                 controller: listViewController,
                                 scrollDirection: Axis.vertical,
@@ -300,7 +301,7 @@ class DieselIssueFormState extends State<DieselIssueForm> with TickerProviderSta
 
                                     ),
                                   ),
-                                  machine?ValidationErrorText(title: "* Select ${dn.isMachine?"Machine":"Vehicle"}",):Container(),
+                                  machine?ValidationErrorText(title: "* Select ${dn.isMachine!?"Machine":"Vehicle"}",):Container(),
 
                                   AddNewLabelTextField(
                                     textEditingController: dn.DI_machineRunningMeter,
@@ -309,7 +310,7 @@ class DieselIssueFormState extends State<DieselIssueForm> with TickerProviderSta
                                     textInputType: TextInputType.number,
                                     onChange: (v){},
                                     ontap: (){
-                                      scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                      scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                       setState(() {
                                         _keyboardVisible=true;
                                         isListScroll=true;
@@ -362,7 +363,7 @@ class DieselIssueFormState extends State<DieselIssueForm> with TickerProviderSta
                                     onChange: (v){},
                                     scrollPadding: 400,
                                     ontap: (){
-                                      scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                      scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                       setState(() {
                                         _keyboardVisible=true;
                                         isListScroll=true;
@@ -391,7 +392,7 @@ class DieselIssueFormState extends State<DieselIssueForm> with TickerProviderSta
                                   ),
                                   qty?ValidationErrorText(title: "* Enter Diesel Quantity",):Container(),
 
-                                  SizedBox(height: _keyboardVisible? SizeConfig.screenHeight*0.5:200,)
+                                  SizedBox(height: _keyboardVisible? SizeConfig.screenHeight!*0.5:200,)
                                 ],
                               ),
                             ),
@@ -430,7 +431,7 @@ class DieselIssueFormState extends State<DieselIssueForm> with TickerProviderSta
 
                     children: [
                       CustomPaint(
-                        size: Size( SizeConfig.screenWidth, 65),
+                        size: Size( SizeConfig.screenWidth!, 65),
                         painter: RPSCustomPainter3(),
                       ),
 
@@ -570,7 +571,7 @@ class DieselIssueFormState extends State<DieselIssueForm> with TickerProviderSta
                 selectedId: dn.DI_MachinType,
                 itemOnTap: (index){
                   setState(() {
-                    dn.DI_MachinType=dn.machineTypeList[index]['MachineType'];
+                    dn.DI_MachinType=dn.machineTypeList![index]['MachineType'];
                     if(dn.DI_MachinType=='Machine'){
                       dn.isVehicle=false;
                       dn.isMachine=true;
@@ -594,29 +595,29 @@ class DieselIssueFormState extends State<DieselIssueForm> with TickerProviderSta
                 isOpen: isMachineOpen,
                 searchController: searchController,
 
-                searchHintText:dn.isVehicle? "Search Vehicle Number":"Search Machine",
+                searchHintText:dn.isVehicle!? "Search Vehicle Number":"Search Machine",
 
-                dataList:dn.isVehicle? dn.filterVehicleList:dn.filterMachineList,
-                propertyKeyId: dn.isVehicle? "VehicleId":"MachineId",
-                propertyKeyName: dn.isVehicle? "VehicleNumber":"MachineName",
+                dataList:dn.isVehicle!? dn.filterVehicleList:dn.filterMachineList,
+                propertyKeyId: dn.isVehicle!? "VehicleId":"MachineId",
+                propertyKeyName: dn.isVehicle!? "VehicleNumber":"MachineName",
                 selectedId: dn.DI_machineID,
 
                 searchOnchange: (v){
-                  dn.isVehicle?  dn.searchVehicle(v):dn.searchMachine(v);
+                  dn.isVehicle!?  dn.searchVehicle(v):dn.searchMachine(v);
                 },
                 itemOnTap: (index){
                   node.unfocus();
                   setState(() {
 
-                    if(dn.isVehicle){
-                      dn.DI_machineID=dn.filterVehicleList[index]['VehicleId'];
-                      dn.DI_machineName=dn.filterVehicleList[index]['VehicleNumber'];
+                    if(dn.isVehicle!){
+                      dn.DI_machineID=dn.filterVehicleList![index]['VehicleId'];
+                      dn.DI_machineName=dn.filterVehicleList![index]['VehicleNumber'];
                       isMachineOpen=false;
                       dn.filterVehicleList=dn.vehicleList;
                     }
                     else{
-                      dn.DI_machineID=dn.filterMachineList[index]['MachineId'];
-                      dn.DI_machineName=dn.filterMachineList[index]['MachineName'];
+                      dn.DI_machineID=dn.filterMachineList![index]['MachineId'];
+                      dn.DI_machineName=dn.filterMachineList![index]['MachineName'];
                       isMachineOpen=false;
                       dn.filterMachineList=dn.machineList;
                     }
@@ -656,8 +657,8 @@ class DieselIssueFormState extends State<DieselIssueForm> with TickerProviderSta
                   setState(() {
 
 
-                      dn.DI_issueID=dn.filterIssuedByList[index]['EmployeeId'];
-                      dn.DI_issueName=dn.filterIssuedByList[index]['EmployeeName'];
+                      dn.DI_issueID=dn.filterIssuedByList![index]['EmployeeId'];
+                      dn.DI_issueName=dn.filterIssuedByList![index]['EmployeeName'];
                       isIssueOpen=false;
                       dn.filterIssuedByList=dn.issuedByList;
 

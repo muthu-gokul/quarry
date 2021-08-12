@@ -7,10 +7,10 @@ class SupplierMaterialModel {
     this.UnitName,
   });
 
-  int materialId;
-  String materialName;
-  int MaterialUnitId;
-  String UnitName;
+  int? materialId;
+  String? materialName;
+  int? MaterialUnitId;
+  String? UnitName;
 
   factory SupplierMaterialModel.fromJson(Map<String, dynamic> json) => SupplierMaterialModel(
     materialId: json["MaterialId"],

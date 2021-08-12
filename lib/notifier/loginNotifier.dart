@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 
 
 class LoginTable {
-  int UserId;
-  String UserName;
-  String DataBaseName;
+  int? UserId;
+  String? UserName;
+  String? DataBaseName;
 
 
 
@@ -25,8 +25,8 @@ class LoginTable {
 
 class LoginTblOutPut {
 
-  String Status;
-  String Message;
+  String? Status;
+  String? Message;
 
 
   LoginTblOutPut(
@@ -55,9 +55,9 @@ class LoginTblOutPut {
 
 
 class LoginModel{
-  List<LoginTable> loginTable;
-  List<LoginTable> allUsers;
-  List<LoginTblOutPut> loginTblOutput;
+  List<LoginTable>? loginTable;
+  List<LoginTable>? allUsers;
+  List<LoginTblOutPut>? loginTblOutput;
   LoginModel({this.loginTable,this.loginTblOutput,this.allUsers});
 
   factory LoginModel.fromJson(Map<dynamic, dynamic> json) {
@@ -77,7 +77,7 @@ class LoginModel{
 
 
 class LoginNotifier extends ChangeNotifier{
-  LoginModel userDetail;
+  late LoginModel userDetail;
   bool loading=false;
 
 

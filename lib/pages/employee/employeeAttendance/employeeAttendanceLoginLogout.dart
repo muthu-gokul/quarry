@@ -17,7 +17,7 @@ import 'package:quarry/widgets/dateRangePicker.dart' as DateRagePicker;
 
 
 class EmployeeAttendanceLoginLogout extends StatefulWidget {
-  VoidCallback drawerCallback;
+  VoidCallback? drawerCallback;
   EmployeeAttendanceLoginLogout({this.drawerCallback});
 
   @override
@@ -27,9 +27,9 @@ class EmployeeAttendanceLoginLogout extends StatefulWidget {
 class _EmployeeAttendanceLoginLogoutState extends State<EmployeeAttendanceLoginLogout> {
 
   bool showEdit=false;
-  int selectedIndex;
+  int? selectedIndex;
 
-  PageController pageController;
+  PageController? pageController;
   int pageIndex=0;
 
 
@@ -152,7 +152,7 @@ class _EmployeeAttendanceLoginLogoutState extends State<EmployeeAttendanceLoginL
                                 children: [
 
                                   Container(
-                                    margin: EdgeInsets.only(left: SizeConfig.width20,right: SizeConfig.width20,top: 20),
+                                    margin: EdgeInsets.only(left: SizeConfig.width20!,right: SizeConfig.width20!,top: 20),
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
@@ -171,7 +171,7 @@ class _EmployeeAttendanceLoginLogoutState extends State<EmployeeAttendanceLoginL
                                           },
                                           child: Container(
                                             height: 50,
-                                            width:( SizeConfig.screenWidthM40*0.5)-10,
+                                            width:( SizeConfig.screenWidthM40!*0.5)-10,
                                             padding: EdgeInsets.only(left: 10,right: 10),
                                             decoration: BoxDecoration(
                                               borderRadius: BorderRadius.circular(3),
@@ -206,7 +206,7 @@ class _EmployeeAttendanceLoginLogoutState extends State<EmployeeAttendanceLoginL
                                           },
                                           child:Container(
                                             height: 50,
-                                            width:( SizeConfig.screenWidthM40*0.5)-10,
+                                            width:( SizeConfig.screenWidthM40!*0.5)-10,
                                             padding: EdgeInsets.only(left: 10,right: 10),
                                             decoration: BoxDecoration(
                                                 borderRadius: BorderRadius.circular(3),
@@ -246,7 +246,7 @@ class _EmployeeAttendanceLoginLogoutState extends State<EmployeeAttendanceLoginL
                                       setState(() {
                                         ean.selectedEmployeeCode=v;
                                         int index;
-                                        index=ean.EmployeeAttendanceGridList.indexWhere((element) =>  "${element.employeeName}  -  ${element.employeePrefix+element.employeeCode}"==v.toString()).toInt();
+                                        index=ean.EmployeeAttendanceGridList.indexWhere((element) =>  "${element.employeeName}  -  ${element.employeePrefix!+element.employeeCode!}"==v.toString()).toInt();
                                         ean.showEmpName=ean.EmployeeAttendanceGridList[index].employeeName;
                                         ean.showEmpDesg=ean.EmployeeAttendanceGridList[index].employeeDesignationName;
                                         ean.showEmpId=ean.EmployeeAttendanceGridList[index].employeeId;
@@ -369,7 +369,7 @@ class _EmployeeAttendanceLoginLogoutState extends State<EmployeeAttendanceLoginL
                                 children: [
 
                                   Container(
-                                    margin: EdgeInsets.only(left: SizeConfig.width20,right: SizeConfig.width20,top: 20),
+                                    margin: EdgeInsets.only(left: SizeConfig.width20!,right: SizeConfig.width20!,top: 20),
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
@@ -388,7 +388,7 @@ class _EmployeeAttendanceLoginLogoutState extends State<EmployeeAttendanceLoginL
                                           },
                                           child: Container(
                                             height: 50,
-                                            width:( SizeConfig.screenWidthM40*0.5)-10,
+                                            width:( SizeConfig.screenWidthM40!*0.5)-10,
                                             padding: EdgeInsets.only(left: 10,right: 10),
                                             decoration: BoxDecoration(
                                                 borderRadius: BorderRadius.circular(3),
@@ -423,7 +423,7 @@ class _EmployeeAttendanceLoginLogoutState extends State<EmployeeAttendanceLoginL
                                           },
                                           child:Container(
                                             height: 50,
-                                            width:( SizeConfig.screenWidthM40*0.5)-10,
+                                            width:( SizeConfig.screenWidthM40!*0.5)-10,
                                             padding: EdgeInsets.only(left: 10,right: 10),
                                             decoration: BoxDecoration(
                                                 borderRadius: BorderRadius.circular(3),
@@ -463,7 +463,7 @@ class _EmployeeAttendanceLoginLogoutState extends State<EmployeeAttendanceLoginL
                                       setState(() {
                                         ean.selectedEmployeeCode=v;
                                         int index;
-                                        index=ean.EmployeeAttendanceGridList.indexWhere((element) =>  "${element.employeeName}  -  ${element.employeePrefix+element.employeeCode}"==v.toString()).toInt();
+                                        index=ean.EmployeeAttendanceGridList.indexWhere((element) =>  "${element.employeeName}  -  ${element.employeePrefix!+element.employeeCode!}"==v.toString()).toInt();
                                         ean.showEmpName=ean.EmployeeAttendanceGridList[index].employeeName;
                                         ean.showEmpDesg=ean.EmployeeAttendanceGridList[index].employeeDesignationName;
                                         ean.showEmpId=ean.EmployeeAttendanceGridList[index].employeeId;
@@ -559,7 +559,7 @@ class _EmployeeAttendanceLoginLogoutState extends State<EmployeeAttendanceLoginL
                             Container(
                               margin:EdgeInsets.only(top: 0),
                               child: CustomPaint(
-                                size: Size( SizeConfig.screenWidth, 65),
+                                size: Size( SizeConfig.screenWidth!, 65),
                                 painter: RPSCustomPainter3(),
                               ),
                             ),
@@ -589,7 +589,7 @@ class _EmployeeAttendanceLoginLogoutState extends State<EmployeeAttendanceLoginL
                                                 ean.updateisEmployeeLogin(true);
                                                 ean.clearinsertForm();
                                                 ean.insertForm();
-                                                pageController.animateToPage(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+                                                pageController!.animateToPage(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
 
                                               },
                                               child: Container(
@@ -609,7 +609,7 @@ class _EmployeeAttendanceLoginLogoutState extends State<EmployeeAttendanceLoginL
                                                 ean.updateisEmployeeLogin(false);
                                                 ean.clearinsertForm();
                                                 ean.insertForm();
-                                                pageController.animateToPage(1, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+                                                pageController!.animateToPage(1, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
 
                                               },
                                               child: Container(

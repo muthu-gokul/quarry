@@ -5,15 +5,15 @@ import 'package:quarry/styles/size.dart';
 
 class EditDelete extends StatelessWidget {
 
-  bool showEdit;
-  VoidCallback editTap;
-  VoidCallback deleteTap;
+  bool? showEdit;
+  VoidCallback? editTap;
+  VoidCallback? deleteTap;
   EditDelete({this.showEdit,this.editTap,this.deleteTap});
 
   @override
   Widget build(BuildContext context) {
     return  AnimatedPositioned(
-      bottom:showEdit?5:-60,
+      bottom:showEdit!?5:-60,
       duration: Duration(milliseconds: 300,),
       curve: Curves.bounceOut,
       child: Container(
@@ -65,17 +65,17 @@ class EditDelete extends StatelessWidget {
 
 class EditDeletePdf extends StatelessWidget {
 
-  bool showEdit;
-  VoidCallback editTap;
-  VoidCallback deleteTap;
-  VoidCallback viewTap;
-  VoidCallback pdfTap;
+  bool? showEdit;
+  VoidCallback? editTap;
+  VoidCallback? deleteTap;
+  VoidCallback? viewTap;
+  VoidCallback? pdfTap;
   EditDeletePdf({this.showEdit,this.editTap,this.deleteTap,this.viewTap,this.pdfTap});
 
   @override
   Widget build(BuildContext context) {
     return  AnimatedPositioned(
-      bottom:showEdit?15:-60,
+      bottom:showEdit!?15:-60,
       duration: Duration(milliseconds: 300,),
       curve: Curves.bounceOut,
       child: Container(
@@ -99,7 +99,7 @@ class EditDeletePdf extends StatelessWidget {
                 ),
               ),
 
-              SizedBox(width: SizeConfig.screenWidth*0.27,),
+              SizedBox(width: SizeConfig.screenWidth!*0.27,),
               GestureDetector(
                 onTap: viewTap,
                 child: SvgPicture.asset("assets/svg/pdfView.svg",width: 27,height: 27,

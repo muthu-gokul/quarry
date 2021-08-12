@@ -62,7 +62,7 @@ class DieselNotifier extends ChangeNotifier{
         if(value!=null){
           var parsed=json.decode(value);
 
-          var t=parsed['Table'] as List;
+          var t=parsed['Table'] as List?;
           var t1=parsed['Table1'] as List;
           plantList=t1.map((e) => PlantUserModel.fromJson(e)).toList();
           plantList.forEach((element) {
@@ -106,25 +106,25 @@ class DieselNotifier extends ChangeNotifier{
   }
 
 
-  List<dynamic> fuelSupplierList=[];
-  List<dynamic> filterFuelSupplierList=[];
+  List<dynamic>? fuelSupplierList=[];
+  List<dynamic>? filterFuelSupplierList=[];
 
-  List<dynamic> fuelPurchaserList=[];
-  List<dynamic> filterFuelPurchaserList=[];
+  List<dynamic>? fuelPurchaserList=[];
+  List<dynamic>? filterFuelPurchaserList=[];
  // List<DieselVehicleModel> vehicleList=[];
  // List<DieselVehicleModel> filterVehicleList=[];
 
-  List<dynamic> issuedByList=[];
-  List<dynamic> filterIssuedByList=[];
+  List<dynamic>? issuedByList=[];
+  List<dynamic>? filterIssuedByList=[];
   //List<DieselMachineModel> machineList=[];
 
-  List<dynamic> machineTypeList=[];
+  List<dynamic>? machineTypeList=[];
 
-  List<dynamic> vehicleList=[];
-  List<dynamic> filterVehicleList=[];
+  List<dynamic>? vehicleList=[];
+  List<dynamic>? filterVehicleList=[];
 
-  List<dynamic> machineList=[];
-  List<dynamic> filterMachineList=[];
+  List<dynamic>? machineList=[];
+  List<dynamic>? filterMachineList=[];
 
   DieselDropDownValues(BuildContext context) async {
     updateDieselLoader(true);
@@ -158,13 +158,13 @@ class DieselNotifier extends ChangeNotifier{
           var parsed=json.decode(value);
 
 
-          var t=parsed['Table'] as List;
-          var t1=parsed['Table1'] as List;
-          var t2=parsed['Table2'] as List;
+          var t=parsed['Table'] as List?;
+          var t1=parsed['Table1'] as List?;
+          var t2=parsed['Table2'] as List?;
 
-          var t3=parsed['Table3'] as List;
-          var t4=parsed['Table4'] as List;
-          var t5=parsed['Table5'] as List;
+          var t3=parsed['Table3'] as List?;
+          var t4=parsed['Table4'] as List?;
+          var t5=parsed['Table5'] as List?;
           print("t_$t");
           print("t1_$t1");
           print("t2_$t2");
@@ -204,7 +204,7 @@ class DieselNotifier extends ChangeNotifier{
       filterVehicleList=vehicleList;
     }
     else{
-      filterVehicleList=vehicleList.where((element) => element['VehicleNumber'].toLowerCase().contains(value.toLowerCase())).toList();
+      filterVehicleList=vehicleList!.where((element) => element['VehicleNumber'].toLowerCase().contains(value.toLowerCase())).toList();
     }
     notifyListeners();
   }
@@ -215,7 +215,7 @@ class DieselNotifier extends ChangeNotifier{
       filterMachineList=machineList;
     }
     else{
-      filterMachineList=machineList.where((element) => element['MachineName'].toLowerCase().contains(value.toLowerCase())).toList();
+      filterMachineList=machineList!.where((element) => element['MachineName'].toLowerCase().contains(value.toLowerCase())).toList();
     }
     notifyListeners();
   }
@@ -226,7 +226,7 @@ class DieselNotifier extends ChangeNotifier{
       filterIssuedByList=issuedByList;
     }
     else{
-      filterIssuedByList=issuedByList.where((element) => element['EmployeeName'].toLowerCase().contains(value.toLowerCase())).toList();
+      filterIssuedByList=issuedByList!.where((element) => element['EmployeeName'].toLowerCase().contains(value.toLowerCase())).toList();
     }
     notifyListeners();
   }
@@ -237,7 +237,7 @@ class DieselNotifier extends ChangeNotifier{
       filterFuelPurchaserList=fuelPurchaserList;
     }
     else{
-      filterFuelPurchaserList=fuelPurchaserList.where((element) => element['EmployeeName'].toLowerCase().contains(value.toLowerCase())).toList();
+      filterFuelPurchaserList=fuelPurchaserList!.where((element) => element['EmployeeName'].toLowerCase().contains(value.toLowerCase())).toList();
     }
     notifyListeners();
   }
@@ -247,7 +247,7 @@ class DieselNotifier extends ChangeNotifier{
       filterFuelSupplierList=fuelSupplierList;
     }
     else{
-      filterFuelSupplierList=fuelSupplierList.where((element) => element['SupplierName'].toLowerCase().contains(value.toLowerCase())).toList();
+      filterFuelSupplierList=fuelSupplierList!.where((element) => element['SupplierName'].toLowerCase().contains(value.toLowerCase())).toList();
     }
     notifyListeners();
   }
@@ -255,17 +255,17 @@ class DieselNotifier extends ChangeNotifier{
 
   //Insert Diesel Purchase
 
-  int DP_PlantId=null;
-  String DP_PlantName=null;
+  int? DP_PlantId=null;
+  String? DP_PlantName=null;
 
-  DateTime DP_currentTime;
-  DateTime DP_billDate;
-  int DP_supplierId=null;
-  var DP_supplierName=null;
-  int DP_purchaserId=null;
-  var DP_purchaserName=null;
-  int DP_vehicleId=null;
-  var DP_vehicleName=null;
+  DateTime? DP_currentTime;
+  DateTime? DP_billDate;
+  int? DP_supplierId=null;
+  dynamic DP_supplierName=null;
+  int? DP_purchaserId=null;
+  dynamic DP_purchaserName=null;
+  int? DP_vehicleId=null;
+  dynamic DP_vehicleName=null;
   bool DP_isVehicle=false;
   TextEditingController DP_billno=new TextEditingController();
   TextEditingController DP_location=new TextEditingController();
@@ -273,7 +273,7 @@ class DieselNotifier extends ChangeNotifier{
 
   TextEditingController DP_dieselQTY=new TextEditingController();
   TextEditingController DP_dieselPrice=new TextEditingController();
-double totalAmount=0.0;
+double? totalAmount=0.0;
 
  dieselCalc(){
    String qty="0.0";
@@ -302,7 +302,7 @@ double totalAmount=0.0;
  }
 
 
- int EditDieselPurchaseId=null;
+ int? EditDieselPurchaseId=null;
 
   InsertDieselPurchaseDbHit(BuildContext context)  async{
     updateDieselLoader(true);
@@ -331,7 +331,7 @@ double totalAmount=0.0;
         {
           "Key": "BillDate",
           "Type": "String",
-          "Value": DateFormat("yyyy-MM-dd").format(DP_billDate).toString()
+          "Value": DateFormat("yyyy-MM-dd").format(DP_billDate!).toString()
         },
 
         {
@@ -446,7 +446,7 @@ double totalAmount=0.0;
 
 
 
-  List<DateTime> picked=[];
+  List<DateTime?> picked=[];
   List<ManageUserPlantModel> filterUsersPlantList=[];
 
 
@@ -454,24 +454,24 @@ double totalAmount=0.0;
   List<DieselPurchaseGridModel> dieselPurchaseGridList=[];
   List<DieselPurchaseGridModel> filterDieselPurchaseGridList=[];
   var dieselPurchaseGridOverAllHeader={};
-  List<dynamic> dbCounterValues=[];
+  List<dynamic>? dbCounterValues=[];
 
-  GetDieselPurchaseDbHit(BuildContext context,int dieselPurchaseId)  async{
+  GetDieselPurchaseDbHit(BuildContext context,int? dieselPurchaseId)  async{
 
     updateDieselLoader(true);
-    String fromDate,toDate;
+    String? fromDate,toDate;
 
     if(picked.isEmpty){
       fromDate=DateFormat("yyyy-MM-dd").format(DateTime.now()).toString();
       toDate=DateFormat("yyyy-MM-dd").format(DateTime.now()).toString();
     }
     else if(picked.length==1){
-      fromDate=DateFormat("yyyy-MM-dd").format(picked[0]).toString();
-      toDate=DateFormat("yyyy-MM-dd").format(picked[0]).toString();
+      fromDate=DateFormat("yyyy-MM-dd").format(picked[0]!).toString();
+      toDate=DateFormat("yyyy-MM-dd").format(picked[0]!).toString();
     }
     else if(picked.length==2){
-      fromDate=DateFormat("yyyy-MM-dd").format(picked[0]).toString();
-      toDate=DateFormat("yyyy-MM-dd").format(picked[1]).toString();
+      fromDate=DateFormat("yyyy-MM-dd").format(picked[0]!).toString();
+      toDate=DateFormat("yyyy-MM-dd").format(picked[1]!).toString();
     }
     var body={
       "Fields": [
@@ -534,9 +534,9 @@ double totalAmount=0.0;
             });
           }
           var parsed=json.decode(value);
-          var t=parsed['Table'] as List;
+          var t=parsed['Table'] as List?;
           if(dieselPurchaseId!=null ){
-            EditDieselPurchaseId=t[0]['DieselPurchaseId'];
+            EditDieselPurchaseId=t![0]['DieselPurchaseId'];
             DP_PlantId=t[0]['PlantId'];
             DP_PlantName=t[0]['PlantName'];
             DP_billno.text=t[0]['BillNumber'];
@@ -562,8 +562,8 @@ double totalAmount=0.0;
             print(t);
             print(parsed['Table1']);
 
-            dbCounterValues=parsed['Table1'] as List;
-            filterDieselPurchaseGridList=t.map((e) => DieselPurchaseGridModel.fromJson(e)).toList();
+            dbCounterValues=parsed['Table1'] as List?;
+            filterDieselPurchaseGridList=t!.map((e) => DieselPurchaseGridModel.fromJson(e)).toList();
             filterDieselPurchaseGrid();
           }
         }
@@ -585,10 +585,10 @@ double totalAmount=0.0;
     dieselPurchaseGridOverAllHeader.clear();
 
     filterUsersPlantList.forEach((element) {
-      if(element.isActive){
+      if(element.isActive!){
         dieselPurchaseGridList=dieselPurchaseGridList+filterDieselPurchaseGridList.where((ele) => ele.PlantId==element.plantId).toList();
 
-        dbCounterValues.forEach((element2) {
+        dbCounterValues!.forEach((element2) {
           if(element2['PlantId']==element.plantId){
             totalPurchase=Calculation().add(totalPurchase, element2['TotalPurchaseDiesel']);
             totalIssue=Calculation().add(totalIssue, element2['TotalIssueDiesel']);
@@ -615,22 +615,22 @@ double totalAmount=0.0;
 
   /**************************************  Diesel Issue   **************************************/
 
-  DateTime DI_currentTime;
-  int DI_plantID=null;
-  String DI_plantName=null;
-  int DI_machineID=null;
-  String DI_machineName=null;
-  int DI_issueID=null;
-  String DI_issueName=null;
+  DateTime? DI_currentTime;
+  int? DI_plantID=null;
+  String? DI_plantName=null;
+  int? DI_machineID=null;
+  String? DI_machineName=null;
+  int? DI_issueID=null;
+  String? DI_issueName=null;
   TextEditingController DI_machineRunningMeter=new TextEditingController();
   TextEditingController DI_dieselQty=new TextEditingController();
 
-  String DI_MachinType=null;
-  bool isVehicle=false;
-  bool isMachine=false;
+  String? DI_MachinType=null;
+  bool? isVehicle=false;
+  bool? isMachine=false;
 
 
-  int EditDieselIssueId=null;
+  int? EditDieselIssueId=null;
 
   InsertDieselIssueDbHit(BuildContext context)  async{
     updateDieselLoader(true);
@@ -654,22 +654,22 @@ double totalAmount=0.0;
         {
           "Key": "IsMachine",
           "Type": "int",
-          "Value": isMachine?1:0
+          "Value": isMachine!?1:0
         },
         {
           "Key": "IsVehicle",
           "Type": "int",
-          "Value": isVehicle?1:0
+          "Value": isVehicle!?1:0
         },
         {
           "Key": "MachineId",
           "Type": "int",
-          "Value":isMachine? DI_machineID:null
+          "Value":isMachine!? DI_machineID:null
         },
         {
           "Key": "VehicleId",
           "Type": "int",
-          "Value":isVehicle? DI_machineID:null
+          "Value":isVehicle!? DI_machineID:null
         },
 
         {
@@ -752,24 +752,24 @@ double totalAmount=0.0;
   List<DieselIssueGridModel> filterDieselIssueGridList=[];
   List<String> dieselIssueGridCol=["Date","Type","Machine/Vehicle","Fuel Reading","Issued By","Diesel Quantity"];
   var dieselIssueGridOverAllHeader={};
-  List<dynamic> dbIssueCounterValues=[];
+  List<dynamic>? dbIssueCounterValues=[];
 
-  GetDieselIssueDbHit(BuildContext context,int dieselIssueId)  async{
+  GetDieselIssueDbHit(BuildContext context,int? dieselIssueId)  async{
 
     updateDieselLoader(true);
-    String fromDate,toDate;
+    String? fromDate,toDate;
 
     if(picked.isEmpty){
       fromDate=DateFormat("yyyy-MM-dd").format(DateTime.now()).toString();
       toDate=DateFormat("yyyy-MM-dd").format(DateTime.now()).toString();
     }
     else if(picked.length==1){
-      fromDate=DateFormat("yyyy-MM-dd").format(picked[0]).toString();
-      toDate=DateFormat("yyyy-MM-dd").format(picked[0]).toString();
+      fromDate=DateFormat("yyyy-MM-dd").format(picked[0]!).toString();
+      toDate=DateFormat("yyyy-MM-dd").format(picked[0]!).toString();
     }
     else if(picked.length==2){
-      fromDate=DateFormat("yyyy-MM-dd").format(picked[0]).toString();
-      toDate=DateFormat("yyyy-MM-dd").format(picked[1]).toString();
+      fromDate=DateFormat("yyyy-MM-dd").format(picked[0]!).toString();
+      toDate=DateFormat("yyyy-MM-dd").format(picked[1]!).toString();
     }
     var body={
       "Fields": [
@@ -811,10 +811,10 @@ double totalAmount=0.0;
       await call.ApiCallGetInvoke(body,context).then((value) {
         if(value!=null){
           var parsed=json.decode(value);
-          var t=parsed['Table'] as List;
+          var t=parsed['Table'] as List?;
           print(t);
           if(dieselIssueId!=null ){
-            EditDieselIssueId=t[0]['DieselIssueId'];
+            EditDieselIssueId=t![0]['DieselIssueId'];
             DI_plantID=t[0]['PlantId'];
             DI_plantName=t[0]['PlantName'];
             DI_MachinType=t[0]['Type'];
@@ -825,11 +825,11 @@ double totalAmount=0.0;
             DI_issueName=t[0]['IssuedName'];
             isMachine=t[0]['IsMachine'];
             isVehicle=t[0]['IsVehicle'];
-            if(isMachine){
+            if(isMachine!){
               DI_machineID=t[0]['MachineId'];
               DI_machineName=t[0]['MachineName'];
             }
-            else if(isVehicle){
+            else if(isVehicle!){
               DI_machineID=t[0]['VehicleId'];
               DI_machineName=t[0]['VehicleNumber'];
             }
@@ -837,9 +837,9 @@ double totalAmount=0.0;
 
           }
           else{
-            dbIssueCounterValues=parsed['Table1'] as List;
+            dbIssueCounterValues=parsed['Table1'] as List?;
             print(dbIssueCounterValues);
-            filterDieselIssueGridList=t.map((e) => DieselIssueGridModel.fromJson(e)).toList();
+            filterDieselIssueGridList=t!.map((e) => DieselIssueGridModel.fromJson(e)).toList();
             filterDieselIssueGrid();
           }
         }
@@ -865,10 +865,10 @@ double totalAmount=0.0;
     dieselIssueGridOverAllHeader.clear();
 
     filterUsersPlantList.forEach((element) {
-      if(element.isActive){
+      if(element.isActive!){
         dieselIssueGridList=dieselIssueGridList+filterDieselIssueGridList.where((ele) => ele.plantId==element.plantId).toList();
 
-        dbIssueCounterValues.forEach((element2) {
+        dbIssueCounterValues!.forEach((element2) {
           if(element2['PlantId']==element.plantId){
             totalBalance=Calculation().add(totalBalance, element2['Total Balance Diesel']);
           }

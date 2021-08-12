@@ -19,7 +19,7 @@ import 'package:quarry/widgets/navigationBarIcon.dart';
 
 
 class PurchaseDetailsGrid extends StatefulWidget {
-  VoidCallback drawerCallback;
+  VoidCallback? drawerCallback;
   PurchaseDetailsGrid({this.drawerCallback});
   @override
   PurchaseDetailsGridState createState() => PurchaseDetailsGridState();
@@ -28,7 +28,7 @@ class PurchaseDetailsGrid extends StatefulWidget {
 class PurchaseDetailsGridState extends State<PurchaseDetailsGrid> with TickerProviderStateMixin{
 
   bool showEdit=false;
-  int selectedIndex;
+  int? selectedIndex;
 
 
   ScrollController header=new ScrollController();
@@ -111,7 +111,7 @@ class PurchaseDetailsGridState extends State<PurchaseDetailsGrid> with TickerPro
                 ),
 
                 Container(
-                    height: SizeConfig.screenHeight-50,
+                    height: SizeConfig.screenHeight!-50,
                     width: SizeConfig.screenWidth,
                     margin: EdgeInsets.only(top: 50),
                     clipBehavior: Clip.antiAlias,
@@ -130,7 +130,7 @@ class PurchaseDetailsGridState extends State<PurchaseDetailsGrid> with TickerPro
                             children: [
                               Container(
                                 height: 50,
-                                width: SizeConfig.screenWidth-149,
+                                width: SizeConfig.screenWidth!-149,
                                 color: showShadow? AppTheme.bgColor.withOpacity(0.8):AppTheme.bgColor,
                                 child: SingleChildScrollView(
                                   controller: header,
@@ -149,15 +149,15 @@ class PurchaseDetailsGridState extends State<PurchaseDetailsGrid> with TickerPro
 
                               ),
                               Container(
-                                height: SizeConfig.screenHeight-140,
-                                width: SizeConfig.screenWidth-149,
+                                height: SizeConfig.screenHeight!-140,
+                                width: SizeConfig.screenWidth!-149,
                                 alignment: Alignment.topCenter,
                                 color: AppTheme.gridbodyBgColor,
                                 child: SingleChildScrollView(
                                   controller: body,
                                   scrollDirection: Axis.horizontal,
                                   child: Container(
-                                    height: SizeConfig.screenHeight-140,
+                                    height: SizeConfig.screenHeight!-140,
                                     alignment: Alignment.topCenter,
                                     color: AppTheme.gridbodyBgColor,
                                     child: SingleChildScrollView(
@@ -204,7 +204,7 @@ class PurchaseDetailsGridState extends State<PurchaseDetailsGrid> with TickerPro
                                                     alignment: Alignment.center,
                                                     //  padding: EdgeInsets.only(left: 20,right: 20),
                                                     width: 150,
-                                                    child: Text(value.expectedDate!=null?"${DateFormat.yMMMd().format(value.expectedDate)}":"",
+                                                    child: Text(value.expectedDate!=null?"${DateFormat.yMMMd().format(value.expectedDate!)}":"",
                                                       style:selectedIndex==i?AppTheme.bgColorTS14:AppTheme.gridTextColor14,
                                                     ),
                                                   ),
@@ -291,7 +291,7 @@ class PurchaseDetailsGridState extends State<PurchaseDetailsGrid> with TickerPro
 
                               ),
                               Container(
-                                height: SizeConfig.screenHeight-140,
+                                height: SizeConfig.screenHeight!-140,
                                 alignment: Alignment.topCenter,
                                 decoration: BoxDecoration(
                                     color: AppTheme.gridbodyBgColor,
@@ -305,7 +305,7 @@ class PurchaseDetailsGridState extends State<PurchaseDetailsGrid> with TickerPro
                                     ]
                                 ),
                                 child: Container(
-                                  height: SizeConfig.screenHeight-140,
+                                  height: SizeConfig.screenHeight!-140,
                                   alignment: Alignment.topCenter,
 
                                   child: SingleChildScrollView(
@@ -416,7 +416,7 @@ class PurchaseDetailsGridState extends State<PurchaseDetailsGrid> with TickerPro
                         Container(
                           margin:EdgeInsets.only(top: 0),
                           child: CustomPaint(
-                            size: Size( SizeConfig.screenWidth, 65),
+                            size: Size( SizeConfig.screenWidth!, 65),
                             painter: RPSCustomPainter3(),
                           ),
                         ),
@@ -479,10 +479,10 @@ class PurchaseDetailsGridState extends State<PurchaseDetailsGrid> with TickerPro
                                               color: pro.usersPlantList.length<=1?AppTheme.bgColor.withOpacity(0.4):AppTheme.bgColor,),
                                           )
                                       ),
-                                      SizedBox(width: SizeConfig.screenWidth*0.6,),
+                                      SizedBox(width: SizeConfig.screenWidth!*0.6,),
                                       GestureDetector(
                                         onTap: () async{
-                                          final List<DateTime>  picked1 = await DateRagePicker.showDatePicker(
+                                          final List<DateTime?>?  picked1 = await DateRagePicker.showDatePicker(
                                               context: context,
                                               initialFirstDate: new DateTime.now(),
                                               initialLastDate: (new DateTime.now()),
@@ -522,7 +522,7 @@ class PurchaseDetailsGridState extends State<PurchaseDetailsGrid> with TickerPro
                                   Navigator.of(context).push(_createRoute());
                                   pn.updatePurchaseEdit(true);
                                   pn.PurchaseDropDownValues(context).then((value) {
-                                    pn.GetPurchaseDbHit(context, pn.purchaseGridList[selectedIndex].purchaseOrderId);
+                                    pn.GetPurchaseDbHit(context, pn.purchaseGridList[selectedIndex!].purchaseOrderId);
                                     setState(() {
                                       showEdit=false;
                                       selectedIndex=-1;

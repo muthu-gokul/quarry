@@ -29,8 +29,8 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
   GlobalKey <ScaffoldState> scaffoldkey = new GlobalKey<ScaffoldState>();
 
 
-  ScrollController scrollController;
-  ScrollController listViewController;
+  ScrollController? scrollController;
+  ScrollController? listViewController;
 
   bool _keyboardVisible = false;
   bool materialCategoryOpen = false;
@@ -44,7 +44,7 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       scrollController = new ScrollController();
       listViewController = new ScrollController();
       setState(() {
@@ -124,7 +124,7 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
 
                                 int sensitivity = 5;
                                 if (details.delta.dy > sensitivity) {
-                                  scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
+                                  scrollController!.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
                                     if(isListScroll){
                                       setState(() {
                                         isListScroll=false;
@@ -133,7 +133,7 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                   });
 
                                 } else if(details.delta.dy < -sensitivity){
-                                  scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
+                                  scrollController!.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
 
                                     if(!isListScroll){
                                       setState(() {
@@ -144,7 +144,7 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                 }
                               },
                               child: Container(
-                                height: SizeConfig.screenHeight - 60,
+                                height: SizeConfig.screenHeight! - 60,
                                 width: SizeConfig.screenWidth,
                                 alignment: Alignment.topCenter,
                                 decoration: BoxDecoration(
@@ -157,15 +157,15 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                   onNotification: (s){
                                     if(s is ScrollStartNotification){
 
-                                      if(listViewController.offset==0 && isListScroll && scrollController.offset==100 && listViewController.position.userScrollDirection==ScrollDirection.idle){
+                                      if(listViewController!.offset==0 && isListScroll && scrollController!.offset==100 && listViewController!.position.userScrollDirection==ScrollDirection.idle){
 
                                         Timer(Duration(milliseconds: 100), (){
-                                          if(listViewController.position.userScrollDirection!=ScrollDirection.reverse){
+                                          if(listViewController!.position.userScrollDirection!=ScrollDirection.reverse){
 
                                             //if(scrollController.position.pixels == scrollController.position.maxScrollExtent){
-                                            if(listViewController.offset==0){
+                                            if(listViewController!.offset==0){
 
-                                              scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value) {
+                                              scrollController!.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value) {
                                                 if(isListScroll){
                                                   setState(() {
                                                     isListScroll=false;
@@ -178,7 +178,8 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                         });
                                       }
                                     }
-                                  },
+                                    return true;
+                                  } ,
                                   child: ListView(
                                     controller: listViewController,
                                     scrollDirection: Axis.vertical,
@@ -195,7 +196,7 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                           });
                                         },
                                         ontap: (){
-                                          scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                          scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                           setState(() {
                                             //isListScroll=true;
                                             _keyboardVisible=true;
@@ -215,7 +216,7 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                           });
                                         },
                                         ontap: (){
-                                          scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                          scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                           setState(() {
                                             _keyboardVisible=true;
                                            // isListScroll=true;
@@ -233,7 +234,7 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                           });
                                         },
                                         ontap: (){
-                                          scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                          scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                           setState(() {
                                             _keyboardVisible=true;
                                             //isListScroll=true;
@@ -251,7 +252,7 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                           });
                                         },
                                         ontap: (){
-                                          scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                          scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                           setState(() {
                                             _keyboardVisible=true;
                                             //isListScroll=true;
@@ -271,7 +272,7 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                           });
                                         },
                                         ontap: (){
-                                          scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                          scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                           setState(() {
                                            // isListScroll=true;
                                             _keyboardVisible=true;
@@ -292,7 +293,7 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                           });
                                         },
                                         ontap: (){
-                                          scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                          scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                           setState(() {
                                             _keyboardVisible=true;
                                             isListScroll=true;
@@ -313,7 +314,7 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                           });
                                         },
                                         ontap: (){
-                                          scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                          scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                           setState(() {
                                             isListScroll=true;
                                             _keyboardVisible=true;
@@ -333,7 +334,7 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                           });
                                         },
                                         ontap: (){
-                                          scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                          scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                           setState(() {
                                             isListScroll=true;
                                             _keyboardVisible=true;
@@ -352,7 +353,7 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                           });
                                         },
                                         ontap: (){
-                                          scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                          scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                           setState(() {
                                             isListScroll=true;
                                             _keyboardVisible=true;
@@ -363,7 +364,7 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                       Container(
                                         height: SizeConfig.height30,
                                         width: SizeConfig.screenWidth,
-                                        padding: EdgeInsets.only(left: SizeConfig.width10),
+                                        padding: EdgeInsets.only(left: SizeConfig.width10!),
                                         child: Row(
                                           children: [
                                             Checkbox(
@@ -379,7 +380,7 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                             InkWell(
                                                 onTap: (){
                                                   setState(() {
-                                                    qn.isCreditCustomer=!qn.isCreditCustomer;
+                                                    qn.isCreditCustomer=!qn.isCreditCustomer!;
                                                     _keyboardVisible=false;
                                                   });
                                                 },
@@ -392,7 +393,7 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                       AnimatedContainer(
                                         duration: Duration(milliseconds: 300),
                                         curve: Curves.easeIn,
-                                        height: qn.isCreditCustomer?160:0,
+                                        height: qn.isCreditCustomer!?160:0,
                                         width: SizeConfig.screenWidth,
 
 
@@ -406,7 +407,7 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                               regExp: decimalReg,
                                               scrollPadding: 400,
                                               ontap: (){
-                                                scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                                scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                                 setState(() {
                                                   isListScroll=true;
                                                   _keyboardVisible=true;
@@ -422,7 +423,7 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                             ),
 
                                             Container(
-                                              margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,top: 10),
+                                              margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!,top: 10),
                                               height:40,
                                               width: SizeConfig.screenWidthM40,
                                               decoration: BoxDecoration(
@@ -434,8 +435,8 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                               child:Row(
                                                 children: [
                                                   Container(
-                                                      padding: EdgeInsets.only(left: SizeConfig.width10),
-                                                      width: (SizeConfig.screenWidthM40*0.5)-2,
+                                                      padding: EdgeInsets.only(left: SizeConfig.width10!),
+                                                      width: (SizeConfig.screenWidthM40!*0.5)-2,
                                                       child: Text("Used Amount",style: tableTextStyle,)
                                                   ),
 
@@ -446,10 +447,10 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                                   ),
 
                                                   Container(
-                                                    padding: EdgeInsets.only(left: SizeConfig.width10),
+                                                    padding: EdgeInsets.only(left: SizeConfig.width10!),
                                                     height: 16,
                                                     alignment: Alignment.centerLeft,
-                                                    width: (SizeConfig.screenWidthM40*0.5)-1,
+                                                    width: (SizeConfig.screenWidthM40!*0.5)-1,
                                                     child: FittedBox(child: Text("${qn.usedAmount}",
 
                                                       style:tableTextStyle2,
@@ -461,7 +462,7 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                               ),
                                             ),
                                             Container(
-                                              margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,),
+                                              margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!,),
                                               height:40,
                                               width: SizeConfig.screenWidthM40,
                                               decoration: BoxDecoration(
@@ -476,8 +477,8 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                               child:Row(
                                                 children: [
                                                   Container(
-                                                      padding: EdgeInsets.only(left: SizeConfig.width10),
-                                                      width: (SizeConfig.screenWidthM40*0.5)-2,
+                                                      padding: EdgeInsets.only(left: SizeConfig.width10!),
+                                                      width: (SizeConfig.screenWidthM40!*0.5)-2,
                                                       child: Text("Balance Amount",style: tableTextStyle,)
                                                   ),
 
@@ -488,10 +489,10 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                                   ),
 
                                                   Container(
-                                                    padding: EdgeInsets.only(left: SizeConfig.width10),
+                                                    padding: EdgeInsets.only(left: SizeConfig.width10!),
                                                     height: 16,
                                                     alignment: Alignment.centerLeft,
-                                                    width: (SizeConfig.screenWidthM40*0.5)-1,
+                                                    width: (SizeConfig.screenWidthM40!*0.5)-1,
                                                     child: FittedBox(child: Text("${qn.balanceAmount}",
 
                                                       style:tableTextStyle2,
@@ -529,7 +530,7 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                       SizedBox(height: 10,),
                                       Container(
 
-                                        margin: EdgeInsets.only(left: SizeConfig.width90,right:  SizeConfig.width90,),
+                                        margin: EdgeInsets.only(left: SizeConfig.width90!,right:  SizeConfig.width90!,),
                                         height:45,
                                         decoration: BoxDecoration(
                                           borderRadius: BorderRadius.circular(25.0),
@@ -551,7 +552,7 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
 
                                       ),
 
-                                      SizedBox(height: _keyboardVisible? SizeConfig.screenHeight*0.5:200,)
+                                      SizedBox(height: _keyboardVisible? SizeConfig.screenHeight!*0.5:200,)
                                     ],
                                   ),
                                 ),
@@ -623,7 +624,7 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                               ),
                               margin:EdgeInsets.only(top: 0),
                               child: CustomPaint(
-                                size: Size( SizeConfig.screenWidth, 65),
+                                size: Size( SizeConfig.screenWidth!, 65),
                                 painter: RPSCustomPainter3(),
                               ),
                             ),

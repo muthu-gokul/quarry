@@ -57,7 +57,7 @@ class ProductionNotifier extends ChangeNotifier{
         if(value!=null){
           var parsed=json.decode(value);
 
-          var t=parsed['Table'] as List;
+          var t=parsed['Table'] as List?;
           var t1=parsed['Table1'] as List;
           plantList=t1.map((e) => PlantUserModel.fromJson(e)).toList();
           plantList.forEach((element) {
@@ -92,35 +92,35 @@ class ProductionNotifier extends ChangeNotifier{
 
 
 
-  int plantId=null;
-  String plantName=null;
+  int? plantId=null;
+  String? plantName=null;
 
 
   TextEditingController materialQuantity=new TextEditingController();
   TextEditingController materialWeight=new TextEditingController();
-  int selectMachineId=null;
-  var selectMachineName=null;
+  int? selectMachineId=null;
+  dynamic selectMachineName=null;
 
-  int selectInputTypeId=null;
-  var selectInputTypeName=null;
-  int selectInputUnitId=null;
-  var selectInputUnitName=null;
+  int? selectInputTypeId=null;
+  dynamic selectInputTypeName=null;
+  int? selectInputUnitId=null;
+  dynamic selectInputUnitName=null;
 
-  int productionMaterialId=null;
-  var productionMaterialName=null;
+  int? productionMaterialId=null;
+  dynamic productionMaterialName=null;
 
-  int productionIdEdit=null;
+  int? productionIdEdit=null;
 
   bool isWastage=false;
 
-  double dustQty=0.0;
-  double wastageQty=0.0;
+  double? dustQty=0.0;
+  double? wastageQty=0.0;
   double totalOutputQty=0.0;
 
-  double stock=0.0;
+  double? stock=0.0;
 
   List<ProductionMachineListModel> machineCategoryList=[];
-  List<dynamic> inputMaterialList=[];
+  List<dynamic>? inputMaterialList=[];
   List<ProductionMaterialListModel> MaterialList=[];
   List<ProductionMaterialMappingListModel> productionMaterialMappingList=[];
   List<String> ProductionDetailsGridCol=['ProductionId','MachineId','MachineName','InputMaterialID','InputMaterialName','InputMaterialQuantity','OutputMaterialCount','IsDustWastage','DustQuantity','WastageQuantity'];
@@ -161,7 +161,7 @@ class ProductionNotifier extends ChangeNotifier{
           var parsed=json.decode(value);
           print(parsed);
           var t=parsed['Table'] as List;
-          var t1=parsed['Table1'] as List;
+          var t1=parsed['Table1'] as List?;
           var t2=parsed['Table2'] as List;
           machineCategoryList=t.map((e) => ProductionMachineListModel.fromJson(e)).toList();
           inputMaterialList=t1;
@@ -185,7 +185,7 @@ class ProductionNotifier extends ChangeNotifier{
       inputQty=double.parse(materialQuantity.text);
 
       productionMaterialMappingList.forEach((element) {
-        totalOutputQty=totalOutputQty+element.OutputMaterialQuantity;
+        totalOutputQty=totalOutputQty+element.OutputMaterialQuantity!;
       });
 
     /*  if(isWastage){
@@ -207,7 +207,7 @@ class ProductionNotifier extends ChangeNotifier{
       else if(totalOutputQty<inputQty){
         if(isWastage){
           wastageQty=inputQty-totalOutputQty;
-          wastageQty=wastageQty+dustQty;
+          wastageQty=wastageQty!+dustQty!;
         }
         else{
           wastageQty=inputQty-totalOutputQty;
@@ -322,7 +322,7 @@ class ProductionNotifier extends ChangeNotifier{
 
   }
 
-  List<DateTime> picked=[];
+  List<DateTime?> picked=[];
   List<ManageUserPlantModel> filterUsersPlantList=[];
 
   List<ProductionGridHeaderModel> gridOverAllHeader=[];
@@ -330,24 +330,24 @@ class ProductionNotifier extends ChangeNotifier{
   List<ProductionDetailGridModel> productionGridValues=[];
   List<ProductionDetailGridModel> filterProductionGridValues=[];
 
-  GetProductionDbHit(BuildContext context,int productionId,TickerProviderStateMixin tickerProviderStateMixin)  async{
+  GetProductionDbHit(BuildContext context,int? productionId,TickerProviderStateMixin tickerProviderStateMixin)  async{
 
     print(tickerProviderStateMixin);
     print(productionId);
     updateProductionLoader(true);
-    String fromDate,toDate;
+    String? fromDate,toDate;
 
     if(picked.isEmpty){
       fromDate=DateFormat("yyyy-MM-dd").format(DateTime.now()).toString();
       toDate=DateFormat("yyyy-MM-dd").format(DateTime.now()).toString();
     }
     else if(picked.length==1){
-      fromDate=DateFormat("yyyy-MM-dd").format(picked[0]).toString();
-      toDate=DateFormat("yyyy-MM-dd").format(picked[0]).toString();
+      fromDate=DateFormat("yyyy-MM-dd").format(picked[0]!).toString();
+      toDate=DateFormat("yyyy-MM-dd").format(picked[0]!).toString();
     }
     else if(picked.length==2){
-      fromDate=DateFormat("yyyy-MM-dd").format(picked[0]).toString();
-      toDate=DateFormat("yyyy-MM-dd").format(picked[1]).toString();
+      fromDate=DateFormat("yyyy-MM-dd").format(picked[0]!).toString();
+      toDate=DateFormat("yyyy-MM-dd").format(picked[1]!).toString();
     }
 
     var body={
@@ -414,7 +414,7 @@ class ProductionNotifier extends ChangeNotifier{
           }
 
           var parsed=json.decode(value);
-          var t=parsed['Table'] as List;
+          var t=parsed['Table'] as List?;
 
           print(t);
           if(productionId!=null){
@@ -422,7 +422,7 @@ class ProductionNotifier extends ChangeNotifier{
             print(t1);
 
 
-            productionIdEdit=t[0]['ProductionId'];
+            productionIdEdit=t![0]['ProductionId'];
             plantId=t[0]['PlantId'];
             plantName=t[0]['PlantName'];
             selectMachineId=t[0]['MachineId'];
@@ -447,7 +447,7 @@ class ProductionNotifier extends ChangeNotifier{
           else{
             var t1=parsed['Table1'] as List;
             print(t);
-              gridOverAllHeader=t.map((e) => ProductionGridHeaderModel.fromJson(e)).toList();
+              gridOverAllHeader=t!.map((e) => ProductionGridHeaderModel.fromJson(e)).toList();
             filterProductionGridValues=t1.map((e) => ProductionDetailGridModel.fromJson(e)).toList();
             filterProductionGrid();
           }
@@ -464,21 +464,21 @@ class ProductionNotifier extends ChangeNotifier{
   }
 
 
-  Map<String,ProductionGridHeaderModel> gridCounter={};
+  Map<String?,ProductionGridHeaderModel> gridCounter={};
 
   filterProductionGrid(){
     productionGridValues.clear();
     gridCounter.clear();
 
     filterUsersPlantList.forEach((element) {
-      if(element.isActive){
+      if(element.isActive!){
         productionGridValues=productionGridValues+filterProductionGridValues.where((ele) => ele.plantId==element.plantId).toList();
 
         gridOverAllHeader.forEach((element2) {
           print(element2.materialName);
           if(element2.PlantId==element.plantId){
             if(gridCounter.containsKey(element2.materialName)){
-              gridCounter[element2.materialName].totalQuantity=Calculation().add(gridCounter[element2.materialName].totalQuantity, element2.totalQuantity);
+              gridCounter[element2.materialName]!.totalQuantity=Calculation().add(gridCounter[element2.materialName]!.totalQuantity, element2.totalQuantity);
             }else{
 
               gridCounter[element2.materialName]=ProductionGridHeaderModel(

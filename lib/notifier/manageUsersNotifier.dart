@@ -16,8 +16,8 @@ class ManageUsersNotifier extends ChangeNotifier{
 
 
 
-  int UserId=null;
-  String selectedSalutation="Mr";
+  int? UserId=null;
+  String? selectedSalutation="Mr";
   String UserGroupName="";
   TextEditingController firstName=new TextEditingController();
   TextEditingController lastName=new TextEditingController();
@@ -25,14 +25,14 @@ class ManageUsersNotifier extends ChangeNotifier{
   TextEditingController email=new TextEditingController();
   TextEditingController password=new TextEditingController();
 
-  int userGroupId=null;
-  String userGroupName=null;
+  int? userGroupId=null;
+  String? userGroupName=null;
 
 
 
   List<ManageUserPlantModel> plantMappingList=[];
 
-  List<dynamic> userGroupList=[];
+  List<dynamic>? userGroupList=[];
   List<ManageUserPlantModel> plantList=[];
 
   UserDropDownValues(BuildContext context) async {
@@ -67,8 +67,8 @@ class ManageUsersNotifier extends ChangeNotifier{
       await call.ApiCallGetInvoke(body,context).then((value) {
         if(value!=null){
           var parsed=json.decode(value);
-          var t=parsed['Table'] as List;
-          var t1=parsed['Table1'] as List;
+          var t=parsed['Table'] as List?;
+          var t1=parsed['Table1'] as List?;
           var t2=parsed['Table2'] as List;
 
           userGroupList=t;
@@ -173,7 +173,7 @@ class ManageUsersNotifier extends ChangeNotifier{
       await call.ApiCallGetInvoke(body,context).then((value) {
         if(value!=null){
           var parsed=json.decode(value);
-          var t=parsed['Table'] as List;
+          var t=parsed['Table'] as List?;
           print(parsed);
           Navigator.pop(context);
           clearForm();
@@ -193,7 +193,7 @@ class ManageUsersNotifier extends ChangeNotifier{
   }
 
   List<ManageUsersGridModel> usersList=[];
-  GetUserDetailDbHit(BuildContext context,int userId)  async{
+  GetUserDetailDbHit(BuildContext context,int? userId)  async{
     updateManageUsersLoader(true);
 
     var body={
@@ -225,13 +225,13 @@ class ManageUsersNotifier extends ChangeNotifier{
       await call.ApiCallGetInvoke(body,context).then((value) {
         if(value!=null){
           var parsed=json.decode(value);
-          var t=parsed['Table'] as List;
-          var t1=parsed['Table1'] as List;
+          var t=parsed['Table'] as List?;
+          var t1=parsed['Table1'] as List?;
           print(value);
 
 
           if(userId!=null){
-            UserId=t[0]['UserId'];
+            UserId=t![0]['UserId'];
             selectedSalutation=t[0]['UserSalutation'];
             firstName.text=t[0]['UserFirstName'];
             lastName.text=t[0]['UserLastName'];
@@ -241,10 +241,10 @@ class ManageUsersNotifier extends ChangeNotifier{
             userGroupId=t[0]['UserGroupId'];
             userGroupName=t[0]['UserGroupName'];
 
-            plantMappingList=t1.map((e) => ManageUserPlantModel.fromJson(e)).toList();
+            plantMappingList=t1!.map((e) => ManageUserPlantModel.fromJson(e)).toList();
           }
           else{
-            usersList=t.map((e) => ManageUsersGridModel.fromJson(e)).toList();
+            usersList=t!.map((e) => ManageUsersGridModel.fromJson(e)).toList();
           }
         }
         updateManageUsersLoader(false);

@@ -9,13 +9,13 @@ class GoodsMaterialTripDetailsModel {
     this.status,
   });
 
-  int trip;
-  String vehicleNumber;
-  int materialId;
-  String unitName;
-  double receivedQuantity;
-  double balanceQuantity;
-  String status;
+  int? trip;
+  String? vehicleNumber;
+  int? materialId;
+  String? unitName;
+  double? receivedQuantity;
+  double? balanceQuantity;
+  String? status;
 
   factory GoodsMaterialTripDetailsModel.fromJson(Map<String, dynamic> json) => GoodsMaterialTripDetailsModel(
     trip: json["Trip"],
@@ -53,14 +53,14 @@ class GoodsMaterialExtraTripModel {
     this.Amount,
   });
 
-  int purchaseOrderId;
-  int materialId;
-  String unitName;
-  double expectedQuantity;
-  double receivedQuantity;
-  double balanceQuantity;
-  double Amount;
-  int isExtra;
+  int? purchaseOrderId;
+  int? materialId;
+  String? unitName;
+  double? expectedQuantity;
+  double? receivedQuantity;
+  double? balanceQuantity;
+  double? Amount;
+  int? isExtra;
 
   factory GoodsMaterialExtraTripModel.fromJson(Map<String, dynamic> json) => GoodsMaterialExtraTripModel(
     purchaseOrderId: json["PurchaseOrderId"],

@@ -3,7 +3,7 @@ class SalesVehiclesModel {
     this.vehicleNumber,
   });
 
-  String vehicleNumber;
+  String? vehicleNumber;
 
   factory SalesVehiclesModel.fromJson(Map<String, dynamic> json) => SalesVehiclesModel(
     vehicleNumber: json["VehicleNumber"],

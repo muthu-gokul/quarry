@@ -12,9 +12,9 @@ class ProfileNotifier extends ChangeNotifier{
 
   final call=ApiManager();
 
-  int UserId;
-  String selectedSalutation="Mr";
-  String UserGroupName="";
+  int? UserId;
+  String? selectedSalutation="Mr";
+  String? UserGroupName="";
   TextEditingController firstName=new TextEditingController();
   TextEditingController lastName=new TextEditingController();
   TextEditingController contactNumber=new TextEditingController();
@@ -99,7 +99,7 @@ class ProfileNotifier extends ChangeNotifier{
       await call.ApiCallGetInvoke(body,context).then((value) {
         if(value!=null){
           var parsed=json.decode(value);
-          var t=parsed['Table'] as List;
+          var t=parsed['Table'] as List?;
           print(parsed);
         }
 
@@ -118,7 +118,7 @@ class ProfileNotifier extends ChangeNotifier{
   List<ManageUserPlantModel> usersPlantList=[];
 
 
-  GetUserDetailDbHit(BuildContext context,int userId)  async{
+  GetUserDetailDbHit(BuildContext context,int? userId)  async{
 
 
     updateProfileLoader(true);
@@ -152,14 +152,14 @@ class ProfileNotifier extends ChangeNotifier{
       await call.ApiCallGetInvoke(body,context).then((value) {
         if(value!=null){
           var parsed=json.decode(value);
-          var t=parsed['Table'] as List;
+          var t=parsed['Table'] as List?;
 
 
           if(userId!=null){
             var t1=parsed['Table1'] as List;
             print(t);
             print("t1${t1}");
-            UserId=t[0]['UserId'];
+            UserId=t![0]['UserId'];
             selectedSalutation=t[0]['UserSalutation'];
             UserGroupName=t[0]['UserGroupName'];
             firstName.text=t[0]['UserFirstName'];

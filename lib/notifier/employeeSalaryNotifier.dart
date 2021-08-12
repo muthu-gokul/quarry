@@ -52,7 +52,7 @@ class EmployeeSalaryNotifier extends ChangeNotifier{
         if(value!=null){
           var parsed=json.decode(value);
 
-          var t=parsed['Table'] as List;
+          var t=parsed['Table'] as List?;
           var t1=parsed['Table1'] as List;
           plantList=t1.map((e) => PlantUserModel.fromJson(e)).toList();
           plantList.forEach((element) {
@@ -93,15 +93,15 @@ class EmployeeSalaryNotifier extends ChangeNotifier{
   int totalEmployees=0;
   double totalNetPay=0.0;
 
-  int showEmpId=null;
-  int showNumberOfWorkingDays=null;
-  int TotalPresentDays=null;
-  int IsPaid=null;
-  String showEmpName="";
-  String showEmpDesg="";
-  String showEmpShift="";
+  int? showEmpId=null;
+  int? showNumberOfWorkingDays=null;
+  int? TotalPresentDays=null;
+  int? IsPaid=null;
+  String? showEmpName="";
+  String? showEmpDesg="";
+  String? showEmpShift="";
   String showEmpMonthlySalary="";
-  String showEmpPresentDay="";
+  String? showEmpPresentDay="";
   String showEmpEarnedSalary="";
   String showEmpOvertime="";
   String showEmpAdvanceAmount="";
@@ -238,8 +238,8 @@ clearInsertForm(){
     GridStyleModel3(columnName: "NetPay"),
 
   ];
-  List<dynamic> gridData=[];
-  GetEmployeeSalaryDbHit(BuildContext context,int EmployeeId)  async{
+  List<dynamic>? gridData=[];
+  GetEmployeeSalaryDbHit(BuildContext context,int? EmployeeId)  async{
 
     totalSalary=0.0;
     totalEmployees=0;
@@ -287,11 +287,11 @@ clearInsertForm(){
       await call.ApiCallGetInvoke(body,context).then((value) {
         if(value!=null){
           var parsed=json.decode(value);
-          var t=parsed['Table'] as List;
+          var t=parsed['Table'] as List?;
           print(parsed['Table']);
 
           if(EmployeeId!=null ){
-            showEmpId=t[0]['EmployeeId'];
+            showEmpId=t![0]['EmployeeId'];
             showEmpName=t[0]['Name'];
             showEmpDesg=t[0]['Designation'];
             showEmpShift=t[0]['Shift'];
@@ -307,8 +307,8 @@ clearInsertForm(){
           }
           else{
             gridData=t;
-            totalEmployees=gridData.length;
-            gridData.forEach((element) { 
+            totalEmployees=gridData!.length;
+            gridData!.forEach((element) { 
               totalSalary=Calculation().add(totalSalary, element['Monthly Salary']);
               totalNetPay=Calculation().add(totalNetPay, element['NetPay']);
               searchEmpList.add("${element['Name']}  -  ${element['Employee Code']}");

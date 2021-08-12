@@ -7,10 +7,10 @@ class ManageUsersGridModel {
     this.userGroupName,
   });
 
-  int userId;
-  String userName;
-  int userGroupId;
-  String userGroupName;
+  int? userId;
+  String? userName;
+  int? userGroupId;
+  String? userGroupName;
 
   factory ManageUsersGridModel.fromJson(Map<String, dynamic> json) => ManageUsersGridModel(
     userId: json["UserId"],

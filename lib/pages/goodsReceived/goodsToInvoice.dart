@@ -34,8 +34,8 @@ class GoodsToInvoiceState extends State<GoodsToInvoice> with TickerProviderState
   bool isEdit=false;
 
 
-  ScrollController scrollController;
-  ScrollController listViewController;
+  ScrollController? scrollController;
+  ScrollController? listViewController;
 
   ScrollController header=new ScrollController();
   ScrollController body=new ScrollController();
@@ -59,7 +59,7 @@ class GoodsToInvoiceState extends State<GoodsToInvoice> with TickerProviderState
   @override
   void initState() {
     isEdit=false;
-    WidgetsBinding.instance.addPostFrameCallback((_){
+    WidgetsBinding.instance!.addPostFrameCallback((_){
       scrollController=new ScrollController();
       listViewController=new ScrollController();
       setState(() {
@@ -67,15 +67,15 @@ class GoodsToInvoiceState extends State<GoodsToInvoice> with TickerProviderState
       });
 
 
-      listViewController.addListener(() {
-        if(listViewController.offset>10){
-          if(scrollController.offset==0){
-            scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+      listViewController!.addListener(() {
+        if(listViewController!.offset>10){
+          if(scrollController!.offset==0){
+            scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
           }
 
         }
-        else if(listViewController.offset==0){
-          scrollController.animateTo(0, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+        else if(listViewController!.offset==0){
+          scrollController!.animateTo(0, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
         }
       });
 
@@ -170,7 +170,7 @@ class GoodsToInvoiceState extends State<GoodsToInvoice> with TickerProviderState
                     children: [
                       SizedBox(height: 160,),
                       Container(
-                          height: SizeConfig.screenHeight-60,
+                          height: SizeConfig.screenHeight!-60,
                           width: SizeConfig.screenWidth,
                           padding: EdgeInsets.only(bottom: 60),
                           decoration: BoxDecoration(
@@ -186,7 +186,7 @@ class GoodsToInvoiceState extends State<GoodsToInvoice> with TickerProviderState
                                   height: dataTableheight,
                                   width: SizeConfig.screenWidth,
                                   clipBehavior: Clip.antiAlias,
-                                  margin: EdgeInsets.only(left:SizeConfig.screenWidth*0.02,right:SizeConfig.screenWidth*0.02,top: 20),
+                                  margin: EdgeInsets.only(left:SizeConfig.screenWidth!*0.02,right:SizeConfig.screenWidth!*0.02,top: 20),
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(10),
                                       color: Colors.white,
@@ -210,7 +210,7 @@ class GoodsToInvoiceState extends State<GoodsToInvoice> with TickerProviderState
                                           children: [
                                             Container(
                                               height: 50,
-                                              width: SizeConfig.screenWidth-valueContainerWidth-SizeConfig.screenWidth*0.04,
+                                              width: SizeConfig.screenWidth!-valueContainerWidth-SizeConfig.screenWidth!*0.04,
                                               color: showShadow? AppTheme.f737373.withOpacity(0.8):AppTheme.f737373,
                                               child: SingleChildScrollView(
                                                 controller: header,
@@ -231,7 +231,7 @@ class GoodsToInvoiceState extends State<GoodsToInvoice> with TickerProviderState
                                             ),
                                             Container(
                                               height: dataTableBodyheight,
-                                              width: SizeConfig.screenWidth-valueContainerWidth-SizeConfig.screenWidth*0.04,
+                                              width: SizeConfig.screenWidth!-valueContainerWidth-SizeConfig.screenWidth!*0.04,
                                               alignment: Alignment.topCenter,
                                               color: Colors.white,
                                               child: SingleChildScrollView(
@@ -479,7 +479,7 @@ class GoodsToInvoiceState extends State<GoodsToInvoice> with TickerProviderState
 
                                 width: SizeConfig.screenWidth,
 
-                                margin: EdgeInsets.only(left:SizeConfig.screenWidth*0.02,right:SizeConfig.screenWidth*0.02,top: 20),
+                                margin: EdgeInsets.only(left:SizeConfig.screenWidth!*0.02,right:SizeConfig.screenWidth!*0.02,top: 20),
                                 decoration: BoxDecoration(
                                     color: Colors.white,
                                     borderRadius: BorderRadius.circular(5),
@@ -519,11 +519,11 @@ class GoodsToInvoiceState extends State<GoodsToInvoice> with TickerProviderState
                                           return
                                             SlideTransition(
                                             position: Tween<Offset>(begin: Offset(0.0,0.0), end:Offset(1, 0))
-                                                .animate(gr.GINV_OtherChargesList[index].animationController),
+                                                .animate(gr.GINV_OtherChargesList[index].animationController!),
 
                                             child: FadeTransition(
                                               opacity: Tween(begin: 1.0, end: 0.0)
-                                                  .animate(gr.GINV_OtherChargesList[index].animationController),
+                                                  .animate(gr.GINV_OtherChargesList[index].animationController!),
                                               child:
                                               Container(
                                                 padding: EdgeInsets.only(top: 5, bottom: 5,left: 10,right: 10),
@@ -562,7 +562,7 @@ class GoodsToInvoiceState extends State<GoodsToInvoice> with TickerProviderState
                                                           alignment: Alignment.centerLeft,
                                                           width: SizeConfig.screenWidthM0_04*0.23,
                                                           child: GestureDetector(
-                                                            onTap:!gr.GINV_OtherChargesList[index].isEdit?null: (){
+                                                            onTap:!gr.GINV_OtherChargesList[index].isEdit!?null: (){
 
                                                               setState(() {
                                                                 indentQty=gr.GINV_OtherChargesList[index].otherChargesAmount.toString();
@@ -579,8 +579,8 @@ class GoodsToInvoiceState extends State<GoodsToInvoice> with TickerProviderState
                                                                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10), ),
 
                                                                             child: Container(
-                                                                              height: SizeConfig.screenHeight*0.85,
-                                                                              width: SizeConfig.screenWidth*0.9,
+                                                                              height: SizeConfig.screenHeight!*0.85,
+                                                                              width: SizeConfig.screenWidth!*0.9,
                                                                               decoration: BoxDecoration(
                                                                                   borderRadius: BorderRadius.circular(10),
                                                                                   color: Colors.white
@@ -601,7 +601,7 @@ class GoodsToInvoiceState extends State<GoodsToInvoice> with TickerProviderState
 
                                                                                   Container(
                                                                                       margin: EdgeInsets.only(top: 20),
-                                                                                      width: SizeConfig.screenWidth*0.8,
+                                                                                      width: SizeConfig.screenWidth!*0.8,
                                                                                       child: Wrap(
                                                                                           spacing: 10,
                                                                                           runSpacing: 10,
@@ -687,8 +687,8 @@ class GoodsToInvoiceState extends State<GoodsToInvoice> with TickerProviderState
                                                                                                   });
                                                                                                 },
                                                                                                 child: AnimatedContainer(
-                                                                                                    height: SizeConfig.screenWidth*0.19,
-                                                                                                    width: SizeConfig.screenWidth*0.19,
+                                                                                                    height: SizeConfig.screenWidth!*0.19,
+                                                                                                    width: SizeConfig.screenWidth!*0.19,
                                                                                                     duration: Duration(milliseconds: 200),
                                                                                                     curve: Curves.easeIn,
                                                                                                     decoration: BoxDecoration(
@@ -763,7 +763,7 @@ class GoodsToInvoiceState extends State<GoodsToInvoice> with TickerProviderState
                                                               decoration: BoxDecoration(
                                                                 borderRadius: BorderRadius.circular(50),
                                                                 border: Border.all(color: AppTheme.addNewTextFieldBorder),
-                                                                color: gr.GINV_OtherChargesList[index].isEdit?Colors.white:AppTheme.disableColor
+                                                                color: gr.GINV_OtherChargesList[index].isEdit!?Colors.white:AppTheme.disableColor
                                                               ),
                                                               child: Text("${gr.GINV_OtherChargesList[index].otherChargesAmount}",
                                                                 style: TextStyle(fontSize: 14, fontFamily: 'RR', color: AppTheme.gridTextColor, letterSpacing: 0.2),
@@ -781,7 +781,7 @@ class GoodsToInvoiceState extends State<GoodsToInvoice> with TickerProviderState
                                                               GestureDetector(
                                                                   onTap:(){
                                                                     setState(() {
-                                                                      gr.GINV_OtherChargesList[index].isEdit=!gr.GINV_OtherChargesList[index].isEdit;
+                                                                      gr.GINV_OtherChargesList[index].isEdit=!gr.GINV_OtherChargesList[index].isEdit!;
                                                                     });
                                                                   },
                                                                   child: SvgPicture.asset("assets/svg/edit.svg",height: 18,width: 18,)
@@ -797,7 +797,7 @@ class GoodsToInvoiceState extends State<GoodsToInvoice> with TickerProviderState
                                                                     callback: (){
                                                                       Navigator.pop(context);
                                                                       Timer(Duration(milliseconds: 200),(){
-                                                                        gr.GINV_OtherChargesList[index].animationController.forward().whenComplete((){
+                                                                        gr.GINV_OtherChargesList[index].animationController!.forward().whenComplete((){
                                                                           setState(() {
                                                                             gr.GINV_OtherChargesList.removeAt(index);
                                                                           });
@@ -886,7 +886,7 @@ class GoodsToInvoiceState extends State<GoodsToInvoice> with TickerProviderState
 
                     children: [
                       CustomPaint(
-                        size: Size( SizeConfig.screenWidth, 55),
+                        size: Size( SizeConfig.screenWidth!, 55),
                         painter: RPSCustomPainter(),
                       ),
 
@@ -920,7 +920,7 @@ class GoodsToInvoiceState extends State<GoodsToInvoice> with TickerProviderState
 
                                       },
                                       child: Container(
-                                        width: SizeConfig.screenWidth*0.4,
+                                        width: SizeConfig.screenWidth!*0.4,
                                         child:Center(
                                           child: Image.asset("assets/goodsIcons/yes.jpg"),
                                         ),
@@ -935,7 +935,7 @@ class GoodsToInvoiceState extends State<GoodsToInvoice> with TickerProviderState
                                         Navigator.pop(context);
                                       },
                                       child: Container(
-                                        width: SizeConfig.screenWidth*0.4,
+                                        width: SizeConfig.screenWidth!*0.4,
                                         child:Center(
                                         child: Image.asset("assets/goodsIcons/no.jpg"),
                                       ),

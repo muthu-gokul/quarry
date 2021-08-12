@@ -30,8 +30,8 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
   GlobalKey <ScaffoldState> scaffoldkey = new GlobalKey<ScaffoldState>();
 
 
-  ScrollController scrollController;
-  ScrollController listViewController;
+  ScrollController? scrollController;
+  ScrollController? listViewController;
 
   bool _keyboardVisible = false;
 
@@ -42,7 +42,7 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
   @override
   void initState() {
     print("init");
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       scrollController = new ScrollController();
       listViewController = new ScrollController();
       setState(() {
@@ -103,7 +103,7 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
                       children: [
                         SizedBox(height: 160,),
                         Container(
-                          height: SizeConfig.screenHeight - 60,
+                          height: SizeConfig.screenHeight! - 60,
                           width: SizeConfig.screenWidth,
                           alignment: Alignment.topCenter,
                           decoration: BoxDecoration(
@@ -115,7 +115,7 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
 
                               int sensitivity = 5;
                               if (details.delta.dy > sensitivity) {
-                                scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
+                                scrollController!.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
                                   if(isListScroll){
                                     setState(() {
                                       isListScroll=false;
@@ -124,7 +124,7 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
                                 });
 
                               } else if(details.delta.dy < -sensitivity){
-                                scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
+                                scrollController!.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
 
                                   if(!isListScroll){
                                     setState(() {
@@ -135,7 +135,7 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
                               }
                             },
                             child: Container(
-                              height: SizeConfig.screenHeight - 100,
+                              height: SizeConfig.screenHeight! - 100,
                               width: SizeConfig.screenWidth,
 
                               decoration: BoxDecoration(
@@ -148,15 +148,15 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
                                 onNotification: (s){
                                   if(s is ScrollStartNotification){
 
-                                    if(listViewController.offset==0 && isListScroll && scrollController.offset==100 && listViewController.position.userScrollDirection==ScrollDirection.idle){
+                                    if(listViewController!.offset==0 && isListScroll && scrollController!.offset==100 && listViewController!.position.userScrollDirection==ScrollDirection.idle){
 
                                       Timer(Duration(milliseconds: 100), (){
-                                        if(listViewController.position.userScrollDirection!=ScrollDirection.reverse){
+                                        if(listViewController!.position.userScrollDirection!=ScrollDirection.reverse){
 
                                           //if(scrollController.position.pixels == scrollController.position.maxScrollExtent){
-                                          if(listViewController.offset==0){
+                                          if(listViewController!.offset==0){
 
-                                            scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value) {
+                                            scrollController!.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value) {
                                               if(isListScroll){
                                                 setState(() {
                                                   isListScroll=false;
@@ -169,7 +169,7 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
                                       });
                                     }
                                   }
-                                },
+                                } as bool Function(ScrollNotification)?,
                                 child: ListView(
                                   physics: isListScroll?AlwaysScrollableScrollPhysics():NeverScrollableScrollPhysics(),
                                   controller: listViewController,
@@ -177,7 +177,7 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
 
                                   children: [
                                     Container(
-                                      margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,top:SizeConfig.height20,),
+                                      margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!,top:SizeConfig.height20!,),
 
                                       width: SizeConfig.screenWidth,
                                       child: Row(
@@ -186,8 +186,8 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
                                           Container(
 
 
-                                              padding: EdgeInsets.only(left:SizeConfig.width10,),
-                                              width: SizeConfig.screenWidthM40*0.49,
+                                              padding: EdgeInsets.only(left:SizeConfig.width10!,),
+                                              width: SizeConfig.screenWidthM40!*0.49,
                                               height: 50,
                                               alignment: Alignment.centerLeft,
                                               decoration: BoxDecoration(
@@ -203,8 +203,8 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
                                           Container(
 
 
-                                              padding: EdgeInsets.only(left:SizeConfig.width10,),
-                                              width: SizeConfig.screenWidthM40*0.49,
+                                              padding: EdgeInsets.only(left:SizeConfig.width10!,),
+                                              width: SizeConfig.screenWidthM40!*0.49,
                                               height: 50,
                                               alignment: Alignment.centerLeft,
                                               decoration: BoxDecoration(
@@ -212,7 +212,7 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
                                                   border: Border.all(color: AppTheme.addNewTextFieldBorder),
                                                   color: AppTheme.editDisableColor
                                               ),
-                                              child:  Text(qn.EditInvoiceDate==null?"":"${DateFormat.yMMMd().add_jm().format(qn.EditInvoiceDate)}",
+                                              child:  Text(qn.EditInvoiceDate==null?"":"${DateFormat.yMMMd().add_jm().format(qn.EditInvoiceDate!)}",
                                                 style: TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 14),
                                               )
 
@@ -223,8 +223,8 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
 
                                     Container(
 
-                                        margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,top:SizeConfig.height20,),
-                                        padding: EdgeInsets.only(left:SizeConfig.width10,),
+                                        margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!,top:SizeConfig.height20!,),
+                                        padding: EdgeInsets.only(left:SizeConfig.width10!,),
                                         width: SizeConfig.screenWidth,
                                         height: 50,
                                         alignment: Alignment.centerLeft,
@@ -240,8 +240,8 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
                                     ),
                                     Container(
 
-                                        margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,top:SizeConfig.height20,),
-                                        padding: EdgeInsets.only(left:SizeConfig.width10,right:SizeConfig.width10,),
+                                        margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!,top:SizeConfig.height20!,),
+                                        padding: EdgeInsets.only(left:SizeConfig.width10!,right:SizeConfig.width10!,),
                                         width: SizeConfig.screenWidth,
                                         height: 50,
                                         alignment: Alignment.centerLeft,
@@ -292,9 +292,9 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
                                       width: SizeConfig.screenWidth,
 
                                       margin: EdgeInsets.only(
-                                        left: SizeConfig.width20,
-                                        right: SizeConfig.width20,
-                                        top: SizeConfig.height20,),
+                                        left: SizeConfig.width20!,
+                                        right: SizeConfig.width20!,
+                                        top: SizeConfig.height20!,),
                                       decoration: BoxDecoration(
                                           color: Colors.white,
                                           borderRadius: BorderRadius.circular(5),
@@ -318,9 +318,9 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
                                             child: Row(
                                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                               children: [
-                                                Container(width: SizeConfig.screenWidthM40*0.30,child: Text("Amount")),
-                                                Container( width: SizeConfig.screenWidthM40*0.30,child: Text("Payment Type")),
-                                                Container( width: SizeConfig.screenWidthM40*0.25,child: Text("Terms")),
+                                                Container(width: SizeConfig.screenWidthM40!*0.30,child: Text("Amount")),
+                                                Container( width: SizeConfig.screenWidthM40!*0.30,child: Text("Payment Type")),
+                                                Container( width: SizeConfig.screenWidthM40!*0.25,child: Text("Terms")),
 
                                               ],
 
@@ -332,16 +332,16 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
                                               itemCount: qn.paymentMappingList.length,
                                               itemBuilder: (context, index) {
                                                 return SlideTransition(
-                                                  position: Tween<Offset>(begin: Offset(qn.paymentMappingList[index].isEdit ? 0.0 :
-                                                  qn.paymentMappingList[index].isDelete ?1.0:0.0,
-                                                      qn.paymentMappingList[index].isEdit ? 0.0 :qn.paymentMappingList[index].isDelete ?0.0: 1.0),
-                                                      end:qn.paymentMappingList[index].isEdit ?Offset(1, 0): Offset.zero)
-                                                      .animate(qn.paymentMappingList[index].scaleController),
+                                                  position: Tween<Offset>(begin: Offset(qn.paymentMappingList[index].isEdit! ? 0.0 :
+                                                  qn.paymentMappingList[index].isDelete! ?1.0:0.0,
+                                                      qn.paymentMappingList[index].isEdit! ? 0.0 :qn.paymentMappingList[index].isDelete! ?0.0: 1.0),
+                                                      end:qn.paymentMappingList[index].isEdit! ?Offset(1, 0): Offset.zero)
+                                                      .animate(qn.paymentMappingList[index].scaleController!),
 
                                                   child: FadeTransition(
-                                                    opacity: Tween(begin: qn.paymentMappingList[index].isEdit ? 1.0 : 0.0,
-                                                        end: qn.paymentMappingList[index].isEdit ? 0.0 : 1.0)
-                                                        .animate(qn.paymentMappingList[index].scaleController),
+                                                    opacity: Tween(begin: qn.paymentMappingList[index].isEdit! ? 1.0 : 0.0,
+                                                        end: qn.paymentMappingList[index].isEdit! ? 0.0 : 1.0)
+                                                        .animate(qn.paymentMappingList[index].scaleController!),
                                                     child: Container(
                                                       padding: EdgeInsets.only(top: 5, bottom: 5,left: 10,right: 10),
                                                       decoration: BoxDecoration(
@@ -357,7 +357,7 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
                                                             children: [
 
                                                               Container(
-                                                                width: SizeConfig.screenWidthM40*0.4,
+                                                                width: SizeConfig.screenWidthM40!*0.4,
                                                                 height: 25,
                                                                 alignment:Alignment.centerLeft,
 
@@ -377,14 +377,14 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
                                                                 padding: EdgeInsets.only(left: 5),
                                                                 alignment: Alignment.centerLeft,
 
-                                                                width: SizeConfig.screenWidthM40*0.20,
+                                                                width: SizeConfig.screenWidthM40!*0.20,
                                                                 child: Text("${qn.paymentMappingList[index].PaymentCategoryName}",
                                                                   style: TextStyle(fontSize: 14, fontFamily: 'RR', color: AppTheme.gridTextColor, letterSpacing: 0.2),
                                                                 ),
                                                               ),
                                                               Container(
                                                                 alignment: Alignment.center,
-                                                                width:SizeConfig.screenWidthM40*0.25,
+                                                                width:SizeConfig.screenWidthM40!*0.25,
                                                               /*  padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
                                                                 decoration: BoxDecoration(
                                                                   borderRadius: BorderRadius.circular(25),
@@ -404,8 +404,8 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
                                                                     callback: (){
                                                                       Navigator.pop(context);
                                                                       Timer(Duration(milliseconds: 200), (){
-                                                                        if (qn.paymentMappingList[index].isEdit) {
-                                                                          qn.paymentMappingList[index].scaleController.forward().whenComplete(() {
+                                                                        if (qn.paymentMappingList[index].isEdit!) {
+                                                                          qn.paymentMappingList[index].scaleController!.forward().whenComplete(() {
                                                                             print("EIT");
                                                                             if (this.mounted) {
                                                                               setState(() {
@@ -423,7 +423,7 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
 
 
 
-                                                                          qn.paymentMappingList[index].scaleController.reverse().whenComplete(() {
+                                                                          qn.paymentMappingList[index].scaleController!.reverse().whenComplete(() {
                                                                             if (this.mounted) {
 
                                                                               setState(() {
@@ -457,10 +457,10 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
 
                                                             ],
                                                           ),
-                                                          Text("${DateFormat.yMMMd().add_jm().format(qn.paymentMappingList[index].createdDate)}",
+                                                          Text("${DateFormat.yMMMd().add_jm().format(qn.paymentMappingList[index].createdDate!)}",
                                                             style: TextStyle(fontSize: 10, fontFamily: 'RR', color: AppTheme.gridTextColor.withOpacity(0.5)),textAlign: TextAlign.left,
                                                           ),
-                                                          qn.paymentMappingList[index].Comment.isNotEmpty?Container(
+                                                          qn.paymentMappingList[index].Comment!.isNotEmpty?Container(
                                                             margin: EdgeInsets.only(top: 5),
                                                             width: SizeConfig.screenWidthM40,
                                                             child: Row(
@@ -468,7 +468,7 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
                                                                 Icon(Icons.comment,color: AppTheme.yellowColor,size: 20,),
                                                                 Container(
 
-                                                                  width: SizeConfig.screenWidthM40-45,
+                                                                  width: SizeConfig.screenWidthM40!-45,
                                                                   child: Text("${qn.paymentMappingList[index].Comment}",
                                                                   style: TextStyle(fontSize: 12,fontFamily: 'RR',color: AppTheme.addNewTextFieldText.withOpacity(0.7)),
                                                                   ),
@@ -494,7 +494,7 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
 
                                     Container(
                                       height: 50,
-                                      margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,top:SizeConfig.height20,),
+                                      margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!,top:SizeConfig.height20!,),
                                       width: SizeConfig.screenWidth,
                                       child: Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -502,20 +502,20 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
 
                                           Container(
                                             height: 50,
-                                            width: SizeConfig.screenWidth*0.42,
+                                            width: SizeConfig.screenWidth!*0.42,
 
                                             child: Stack(
                                               children: [
                                                 Align(
                                                   alignment: Alignment.centerLeft,
                                                   child: Container(
-                                                    width: SizeConfig.screenWidth*0.42,
+                                                    width: SizeConfig.screenWidth!*0.42,
                                                     height:50,
                                                     alignment: Alignment.center,
                                                     child: TextFormField(
                                                       onTap: (){
-                                                        if(scrollController.offset==0){
-                                                          scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                                        if(scrollController!.offset==0){
+                                                          scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                                         }
                                                         setState(() {
                                                           _keyboardVisible=true;
@@ -602,9 +602,9 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
 
                                                             });
 
-                                                            listViewController.animateTo(listViewController.position.maxScrollExtent, duration: Duration(milliseconds: 200), curve: Curves.easeIn).then((value) {
-                                                              qn.paymentMappingList[qn.paymentMappingList.length - 1].scaleController.forward().then((value) {
-                                                                listViewController.animateTo(listViewController.position.maxScrollExtent, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                                            listViewController!.animateTo(listViewController!.position.maxScrollExtent, duration: Duration(milliseconds: 200), curve: Curves.easeIn).then((value) {
+                                                              qn.paymentMappingList[qn.paymentMappingList.length - 1].scaleController!.forward().then((value) {
+                                                                listViewController!.animateTo(listViewController!.position.maxScrollExtent, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                                                 qn.clearPaymentEntry();
                                                               });
                                                             });
@@ -620,7 +620,7 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
                                                     child: Container(
                                                       height: 40,
                                                       width: 40,
-                                                     margin: EdgeInsets.only( right: SizeConfig.width5),
+                                                     margin: EdgeInsets.only( right: SizeConfig.width5!),
                                                       decoration: BoxDecoration(
                                                         shape: BoxShape.circle,
                                                         color: AppTheme.yellowColor,
@@ -645,9 +645,9 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
 
                                             },
                                             child: Container(
-                                              padding: EdgeInsets.only(left: SizeConfig.width5, right: SizeConfig.width5),
+                                              padding: EdgeInsets.only(left: SizeConfig.width5!, right: SizeConfig.width5!),
                                               height:50,
-                                              width: SizeConfig.screenWidth*0.42,
+                                              width: SizeConfig.screenWidth!*0.42,
                                               alignment: Alignment.centerLeft,
                                               decoration: BoxDecoration(
                                                 color: qn.paymentCategoryName == null ? AppTheme.disableColor:Colors.white,
@@ -656,7 +656,7 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
                                               ),
                                               child: Row(
                                                 children: [
-                                                  Text(qn.paymentCategoryName == null ? "Payment Type" : qn.paymentCategoryName,
+                                                  Text(qn.paymentCategoryName == null ? "Payment Type" : qn.paymentCategoryName!,
                                                     style: TextStyle(fontFamily: 'RR', fontSize: 16,
                                                       color: qn.paymentCategoryName == null ? AppTheme.addNewTextFieldText.withOpacity(0.5) : AppTheme.addNewTextFieldText,),
                                                   ),
@@ -695,7 +695,7 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
                                           _keyboardVisible=true;
                                           isListScroll=true;
                                         });
-                                        scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                        scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
 
                                       },
                                       onEditComplete: (){
@@ -715,7 +715,7 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
 
                                           width: SizeConfig.screenWidth,
                                           alignment: Alignment.center,
-                                          padding: EdgeInsets.only(left: SizeConfig.screenWidth*0.4),
+                                          padding: EdgeInsets.only(left: SizeConfig.screenWidth!*0.4),
                                           margin: EdgeInsets.only(top: 10),
                                           child: Column(
                                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -737,7 +737,7 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
                                           ),
                                         )
                                     ),
-                                    SizedBox(height:  _keyboardVisible ? SizeConfig.screenHeight * 0.5 :SizeConfig.height100,)
+                                    SizedBox(height:  _keyboardVisible ? SizeConfig.screenHeight! * 0.5 :SizeConfig.height100,)
                                   ],
                                 ),
                               ),
@@ -797,7 +797,7 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
                         Container(
                           margin:EdgeInsets.only(top: 0),
                           child: CustomPaint(
-                            size: Size( SizeConfig.screenWidth, 65),
+                            size: Size( SizeConfig.screenWidth!, 65),
                             painter: RPSCustomPainter3(),
                           ),
                         ),

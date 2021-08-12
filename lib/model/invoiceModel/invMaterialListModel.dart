@@ -12,16 +12,16 @@ class InvoiceMaterialModel {
     this.supplierType,
   });
 
-  int supplierId;
-  String supplierName;
-  int materialId;
-  String materialName;
-  int materialUnitId;
-  String unitName;
-  double taxValue;
-  double materialPrice;
-  double taxValue1;
-  String supplierType;
+  int? supplierId;
+  String? supplierName;
+  int? materialId;
+  String? materialName;
+  int? materialUnitId;
+  String? unitName;
+  double? taxValue;
+  double? materialPrice;
+  double? taxValue1;
+  String? supplierType;
 
   factory InvoiceMaterialModel.fromJson(Map<String, dynamic> json) => InvoiceMaterialModel(
     supplierId: json["SupplierId"],

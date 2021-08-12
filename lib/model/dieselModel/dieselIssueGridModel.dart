@@ -15,17 +15,17 @@ class DieselIssueGridModel {
     this.Type,
   });
 
-  DateTime issuedDate;
-  int plantId;
-  int dieselIssueId;
-  String plantName;
-  String Type;
-  int machineId;
-  String machineName;
-  double dieselIssuedQuantity;
-  double machineFuelReadingQuantity;
-  int issuedBy;
-  String issuedName;
+  DateTime? issuedDate;
+  int? plantId;
+  int? dieselIssueId;
+  String? plantName;
+  String? Type;
+  int? machineId;
+  String? machineName;
+  double? dieselIssuedQuantity;
+  double? machineFuelReadingQuantity;
+  int? issuedBy;
+  String? issuedName;
 
   factory DieselIssueGridModel.fromJson(Map<String, dynamic> json) => DieselIssueGridModel(
     issuedDate: DateTime.parse(json["IssuedDate"]),
@@ -42,7 +42,7 @@ class DieselIssueGridModel {
   );
 
   Map<String, dynamic> toJson() => {
-    "IssuedDate": issuedDate.toIso8601String(),
+    "IssuedDate": issuedDate!.toIso8601String(),
     "PlantId": plantId,
     "PlantName": plantName,
     "MachineId": machineId,
@@ -54,7 +54,7 @@ class DieselIssueGridModel {
   };
 
   Map<String, dynamic> toGridJson() => {
-    "Date": issuedDate!=null?DateFormat.yMMMd().format(issuedDate):" ",
+    "Date": issuedDate!=null?DateFormat.yMMMd().format(issuedDate!):" ",
     "Machine/Vehicle": machineName,
     "Type": Type,
     "Diesel Quantity": dieselIssuedQuantity,

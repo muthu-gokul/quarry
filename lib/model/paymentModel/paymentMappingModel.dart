@@ -4,19 +4,19 @@ import 'package:flutter/cupertino.dart';
 class PaymentMappingModel{
 
 
-  int InvoicePaymentMappingId;
-  int InvoiceId;
+  int? InvoicePaymentMappingId;
+  int? InvoiceId;
 
-  int PartyId;
-  int PaymentCategoryId;
-  String PaymentCategoryName;
-  double Amount;
-  String Comment;
-  int IsActive;
-  AnimationController scaleController;
-  bool isEdit;
-  bool isDelete;
-  DateTime createdDate;
+  int? PartyId;
+  int? PaymentCategoryId;
+  String? PaymentCategoryName;
+  double? Amount;
+  String? Comment;
+  int? IsActive;
+  AnimationController? scaleController;
+  bool? isEdit;
+  bool? isDelete;
+  DateTime? createdDate;
 
 /*  guestNoController=AnimationController(duration: const Duration(milliseconds: 300), vsync: this);
   scaleAnimation = new Tween(begin: 0.0, end: 1.0)
@@ -69,7 +69,7 @@ class PaymentMappingModel{
     "Amount": Amount,
     "Comment": Comment,
     "IsActive": IsActive,
-    "CreatedDate": createdDate.toIso8601String(),
+    "CreatedDate": createdDate!.toIso8601String(),
 
 
 

@@ -24,16 +24,16 @@ class CustomerNotifier extends ChangeNotifier {
   TextEditingController customerGstNumber = new TextEditingController();
   TextEditingController customerType = new TextEditingController();
   TextEditingController customerCreditLimit = new TextEditingController();
-  double usedAmount=0.0;
-  double balanceAmount=0.0;
+  double? usedAmount=0.0;
+  double? balanceAmount=0.0;
 
-  bool isCreditCustomer = false;
+  bool? isCreditCustomer = false;
 
-  String customerLogoFileName;
-  String customerLogoFolderName;
+  String? customerLogoFileName;
+  String? customerLogoFolderName;
 
 
-  int editCustomerId = null;
+  int? editCustomerId = null;
   final call = ApiManager();
 
 
@@ -109,7 +109,7 @@ class CustomerNotifier extends ChangeNotifier {
         {
           "Key": "IsCreditCustomer",
           "Type": "int",
-          "Value": isCreditCustomer?1:0
+          "Value": isCreditCustomer!?1:0
         },
         {
           "Key": "CustomerCreditLimit",
@@ -164,7 +164,7 @@ class CustomerNotifier extends ChangeNotifier {
   }
 
 
-  GetCustomerDetailDbhit(BuildContext context, int customerId) async {
+  GetCustomerDetailDbhit(BuildContext context, int? customerId) async {
     print(customerId);
     updatecustomerLoader(true);
     var body = {
@@ -200,10 +200,10 @@ class CustomerNotifier extends ChangeNotifier {
       await call.ApiCallGetInvoke(body, context).then((value) {
 
         var parsed = json.decode(value);
-        var t = parsed['Table'] as List;
+        var t = parsed['Table'] as List?;
         print(t);
         if(customerId!=null){
-          editCustomerId=t[0]['CustomerId'];
+          editCustomerId=t![0]['CustomerId'];
           customerName.text=t[0]['CustomerName'];
           customerAddress.text=t[0]['CustomerAddress'];
           customerCity.text=t[0]['CustomerCity'];
@@ -215,14 +215,14 @@ class CustomerNotifier extends ChangeNotifier {
           customerEmail.text=t[0]['CustomerEmail'];
           customerCreditLimit.text=t[0]['CustomerCreditLimit'].toString();
           isCreditCustomer=t[0]['IsCreditCustomer']==0?false:true;
-          if(isCreditCustomer){
+          if(isCreditCustomer!){
             usedAmount=t[0]['UsedAmount'];
             balanceAmount=t[0]['BalanceAmount'];
           }
 
         }
         else{
-          customerGridList = t.map((e) => CustomerDetails.fromJson(e)).toList();
+          customerGridList = t!.map((e) => CustomerDetails.fromJson(e)).toList();
         }
 
 

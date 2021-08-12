@@ -4,7 +4,7 @@ import '../../styles/app_theme.dart';
 import '../../styles/size.dart';
 
 class ReportGridStyleModel{
-  String columnName;
+  String? columnName;
   double width;
   Alignment alignment;
   EdgeInsets edgeInsets;
@@ -30,14 +30,14 @@ class ReportGridStyleModel{
 
 class ReportDataTable extends StatefulWidget {
 
-  List<ReportGridStyleModel> gridDataRowList=[];
-  List<dynamic> gridData=[];
+  List<ReportGridStyleModel>? gridDataRowList=[];
+  List<dynamic>? gridData=[];
 
-  int selectedIndex;
-  VoidCallback voidCallback;
-  Function(int) func;
-  double topMargin;//70 || 50
-  double gridBodyReduceHeight;// 260  // 140
+  int? selectedIndex;
+  VoidCallback? voidCallback;
+  Function(int)? func;
+  double? topMargin;//70 || 50
+  double? gridBodyReduceHeight;// 260  // 140
 
   ReportDataTable({this.gridDataRowList,this.gridData,this.selectedIndex,this.voidCallback,this.func,this.topMargin,this.gridBodyReduceHeight});
   @override
@@ -108,9 +108,9 @@ class _ReportDataTableState extends State<ReportDataTable> {
     // print(gridCol);
     // print(widget.selectedIndex);
     return Container(
-        height: SizeConfig.screenHeight-widget.topMargin,
+        height: SizeConfig.screenHeight!-widget.topMargin!,
         width: SizeConfig.screenWidth,
-        margin: EdgeInsets.only(top: widget.topMargin),
+        margin: EdgeInsets.only(top: widget.topMargin!),
         clipBehavior: Clip.antiAlias,
         decoration: BoxDecoration(
             color:AppTheme.gridbodyBgColor,
@@ -128,14 +128,14 @@ class _ReportDataTableState extends State<ReportDataTable> {
                 children: [
                   Container(
                     height: 50,
-                    width: SizeConfig.screenWidth-149,
+                    width: SizeConfig.screenWidth!-149,
                     color: showShadow? AppTheme.bgColor.withOpacity(0.8):AppTheme.bgColor,
                     child: SingleChildScrollView(
                       controller: header,
                       scrollDirection: Axis.horizontal,
                       physics: ClampingScrollPhysics(),
                       child: Row(
-                          children: widget.gridDataRowList.asMap().
+                          children: widget.gridDataRowList!.asMap().
                           map((i, value) => MapEntry(i, i==0?Container():
                           value.isActive?Container(
                               alignment: value.alignment,
@@ -146,7 +146,7 @@ class _ReportDataTableState extends State<ReportDataTable> {
                                   minWidth: 150,
                                   maxWidth: 200
                               ),
-                              child: FittedBox(child: Text(value.columnName,style: AppTheme.TSWhite166,))
+                              child: FittedBox(child: Text(value.columnName!,style: AppTheme.TSWhite166,))
                           ):Container()
                           ))
                               .values.toList()
@@ -155,8 +155,8 @@ class _ReportDataTableState extends State<ReportDataTable> {
 
                   ),
                   Container(
-                    height: SizeConfig.screenHeight-widget.gridBodyReduceHeight,
-                    width: SizeConfig.screenWidth-149,
+                    height: SizeConfig.screenHeight!-widget.gridBodyReduceHeight!,
+                    width: SizeConfig.screenWidth!-149,
                     alignment: Alignment.topLeft,
                     color: AppTheme.gridbodyBgColor,
                     child: SingleChildScrollView(
@@ -164,7 +164,7 @@ class _ReportDataTableState extends State<ReportDataTable> {
                       scrollDirection: Axis.horizontal,
                       physics: ClampingScrollPhysics(),
                       child: Container(
-                        height: SizeConfig.screenHeight-widget.gridBodyReduceHeight,
+                        height: SizeConfig.screenHeight!-widget.gridBodyReduceHeight!,
                         alignment: Alignment.topCenter,
                         color:AppTheme.gridbodyBgColor,
                         child: SingleChildScrollView(
@@ -173,12 +173,12 @@ class _ReportDataTableState extends State<ReportDataTable> {
                           physics: ClampingScrollPhysics(),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                              children:widget.gridData.asMap().
+                              children:widget.gridData!.asMap().
                               map((i, value) => MapEntry(
                                   i,InkWell(
                                 //   onTap: widget.voidCallback,
                                 onTap: (){
-                                  widget.func(i);
+                                  widget.func!(i);
                                   //setState(() {});
                                 },
                                 child: Container(
@@ -188,11 +188,11 @@ class _ReportDataTableState extends State<ReportDataTable> {
                                     color: widget.selectedIndex==i?AppTheme.yellowColor:AppTheme.gridbodyBgColor,
                                   ),
                                   height: 50,
-                                  margin: EdgeInsets.only(bottom:i==widget.gridData.length-1?70: 0),
+                                  margin: EdgeInsets.only(bottom:i==widget.gridData!.length-1?70: 0),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
 
-                                      children: widget.gridDataRowList.asMap().map((j, v) {
+                                      children: widget.gridDataRowList!.asMap().map((j, v) {
 
 
                                         if((10.0*value.get(v.columnName).toString().length)>v.width){
@@ -250,13 +250,13 @@ class _ReportDataTableState extends State<ReportDataTable> {
                     height: 50,
                     width: 150,
                     color: AppTheme.bgColor,
-                    padding: widget.gridDataRowList[0].edgeInsets,
-                    alignment: widget.gridDataRowList[0].alignment,
-                    child: FittedBox(child: Text("${widget.gridDataRowList[0].columnName}",style: AppTheme.TSWhite166,)),
+                    padding: widget.gridDataRowList![0].edgeInsets,
+                    alignment: widget.gridDataRowList![0].alignment,
+                    child: FittedBox(child: Text("${widget.gridDataRowList![0].columnName}",style: AppTheme.TSWhite166,)),
 
                   ),
                   Container(
-                    height: SizeConfig.screenHeight-widget.gridBodyReduceHeight,
+                    height: SizeConfig.screenHeight!-widget.gridBodyReduceHeight!,
                     alignment: Alignment.topCenter,
                     decoration: BoxDecoration(
                         color:showShadow? AppTheme.gridbodyBgColor:Colors.transparent,
@@ -270,24 +270,24 @@ class _ReportDataTableState extends State<ReportDataTable> {
                         ]
                     ),
                     child: Container(
-                      height: SizeConfig.screenHeight-widget.gridBodyReduceHeight,
+                      height: SizeConfig.screenHeight!-widget.gridBodyReduceHeight!,
                       alignment: Alignment.topCenter,
 
                       child: SingleChildScrollView(
                         controller: verticalLeft,
                         scrollDirection: Axis.vertical,
                         child: Column(
-                            children: widget.gridData.asMap().
+                            children: widget.gridData!.asMap().
                             map((i, value) => MapEntry(
                                 i,InkWell(
                               onTap: (){
-                                widget.func(i);
+                                widget.func!(i);
                                 //setState(() {});
                               },
                               child:  Container(
-                                alignment:widget.gridDataRowList[0].alignment,
-                                padding: widget.gridDataRowList[0].edgeInsets,
-                                margin: EdgeInsets.only(bottom:i==widget.gridData.length-1?70: 0),
+                                alignment:widget.gridDataRowList![0].alignment,
+                                padding: widget.gridDataRowList![0].edgeInsets,
+                                margin: EdgeInsets.only(bottom:i==widget.gridData!.length-1?70: 0),
                                 decoration: BoxDecoration(
                                   border: AppTheme.gridBottomborder,
                                   color: widget.selectedIndex==i?AppTheme.yellowColor:AppTheme.gridbodyBgColor,
@@ -304,7 +304,7 @@ class _ReportDataTableState extends State<ReportDataTable> {
                                   ),
                                   child: FittedBox(
                                     fit: BoxFit.contain,
-                                    child: Text("${value.get(widget.gridDataRowList[0].columnName)}",
+                                    child: Text("${value.get(widget.gridDataRowList![0].columnName)}",
                                       style:widget.selectedIndex==i?AppTheme.bgColorTS14:AppTheme.gridTextColor14,
                                     ),
                                   ),

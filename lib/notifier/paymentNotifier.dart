@@ -24,8 +24,8 @@ class PaymentNotifier extends ChangeNotifier{
   final call=ApiManager();
 
 
-  int PlantId=null;
-  String PlantName=null;
+  int? PlantId=null;
+  String? PlantName=null;
 
   List<PlantUserModel> plantList=[];
   int plantCount=0;
@@ -61,7 +61,7 @@ class PaymentNotifier extends ChangeNotifier{
       await call.ApiCallGetInvoke(body,context).then((value) {
         if(value!=null){
           var parsed=json.decode(value);
-          var t=parsed['Table'] as List;
+          var t=parsed['Table'] as List?;
           var t1=parsed['Table1'] as List;
 
 
@@ -175,15 +175,15 @@ class PaymentNotifier extends ChangeNotifier{
   List<InvoiceCounterModel> counterList=[];
 
 
-  int EditinvoiceId=null;
-  String EditInvoiceNumber=null;
-  DateTime EditInvoiceDate=null;
-  int EditPlantId=null;
-  String EditPlantName=null;
-  String EditInvoiceType=null;
-  int EditPartyId=null;
-  String EditPartyName=null;
-  double EditGrandTotalAmount=null;
+  int? EditinvoiceId=null;
+  String? EditInvoiceNumber=null;
+  DateTime? EditInvoiceDate=null;
+  int? EditPlantId=null;
+  String? EditPlantName=null;
+  String? EditInvoiceType=null;
+  int? EditPartyId=null;
+  String? EditPartyName=null;
+  double? EditGrandTotalAmount=null;
 
   List<PaymentMappingModel> paymentMappingList=[];
 
@@ -201,8 +201,8 @@ class PaymentNotifier extends ChangeNotifier{
   }
 
 
-  int paymentCategoryId=null;
-  String paymentCategoryName=null;
+  int? paymentCategoryId=null;
+  String? paymentCategoryName=null;
   TextEditingController amount =new TextEditingController();
   TextEditingController comment =new TextEditingController();
 
@@ -211,9 +211,9 @@ class PaymentNotifier extends ChangeNotifier{
     balanceAmount=0.0;
     double paidAmount=0.0;
     paymentMappingList.forEach((element) {
-      paidAmount=paidAmount+element.Amount;
+      paidAmount=paidAmount+element.Amount!;
     });
-    balanceAmount=EditGrandTotalAmount-paidAmount;
+    balanceAmount=EditGrandTotalAmount!-paidAmount;
     notifyListeners();
   }
 
@@ -290,26 +290,26 @@ class PaymentNotifier extends ChangeNotifier{
 
   }
 
-  List<DateTime> picked=[];
+  List<DateTime?> picked=[];
   List<ManageUserPlantModel> filterUsersPlantList=[];
 
-  GetPaymentDbHit(BuildContext context,int invoiceId,TickerProviderStateMixin tickerProviderStateMixin)  async{
+  GetPaymentDbHit(BuildContext context,int? invoiceId,TickerProviderStateMixin tickerProviderStateMixin)  async{
 
 
     updatePaymentLoader(true);
-    String fromDate,toDate;
+    String? fromDate,toDate;
 
     if(picked.isEmpty){
       fromDate=DateFormat("yyyy-MM-dd").format(DateTime.now()).toString();
       toDate=DateFormat("yyyy-MM-dd").format(DateTime.now()).toString();
     }
     else if(picked.length==1){
-      fromDate=DateFormat("yyyy-MM-dd").format(picked[0]).toString();
-      toDate=DateFormat("yyyy-MM-dd").format(picked[0]).toString();
+      fromDate=DateFormat("yyyy-MM-dd").format(picked[0]!).toString();
+      toDate=DateFormat("yyyy-MM-dd").format(picked[0]!).toString();
     }
     else if(picked.length==2){
-      fromDate=DateFormat("yyyy-MM-dd").format(picked[0]).toString();
-      toDate=DateFormat("yyyy-MM-dd").format(picked[1]).toString();
+      fromDate=DateFormat("yyyy-MM-dd").format(picked[0]!).toString();
+      toDate=DateFormat("yyyy-MM-dd").format(picked[1]!).toString();
     }
     var body={
       "Fields": [
@@ -373,11 +373,11 @@ class PaymentNotifier extends ChangeNotifier{
             });
           }
           var parsed=json.decode(value);
-          var t=parsed['Table'] as List;
+          var t=parsed['Table'] as List?;
           if(invoiceId!=null){
             var t1=parsed['Table1'] as List;
 
-            EditinvoiceId=t[0]['InvoiceId'];
+            EditinvoiceId=t![0]['InvoiceId'];
             EditInvoiceNumber=t[0]['InvoiceNumber'];
             EditInvoiceDate=DateTime.parse(t[0]['InvoiceDate']);
             EditPlantId=t[0]['PlantId'];
@@ -397,7 +397,7 @@ class PaymentNotifier extends ChangeNotifier{
           }
           else{
             print(t);
-                gridPaymentList=t.map((e) => PaymentGridModel.fromJson(e)).toList();
+                gridPaymentList=t!.map((e) => PaymentGridModel.fromJson(e)).toList();
 
                 filterGridValues();
           }
@@ -434,7 +434,7 @@ class PaymentNotifier extends ChangeNotifier{
 
 
       filterUsersPlantList.forEach((element) {
-        if(element.isActive){
+        if(element.isActive!){
           filterGridPaymentList=filterGridPaymentList+filterGridPaymentList2.where((ele) => ele.plantId==element.plantId).toList();
         }
       });
@@ -467,7 +467,7 @@ class PaymentNotifier extends ChangeNotifier{
       filterGridPaymentList2=gridPaymentList.where((element) => element.invoiceType=="Payable").toList();
 
       filterUsersPlantList.forEach((element) {
-        if(element.isActive){
+        if(element.isActive!){
           filterGridPaymentList=filterGridPaymentList+filterGridPaymentList2.where((ele) => ele.plantId==element.plantId).toList();
         }
       });
@@ -501,10 +501,10 @@ class PaymentNotifier extends ChangeNotifier{
 
 
 /*          INSERT          */
-  int selectedPartyId=null;
-  String selectedPartyName=null;
+  int? selectedPartyId=null;
+  String? selectedPartyName=null;
   TextEditingController materialName=new TextEditingController();
-  DateTime paymentDate;
+  DateTime? paymentDate;
 
 
   InsertPaymentDbHit(BuildContext context,TickerProviderStateMixin tickerProviderStateMixin)  async{
@@ -536,7 +536,7 @@ class PaymentNotifier extends ChangeNotifier{
         {
           "Key": "InvoicePaymentDate",
           "Type": "String",
-          "Value": DateFormat('yyyy-MM-dd').format(paymentDate)
+          "Value": DateFormat('yyyy-MM-dd').format(paymentDate!)
         },
         {
           "Key": "PlantId",

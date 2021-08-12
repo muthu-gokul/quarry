@@ -24,15 +24,15 @@ class PurchaseNotifier extends ChangeNotifier{
 
 
 
-  String supplierType=null;
+  String? supplierType=null;
 
-  int supplierId=null;
-  var supplierName=null;
+  int? supplierId=null;
+  dynamic supplierName=null;
 
-  DateTime PurchaseDate;
-  DateTime ExpectedPurchaseDate;
+  late DateTime PurchaseDate;
+  DateTime? ExpectedPurchaseDate;
 
-  int PurchaseEditId=null;
+  int? PurchaseEditId=null;
 
 
   List<PurchaseSupplierType> supplierTypeList=[];
@@ -45,13 +45,13 @@ class PurchaseNotifier extends ChangeNotifier{
   List<PurchaseMaterialsListModel> searchFilterMaterialsList=[];
 
 
-  int PlantId=null;
-  int EditPlantId=null;
-  String PlantName=null;
+  int? PlantId=null;
+  int? EditPlantId=null;
+  String? PlantName=null;
 
   final call=ApiManager();
   List<PlantUserModel> plantList=[];
-  int plantCount;
+  int? plantCount;
   Future<dynamic>  PlantUserDropDownValues(BuildContext context) async {
 
     plantCount=0;
@@ -85,12 +85,12 @@ class PurchaseNotifier extends ChangeNotifier{
         if(value!=null){
           var parsed=json.decode(value);
 
-          var t=parsed['Table'] as List;
+          var t=parsed['Table'] as List?;
           var t1=parsed['Table1'] as List;
           plantList=t1.map((e) => PlantUserModel.fromJson(e)).toList();
           plantList.forEach((element) {
             if(element.userId==Provider.of<QuarryNotifier>(context,listen: false).UserId){
-              plantCount=plantCount+1;
+              plantCount=plantCount!+1;
               if(!isPurchaseEdit){
                 PlantId=element.plantId;
                 PlantName=element.plantName;
@@ -160,11 +160,11 @@ class PurchaseNotifier extends ChangeNotifier{
       await call.ApiCallGetInvoke(body,context).then((value) {
         if(value!=null){
           var parsed=json.decode(value);
-          var t=parsed['Table'] as List;
+          var t=parsed['Table'] as List?;
           var t1=parsed['Table1'] as List;
           var t2=parsed['Table2'] as List;
           var t3=parsed['Table3'] as List;
-          var t4=parsed['Table4'] as List;
+          var t4=parsed['Table4'] as List?;
 
 
           materialsList=t1.map((e) => PurchaseMaterialsListModel.fromJson(e)).toList();
@@ -197,7 +197,7 @@ class PurchaseNotifier extends ChangeNotifier{
    }
    else{
     // filterMaterialsList=materialsList.where((element) => element.materialName.toLowerCase().contains(value.toLowerCase())).toList();
-     searchFilterMaterialsList=filterMaterialsList.where((element) => element.materialName.toLowerCase().contains(value.toLowerCase())).toList();
+     searchFilterMaterialsList=filterMaterialsList.where((element) => element.materialName!.toLowerCase().contains(value.toLowerCase())).toList();
    }
    notifyListeners();
  }
@@ -208,7 +208,7 @@ class PurchaseNotifier extends ChangeNotifier{
      searchFilterSuppliersList=filterSuppliersList;
    }
    else{
-     searchFilterSuppliersList=filterSuppliersList.where((element) => element.supplierName.toLowerCase().contains(value.toLowerCase())).toList();
+     searchFilterSuppliersList=filterSuppliersList.where((element) => element.supplierName!.toLowerCase().contains(value.toLowerCase())).toList();
    }
    notifyListeners();
  }
@@ -230,7 +230,7 @@ class PurchaseNotifier extends ChangeNotifier{
     notifyListeners();
   }
 
-  bool isTax=false;
+  bool? isTax=false;
   updateIsTax(bool value){
     isTax=value;
     notifyListeners();
@@ -246,10 +246,10 @@ class PurchaseNotifier extends ChangeNotifier{
       purchaseOrdersMappingList[index].DiscountAmount=0.0;
 
       if(purchaseqty.isEmpty){
-        purchaseOrdersMappingList[index].purchaseQty..text="";
+        purchaseOrdersMappingList[index].purchaseQty!..text="";
         purchaseOrdersCalc(index,"0");
       }else{
-        purchaseOrdersMappingList[index].purchaseQty..text=purchaseqty;
+        purchaseOrdersMappingList[index].purchaseQty!..text=purchaseqty;
         purchaseOrdersCalc(index,purchaseqty);
       }
 
@@ -267,10 +267,10 @@ class PurchaseNotifier extends ChangeNotifier{
       purchaseOrdersMappingList[index].DiscountAmount=0.0;
 
       if(purchaseqty.isEmpty){
-        purchaseOrdersMappingList[index].purchaseQty..text="";
+        purchaseOrdersMappingList[index].purchaseQty!..text="";
         purchaseOrdersCalc(index,"0");
       }else{
-        purchaseOrdersMappingList[index].purchaseQty..text=purchaseqty;
+        purchaseOrdersMappingList[index].purchaseQty!..text=purchaseqty;
         purchaseOrdersCalc(index,purchaseqty);
       }
 
@@ -298,7 +298,7 @@ class PurchaseNotifier extends ChangeNotifier{
       if( purchaseOrdersMappingList[index].IsDiscount==0){
         purchaseOrdersMappingList[index].Amount=double.parse((Decimal.parse(purchaseQty)*Decimal.parse(purchaseOrdersMappingList[index].MaterialPrice.toString())).toString());
 
-        if(isTax){
+        if(isTax!){
           purchaseOrdersMappingList[index].TaxAmount=double.parse(((Decimal.parse(purchaseOrdersMappingList[index].TaxValue.toString())*(Decimal.parse(purchaseOrdersMappingList[index].Amount.toString())-Decimal.parse(purchaseOrdersMappingList[index].DiscountAmount.toString())))/Decimal.parse("100")).toString());
         }else{
           purchaseOrdersMappingList[index].TaxAmount=0.0;
@@ -311,7 +311,7 @@ class PurchaseNotifier extends ChangeNotifier{
         if(purchaseOrdersMappingList[index].IsPercentage==1){
           purchaseOrdersMappingList[index].Amount=double.parse((Decimal.parse(purchaseQty)*Decimal.parse(purchaseOrdersMappingList[index].MaterialPrice.toString())).toString());
           purchaseOrdersMappingList[index].DiscountAmount=double.parse(((Decimal.parse(purchaseOrdersMappingList[index].DiscountValue.toString())*Decimal.parse(purchaseOrdersMappingList[index].Amount.toString()))/Decimal.parse("100")).toString());
-          if(isTax){
+          if(isTax!){
             purchaseOrdersMappingList[index].TaxAmount=double.parse(((((Decimal.parse(purchaseOrdersMappingList[index].Amount.toString()))-Decimal.parse(purchaseOrdersMappingList[index].DiscountAmount.toString())) * Decimal.parse(purchaseOrdersMappingList[index].TaxValue.toString()) )/Decimal.parse("100")).toString());
           }else{
             purchaseOrdersMappingList[index].TaxAmount=0.0;
@@ -324,7 +324,7 @@ class PurchaseNotifier extends ChangeNotifier{
           purchaseOrdersMappingList[index].Amount=double.parse((Decimal.parse(purchaseQty)*Decimal.parse(purchaseOrdersMappingList[index].MaterialPrice.toString())).toString());
 
           purchaseOrdersMappingList[index].DiscountAmount=double.parse((Decimal.parse(purchaseOrdersMappingList[index].DiscountValue.toString())).toString());
-          if(isTax){
+          if(isTax!){
             purchaseOrdersMappingList[index].TaxAmount=double.parse(((((Decimal.parse(purchaseOrdersMappingList[index].Amount.toString()))-Decimal.parse(purchaseOrdersMappingList[index].DiscountAmount.toString())) * Decimal.parse(purchaseOrdersMappingList[index].TaxValue.toString()) )/Decimal.parse("100")).toString());
           }else{
             purchaseOrdersMappingList[index].TaxAmount=0.0;
@@ -340,11 +340,11 @@ class PurchaseNotifier extends ChangeNotifier{
   
 
 
-  double subtotal=0.0;
-  double taxAmount=0.0;
+  double? subtotal=0.0;
+  double? taxAmount=0.0;
   double discountAmount=0.0;
   double discountedSubtotal=0.0;
-  double grandTotal=0.0;
+  double? grandTotal=0.0;
   double otherCharges=0.0;
 
 
@@ -414,7 +414,7 @@ class PurchaseNotifier extends ChangeNotifier{
         {
           "Key": "ExpectedDate",
           "Type": "String",
-          "Value":ExpectedPurchaseDate!=null? DateFormat("yyyy-MM-dd").format(ExpectedPurchaseDate).toString():null
+          "Value":ExpectedPurchaseDate!=null? DateFormat("yyyy-MM-dd").format(ExpectedPurchaseDate!).toString():null
         },
         {
           "Key": "SupplierType",
@@ -454,7 +454,7 @@ class PurchaseNotifier extends ChangeNotifier{
         {
           "Key": "IsTax",
           "Type": "int",
-          "Value": isTax?1:0
+          "Value": isTax!?1:0
         },
 
         {
@@ -503,7 +503,7 @@ class PurchaseNotifier extends ChangeNotifier{
 
 
 
-  List<DateTime> picked=[];
+  List<DateTime?> picked=[];
   List<ManageUserPlantModel> filterUsersPlantList=[];
 
 
@@ -512,21 +512,21 @@ class PurchaseNotifier extends ChangeNotifier{
   List<PurchaseOrderGridModel> filterPurchaseGridList=[];
 
 
-  GetPurchaseDbHit(BuildContext context,int PurchaseOrderId)  async{
+  GetPurchaseDbHit(BuildContext context,int? PurchaseOrderId)  async{
     updatePurchaseLoader(true);
-    String fromDate,toDate;
+    String? fromDate,toDate;
 
     if(picked.isEmpty){
       fromDate=DateFormat("yyyy-MM-dd").format(DateTime.now()).toString();
       toDate=DateFormat("yyyy-MM-dd").format(DateTime.now()).toString();
     }
     else if(picked.length==1){
-      fromDate=DateFormat("yyyy-MM-dd").format(picked[0]).toString();
-      toDate=DateFormat("yyyy-MM-dd").format(picked[0]).toString();
+      fromDate=DateFormat("yyyy-MM-dd").format(picked[0]!).toString();
+      toDate=DateFormat("yyyy-MM-dd").format(picked[0]!).toString();
     }
     else if(picked.length==2){
-      fromDate=DateFormat("yyyy-MM-dd").format(picked[0]).toString();
-      toDate=DateFormat("yyyy-MM-dd").format(picked[1]).toString();
+      fromDate=DateFormat("yyyy-MM-dd").format(picked[0]!).toString();
+      toDate=DateFormat("yyyy-MM-dd").format(picked[1]!).toString();
     }
 
     var body={
@@ -591,7 +591,7 @@ class PurchaseNotifier extends ChangeNotifier{
           }
 
           var parsed=json.decode(value);
-          var t=parsed['Table'] as List;
+          var t=parsed['Table'] as List?;
           if(PurchaseOrderId!=null){
             print("t_$t");
             var t1=parsed['Table1'] as List;
@@ -599,7 +599,7 @@ class PurchaseNotifier extends ChangeNotifier{
             var t2=parsed['Table2'] as List;
             print(t2);
 
-            PurchaseEditId=t[0]['PurchaseOrderId'];
+            PurchaseEditId=t![0]['PurchaseOrderId'];
             EditPlantId=t[0]['PlantId'];
             PlantId=t[0]['PlantId'];
             PlantName=t[0]['PlantName'];
@@ -608,7 +608,7 @@ class PurchaseNotifier extends ChangeNotifier{
             supplierId=t[0]['Supplier'];
             supplierName=t[0]['SupplierName'];
 
-            filterSuppliersList=suppliersList.where((element) => element.supplierType.toLowerCase()==supplierType.toLowerCase()).toList();
+            filterSuppliersList=suppliersList.where((element) => element.supplierType!.toLowerCase()==supplierType!.toLowerCase()).toList();
             searchFilterSuppliersList=filterSuppliersList;
 
             if(supplierType=='External'){
@@ -645,7 +645,7 @@ class PurchaseNotifier extends ChangeNotifier{
           }
           else{
             print(t);
-            filterPurchaseGridList=t.map((e) => PurchaseOrderGridModel.fromJson(e)).toList();
+            filterPurchaseGridList=t!.map((e) => PurchaseOrderGridModel.fromJson(e)).toList();
             filterPurchaseGrid();
 
           }
@@ -665,11 +665,11 @@ class PurchaseNotifier extends ChangeNotifier{
     purchaseGridList.clear();
     filterUsersPlantList.forEach((element) {
 
-      if(element.isActive){
+      if(element.isActive!){
         purchaseGridList=purchaseGridList+filterPurchaseGridList.where((ele) => ele.PlantId==element.plantId).toList();
       }
     });
-    purchaseGridList.sort((a,b)=>a.purchaseOrderId.compareTo(b.purchaseOrderId));
+    purchaseGridList.sort((a,b)=>a.purchaseOrderId!.compareTo(b.purchaseOrderId!));
     notifyListeners();
   }
 

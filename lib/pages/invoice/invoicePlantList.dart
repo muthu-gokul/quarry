@@ -22,7 +22,7 @@ import 'package:quarry/widgets/bottomBarAddButton.dart';
 
 
 class InvoicePlantList extends StatefulWidget {
-  VoidCallback drawerCallback;
+  VoidCallback? drawerCallback;
   InvoicePlantList({this.drawerCallback});
   @override
   InvoicePlantListState createState() => InvoicePlantListState();
@@ -33,14 +33,14 @@ class InvoicePlantListState extends State<InvoicePlantList> with TickerProviderS
 
 
 
-  ScrollController scrollController;
-  ScrollController listViewController;
+  ScrollController? scrollController;
+  ScrollController? listViewController;
   bool isListScroll=false;
 
   @override
   void initState() {
 
-    WidgetsBinding.instance.addPostFrameCallback((_){
+    WidgetsBinding.instance!.addPostFrameCallback((_){
 
 
       scrollController=new ScrollController();
@@ -101,7 +101,7 @@ class InvoicePlantListState extends State<InvoicePlantList> with TickerProviderS
 
                           int sensitivity = 5;
                           if (details.delta.dy > sensitivity) {
-                            scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
+                            scrollController!.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
                               if(isListScroll){
                                 setState(() {
                                   isListScroll=false;
@@ -110,7 +110,7 @@ class InvoicePlantListState extends State<InvoicePlantList> with TickerProviderS
                             });
 
                           } else if(details.delta.dy < -sensitivity){
-                            scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
+                            scrollController!.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
 
                               if(!isListScroll){
                                 setState(() {
@@ -121,7 +121,7 @@ class InvoicePlantListState extends State<InvoicePlantList> with TickerProviderS
                           }
                         },
                         child: Container(
-                          height: SizeConfig.screenHeight-60,
+                          height: SizeConfig.screenHeight!-60,
                           width: SizeConfig.screenWidth,
                           clipBehavior: Clip.antiAlias,
                           decoration: BoxDecoration(
@@ -132,15 +132,15 @@ class InvoicePlantListState extends State<InvoicePlantList> with TickerProviderS
                             onNotification: (s){
                               if(s is ScrollStartNotification){
 
-                                if(listViewController.offset==0 && isListScroll && scrollController.offset==100 && listViewController.position.userScrollDirection==ScrollDirection.idle){
+                                if(listViewController!.offset==0 && isListScroll && scrollController!.offset==100 && listViewController!.position.userScrollDirection==ScrollDirection.idle){
 
                                   Timer(Duration(milliseconds: 100), (){
-                                    if(listViewController.position.userScrollDirection!=ScrollDirection.reverse){
+                                    if(listViewController!.position.userScrollDirection!=ScrollDirection.reverse){
 
                                       //if(scrollController.position.pixels == scrollController.position.maxScrollExtent){
-                                      if(listViewController.offset==0){
+                                      if(listViewController!.offset==0){
 
-                                        scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value) {
+                                        scrollController!.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value) {
                                           if(isListScroll){
                                             setState(() {
                                               isListScroll=false;
@@ -153,7 +153,7 @@ class InvoicePlantListState extends State<InvoicePlantList> with TickerProviderS
                                   });
                                 }
                               }
-                            },
+                            } as bool Function(ScrollNotification)?,
                             child: ListView(
                               controller: listViewController,
                               scrollDirection: Axis.vertical,
@@ -174,17 +174,17 @@ class InvoicePlantListState extends State<InvoicePlantList> with TickerProviderS
                                         GestureDetector(
                                           onTap: (){
                                             setState(() {
-                                              value.isActive=!value.isActive;
+                                              value.isActive=!value.isActive!;
                                             });
                                           },
                                           child: Container(
                                             height: 200,
-                                            width: SizeConfig.screenWidth*0.5,
+                                            width: SizeConfig.screenWidth!*0.5,
                                             color: Colors.white,
                                             child: AnimatedOpacity(
                                               duration: Duration(milliseconds: 300),
                                               curve: Curves.easeIn,
-                                              opacity: value.isActive?1:0.3,
+                                              opacity: value.isActive!?1:0.3,
                                               child: Column(
                                                 mainAxisAlignment: MainAxisAlignment.center,
                                                 children: [
@@ -257,7 +257,7 @@ class InvoicePlantListState extends State<InvoicePlantList> with TickerProviderS
                       Container(
                         margin:EdgeInsets.only(top: 0),
                         child: CustomPaint(
-                          size: Size( SizeConfig.screenWidth, 65),
+                          size: Size( SizeConfig.screenWidth!, 65),
                           painter: RPSCustomPainter3(),
                         ),
                       ),

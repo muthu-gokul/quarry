@@ -20,14 +20,14 @@ import 'package:quarry/widgets/dateRangePicker.dart' as DateRagePicker;
 
 class CounterDashBoard extends StatefulWidget {
 
-  VoidCallback drawerCallback;
+  VoidCallback? drawerCallback;
   CounterDashBoard({this.drawerCallback});
   @override
   _CounterDashBoardState createState() => _CounterDashBoardState();
 }
 
 class _CounterDashBoardState extends State<CounterDashBoard> {
-  ScrollController silverController;
+  ScrollController? silverController;
   double silverBodyTopMargin=0;
   List<DateTime> picked=[];
   int selIndex=-1;
@@ -39,23 +39,23 @@ class _CounterDashBoardState extends State<CounterDashBoard> {
         DateFormat("yyyy-MM-dd").format(DateTime.now().subtract(Duration(days: 6))).toString(),
         DateFormat("yyyy-MM-dd").format(DateTime.now()).toString()
     );
-    WidgetsBinding.instance.addPostFrameCallback((_){
+    WidgetsBinding.instance!.addPostFrameCallback((_){
       silverController=new ScrollController();
 
       setState(() {
         silverBodyTopMargin=0;
       });
 
-      silverController.addListener(() {
-        if(silverController.offset>150){
+      silverController!.addListener(() {
+        if(silverController!.offset>150){
           setState(() {
-            silverBodyTopMargin=50-(-(silverController.offset-200));
+            silverBodyTopMargin=50-(-(silverController!.offset-200));
             if(silverBodyTopMargin<0){
               silverBodyTopMargin=0;
             }
           });
         }
-        else if(silverController.offset<170){
+        else if(silverController!.offset<170){
           setState(() {
             silverBodyTopMargin=0;
           });
@@ -155,22 +155,22 @@ class _CounterDashBoardState extends State<CounterDashBoard> {
                   borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10)),
                   color: Color(0xFFF6F7F9),
                 ),
-                child:db.counterList.isEmpty?Container(): Wrap(
+                child:db.counterList!.isEmpty?Container(): Wrap(
                   alignment: WrapAlignment.center,
                   runSpacing: 30,
                   spacing: 30,
                   children: [
-                    counter(Color(0xFF4E57DD),"Customers",db.counterList[0]['TotalCustomers'],"assets/svg/drawer/settings/customer.svg"),
-                    counter(Color(0xFF67CBA9),"Supplier",db.counterList[0]['TotalSupplier'],"assets/svg/drawer/settings/supplier.svg"),
-                    counter(Color(0xFFE35A87),"Employee",db.counterList[0]['TotalEmployee'],"assets/svg/drawer/employee-details.svg"),
-                    counter(AppTheme.yellowColor,"Machine",db.counterList[0]['TotalMachine'],"assets/svg/drawer/machineManagement.svg"),
-                    counter(Color(0xFFE35A87),"Input Material",db.counterList[0]['TotalInputMaterial'],"assets/svg/drawer/settings/material.svg"),
-                    counter(Color(0xFFE35A87),"Output Material",db.counterList[0]['TotalOutputMaterial'],"assets/svg/drawer/settings/material.svg"),
+                    counter(Color(0xFF4E57DD),"Customers",db.counterList![0]['TotalCustomers'],"assets/svg/drawer/settings/customer.svg"),
+                    counter(Color(0xFF67CBA9),"Supplier",db.counterList![0]['TotalSupplier'],"assets/svg/drawer/settings/supplier.svg"),
+                    counter(Color(0xFFE35A87),"Employee",db.counterList![0]['TotalEmployee'],"assets/svg/drawer/employee-details.svg"),
+                    counter(AppTheme.yellowColor,"Machine",db.counterList![0]['TotalMachine'],"assets/svg/drawer/machineManagement.svg"),
+                    counter(Color(0xFFE35A87),"Input Material",db.counterList![0]['TotalInputMaterial'],"assets/svg/drawer/settings/material.svg"),
+                    counter(Color(0xFFE35A87),"Output Material",db.counterList![0]['TotalOutputMaterial'],"assets/svg/drawer/settings/material.svg"),
                   ],
                 ),
               ),
             ),
-            db.counterList.isEmpty?Container(
+            db.counterList!.isEmpty?Container(
               width: SizeConfig.screenWidth,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -196,8 +196,8 @@ class _CounterDashBoardState extends State<CounterDashBoard> {
 
   counter(Color color,String title,dynamic value,String img){
     return  Container(
-      height: SizeConfig.screenWidth*0.4,
-      width: SizeConfig.screenWidth*0.4,
+      height: SizeConfig.screenWidth!*0.4,
+      width: SizeConfig.screenWidth!*0.4,
       padding: EdgeInsets.only(left: 10,right: 10),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),

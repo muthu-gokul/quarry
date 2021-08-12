@@ -24,8 +24,8 @@ class VehicleDetailAddNewState extends State<VehicleDetailAddNew> with TickerPro
   GlobalKey <ScaffoldState> scaffoldkey=new GlobalKey<ScaffoldState>();
 
 
-  ScrollController scrollController;
-  ScrollController listViewController;
+  ScrollController? scrollController;
+  ScrollController? listViewController;
 
   bool isVehicleTypeOpen=false;
   bool isAddTransportOpen=false;
@@ -40,7 +40,7 @@ class VehicleDetailAddNewState extends State<VehicleDetailAddNew> with TickerPro
   @override
   void initState() {
 
-    WidgetsBinding.instance.addPostFrameCallback((_){
+    WidgetsBinding.instance!.addPostFrameCallback((_){
 
 
       scrollController=new ScrollController();
@@ -104,7 +104,7 @@ class VehicleDetailAddNewState extends State<VehicleDetailAddNew> with TickerPro
                       children: [
                         SizedBox(height: 160,),
                         Container(
-                          height: SizeConfig.screenHeight-60,
+                          height: SizeConfig.screenHeight!-60,
                           width: SizeConfig.screenWidth,
 
                           decoration: BoxDecoration(
@@ -115,7 +115,7 @@ class VehicleDetailAddNewState extends State<VehicleDetailAddNew> with TickerPro
                             onVerticalDragUpdate: (details){
                               int sensitivity = 5;
                               if (details.delta.dy > sensitivity) {
-                                scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
+                                scrollController!.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
                                   /* if(isListScroll){
                                     setState(() {
                                       isListScroll=false;
@@ -124,7 +124,7 @@ class VehicleDetailAddNewState extends State<VehicleDetailAddNew> with TickerPro
                                 });
 
                               } else if(details.delta.dy < -sensitivity){
-                                scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
+                                scrollController!.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
 
                                   /*if(!isListScroll){
                                     setState(() {
@@ -147,7 +147,7 @@ class VehicleDetailAddNewState extends State<VehicleDetailAddNew> with TickerPro
                                     node.unfocus();
                                   },
                                   ontap: (){
-                                    scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                    scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                   },
                                 ),
                                 !vehicleName?Container():ValidationErrorText(title: "* Enter Vehicle Number ",),
@@ -159,7 +159,7 @@ class VehicleDetailAddNewState extends State<VehicleDetailAddNew> with TickerPro
                                     node.unfocus();
                                   },
                                   ontap: (){
-                                    scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                    scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                   },
                                 ),
 
@@ -191,7 +191,7 @@ class VehicleDetailAddNewState extends State<VehicleDetailAddNew> with TickerPro
                                   regExp: '[A-Za-z0-9  ]',
                                   textEditingController: qn.VehicleModel,
                                   ontap: (){
-                                    scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                    scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                   },
                                   onEditComplete: (){
                                     node.unfocus();
@@ -205,7 +205,7 @@ class VehicleDetailAddNewState extends State<VehicleDetailAddNew> with TickerPro
                                   scrollPadding: 100,
                                   textEditingController: qn.VehicleWeight,
                                   ontap: (){
-                                    scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                    scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                   },
                                   onEditComplete: (){
                                     node.unfocus();
@@ -289,7 +289,7 @@ class VehicleDetailAddNewState extends State<VehicleDetailAddNew> with TickerPro
                           ),
                           margin:EdgeInsets.only(top: 0),
                           child: CustomPaint(
-                            size: Size( SizeConfig.screenWidth, 65),
+                            size: Size( SizeConfig.screenWidth!, 65),
                             painter: RPSCustomPainter3(),
                           ),
                         ),
@@ -413,8 +413,8 @@ class VehicleDetailAddNewState extends State<VehicleDetailAddNew> with TickerPro
                         color: Colors.white,
                       ),
                       clipBehavior: Clip.antiAlias,
-                      margin: EdgeInsets.only(left: SizeConfig.width30,right: SizeConfig.width30),
-                      transform: Matrix4.translationValues(isAddTransportOpen?0:SizeConfig.screenWidth, 0, 0),
+                      margin: EdgeInsets.only(left: SizeConfig.width30!,right: SizeConfig.width30!),
+                      transform: Matrix4.translationValues(isAddTransportOpen?0:SizeConfig.screenWidth!, 0, 0),
 
                       child:Container(
                         height:250,
@@ -432,7 +432,7 @@ class VehicleDetailAddNewState extends State<VehicleDetailAddNew> with TickerPro
                                       child:Container(
                                         height: 50,
                                         width: SizeConfig.screenWidth,
-                                        margin: EdgeInsets.only(left: SizeConfig.width20,right: SizeConfig.width20),
+                                        margin: EdgeInsets.only(left: SizeConfig.width20!,right: SizeConfig.width20!),
                                         decoration: BoxDecoration(
                                             borderRadius: BorderRadius.circular(25),
                                             /*      border: Border.all(color: AppTheme.addNewTextFieldBorder),*/
@@ -448,7 +448,7 @@ class VehicleDetailAddNewState extends State<VehicleDetailAddNew> with TickerPro
                                         ),
                                         child:Container(
                                           padding: EdgeInsets.only(left: 20),
-                                          width: SizeConfig.screenWidth*0.52,
+                                          width: SizeConfig.screenWidth!*0.52,
                                           child: TextField(
                                             controller: addTransportTypeController,
                                             scrollPadding: EdgeInsets.only(bottom: 500),

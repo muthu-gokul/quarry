@@ -6,19 +6,19 @@ import 'package:quarry/styles/size.dart';
 
 class AddNewLabelTextField extends StatelessWidget {
   bool isEnabled;
-  String labelText;
-  TextEditingController textEditingController;
+  String? labelText;
+  TextEditingController? textEditingController;
   double scrollPadding;
   TextInputType textInputType;
-  Widget prefixIcon;
-  Widget suffixIcon;
-  Function(String) onChange;
-  VoidCallback ontap;
-  TextInputFormatter textInputFormatter;
-  VoidCallback onEditComplete;
+  Widget? prefixIcon;
+  Widget? suffixIcon;
+  Function(String)? onChange;
+  VoidCallback? ontap;
+  TextInputFormatter? textInputFormatter;
+  VoidCallback? onEditComplete;
   bool isObscure;
-  int maxlines;
-  int textLength;
+  int? maxlines;
+  int? textLength;
   String regExp;
 
   AddNewLabelTextField({this.textEditingController,this.labelText,this.scrollPadding=0.0,this.textInputType:TextInputType.text,
@@ -30,7 +30,7 @@ class AddNewLabelTextField extends StatelessWidget {
     SizeConfig().init(context);
     return  maxlines!=null? Container(
 
-      margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,top:15,),
+      margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!,top:15,),
       height: 50,
 
       decoration: BoxDecoration(
@@ -79,17 +79,17 @@ class AddNewLabelTextField extends StatelessWidget {
           FilteringTextInputFormatter.allow(RegExp(regExp)),
         ],
         onChanged: (v){
-           onChange(v);
+           onChange!(v);
         },
         onEditingComplete: (){
-           onEditComplete();
+           onEditComplete!();
         },
       ),
 
     ):
     Container(
 
-      margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,top:15,),
+      margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!,top:15,),
   //    height: 50,
 
       decoration: BoxDecoration(
@@ -130,10 +130,10 @@ class AddNewLabelTextField extends StatelessWidget {
         textInputAction: TextInputAction.done,
 
         onChanged: (v){
-          onChange(v);
+          onChange!(v);
         },
         onEditingComplete: (){
-          onEditComplete();
+          onEditComplete!();
         },
       ),
 

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
@@ -24,8 +25,6 @@ import 'package:quarry/widgets/sidePopUp/sidePopUpWithSearch.dart';
 import 'package:quarry/widgets/sidePopUp/sidePopUpWithoutSearch.dart';
 import 'package:quarry/widgets/sidePopUp/sidePopupWithoutModelList.dart';
 import 'package:quarry/widgets/validationErrorText.dart';
-
-import 'package:firebase_ml_vision/firebase_ml_vision.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../notifier/quarryNotifier.dart';
 import '../../styles/app_theme.dart';
@@ -34,7 +33,7 @@ import '../../styles/app_theme.dart';
 
 
 class SalesDetail extends StatefulWidget {
-  VoidCallback drawerCallback;
+  VoidCallback? drawerCallback;
   bool fromsaleGrid;
   SalesDetail({this.drawerCallback,this.fromsaleGrid:false});
   @override
@@ -44,8 +43,8 @@ class SalesDetail extends StatefulWidget {
 class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin{
 
 
-  ScrollController scrollController;
-  ScrollController listViewController;
+  ScrollController? scrollController;
+  ScrollController? listViewController;
 
   final now = DateTime.now();
   final formatter = DateFormat('dd/MM/yyyy');
@@ -67,13 +66,13 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
   TextEditingController transportTypeSearchController =new TextEditingController();
   TextEditingController addTransportTypeController =new TextEditingController();
 
-  Animation driverArrowAnimation;
-  AnimationController driverArrowAnimationController;
+  late Animation driverArrowAnimation;
+  late AnimationController driverArrowAnimationController;
   bool driverOpen=false;
 
   bool isPlantOpen=false;
   bool plant=false;
-  PickedFile _image;
+  late PickedFile _image;
   @override
   void initState() {
     print("SALE -INIt");
@@ -151,13 +150,13 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                   child: Column(
                     children: [
                       Container(
-                        height: SizeConfig.screenHeight-(SizeConfig.height70),
+                        height: SizeConfig.screenHeight!-SizeConfig.height70!,
                         child: TabBarView(
                           //  physics: NeverScrollableScrollPhysics(),
                             controller: qn.tabController,
                             children: [
                               Container(
-                                height: SizeConfig.screenHeight-(SizeConfig.height70),
+                                height: SizeConfig.screenHeight!-SizeConfig.height70!,
                                 child: Stack(
                                   children: [
                                     //IMAGE
@@ -186,7 +185,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
 
                                     //FORM
                                     Container(
-                                      height: SizeConfig.screenHeight-(SizeConfig.height70),
+                                      height: SizeConfig.screenHeight!-SizeConfig.height70!,
                                       // color: Colors.transparent,
                                       child: SingleChildScrollView(
                                         physics: NeverScrollableScrollPhysics(),
@@ -207,7 +206,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
 
                                                   int sensitivity = 5;
                                                   if (details.delta.dy > sensitivity) {
-                                                    scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
+                                                    scrollController!.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
                                                       if(isListScroll){
                                                         setState(() {
                                                           isListScroll=false;
@@ -216,7 +215,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                     });
 
                                                   } else if(details.delta.dy < -sensitivity){
-                                                    scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
+                                                    scrollController!.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
 
                                                       if(!isListScroll){
                                                         setState(() {
@@ -243,15 +242,15 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                       //   print(ScrollStartNotification);
                                                         if(s is ScrollStartNotification){
 
-                                                          if(listViewController.offset==0 && isListScroll && scrollController.offset==100 && listViewController.position.userScrollDirection==ScrollDirection.idle){
+                                                          if(listViewController!.offset==0 && isListScroll && scrollController!.offset==100 && listViewController!.position.userScrollDirection==ScrollDirection.idle){
 
                                                             Timer(Duration(milliseconds: 100), (){
-                                                              if(listViewController.position.userScrollDirection!=ScrollDirection.reverse){
+                                                              if(listViewController!.position.userScrollDirection!=ScrollDirection.reverse){
 
                                                                 //if(scrollController.position.pixels == scrollController.position.maxScrollExtent){
-                                                                if(listViewController.offset==0){
+                                                                if(listViewController!.offset==0){
 
-                                                                  scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value) {
+                                                                  scrollController!.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value) {
                                                                     if(isListScroll){
                                                                       setState(() {
                                                                         isListScroll=false;
@@ -264,7 +263,8 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                             });
                                                           }
                                                         }
-                                                    },
+                                                        return true;
+                                                    } ,
                                                     child: ListView(
                                                       controller: listViewController,
                                                       scrollDirection: Axis.vertical,
@@ -403,11 +403,14 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                             setState(() async {
                                                               if (pickedFile != null) {
                                                                 _image = pickedFile;
-                                                                final FirebaseVisionImage visionImage = FirebaseVisionImage.fromFile(File(_image.path));
-                                                                final TextRecognizer textRecognizer = FirebaseVision.instance.textRecognizer();
-                                                                final VisionText visionText = await textRecognizer.processImage(visionImage);
+                                                                final inputImage = InputImage.fromFilePath(_image.path);
+                                                                TextDetector textDetector = GoogleMlKit.vision.textDetector();
+                                                                final recognisedText = await textDetector.processImage(inputImage);
+                                                             //   final FirebaseVisionImage visionImage = FirebaseVisionImage.fromFile(File(_image.path));
+                                                             //   final TextRecognizer textRecognizer = FirebaseVision.instance.textRecognizer();
+                                                              //  final VisionText visionText = await textRecognizer.processImage(visionImage);
 
-                                                                for (TextBlock block in visionText.blocks) {
+                                                                for (TextBlock block in recognisedText.blocks) {
                                                                   for (TextLine line in block.lines) {
 
                                                                     if( RegExp(r'^\d+\.?\d').hasMatch(line.text)){
@@ -426,7 +429,8 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                                   qn.SS_emptyVehicleWeight.text=(double.parse(qn.scanWeight)/1000).toString();
                                                                 }
                                                                 qn.updateInsertSaleLoader(false);
-                                                              } else {
+                                                              }
+                                                              else {
                                                                 qn.updateInsertSaleLoader(false);
                                                                 print('No image selected');
                                                               }
@@ -434,7 +438,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                           },
                                                           child: Container(
                                                             height: 50,
-                                                            margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,top:15,),
+                                                            margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!,top:15,),
                                                             width:SizeConfig.screenWidth,
                                                             decoration: BoxDecoration(
                                                                 borderRadius: BorderRadius.circular(3),
@@ -463,7 +467,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                             setState(() {
                                                               _keyboardVisible=false;
                                                             });
-                                                            scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                                            scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                                           },
 
                                                           onEditComplete: () {
@@ -479,7 +483,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                               width: 50,
                                                               margin: EdgeInsets.all(13),
                                                               decoration: BoxDecoration(
-                                                                  borderRadius: BorderRadius.circular(SizeConfig.height25),
+                                                                  borderRadius: BorderRadius.circular(SizeConfig.height25!),
                                                                   color: AppTheme.yellowColor
                                                               ),
                                                               child: Center(
@@ -535,7 +539,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                               InkWell(
                                                                   onTap: (){
                                                                     setState(() {
-                                                                      qn.isCustomPrice=!qn.isCustomPrice;
+                                                                      qn.isCustomPrice=!qn.isCustomPrice!;
                                                                       qn.customPriceController.clear();
                                                                       _keyboardVisible=false;
                                                                     });
@@ -545,24 +549,24 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                             ],
                                                           ),
                                                         ),
-                                                        SizedBox(height: qn.isCustomPrice? 10:0,),
+                                                        SizedBox(height: qn.isCustomPrice!? 10:0,),
                                                         AnimatedContainer(
                                                           duration: Duration(milliseconds: 300),
                                                           curve: Curves.easeIn,
-                                                          height: qn.isCustomPrice?SizeConfig.height50:0,
+                                                          height: qn.isCustomPrice!?SizeConfig.height50:0,
                                                           width: SizeConfig.screenWidth,
-                                                          margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,),
-                                                          padding: EdgeInsets.only(left:SizeConfig.width10,),
+                                                          margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!,),
+                                                          padding: EdgeInsets.only(left:SizeConfig.width10!,),
                                                           decoration: BoxDecoration(
                                                               border: Border.all(color: AppTheme.addNewTextFieldBorder),
                                                               borderRadius: BorderRadius.circular(3),
                                                               color:Colors.white
                                                           ),
-                                                          child:qn.isCustomPrice? TextField(
+                                                          child:qn.isCustomPrice!? TextField(
                                                             scrollPadding: EdgeInsets.only(bottom: 500),
                                                             onTap: (){
-                                                              if(scrollController.offset==0){
-                                                                scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                                              if(scrollController!.offset==0){
+                                                                scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                                               }
                                                               setState(() {
                                                                 _keyboardVisible=true;
@@ -612,8 +616,8 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                             isEnabled:qn.SS_selectedMaterialTypeId==null?false: true,
                                                             scrollPadding: 500,
                                                             ontap: () {
-                                                              if(scrollController.offset==0){
-                                                                scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                                              if(scrollController!.offset==0){
+                                                                scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                                               }
 
 
@@ -624,7 +628,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                             },
                                                             onChange: (v){
                                                               if(qn.SS_customerNeedWeight.text.isNotEmpty){
-                                                                if(double.parse(qn.SS_customerNeedWeight.text)>qn.SS_selectedMaterialStock){
+                                                                if(double.parse(qn.SS_customerNeedWeight.text)>qn.SS_selectedMaterialStock!){
                                                                   CustomAlert().commonErrorAlert(context, "Out Of Stock", "Current Stock - ${qn.SS_selectedMaterialStock} Ton");
                                                                   qn.SS_customerNeedWeight.clear();
                                                                   qn.weightToAmount();
@@ -645,12 +649,12 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                                 });
                                                               });
                                                             },
-                                                            suffixIcon:qn.SS_Empty_ReqQtyUnit.isEmpty?Container(
+                                                            suffixIcon:qn.SS_Empty_ReqQtyUnit!.isEmpty?Container(
                                                                 height:30,
                                                                 width: 50,
                                                                 margin: EdgeInsets.all(13),
                                                                 decoration: BoxDecoration(
-                                                                    borderRadius: BorderRadius.circular(SizeConfig.height25),
+                                                                    borderRadius: BorderRadius.circular(SizeConfig.height25!),
                                                                     color: AppTheme.yellowColor
                                                                 ),
                                                                 child: Center(
@@ -662,7 +666,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                                 width: 50,
                                                                 margin: EdgeInsets.all(13),
                                                                 decoration: BoxDecoration(
-                                                                    borderRadius: BorderRadius.circular(SizeConfig.height25),
+                                                                    borderRadius: BorderRadius.circular(SizeConfig.height25!),
                                                                     color: AppTheme.yellowColor
                                                                 ),
                                                                 child: Center(
@@ -692,8 +696,8 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                               qn.amountToWeight(context);
                                                             },
                                                             ontap: () {
-                                                              if(scrollController.offset==0){
-                                                                scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                                              if(scrollController!.offset==0){
+                                                                scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                                               }
                                                               setState(() {
                                                                 _keyboardVisible=true;
@@ -754,10 +758,10 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                         ),
                                                         SizedBox(height:20,),
 
-                                                        qn.SS_selectIsCreditCustomer?Column(
+                                                        qn.SS_selectIsCreditCustomer!?Column(
                                                           children: [
                                                             Container(
-                                                              margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20),
+                                                              margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!),
                                                               height:40,
                                                               width: SizeConfig.screenWidthM40,
                                                               decoration: BoxDecoration(
@@ -769,8 +773,8 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                               child:Row(
                                                                 children: [
                                                                   Container(
-                                                                      padding: EdgeInsets.only(left: SizeConfig.width10),
-                                                                      width: (SizeConfig.screenWidthM40*0.5)-2,
+                                                                      padding: EdgeInsets.only(left: SizeConfig.width10!),
+                                                                      width: (SizeConfig.screenWidthM40!*0.5)-2,
                                                                       child: Text("Credit Limit",style: tableTextStyle,)
                                                                   ),
 
@@ -781,10 +785,10 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                                   ),
 
                                                                   Container(
-                                                                    padding: EdgeInsets.only(left: SizeConfig.width10),
+                                                                    padding: EdgeInsets.only(left: SizeConfig.width10!),
                                                                     height: 16,
                                                                     alignment: Alignment.centerLeft,
-                                                                    width: (SizeConfig.screenWidthM40*0.5)-1,
+                                                                    width: (SizeConfig.screenWidthM40!*0.5)-1,
                                                                     child: FittedBox(child: Text("${qn.SS_selectCustomerCreditLimit}",
 
                                                                       style:tableTextStyle2,
@@ -796,7 +800,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                               ),
                                                             ),
                                                             Container(
-                                                              margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,),
+                                                              margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!,),
                                                               height:40,
                                                               width: SizeConfig.screenWidthM40,
                                                               decoration: BoxDecoration(
@@ -811,8 +815,8 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                               child:Row(
                                                                 children: [
                                                                   Container(
-                                                                      padding: EdgeInsets.only(left: SizeConfig.width10),
-                                                                      width: (SizeConfig.screenWidthM40*0.5)-2,
+                                                                      padding: EdgeInsets.only(left: SizeConfig.width10!),
+                                                                      width: (SizeConfig.screenWidthM40!*0.5)-2,
                                                                       child: Text("Used Amount",style: tableTextStyle,)
                                                                   ),
 
@@ -823,10 +827,10 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                                   ),
 
                                                                   Container(
-                                                                    padding: EdgeInsets.only(left: SizeConfig.width10),
+                                                                    padding: EdgeInsets.only(left: SizeConfig.width10!),
                                                                     height: 16,
                                                                     alignment: Alignment.centerLeft,
-                                                                    width: (SizeConfig.screenWidthM40*0.5)-1,
+                                                                    width: (SizeConfig.screenWidthM40!*0.5)-1,
                                                                     child: FittedBox(child: Text("${qn.SS_selectUsedAmount}",
 
                                                                       style:tableTextStyle2,
@@ -838,7 +842,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                               ),
                                                             ),
                                                             Container(
-                                                              margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,),
+                                                              margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!,),
                                                               height:40,
                                                               width: SizeConfig.screenWidthM40,
                                                               decoration: BoxDecoration(
@@ -853,8 +857,8 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                               child:Row(
                                                                 children: [
                                                                   Container(
-                                                                      padding: EdgeInsets.only(left: SizeConfig.width10),
-                                                                      width: (SizeConfig.screenWidthM40*0.5)-2,
+                                                                      padding: EdgeInsets.only(left: SizeConfig.width10!),
+                                                                      width: (SizeConfig.screenWidthM40!*0.5)-2,
                                                                       child: Text("Balance Amount",style: tableTextStyle,)
                                                                   ),
 
@@ -865,10 +869,10 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                                   ),
 
                                                                   Container(
-                                                                    padding: EdgeInsets.only(left: SizeConfig.width10),
+                                                                    padding: EdgeInsets.only(left: SizeConfig.width10!),
                                                                     height: 16,
                                                                     alignment: Alignment.centerLeft,
-                                                                    width: (SizeConfig.screenWidthM40*0.5)-1,
+                                                                    width: (SizeConfig.screenWidthM40!*0.5)-1,
                                                                     child: FittedBox(child: Text("${qn.SS_selectBalanceAmount}",
 
                                                                       style:tableTextStyle2,
@@ -890,7 +894,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                         Container(
                                                           height: SizeConfig.height30,
                                                           width: SizeConfig.screenWidth,
-                                                          padding: EdgeInsets.only(left: SizeConfig.width10,right: SizeConfig.width20),
+                                                          padding: EdgeInsets.only(left: SizeConfig.width10!,right: SizeConfig.width20!),
                                                           child: Row(
                                                             children: [
                                                               Checkbox(
@@ -902,7 +906,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                                       qn.isDiscount=v;
                                                                     });
 
-                                                                    if(qn.isDiscount){
+                                                                    if(qn.isDiscount!){
 
                                                                       if(qn.DiscountValue.toInt()!=0){
                                                                         setState(() {
@@ -925,8 +929,8 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                                                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10), ),
 
                                                                                     child: Container(
-                                                                                      height: SizeConfig.screenHeight*0.85,
-                                                                                      width: SizeConfig.screenWidth*0.9,
+                                                                                      height: SizeConfig.screenHeight!*0.85,
+                                                                                      width: SizeConfig.screenWidth!*0.9,
                                                                                       decoration: BoxDecoration(
                                                                                           borderRadius: BorderRadius.circular(10),
                                                                                           color: Colors.white
@@ -1015,7 +1019,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                                                           Spacer(),
                                                                                           Container(
                                                                                               margin: EdgeInsets.only(top: 20),
-                                                                                              width: SizeConfig.screenWidth*0.8,
+                                                                                              width: SizeConfig.screenWidth!*0.8,
                                                                                               child: Wrap(
                                                                                                   spacing: 10,
                                                                                                   runSpacing: 10,
@@ -1094,8 +1098,8 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                                                                              });
                                                                                                           },
                                                                                                         child: AnimatedContainer(
-                                                                                                            height: SizeConfig.screenWidth*0.19,
-                                                                                                            width: SizeConfig.screenWidth*0.19,
+                                                                                                            height: SizeConfig.screenWidth!*0.19,
+                                                                                                            width: SizeConfig.screenWidth!*0.19,
                                                                                                             duration: Duration(milliseconds: 200),
                                                                                                             curve: Curves.easeIn,
                                                                                                             decoration: BoxDecoration(
@@ -1254,7 +1258,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                             });
                                                             if(driverOpen){
                                                               Timer(Duration(milliseconds: 300), (){
-                                                                listViewController.animateTo(listViewController.position.maxScrollExtent, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+                                                                listViewController!.animateTo(listViewController!.position.maxScrollExtent, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
 
                                                               });
                                                             }
@@ -1263,9 +1267,9 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                             alignment: Alignment.centerRight,
                                                             child: Container(
                                                               height: 40,
-                                                              width: SizeConfig.screenWidth*0.37,
-                                                              margin: EdgeInsets.only(left: SizeConfig.width20,right: SizeConfig.width20,top: 20),
-                                                              padding: EdgeInsets.only(left: SizeConfig.width10,right: SizeConfig.width10),
+                                                              width: SizeConfig.screenWidth!*0.37,
+                                                              margin: EdgeInsets.only(left: SizeConfig.width20!,right: SizeConfig.width20!,top: 20),
+                                                              padding: EdgeInsets.only(left: SizeConfig.width10!,right: SizeConfig.width10!),
                                                               decoration: BoxDecoration(
                                                                 borderRadius: BorderRadius.circular(25),
                                                                 color: AppTheme.yellowColor,
@@ -1303,7 +1307,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                           duration: Duration(milliseconds: 300),
                                                           curve: Curves.easeIn,
                                                           width: SizeConfig.screenWidth,
-                                                          height: driverOpen? (150+SizeConfig.height60):0,
+                                                          height: driverOpen? (150+SizeConfig.height60!):0,
                                                         //  margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20),
                                                           child: Column(
                                                             children: [
@@ -1317,7 +1321,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                                   setState(() {
                                                                     _keyboardVisible=true;
                                                                   });
-                                                                  scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                                                  scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                                                 },
 
                                                                 onEditComplete: () {
@@ -1341,7 +1345,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                                   setState(() {
                                                                     _keyboardVisible=true;
                                                                   });
-                                                                  scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                                                  scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                                                 },
 
                                                                 onEditComplete: () {
@@ -1364,7 +1368,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                                   setState(() {
                                                                     _keyboardVisible=true;
                                                                   });
-                                                                  scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                                                  scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                                                 },
 
                                                                 onEditComplete: () {
@@ -1382,7 +1386,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
 
 
 
-                                                        SizedBox(height: _keyboardVisible? SizeConfig.screenHeight*0.5:200,)
+                                                        SizedBox(height: _keyboardVisible? SizeConfig.screenHeight!*0.5:200,)
                                                       ],
                                                     ),
                                                   ),
@@ -1410,7 +1414,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                           Text("Sales",
                                             style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: 16),
                                           ),
-                                          Text(qn.tabController.index==0?" / In Gate":" / Out Gate",
+                                          Text(qn.tabController!.index==0?" / In Gate":" / Out Gate",
                                             style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: 16),
                                           ),
                                         ],
@@ -1425,7 +1429,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
 /////////////////////////////////////////////////////LOADED FORM /////
 
                               Container(
-                                height: SizeConfig.screenHeight-(SizeConfig.height70),
+                                height: SizeConfig.screenHeight!-SizeConfig.height70!,
                                 child: Stack(
                                   children: [
                                     //IMAGE
@@ -1456,7 +1460,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
 
                                     //FORM
                                     Container(
-                                      height: SizeConfig.screenHeight-(SizeConfig.height70),
+                                      height: SizeConfig.screenHeight!-SizeConfig.height70!,
                                       // color: Colors.transparent,
                                       child: SingleChildScrollView(
                                         physics: NeverScrollableScrollPhysics(),
@@ -1477,7 +1481,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
 
                                                   int sensitivity = 5;
                                                   if (details.delta.dy > sensitivity) {
-                                                    scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
+                                                    scrollController!.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
                                                       if(isListScroll){
                                                         setState(() {
                                                           isListScroll=false;
@@ -1486,7 +1490,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                     });
 
                                                   } else if(details.delta.dy < -sensitivity){
-                                                    scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
+                                                    scrollController!.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
 
                                                       if(!isListScroll){
                                                         setState(() {
@@ -1511,15 +1515,15 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                     onNotification: (s){
                                                       if(s is ScrollStartNotification){
 
-                                                        if(listViewController.offset==0 && isListScroll && scrollController.offset==100 && listViewController.position.userScrollDirection==ScrollDirection.idle){
+                                                        if(listViewController!.offset==0 && isListScroll && scrollController!.offset==100 && listViewController!.position.userScrollDirection==ScrollDirection.idle){
 
                                                           Timer(Duration(milliseconds: 100), (){
-                                                            if(listViewController.position.userScrollDirection!=ScrollDirection.reverse){
+                                                            if(listViewController!.position.userScrollDirection!=ScrollDirection.reverse){
 
                                                               //if(scrollController.position.pixels == scrollController.position.maxScrollExtent){
-                                                              if(listViewController.offset==0){
+                                                              if(listViewController!.offset==0){
 
-                                                                scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value) {
+                                                                scrollController!.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value) {
                                                                   if(isListScroll){
                                                                     setState(() {
                                                                       isListScroll=false;
@@ -1532,7 +1536,8 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                           });
                                                         }
                                                       }
-                                                    },
+                                                      return true;
+                                                    } ,
                                                     child: ListView(
                                                       controller: listViewController,
                                                       scrollDirection: Axis.vertical,
@@ -1581,7 +1586,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                             setState(() {
                                                               qn.SS_LoadedVehicleNo=v;
                                                               int index;
-                                                              index=qn.saleDetails.indexWhere((element) => element.VehicleNumber.toLowerCase()==v.toString().toLowerCase()).toInt();
+                                                              index=qn.saleDetails.indexWhere((element) => element.VehicleNumber!.toLowerCase()==v.toString().toLowerCase()).toInt();
                                                               qn.SS_EmptyWeightOfVehicle=qn.saleDetails[index].EmptyWeightOfVehicle;
                                                               qn.SS_VehicleTypeName=qn.saleDetails[index].VehicleTypeName;
                                                               qn.SS_VehicleTypeId=qn.saleDetails[index].VehicleTypeId;
@@ -1606,9 +1611,9 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                               qn.OG_TaxValue=qn.saleDetails[index].TaxPercentage;
                                                               qn.OG_isPercentage=qn.saleDetails[index].isPercentage;
                                                               qn.OG_isDiscount=qn.saleDetails[index].isDiscount;
-                                                              qn.SS_TotalWeight=(Decimal.parse(qn.SS_EmptyWeightOfVehicle)+Decimal.parse((qn.SS_RequiredMaterialQty))).toString();
+                                                              qn.SS_TotalWeight=(Decimal.parse(qn.SS_EmptyWeightOfVehicle!)+Decimal.parse(qn.SS_RequiredMaterialQty!)).toString();
                                                               qn.SS_MaterialUnitPrice=qn.saleDetails[index].MaterialUnitPrice;
-                                                              qn.OG_isTax=qn.saleDetails[index].TaxAmount>0?true:false;
+                                                              qn.OG_isTax=qn.saleDetails[index].TaxAmount!>0?true:false;
 
 
                                                               print("qn.SS_DiscountedOutputQtyAmount${qn.SS_MaterialUnitPrice}");
@@ -1621,7 +1626,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
 
 
                                                         Container(
-                                                          margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,top:SizeConfig.height20,),
+                                                          margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!,top:SizeConfig.height20!,),
                                                           height:SizeConfig.height50,
                                                           width: SizeConfig.width320,
                                                           decoration: BoxDecoration(
@@ -1632,8 +1637,8 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                           child:Row(
                                                             children: [
                                                               Container(
-                                                                  padding: EdgeInsets.only(left: SizeConfig.width10),
-                                                                  width: SizeConfig.width140-2,
+                                                                  padding: EdgeInsets.only(left: SizeConfig.width10!),
+                                                                  width: SizeConfig.width140!-2,
                                                                   child: Text("Empty Vehicle Weight")
                                                               ),
 
@@ -1644,14 +1649,14 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                               ),
 
                                                               Container(
-                                                                  padding: EdgeInsets.only(left: SizeConfig.width10),
-                                                                  width: SizeConfig.width140-1,
-                                                                  child: Text(qn.SS_EmptyWeightOfVehicle==null?"":"${qn.SS_EmptyWeightOfVehicle+" Ton"}")),
+                                                                  padding: EdgeInsets.only(left: SizeConfig.width10!),
+                                                                  width: SizeConfig.width140!-1,
+                                                                  child: Text(qn.SS_EmptyWeightOfVehicle==null?"":"${qn.SS_EmptyWeightOfVehicle!+" Ton"}")),
                                                             ],
                                                           ),
                                                         ),
                                                         Container(
-                                                          margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20),
+                                                          margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!),
                                                           height:SizeConfig.height50,
                                                           width: SizeConfig.width320,
                                                           decoration: BoxDecoration(
@@ -1665,8 +1670,8 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                           child: Row(
                                                             children: [
                                                               Container(
-                                                                  padding: EdgeInsets.only(left: SizeConfig.width10),
-                                                                  width: SizeConfig.width140-2,
+                                                                  padding: EdgeInsets.only(left: SizeConfig.width10!),
+                                                                  width: SizeConfig.width140!-2,
                                                                   child: Text("Vehicle Type")
                                                               ),
 
@@ -1677,14 +1682,14 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                               ),
 
                                                               Container(
-                                                                  padding: EdgeInsets.only(left: SizeConfig.width10),
-                                                                  width: SizeConfig.width140-1,
+                                                                  padding: EdgeInsets.only(left: SizeConfig.width10!),
+                                                                  width: SizeConfig.width140!-1,
                                                                   child: Text("${qn.SS_VehicleTypeName??""}")),
                                                             ],
                                                           ),
                                                         ),
                                                         Container(
-                                                          margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20),
+                                                          margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!),
                                                           height:SizeConfig.height50,
                                                           width: SizeConfig.width320,
                                                           decoration: BoxDecoration(
@@ -1697,8 +1702,8 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                           child: Row(
                                                             children: [
                                                               Container(
-                                                                  padding: EdgeInsets.only(left: SizeConfig.width10),
-                                                                  width: SizeConfig.width140-2,
+                                                                  padding: EdgeInsets.only(left: SizeConfig.width10!),
+                                                                  width: SizeConfig.width140!-2,
                                                                   child: Text("Material Name")
                                                               ),
 
@@ -1709,14 +1714,14 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                               ),
 
                                                               Container(
-                                                                  padding: EdgeInsets.only(left: SizeConfig.width10),
-                                                                  width: SizeConfig.width140-1,
+                                                                  padding: EdgeInsets.only(left: SizeConfig.width10!),
+                                                                  width: SizeConfig.width140!-1,
                                                                   child: Text("${qn.SS_MaterialName??""}")),
                                                             ],
                                                           ),
                                                         ),
                                                         Container(
-                                                          margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20),
+                                                          margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!),
                                                           height:SizeConfig.height50,
                                                           width: SizeConfig.width320,
                                                           decoration: BoxDecoration(
@@ -1730,8 +1735,8 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                             children: [
 
                                                               Container(
-                                                                  padding: EdgeInsets.only(left: SizeConfig.width10),
-                                                                  width: SizeConfig.width140-2,
+                                                                  padding: EdgeInsets.only(left: SizeConfig.width10!),
+                                                                  width: SizeConfig.width140!-2,
                                                                   child: Text("Required Qty")
                                                               ),
 
@@ -1742,14 +1747,14 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                               ),
 
                                                               Container(
-                                                                  padding: EdgeInsets.only(left: SizeConfig.width10),
-                                                                  width: SizeConfig.width140-1,
+                                                                  padding: EdgeInsets.only(left: SizeConfig.width10!),
+                                                                  width: SizeConfig.width140!-1,
                                                                   child: Text("${qn.SS_RequiredMaterialQty??""} ${qn.SS_RequiredMaterialQtyUnit??""}")),
                                                             ],
                                                           ),
                                                         ),
                                                         Container(
-                                                          margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20),
+                                                          margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!),
                                                           height:SizeConfig.height50,
                                                           width: SizeConfig.width320,
                                                           decoration: BoxDecoration(
@@ -1763,8 +1768,8 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                             children: [
 
                                                               Container(
-                                                                  padding: EdgeInsets.only(left: SizeConfig.width10),
-                                                                  width: SizeConfig.width140-2,
+                                                                  padding: EdgeInsets.only(left: SizeConfig.width10!),
+                                                                  width: SizeConfig.width140!-2,
                                                                   child: Text("Amount")
                                                               ),
 
@@ -1775,14 +1780,14 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                               ),
 
                                                               Container(
-                                                                  padding: EdgeInsets.only(left: SizeConfig.width10),
-                                                                  width: SizeConfig.width140-1,
+                                                                  padding: EdgeInsets.only(left: SizeConfig.width10!),
+                                                                  width: SizeConfig.width140!-1,
                                                                   child: Text("${qn.SS_Amount??""}")),
                                                             ],
                                                           ),
                                                         ),
-                                                        qn.OG_discountValue!=null?qn.OG_discountValue>0?Container(
-                                                          margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20),
+                                                        qn.OG_discountValue!=null?qn.OG_discountValue!>0?Container(
+                                                          margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!),
                                                           height:SizeConfig.height50,
                                                           width: SizeConfig.width320,
                                                           decoration: BoxDecoration(
@@ -1796,8 +1801,8 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                             children: [
 
                                                               Container(
-                                                                  padding: EdgeInsets.only(left: SizeConfig.width10),
-                                                                  width: SizeConfig.width140-2,
+                                                                  padding: EdgeInsets.only(left: SizeConfig.width10!),
+                                                                  width: SizeConfig.width140!-2,
                                                                   child: Text("Discount")
                                                               ),
 
@@ -1808,15 +1813,15 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                               ),
 
                                                               Container(
-                                                                  padding: EdgeInsets.only(left: SizeConfig.width10),
-                                                                  width: SizeConfig.width140-1,
+                                                                  padding: EdgeInsets.only(left: SizeConfig.width10!),
+                                                                  width: SizeConfig.width140!-1,
                                                                   child: Text(qn.OG_discountValue!=null?"${qn.OG_discountValue??""} ${qn.OG_isPercentage==0?"Rs":"%"}":"")
                                                               ),
                                                             ],
                                                           ),
                                                         ):Container():Container(),
                                                         Container(
-                                                          margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20),
+                                                          margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!),
                                                           height:SizeConfig.height50,
                                                           width: SizeConfig.width320,
                                                           decoration: BoxDecoration(
@@ -1830,8 +1835,8 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                             children: [
 
                                                               Container(
-                                                                  padding: EdgeInsets.only(left: SizeConfig.width10),
-                                                                  width: SizeConfig.width140-2,
+                                                                  padding: EdgeInsets.only(left: SizeConfig.width10!),
+                                                                  width: SizeConfig.width140!-2,
                                                                   child: Text("Payment Type")
                                                               ),
 
@@ -1842,14 +1847,14 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                               ),
 
                                                               Container(
-                                                                  padding: EdgeInsets.only(left: SizeConfig.width10),
-                                                                  width: SizeConfig.width140-1,
+                                                                  padding: EdgeInsets.only(left: SizeConfig.width10!),
+                                                                  width: SizeConfig.width140!-1,
                                                                   child: Text("${qn.SS_PaymentCategoryName??""}")),
                                                             ],
                                                           ),
                                                         ),
                                                         Container(
-                                                          margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20),
+                                                          margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!),
                                                           height:SizeConfig.height50,
                                                           width: SizeConfig.width320,
                                                           decoration: BoxDecoration(
@@ -1863,8 +1868,8 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                             children: [
 
                                                               Container(
-                                                                  padding: EdgeInsets.only(left: SizeConfig.width10),
-                                                                  width: SizeConfig.width140-2,
+                                                                  padding: EdgeInsets.only(left: SizeConfig.width10!),
+                                                                  width: SizeConfig.width140!-2,
                                                                   child: Text("Total Weight")
                                                               ),
 
@@ -1876,10 +1881,10 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
 
                                                               Container(
                                                                   height:SizeConfig.height50,
-                                                                  padding: EdgeInsets.only(left: SizeConfig.width10),
-                                                                  width: SizeConfig.width140-1,
+                                                                  padding: EdgeInsets.only(left: SizeConfig.width10!),
+                                                                  width: SizeConfig.width140!-1,
                                                                   alignment: Alignment.centerLeft,
-                                                                  child: Text(qn.SS_TotalWeight==null?"":"${qn.SS_TotalWeight + " Ton"??""}")),
+                                                                  child: Text(qn.SS_TotalWeight==null?"":"${qn.SS_TotalWeight! + " Ton"}")),
                                                             ],
                                                           ),
                                                         ),
@@ -1895,11 +1900,14 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                             setState(() async {
                                                               if (pickedFile != null) {
                                                                 _image = pickedFile;
-                                                                final FirebaseVisionImage visionImage = FirebaseVisionImage.fromFile(File(_image.path));
-                                                                final TextRecognizer textRecognizer = FirebaseVision.instance.textRecognizer();
-                                                                final VisionText visionText = await textRecognizer.processImage(visionImage);
+                                                                final inputImage = InputImage.fromFilePath(_image.path);
+                                                                TextDetector textDetector = GoogleMlKit.vision.textDetector();
+                                                                final recognisedText = await textDetector.processImage(inputImage);
+                                                             //   final FirebaseVisionImage visionImage = FirebaseVisionImage.fromFile(File(_image.path));
+                                                             //   final TextRecognizer textRecognizer = FirebaseVision.instance.textRecognizer();
+                                                             //   final VisionText visionText = await textRecognizer.processImage(visionImage);
 
-                                                                for (TextBlock block in visionText.blocks) {
+                                                                for (TextBlock block in recognisedText.blocks) {
                                                                   for (TextLine line in block.lines) {
 
                                                                     if( RegExp(r'^\d+\.?\d').hasMatch(line.text)){
@@ -1930,7 +1938,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                           },
                                                           child: Container(
                                                             height: 50,
-                                                            margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,top:15,),
+                                                            margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!,top:15,),
                                                             width:SizeConfig.screenWidth,
                                                             decoration: BoxDecoration(
                                                                 borderRadius: BorderRadius.circular(3),
@@ -1976,7 +1984,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                               _keyboardVisible=true;
                                                               isListScroll=true;
                                                             });
-                                                            scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                                            scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
 
                                                           },
 
@@ -1994,7 +2002,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                               borderRadius: BorderRadius.circular(3)
                                                           ),
 
-                                                          margin: EdgeInsets.only(left: SizeConfig.width20,right: SizeConfig.width20),
+                                                          margin: EdgeInsets.only(left: SizeConfig.width20!,right: SizeConfig.width20!),
                                                           child: Center(
                                                             child: Text(qn.returnMoney,style: TextStyle(fontFamily: 'RR',fontSize: 24,color: Colors.white
                                                               //color:double.parse(qn.returnMoney.toString()) > qn.SS_Amount? AppTheme.bgColor :Colors.white
@@ -2035,7 +2043,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                           Text("Sales",
                                             style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: 16),
                                           ),
-                                          Text(qn.tabController.index==0?" / In Gate":" / Out Gate",
+                                          Text(qn.tabController!.index==0?" / In Gate":" / Out Gate",
                                             style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: 16),
                                           ),
                                         ],
@@ -2084,7 +2092,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                               ),
                               margin:EdgeInsets.only(top: 0),
                               child: CustomPaint(
-                                size: Size( SizeConfig.screenWidth, 65),
+                                size: Size( SizeConfig.screenWidth!, 65),
                                 //  painter: RPSCustomPainter(),
                                 painter: RPSCustomPainter3(),
                               ),
@@ -2095,7 +2103,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                 behavior: HitTestBehavior.translucent,
                                 onTap: (){
                                   node.unfocus();
-                                  if(qn.tabController.index==0){
+                                  if(qn.tabController!.index==0){
                                     if(qn.PlantId==null ){setState(() {plant=true;});}
                                     else{setState(() {plant=false;});}
 
@@ -2114,13 +2122,13 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                       qn.InsertSaleDetailDbhit(context);
                                     }
                                   }
-                                  else if(qn.tabController.index==1){
+                                  else if(qn.tabController!.index==1){
                                     if(qn.searchVehicleNo.text.isEmpty){
                                       CustomAlert().commonErrorAlert(context, "Enter Vehicle Number", "");
                                     }
                                     else if(qn.SS_DifferWeightController.text.isEmpty){
                                       CustomAlert().commonErrorAlert(context, "Enter Vehicle Weight", "");
-                                    }else if(double.parse(qn.SS_DifferWeightController.text.toString())<double.parse(qn.SS_EmptyWeightOfVehicle)){
+                                    }else if(double.parse(qn.SS_DifferWeightController.text.toString())<double.parse(qn.SS_EmptyWeightOfVehicle!)){
                                       CustomAlert().commonErrorAlert(context, "Outward Weight Should not be less than empty vehicle weight", "");
                                     } else{
                                       qn.UpdateSaleDetailDbhit(context,null,"");
@@ -2169,14 +2177,14 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                           SizedBox(width: SizeConfig.width20,),
                                           GestureDetector(
                                             onTap: (){
-                                              qn.tabController.animateTo(0,duration: Duration(milliseconds: 300),curve: Curves.easeIn);
+                                              qn.tabController!.animateTo(0,duration: Duration(milliseconds: 300),curve: Curves.easeIn);
                                               qn.clearEmptyForm();
                                               qn.clearLoaderForm();
                                               setState(() {
                                                 isListScroll=false;
                                                 _keyboardVisible=false;
                                               });
-                                              scrollController.jumpTo(0);
+                                              scrollController!.jumpTo(0);
                                             },
                                             child: Container(
                                               width: 70,
@@ -2187,8 +2195,8 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                   Padding(
                                                     padding:  EdgeInsets.only(top: 10),
                                                     child: Opacity(
-                                                        opacity:qn.tabController.index==0?1:0.7,
-                                                      child: SvgPicture.asset(qn.tabController.index==0?"assets/bottomIcons/Lorry-in.svg":
+                                                        opacity:qn.tabController!.index==0?1:0.7,
+                                                      child: SvgPicture.asset(qn.tabController!.index==0?"assets/bottomIcons/Lorry-in.svg":
                                                       "assets/bottomIcons/Lorry-in-inactive.svg"),
                                                     ),
                                                   ),
@@ -2200,14 +2208,14 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                           Spacer(),
                                           GestureDetector(
                                             onTap: (){
-                                              qn.tabController.animateTo(1,duration: Duration(milliseconds: 300),curve: Curves.easeIn);
+                                              qn.tabController!.animateTo(1,duration: Duration(milliseconds: 300),curve: Curves.easeIn);
                                               qn.clearEmptyForm();
                                               qn.clearLoaderForm();
                                               setState(() {
                                                 isListScroll=false;
                                                 _keyboardVisible=false;
                                               });
-                                              scrollController.jumpTo(0);
+                                              scrollController!.jumpTo(0);
                                             },
                                             child: Container(
                                               width: 75,
@@ -2218,8 +2226,8 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                   Padding(
                                                     padding:  EdgeInsets.only(top: 10),
                                                     child: Opacity(
-                                                      opacity:qn.tabController.index==1?1:0.7,
-                                                      child: SvgPicture.asset(qn.tabController.index==1?"assets/bottomIcons/Lorry-out.svg":
+                                                      opacity:qn.tabController!.index==1?1:0.7,
+                                                      child: SvgPicture.asset(qn.tabController!.index==1?"assets/bottomIcons/Lorry-out.svg":
                                                       "assets/bottomIcons/Lorry-out-inactive.svg"),
                                                     ),
                                                   ),
@@ -2354,8 +2362,8 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                         color: Colors.white,
                       ),
                       clipBehavior: Clip.antiAlias,
-                      margin: EdgeInsets.only(left: SizeConfig.width30,right: SizeConfig.width30),
-                      transform: Matrix4.translationValues(isAddTransportOpen?0:SizeConfig.screenWidth, 0, 0),
+                      margin: EdgeInsets.only(left: SizeConfig.width30!,right: SizeConfig.width30!),
+                      transform: Matrix4.translationValues(isAddTransportOpen?0:SizeConfig.screenWidth!, 0, 0),
 
                       child:Container(
                         height:250,
@@ -2373,7 +2381,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                       child:Container(
                                         height: 50,
                                         width: SizeConfig.screenWidth,
-                                        margin: EdgeInsets.only(left: SizeConfig.width20,right: SizeConfig.width20),
+                                        margin: EdgeInsets.only(left: SizeConfig.width20!,right: SizeConfig.width20!),
                                         decoration: BoxDecoration(
                                             borderRadius: BorderRadius.circular(25),
                                             /*      border: Border.all(color: AppTheme.addNewTextFieldBorder),*/
@@ -2389,7 +2397,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                         ),
                                         child:Container(
                                           padding: EdgeInsets.only(left: 20),
-                                          width: SizeConfig.screenWidth*0.52,
+                                          width: SizeConfig.screenWidth!*0.52,
                                           child: TextField(
                                               controller: addTransportTypeController,
                                             scrollPadding: EdgeInsets.only(bottom: 500),
@@ -2509,9 +2517,9 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                   selectedId: qn.SS_selectedMaterialTypeId,
                   itemOnTap: (index){
                     setState(() {
-                      qn.SS_selectedMaterialTypeId=qn.sale_materialList[index]['MaterialId'];
-                      qn.SS_selectedMaterialTypeName=qn.sale_materialList[index]['MaterialName'];
-                      qn.SS_selectedMaterialStock=qn.sale_materialList[index][qn.PlantId.toString()];
+                      qn.SS_selectedMaterialTypeId=qn.sale_materialList![index]['MaterialId'];
+                      qn.SS_selectedMaterialTypeName=qn.sale_materialList![index]['MaterialName'];
+                      qn.SS_selectedMaterialStock=qn.sale_materialList![index][qn.PlantId.toString()];
                       isMaterialTypeOpen=false;
                       if(qn.SS_customerNeedWeight.text.isNotEmpty){
                         qn.weightToAmount();
@@ -2641,16 +2649,16 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
 }
 
 class SidePopUpParent extends StatelessWidget {
-  String text;
-  Color textColor;
-  Color iconColor;
-  Color bgColor;
+  String? text;
+  Color? textColor;
+  Color? iconColor;
+  Color? bgColor;
   SidePopUpParent({this.text,this.textColor,this.iconColor,this.bgColor});
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,top:15,),
-      padding: EdgeInsets.only(left:SizeConfig.width10,right:SizeConfig.width10),
+      margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!,top:15,),
+      padding: EdgeInsets.only(left:SizeConfig.width10!,right:SizeConfig.width10!),
      // height: SizeConfig.height50,
       height: 50,
       width: double.maxFinite,
@@ -2663,7 +2671,7 @@ class SidePopUpParent extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Text(text,style: TextStyle(fontFamily: 'RR',fontSize: 16,color: textColor),),
+          Text(text!,style: TextStyle(fontFamily: 'RR',fontSize: 16,color: textColor),),
           Spacer(),
           Container(
               height: SizeConfig.height25,
@@ -2680,16 +2688,16 @@ class SidePopUpParent extends StatelessWidget {
   }
 }
 class SidePopUpParentWithoutTopMargin extends StatelessWidget {
-  String text;
-  Color textColor;
-  Color iconColor;
-  Color bgColor;
+  String? text;
+  Color? textColor;
+  Color? iconColor;
+  Color? bgColor;
   SidePopUpParentWithoutTopMargin({this.text,this.textColor,this.iconColor,this.bgColor});
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,),
-      padding: EdgeInsets.only(left:SizeConfig.width10,right:SizeConfig.width10),
+      margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!,),
+      padding: EdgeInsets.only(left:SizeConfig.width10!,right:SizeConfig.width10!),
       height: SizeConfig.height50,
       width: double.maxFinite,
       alignment: Alignment.centerLeft,
@@ -2701,7 +2709,7 @@ class SidePopUpParentWithoutTopMargin extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Text(text,style: TextStyle(fontFamily: 'RR',fontSize: 16,color: textColor),),
+          Text(text!,style: TextStyle(fontFamily: 'RR',fontSize: 16,color: textColor),),
           Spacer(),
           Container(
               height: SizeConfig.height25,

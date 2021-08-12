@@ -37,8 +37,8 @@ class DieselPurchaseFormState extends State<DieselPurchaseForm> with TickerProvi
   bool isEdit=false;
 
 
-  ScrollController scrollController;
-  ScrollController listViewController;
+  ScrollController? scrollController;
+  ScrollController? listViewController;
 
 
   bool isPlantOpen=false;
@@ -64,7 +64,7 @@ class DieselPurchaseFormState extends State<DieselPurchaseForm> with TickerProvi
   @override
   void initState() {
     isEdit=false;
-    WidgetsBinding.instance.addPostFrameCallback((_){
+    WidgetsBinding.instance!.addPostFrameCallback((_){
 
 
       scrollController=new ScrollController();
@@ -142,7 +142,7 @@ class DieselPurchaseFormState extends State<DieselPurchaseForm> with TickerProvi
 
                             int sensitivity = 5;
                             if (details.delta.dy > sensitivity) {
-                              scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
+                              scrollController!.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
                                 if(isListScroll){
                                   setState(() {
                                     isListScroll=false;
@@ -151,7 +151,7 @@ class DieselPurchaseFormState extends State<DieselPurchaseForm> with TickerProvi
                               });
 
                             } else if(details.delta.dy < -sensitivity){
-                              scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
+                              scrollController!.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
 
                                 if(!isListScroll){
                                   setState(() {
@@ -174,15 +174,15 @@ class DieselPurchaseFormState extends State<DieselPurchaseForm> with TickerProvi
                               onNotification: (s){
                                 if(s is ScrollStartNotification){
 
-                                  if(listViewController.offset==0 && isListScroll && scrollController.offset==100 && listViewController.position.userScrollDirection==ScrollDirection.idle){
+                                  if(listViewController!.offset==0 && isListScroll && scrollController!.offset==100 && listViewController!.position.userScrollDirection==ScrollDirection.idle){
 
                                     Timer(Duration(milliseconds: 100), (){
-                                      if(listViewController.position.userScrollDirection!=ScrollDirection.reverse){
+                                      if(listViewController!.position.userScrollDirection!=ScrollDirection.reverse){
 
                                         //if(scrollController.position.pixels == scrollController.position.maxScrollExtent){
-                                        if(listViewController.offset==0){
+                                        if(listViewController!.offset==0){
 
-                                          scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value) {
+                                          scrollController!.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value) {
                                             if(isListScroll){
                                               setState(() {
                                                 isListScroll=false;
@@ -195,7 +195,8 @@ class DieselPurchaseFormState extends State<DieselPurchaseForm> with TickerProvi
                                     });
                                   }
                                 }
-                              },
+                                return true;
+                              } ,
                               child: ListView(
                                 controller: listViewController,
                                 scrollDirection: Axis.vertical,
@@ -240,7 +241,7 @@ class DieselPurchaseFormState extends State<DieselPurchaseForm> with TickerProvi
                                     labelText: "Bill Number",
                                     regExp: '[A-Za-z0-9  ]',
                                     ontap: (){
-                                      scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                      scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                       setState(() {
                                         _keyboardVisible=true;
                                       });
@@ -258,12 +259,12 @@ class DieselPurchaseFormState extends State<DieselPurchaseForm> with TickerProvi
                                   !billNo?Container():ValidationErrorText(title: "* Enter Bill Number",),
                                   GestureDetector(
                                     onTap: () async{
-                                      final DateTime picked = await showDatePicker2(
+                                      final DateTime? picked = await showDatePicker2(
                                         context: context,
-                                        initialDate:  dn.DP_billDate==null?DateTime.now():dn.DP_billDate, // Refer step 1
+                                        initialDate:  dn.DP_billDate==null?DateTime.now():dn.DP_billDate!, // Refer step 1
                                         firstDate: DateTime(2000),
                                         lastDate: DateTime.now(),
-                                          builder: (BuildContext context,Widget child){
+                                          builder: (BuildContext context,Widget? child){
                                             return Theme(
                                               data: Theme.of(context).copyWith(
                                                 colorScheme: ColorScheme.light(
@@ -272,7 +273,7 @@ class DieselPurchaseFormState extends State<DieselPurchaseForm> with TickerProvi
                                                   onSurface: AppTheme.addNewTextFieldText, // body text color
                                                 ),
                                               ),
-                                              child: child,
+                                              child: child!,
                                             );
                                           });
 
@@ -286,7 +287,7 @@ class DieselPurchaseFormState extends State<DieselPurchaseForm> with TickerProvi
                                     },
                                     child: ExpectedDateContainer(
                                     //  text: DateFormat("yyyy-MM-dd").format(dn.DP_billDate)==DateFormat("yyyy-MM-dd").format(DateTime.now())?"Select Bill Date":"${DateFormat.yMMMd().format(dn.DP_billDate)}",
-                                      text:dn.DP_billDate==null?"Select Bill Date": "${DateFormat.yMMMd().format(dn.DP_billDate)}",
+                                      text:dn.DP_billDate==null?"Select Bill Date": "${DateFormat.yMMMd().format(dn.DP_billDate!)}",
                                       textColor:AppTheme.addNewTextFieldText,
                                      // textColor:DateFormat("yyyy-MM-dd").format(dn.DP_billDate)==DateFormat("yyyy-MM-dd").format(DateTime.now())? AppTheme.addNewTextFieldText.withOpacity(0.5):AppTheme.addNewTextFieldText,
                                     ),
@@ -353,7 +354,7 @@ class DieselPurchaseFormState extends State<DieselPurchaseForm> with TickerProvi
                                     scrollPadding: 450,
                                     onChange: (v){},
                                     ontap: (){
-                                      scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                      scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                       setState(() {
                                         _keyboardVisible=true;
                                         isListScroll=true;
@@ -378,7 +379,7 @@ class DieselPurchaseFormState extends State<DieselPurchaseForm> with TickerProvi
                                     textInputType: TextInputType.number,
                                     scrollPadding: 500,
                                     ontap: (){
-                                      scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                      scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                       setState(() {
                                         _keyboardVisible=true;
                                         isListScroll=true;
@@ -453,7 +454,7 @@ class DieselPurchaseFormState extends State<DieselPurchaseForm> with TickerProvi
                                     textInputType: TextInputType.number,
                                     scrollPadding: 550,
                                     ontap: (){
-                                      scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                      scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                       setState(() {
                                         _keyboardVisible=true;
                                         isListScroll=true;
@@ -491,7 +492,7 @@ class DieselPurchaseFormState extends State<DieselPurchaseForm> with TickerProvi
                                     textInputType: TextInputType.number,
                                     scrollPadding: 550,
                                     ontap: (){
-                                      scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                      scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                       setState(() {
                                         _keyboardVisible=true;
                                         isListScroll=true;
@@ -520,7 +521,7 @@ class DieselPurchaseFormState extends State<DieselPurchaseForm> with TickerProvi
                                     textAlign: TextAlign.center,
                                   ),
 
-                                  SizedBox(height:_keyboardVisible?SizeConfig.screenHeight*0.5: SizeConfig.height250,)
+                                  SizedBox(height:_keyboardVisible?SizeConfig.screenHeight!*0.5: SizeConfig.height250,)
                                 ],
                               ),
                             ),
@@ -561,7 +562,7 @@ class DieselPurchaseFormState extends State<DieselPurchaseForm> with TickerProvi
                         ),
                         margin:EdgeInsets.only(top: 0),
                         child: CustomPaint(
-                          size: Size( SizeConfig.screenWidth, 65),
+                          size: Size( SizeConfig.screenWidth!, 65),
                           painter: RPSCustomPainter3(),
                         ),
                       ),
@@ -739,8 +740,8 @@ class DieselPurchaseFormState extends State<DieselPurchaseForm> with TickerProvi
                   setState(() {
 
 
-                    dn.DP_purchaserId=dn.filterFuelPurchaserList[index]['EmployeeId'];
-                    dn.DP_purchaserName=dn.filterFuelPurchaserList[index]['EmployeeName'];
+                    dn.DP_purchaserId=dn.filterFuelPurchaserList![index]['EmployeeId'];
+                    dn.DP_purchaserName=dn.filterFuelPurchaserList![index]['EmployeeName'];
                     isPurchaserOpen=false;
                     dn.filterFuelPurchaserList=dn.fuelPurchaserList;
 
@@ -779,8 +780,8 @@ class DieselPurchaseFormState extends State<DieselPurchaseForm> with TickerProvi
                   setState(() {
 
 
-                    dn.DP_supplierId=dn.filterFuelSupplierList[index]['SupplierId'];
-                    dn.DP_supplierName=dn.filterFuelSupplierList[index]['SupplierName'];
+                    dn.DP_supplierId=dn.filterFuelSupplierList![index]['SupplierId'];
+                    dn.DP_supplierName=dn.filterFuelSupplierList![index]['SupplierName'];
                     isSupplierOpen=false;
                     dn.filterFuelSupplierList=dn.fuelSupplierList;
 
@@ -819,8 +820,8 @@ class DieselPurchaseFormState extends State<DieselPurchaseForm> with TickerProvi
                 itemOnTap: (index){
                   node.unfocus();
                   setState(() {
-                    dn.DP_vehicleId=dn.filterVehicleList[index]['VehicleId'];
-                    dn.DP_vehicleName=dn.filterVehicleList[index]['VehicleNumber'];
+                    dn.DP_vehicleId=dn.filterVehicleList![index]['VehicleId'];
+                    dn.DP_vehicleName=dn.filterVehicleList![index]['VehicleNumber'];
                     isVehicleOpen=false;
                     dn.filterVehicleList=dn.vehicleList;
                   });

@@ -24,14 +24,14 @@ import 'package:quarry/widgets/dateRangePicker.dart' as DateRagePicker;
 
 class SalesDashBoard extends StatefulWidget {
 
-  VoidCallback drawerCallback;
+  VoidCallback? drawerCallback;
   SalesDashBoard({this.drawerCallback});
   @override
   _SalesDashBoardState createState() => _SalesDashBoardState();
 }
 
 class _SalesDashBoardState extends State<SalesDashBoard> {
-  ScrollController silverController;
+  ScrollController? silverController;
   double silverBodyTopMargin=0;
 
   int selIndex=-1;
@@ -43,23 +43,23 @@ class _SalesDashBoardState extends State<SalesDashBoard> {
         DateFormat("yyyy-MM-dd").format(DateTime.now().subtract(Duration(days: 6))).toString(),
         DateFormat("yyyy-MM-dd").format(DateTime.now()).toString()
     );
-    WidgetsBinding.instance.addPostFrameCallback((_){
+    WidgetsBinding.instance!.addPostFrameCallback((_){
       silverController=new ScrollController();
 
       setState(() {
         silverBodyTopMargin=0;
       });
 
-      silverController.addListener(() {
-        if(silverController.offset>250){
+      silverController!.addListener(() {
+        if(silverController!.offset>250){
           setState(() {
-            silverBodyTopMargin=50-(-(silverController.offset-300));
+            silverBodyTopMargin=50-(-(silverController!.offset-300));
             if(silverBodyTopMargin<0){
               silverBodyTopMargin=0;
             }
           });
         }
-        else if(silverController.offset<270){
+        else if(silverController!.offset<270){
           setState(() {
             silverBodyTopMargin=0;
           });
@@ -68,7 +68,7 @@ class _SalesDashBoardState extends State<SalesDashBoard> {
     });
     super.initState();
   }
-List<DateTime> picked=[];
+List<DateTime?> picked=[];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -100,7 +100,7 @@ List<DateTime> picked=[];
                             Spacer(),
                             GestureDetector(
                               onTap: () async{
-                                final List<DateTime>  picked1 = await DateRagePicker.showDatePicker(
+                                final List<DateTime?>?  picked1 = await DateRagePicker.showDatePicker(
                                     context: context,
                                     initialFirstDate: new DateTime.now(),
                                     initialLastDate: (new DateTime.now()),
@@ -114,8 +114,8 @@ List<DateTime> picked=[];
                                   });
                                   db.DashBoardDbHit(context,
                                       "Sale",
-                                      DateFormat("yyyy-MM-dd").format(picked[0]).toString(),
-                                      DateFormat("yyyy-MM-dd").format(picked[1]).toString()
+                                      DateFormat("yyyy-MM-dd").format(picked[0]!).toString(),
+                                      DateFormat("yyyy-MM-dd").format(picked[1]!).toString()
                                   );
                                 }
                                 else if(picked1!=null && picked1.length ==1){
@@ -124,8 +124,8 @@ List<DateTime> picked=[];
                                   });
                                   db.DashBoardDbHit(context,
                                       "Sale",
-                                      DateFormat("yyyy-MM-dd").format(picked[0]).toString(),
-                                      DateFormat("yyyy-MM-dd").format(picked[0]).toString()
+                                      DateFormat("yyyy-MM-dd").format(picked[0]!).toString(),
+                                      DateFormat("yyyy-MM-dd").format(picked[0]!).toString()
                                   );
                                 }
                              },
@@ -163,25 +163,25 @@ List<DateTime> picked=[];
                   color: Color(0xFFF6F7F9),
                 ),
                 child: ListView.builder(
-                  itemCount: db.saleT2.length,
+                  itemCount: db.saleT2!.length,
                   itemBuilder: (ctx,i){
                     return Align(
                       alignment: Alignment.center,
                       child: GestureDetector(
                         onTap: (){
                           Navigator.push(context, rightLeftRoute(SalesMaterial(
-                            materialName: db.saleT2[i]['MaterialName'],
-                            materialPrice: db.saleT2[i]['TotalSale'],
-                            materialQty: db.saleT2[i]['TotalQuantity'],
-                            materialUnit: db.saleT2[i]['UnitName'],
-                            weekList: db.saleMaterialWeeklyT3.where((element) => element['MaterialId']==db.saleT2[i]['MaterialId']).toList(),
-                            monthList: db.saleMaterialMonthlyT4.where((element) => element['MaterialId']==db.saleT2[i]['MaterialId']).toList(),
-                            yearList: db.saleMaterialYearT5.where((element) => element['MaterialId']==db.saleT2[i]['MaterialId']).toList(),
+                            materialName: db.saleT2![i]['MaterialName'],
+                            materialPrice: db.saleT2![i]['TotalSale'],
+                            materialQty: db.saleT2![i]['TotalQuantity'],
+                            materialUnit: db.saleT2![i]['UnitName'],
+                            weekList: db.saleMaterialWeeklyT3!.where((element) => element['MaterialId']==db.saleT2![i]['MaterialId']).toList(),
+                            monthList: db.saleMaterialMonthlyT4!.where((element) => element['MaterialId']==db.saleT2![i]['MaterialId']).toList(),
+                            yearList: db.saleMaterialYearT5!.where((element) => element['MaterialId']==db.saleT2![i]['MaterialId']).toList(),
                           )));
                         },
                         child: Container(
                           height: 65,
-                          width: SizeConfig.screenWidth*0.95,
+                          width: SizeConfig.screenWidth!*0.95,
                           margin: EdgeInsets.only(bottom: 20),
                           padding: EdgeInsets.only(left: 10,right: 10),
                           decoration: BoxDecoration(
@@ -214,18 +214,18 @@ List<DateTime> picked=[];
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Container(
-                                    width:(SizeConfig.screenWidth*0.95)-80,
+                                    width:(SizeConfig.screenWidth!*0.95)-80,
                                     child: Row(
                                       crossAxisAlignment: CrossAxisAlignment.end,
                                       children: [
-                                        Text("${db.saleT2[i]['MaterialName']} / ",style: TextStyle(fontFamily: 'RR',color: Color(0xFFBDBCBD),fontSize: 14),),
-                                        Text("${formatCurrency.format(db.saleT2[i]['TotalSale']??0.0)}",style: TextStyle(fontFamily: 'RM',color: Color(0xFF999999),fontSize: 14),),
-                                        Text("  ${db.saleT2[i]['TotalQuantity']} ${db.saleT2[i]['UnitName']}",style: TextStyle(fontFamily: 'RR',color: Color(0xFF999999),fontSize: 10),),
+                                        Text("${db.saleT2![i]['MaterialName']} / ",style: TextStyle(fontFamily: 'RR',color: Color(0xFFBDBCBD),fontSize: 14),),
+                                        Text("${formatCurrency.format(db.saleT2![i]['TotalSale']??0.0)}",style: TextStyle(fontFamily: 'RM',color: Color(0xFF999999),fontSize: 14),),
+                                        Text("  ${db.saleT2![i]['TotalQuantity']} ${db.saleT2![i]['UnitName']}",style: TextStyle(fontFamily: 'RR',color: Color(0xFF999999),fontSize: 10),),
                                         Spacer(),
                                         FittedText(
                                           height: 18,
                                           width: 50,
-                                          text: "${db.saleT2[i]['SalePercentage']} %",
+                                          text: "${db.saleT2![i]['SalePercentage']} %",
                                           alignment: Alignment.bottomRight,
                                           textStyle: TextStyle(fontFamily: 'RR',color: Color(0xFF999999),fontSize: 14),
                                         ),
@@ -234,16 +234,18 @@ List<DateTime> picked=[];
                                   ),
                                   SizedBox(height: 5,),
                                   LinearPercentIndicator(
-                                    width:(SizeConfig.screenWidth*0.95)-80,
+                                    width:(SizeConfig.screenWidth!*0.95)-80,
                                     animation: true,
                                     lineHeight: 8.0,
                                     animationDuration: 1000,
-                                    percent: (db.saleT2[i]['SalePercentage'])/100.0,
+                                    percent: (db.saleT2![i]['SalePercentage'])/100.0,
                                     linearStrokeCap: LinearStrokeCap.roundAll,
                                    padding: EdgeInsets.only(left: 0),
                                    // progressColor: AppTheme.yellowColor,
                                     backgroundColor: Color(0xFFEAEAEA),
                                     linearGradient: LinearGradient(colors: [Color(0xFFF9E6AA),AppTheme.yellowColor,],),
+                                    leading: Container(),
+                                    trailing: Container(),
                                   ),
                                 ],
                               )

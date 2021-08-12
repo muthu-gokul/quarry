@@ -21,7 +21,7 @@ import 'materialDetailsAddNew.dart';
 
 
 class MaterialDetailsGrid extends StatefulWidget {
-  VoidCallback drawerCallback;
+  VoidCallback? drawerCallback;
   MaterialDetailsGrid({this.drawerCallback});
   @override
   MaterialDetailsGridState createState() => MaterialDetailsGridState();
@@ -120,7 +120,7 @@ class MaterialDetailsGridState extends State<MaterialDetailsGrid> {
                         Container(
                           margin:EdgeInsets.only(top: 0),
                           child: CustomPaint(
-                            size: Size( SizeConfig.screenWidth, 65),
+                            size: Size( SizeConfig.screenWidth!, 65),
                             painter: RPSCustomPainter3(),
                           ),
                         ),
@@ -189,7 +189,7 @@ class MaterialDetailsGridState extends State<MaterialDetailsGrid> {
 
                                           final File file = File(path);
 
-                                          await file.writeAsBytes(await excel.encode()).then((value) async {
+                                          await file.writeAsBytes(await excel.encode()!).then((value) async {
                                             //  OpenFile.open(path);
                                             CustomAlert().billSuccessAlert(context, "", "Successfully Downloaded @ \n\n Internal Storage/Download/Quarry/Masters/$filename.xlsx", "", "");
                                           });

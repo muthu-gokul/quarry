@@ -13,7 +13,7 @@ import 'package:quarry/widgets/searchdropdownSingleSelect.dart';
 
 
 class EmployeeSalaryAddNew extends StatefulWidget {
-  VoidCallback drawerCallback;
+  VoidCallback? drawerCallback;
   bool fromsaleGrid;
   EmployeeSalaryAddNew({this.drawerCallback,this.fromsaleGrid:false});
 
@@ -23,8 +23,8 @@ class EmployeeSalaryAddNew extends StatefulWidget {
 
 class _EmployeeSalaryAddNewState extends State<EmployeeSalaryAddNew> {
 
-  ScrollController scrollController;
-  ScrollController listViewController;
+  ScrollController? scrollController;
+  ScrollController? listViewController;
   bool _keyboardVisible=false;
   bool isListScroll=false;
   bool isAmountTypeOpen=false;
@@ -86,7 +86,7 @@ class _EmployeeSalaryAddNewState extends State<EmployeeSalaryAddNew> {
 
                 //Form
                 Container(
-                  height: SizeConfig.screenHeight-70,
+                  height: SizeConfig.screenHeight!-70,
                   // color: Colors.transparent,
                   child: SingleChildScrollView(
                     physics: NeverScrollableScrollPhysics(),
@@ -107,7 +107,7 @@ class _EmployeeSalaryAddNewState extends State<EmployeeSalaryAddNew> {
 
                               int sensitivity = 5;
                               if (details.delta.dy > sensitivity) {
-                                scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
+                                scrollController!.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
                                   if(isListScroll){
                                     setState(() {
                                       isListScroll=false;
@@ -116,7 +116,7 @@ class _EmployeeSalaryAddNewState extends State<EmployeeSalaryAddNew> {
                                 });
 
                               } else if(details.delta.dy < -sensitivity){
-                                scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
+                                scrollController!.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
 
                                   if(!isListScroll){
                                     setState(() {
@@ -140,11 +140,11 @@ class _EmployeeSalaryAddNewState extends State<EmployeeSalaryAddNew> {
                                 onNotification: (s){
                                   if(s is ScrollStartNotification){
 
-                                    if(listViewController.offset==0 && isListScroll && scrollController.offset==100 && listViewController.position.userScrollDirection==ScrollDirection.idle){
+                                    if(listViewController!.offset==0 && isListScroll && scrollController!.offset==100 && listViewController!.position.userScrollDirection==ScrollDirection.idle){
                                       Timer(Duration(milliseconds: 100), (){
-                                        if(listViewController.position.userScrollDirection!=ScrollDirection.reverse){
-                                          if(listViewController.offset==0){
-                                            scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value) {
+                                        if(listViewController!.position.userScrollDirection!=ScrollDirection.reverse){
+                                          if(listViewController!.offset==0){
+                                            scrollController!.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value) {
                                               if(isListScroll){
                                                 setState(() {
                                                   isListScroll=false;
@@ -156,7 +156,8 @@ class _EmployeeSalaryAddNewState extends State<EmployeeSalaryAddNew> {
                                       });
                                     }
                                   }
-                                },
+                                  return true;
+                                } ,
                                 child: ListView(
                                   controller: listViewController,
                                   scrollDirection: Axis.vertical,
@@ -171,7 +172,7 @@ class _EmployeeSalaryAddNewState extends State<EmployeeSalaryAddNew> {
                                       },
                                       ontap:(){
 
-                                        scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                        scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                       },
                                       value: esn.employeeCodeController.text,
                                       controller: esn.employeeCodeController,
@@ -187,20 +188,20 @@ class _EmployeeSalaryAddNewState extends State<EmployeeSalaryAddNew> {
                                         setState(() {
                                           
                                           int index;
-                                          index=esn.gridData.indexWhere((element) => "${element['Name']}  -  ${element['Employee Code']}"==v.toString()).toInt();
-                                          esn.showEmpId=esn.gridData[index]['EmployeeId'];
-                                          esn.showEmpName=esn.gridData[index]['Name'];
-                                          esn.showEmpDesg=esn.gridData[index]['Designation'];
-                                          esn.showEmpShift=esn.gridData[index]['Shift'];
-                                          esn.showEmpMonthlySalary=esn.gridData[index]['Monthly Salary'].toString();
-                                          esn.showEmpEarnedSalary=esn.gridData[index]['Earned Salary'].toString();
-                                          esn.showEmpPresentDay=esn.gridData[index]['Present Days'];
-                                          esn.TotalPresentDays=esn.gridData[index]['TotalPresentDays'];
-                                          esn.showEmpOvertime=esn.gridData[index]['OT'].toString();
-                                          esn.showEmpAdvanceAmount=esn.gridData[index]['Advance/Loan'].toString();
-                                          esn.showEmpNetPay=esn.gridData[index]['NetPay'].toString();
-                                          esn.showEmpEMI=esn.gridData[index]['LoanEMIAmount'].toString();
-                                          esn.IsPaid=esn.gridData[index]['IsPaid'];
+                                          index=esn.gridData!.indexWhere((element) => "${element['Name']}  -  ${element['Employee Code']}"==v.toString()).toInt();
+                                          esn.showEmpId=esn.gridData![index]['EmployeeId'];
+                                          esn.showEmpName=esn.gridData![index]['Name'];
+                                          esn.showEmpDesg=esn.gridData![index]['Designation'];
+                                          esn.showEmpShift=esn.gridData![index]['Shift'];
+                                          esn.showEmpMonthlySalary=esn.gridData![index]['Monthly Salary'].toString();
+                                          esn.showEmpEarnedSalary=esn.gridData![index]['Earned Salary'].toString();
+                                          esn.showEmpPresentDay=esn.gridData![index]['Present Days'];
+                                          esn.TotalPresentDays=esn.gridData![index]['TotalPresentDays'];
+                                          esn.showEmpOvertime=esn.gridData![index]['OT'].toString();
+                                          esn.showEmpAdvanceAmount=esn.gridData![index]['Advance/Loan'].toString();
+                                          esn.showEmpNetPay=esn.gridData![index]['NetPay'].toString();
+                                          esn.showEmpEMI=esn.gridData![index]['LoanEMIAmount'].toString();
+                                          esn.IsPaid=esn.gridData![index]['IsPaid'];
                                           _keyboardVisible=false;
                                         });
                                       },
@@ -218,7 +219,7 @@ class _EmployeeSalaryAddNewState extends State<EmployeeSalaryAddNew> {
 
                                     SizedBox(height: 20,),
                                     Container(
-                                      margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,),
+                                      margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!,),
                                       height:40,
                                       width: SizeConfig.screenWidthM40,
                                       decoration: BoxDecoration(
@@ -230,8 +231,8 @@ class _EmployeeSalaryAddNewState extends State<EmployeeSalaryAddNew> {
                                       child:Row(
                                         children: [
                                           Container(
-                                              padding: EdgeInsets.only(left: SizeConfig.width10),
-                                              width: (SizeConfig.screenWidthM40*0.5)-2,
+                                              padding: EdgeInsets.only(left: SizeConfig.width10!),
+                                              width: (SizeConfig.screenWidthM40!*0.5)-2,
                                               child: Text("Employee Name",style: tableTextStyle,)
                                           ),
 
@@ -242,10 +243,10 @@ class _EmployeeSalaryAddNewState extends State<EmployeeSalaryAddNew> {
                                           ),
 
                                           Container(
-                                            padding: EdgeInsets.only(left: SizeConfig.width10),
+                                            padding: EdgeInsets.only(left: SizeConfig.width10!),
                                             height: 16,
                                             alignment: Alignment.centerLeft,
-                                            width: (SizeConfig.screenWidthM40*0.5)-1,
+                                            width: (SizeConfig.screenWidthM40!*0.5)-1,
 
                                             child: FittedBox(child: Text("${esn.showEmpName??""}",
 
@@ -259,7 +260,7 @@ class _EmployeeSalaryAddNewState extends State<EmployeeSalaryAddNew> {
 
                                     for(int i=0;i<8;i++)
                                       Container(
-                                        margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,),
+                                        margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!,),
                                         height:40,
                                         width: SizeConfig.screenWidthM40,
                                         decoration: BoxDecoration(
@@ -274,8 +275,8 @@ class _EmployeeSalaryAddNewState extends State<EmployeeSalaryAddNew> {
                                         child:Row(
                                           children: [
                                             Container(
-                                                padding: EdgeInsets.only(left: SizeConfig.width10),
-                                                width: (SizeConfig.screenWidthM40*0.5)-2,
+                                                padding: EdgeInsets.only(left: SizeConfig.width10!),
+                                                width: (SizeConfig.screenWidthM40!*0.5)-2,
                                                 child: Text(i==0?"Designation":i==1?"Shift":i==2?"Monthly Salary":i==3?"Present Day":
                                                             i==4?"Earned Salary":i==5?"Over Time":i==6?"Advance Amount":"Loan EMI/Month",
                                                   style: tableTextStyle,
@@ -289,11 +290,11 @@ class _EmployeeSalaryAddNewState extends State<EmployeeSalaryAddNew> {
                                             ),
 
                                             Container(
-                                              padding: EdgeInsets.only(left: SizeConfig.width10),
+                                              padding: EdgeInsets.only(left: SizeConfig.width10!),
                                               height: 16,
                                               alignment: Alignment.centerLeft,
                                             // width:200,
-                                             width: (SizeConfig.screenWidthM40*0.5)-1,
+                                             width: (SizeConfig.screenWidthM40!*0.5)-1,
                                               child: FittedBox(
                                                 fit: BoxFit.contain,
                                                 child: Text("${i==0?esn.showEmpDesg??"":i==1?esn.showEmpShift:i==2?esn.showEmpMonthlySalary:i==3?esn.showEmpPresentDay:
@@ -347,7 +348,7 @@ class _EmployeeSalaryAddNewState extends State<EmployeeSalaryAddNew> {
 
 
 
-                                    SizedBox(height: _keyboardVisible? SizeConfig.screenHeight*0.6:200,)
+                                    SizedBox(height: _keyboardVisible? SizeConfig.screenHeight!*0.6:200,)
                                   ],
                                 ),
                               ),
@@ -405,7 +406,7 @@ class _EmployeeSalaryAddNewState extends State<EmployeeSalaryAddNew> {
                         Container(
                           margin:EdgeInsets.only(top: 0),
                           child: CustomPaint(
-                            size: Size( SizeConfig.screenWidth, 65),
+                            size: Size( SizeConfig.screenWidth!, 65),
                             painter: RPSCustomPainter3(),
                           ),
                         ),

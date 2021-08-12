@@ -3,7 +3,7 @@ class InvoiceTypeModel {
     this.invoiceType,
   });
 
-  String invoiceType;
+  String? invoiceType;
 
   factory InvoiceTypeModel.fromJson(Map<String, dynamic> json) => InvoiceTypeModel(
     invoiceType: json["InvoiceType"],

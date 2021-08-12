@@ -3,7 +3,7 @@ class EmpLoanAmountTypeModel {
     this.amountType,
   });
 
-  String amountType;
+  String? amountType;
 
   factory EmpLoanAmountTypeModel.fromJson(Map<String, dynamic> json) => EmpLoanAmountTypeModel(
     amountType: json["AmountType"],

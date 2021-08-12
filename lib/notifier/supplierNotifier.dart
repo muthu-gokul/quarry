@@ -31,12 +31,12 @@ class SupplierNotifier extends ChangeNotifier{
   TextEditingController supplierEmail=new TextEditingController();
   TextEditingController supplierGstNo=new TextEditingController();
 
-  int supplierCategoryId=null;
-  var supplierCategoryName=null;
+  int? supplierCategoryId=null;
+  dynamic supplierCategoryName=null;
 
-  int supplierMaterialId=null;
-  var supplierMaterialName=null;
-  var supplierMaterialUnitName=null;
+  int? supplierMaterialId=null;
+  dynamic supplierMaterialName=null;
+  dynamic supplierMaterialUnitName=null;
 
   TextEditingController materialPrice=new TextEditingController();
 
@@ -46,7 +46,7 @@ class SupplierNotifier extends ChangeNotifier{
 
 
 
-  int supplierEditId=null;
+  int? supplierEditId=null;
 
 
 
@@ -229,7 +229,7 @@ class SupplierNotifier extends ChangeNotifier{
   List<SupplierGridModel> supplierGridList=[];
 
 
-  GetSupplierDbHit(BuildContext context,int supplierId,TickerProviderStateMixin tickerProviderStateMixin)  async{
+  GetSupplierDbHit(BuildContext context,int? supplierId,TickerProviderStateMixin tickerProviderStateMixin)  async{
 
     print(tickerProviderStateMixin);
     print(supplierId);
@@ -264,14 +264,14 @@ class SupplierNotifier extends ChangeNotifier{
       await call.ApiCallGetInvoke(body,context).then((value) {
         if(value!=null){
           var parsed=json.decode(value);
-          var t=parsed['Table'] as List;
+          var t=parsed['Table'] as List?;
 
           print("t_$t");
           if(supplierId!=null){
             var t1=parsed['Table1'] as List;
             print(t1);
 
-            supplierCategoryName=t[0]['SupplierCategoryName'];
+            supplierCategoryName=t![0]['SupplierCategoryName'];
             supplierCategoryId=t[0]['SupplierCategoryId'];
             supplierEditId=t[0]['SupplierId'];
             supplierMaterialId=null;
@@ -295,7 +295,7 @@ class SupplierNotifier extends ChangeNotifier{
          /*   notifyListeners();*/
           }
           else{
-            supplierGridList=t.map((e) => SupplierGridModel.fromJson(e)).toList();
+            supplierGridList=t!.map((e) => SupplierGridModel.fromJson(e)).toList();
           }
         }
 

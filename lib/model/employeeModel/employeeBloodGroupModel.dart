@@ -4,8 +4,8 @@ class EmployeeBloodGroupModel {
     this.employeeBloodGroupName,
   });
 
-  int employeeBloodGroupId;
-  String employeeBloodGroupName;
+  int? employeeBloodGroupId;
+  String? employeeBloodGroupName;
 
   factory EmployeeBloodGroupModel.fromJson(Map<String, dynamic> json) => EmployeeBloodGroupModel(
     employeeBloodGroupId: json["EmployeeBloodGroupId"],

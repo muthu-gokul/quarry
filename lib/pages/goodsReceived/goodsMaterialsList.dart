@@ -29,8 +29,8 @@ class GoodsMaterialsListState extends State<GoodsMaterialsList> with TickerProvi
   bool isEdit=false;
 
 
-  ScrollController scrollController;
-  ScrollController listViewController;
+  ScrollController? scrollController;
+  ScrollController? listViewController;
 
   ScrollController header=new ScrollController();
   ScrollController body=new ScrollController();
@@ -47,7 +47,7 @@ class GoodsMaterialsListState extends State<GoodsMaterialsList> with TickerProvi
   @override
   void initState() {
     isEdit=false;
-    WidgetsBinding.instance.addPostFrameCallback((_){
+    WidgetsBinding.instance!.addPostFrameCallback((_){
       scrollController=new ScrollController();
       listViewController=new ScrollController();
       setState(() {
@@ -55,15 +55,15 @@ class GoodsMaterialsListState extends State<GoodsMaterialsList> with TickerProvi
       });
 
 
-      listViewController.addListener(() {
-        if(listViewController.offset>10){
-          if(scrollController.offset==0){
-            scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+      listViewController!.addListener(() {
+        if(listViewController!.offset>10){
+          if(scrollController!.offset==0){
+            scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
           }
 
         }
-        else if(listViewController.offset==0){
-          scrollController.animateTo(0, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+        else if(listViewController!.offset==0){
+          scrollController!.animateTo(0, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
         }
       });
 
@@ -158,7 +158,7 @@ class GoodsMaterialsListState extends State<GoodsMaterialsList> with TickerProvi
                     children: [
                       SizedBox(height: 160,),
                       Container(
-                        height: SizeConfig.screenHeight-60,
+                        height: SizeConfig.screenHeight!-60,
                         width: SizeConfig.screenWidth,
                         padding: EdgeInsets.only(top: 20,bottom: 60),
                         decoration: BoxDecoration(
@@ -174,7 +174,7 @@ class GoodsMaterialsListState extends State<GoodsMaterialsList> with TickerProvi
                               height: dataTableheight,
                               width: SizeConfig.screenWidth,
                               clipBehavior: Clip.antiAlias,
-                              margin: EdgeInsets.only(left:SizeConfig.screenWidth*0.02,right:SizeConfig.screenWidth*0.02),
+                              margin: EdgeInsets.only(left:SizeConfig.screenWidth!*0.02,right:SizeConfig.screenWidth!*0.02),
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
                                   color: Colors.white,
@@ -198,7 +198,7 @@ class GoodsMaterialsListState extends State<GoodsMaterialsList> with TickerProvi
                                       children: [
                                         Container(
                                           height: 50,
-                                          width: SizeConfig.screenWidth-valueContainerWidth-SizeConfig.screenWidth*0.04,
+                                          width: SizeConfig.screenWidth!-valueContainerWidth-SizeConfig.screenWidth!*0.04,
                                           color: showShadow? AppTheme.f737373.withOpacity(0.8):AppTheme.f737373,
                                           child: SingleChildScrollView(
                                             controller: header,
@@ -219,7 +219,7 @@ class GoodsMaterialsListState extends State<GoodsMaterialsList> with TickerProvi
                                         ),
                                         Container(
                                           height: dataTableBodyheight,
-                                          width: SizeConfig.screenWidth-valueContainerWidth-SizeConfig.screenWidth*0.04,
+                                          width: SizeConfig.screenWidth!-valueContainerWidth-SizeConfig.screenWidth!*0.04,
                                           alignment: Alignment.topCenter,
                                           color: Colors.white,
                                           child: SingleChildScrollView(
@@ -726,7 +726,7 @@ class GoodsMaterialsListState extends State<GoodsMaterialsList> with TickerProvi
 
                     children: [
                       CustomPaint(
-                        size: Size( SizeConfig.screenWidth, 55),
+                        size: Size( SizeConfig.screenWidth!, 55),
                         painter: RPSCustomPainter(),
                       ),
                       Container(
@@ -819,7 +819,7 @@ class GoodsMaterialsListState extends State<GoodsMaterialsList> with TickerProvi
       },
     );
   }
-  Route _createRouteTripList(int materialId,String materialName,String unitName,double expectedQty) {
+  Route _createRouteTripList(int? materialId,String? materialName,String? unitName,double? expectedQty) {
     return PageRouteBuilder(
       pageBuilder: (context, animation, secondaryAnimation) => GoodsMaterialTripList(materialId,materialName,unitName,expectedQty),
       transitionsBuilder: (context, animation, secondaryAnimation, child) {

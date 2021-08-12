@@ -18,7 +18,7 @@ import 'package:quarry/widgets/staticColumnScroll/customDataTableWithoutModel.da
 
 
 class EmployeeSalaryGrid extends StatefulWidget {
-  VoidCallback drawerCallback;
+  VoidCallback? drawerCallback;
   EmployeeSalaryGrid({this.drawerCallback});
 
   @override
@@ -28,7 +28,7 @@ class EmployeeSalaryGrid extends StatefulWidget {
 class _EmployeeSalaryGridState extends State<EmployeeSalaryGrid> {
 
   bool showEdit=false;
-  int selectedIndex;
+  int? selectedIndex;
 
 
 
@@ -187,7 +187,7 @@ class _EmployeeSalaryGridState extends State<EmployeeSalaryGrid> {
                             Container(
                               margin:EdgeInsets.only(top: 0),
                               child: CustomPaint(
-                                size: Size( SizeConfig.screenWidth, 65),
+                                size: Size( SizeConfig.screenWidth!, 65),
                                 painter: RPSCustomPainter3(),
                               ),
                             ),

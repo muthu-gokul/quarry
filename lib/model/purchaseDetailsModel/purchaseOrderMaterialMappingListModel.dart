@@ -1,26 +1,26 @@
 import 'package:flutter/cupertino.dart';
 
 class PurchaseOrderMaterialMappingListModel{
- int PurchaseOrderMaterialMappingId;
- int  PurchaseOrderId;
- int MaterialId;
- String materialName;
- double  MaterialPrice;
- double  PurchaseQuantity;
- double  Amount;//subtotal
- int  IsDiscount;
- int  IsPercentage;
- int  IsAmount;
- double  DiscountValue;
- double  DiscountAmount;
- double  TaxValue;
- double  TaxAmount;
- double  TotalAmount;
- int  IsActive;
- int materialUnitId;
- String unitName;
+ int? PurchaseOrderMaterialMappingId;
+ int?  PurchaseOrderId;
+ int? MaterialId;
+ String? materialName;
+ double?  MaterialPrice;
+ double?  PurchaseQuantity;
+ double?  Amount;//subtotal
+ int?  IsDiscount;
+ int?  IsPercentage;
+ int?  IsAmount;
+ double?  DiscountValue;
+ double?  DiscountAmount;
+ double?  TaxValue;
+ double?  TaxAmount;
+ double?  TotalAmount;
+ int?  IsActive;
+ int? materialUnitId;
+ String? unitName;
 
- TextEditingController purchaseQty;
+ TextEditingController? purchaseQty;
 
  PurchaseOrderMaterialMappingListModel({
       this.PurchaseOrderMaterialMappingId,
@@ -73,7 +73,7 @@ class PurchaseOrderMaterialMappingListModel{
    "PurchaseOrderId":PurchaseOrderId,
    "MaterialId":MaterialId,
    "MaterialPrice":MaterialPrice,
-   "PurchaseQuantity":purchaseQty.text.isEmpty?0.0:double.parse(purchaseQty.text),
+   "PurchaseQuantity":purchaseQty!.text.isEmpty?0.0:double.parse(purchaseQty!.text),
    "Amount":Amount,
    "IsDiscount":IsDiscount,
    "IsPercentage":IsPercentage,

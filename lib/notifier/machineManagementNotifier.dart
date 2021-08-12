@@ -56,7 +56,7 @@ class MachineManagementNotifier extends ChangeNotifier{
         if(value!=null){
           var parsed=json.decode(value);
 
-          var t=parsed['Table'] as List;
+          var t=parsed['Table'] as List?;
           var t1=parsed['Table1'] as List;
           plantList=t1.map((e) => PlantUserModel.fromJson(e)).toList();
           plantList.forEach((element) {
@@ -91,8 +91,8 @@ class MachineManagementNotifier extends ChangeNotifier{
   }
 
 
-  List<dynamic> machineList=[];
-  List<dynamic> reponsiblePersonList=[];
+  List<dynamic>? machineList=[];
+  List<dynamic>? reponsiblePersonList=[];
 
   Future<dynamic> MachineManagementDropDownValues(BuildContext context) async {
     updateMachineManagementLoader(true);
@@ -126,9 +126,9 @@ class MachineManagementNotifier extends ChangeNotifier{
       await call.ApiCallGetInvoke(body, context).then((value) {
         var parsed = json.decode(value);
 
-        var t = parsed['Table'] as List;
+        var t = parsed['Table'] as List?;
 
-        var t1= parsed['Table1'] as List;
+        var t1= parsed['Table1'] as List?;
         machineList=t;
         reponsiblePersonList=t1;
 
@@ -147,27 +147,27 @@ class MachineManagementNotifier extends ChangeNotifier{
 
   /*      inserrt form                */
 
-  int PlantId;
-  String PlantName;
+  int? PlantId;
+  String? PlantName;
 
-  int selectedMachineId=null;
-  String selectedMachineName=null;
-  String selectedMachineModel=null;
+  int? selectedMachineId=null;
+  String? selectedMachineName=null;
+  String? selectedMachineModel=null;
 
-  int selectedPersonId=null;
-  String selectedPersonName=null;
+  int? selectedPersonId=null;
+  String? selectedPersonName=null;
 
   TextEditingController operatorName =new TextEditingController();
   TextEditingController operatorNo =new TextEditingController();
   TextEditingController reason =new TextEditingController();
-  DateTime MachineServicedate;
+  DateTime? MachineServicedate;
 
-  TimeOfDay InTime;
-  String inTime;
-  TimeOfDay OutTime;
-  String outTime;
+  TimeOfDay? InTime;
+  String? inTime;
+  TimeOfDay? OutTime;
+  String? outTime;
 
-  int editMachineManagementId;
+  int? editMachineManagementId;
 
   clearInsertForm(){
      selectedMachineId=null;
@@ -227,18 +227,18 @@ class MachineManagementNotifier extends ChangeNotifier{
         {
           "Key": "MachineServicedate",
           "Type": "String",
-          "Value":MachineServicedate==null?DateFormat("yyyy-MM-dd").format(DateTime.now()) :DateFormat("yyyy-MM-dd").format(MachineServicedate)
+          "Value":MachineServicedate==null?DateFormat("yyyy-MM-dd").format(DateTime.now()) :DateFormat("yyyy-MM-dd").format(MachineServicedate!)
         },
         {
           "Key": "OperatorInTime",
           "Type": "String",
-          "Value": InTime!=null?"${InTime.hour}:${InTime.minute}":null
+          "Value": InTime!=null?"${InTime!.hour}:${InTime!.minute}":null
         },
 
         {
           "Key": "OperatorOutTime",
           "Type": "String",
-          "Value": OutTime!=null?"${OutTime.hour}:${OutTime.minute}":null
+          "Value": OutTime!=null?"${OutTime!.hour}:${OutTime!.minute}":null
         },
         {
           "Key": "Reason",
@@ -308,26 +308,26 @@ class MachineManagementNotifier extends ChangeNotifier{
 
   ];
   List<dynamic> gridData=[];
-  List<dynamic> filterGridData=[];
-  List<DateTime> picked=[];
+  List<dynamic>? filterGridData=[];
+  List<DateTime?> picked=[];
   List<ManageUserPlantModel> filterUsersPlantList=[];
-  GetMachineManagementDbHit(BuildContext context,int MachineManagementId,int MachineId)  async{
+  GetMachineManagementDbHit(BuildContext context,int? MachineManagementId,int? MachineId)  async{
 
 
     updateMachineManagementLoader(true);
-    String fromDate,toDate;
+    String? fromDate,toDate;
 
     if(picked.isEmpty){
       fromDate=DateFormat("yyyy-MM-dd").format(DateTime.now()).toString();
       toDate=DateFormat("yyyy-MM-dd").format(DateTime.now()).toString();
     }
     else if(picked.length==1){
-      fromDate=DateFormat("yyyy-MM-dd").format(picked[0]).toString();
-      toDate=DateFormat("yyyy-MM-dd").format(picked[0]).toString();
+      fromDate=DateFormat("yyyy-MM-dd").format(picked[0]!).toString();
+      toDate=DateFormat("yyyy-MM-dd").format(picked[0]!).toString();
     }
     else if(picked.length==2){
-      fromDate=DateFormat("yyyy-MM-dd").format(picked[0]).toString();
-      toDate=DateFormat("yyyy-MM-dd").format(picked[1]).toString();
+      fromDate=DateFormat("yyyy-MM-dd").format(picked[0]!).toString();
+      toDate=DateFormat("yyyy-MM-dd").format(picked[1]!).toString();
     }
     var body={
       "Fields": [
@@ -396,11 +396,11 @@ class MachineManagementNotifier extends ChangeNotifier{
             });
           }
           var parsed=json.decode(value);
-          var t=parsed['Table'] as List;
+          var t=parsed['Table'] as List?;
           print(t);
 
           if(MachineManagementId!=null && MachineId!=null ){
-            PlantId=t[0]['PlantId'];
+            PlantId=t![0]['PlantId'];
             PlantName=t[0]['PlantName'];
             editMachineManagementId=t[0]['MachineManagementId'];
             selectedMachineId=t[0]['MachineId'];
@@ -440,8 +440,8 @@ class MachineManagementNotifier extends ChangeNotifier{
     gridData.clear();
 
     filterUsersPlantList.forEach((element) {
-      if(element.isActive){
-        gridData=gridData+filterGridData.where((ele) => ele['PlantId']==element.plantId).toList();
+      if(element.isActive!){
+        gridData=gridData+filterGridData!.where((ele) => ele['PlantId']==element.plantId).toList();
       }
     });
 

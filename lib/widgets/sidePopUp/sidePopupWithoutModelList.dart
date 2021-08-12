@@ -4,19 +4,19 @@ import 'package:quarry/styles/size.dart';
 
 class PopUpStatic2 extends StatefulWidget {
 
-  String title;
+  String? title;
 
-  bool isOpen;
+  bool? isOpen;
   bool isAlwaysShown;
 
 
-  List<dynamic> dataList;
-  String propertyKeyName;
-  String propertyKeyId;
+  List<dynamic>? dataList;
+  String? propertyKeyName;
+  String? propertyKeyId;
   dynamic selectedId;
 
-  Function(int) itemOnTap;
-  VoidCallback closeOnTap;
+  Function(int)? itemOnTap;
+  VoidCallback? closeOnTap;
 
 
   PopUpStatic2({this.isOpen,this.itemOnTap,this.dataList,this.isAlwaysShown=false,
@@ -44,21 +44,21 @@ class _PopUpStatic2State extends State<PopUpStatic2> {
         ),
         clipBehavior: Clip.antiAlias,
         padding: EdgeInsets.only(top: 20,bottom: 20,),
-        margin: EdgeInsets.only(left: SizeConfig.width25,right: SizeConfig.width25),
-        transform: Matrix4.translationValues(widget.isOpen?0:SizeConfig.screenWidth, 0, 0),
+        margin: EdgeInsets.only(left: SizeConfig.width25!,right: SizeConfig.width25!),
+        transform: Matrix4.translationValues(widget.isOpen!?0:SizeConfig.screenWidth!, 0, 0),
         child: Stack(
           children: [
 
             Container(
 
               /// height: SizeConfig.screenHeight*0.63,
-              height: (widget.dataList.length*60.0)+70,
+              height: (widget.dataList!.length*60.0)+70,
               constraints: BoxConstraints(
                   minHeight: 60,
-                  maxHeight: SizeConfig.screenHeight*0.63
+                  maxHeight: SizeConfig.screenHeight!*0.63
               ),
               width: SizeConfig.screenWidth,
-              margin: EdgeInsets.only(left: SizeConfig.width16,right: SizeConfig.width16,top: 10),
+              margin: EdgeInsets.only(left: SizeConfig.width16!,right: SizeConfig.width16!,top: 10),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   color: Colors.white
@@ -69,15 +69,15 @@ class _PopUpStatic2State extends State<PopUpStatic2> {
                   Container(
                     padding: EdgeInsets.only(right: 5,left: 5),
                     margin: EdgeInsets.only(top: 50),
-                    height: widget.dataList.length*60.0,
+                    height: widget.dataList!.length*60.0,
                     constraints: BoxConstraints(
                         minHeight: 60,
-                        maxHeight: SizeConfig.screenHeight*0.63-70
+                        maxHeight: SizeConfig.screenHeight!*0.63-70
                     ),
                     decoration: BoxDecoration(
                       color: Colors.white,
                     ),
-                    width: SizeConfig.screenWidth-SizeConfig.width60,
+                    width: SizeConfig.screenWidth!-SizeConfig.width60!,
 
                     child: RawScrollbar(
                       isAlwaysShown: widget.isAlwaysShown,
@@ -86,19 +86,19 @@ class _PopUpStatic2State extends State<PopUpStatic2> {
                       thickness: AppTheme.scrollBarThickness,
                       controller: listController,
                       child: ListView.builder(
-                          itemCount: widget.dataList.length,
+                          itemCount: widget.dataList!.length,
                           physics: BouncingScrollPhysics(),
                           controller: listController,
                           itemBuilder: (context,index){
                             return GestureDetector(
                               onTap: (){
-                                widget.itemOnTap(index);
+                                widget.itemOnTap!(index);
 
 
 
                               },
                               child: Container(
-                                margin: EdgeInsets.only(left: SizeConfig.width40,right:  SizeConfig.width40,top: 20),
+                                margin: EdgeInsets.only(left: SizeConfig.width40!,right:  SizeConfig.width40!,top: 20),
                                 padding: EdgeInsets.only(left:5,right:5),
 
                                 height: 40,
@@ -106,13 +106,13 @@ class _PopUpStatic2State extends State<PopUpStatic2> {
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(5),
                                     border: Border.all(color: AppTheme.addNewTextFieldBorder),
-                                    color: widget.selectedId==null ?Color(0xFFf8f8f8):widget.selectedId==widget.dataList[index][widget.propertyKeyId]?AppTheme.bgColor:Colors.white
+                                    color: widget.selectedId==null ?Color(0xFFf8f8f8):widget.selectedId==widget.dataList![index][widget.propertyKeyId]?AppTheme.bgColor:Colors.white
                                 ),
                                 child: Center(
                                   child: FittedBox(
                                     fit: BoxFit.contain,
-                                    child: Text("${widget.dataList[index][widget.propertyKeyName]}",style: TextStyle(fontFamily: 'RR',fontSize: 14,
-                                        color: widget.selectedId==null ?AppTheme.bgColor:widget.selectedId==widget.dataList[index][widget.propertyKeyId]?Colors.white:AppTheme.bgColor
+                                    child: Text("${widget.dataList![index][widget.propertyKeyName]}",style: TextStyle(fontFamily: 'RR',fontSize: 14,
+                                        color: widget.selectedId==null ?AppTheme.bgColor:widget.selectedId==widget.dataList![index][widget.propertyKeyId]?Colors.white:AppTheme.bgColor
 
                                     ),),
                                   ),
@@ -139,7 +139,7 @@ class _PopUpStatic2State extends State<PopUpStatic2> {
                         ]
                     ),
                     child: Center(
-                      child: Text(widget.title,style: TextStyle(fontFamily: 'RM',fontSize: 16,color: AppTheme.bgColor),),
+                      child: Text(widget.title!,style: TextStyle(fontFamily: 'RM',fontSize: 16,color: AppTheme.bgColor),),
                     ),
                   ),
 
@@ -180,7 +180,7 @@ class _PopUpStatic2State extends State<PopUpStatic2> {
               right: 8,
               child: GestureDetector(
                 onTap: (){
-                  widget.closeOnTap();
+                  widget.closeOnTap!();
 
                 },
                 child: Container(

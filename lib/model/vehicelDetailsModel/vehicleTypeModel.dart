@@ -1,6 +1,6 @@
 class VehicleTypeModel{
-  int VehicleTypeId;
-  String VehicleTypeName;
+  int? VehicleTypeId;
+  String? VehicleTypeName;
 
 
   VehicleTypeModel({this.VehicleTypeId,this.VehicleTypeName});

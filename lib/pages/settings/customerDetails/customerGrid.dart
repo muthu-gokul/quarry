@@ -21,7 +21,7 @@ import 'customerAddNew.dart';
 
 
 class CustomerMaster extends StatefulWidget {
-  VoidCallback drawerCallback;
+  VoidCallback? drawerCallback;
   CustomerMaster({this.drawerCallback});
   @override
   _CustomerMasterState createState() => _CustomerMasterState();
@@ -114,7 +114,7 @@ class _CustomerMasterState extends State<CustomerMaster> {
                         Container(
                           margin:EdgeInsets.only(top: 0),
                           child: CustomPaint(
-                            size: Size( SizeConfig.screenWidth, 65),
+                            size: Size( SizeConfig.screenWidth!, 65),
                             painter: RPSCustomPainter3(),
                           ),
                         ),
@@ -184,7 +184,7 @@ class _CustomerMasterState extends State<CustomerMaster> {
 
                                           final File file = File(path);
 
-                                          await file.writeAsBytes(await excel.encode()).then((value) async {
+                                          await file.writeAsBytes(await excel.encode()!).then((value) async {
                                           //  OpenFile.open(path);
                                             CustomAlert().billSuccessAlert(context, "", "Successfully Downloaded @ \n\n Internal Storage/Download/Quarry/Masters/$filename.xlsx", "", "");
                                           });

@@ -19,7 +19,7 @@ import 'package:quarry/widgets/dateRangePicker.dart' as DateRagePicker;
 
 
 class InvoiceGrid extends StatefulWidget {
-  VoidCallback drawerCallback;
+  VoidCallback? drawerCallback;
   InvoiceGrid({this.drawerCallback});
   @override
   InvoiceGridState createState() => InvoiceGridState();
@@ -28,7 +28,7 @@ class InvoiceGrid extends StatefulWidget {
 class InvoiceGridState extends State<InvoiceGrid> with TickerProviderStateMixin{
 
   bool showEdit=false;
-  int selectedIndex;
+  int? selectedIndex;
 
 
   ScrollController header=new ScrollController();
@@ -140,8 +140,8 @@ class InvoiceGridState extends State<InvoiceGrid> with TickerProviderStateMixin{
                           map((i, value) => MapEntry(i,
                               Container(
                                 height: 80,
-                                width: SizeConfig.screenWidth*0.35,
-                                margin: EdgeInsets.only(right: SizeConfig.width10),
+                                width: SizeConfig.screenWidth!*0.35,
+                                margin: EdgeInsets.only(right: SizeConfig.width10!),
 
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(5),
@@ -157,11 +157,11 @@ class InvoiceGridState extends State<InvoiceGrid> with TickerProviderStateMixin{
                                       children: [
                                         Container(
                                           height: 18,
-                                            width: SizeConfig.screenWidth*0.35,
+                                            width: SizeConfig.screenWidth!*0.35,
                                             alignment: Alignment.center,
                                             padding: EdgeInsets.only(left: 3,right: 3),
                                             child: FittedBox(
-                                              child: Text(value.name,style: TextStyle(fontFamily: 'RR',fontSize: 16,color: Colors.white,letterSpacing: 0.1),
+                                              child: Text(value.name!,style: TextStyle(fontFamily: 'RR',fontSize: 16,color: Colors.white,letterSpacing: 0.1),
                                               ),
                                             )
                                         ),
@@ -182,7 +182,7 @@ class InvoiceGridState extends State<InvoiceGrid> with TickerProviderStateMixin{
                 ),
 
                 Container(
-                    height: SizeConfig.screenHeight-140,
+                    height: SizeConfig.screenHeight!-140,
                     width: SizeConfig.screenWidth,
                     margin: EdgeInsets.only(top: 140),
                     clipBehavior: Clip.antiAlias,
@@ -201,7 +201,7 @@ class InvoiceGridState extends State<InvoiceGrid> with TickerProviderStateMixin{
                             children: [
                               Container(
                                 height: 50,
-                                width: SizeConfig.screenWidth-149,
+                                width: SizeConfig.screenWidth!-149,
                                 color: showShadow? AppTheme.bgColor.withOpacity(0.8):AppTheme.bgColor,
                                 child: SingleChildScrollView(
                                   controller: header,
@@ -220,15 +220,15 @@ class InvoiceGridState extends State<InvoiceGrid> with TickerProviderStateMixin{
 
                               ),
                               Container(
-                                height: SizeConfig.screenHeight-260,
-                                width: SizeConfig.screenWidth-149,
+                                height: SizeConfig.screenHeight!-260,
+                                width: SizeConfig.screenWidth!-149,
                                 alignment: Alignment.topCenter,
                                 color: AppTheme.gridbodyBgColor,
                                 child: SingleChildScrollView(
                                   controller: body,
                                   scrollDirection: Axis.horizontal,
                                   child: Container(
-                                    height: SizeConfig.screenHeight-260,
+                                    height: SizeConfig.screenHeight!-260,
                                     alignment: Alignment.topCenter,
                                     color: AppTheme.gridbodyBgColor,
                                     child: SingleChildScrollView(
@@ -269,7 +269,7 @@ class InvoiceGridState extends State<InvoiceGrid> with TickerProviderStateMixin{
                                                     alignment: Alignment.centerLeft,
                                                     // padding: EdgeInsets.only(left: 20,right: 20),
                                                     width: 150,
-                                                    child: Text(value.invoiceDate!=null?"${DateFormat.yMMMd().format(value.invoiceDate)}":"",
+                                                    child: Text(value.invoiceDate!=null?"${DateFormat.yMMMd().format(value.invoiceDate!)}":"",
                                                       style:selectedIndex==i?AppTheme.TSWhiteML:AppTheme.gridTextColor14,
                                                     ),
 
@@ -334,7 +334,7 @@ class InvoiceGridState extends State<InvoiceGrid> with TickerProviderStateMixin{
 
                               ),
                               Container(
-                                height: SizeConfig.screenHeight-260,
+                                height: SizeConfig.screenHeight!-260,
                                 width: 150,
                                 alignment: Alignment.topCenter,
                                 decoration: BoxDecoration(
@@ -349,7 +349,7 @@ class InvoiceGridState extends State<InvoiceGrid> with TickerProviderStateMixin{
                                     ]
                                 ),
                                 child: Container(
-                                  height: SizeConfig.screenHeight-260,
+                                  height: SizeConfig.screenHeight!-260,
                                   alignment: Alignment.topCenter,
 
                                   child: SingleChildScrollView(
@@ -463,7 +463,7 @@ class InvoiceGridState extends State<InvoiceGrid> with TickerProviderStateMixin{
                         Container(
                           margin:EdgeInsets.only(top: 0),
                           child: CustomPaint(
-                            size: Size( SizeConfig.screenWidth, 65),
+                            size: Size( SizeConfig.screenWidth!, 65),
                             painter: RPSCustomPainter3(),
                           ),
                         ),
@@ -526,7 +526,7 @@ class InvoiceGridState extends State<InvoiceGrid> with TickerProviderStateMixin{
                                       ),
                                       GestureDetector(
                                         onTap: () async{
-                                          final List<DateTime>  picked1 = await DateRagePicker.showDatePicker(
+                                          final List<DateTime?>?  picked1 = await DateRagePicker.showDatePicker(
                                               context: context,
                                               initialFirstDate: new DateTime.now(),
                                               initialLastDate: (new DateTime.now()),
@@ -555,7 +555,7 @@ class InvoiceGridState extends State<InvoiceGrid> with TickerProviderStateMixin{
                                         ),
                                       ),
 
-                                      SizedBox(width: SizeConfig.screenWidth*0.25,),
+                                      SizedBox(width: SizeConfig.screenWidth!*0.25,),
                                       Container(
                                         height: 50,
                                         width: 50,
@@ -593,7 +593,7 @@ class InvoiceGridState extends State<InvoiceGrid> with TickerProviderStateMixin{
                                   inv.updateInvoiceEdit(true);
                                   inv.InvoiceDropDownValues(context);
                                   inv.PlantUserDropDownValues(context).then((value) {
-                                    inv.GetInvoiceDbHit(context, inv.filterInvoiceGridList[selectedIndex].invoiceId);
+                                    inv.GetInvoiceDbHit(context, inv.filterInvoiceGridList[selectedIndex!].invoiceId);
                                     Navigator.push(context, _createRoute());
                                     setState(() {
                                       selectedIndex=-1;
@@ -604,7 +604,7 @@ class InvoiceGridState extends State<InvoiceGrid> with TickerProviderStateMixin{
                                 },
                                 deleteTap: (){},
                                 viewTap: (){
-                                  inv.GetInvoiceDbHit(context, inv.filterInvoiceGridList[selectedIndex].invoiceId).then((value) {
+                                  inv.GetInvoiceDbHit(context, inv.filterInvoiceGridList[selectedIndex!].invoiceId).then((value) {
                                     invoicePdf(context,true);
                                     setState(() {
                                       selectedIndex=-1;
@@ -614,7 +614,7 @@ class InvoiceGridState extends State<InvoiceGrid> with TickerProviderStateMixin{
 
                                 },
                                 pdfTap: (){
-                                  inv.GetInvoiceDbHit(context, inv.filterInvoiceGridList[selectedIndex].invoiceId).then((value) {
+                                  inv.GetInvoiceDbHit(context, inv.filterInvoiceGridList[selectedIndex!].invoiceId).then((value) {
                                     invoicePdf(context,false);
                                     setState(() {
                                       selectedIndex=-1;

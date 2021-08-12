@@ -20,16 +20,16 @@ import 'package:quarry/widgets/dateRangePicker.dart' as DateRagePicker;
 
 class DashBoardTemplate extends StatefulWidget {
 
-  VoidCallback drawerCallback;
+  VoidCallback? drawerCallback;
   DashBoardTemplate({this.drawerCallback});
   @override
   _DashBoardTemplateState createState() => _DashBoardTemplateState();
 }
 
 class _DashBoardTemplateState extends State<DashBoardTemplate> {
-  ScrollController silverController;
+  ScrollController? silverController;
   double silverBodyTopMargin=0;
-  List<DateTime> picked=[];
+  List<DateTime?> picked=[];
   int selIndex=-1;
 
   @override
@@ -39,23 +39,23 @@ class _DashBoardTemplateState extends State<DashBoardTemplate> {
         DateFormat("yyyy-MM-dd").format(DateTime.now().subtract(Duration(days: 6))).toString(),
         DateFormat("yyyy-MM-dd").format(DateTime.now()).toString()
     );
-    WidgetsBinding.instance.addPostFrameCallback((_){
+    WidgetsBinding.instance!.addPostFrameCallback((_){
       silverController=new ScrollController();
 
       setState(() {
         silverBodyTopMargin=0;
       });
 
-      silverController.addListener(() {
-        if(silverController.offset>250){
+      silverController!.addListener(() {
+        if(silverController!.offset>250){
           setState(() {
-            silverBodyTopMargin=50-(-(silverController.offset-300));
+            silverBodyTopMargin=50-(-(silverController!.offset-300));
             if(silverBodyTopMargin<0){
               silverBodyTopMargin=0;
             }
           });
         }
-        else if(silverController.offset<270){
+        else if(silverController!.offset<270){
           setState(() {
             silverBodyTopMargin=0;
           });
@@ -149,7 +149,7 @@ class _DashBoardTemplateState extends State<DashBoardTemplate> {
                             ),
                             Container(
                               height: 40,
-                              width: SizeConfig.screenWidth*0.57,
+                              width: SizeConfig.screenWidth!*0.57,
                               padding:EdgeInsets.only(left: 10,right: 10),
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(25),
@@ -181,14 +181,14 @@ class _DashBoardTemplateState extends State<DashBoardTemplate> {
                                     children: [
                                       FittedText(
                                         height: 15,
-                                        width: SizeConfig.screenWidth*0.23,
+                                        width: SizeConfig.screenWidth!*0.23,
                                         alignment: Alignment.centerRight,
-                                        text: "${formatCurrency.format(db.currentSaleT['TotalSale']??0.0)}",
+                                        text: "${formatCurrency.format(db.currentSaleT!['TotalSale']??0.0)}",
                                         textStyle: TextStyle(fontFamily: 'RM',fontSize: 14,color: AppTheme.bgColor),
                                       ),
                                       // Text("${db.currentSaleT['TotalSale']}",style: TextStyle(fontFamily: 'RM',fontSize: 14,color: AppTheme.bgColor),),
                                       SizedBox(height: 2,),
-                                      Text("${db.currentSaleT['TotalQuantity']} ${db.currentSaleT['UnitName']}",style: TextStyle(fontFamily: 'RM',fontSize: 9,color: AppTheme.bgColor),),
+                                      Text("${db.currentSaleT!['TotalQuantity']} ${db.currentSaleT!['UnitName']}",style: TextStyle(fontFamily: 'RM',fontSize: 9,color: AppTheme.bgColor),),
                                     ],
                                   ),
                                 ],
@@ -197,7 +197,7 @@ class _DashBoardTemplateState extends State<DashBoardTemplate> {
                             Spacer(),
                             GestureDetector(
                                 onTap: () async{
-                                  final List<DateTime>  picked1 = await DateRagePicker.showDatePicker(
+                                  final List<DateTime?>?  picked1 = await DateRagePicker.showDatePicker(
                                       context: context,
                                       initialFirstDate: new DateTime.now(),
                                       initialLastDate: (new DateTime.now()),
@@ -210,8 +210,8 @@ class _DashBoardTemplateState extends State<DashBoardTemplate> {
                                     });
                                     db.DashBoardDbHit(context,
                                         "Sale",
-                                        DateFormat("yyyy-MM-dd").format(picked[0]).toString(),
-                                        DateFormat("yyyy-MM-dd").format(picked[1]).toString()
+                                        DateFormat("yyyy-MM-dd").format(picked[0]!).toString(),
+                                        DateFormat("yyyy-MM-dd").format(picked[1]!).toString()
                                     );
                                   }
                                   else if(picked1!=null && picked1.length ==1){
@@ -220,8 +220,8 @@ class _DashBoardTemplateState extends State<DashBoardTemplate> {
                                     });
                                     db.DashBoardDbHit(context,
                                         "Sale",
-                                        DateFormat("yyyy-MM-dd").format(picked[0]).toString(),
-                                        DateFormat("yyyy-MM-dd").format(picked[0]).toString()
+                                        DateFormat("yyyy-MM-dd").format(picked[0]!).toString(),
+                                        DateFormat("yyyy-MM-dd").format(picked[0]!).toString()
                                     );
                                   }
 

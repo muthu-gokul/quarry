@@ -17,21 +17,21 @@ class PurchaseOrderGridModel {
     this.PlantName,
   });
 
-  int purchaseOrderId;
-  int PlantId;
-  DateTime expectedDate;
-  String purchaseOrderNumber;
-  String PlantName;
-  int materialId;
-  String materialName;
-  String supplierName;
-  String status;
-  double taxAmount;
-  double Subtotal;
-  double purchaseQuantity;
-  double netAmount;
-  double TotalQuantity;
-  int NoOfMaterial;
+  int? purchaseOrderId;
+  int? PlantId;
+  DateTime? expectedDate;
+  String? purchaseOrderNumber;
+  String? PlantName;
+  int? materialId;
+  String? materialName;
+  String? supplierName;
+  String? status;
+  double? taxAmount;
+  double? Subtotal;
+  double? purchaseQuantity;
+  double? netAmount;
+  double? TotalQuantity;
+  int? NoOfMaterial;
 
   factory PurchaseOrderGridModel.fromJson(Map<String, dynamic> json) => PurchaseOrderGridModel(
     purchaseOrderId: json["PurchaseOrderId"],
@@ -53,7 +53,7 @@ class PurchaseOrderGridModel {
 
   Map<String, dynamic> toJson() => {
     "PurchaseOrderId": purchaseOrderId,
-    "ExpectedDate": expectedDate.toIso8601String(),
+    "ExpectedDate": expectedDate!.toIso8601String(),
     "PurchaseOrderNumber": purchaseOrderNumber,
     "MaterialId": materialId,
     "MaterialName": materialName,

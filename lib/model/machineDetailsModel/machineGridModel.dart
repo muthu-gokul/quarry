@@ -1,12 +1,12 @@
 class MachineGridModel{
-  int machineId;
-  String machineName;
-  String machineType;
-  String machineModel;
-  String machineCapacity;
-  String machineMotorPower;
-  String machineWeight;
-  int companyId;
+  int? machineId;
+  String? machineName;
+  String? machineType;
+  String? machineModel;
+  String? machineCapacity;
+  String? machineMotorPower;
+  String? machineWeight;
+  int? companyId;
 
   MachineGridModel({this.machineName, this.machineType, this.machineModel,
     this.machineCapacity, this.machineMotorPower, this.machineWeight,this.companyId,this.machineId});

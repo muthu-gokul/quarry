@@ -21,8 +21,8 @@ class _MachineDetailAddNewState extends State<MachineDetailAddNew> with TickerPr
   GlobalKey <ScaffoldState> scaffoldkey=new GlobalKey<ScaffoldState>();
 
 
-  ScrollController scrollController;
-  ScrollController listViewController;
+  ScrollController? scrollController;
+  ScrollController? listViewController;
   bool _keyboardVisible = false;
 
   bool machineName=false;
@@ -30,7 +30,7 @@ class _MachineDetailAddNewState extends State<MachineDetailAddNew> with TickerPr
   @override
   void initState() {
 
-    WidgetsBinding.instance.addPostFrameCallback((_){
+    WidgetsBinding.instance!.addPostFrameCallback((_){
 
 
       scrollController=new ScrollController();
@@ -113,7 +113,7 @@ class _MachineDetailAddNewState extends State<MachineDetailAddNew> with TickerPr
                    children: [
                      SizedBox(height: 160,),
                      Container(
-                       height: SizeConfig.screenHeight-60,
+                       height: SizeConfig.screenHeight!-60,
                        width: SizeConfig.screenWidth,
                        alignment: Alignment.topCenter,
                        decoration: BoxDecoration(
@@ -134,7 +134,7 @@ class _MachineDetailAddNewState extends State<MachineDetailAddNew> with TickerPr
                          onVerticalDragUpdate: (details){
                            int sensitivity = 5;
                            if (details.delta.dy > sensitivity) {
-                             scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
+                             scrollController!.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
                                /* if(isListScroll){
                                     setState(() {
                                       isListScroll=false;
@@ -143,7 +143,7 @@ class _MachineDetailAddNewState extends State<MachineDetailAddNew> with TickerPr
                              });
 
                            } else if(details.delta.dy < -sensitivity){
-                             scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
+                             scrollController!.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
 
                                /*if(!isListScroll){
                                     setState(() {
@@ -155,7 +155,7 @@ class _MachineDetailAddNewState extends State<MachineDetailAddNew> with TickerPr
                          },
                          child: Container(
                         //   height:_keyboardVisible?SizeConfig.screenHeight*0.5 :SizeConfig.screenHeight-100,
-                           height: SizeConfig.screenHeight-100,
+                           height: SizeConfig.screenHeight!-100,
                            width: SizeConfig.screenWidth,
 
                            decoration: BoxDecoration(
@@ -175,7 +175,7 @@ class _MachineDetailAddNewState extends State<MachineDetailAddNew> with TickerPr
                                    node.unfocus();
                                  },
                                  ontap: (){
-                                   scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                   scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                  },
                                ),
                                !machineName?Container():ValidationErrorText(title: "* Enter Machine Name",),
@@ -184,7 +184,7 @@ class _MachineDetailAddNewState extends State<MachineDetailAddNew> with TickerPr
                                  regExp: '[A-Za-z0-9  ]',
                                  textEditingController: qn.MachineType,
                                  ontap: (){
-                                   scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                   scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                  },
                                  onEditComplete: (){
                                    node.unfocus();
@@ -195,7 +195,7 @@ class _MachineDetailAddNewState extends State<MachineDetailAddNew> with TickerPr
                                  regExp: '[A-Za-z0-9  ]',
                                  textEditingController: qn.MachineModel,
                                  ontap: (){
-                                   scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                   scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                  },
                                  onEditComplete: (){
                                    node.unfocus();
@@ -209,7 +209,7 @@ class _MachineDetailAddNewState extends State<MachineDetailAddNew> with TickerPr
                                  textInputType: TextInputType.number,
                                  scrollPadding: 100,
                                  ontap: (){
-                                   scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                   scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                  },
                                  onEditComplete: (){
                                    node.unfocus();
@@ -221,7 +221,7 @@ class _MachineDetailAddNewState extends State<MachineDetailAddNew> with TickerPr
                                   textEditingController: qn.MoterPower,
                                  scrollPadding: 400,
                                  ontap: (){
-                                   scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                   scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                    setState(() {
                                      _keyboardVisible=true;
                                    });
@@ -239,7 +239,7 @@ class _MachineDetailAddNewState extends State<MachineDetailAddNew> with TickerPr
                                  regExp: '[A-Za-z0-9  ]',
                                  scrollPadding: 450,
                                  ontap: (){
-                                   scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                   scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                    setState(() {
                                      _keyboardVisible=true;
                                    });
@@ -258,7 +258,7 @@ class _MachineDetailAddNewState extends State<MachineDetailAddNew> with TickerPr
                                // // ),
 
 
-                               SizedBox(height: _keyboardVisible? SizeConfig.screenHeight*0.5:200,)
+                               SizedBox(height: _keyboardVisible? SizeConfig.screenHeight!*0.5:200,)
                              ],
                            ),
                          ),
@@ -320,7 +320,7 @@ class _MachineDetailAddNewState extends State<MachineDetailAddNew> with TickerPr
                        ),
                        margin:EdgeInsets.only(top: 0),
                        child: CustomPaint(
-                         size: Size( SizeConfig.screenWidth, 65),
+                         size: Size( SizeConfig.screenWidth!, 65),
                          painter: RPSCustomPainter3(),
                        ),
                      ),

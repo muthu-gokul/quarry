@@ -20,7 +20,7 @@ import 'package:quarry/widgets/navigationBarIcon.dart';
 import 'package:quarry/widgets/validationErrorText.dart';
 
 class ProfileScreen extends StatefulWidget {
-  VoidCallback drawerCallback;
+  VoidCallback? drawerCallback;
   ProfileScreen({this.drawerCallback});
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
@@ -30,8 +30,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   GlobalKey <ScaffoldState> scaffoldkey=new GlobalKey<ScaffoldState>();
 
 
-  ScrollController scrollController;
-  ScrollController listViewController;
+  ScrollController? scrollController;
+  ScrollController? listViewController;
   bool _keyboardVisible = false;
   bool salutationOpen=false;
   bool passwordvisible=true;
@@ -45,7 +45,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
 
-    WidgetsBinding.instance.addPostFrameCallback((_){
+    WidgetsBinding.instance!.addPostFrameCallback((_){
 
 
       scrollController=new ScrollController();
@@ -55,15 +55,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
       });
 
 
-      listViewController.addListener(() {
-        if(listViewController.offset>20){
+      listViewController!.addListener(() {
+        if(listViewController!.offset>20){
 
-          scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+          scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
 
 
         }
-        else if(listViewController.offset==0){
-          scrollController.animateTo(0, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+        else if(listViewController!.offset==0){
+          scrollController!.animateTo(0, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
         }
       });
 
@@ -128,7 +128,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           children: [
                             SizedBox(height: 160,),
                             Container(
-                              height: SizeConfig.screenHeight-60,
+                              height: SizeConfig.screenHeight!-60,
                               width: SizeConfig.screenWidth,
                               alignment: Alignment.topCenter,
                               decoration: BoxDecoration(
@@ -140,15 +140,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   int sensitivity = 5;
 
                                   if (details.delta.dy > sensitivity) {
-                                    scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+                                    scrollController!.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
 
                                   } else if(details.delta.dy < -sensitivity){
-                                    scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+                                    scrollController!.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
                                   }
                                 },
 
                                 child: Container(
-                                  height:SizeConfig.screenHeight-100,
+                                  height:SizeConfig.screenHeight!-100,
                                   width: SizeConfig.screenWidth,
 
                                   decoration: BoxDecoration(
@@ -169,7 +169,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             });
                                           },
                                           child: Container(
-                                            margin: EdgeInsets.only(right: SizeConfig.width20,top: 10,bottom: 10),
+                                            margin: EdgeInsets.only(right: SizeConfig.width20!,top: 10,bottom: 10),
                                             height: 40,
                                             width: 40,
                                             decoration: BoxDecoration(
@@ -211,8 +211,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                               alignment: Alignment.center,
                                               child: Container(
 
-                                                margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20),
-                                                padding: EdgeInsets.only(left:SizeConfig.width60,),
+                                                margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!),
+                                                padding: EdgeInsets.only(left:SizeConfig.width60!,),
                                                 decoration: BoxDecoration(
                                                     borderRadius: BorderRadius.circular(3),
                                                     border: Border.all(color: AppTheme.addNewTextFieldBorder),
@@ -225,7 +225,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                   controller: pn.firstName,
                                                   enabled: isEdit,
                                                   onTap: (){
-                                                    scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                                    scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                                     setState(() {
                                                       _keyboardVisible=true;
                                                     });
@@ -269,7 +269,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                 width: 60,
                                                 duration: Duration(milliseconds: 300),
                                                 curve: Curves.easeIn,
-                                                margin: EdgeInsets.only(left: SizeConfig.width30),
+                                                margin: EdgeInsets.only(left: SizeConfig.width30!),
                                                 decoration: BoxDecoration(
                                                     color: AppTheme.yellowColor,
                                                   borderRadius: BorderRadius.circular(10)
@@ -342,7 +342,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         regExp: '[A-Za-z ]',
                                         textEditingController: pn.lastName,
                                         ontap: (){
-                                          scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                          scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                           setState(() {
                                             _keyboardVisible=true;
                                           });
@@ -373,7 +373,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           });
                                         },
                                         ontap: (){
-                                          scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                          scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                           setState(() {
                                             _keyboardVisible=true;
                                           });
@@ -396,7 +396,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           });
                                         },
                                         ontap: (){
-                                          scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                          scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                           setState(() {
                                             _keyboardVisible=true;
                                           });
@@ -421,7 +421,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           });
                                         },
                                         ontap: (){
-                                          scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                          scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                           setState(() {
                                             _keyboardVisible=true;
                                           });
@@ -445,7 +445,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                               Provider.of<ManageUsersNotifier>(context,listen: false).GetUserDetailDbHit(context, null);
                                             },
                                             child: Container(
-                                              width:SizeConfig.screenWidth*0.4,
+                                              width:SizeConfig.screenWidth!*0.4,
                                               height:50,
                                               decoration: BoxDecoration(
                                                 borderRadius: BorderRadius.circular(25.0),
@@ -466,7 +466,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             ),
                                           ),
                                           Container(
-                                            width:SizeConfig.screenWidth*0.4,
+                                            width:SizeConfig.screenWidth!*0.4,
                                             height:50,
                                             decoration: BoxDecoration(
                                               borderRadius: BorderRadius.circular(25.0),
@@ -489,7 +489,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       ),
 
 
-                                    SizedBox(height:_keyboardVisible?SizeConfig.screenHeight*0.5 : SizeConfig.height100,),
+                                    SizedBox(height:_keyboardVisible?SizeConfig.screenHeight!*0.5 : SizeConfig.height100,),
                                     ],
                                   ),
                                 ),
@@ -575,7 +575,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                           margin:EdgeInsets.only(top: 0),
                           child: CustomPaint(
-                            size: Size( SizeConfig.screenWidth, 65),
+                            size: Size( SizeConfig.screenWidth!, 65),
                             //  painter: RPSCustomPainter(),
                             painter: RPSCustomPainter3(),
                           ),

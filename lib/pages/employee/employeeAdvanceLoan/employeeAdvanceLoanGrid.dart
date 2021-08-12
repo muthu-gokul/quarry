@@ -13,7 +13,7 @@ import 'package:quarry/widgets/navigationBarIcon.dart';
 
 
 class EmployeeAdvanceLoanGrid extends StatefulWidget {
-  VoidCallback drawerCallback;
+  VoidCallback? drawerCallback;
   EmployeeAdvanceLoanGrid({this.drawerCallback});
 
 
@@ -23,7 +23,7 @@ class EmployeeAdvanceLoanGrid extends StatefulWidget {
 
 class _EmployeeAdvanceLoanGridState extends State<EmployeeAdvanceLoanGrid> {
   bool showEdit=false;
-  int selectedIndex;
+  int? selectedIndex;
 
   ScrollController header=new ScrollController();
   ScrollController body=new ScrollController();
@@ -101,7 +101,7 @@ class _EmployeeAdvanceLoanGridState extends State<EmployeeAdvanceLoanGrid> {
               ),
 
               Container(
-            height: SizeConfig.screenHeight-topMargin,
+            height: SizeConfig.screenHeight!-topMargin,
             width: SizeConfig.screenWidth,
             margin: EdgeInsets.only(top: topMargin),
             clipBehavior: Clip.antiAlias,
@@ -120,7 +120,7 @@ class _EmployeeAdvanceLoanGridState extends State<EmployeeAdvanceLoanGrid> {
                     children: [
                       Container(
                         height: 50,
-                        width: SizeConfig.screenWidth-149,
+                        width: SizeConfig.screenWidth!-149,
                         color: showShadow? AppTheme.bgColor.withOpacity(0.8):AppTheme.bgColor,
                         child: SingleChildScrollView(
                           controller: header,
@@ -136,7 +136,7 @@ class _EmployeeAdvanceLoanGridState extends State<EmployeeAdvanceLoanGrid> {
                                       minWidth: 150,
                                       maxWidth: 200
                                   ),
-                                  child: FittedBox(child: Text(value.columnName,style: AppTheme.TSWhite166,))
+                                  child: FittedBox(child: Text(value.columnName!,style: AppTheme.TSWhite166,))
                               )
                               )).values.toList()
                           ),
@@ -144,22 +144,22 @@ class _EmployeeAdvanceLoanGridState extends State<EmployeeAdvanceLoanGrid> {
 
                       ),
                       Container(
-                        height: SizeConfig.screenHeight-gridBodyReduceHeight,
-                        width: SizeConfig.screenWidth-149,
+                        height: SizeConfig.screenHeight!-gridBodyReduceHeight,
+                        width: SizeConfig.screenWidth!-149,
                         alignment: Alignment.topCenter,
                         color: AppTheme.gridbodyBgColor,
                         child: SingleChildScrollView(
                           controller: body,
                           scrollDirection: Axis.horizontal,
                           child: Container(
-                            height: SizeConfig.screenHeight-gridBodyReduceHeight,
+                            height: SizeConfig.screenHeight!-gridBodyReduceHeight,
                             alignment: Alignment.topCenter,
                             color:AppTheme.gridbodyBgColor,
                             child: SingleChildScrollView(
                               controller: verticalRight,
                               scrollDirection: Axis.vertical,
                               child: Column(
-                                  children:eal.gridData.asMap().
+                                  children:eal.gridData!.asMap().
                                   map((i, value) => MapEntry(
                                       i,InkWell(
                                     //   onTap: widget.voidCallback,
@@ -186,7 +186,7 @@ class _EmployeeAdvanceLoanGridState extends State<EmployeeAdvanceLoanGrid> {
                                         color: selectedIndex==i?AppTheme.yellowColor:AppTheme.gridbodyBgColor,
                                       ),
                                       height: 50,
-                                      margin: EdgeInsets.only(bottom:i==eal.gridData.length-1?70: 0),
+                                      margin: EdgeInsets.only(bottom:i==eal.gridData!.length-1?70: 0),
                                       child: Row(
                                           children: eal.gridDataRowList.asMap().map((j, v) {
 
@@ -240,7 +240,7 @@ class _EmployeeAdvanceLoanGridState extends State<EmployeeAdvanceLoanGrid> {
                                                            clipBehavior: Clip.antiAlias,
                                                            child: Container(
                                                              height: 400,
-                                                             margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,),
+                                                             margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!,),
                                                              width: SizeConfig.screenWidth,
                                                              color: Colors.white,
                                                          //    padding: EdgeInsets.only(left: 5),
@@ -265,8 +265,8 @@ class _EmployeeAdvanceLoanGridState extends State<EmployeeAdvanceLoanGrid> {
                                                                    child:Row(
                                                                      children: [
                                                                        Container(
-                                                                           padding: EdgeInsets.only(left: SizeConfig.width10),
-                                                                           width: (SizeConfig.screenWidthM40*0.35),
+                                                                           padding: EdgeInsets.only(left: SizeConfig.width10!),
+                                                                           width: (SizeConfig.screenWidthM40!*0.35),
                                                                            child: Text("Loan Amount",style: tableTextStyle,)
                                                                        ),
 
@@ -277,10 +277,10 @@ class _EmployeeAdvanceLoanGridState extends State<EmployeeAdvanceLoanGrid> {
                                                                        ),
 
                                                                        Container(
-                                                                         padding: EdgeInsets.only(left: SizeConfig.width10),
+                                                                         padding: EdgeInsets.only(left: SizeConfig.width10!),
                                                                          height: 16,
                                                                          alignment: Alignment.centerLeft,
-                                                                         width: (SizeConfig.screenWidthM40*0.35),
+                                                                         width: (SizeConfig.screenWidthM40!*0.35),
                                                                          child: FittedBox(child: Text("${value['LoanAmount']}",
 
                                                                            style:tableTextStyle,
@@ -307,8 +307,8 @@ class _EmployeeAdvanceLoanGridState extends State<EmployeeAdvanceLoanGrid> {
                                                                    child:Row(
                                                                      children: [
                                                                        Container(
-                                                                           padding: EdgeInsets.only(left: SizeConfig.width10),
-                                                                           width: (SizeConfig.screenWidthM40*0.35),
+                                                                           padding: EdgeInsets.only(left: SizeConfig.width10!),
+                                                                           width: (SizeConfig.screenWidthM40!*0.35),
                                                                            child: Text("Due Month",style: tableTextStyle,)
                                                                        ),
 
@@ -319,10 +319,10 @@ class _EmployeeAdvanceLoanGridState extends State<EmployeeAdvanceLoanGrid> {
                                                                        ),
 
                                                                        Container(
-                                                                         padding: EdgeInsets.only(left: SizeConfig.width10),
+                                                                         padding: EdgeInsets.only(left: SizeConfig.width10!),
                                                                          height: 16,
                                                                          alignment: Alignment.centerLeft,
-                                                                         width: (SizeConfig.screenWidthM40*0.35),
+                                                                         width: (SizeConfig.screenWidthM40!*0.35),
                                                                          child: FittedBox(child: Text("${value['DueMonth']}",
 
                                                                            style:tableTextStyle,
@@ -349,8 +349,8 @@ class _EmployeeAdvanceLoanGridState extends State<EmployeeAdvanceLoanGrid> {
                                                                    child:Row(
                                                                      children: [
                                                                        Container(
-                                                                           padding: EdgeInsets.only(left: SizeConfig.width10),
-                                                                           width: (SizeConfig.screenWidthM40*0.35),
+                                                                           padding: EdgeInsets.only(left: SizeConfig.width10!),
+                                                                           width: (SizeConfig.screenWidthM40!*0.35),
                                                                            child: Text("LoanEMI/Month",style: tableTextStyle,)
                                                                        ),
 
@@ -361,10 +361,10 @@ class _EmployeeAdvanceLoanGridState extends State<EmployeeAdvanceLoanGrid> {
                                                                        ),
 
                                                                        Container(
-                                                                         padding: EdgeInsets.only(left: SizeConfig.width10),
+                                                                         padding: EdgeInsets.only(left: SizeConfig.width10!),
                                                                          height: 16,
                                                                          alignment: Alignment.centerLeft,
-                                                                         width: (SizeConfig.screenWidthM40*0.35),
+                                                                         width: (SizeConfig.screenWidthM40!*0.35),
                                                                          child: FittedBox(child: Text("${value['LoanEMI/Month']}",
 
                                                                            style:tableTextStyle,
@@ -437,7 +437,7 @@ class _EmployeeAdvanceLoanGridState extends State<EmployeeAdvanceLoanGrid> {
 
                       ),
                       Container(
-                        height: SizeConfig.screenHeight-gridBodyReduceHeight,
+                        height: SizeConfig.screenHeight!-gridBodyReduceHeight,
                         alignment: Alignment.topCenter,
                         decoration: BoxDecoration(
                             color:showShadow? AppTheme.gridbodyBgColor:Colors.transparent,
@@ -451,14 +451,14 @@ class _EmployeeAdvanceLoanGridState extends State<EmployeeAdvanceLoanGrid> {
                             ]
                         ),
                         child: Container(
-                          height: SizeConfig.screenHeight-gridBodyReduceHeight,
+                          height: SizeConfig.screenHeight!-gridBodyReduceHeight,
                           alignment: Alignment.topCenter,
 
                           child: SingleChildScrollView(
                             controller: verticalLeft,
                             scrollDirection: Axis.vertical,
                             child: Column(
-                                children: eal.gridData.asMap().
+                                children: eal.gridData!.asMap().
                                 map((i, value) => MapEntry(
                                     i,InkWell(
                                   onTap: (){
@@ -480,7 +480,7 @@ class _EmployeeAdvanceLoanGridState extends State<EmployeeAdvanceLoanGrid> {
                                   child:  Container(
                                     alignment:eal.gridDataRowList[0].alignment,
                                     padding: eal.gridDataRowList[0].edgeInsets,
-                                    margin: EdgeInsets.only(bottom:i==eal.gridData.length-1?70: 0),
+                                    margin: EdgeInsets.only(bottom:i==eal.gridData!.length-1?70: 0),
                                     decoration: BoxDecoration(
                                       border: AppTheme.gridBottomborder,
                                       color: selectedIndex==i?AppTheme.yellowColor:AppTheme.gridbodyBgColor,
@@ -551,7 +551,7 @@ class _EmployeeAdvanceLoanGridState extends State<EmployeeAdvanceLoanGrid> {
                       Container(
                         margin:EdgeInsets.only(top: 0),
                         child: CustomPaint(
-                          size: Size( SizeConfig.screenWidth, 65),
+                          size: Size( SizeConfig.screenWidth!, 65),
                           painter: RPSCustomPainter3(),
                         ),
                       ),
@@ -578,7 +578,7 @@ class _EmployeeAdvanceLoanGridState extends State<EmployeeAdvanceLoanGrid> {
                                         onTap: (){
                                           eal.updateisEdit(true);
                                           eal.EmployeeAdvanceDropDownValues(context).then((value) {
-                                            eal.GetEmployeeAttendanceLoanDbHit(context, eal.gridData[selectedIndex]['EmployeeId']);
+                                            eal.GetEmployeeAttendanceLoanDbHit(context, eal.gridData![selectedIndex!]['EmployeeId']);
                                             Navigator.push(context, _createRoute());
                                             setState(() {
                                               showEdit=false;

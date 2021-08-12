@@ -110,14 +110,14 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                               alignment: Alignment.centerRight,
                               child: IconButton(icon: Icon(Icons.clear_outlined,size: 25,color: AppTheme.yellowColor,),
                                   onPressed: (){
-                                    scaffoldkey.currentState.openEndDrawer();
+                                    scaffoldkey.currentState!.openEndDrawer();
                                   }),
                             ),
                             GestureDetector(
                               onTap: (){
                                 setState(() {
                                   drawer.menuSelected=10;
-                                  scaffoldkey.currentState.openEndDrawer();
+                                  scaffoldkey.currentState!.openEndDrawer();
                                 });
                                 Provider.of<ProfileNotifier>(context, listen: false).GetUserDetailDbHit(context,Provider.of<QuarryNotifier>(context,listen: false).UserId);
                               },
@@ -171,11 +171,11 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                     ),
 
                     Container(
-                      height: SizeConfig.screenHeight-210,
+                      height: SizeConfig.screenHeight!-210,
                       child: Column(
                         children: [
                           Container(
-                            height: (SizeConfig.screenHeight-255),
+                            height: (SizeConfig.screenHeight!-255),
                             child: ListView(
                               children: [
                                 SizedBox(height: 20,),
@@ -189,7 +189,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                   callback: (){
                                     setState(() {
                                       drawer.menuSelected=22;
-                                      scaffoldkey.currentState.openEndDrawer();
+                                      scaffoldkey.currentState!.openEndDrawer();
                                     });
                                   },
                                 ),
@@ -204,7 +204,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                     Navigator.pop(context);
                                     setState(() {
                                       drawer.menuSelected=4;
-                                      scaffoldkey.currentState.openEndDrawer();
+                                      scaffoldkey.currentState!.openEndDrawer();
                                     });
 
 
@@ -224,7 +224,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                   callback: (){
                                     setState(() {
                                       drawer.menuSelected=9;
-                                      scaffoldkey.currentState.openEndDrawer();
+                                      scaffoldkey.currentState!.openEndDrawer();
                                     });
 
                                     Provider.of<PurchaseNotifier>(context, listen: false).GetPurchaseDbHit(context,null);
@@ -241,7 +241,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                   callback: (){
                                     setState(() {
                                       drawer.menuSelected=11;
-                                      scaffoldkey.currentState.openEndDrawer();
+                                      scaffoldkey.currentState!.openEndDrawer();
                                     });
                                     Provider.of<GoodsReceivedNotifier>(context, listen: false).GetGoodsDbHit(context,null,null,false,this);
 
@@ -257,7 +257,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                   callback: (){
                                     setState(() {
                                       drawer.menuSelected=12;
-                                      scaffoldkey.currentState.openEndDrawer();
+                                      scaffoldkey.currentState!.openEndDrawer();
                                     });
 
                                     Provider.of<ProductionNotifier>(context, listen: false).GetProductionDbHit(context,null,this);
@@ -275,7 +275,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                   callback: (){
                                     setState(() {
                                       drawer.menuSelected=13;
-                                      scaffoldkey.currentState.openEndDrawer();
+                                      scaffoldkey.currentState!.openEndDrawer();
                                     });
                                     Provider.of<DieselNotifier>(context, listen: false).GetDieselPurchaseDbHit(context,null);
 
@@ -291,7 +291,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                   isRightArrow: true,
                                   callback: (){
                                     Navigator.push(context, MaterialPageRoute(builder: (context)=>EmployeeDetails(voidCallback: (){
-                                      scaffoldkey.currentState.openEndDrawer();
+                                      scaffoldkey.currentState!.openEndDrawer();
                                    },)));
                                   },
                                 ),
@@ -305,7 +305,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                   callback: (){
                                     setState(() {
                                       drawer.menuSelected=21;
-                                      scaffoldkey.currentState.openEndDrawer();
+                                      scaffoldkey.currentState!.openEndDrawer();
                                     });
                                     Provider.of<MachineManagementNotifier>(context, listen: false).GetMachineManagementDbHit(context,null,null);
                                   },
@@ -321,7 +321,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                   titleColor: AppTheme.yellowColor,
                                   callback: (){
                                     Navigator.push(context, MaterialPageRoute(builder: (context)=>AccountsPage(voidCallback: (){
-                                      scaffoldkey.currentState.openEndDrawer();
+                                      scaffoldkey.currentState!.openEndDrawer();
                                     },)));
                                   },
                                 ),
@@ -335,7 +335,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                   titleColor: AppTheme.yellowColor,
                                   callback: (){
                                     Navigator.push(context, MaterialPageRoute(builder: (context)=>ReportsPage(voidCallback: (){
-                                      scaffoldkey.currentState.openEndDrawer();
+                                      scaffoldkey.currentState!.openEndDrawer();
                                     },)));
                                   },
                                 ),
@@ -350,7 +350,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                   titleColor: AppTheme.yellowColor,
                                   callback: (){
                                     Navigator.push(context, MaterialPageRoute(builder: (context)=>SettingsPage(voidCallback: (){
-                                      scaffoldkey.currentState.openEndDrawer();
+                                      scaffoldkey.currentState!.openEndDrawer();
                                     },)));
                                   },
 
@@ -407,67 +407,67 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
 
 
           body: drawer.menuSelected==1?QuaryAddNew(drawerCallback: (){
-            scaffoldkey.currentState.openDrawer();
+            scaffoldkey.currentState!.openDrawer();
           },):
           drawer.menuSelected==2?MaterialDetailsGrid(drawerCallback: (){
-            scaffoldkey.currentState.openDrawer();
+            scaffoldkey.currentState!.openDrawer();
           },):
           drawer.menuSelected==4?SaleGrid(drawerCallback: (){
-            scaffoldkey.currentState.openDrawer();
+            scaffoldkey.currentState!.openDrawer();
           },):
           drawer.menuSelected==5?CustomerMaster(drawerCallback: (){
-            scaffoldkey.currentState.openDrawer();
+            scaffoldkey.currentState!.openDrawer();
           },):
           drawer.menuSelected==6?MachineDetailsGrid(drawerCallback: (){
-            scaffoldkey.currentState.openDrawer();
+            scaffoldkey.currentState!.openDrawer();
           },):
           drawer.menuSelected==7?VehicleDetailsGrid(drawerCallback: (){
-            scaffoldkey.currentState.openDrawer();
+            scaffoldkey.currentState!.openDrawer();
           },):
           drawer.menuSelected==8?SupplierDetailsGrid(drawerCallback: (){
-            scaffoldkey.currentState.openDrawer();
+            scaffoldkey.currentState!.openDrawer();
           },):
           drawer.menuSelected==9?PurchaseDetailsGrid(drawerCallback: (){
-            scaffoldkey.currentState.openDrawer();
+            scaffoldkey.currentState!.openDrawer();
           },):
           drawer.menuSelected==10?ProfileScreen(drawerCallback: (){
-            scaffoldkey.currentState.openDrawer();
+            scaffoldkey.currentState!.openDrawer();
           },):
           drawer.menuSelected==11?GoodsReceivedGrid(drawerCallback: (){
-            scaffoldkey.currentState.openDrawer();
+            scaffoldkey.currentState!.openDrawer();
           },):
           drawer.menuSelected==12?ProductionGrid(drawerCallback: (){
-            scaffoldkey.currentState.openDrawer();
+            scaffoldkey.currentState!.openDrawer();
           },):
           drawer.menuSelected==13?DieselGrid(drawerCallback: (){
-            scaffoldkey.currentState.openDrawer();
+            scaffoldkey.currentState!.openDrawer();
           },):
           drawer.menuSelected==14?InvoiceGrid(drawerCallback: (){
-            scaffoldkey.currentState.openDrawer();
+            scaffoldkey.currentState!.openDrawer();
           },):
           drawer.menuSelected==15?PaymentGrid(drawerCallback: (){
-            scaffoldkey.currentState.openDrawer();
+            scaffoldkey.currentState!.openDrawer();
           },):
           drawer.menuSelected==16?ReportGrid(drawerCallback: (){
-            scaffoldkey.currentState.openDrawer();
+            scaffoldkey.currentState!.openDrawer();
           },):
           drawer.menuSelected==17?EmployeeMasterGrid(drawerCallback: (){
-            scaffoldkey.currentState.openDrawer();
+            scaffoldkey.currentState!.openDrawer();
           },):
           drawer.menuSelected==18?EmployeeAttendanceGrid(drawerCallback: (){
-            scaffoldkey.currentState.openDrawer();
+            scaffoldkey.currentState!.openDrawer();
           },):
           drawer.menuSelected==19?EmployeeAdvanceLoanGrid(drawerCallback: (){
-            scaffoldkey.currentState.openDrawer();
+            scaffoldkey.currentState!.openDrawer();
           },):
           drawer.menuSelected==20?EmployeeSalaryGrid(drawerCallback: (){
-            scaffoldkey.currentState.openDrawer();
+            scaffoldkey.currentState!.openDrawer();
           },):
           drawer.menuSelected==21?MachineManagementGrid(drawerCallback: (){
-            scaffoldkey.currentState.openDrawer();
+            scaffoldkey.currentState!.openDrawer();
           },):
           drawer.menuSelected==22?DashBoardHome(drawerCallback: (){
-            scaffoldkey.currentState.openDrawer();
+            scaffoldkey.currentState!.openDrawer();
           },):
           Container()
       ),
@@ -489,13 +489,13 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
 
 class DrawerContent extends StatelessWidget {
 
-  VoidCallback callback;
-  String image;
-  String title;
-  String tag;
-  double height;
-  Color titleColor;
-  double delay;
+  VoidCallback? callback;
+  String? image;
+  String? title;
+  String? tag;
+  double? height;
+  Color? titleColor;
+  double? delay;
   bool isRightArrow;
 
   DrawerContent({this.callback,this.title,this.image,this.height,this.titleColor,this.delay,this.tag,this.isRightArrow=false});
@@ -517,13 +517,13 @@ class DrawerContent extends StatelessWidget {
             children: [
               Hero(
 
-                  tag: tag,
+                  tag: tag!,
                   child: Container(
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: AppTheme.yellowColor
                     ),
-                      child: SvgPicture.asset(image,width: 30,)
+                      child: SvgPicture.asset(image!,width: 30,)
                   )
               ),
               SizedBox(width: 10,),
@@ -535,7 +535,7 @@ class DrawerContent extends StatelessWidget {
                   children: [
                     FittedBox(
                         fit: BoxFit.contain,
-                        child: Text(title, style: TextStyle(fontSize: 16,color:titleColor, fontFamily:'RR'),)
+                        child: Text(title!, style: TextStyle(fontSize: 16,color:titleColor, fontFamily:'RR'),)
                     ),
                     SizedBox(width: isRightArrow? 5:0,),
                     isRightArrow?Icon(Icons.arrow_forward_ios_rounded,color: AppTheme.yellowColor,size: 15,):Container()
@@ -564,7 +564,7 @@ class DrawerNotifier extends ChangeNotifier{
 
 class EmployeeDetails extends StatefulWidget {
 
-  VoidCallback voidCallback;
+  VoidCallback? voidCallback;
   EmployeeDetails({this.voidCallback});
 
   @override
@@ -588,7 +588,7 @@ class EmployeeDetailsState extends State<EmployeeDetails> with TickerProviderSta
           children: [
 
             Container(
-              height: SizeConfig.screenHeight-45,
+              height: SizeConfig.screenHeight!-45,
               width: SizeConfig.screenWidth,
 
 
@@ -619,7 +619,7 @@ class EmployeeDetailsState extends State<EmployeeDetails> with TickerProviderSta
                     titleColor: AppTheme.yellowColor,
                     callback: (){
                       Navigator.pop(context);
-                      widget.voidCallback();
+                      widget.voidCallback!();
                       Provider.of<DrawerNotifier>(context,listen: false).changeMenu(17);
                       Provider.of<EmployeeNotifier>(context, listen: false).GetEmployeeIssueDbHit(context,null);
                     },
@@ -634,7 +634,7 @@ class EmployeeDetailsState extends State<EmployeeDetails> with TickerProviderSta
                     titleColor: AppTheme.yellowColor,
                     callback: (){
                       Navigator.pop(context);
-                      widget.voidCallback();
+                      widget.voidCallback!();
 
                       Provider.of<DrawerNotifier>(context,listen: false).changeMenu(18);
                       Provider.of<EmployeeAttendanceNotifier>(context, listen: false).GetEmployeeAttendanceIssueDbHit(context,null);
@@ -653,7 +653,7 @@ class EmployeeDetailsState extends State<EmployeeDetails> with TickerProviderSta
                     callback: (){
 
                       Navigator.pop(context);
-                      widget.voidCallback();
+                      widget.voidCallback!();
                       Provider.of<DrawerNotifier>(context,listen: false).changeMenu(19);
                       Provider.of<EmployeeAdvanceLoanNotifier>(context, listen: false).GetEmployeeAttendanceLoanDbHit(context,null);
 
@@ -669,7 +669,7 @@ class EmployeeDetailsState extends State<EmployeeDetails> with TickerProviderSta
                     titleColor: AppTheme.yellowColor,
                     callback: (){
                       Navigator.pop(context);
-                      widget.voidCallback();
+                      widget.voidCallback!();
 
                       Provider.of<DrawerNotifier>(context,listen: false).changeMenu(20);
 
@@ -713,7 +713,7 @@ class EmployeeDetailsState extends State<EmployeeDetails> with TickerProviderSta
 
 class AccountsPage extends StatefulWidget {
 
-  VoidCallback voidCallback;
+  VoidCallback? voidCallback;
   AccountsPage({this.voidCallback});
 
   @override
@@ -737,7 +737,7 @@ class AccountsPageState extends State<AccountsPage> with TickerProviderStateMixi
           children: [
 
             Container(
-              height: SizeConfig.screenHeight-45,
+              height: SizeConfig.screenHeight!-45,
               width: SizeConfig.screenWidth,
 
               child: Column(
@@ -767,7 +767,7 @@ class AccountsPageState extends State<AccountsPage> with TickerProviderStateMixi
                     callback: (){
 
                       Navigator.pop(context);
-                      widget.voidCallback();
+                      widget.voidCallback!();
 
                       Provider.of<DrawerNotifier>(context,listen: false).changeMenu(14);
                       Provider.of<InvoiceNotifier>(context, listen: false).GetInvoiceDbHit(context,null);
@@ -782,7 +782,7 @@ class AccountsPageState extends State<AccountsPage> with TickerProviderStateMixi
                     titleColor: AppTheme.yellowColor,
                     callback: (){
                       Navigator.pop(context);
-                      widget.voidCallback();
+                      widget.voidCallback!();
 
                       Provider.of<DrawerNotifier>(context,listen: false).changeMenu(15);
                       Provider.of<PaymentNotifier>(context, listen: false).updatePaymentReceivable(true);
@@ -826,7 +826,7 @@ class AccountsPageState extends State<AccountsPage> with TickerProviderStateMixi
 
 class ReportsPage extends StatefulWidget {
 
-  VoidCallback voidCallback;
+  VoidCallback? voidCallback;
   ReportsPage({this.voidCallback});
 
   @override
@@ -852,7 +852,7 @@ class ReportsPageState extends State<ReportsPage> with TickerProviderStateMixin{
 
 
             Container(
-              height: SizeConfig.screenHeight-45,
+              height: SizeConfig.screenHeight!-45,
               width: SizeConfig.screenWidth,
               child: SingleChildScrollView(
                 child: Column(
@@ -883,7 +883,7 @@ class ReportsPageState extends State<ReportsPage> with TickerProviderStateMixin{
                       callback: (){
 
                         Navigator.pop(context);
-                        widget.voidCallback();
+                        widget.voidCallback!();
 
 
                         Provider.of<DrawerNotifier>(context,listen: false).changeMenu(16).then((value){
@@ -905,7 +905,7 @@ class ReportsPageState extends State<ReportsPage> with TickerProviderStateMixin{
                       titleColor: AppTheme.yellowColor,
                       callback: (){
                         Navigator.pop(context);
-                        widget.voidCallback();
+                        widget.voidCallback!();
 
                         Provider.of<DrawerNotifier>(context,listen: false).changeMenu(16);
                         Provider.of<ReportNotifier>(context,listen: false).ReportsDropDownValues(context,"StockReport").then((value) {
@@ -924,7 +924,7 @@ class ReportsPageState extends State<ReportsPage> with TickerProviderStateMixin{
                       titleColor: AppTheme.yellowColor,
                       callback: (){
                         Navigator.pop(context);
-                        widget.voidCallback();
+                        widget.voidCallback!();
 
                         Provider.of<DrawerNotifier>(context,listen: false).changeMenu(16);
 
@@ -945,7 +945,7 @@ class ReportsPageState extends State<ReportsPage> with TickerProviderStateMixin{
                       titleColor: AppTheme.yellowColor,
                       callback: (){
                         Navigator.pop(context);
-                        widget.voidCallback();
+                        widget.voidCallback!();
 
                         Provider.of<DrawerNotifier>(context,listen: false).changeMenu(16);
 
@@ -965,7 +965,7 @@ class ReportsPageState extends State<ReportsPage> with TickerProviderStateMixin{
                       titleColor: AppTheme.yellowColor,
                       callback: (){
                         Navigator.pop(context);
-                        widget.voidCallback();
+                        widget.voidCallback!();
 
                         Provider.of<DrawerNotifier>(context,listen: false).changeMenu(16);
 
@@ -984,7 +984,7 @@ class ReportsPageState extends State<ReportsPage> with TickerProviderStateMixin{
                       titleColor: AppTheme.yellowColor,
                       callback: (){
                         Navigator.pop(context);
-                        widget.voidCallback();
+                        widget.voidCallback!();
 
                         Provider.of<DrawerNotifier>(context,listen: false).changeMenu(16);
 
@@ -1004,7 +1004,7 @@ class ReportsPageState extends State<ReportsPage> with TickerProviderStateMixin{
                       titleColor: AppTheme.yellowColor,
                       callback: (){
                         Navigator.pop(context);
-                        widget.voidCallback();
+                        widget.voidCallback!();
 
                            Provider.of<DrawerNotifier>(context,listen: false).changeMenu(16);
 
@@ -1024,7 +1024,7 @@ class ReportsPageState extends State<ReportsPage> with TickerProviderStateMixin{
                       titleColor: AppTheme.yellowColor,
                       callback: (){
                         Navigator.pop(context);
-                        widget.voidCallback();
+                        widget.voidCallback!();
 
                        Provider.of<DrawerNotifier>(context,listen: false).changeMenu(16);
                        Provider.of<ReportNotifier>(context,listen: false).ReportsDropDownValues(context,"ReceivablePaymentReport").then((value) {
@@ -1042,7 +1042,7 @@ class ReportsPageState extends State<ReportsPage> with TickerProviderStateMixin{
                       titleColor: AppTheme.yellowColor,
                       callback: (){
                         Navigator.pop(context);
-                        widget.voidCallback();
+                        widget.voidCallback!();
 
                       Provider.of<DrawerNotifier>(context,listen: false).changeMenu(16);
                          Provider.of<ReportNotifier>(context,listen: false).ReportsDropDownValues(context,"PayablePaymentReport").then((value){
@@ -1060,7 +1060,7 @@ class ReportsPageState extends State<ReportsPage> with TickerProviderStateMixin{
                       titleColor: AppTheme.yellowColor,
                       callback: (){
                         Navigator.pop(context);
-                        widget.voidCallback();
+                        widget.voidCallback!();
 
                         Provider.of<DrawerNotifier>(context,listen: false).changeMenu(16);
                         Provider.of<ReportNotifier>(context,listen: false).ReportsDropDownValues(context,"EmployeeReport").then((value){
@@ -1079,7 +1079,7 @@ class ReportsPageState extends State<ReportsPage> with TickerProviderStateMixin{
                       titleColor: AppTheme.yellowColor,
                       callback: (){
                         Navigator.pop(context);
-                        widget.voidCallback();
+                        widget.voidCallback!();
                         Provider.of<DrawerNotifier>(context,listen: false).changeMenu(16);
                         Provider.of<ReportNotifier>(context,listen: false).ReportsDropDownValues(context,"AttendanceReport").then((value){
                           Provider.of<ReportNotifier>(context,listen: false).ReportsDbHit(context,"AttendanceReport");
@@ -1095,7 +1095,7 @@ class ReportsPageState extends State<ReportsPage> with TickerProviderStateMixin{
                       titleColor: AppTheme.yellowColor,
                       callback: (){
                         Navigator.pop(context);
-                        widget.voidCallback();
+                        widget.voidCallback!();
 
                         Provider.of<DrawerNotifier>(context,listen: false).changeMenu(16);
 
@@ -1115,7 +1115,7 @@ class ReportsPageState extends State<ReportsPage> with TickerProviderStateMixin{
                       titleColor: AppTheme.yellowColor,
                       callback: (){
                         Navigator.pop(context);
-                        widget.voidCallback();
+                        widget.voidCallback!();
 
                         Provider.of<DrawerNotifier>(context,listen: false).changeMenu(16);
 
@@ -1135,7 +1135,7 @@ class ReportsPageState extends State<ReportsPage> with TickerProviderStateMixin{
                       titleColor: AppTheme.yellowColor,
                       callback: (){
                         Navigator.pop(context);
-                        widget.voidCallback();
+                        widget.voidCallback!();
 
                         Provider.of<DrawerNotifier>(context,listen: false).changeMenu(16);
 
@@ -1155,7 +1155,7 @@ class ReportsPageState extends State<ReportsPage> with TickerProviderStateMixin{
                       titleColor: AppTheme.yellowColor,
                       callback: (){
                         Navigator.pop(context);
-                        widget.voidCallback();
+                        widget.voidCallback!();
 
                         Provider.of<DrawerNotifier>(context,listen: false).changeMenu(16);
 
@@ -1175,7 +1175,7 @@ class ReportsPageState extends State<ReportsPage> with TickerProviderStateMixin{
                       titleColor: AppTheme.yellowColor,
                       callback: (){
                         Navigator.pop(context);
-                        widget.voidCallback();
+                        widget.voidCallback!();
 
                         Provider.of<DrawerNotifier>(context,listen: false).changeMenu(16);
 
@@ -1195,7 +1195,7 @@ class ReportsPageState extends State<ReportsPage> with TickerProviderStateMixin{
                       titleColor: AppTheme.yellowColor,
                       callback: (){
                         Navigator.pop(context);
-                        widget.voidCallback();
+                        widget.voidCallback!();
 
                        Provider.of<DrawerNotifier>(context,listen: false).changeMenu(16);
 
@@ -1240,7 +1240,7 @@ class ReportsPageState extends State<ReportsPage> with TickerProviderStateMixin{
 
 class SettingsPage extends StatefulWidget {
 
-  VoidCallback voidCallback;
+  VoidCallback? voidCallback;
   SettingsPage({this.voidCallback});
 
   @override
@@ -1265,7 +1265,7 @@ class SettingsPageState extends State<SettingsPage> with TickerProviderStateMixi
           children: [
 
             Container(
-              height: SizeConfig.screenHeight-45,
+              height: SizeConfig.screenHeight!-45,
               width: SizeConfig.screenWidth,
 
               child: Column(
@@ -1294,7 +1294,7 @@ class SettingsPageState extends State<SettingsPage> with TickerProviderStateMixi
                     titleColor: AppTheme.yellowColor,
                     callback: (){
                       Navigator.pop(context);
-                      widget.voidCallback();
+                      widget.voidCallback!();
 
                       Provider.of<DrawerNotifier>(context,listen: false).changeMenu(1);
                       Provider.of<QuarryNotifier>(context,listen: false).GetQuarryDetailDbhit(context);
@@ -1312,7 +1312,7 @@ class SettingsPageState extends State<SettingsPage> with TickerProviderStateMixi
                     titleColor: AppTheme.yellowColor,
                     callback: (){
                       Navigator.pop(context);
-                      widget.voidCallback();
+                      widget.voidCallback!();
                       Provider.of<DrawerNotifier>(context,listen: false).changeMenu(5);
 
                       Provider.of<CustomerNotifier>(context,listen: false).GetCustomerDetailDbhit(context,null);
@@ -1329,7 +1329,7 @@ class SettingsPageState extends State<SettingsPage> with TickerProviderStateMixi
                     titleColor: AppTheme.yellowColor,
                     callback: (){
                       Navigator.pop(context);
-                      widget.voidCallback();
+                      widget.voidCallback!();
                       Provider.of<DrawerNotifier>(context,listen: false).changeMenu(2);
 
                       Provider.of<MaterialNotifier>(context,listen: false).GetMaterialDbHit(context,null);
@@ -1344,7 +1344,7 @@ class SettingsPageState extends State<SettingsPage> with TickerProviderStateMixi
                     titleColor: AppTheme.yellowColor,
                     callback: (){
                       Navigator.pop(context);
-                      widget.voidCallback();
+                      widget.voidCallback!();
                       Provider.of<DrawerNotifier>(context,listen: false).changeMenu(6);
 
                       Provider.of<MachineNotifier>(context,listen: false).GetMachineDbHit(context,null);
@@ -1360,7 +1360,7 @@ class SettingsPageState extends State<SettingsPage> with TickerProviderStateMixi
                     titleColor: AppTheme.yellowColor,
                     callback: (){
                       Navigator.pop(context);
-                      widget.voidCallback();
+                      widget.voidCallback!();
                       Provider.of<DrawerNotifier>(context,listen: false).changeMenu(7);
 
                       Provider.of<VehicleNotifier>(context, listen: false).GetVehicleDbHit(context,null);
@@ -1376,7 +1376,7 @@ class SettingsPageState extends State<SettingsPage> with TickerProviderStateMixi
                     titleColor: AppTheme.yellowColor,
                     callback: (){
                       Navigator.pop(context);
-                      widget.voidCallback();
+                      widget.voidCallback!();
                       Provider.of<DrawerNotifier>(context,listen: false).changeMenu(8);
 
                       Provider.of<SupplierNotifier>(context, listen: false).GetSupplierDbHit(context,null,this);

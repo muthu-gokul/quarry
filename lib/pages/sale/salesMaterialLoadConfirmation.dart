@@ -22,7 +22,7 @@ import '../../widgets/alertDialog.dart';
 
 
 class SalesMaterialLoadConfirmation extends StatefulWidget {
-  VoidCallback drawerCallback;
+  VoidCallback? drawerCallback;
   bool fromsaleGrid;
   SalesMaterialLoadConfirmation({this.drawerCallback,this.fromsaleGrid:false});
   @override
@@ -32,8 +32,8 @@ class SalesMaterialLoadConfirmation extends StatefulWidget {
 class SalesMaterialLoadConfirmationState extends State<SalesMaterialLoadConfirmation> with TickerProviderStateMixin{
 
 
-  ScrollController scrollController;
-  ScrollController listViewController;
+  ScrollController? scrollController;
+  ScrollController? listViewController;
 
   final now = DateTime.now();
   final formatter = DateFormat('dd/MM/yyyy');
@@ -57,23 +57,23 @@ class SalesMaterialLoadConfirmationState extends State<SalesMaterialLoadConfirma
     setState(() {
 
     });
-    listViewController.addListener(() {
-      if(listViewController.position.userScrollDirection == ScrollDirection.forward){
+    listViewController!.addListener(() {
+      if(listViewController!.position.userScrollDirection == ScrollDirection.forward){
         print("Down");
       } else
-      if(listViewController.position.userScrollDirection == ScrollDirection.reverse){
+      if(listViewController!.position.userScrollDirection == ScrollDirection.reverse){
         print("Up");
-        scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+        scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
       }
-      print("LISt-${listViewController.offset}");
-      if(listViewController.offset>20){
+      print("LISt-${listViewController!.offset}");
+      if(listViewController!.offset>20){
 
-        scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+        scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
 
 
       }
-      else if(listViewController.offset==0){
-        scrollController.animateTo(0, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+      else if(listViewController!.offset==0){
+        scrollController!.animateTo(0, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
       }
     });
     super.initState();
@@ -153,16 +153,16 @@ class SalesMaterialLoadConfirmationState extends State<SalesMaterialLoadConfirma
                                         int sensitivity = 5;
 
                                         if (details.delta.dy > sensitivity) {
-                                          scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+                                          scrollController!.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
 
                                         } else if(details.delta.dy < -sensitivity){
-                                          scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+                                          scrollController!.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
                                         }
 
 
                                       },
                                       child: Container(
-                                        height: _keyboardVisible ? SizeConfig.screenHeight * 0.5 : SizeConfig.screenHeight-SizeConfig.height40,
+                                        height: _keyboardVisible ? SizeConfig.screenHeight! * 0.5 : SizeConfig.screenHeight!-SizeConfig.height40!,
                                         //  height:  SizeConfig.screenHeight ,
                                         width: SizeConfig.screenWidth,
 
@@ -189,7 +189,7 @@ class SalesMaterialLoadConfirmationState extends State<SalesMaterialLoadConfirma
                                                 node.unfocus();
                                               },
                                               ontap: (){
-                                                scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                                scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                               },
                                               value: qn.SS_LoadedVehicleNo,
                                               controller: qn.searchVehicleNo,
@@ -223,7 +223,7 @@ class SalesMaterialLoadConfirmationState extends State<SalesMaterialLoadConfirma
                                                 setState(() {
                                                   qn.SS_LoadedVehicleNo=v;
                                                   int index;
-                                                  index=qn.saleDetails.indexWhere((element) => element.VehicleNumber.toLowerCase()==v.toString().toLowerCase()).toInt();
+                                                  index=qn.saleDetails.indexWhere((element) => element.VehicleNumber!.toLowerCase()==v.toString().toLowerCase()).toInt();
                                                   qn.SS_EmptyWeightOfVehicle=qn.saleDetails[index].EmptyWeightOfVehicle;
                                                   qn.SS_VehicleTypeName=qn.saleDetails[index].VehicleTypeName;
                                                   qn.SS_VehicleTypeId=qn.saleDetails[index].VehicleTypeId;
@@ -237,7 +237,7 @@ class SalesMaterialLoadConfirmationState extends State<SalesMaterialLoadConfirma
                                                   qn.SS_UpdateSaleId=qn.saleDetails[index].SaleId;
                                                   qn.SS_UpdateSaleNo=qn.saleDetails[index].SaleNumber;
                                                   qn.SS_selectCustomerId=qn.saleDetails[index].CustomerId;
-                                                  qn.SS_TotalWeight=(Decimal.parse(qn.SS_EmptyWeightOfVehicle)+Decimal.parse((qn.SS_RequiredMaterialQty))).toString();
+                                                  qn.SS_TotalWeight=(Decimal.parse(qn.SS_EmptyWeightOfVehicle!)+Decimal.parse(qn.SS_RequiredMaterialQty!)).toString();
                                                   qn.SS_MaterialUnitPrice=qn.saleDetails[index].MaterialUnitPrice;
                                                   print(qn.saleDetails[index].MaterialUnitPrice);
                                                 });
@@ -245,7 +245,7 @@ class SalesMaterialLoadConfirmationState extends State<SalesMaterialLoadConfirma
                                             ),
 
                                             Container(
-                                              margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,top:SizeConfig.height20,),
+                                              margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!,top:SizeConfig.height20!,),
                                               height:SizeConfig.height50,
                                               width: SizeConfig.width320,
                                               decoration: BoxDecoration(
@@ -256,8 +256,8 @@ class SalesMaterialLoadConfirmationState extends State<SalesMaterialLoadConfirma
                                               child:Row(
                                                 children: [
                                                   Container(
-                                                      padding: EdgeInsets.only(left: SizeConfig.width10),
-                                                      width: SizeConfig.width140-2,
+                                                      padding: EdgeInsets.only(left: SizeConfig.width10!),
+                                                      width: SizeConfig.width140!-2,
                                                       child: Text("Empty Vehicle Weight")
                                                   ),
 
@@ -268,14 +268,14 @@ class SalesMaterialLoadConfirmationState extends State<SalesMaterialLoadConfirma
                                                   ),
 
                                                   Container(
-                                                      padding: EdgeInsets.only(left: SizeConfig.width10),
-                                                      width: SizeConfig.width140-1,
-                                                      child: Text(qn.SS_EmptyWeightOfVehicle==null?"":"${qn.SS_EmptyWeightOfVehicle+" Ton"}")),
+                                                      padding: EdgeInsets.only(left: SizeConfig.width10!),
+                                                      width: SizeConfig.width140!-1,
+                                                      child: Text(qn.SS_EmptyWeightOfVehicle==null?"":"${qn.SS_EmptyWeightOfVehicle!+" Ton"}")),
                                                 ],
                                               ),
                                             ),
                                             Container(
-                                              margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20),
+                                              margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!),
                                               height:SizeConfig.height50,
                                               width: SizeConfig.width320,
                                               decoration: BoxDecoration(
@@ -288,8 +288,8 @@ class SalesMaterialLoadConfirmationState extends State<SalesMaterialLoadConfirma
                                               child: Row(
                                                 children: [
                                                   Container(
-                                                      padding: EdgeInsets.only(left: SizeConfig.width10),
-                                                      width: SizeConfig.width140-2,
+                                                      padding: EdgeInsets.only(left: SizeConfig.width10!),
+                                                      width: SizeConfig.width140!-2,
                                                       child: Text("Vehicle Type")
                                                   ),
 
@@ -300,14 +300,14 @@ class SalesMaterialLoadConfirmationState extends State<SalesMaterialLoadConfirma
                                                   ),
 
                                                   Container(
-                                                      padding: EdgeInsets.only(left: SizeConfig.width10),
-                                                      width: SizeConfig.width140-1,
+                                                      padding: EdgeInsets.only(left: SizeConfig.width10!),
+                                                      width: SizeConfig.width140!-1,
                                                       child: Text("${qn.SS_VehicleTypeName??""}")),
                                                 ],
                                               ),
                                             ),
                                             Container(
-                                              margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20),
+                                              margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!),
                                               height:SizeConfig.height50,
                                               width: SizeConfig.width320,
                                               decoration: BoxDecoration(
@@ -320,8 +320,8 @@ class SalesMaterialLoadConfirmationState extends State<SalesMaterialLoadConfirma
                                               child: Row(
                                                 children: [
                                                   Container(
-                                                      padding: EdgeInsets.only(left: SizeConfig.width10),
-                                                      width: SizeConfig.width140-2,
+                                                      padding: EdgeInsets.only(left: SizeConfig.width10!),
+                                                      width: SizeConfig.width140!-2,
                                                       child: Text("Material Name")
                                                   ),
 
@@ -332,14 +332,14 @@ class SalesMaterialLoadConfirmationState extends State<SalesMaterialLoadConfirma
                                                   ),
 
                                                   Container(
-                                                      padding: EdgeInsets.only(left: SizeConfig.width10),
-                                                      width: SizeConfig.width140-1,
+                                                      padding: EdgeInsets.only(left: SizeConfig.width10!),
+                                                      width: SizeConfig.width140!-1,
                                                       child: Text("${qn.SS_MaterialName??""}")),
                                                 ],
                                               ),
                                             ),
                                             Container(
-                                              margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20),
+                                              margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!),
                                               height:SizeConfig.height50,
                                               width: SizeConfig.width320,
                                               decoration: BoxDecoration(
@@ -353,8 +353,8 @@ class SalesMaterialLoadConfirmationState extends State<SalesMaterialLoadConfirma
                                                 children: [
 
                                                   Container(
-                                                      padding: EdgeInsets.only(left: SizeConfig.width10),
-                                                      width: SizeConfig.width140-2,
+                                                      padding: EdgeInsets.only(left: SizeConfig.width10!),
+                                                      width: SizeConfig.width140!-2,
                                                       child: Text("Required Qty")
                                                   ),
 
@@ -365,14 +365,14 @@ class SalesMaterialLoadConfirmationState extends State<SalesMaterialLoadConfirma
                                                   ),
 
                                                   Container(
-                                                      padding: EdgeInsets.only(left: SizeConfig.width10),
-                                                      width: SizeConfig.width140-1,
+                                                      padding: EdgeInsets.only(left: SizeConfig.width10!),
+                                                      width: SizeConfig.width140!-1,
                                                       child: Text("${qn.SS_RequiredMaterialQty??""} ${qn.SS_RequiredMaterialQtyUnit??""}")),
                                                 ],
                                               ),
                                             ),
                                             Container(
-                                              margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20),
+                                              margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!),
                                               height:SizeConfig.height50,
                                               width: SizeConfig.width320,
                                               decoration: BoxDecoration(
@@ -386,8 +386,8 @@ class SalesMaterialLoadConfirmationState extends State<SalesMaterialLoadConfirma
                                                 children: [
 
                                                   Container(
-                                                      padding: EdgeInsets.only(left: SizeConfig.width10),
-                                                      width: SizeConfig.width140-2,
+                                                      padding: EdgeInsets.only(left: SizeConfig.width10!),
+                                                      width: SizeConfig.width140!-2,
                                                       child: Text("Amount")
                                                   ),
 
@@ -398,14 +398,14 @@ class SalesMaterialLoadConfirmationState extends State<SalesMaterialLoadConfirma
                                                   ),
 
                                                   Container(
-                                                      padding: EdgeInsets.only(left: SizeConfig.width10),
-                                                      width: SizeConfig.width140-1,
+                                                      padding: EdgeInsets.only(left: SizeConfig.width10!),
+                                                      width: SizeConfig.width140!-1,
                                                       child: Text("${qn.SS_Amount??""}")),
                                                 ],
                                               ),
                                             ),
                                             Container(
-                                              margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20),
+                                              margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!),
                                               height:SizeConfig.height50,
                                               width: SizeConfig.width320,
                                               decoration: BoxDecoration(
@@ -419,8 +419,8 @@ class SalesMaterialLoadConfirmationState extends State<SalesMaterialLoadConfirma
                                                 children: [
 
                                                   Container(
-                                                      padding: EdgeInsets.only(left: SizeConfig.width10),
-                                                      width: SizeConfig.width140-2,
+                                                      padding: EdgeInsets.only(left: SizeConfig.width10!),
+                                                      width: SizeConfig.width140!-2,
                                                       child: Text("Payment Type")
                                                   ),
 
@@ -431,14 +431,14 @@ class SalesMaterialLoadConfirmationState extends State<SalesMaterialLoadConfirma
                                                   ),
 
                                                   Container(
-                                                      padding: EdgeInsets.only(left: SizeConfig.width10),
-                                                      width: SizeConfig.width140-1,
+                                                      padding: EdgeInsets.only(left: SizeConfig.width10!),
+                                                      width: SizeConfig.width140!-1,
                                                       child: Text("${qn.SS_PaymentCategoryName??""}")),
                                                 ],
                                               ),
                                             ),
                                             Container(
-                                              margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20),
+                                              margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!),
                                               height:SizeConfig.height50,
                                               width: SizeConfig.width320,
                                               decoration: BoxDecoration(
@@ -452,8 +452,8 @@ class SalesMaterialLoadConfirmationState extends State<SalesMaterialLoadConfirma
                                                 children: [
 
                                                   Container(
-                                                      padding: EdgeInsets.only(left: SizeConfig.width10),
-                                                      width: SizeConfig.width140-2,
+                                                      padding: EdgeInsets.only(left: SizeConfig.width10!),
+                                                      width: SizeConfig.width140!-2,
                                                       child: Text("Total Weight")
                                                   ),
 
@@ -465,10 +465,10 @@ class SalesMaterialLoadConfirmationState extends State<SalesMaterialLoadConfirma
 
                                                   Container(
                                                       height:SizeConfig.height50,
-                                                      padding: EdgeInsets.only(left: SizeConfig.width10),
-                                                      width: SizeConfig.width140-1,
+                                                      padding: EdgeInsets.only(left: SizeConfig.width10!),
+                                                      width: SizeConfig.width140!-1,
                                                       alignment: Alignment.centerLeft,
-                                                      child: Text(qn.SS_TotalWeight==null?"":"${qn.SS_TotalWeight + " Ton"??""}")),
+                                                      child: Text(qn.SS_TotalWeight==null?"":"${qn.SS_TotalWeight! + " Ton"}")),
                                                 ],
                                               ),
                                             ),
@@ -496,7 +496,7 @@ class SalesMaterialLoadConfirmationState extends State<SalesMaterialLoadConfirma
                                                 alignment: Alignment.center,
                                                 child: Container(
 
-                                                  width:SizeConfig.screenWidth*0.3,
+                                                  width:SizeConfig.screenWidth!*0.3,
                                                   height:SizeConfig.height50,
                                                   decoration: BoxDecoration(
                                                     borderRadius: BorderRadius.circular(25.0),
@@ -531,7 +531,7 @@ class SalesMaterialLoadConfirmationState extends State<SalesMaterialLoadConfirma
                                                 alignment: Alignment.center,
                                                 child: Container(
 
-                                                  width:SizeConfig.screenWidth*0.3,
+                                                  width:SizeConfig.screenWidth!*0.3,
                                                   height:SizeConfig.height50,
                                                   decoration: BoxDecoration(
                                                     borderRadius: BorderRadius.circular(25.0),
@@ -782,22 +782,22 @@ class SalesMaterialLoadConfirmationState extends State<SalesMaterialLoadConfirma
                   duration: Duration(milliseconds: 300),
                   curve: Curves.easeIn,
                   width: SizeConfig.screenWidth,
-                  height: SizeConfig.screenHeight*0.5,
+                  height: SizeConfig.screenHeight!*0.5,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     color: Colors.white,
                   ),
                   clipBehavior: Clip.antiAlias,
 
-                  margin: EdgeInsets.only(left: SizeConfig.width30,right: SizeConfig.width30,),
-                  transform: Matrix4.translationValues(isTransportModeOpen?0:SizeConfig.screenWidth, 0, 0),
+                  margin: EdgeInsets.only(left: SizeConfig.width30!,right: SizeConfig.width30!,),
+                  transform: Matrix4.translationValues(isTransportModeOpen?0:SizeConfig.screenWidth!, 0, 0),
                   child: Stack(
                     children: [
                       Container(
                         height: SizeConfig.height70,
                         width: double.maxFinite,
                         color: Colors.white,
-                        padding: EdgeInsets.only(left: SizeConfig.width20,right: SizeConfig.width20,bottom: SizeConfig.height10),
+                        padding: EdgeInsets.only(left: SizeConfig.width20!,right: SizeConfig.width20!,bottom: SizeConfig.height10!),
 
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -834,8 +834,8 @@ class SalesMaterialLoadConfirmationState extends State<SalesMaterialLoadConfirma
                       Positioned(
                         top: SizeConfig.height60,
                         child: Container(
-                          height: SizeConfig.screenHeight*0.5- SizeConfig.height80,
-                          width: SizeConfig.screenWidth-SizeConfig.width60,
+                          height: SizeConfig.screenHeight!*0.5- SizeConfig.height80!,
+                          width: SizeConfig.screenWidth!-SizeConfig.width60!,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               color: Colors.white
@@ -853,7 +853,7 @@ class SalesMaterialLoadConfirmationState extends State<SalesMaterialLoadConfirma
                                     });
                                   },
                                   child: Container(
-                                    margin: EdgeInsets.only(left: SizeConfig.width50,right:  SizeConfig.width50,top: SizeConfig.height20),
+                                    margin: EdgeInsets.only(left: SizeConfig.width50!,right:  SizeConfig.width50!,top: SizeConfig.height20!),
 
                                     height: SizeConfig.height50,
                                     width: SizeConfig.screenWidth,
@@ -890,22 +890,22 @@ class SalesMaterialLoadConfirmationState extends State<SalesMaterialLoadConfirma
                   duration: Duration(milliseconds: 300),
                   curve: Curves.easeIn,
                   width: SizeConfig.screenWidth,
-                  height: SizeConfig.screenHeight*0.5,
+                  height: SizeConfig.screenHeight!*0.5,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     color: Colors.white,
                   ),
                   clipBehavior: Clip.antiAlias,
 
-                  margin: EdgeInsets.only(left: SizeConfig.width30,right: SizeConfig.width30,),
-                  transform: Matrix4.translationValues(isMaterialTypeOpen?0:SizeConfig.screenWidth, 0, 0),
+                  margin: EdgeInsets.only(left: SizeConfig.width30!,right: SizeConfig.width30!,),
+                  transform: Matrix4.translationValues(isMaterialTypeOpen?0:SizeConfig.screenWidth!, 0, 0),
                   child: Stack(
                     children: [
                       Container(
                         height: SizeConfig.height70,
                         width: double.maxFinite,
                         color: Colors.white,
-                        padding: EdgeInsets.only(left: SizeConfig.width20,right: SizeConfig.width20,bottom: SizeConfig.height10),
+                        padding: EdgeInsets.only(left: SizeConfig.width20!,right: SizeConfig.width20!,bottom: SizeConfig.height10!),
 
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -942,28 +942,28 @@ class SalesMaterialLoadConfirmationState extends State<SalesMaterialLoadConfirma
                       Positioned(
                         top: SizeConfig.height60,
                         child: Container(
-                          height: SizeConfig.screenHeight*0.5- SizeConfig.height80,
-                          width: SizeConfig.screenWidth-SizeConfig.width60,
+                          height: SizeConfig.screenHeight!*0.5- SizeConfig.height80!,
+                          width: SizeConfig.screenWidth!-SizeConfig.width60!,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               color: Colors.white
                           ),
                           child: ListView.builder(
-                              itemCount: qn.sale_materialList.length,
+                              itemCount: qn.sale_materialList!.length,
                               itemBuilder: (context,index){
                                 return GestureDetector(
                                   onTap: (){
 
                                     setState(() {
                                       isMaterialTypeOpen=false;
-                                      qn.SS_selectedMaterialTypeId=qn.sale_materialList[index].MaterialId;
-                                      qn.SS_selectedMaterialTypeName=qn.sale_materialList[index].MaterialName;
-                                      qn.SS_Empty_ReqQtyUnit=qn.sale_materialList[index].MaterialUnitName;
+                                      qn.SS_selectedMaterialTypeId=qn.sale_materialList![index].MaterialId;
+                                      qn.SS_selectedMaterialTypeName=qn.sale_materialList![index].MaterialName;
+                                      qn.SS_Empty_ReqQtyUnit=qn.sale_materialList![index].MaterialUnitName;
                                     });
                                     qn.weightToAmount();
                                   },
                                   child: Container(
-                                    margin: EdgeInsets.only(left: SizeConfig.width50,right:  SizeConfig.width50,top: SizeConfig.height20),
+                                    margin: EdgeInsets.only(left: SizeConfig.width50!,right:  SizeConfig.width50!,top: SizeConfig.height20!),
 
                                     height: SizeConfig.height50,
                                     width: double.maxFinite,
@@ -971,12 +971,12 @@ class SalesMaterialLoadConfirmationState extends State<SalesMaterialLoadConfirma
                                         borderRadius: BorderRadius.circular(5),
                                         border: Border.all(color: AppTheme.addNewTextFieldBorder),
                                         //color: Colors.white
-                                        color: qn.SS_selectedMaterialTypeId==null ?Colors.white:qn.SS_selectedMaterialTypeId==qn.sale_materialList[index].MaterialId?AppTheme.bgColor:Colors.white
+                                        color: qn.SS_selectedMaterialTypeId==null ?Colors.white:qn.SS_selectedMaterialTypeId==qn.sale_materialList![index].MaterialId?AppTheme.bgColor:Colors.white
 
                                     ),
                                     child: Center(
-                                      child: Text("${qn.sale_materialList[index].MaterialName}",style: TextStyle(fontFamily: 'RR',fontSize: 18,
-                                          color: qn.SS_selectedMaterialTypeId==null ?AppTheme.bgColor:qn.SS_selectedMaterialTypeId==qn.sale_materialList[index].MaterialId?Colors.white:AppTheme.bgColor
+                                      child: Text("${qn.sale_materialList![index].MaterialName}",style: TextStyle(fontFamily: 'RR',fontSize: 18,
+                                          color: qn.SS_selectedMaterialTypeId==null ?AppTheme.bgColor:qn.SS_selectedMaterialTypeId==qn.sale_materialList![index].MaterialId?Colors.white:AppTheme.bgColor
 
                                       ),),
                                     ),
@@ -1006,22 +1006,22 @@ class SalesMaterialLoadConfirmationState extends State<SalesMaterialLoadConfirma
                   duration: Duration(milliseconds: 300),
                   curve: Curves.easeIn,
                   width: SizeConfig.screenWidth,
-                  height: SizeConfig.screenHeight*0.5,
+                  height: SizeConfig.screenHeight!*0.5,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     color: Colors.white,
                   ),
                   clipBehavior: Clip.antiAlias,
 
-                  margin: EdgeInsets.only(left: SizeConfig.width30,right: SizeConfig.width30,),
-                  transform: Matrix4.translationValues(isPaymentTypeOpen?0:SizeConfig.screenWidth, 0, 0),
+                  margin: EdgeInsets.only(left: SizeConfig.width30!,right: SizeConfig.width30!,),
+                  transform: Matrix4.translationValues(isPaymentTypeOpen?0:SizeConfig.screenWidth!, 0, 0),
                   child: Stack(
                     children: [
                       Container(
                         height: SizeConfig.height70,
                         width: double.maxFinite,
                         color: Colors.white,
-                        padding: EdgeInsets.only(left: SizeConfig.width20,right: SizeConfig.width20,bottom: SizeConfig.height10),
+                        padding: EdgeInsets.only(left: SizeConfig.width20!,right: SizeConfig.width20!,bottom: SizeConfig.height10!),
 
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -1058,8 +1058,8 @@ class SalesMaterialLoadConfirmationState extends State<SalesMaterialLoadConfirma
                       Positioned(
                         top: SizeConfig.height60,
                         child: Container(
-                          height: SizeConfig.screenHeight*0.5- SizeConfig.height80,
-                          width: SizeConfig.screenWidth-SizeConfig.width60,
+                          height: SizeConfig.screenHeight!*0.5- SizeConfig.height80!,
+                          width: SizeConfig.screenWidth!-SizeConfig.width60!,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               color: Colors.white
@@ -1077,7 +1077,7 @@ class SalesMaterialLoadConfirmationState extends State<SalesMaterialLoadConfirma
 
                                   },
                                   child: Container(
-                                    margin: EdgeInsets.only(left: SizeConfig.width50,right:  SizeConfig.width50,top: SizeConfig.height20),
+                                    margin: EdgeInsets.only(left: SizeConfig.width50!,right:  SizeConfig.width50!,top: SizeConfig.height20!),
 
                                     height: SizeConfig.height50,
                                     width: double.maxFinite,
@@ -1118,22 +1118,22 @@ class SalesMaterialLoadConfirmationState extends State<SalesMaterialLoadConfirma
                   duration: Duration(milliseconds: 300),
                   curve: Curves.easeIn,
                   width: SizeConfig.screenWidth,
-                  height: SizeConfig.screenHeight*0.5,
+                  height: SizeConfig.screenHeight!*0.5,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     color: Colors.white,
                   ),
                   clipBehavior: Clip.antiAlias,
 
-                  margin: EdgeInsets.only(left: SizeConfig.width30,right: SizeConfig.width30,),
-                  transform: Matrix4.translationValues(isCustomerDetaislOpen?0:SizeConfig.screenWidth, 0, 0),
+                  margin: EdgeInsets.only(left: SizeConfig.width30!,right: SizeConfig.width30!,),
+                  transform: Matrix4.translationValues(isCustomerDetaislOpen?0:SizeConfig.screenWidth!, 0, 0),
                   child: Stack(
                     children: [
                       Container(
                         height: SizeConfig.height70,
                         width: double.maxFinite,
                         color: Colors.white,
-                        padding: EdgeInsets.only(left: SizeConfig.width20,right: SizeConfig.width20,bottom: SizeConfig.height10),
+                        padding: EdgeInsets.only(left: SizeConfig.width20!,right: SizeConfig.width20!,bottom: SizeConfig.height10!),
 
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -1170,8 +1170,8 @@ class SalesMaterialLoadConfirmationState extends State<SalesMaterialLoadConfirma
                       Positioned(
                         top: SizeConfig.height60,
                         child: Container(
-                          height: SizeConfig.screenHeight*0.5- SizeConfig.height80,
-                          width: SizeConfig.screenWidth-SizeConfig.width60,
+                          height: SizeConfig.screenHeight!*0.5- SizeConfig.height80!,
+                          width: SizeConfig.screenWidth!-SizeConfig.width60!,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               color: Colors.white
@@ -1189,7 +1189,7 @@ class SalesMaterialLoadConfirmationState extends State<SalesMaterialLoadConfirma
 
                                   },
                                   child: Container(
-                                    margin: EdgeInsets.only(left: SizeConfig.width50,right:  SizeConfig.width50,top: SizeConfig.height20),
+                                    margin: EdgeInsets.only(left: SizeConfig.width50!,right:  SizeConfig.width50!,top: SizeConfig.height20!),
 
                                     height: SizeConfig.height50,
                                     width: double.maxFinite,
@@ -1228,16 +1228,16 @@ class SalesMaterialLoadConfirmationState extends State<SalesMaterialLoadConfirma
 }
 
 class SidePopUpParent extends StatelessWidget {
-  String text;
-  Color textColor;
-  Color iconColor;
-  Color bgColor;
+  String? text;
+  Color? textColor;
+  Color? iconColor;
+  Color? bgColor;
   SidePopUpParent({this.text,this.textColor,this.iconColor,this.bgColor});
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,top:SizeConfig.height20,),
-      padding: EdgeInsets.only(left:SizeConfig.width10,right:SizeConfig.width10),
+      margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!,top:SizeConfig.height20!,),
+      padding: EdgeInsets.only(left:SizeConfig.width10!,right:SizeConfig.width10!),
       height: SizeConfig.height50,
       width: double.maxFinite,
       alignment: Alignment.centerLeft,
@@ -1249,7 +1249,7 @@ class SidePopUpParent extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Text(text,style: TextStyle(fontFamily: 'RR',fontSize: 16,color: textColor),),
+          Text(text!,style: TextStyle(fontFamily: 'RR',fontSize: 16,color: textColor),),
           Spacer(),
           Container(
               height: SizeConfig.height25,
@@ -1266,16 +1266,16 @@ class SidePopUpParent extends StatelessWidget {
   }
 }
 class SidePopUpParentWithoutTopMargin extends StatelessWidget {
-  String text;
-  Color textColor;
-  Color iconColor;
-  Color bgColor;
+  String? text;
+  Color? textColor;
+  Color? iconColor;
+  Color? bgColor;
   SidePopUpParentWithoutTopMargin({this.text,this.textColor,this.iconColor,this.bgColor});
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,),
-      padding: EdgeInsets.only(left:SizeConfig.width10,right:SizeConfig.width10),
+      margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!,),
+      padding: EdgeInsets.only(left:SizeConfig.width10!,right:SizeConfig.width10!),
       height: SizeConfig.height50,
       width: double.maxFinite,
       alignment: Alignment.centerLeft,
@@ -1287,7 +1287,7 @@ class SidePopUpParentWithoutTopMargin extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Text(text,style: TextStyle(fontFamily: 'RR',fontSize: 16,color: textColor),),
+          Text(text!,style: TextStyle(fontFamily: 'RR',fontSize: 16,color: textColor),),
           Spacer(),
           Container(
               height: SizeConfig.height25,

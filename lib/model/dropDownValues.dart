@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 
 class VehicleType{
-  int VehicleTypeId;
-  String VehicleTypeName;
+  int? VehicleTypeId;
+  String? VehicleTypeName;
 
   VehicleType({this.VehicleTypeId,this.VehicleTypeName});
 
@@ -29,16 +29,16 @@ class VehicleType{
 
 
 class MaterialTypelist{
-  int MaterialId;
-  String MaterialName;
-  String MaterialDescription;
-  String MaterialCode;
-  int MaterialUnitId;
-  String MaterialUnitName;
-  double MaterialUnitPrice;
-  double TaxValue;
-  double Stock;
-  String MaterialHSNCode;
+  int? MaterialId;
+  String? MaterialName;
+  String? MaterialDescription;
+  String? MaterialCode;
+  int? MaterialUnitId;
+  String? MaterialUnitName;
+  double? MaterialUnitPrice;
+  double? TaxValue;
+  double? Stock;
+  String? MaterialHSNCode;
 
   MaterialTypelist({this.MaterialId,this.MaterialName,this.MaterialDescription,this.MaterialCode,this.MaterialUnitId,
  this.MaterialUnitPrice,this.MaterialHSNCode,this.MaterialUnitName,this.TaxValue,this.Stock});
@@ -77,8 +77,8 @@ class MaterialTypelist{
 
 
 class PaymentType{
-  int PaymentCategoryId;
-  String PaymentCategoryName;
+  int? PaymentCategoryId;
+  String? PaymentCategoryName;
 
   PaymentType({this.PaymentCategoryId,this.PaymentCategoryName});
 
@@ -113,13 +113,13 @@ class CustomerModel {
     this.balanceAmount,
   });
 
-  int customerId;
-  String customerName;
-  bool isActive;
-  bool isCreditCustomer;
-  double customerCreditLimit;
-  double usedAmount;
-  double balanceAmount;
+  int? customerId;
+  String? customerName;
+  bool? isActive;
+  bool? isCreditCustomer;
+  double? customerCreditLimit;
+  double? usedAmount;
+  double? balanceAmount;
 
   factory CustomerModel.fromJson(Map<String, dynamic> json) => CustomerModel(
     customerId: json["CustomerId"],
@@ -153,56 +153,56 @@ class CustomerModel {
 
 
 class SaleDetails{
-  int SaleId;
-  String SaleNumber;
-  int PlantId;
-  String PlantName;
-  int VehicleTypeId;
-  int MaterialId;
-  int PaymentCategoryId;
-  int CustomerId;
-  String VehicleNumber;
-  String VehicleTypeName;
-  String EmptyWeightOfVehicle;
-  String MaterialName;
-  String RequiredMaterialQty;
-  String OutputMaterialQty;
-  String MaterialHSNCode;
-  double Amount;
-  double MaterialUnitPrice;
-  double OutputQtyAmount;
-  double TaxPercentage;
-  double TaxAmount;
-  double TotalAmount;
-  int RoundedTotalAmount;
-  double RoundOffAmount;
-  String LoadWeightOfVehicle;
-  String PaymentCategoryName;
-  String CustomerName;
-  String SaleStatus;
-  String SaleDate;
-  String UnitName;
-  String AmountInWords;
-  int isDiscount;
-  int isPercentage;
-  int isAmount;
-  double discountValue;
-  double discountAmount;
-  double DiscountedOutputQtyAmount;
-  double DiscountedRequiredQtyAmount;
+  int? SaleId;
+  String? SaleNumber;
+  int? PlantId;
+  String? PlantName;
+  int? VehicleTypeId;
+  int? MaterialId;
+  int? PaymentCategoryId;
+  int? CustomerId;
+  String? VehicleNumber;
+  String? VehicleTypeName;
+  String? EmptyWeightOfVehicle;
+  String? MaterialName;
+  String? RequiredMaterialQty;
+  String? OutputMaterialQty;
+  String? MaterialHSNCode;
+  double? Amount;
+  double? MaterialUnitPrice;
+  double? OutputQtyAmount;
+  double? TaxPercentage;
+  double? TaxAmount;
+  double? TotalAmount;
+  int? RoundedTotalAmount;
+  double? RoundOffAmount;
+  String? LoadWeightOfVehicle;
+  String? PaymentCategoryName;
+  String? CustomerName;
+  String? SaleStatus;
+  String? SaleDate;
+  String? UnitName;
+  String? AmountInWords;
+  int? isDiscount;
+  int? isPercentage;
+  int? isAmount;
+  double? discountValue;
+  double? discountAmount;
+  double? DiscountedOutputQtyAmount;
+  double? DiscountedRequiredQtyAmount;
 
-  int customerId;
-  String customerName;
-  String customerAddress;
-  String customerCity;
-  String customerState;
-  String customerCountry;
-  String customerZipCode;
-  String customerContactNumber;
-  String customerEmail;
-  String customerGstNumber;
-  String driverName;
-  String driverContactNumber;
+  int? customerId;
+  String? customerName;
+  String? customerAddress;
+  String? customerCity;
+  String? customerState;
+  String? customerCountry;
+  String? customerZipCode;
+  String? customerContactNumber;
+  String? customerEmail;
+  String? customerGstNumber;
+  String? driverName;
+  String? driverContactNumber;
 
   SaleDetails({this.SaleId,this.SaleNumber,this.VehicleNumber,this.VehicleTypeId,
   this.VehicleTypeName,this.EmptyWeightOfVehicle,this.MaterialId,this.MaterialName,
@@ -309,10 +309,10 @@ class SaleDetails{
 
 
 class SalePrintersList{
-  String PrinterName;
-  String PrinterTypeName;
-  String PrinterIPAddress;
-  String PrinterPortNumber;
+  String? PrinterName;
+  String? PrinterTypeName;
+  String? PrinterIPAddress;
+  String? PrinterPortNumber;
 
   SalePrintersList({this.PrinterName,this.PrinterTypeName,this.PrinterIPAddress,this.PrinterPortNumber});
 
@@ -331,15 +331,15 @@ class SalePrintersList{
 
 
 class TaxDetails{
-  int TaxId;
-  String TaxName;
+  int? TaxId;
+  String? TaxName;
 
-  int MaterialTaxMappingId;
-  int MaterialId;
-  double MaterialTaxValue;
-  int IsActive;
+  int? MaterialTaxMappingId;
+  int? MaterialId;
+  double? MaterialTaxValue;
+  int? IsActive;
 
-  TextEditingController taxValue;
+  TextEditingController? taxValue;
 
   TaxDetails({this.TaxId,this.TaxName,this.MaterialTaxMappingId,this.MaterialTaxValue,this.IsActive,this.MaterialId,this.taxValue});
 
@@ -353,12 +353,12 @@ class TaxDetails{
 
 
   Map<dynamic,dynamic> toJson(){
-    if(taxValue.text.isNotEmpty ){
+    if(taxValue!.text.isNotEmpty ){
       var map = <dynamic, dynamic>{
         'MaterialTaxMappingId': MaterialTaxMappingId,
         'MaterialId': MaterialId,
         'TaxId':TaxId,
-        'MaterialTaxValue':taxValue.text.isNotEmpty?double.parse(taxValue.text):0,
+        'MaterialTaxValue':taxValue!.text.isNotEmpty?double.parse(taxValue!.text):0,
         'IsActive':IsActive,
       };
       return map;
@@ -380,8 +380,8 @@ class TaxDetails{
 
 
 class UnitDetails{
-  int UnitId;
-  String UnitName;
+  int? UnitId;
+  String? UnitName;
 
   UnitDetails({this.UnitId,this.UnitName});
 

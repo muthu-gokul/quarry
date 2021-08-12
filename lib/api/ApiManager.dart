@@ -11,7 +11,7 @@ class ApiManager{
 
 
 
-  Future< String> ApiCallGetInvoke(var body,BuildContext context) async {
+  Future<String> ApiCallGetInvoke(var body,BuildContext context) async {
     try{
       var itemsUrl="http://183.82.32.76/restroApi///api/Mobile/GetInvoke";
     //  var itemsUrl="http://117.247.181.35/restroApi///api/Mobile/GetInvoke";
@@ -34,11 +34,13 @@ class ApiManager{
         msg=json.decode(response.body);
 
          CustomAlert().commonErrorAlert2(context, "${msg['Message']}", "");
+
         // return response.statusCode.toString();
 
       }
-
+      return "F";
     }catch(e){
+      return "F";
       print("NETWORK ISSUE--$e");
       // CustomAlert().commonErrorAlert(context, "Network Issue", "Your Internet Connectivity or Server is Slow..");
     }

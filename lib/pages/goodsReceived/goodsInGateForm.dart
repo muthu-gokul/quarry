@@ -2,12 +2,12 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:firebase_ml_vision/firebase_ml_vision.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/notifier/goodsReceivedNotifier.dart';
@@ -39,20 +39,20 @@ class GoodsInGateFormState extends State<GoodsInGateForm> with TickerProviderSta
   bool isEdit=false;
 
 
-  ScrollController scrollController;
-  ScrollController listViewController;
+  ScrollController? scrollController;
+  ScrollController? listViewController;
 
   bool _keyboardVisible=false;
   bool isVehicleTypeOpen=false;
   bool isListScroll=false;
 
   TextEditingController searchController = new TextEditingController();
-  PickedFile _image;
+  late PickedFile _image;
 
   @override
   void initState() {
     isEdit=false;
-    WidgetsBinding.instance.addPostFrameCallback((_){
+    WidgetsBinding.instance!.addPostFrameCallback((_){
 
 
       scrollController=new ScrollController();
@@ -122,7 +122,7 @@ class GoodsInGateFormState extends State<GoodsInGateForm> with TickerProviderSta
 
                           int sensitivity = 5;
                           if (details.delta.dy > sensitivity) {
-                            scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
+                            scrollController!.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
                               if(isListScroll){
                                 setState(() {
                                   isListScroll=false;
@@ -131,7 +131,7 @@ class GoodsInGateFormState extends State<GoodsInGateForm> with TickerProviderSta
                             });
 
                           } else if(details.delta.dy < -sensitivity){
-                            scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
+                            scrollController!.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
 
                               if(!isListScroll){
                                 setState(() {
@@ -142,7 +142,7 @@ class GoodsInGateFormState extends State<GoodsInGateForm> with TickerProviderSta
                           }
                         },
                         child: Container(
-                            height: SizeConfig.screenHeight-60,
+                            height: SizeConfig.screenHeight!-60,
                             width: SizeConfig.screenWidth,
                             padding: EdgeInsets.only(top: 20,bottom: 60),
                             decoration: BoxDecoration(
@@ -153,15 +153,15 @@ class GoodsInGateFormState extends State<GoodsInGateForm> with TickerProviderSta
                               onNotification: (s){
                                 if(s is ScrollStartNotification){
 
-                                  if(listViewController.offset==0 && isListScroll && scrollController.offset==100 && listViewController.position.userScrollDirection==ScrollDirection.idle){
+                                  if(listViewController!.offset==0 && isListScroll && scrollController!.offset==100 && listViewController!.position.userScrollDirection==ScrollDirection.idle){
 
                                     Timer(Duration(milliseconds: 100), (){
-                                      if(listViewController.position.userScrollDirection!=ScrollDirection.reverse){
+                                      if(listViewController!.position.userScrollDirection!=ScrollDirection.reverse){
 
                                         //if(scrollController.position.pixels == scrollController.position.maxScrollExtent){
-                                        if(listViewController.offset==0){
+                                        if(listViewController!.offset==0){
 
-                                          scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value) {
+                                          scrollController!.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value) {
                                             if(isListScroll){
                                               setState(() {
                                                 isListScroll=false;
@@ -174,7 +174,7 @@ class GoodsInGateFormState extends State<GoodsInGateForm> with TickerProviderSta
                                     });
                                   }
                                 }
-                              },
+                              } as bool Function(ScrollNotification)?,
                               child: ListView(
                                 controller: listViewController,
                                 children: [
@@ -248,19 +248,19 @@ class GoodsInGateFormState extends State<GoodsInGateForm> with TickerProviderSta
                                         setState(() async {
                                           if (pickedFile != null) {
                                             _image = pickedFile;
-                                            final FirebaseVisionImage visionImage = FirebaseVisionImage.fromFile(File(_image.path));
-                                            final TextRecognizer textRecognizer = FirebaseVision.instance.textRecognizer();
-                                            final VisionText visionText = await textRecognizer.processImage(visionImage);
+                                            final inputImage = InputImage.fromFilePath(_image.path);
+                                            TextDetector textDetector = GoogleMlKit.vision.textDetector();
+                                            final recognisedText = await textDetector.processImage(inputImage);
+                                           // final FirebaseVisionImage visionImage = FirebaseVisionImage.fromFile(File(_image.path));
+                                           // final TextRecognizer textRecognizer = FirebaseVision.instance.textRecognizer();
+                                          //  final VisionText visionText = await textRecognizer.processImage(visionImage);
 
-                                            for (TextBlock block in visionText.blocks) {
+                                            for (TextBlock block in recognisedText.blocks) {
                                               for (TextLine line in block.lines) {
-
                                                 if( RegExp(r'^\d+\.?\d').hasMatch(line.text)){
                                                   print(line.text);
                                                   gr.scanWeight += line.text;
-
                                                 }
-
                                               }
                                             }
                                             if(gr.scanWeight.isEmpty){
@@ -286,7 +286,7 @@ class GoodsInGateFormState extends State<GoodsInGateForm> with TickerProviderSta
                                     },
                                     child: Container(
                                       height: 50,
-                                      margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,top:15,),
+                                      margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!,top:15,),
                                       width:SizeConfig.screenWidth,
                                       decoration: BoxDecoration(
                                           borderRadius: BorderRadius.circular(3),
@@ -309,7 +309,7 @@ class GoodsInGateFormState extends State<GoodsInGateForm> with TickerProviderSta
                                     textEditingController: gr.loadedWeight,
                                     labelText: "Loaded Weight",
                                     ontap: (){
-                                      scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                      scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                       setState(() {
                                         _keyboardVisible=true;
                                       });
@@ -358,7 +358,7 @@ class GoodsInGateFormState extends State<GoodsInGateForm> with TickerProviderSta
 
                     children: [
                       CustomPaint(
-                        size: Size( SizeConfig.screenWidth, 65),
+                        size: Size( SizeConfig.screenWidth!, 65),
                         painter: RPSCustomPainter3(),
                       ),
 
@@ -482,8 +482,8 @@ class GoodsInGateFormState extends State<GoodsInGateForm> with TickerProviderSta
                   setState(() {
 
 
-                    gr.selectedVehicleTypeId=gr.filterVehicleTypeList[index]['VehicleTypeId'];
-                    gr.selectedVehicleTypeName=gr.filterVehicleTypeList[index]['VehicleTypeName'];
+                    gr.selectedVehicleTypeId=gr.filterVehicleTypeList![index]['VehicleTypeId'];
+                    gr.selectedVehicleTypeName=gr.filterVehicleTypeList![index]['VehicleTypeName'];
                     isVehicleTypeOpen=false;
                     gr.filterVehicleTypeList=gr.vehicleTypeList;
 

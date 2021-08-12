@@ -19,7 +19,7 @@ import 'package:quarry/widgets/staticColumnScroll/customDataTableWithoutModel.da
 
 
 class MachineManagementGrid extends StatefulWidget {
-  VoidCallback drawerCallback;
+  VoidCallback? drawerCallback;
   MachineManagementGrid({this.drawerCallback});
 
   @override
@@ -29,7 +29,7 @@ class MachineManagementGrid extends StatefulWidget {
 class _MachineManagementGridState extends State<MachineManagementGrid> {
 
   bool showEdit=false;
-  int selectedIndex;
+  int? selectedIndex;
 
 
   @override
@@ -156,7 +156,7 @@ class _MachineManagementGridState extends State<MachineManagementGrid> {
                             Container(
                               margin:EdgeInsets.only(top: 0),
                               child: CustomPaint(
-                                size: Size( SizeConfig.screenWidth, 65),
+                                size: Size( SizeConfig.screenWidth!, 65),
                                 painter: RPSCustomPainter3(),
                               ),
                             ),
@@ -218,10 +218,10 @@ class _MachineManagementGridState extends State<MachineManagementGrid> {
                                                   color: pro.usersPlantList.length<=1?AppTheme.bgColor.withOpacity(0.4):AppTheme.bgColor,),
                                               )
                                           ),
-                                          SizedBox(width: SizeConfig.screenWidth*0.6,),
+                                          SizedBox(width: SizeConfig.screenWidth!*0.6,),
                                           GestureDetector(
                                             onTap: () async{
-                                              final List<DateTime>  picked1 = await DateRagePicker.showDatePicker(
+                                              final List<DateTime?>?  picked1 = await DateRagePicker.showDatePicker(
                                                   context: context,
                                                   initialFirstDate: new DateTime.now(),
                                                   initialLastDate: (new DateTime.now()),
@@ -260,7 +260,7 @@ class _MachineManagementGridState extends State<MachineManagementGrid> {
                                       mmn.updateMachineManagementEdit(true);
                                       mmn.PlantUserDropDownValues(context);
                                       mmn.MachineManagementDropDownValues(context);
-                                      mmn.GetMachineManagementDbHit(context, mmn.gridData[selectedIndex]['MachineManagementId'], mmn.gridData[selectedIndex]['MachineId']);
+                                      mmn.GetMachineManagementDbHit(context, mmn.gridData[selectedIndex!]['MachineManagementId'], mmn.gridData[selectedIndex!]['MachineId']);
                                       Navigator.push(context, _createRoute());
 
                                       setState(() {

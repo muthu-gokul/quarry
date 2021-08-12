@@ -59,7 +59,7 @@ class EmployeeNotifier extends ChangeNotifier{
         if(value!=null){
           var parsed=json.decode(value);
 
-          var t=parsed['Table'] as List;
+          var t=parsed['Table'] as List?;
           var t1=parsed['Table1'] as List;
           plantList=t1.map((e) => PlantUserModel.fromJson(e)).toList();
           plantList.forEach((element) {
@@ -147,7 +147,7 @@ class EmployeeNotifier extends ChangeNotifier{
         var t5= parsed['Table5'] as List;
 
         var t6= parsed['Table6'] as List;
-        var t7= parsed['Table7'] as List;
+        var t7= parsed['Table7'] as List?;
 
 
 
@@ -162,7 +162,7 @@ class EmployeeNotifier extends ChangeNotifier{
         if(!isEmployeeEdit){
           selectSalaryTypeId=employeeSalaryTypeList[2].employeeSalaryTypeId;
           selectSalaryTypeName=employeeSalaryTypeList[2].employeeSalaryTypeName;
-          EmployeePrefix=t7[0]['EmployeePrefix'];
+          EmployeePrefix=t7![0]['EmployeePrefix'];
           EmployeeCode=t7[0]['EmployeeCode'];
           print("EmployeeCode$EmployeeCode");
 
@@ -179,32 +179,32 @@ class EmployeeNotifier extends ChangeNotifier{
 
  /* insert Form */
 
-  String EmployeePrefix="";
-  String EmployeeCode="";
+  String? EmployeePrefix="";
+  String? EmployeeCode="";
 
-  int selectEmployeeDesignationId = null;
-  String selectEmployeeDesignationName = null;
+  int? selectEmployeeDesignationId = null;
+  String? selectEmployeeDesignationName = null;
 
-  int selectEmployeeTypeId = null;
-  String selectEmployeeTypeName = null;
+  int? selectEmployeeTypeId = null;
+  String? selectEmployeeTypeName = null;
 
-  int selectShiftId = null;
-  String selectShiftName = null;
+  int? selectShiftId = null;
+  String? selectShiftName = null;
 
-  int selectBloodGroupId = null;
-  String selectBloodGroupName = null;
+  int? selectBloodGroupId = null;
+  String? selectBloodGroupName = null;
 
-  int selectMartialStatusId = null;
-  String selectMartialStatusName = null;
+  int? selectMartialStatusId = null;
+  String? selectMartialStatusName = null;
 
-  int selectPaymentMethodId = null;
-  String selectPaymentMethodName = null;
+  int? selectPaymentMethodId = null;
+  String? selectPaymentMethodName = null;
 
-  int selectSalaryTypeId = null;
-  String selectSalaryTypeName = null;
+  int? selectSalaryTypeId = null;
+  String? selectSalaryTypeName = null;
 
 
-  String selectedSalutation="Mr";
+  String? selectedSalutation="Mr";
   TextEditingController employeeFirstName=new TextEditingController();
   TextEditingController employeeLastName=new TextEditingController();
   TextEditingController employeeSalary=new TextEditingController();
@@ -231,8 +231,8 @@ class EmployeeNotifier extends ChangeNotifier{
 
 
 
-  DateTime joiningDate;
-  DateTime dob;
+  DateTime? joiningDate;
+  DateTime? dob;
 
 /*  insertForm(){
     joiningDate=DateTime.now();
@@ -240,7 +240,7 @@ class EmployeeNotifier extends ChangeNotifier{
   }*/
 
 
-  int editEmployeeId;
+  int? editEmployeeId;
 
   clearInsertForm(){
     editEmployeeId=null;
@@ -353,7 +353,7 @@ class EmployeeNotifier extends ChangeNotifier{
         {
           "Key": "EmployeeDateOfJoin",
           "Type": "String",
-          "Value": joiningDate!=null?DateFormat("yyyy-MM-dd").format(joiningDate):null
+          "Value": joiningDate!=null?DateFormat("yyyy-MM-dd").format(joiningDate!):null
         },
         {
           "Key": "EmployeeSalary",
@@ -404,7 +404,7 @@ class EmployeeNotifier extends ChangeNotifier{
         {
           "Key": "EmployeeDateOfBirth",
           "Type": "String",
-          "Value": dob!=null?DateFormat("yyyy-MM-dd").format(dob):null
+          "Value": dob!=null?DateFormat("yyyy-MM-dd").format(dob!):null
         },
         {
           "Key": "EmployeeBloodGroupId",
@@ -514,7 +514,7 @@ class EmployeeNotifier extends ChangeNotifier{
 
 
   List<EmployeeGridModel> employeeGridList=[];
-  GetEmployeeIssueDbHit(BuildContext context,int EmployeeId)  async{
+  GetEmployeeIssueDbHit(BuildContext context,int? EmployeeId)  async{
 
     updateEmployeeLoader(true);
 
@@ -548,10 +548,10 @@ class EmployeeNotifier extends ChangeNotifier{
       await call.ApiCallGetInvoke(body,context).then((value) {
         if(value!=null){
           var parsed=json.decode(value);
-          var t=parsed['Table'] as List;
+          var t=parsed['Table'] as List?;
           print("t$t");
           if(EmployeeId!=null ){
-            editEmployeeId=t[0]['EmployeeId'];
+            editEmployeeId=t![0]['EmployeeId'];
             EmployeePrefix=t[0]['EmployeePrefix'];
             EmployeeCode=t[0]['EmployeeCode'];
             selectedSalutation=t[0]['EmployeeSalutation'];
@@ -594,7 +594,7 @@ class EmployeeNotifier extends ChangeNotifier{
 
           }
           else{
-            employeeGridList=t.map((e) => EmployeeGridModel.fromJson(e)).toList();
+            employeeGridList=t!.map((e) => EmployeeGridModel.fromJson(e)).toList();
           }
         }
 

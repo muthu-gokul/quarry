@@ -10,13 +10,13 @@ class ManageUserPlantModel {
     this.isActive
   });
 
-  int plantId;
-  String plantName;
-  int UserPlantMappingId;
-  int UserId;
-  bool isActive;
+  int? plantId;
+  String? plantName;
+  int? UserPlantMappingId;
+  int? UserId;
+  bool? isActive;
 
-  AnimationController scaleController;
+  AnimationController? scaleController;
 
   factory ManageUserPlantModel.fromJson(Map<String, dynamic> json) => ManageUserPlantModel(
     plantId: json["PlantId"],

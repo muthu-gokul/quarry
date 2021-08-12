@@ -1,6 +1,6 @@
 class ProductionMaterialListModel{
-  int materialId;
-  String materialName;
+  int? materialId;
+  String? materialName;
 
 
   ProductionMaterialListModel({this.materialName,this.materialId});

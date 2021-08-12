@@ -15,7 +15,7 @@ import 'employeeAttendanceLoginLogout.dart';
 
 
 class EmployeeAttendanceGrid extends StatefulWidget {
-  VoidCallback drawerCallback;
+  VoidCallback? drawerCallback;
   EmployeeAttendanceGrid({this.drawerCallback});
 
   @override
@@ -25,7 +25,7 @@ class EmployeeAttendanceGrid extends StatefulWidget {
 class _EmployeeAttendanceGridState extends State<EmployeeAttendanceGrid> {
 
   bool showEdit=false;
-  int selectedIndex;
+  int? selectedIndex;
 
 
 
@@ -77,7 +77,7 @@ class _EmployeeAttendanceGridState extends State<EmployeeAttendanceGrid> {
                        child: GestureDetector(
                          onTap: () async {
 
-                           final DateTime picked = await showDatePicker(
+                           final DateTime? picked = await showDatePicker(
                              context: context,
                              initialDate: DateTime.now(), // Refer step 1
                              firstDate: DateTime(2000),
@@ -188,7 +188,7 @@ class _EmployeeAttendanceGridState extends State<EmployeeAttendanceGrid> {
                        Container(
                          margin:EdgeInsets.only(top: 0),
                          child: CustomPaint(
-                           size: Size( SizeConfig.screenWidth, 65),
+                           size: Size( SizeConfig.screenWidth!, 65),
                            painter: RPSCustomPainter3(),
                          ),
                        ),

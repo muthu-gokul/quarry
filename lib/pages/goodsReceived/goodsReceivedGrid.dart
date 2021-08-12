@@ -30,7 +30,7 @@ import '../../styles/size.dart';
 
 
 class GoodsReceivedGrid extends StatefulWidget {
-  VoidCallback drawerCallback;
+  VoidCallback? drawerCallback;
   GoodsReceivedGrid({this.drawerCallback});
   @override
   GoodsReceivedGridState createState() => GoodsReceivedGridState();
@@ -41,8 +41,8 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
   bool isEdit=false;
 
 
-  ScrollController scrollController;
-  ScrollController listViewController;
+  ScrollController? scrollController;
+  ScrollController? listViewController;
 
   bool isListScroll=false;
 
@@ -51,8 +51,8 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
 
   bool isCompletedGoods=false;
 
-  AnimationController _controller,goodsAllController,goodsDataController;
-  Animation goodsAllAnimation,goodsDataAnimation;
+ late AnimationController _controller,goodsAllController,goodsDataController;
+  late Animation goodsAllAnimation,goodsDataAnimation;
 
   int index=1;
 
@@ -68,7 +68,7 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
     goodsDataController = AnimationController(duration: const Duration(milliseconds: 300), vsync: this,);
     goodsDataAnimation=Tween<double>(begin: 0.0,end: 1.0).animate(goodsDataController);
 
-    WidgetsBinding.instance.addPostFrameCallback((_){
+    WidgetsBinding.instance!.addPostFrameCallback((_){
 
       goodsDataController.forward();
 
@@ -132,7 +132,7 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
 
                           int sensitivity = 5;
                           if (details.delta.dy > sensitivity) {
-                            scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
+                            scrollController!.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
                               if(isListScroll){
                                 setState(() {
                                   isListScroll=false;
@@ -141,7 +141,7 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
                             });
 
                           } else if(details.delta.dy < -sensitivity){
-                            scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
+                            scrollController!.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
 
                               if(!isListScroll){
                                 setState(() {
@@ -152,7 +152,7 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
                           }
                         },
                         child: Container(
-                          height: SizeConfig.screenHeight-60,
+                          height: SizeConfig.screenHeight!-60,
                           width: SizeConfig.screenWidth,
                           padding: EdgeInsets.only(top: 0,bottom: 80),
                           clipBehavior: Clip.antiAlias,
@@ -163,21 +163,21 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
                           child: Stack(
                             children: [
                               FadeTransition(
-                                opacity: goodsDataAnimation,
+                                opacity: goodsDataAnimation as Animation<double>,
                                 child:index==1? NotificationListener<ScrollNotification>(
                                   onNotification: (s){
                                     //   print(ScrollStartNotification);
                                     if(s is ScrollStartNotification){
 
-                                      if(listViewController.offset==0 && isListScroll && scrollController.offset==100 && listViewController.position.userScrollDirection==ScrollDirection.idle){
+                                      if(listViewController!.offset==0 && isListScroll && scrollController!.offset==100 && listViewController!.position.userScrollDirection==ScrollDirection.idle){
 
                                         Timer(Duration(milliseconds: 100), (){
-                                          if(listViewController.position.userScrollDirection!=ScrollDirection.reverse){
+                                          if(listViewController!.position.userScrollDirection!=ScrollDirection.reverse){
 
                                             //if(scrollController.position.pixels == scrollController.position.maxScrollExtent){
-                                            if(listViewController.offset==0){
+                                            if(listViewController!.offset==0){
 
-                                              scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value) {
+                                              scrollController!.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value) {
                                                 if(isListScroll){
                                                   setState(() {
                                                     isListScroll=false;
@@ -190,7 +190,8 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
                                         });
                                       }
                                     }
-                                  },
+                                    return true;
+                                  } ,
                                   child: SingleChildScrollView(
                                     physics: isListScroll?AlwaysScrollableScrollPhysics():NeverScrollableScrollPhysics(),
                                     controller: listViewController,
@@ -218,7 +219,7 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
                                             },
                                             child: ScaleTransition(
                                               scale: Tween(begin: 1.0, end: 0.0)
-                                                  .animate(new CurvedAnimation(parent: value.controller, curve: Curves.easeInOutBack)),
+                                                  .animate(new CurvedAnimation(parent: value.controller!, curve: Curves.easeInOutBack)),
                                               child: AnimatedOpacity(
                                                 // opacity: value.isAnimate?0:1,
                                                 opacity: 1,
@@ -228,8 +229,8 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
                                                 child:Container(
                                                   //  duration: Duration(milliseconds: 200),
                                                   //  curve: Curves.easeIn,
-                                                  height: value.isAnimate?0: 200,
-                                                  width:value.isAnimate?0: SizeConfig.screenWidth*0.5,
+                                                  height: value.isAnimate!?0: 200,
+                                                  width:value.isAnimate!?0: SizeConfig.screenWidth!*0.5,
                                                   /*height: value.isAnimate?0:200,
                                             width:  value.isAnimate?0: SizeConfig.screenWidth*0.5,
                                             transform: Matrix4.translationValues(value.isAnimate?SizeConfig.screenWidth*0.25:0, value.isAnimate?100:0, 0),*/
@@ -239,7 +240,7 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
                                                       //  margin: EdgeInsets.only(top: 10),
                                                       height: 200,
                                                       // height: SizeConfig.screenWidth*0.5,
-                                                      width: SizeConfig.screenWidth*0.5,
+                                                      width: SizeConfig.screenWidth!*0.5,
 
                                                       decoration: BoxDecoration(
                                                         //  borderRadius: BorderRadius.circular(10),
@@ -249,7 +250,7 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
                                                         child: Container(
                                                           height: 160,
                                                           // height: SizeConfig.screenWidth*0.4,
-                                                          width: SizeConfig.screenWidth*0.4,
+                                                          width: SizeConfig.screenWidth!*0.4,
                                                           decoration: BoxDecoration(
                                                             color: Colors.white,
                                                             borderRadius: BorderRadius.circular(20),
@@ -302,7 +303,7 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
                                                                               setState(() {
                                                                                 element.isAnimate=false;
                                                                               });
-                                                                              element.controller.reverse().then((value){
+                                                                              element.controller!.reverse().then((value){
 
                                                                               });
                                                                             }
@@ -330,7 +331,7 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
                                                                 },
                                                                 child: Container(
                                                                   height: 40,
-                                                                  width: SizeConfig.screenWidth*0.3,
+                                                                  width: SizeConfig.screenWidth!*0.3,
                                                                   decoration: BoxDecoration(
                                                                       borderRadius: BorderRadius.circular(25),
                                                                       color: AppTheme.yellowColor,
@@ -372,21 +373,21 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
 
 
                               FadeTransition(
-                                opacity: goodsAllAnimation,
+                                opacity: goodsAllAnimation as Animation<double>,
                                 child:index==2? NotificationListener<ScrollNotification>(
                                   onNotification: (s){
                                     //   print(ScrollStartNotification);
                                     if(s is ScrollStartNotification){
 
-                                      if(listViewController.offset==0 && isListScroll && scrollController.offset==100 && listViewController.position.userScrollDirection==ScrollDirection.idle){
+                                      if(listViewController!.offset==0 && isListScroll && scrollController!.offset==100 && listViewController!.position.userScrollDirection==ScrollDirection.idle){
 
                                         Timer(Duration(milliseconds: 100), (){
-                                          if(listViewController.position.userScrollDirection!=ScrollDirection.reverse){
+                                          if(listViewController!.position.userScrollDirection!=ScrollDirection.reverse){
 
                                             //if(scrollController.position.pixels == scrollController.position.maxScrollExtent){
-                                            if(listViewController.offset==0){
+                                            if(listViewController!.offset==0){
 
-                                              scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value) {
+                                              scrollController!.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value) {
                                                 if(isListScroll){
                                                   setState(() {
                                                     isListScroll=false;
@@ -399,7 +400,8 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
                                         });
                                       }
                                     }
-                                  },
+                                    return true;
+                                  } ,
                                   child: SingleChildScrollView(
                                     physics: isListScroll?AlwaysScrollableScrollPhysics():NeverScrollableScrollPhysics(),
                                     controller: listViewController,
@@ -427,7 +429,7 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
                                             },
                                             child: ScaleTransition(
                                               scale: Tween(begin: 1.0, end: 0.0)
-                                                  .animate(new CurvedAnimation(parent: value.controller, curve: Curves.easeInOutBack)),
+                                                  .animate(new CurvedAnimation(parent: value.controller!, curve: Curves.easeInOutBack)),
                                               child: AnimatedOpacity(
                                                 // opacity: value.isAnimate?0:1,
                                                 opacity: 1,
@@ -437,8 +439,8 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
                                                 child:Container(
                                                   //  duration: Duration(milliseconds: 200),
                                                   //  curve: Curves.easeIn,
-                                                  height: value.isAnimate?0: 200,
-                                                  width:value.isAnimate?0: SizeConfig.screenWidth*0.5,
+                                                  height: value.isAnimate!?0: 200,
+                                                  width:value.isAnimate!?0: SizeConfig.screenWidth!*0.5,
                                                   /*height: value.isAnimate?0:200,
                                             width:  value.isAnimate?0: SizeConfig.screenWidth*0.5,
                                             transform: Matrix4.translationValues(value.isAnimate?SizeConfig.screenWidth*0.25:0, value.isAnimate?100:0, 0),*/
@@ -448,7 +450,7 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
                                                       //  margin: EdgeInsets.only(top: 10),
                                                       height: 200,
                                                       // height: SizeConfig.screenWidth*0.5,
-                                                      width: SizeConfig.screenWidth*0.5,
+                                                      width: SizeConfig.screenWidth!*0.5,
 
                                                       decoration: BoxDecoration(
                                                         //  borderRadius: BorderRadius.circular(10),
@@ -458,7 +460,7 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
                                                         child: Container(
                                                           height: 160,
                                                           // height: SizeConfig.screenWidth*0.4,
-                                                          width: SizeConfig.screenWidth*0.4,
+                                                          width: SizeConfig.screenWidth!*0.4,
                                                           decoration: BoxDecoration(
                                                             color: Colors.white,
                                                             borderRadius: BorderRadius.circular(20),
@@ -506,7 +508,7 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
                                                                 },
                                                                 child: Container(
                                                                   height: 40,
-                                                                  width: SizeConfig.screenWidth*0.3,
+                                                                  width: SizeConfig.screenWidth!*0.3,
                                                                   decoration: BoxDecoration(
                                                                       borderRadius: BorderRadius.circular(25),
                                                                       color: AppTheme.yellowColor,
@@ -582,7 +584,7 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
                         ),
                         margin:EdgeInsets.only(top: 0),
                         child: CustomPaint(
-                          size: Size( SizeConfig.screenWidth, 65),
+                          size: Size( SizeConfig.screenWidth!, 65),
                           //  painter: RPSCustomPainter(),
                           painter: RPSCustomPainter3(),
                         ),
@@ -647,7 +649,7 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
                                 child: SvgPicture.asset("assets/bottomIcons/completed-Goods.svg",height: 37,width: 37,)),
 
 
-                            SizedBox(width: SizeConfig.screenWidth*0.25,),
+                            SizedBox(width: SizeConfig.screenWidth!*0.25,),
                             GestureDetector(
                                 onTap: (){
                                   gr.clearOGFform();
@@ -680,7 +682,7 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
 
                                      Timer(Duration(milliseconds: 300), (){
                                        if(element.status=="Not Yet"){
-                                         element.controller.forward().then((value){
+                                         element.controller!.forward().then((value){
                                            setState(() {
                                              element.isAnimate=true;
                                            });
@@ -739,7 +741,7 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
                                   setState(() {
                                     element.isAnimate=false;
                                   });
-                                  element.controller.reverse().then((value){
+                                  element.controller!.reverse().then((value){
 
                                   });
                                 }
@@ -787,7 +789,7 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
                             setState(() {
                               element.isAnimate=false;
                             });
-                            element.controller.reverse().then((value){
+                            element.controller!.reverse().then((value){
 
                             });
                           }
@@ -850,7 +852,7 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
                     Spacer(),
                     GestureDetector(
                       onTap: () async{
-                        final List<DateTime>  picked1 = await DateRagePicker.showDatePicker(
+                        final List<DateTime?>?  picked1 = await DateRagePicker.showDatePicker(
                             context: context,
                             initialFirstDate: new DateTime.now(),
                             initialLastDate: (new DateTime.now()),

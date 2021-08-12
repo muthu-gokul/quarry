@@ -12,8 +12,8 @@ class CurrentDate extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
 
-        margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,top:SizeConfig.height20,),
-        padding: EdgeInsets.only(left:SizeConfig.width10,),
+        margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!,top:SizeConfig.height20!,),
+        padding: EdgeInsets.only(left:SizeConfig.width10!,),
         height: 50,
         alignment: Alignment.centerLeft,
         decoration: BoxDecoration(

@@ -22,7 +22,7 @@ class MachineNotifier extends ChangeNotifier{
   TextEditingController MoterPower=new TextEditingController();
 
 
-  int editMachineId=null;
+  int? editMachineId=null;
 
   final call=ApiManager();
 
@@ -109,7 +109,7 @@ class MachineNotifier extends ChangeNotifier{
 
   }
 
-  GetMachineDbHit(BuildContext context,int machineId)  async{
+  GetMachineDbHit(BuildContext context,int? machineId)  async{
 
     updatemachineLoader(true);
 
@@ -144,12 +144,12 @@ class MachineNotifier extends ChangeNotifier{
 
         if(value!=null){
           var parsed=json.decode(value);
-          var t=parsed['Table'] as List;
+          var t=parsed['Table'] as List?;
           print(parsed);
 
 
           if(machineId!=null){
-            editMachineId=t[0]['MachineId'];
+            editMachineId=t![0]['MachineId'];
             MachineName.text=t[0]['MachineName'];
             MachineType.text=t[0]['MachineType'];
             MachineModel.text=t[0]['MachineModel'];
@@ -159,7 +159,7 @@ class MachineNotifier extends ChangeNotifier{
 
           }
           else{
-            machineGridList=t.map((e) =>  MachineGridModel.fromJson(e)).toList();
+            machineGridList=t!.map((e) =>  MachineGridModel.fromJson(e)).toList();
           }
 
         }

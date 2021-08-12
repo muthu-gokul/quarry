@@ -5,8 +5,8 @@ class ManageUserGroupModel {
     this.userGroupName,
   });
 
-  int userGroupId;
-  String userGroupName;
+  int? userGroupId;
+  String? userGroupName;
 
   factory ManageUserGroupModel.fromJson(Map<String, dynamic> json) => ManageUserGroupModel(
     userGroupId: json["UserGroupId"],

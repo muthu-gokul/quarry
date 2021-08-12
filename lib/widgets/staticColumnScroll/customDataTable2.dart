@@ -5,7 +5,7 @@ import '../../styles/app_theme.dart';
 import '../../styles/size.dart';
 
 class GridStyleModel{
-  String columnName;
+  String? columnName;
   double width;
   Alignment alignment;
   EdgeInsets edgeInsets;
@@ -15,14 +15,14 @@ class GridStyleModel{
 
 class CustomDataTable2 extends StatefulWidget {
 
-  List<GridStyleModel> gridDataRowList=[];
-  List<dynamic> gridData=[];
+  List<GridStyleModel>? gridDataRowList=[];
+  List<dynamic>? gridData=[];
 
-  int selectedIndex;
-  VoidCallback voidCallback;
-  Function(int) func;
-  double topMargin;//70 || 50
-  double gridBodyReduceHeight;// 260  // 140
+  int? selectedIndex;
+  VoidCallback? voidCallback;
+  Function(int)? func;
+  double? topMargin;//70 || 50
+  double? gridBodyReduceHeight;// 260  // 140
 
   CustomDataTable2({this.gridDataRowList,this.gridData,this.selectedIndex,this.voidCallback,this.func,this.topMargin,this.gridBodyReduceHeight});
   @override
@@ -39,9 +39,9 @@ class _CustomDataTable2State extends State<CustomDataTable2> {
 
   bool showShadow=false;
 
-  List<GridStyleModel> gridDataRowList=[];
+  List<GridStyleModel>? gridDataRowList=[];
 
-  VoidCallback voidCallback;
+  VoidCallback? voidCallback;
 
   _CustomDataTable2State({this.gridDataRowList,this.voidCallback});
 
@@ -95,9 +95,9 @@ class _CustomDataTable2State extends State<CustomDataTable2> {
     // print(gridCol);
     // print(widget.selectedIndex);
     return Container(
-        height: SizeConfig.screenHeight-widget.topMargin,
+        height: SizeConfig.screenHeight!-widget.topMargin!,
         width: SizeConfig.screenWidth,
-        margin: EdgeInsets.only(top: widget.topMargin),
+        margin: EdgeInsets.only(top: widget.topMargin!),
         clipBehavior: Clip.antiAlias,
         decoration: BoxDecoration(
             color:AppTheme.gridbodyBgColor,
@@ -114,13 +114,13 @@ class _CustomDataTable2State extends State<CustomDataTable2> {
                 children: [
                   Container(
                     height: 50,
-                    width: SizeConfig.screenWidth-149,
+                    width: SizeConfig.screenWidth!-149,
                     color: showShadow? AppTheme.bgColor.withOpacity(0.8):AppTheme.bgColor,
                     child: SingleChildScrollView(
                       controller: header,
                       scrollDirection: Axis.horizontal,
                       child: Row(
-                          children: widget.gridDataRowList.asMap().
+                          children: widget.gridDataRowList!.asMap().
                           map((i, value) => MapEntry(i, i==0?Container():
                           Container(
                               alignment: value.alignment,
@@ -130,7 +130,7 @@ class _CustomDataTable2State extends State<CustomDataTable2> {
                                   minWidth: 100,
                                   maxWidth: 200
                               ),
-                              child: FittedBox(child: Text(value.columnName,style: AppTheme.TSWhite166,))
+                              child: FittedBox(child: Text(value.columnName!,style: AppTheme.TSWhite166,))
                           )
                           )).values.toList()
                       ),
@@ -138,27 +138,27 @@ class _CustomDataTable2State extends State<CustomDataTable2> {
 
                   ),
                   Container(
-                    height: SizeConfig.screenHeight-widget.gridBodyReduceHeight,
-                    width: SizeConfig.screenWidth-149,
+                    height: SizeConfig.screenHeight!-widget.gridBodyReduceHeight!,
+                    width: SizeConfig.screenWidth!-149,
                     alignment: Alignment.topCenter,
                     color: AppTheme.gridbodyBgColor,
                     child: SingleChildScrollView(
                       controller: body,
                       scrollDirection: Axis.horizontal,
                       child: Container(
-                        height: SizeConfig.screenHeight-widget.gridBodyReduceHeight,
+                        height: SizeConfig.screenHeight!-widget.gridBodyReduceHeight!,
                         alignment: Alignment.topCenter,
                         color:AppTheme.gridbodyBgColor,
                         child: SingleChildScrollView(
                           controller: verticalRight,
                           scrollDirection: Axis.vertical,
                           child: Column(
-                              children:widget.gridData.asMap().
+                              children:widget.gridData!.asMap().
                               map((i, value) => MapEntry(
                                   i,InkWell(
                                 //   onTap: widget.voidCallback,
                                 onTap: (){
-                                  widget.func(i);
+                                  widget.func!(i);
                                   //setState(() {});
                                 },
                                 child: Container(
@@ -168,9 +168,9 @@ class _CustomDataTable2State extends State<CustomDataTable2> {
                                     color: widget.selectedIndex==i?AppTheme.yellowColor:AppTheme.gridbodyBgColor,
                                   ),
                                   height: 50,
-                                  margin: EdgeInsets.only(bottom:i==widget.gridData.length-1?70: 0),
+                                  margin: EdgeInsets.only(bottom:i==widget.gridData!.length-1?70: 0),
                                   child: Row(
-                                      children: gridDataRowList.asMap().map((j, v) {
+                                      children: gridDataRowList!.asMap().map((j, v) {
 
 
                                           if((7.0*value.get(v.columnName).toString().length)>v.width){
@@ -227,13 +227,13 @@ class _CustomDataTable2State extends State<CustomDataTable2> {
                     height: 50,
                     width: 150,
                     color: AppTheme.bgColor,
-                    padding: widget.gridDataRowList[0].edgeInsets,
-                    alignment: widget.gridDataRowList[0].alignment,
-                    child: Text("${widget.gridDataRowList[0].columnName}",style: AppTheme.TSWhite166,),
+                    padding: widget.gridDataRowList![0].edgeInsets,
+                    alignment: widget.gridDataRowList![0].alignment,
+                    child: Text("${widget.gridDataRowList![0].columnName}",style: AppTheme.TSWhite166,),
 
                   ),
                   Container(
-                    height: SizeConfig.screenHeight-widget.gridBodyReduceHeight,
+                    height: SizeConfig.screenHeight!-widget.gridBodyReduceHeight!,
                     alignment: Alignment.topCenter,
                     decoration: BoxDecoration(
                         color:showShadow? AppTheme.gridbodyBgColor:Colors.transparent,
@@ -247,24 +247,24 @@ class _CustomDataTable2State extends State<CustomDataTable2> {
                         ]
                     ),
                     child: Container(
-                      height: SizeConfig.screenHeight-widget.gridBodyReduceHeight,
+                      height: SizeConfig.screenHeight!-widget.gridBodyReduceHeight!,
                       alignment: Alignment.topCenter,
 
                       child: SingleChildScrollView(
                         controller: verticalLeft,
                         scrollDirection: Axis.vertical,
                         child: Column(
-                            children: widget.gridData.asMap().
+                            children: widget.gridData!.asMap().
                             map((i, value) => MapEntry(
                                 i,InkWell(
                               onTap: (){
-                                widget.func(i);
+                                widget.func!(i);
                                 //setState(() {});
                               },
                               child:  Container(
-                                alignment:gridDataRowList[0].alignment,
-                                padding: gridDataRowList[0].edgeInsets,
-                                margin: EdgeInsets.only(bottom:i==widget.gridData.length-1?70: 0),
+                                alignment:gridDataRowList![0].alignment,
+                                padding: gridDataRowList![0].edgeInsets,
+                                margin: EdgeInsets.only(bottom:i==widget.gridData!.length-1?70: 0),
                                 decoration: BoxDecoration(
                                   border: AppTheme.gridBottomborder,
                                   color: widget.selectedIndex==i?AppTheme.yellowColor:AppTheme.gridbodyBgColor,
@@ -281,7 +281,7 @@ class _CustomDataTable2State extends State<CustomDataTable2> {
                                   ),
                                   child: FittedBox(
                                     fit: BoxFit.contain,
-                                    child: Text("${value.get(gridDataRowList[0].columnName)}",
+                                    child: Text("${value.get(gridDataRowList![0].columnName)}",
                                       style:widget.selectedIndex==i?AppTheme.bgColorTS14:AppTheme.gridTextColor14,
                                     ),
                                   ),
@@ -303,7 +303,7 @@ class _CustomDataTable2State extends State<CustomDataTable2> {
             ),
 
 
-            widget.gridData.isEmpty?Container(
+            widget.gridData!.isEmpty?Container(
               width: SizeConfig.screenWidth,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,

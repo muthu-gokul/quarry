@@ -24,13 +24,13 @@ class MaterialNotifier extends ChangeNotifier{
   TextEditingController materialPrice=new TextEditingController();
   TextEditingController materialGst=new TextEditingController();
 
-  int selectedMatCategoryId=null;
-  var selectedMatCategoryName=null;
+  int? selectedMatCategoryId=null;
+  dynamic selectedMatCategoryName=null;
 
-  int selectedUnitId=null;
-  var selectedUnitName=null;
+  int? selectedUnitId=null;
+  dynamic selectedUnitName=null;
 
-  int materialIdEdit=null;
+  int? materialIdEdit=null;
 
   List<UnitDetailModel> materialUnits=[];
   List<MaterialCategoryModel> materialCategoryList=[];
@@ -183,7 +183,7 @@ class MaterialNotifier extends ChangeNotifier{
   List<MaterialGridModel> materialGridList=[];
 
 
-  GetMaterialDbHit(BuildContext context,int materialId)  async{
+  GetMaterialDbHit(BuildContext context,int? materialId)  async{
     print(materialId);
     updatematerialLoader(true);
 
@@ -215,11 +215,11 @@ class MaterialNotifier extends ChangeNotifier{
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
         var parsed=json.decode(value);
-        var t=parsed['Table'] as List;
+        var t=parsed['Table'] as List?;
 
 
         if(materialId!=null){
-          materialIdEdit=t[0]['MaterialId'];
+          materialIdEdit=t![0]['MaterialId'];
 
           materialName.text=t[0]['MaterialName'];
           materialDescription.text=t[0]['MaterialDescription'];
@@ -234,7 +234,7 @@ class MaterialNotifier extends ChangeNotifier{
           selectedUnitName=t[0]['UnitName'];
         }
         else{
-          materialGridList=t.map((e) => MaterialGridModel.fromJson(e)).toList();
+          materialGridList=t!.map((e) => MaterialGridModel.fromJson(e)).toList();
         }
 
 

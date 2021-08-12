@@ -20,7 +20,7 @@ import 'manageUsersAddNew.dart';
 
 
 class ManageUsersGrid extends StatefulWidget {
-  VoidCallback drawerCallback;
+  VoidCallback? drawerCallback;
   ManageUsersGrid({this.drawerCallback});
   @override
   ManageUsersGridState createState() => ManageUsersGridState();
@@ -31,14 +31,14 @@ class ManageUsersGridState extends State<ManageUsersGrid> with TickerProviderSta
   bool isEdit=false;
 
 
-  ScrollController scrollController;
-  ScrollController listViewController;
+  ScrollController? scrollController;
+  ScrollController? listViewController;
   bool isListScroll=false;
 
   @override
   void initState() {
     isEdit=false;
-    WidgetsBinding.instance.addPostFrameCallback((_){
+    WidgetsBinding.instance!.addPostFrameCallback((_){
 
 
       scrollController=new ScrollController();
@@ -99,7 +99,7 @@ class ManageUsersGridState extends State<ManageUsersGrid> with TickerProviderSta
 
                           int sensitivity = 5;
                           if (details.delta.dy > sensitivity) {
-                            scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
+                            scrollController!.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
                               if(isListScroll){
                                 setState(() {
                                   isListScroll=false;
@@ -108,7 +108,7 @@ class ManageUsersGridState extends State<ManageUsersGrid> with TickerProviderSta
                             });
 
                           } else if(details.delta.dy < -sensitivity){
-                            scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
+                            scrollController!.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
 
                               if(!isListScroll){
                                 setState(() {
@@ -119,7 +119,7 @@ class ManageUsersGridState extends State<ManageUsersGrid> with TickerProviderSta
                           }
                         },
                         child: Container(
-                          height: SizeConfig.screenHeight-60,
+                          height: SizeConfig.screenHeight!-60,
                           width: SizeConfig.screenWidth,
                           clipBehavior: Clip.antiAlias,
                           decoration: BoxDecoration(
@@ -130,15 +130,15 @@ class ManageUsersGridState extends State<ManageUsersGrid> with TickerProviderSta
                                     onNotification: (s){
                                       if(s is ScrollStartNotification){
 
-                                        if(listViewController.offset==0 && isListScroll && scrollController.offset==100 && listViewController.position.userScrollDirection==ScrollDirection.idle){
+                                        if(listViewController!.offset==0 && isListScroll && scrollController!.offset==100 && listViewController!.position.userScrollDirection==ScrollDirection.idle){
 
                                           Timer(Duration(milliseconds: 100), (){
-                                            if(listViewController.position.userScrollDirection!=ScrollDirection.reverse){
+                                            if(listViewController!.position.userScrollDirection!=ScrollDirection.reverse){
 
                                               //if(scrollController.position.pixels == scrollController.position.maxScrollExtent){
-                                              if(listViewController.offset==0){
+                                              if(listViewController!.offset==0){
 
-                                                scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value) {
+                                                scrollController!.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value) {
                                                   if(isListScroll){
                                                     setState(() {
                                                       isListScroll=false;
@@ -151,7 +151,7 @@ class ManageUsersGridState extends State<ManageUsersGrid> with TickerProviderSta
                                           });
                                         }
                                       }
-                                     },
+                                     } as bool Function(ScrollNotification)?,
                             child: ListView(
                               controller: listViewController,
                               scrollDirection: Axis.vertical,
@@ -167,7 +167,7 @@ class ManageUsersGridState extends State<ManageUsersGrid> with TickerProviderSta
                                     children: [
                                       Container(
                                         height: 200,
-                                        width: SizeConfig.screenWidth*0.5,
+                                        width: SizeConfig.screenWidth!*0.5,
                                         decoration: BoxDecoration(
                                             color: Colors.white,
                                             borderRadius: BorderRadius.only(topLeft: Radius.circular(10))
@@ -227,7 +227,7 @@ class ManageUsersGridState extends State<ManageUsersGrid> with TickerProviderSta
                                         },
                                         child: Container(
                                           height: 200,
-                                          width: SizeConfig.screenWidth*0.5,
+                                          width: SizeConfig.screenWidth!*0.5,
                                           decoration: BoxDecoration(
                                               color: Colors.white,
                                               borderRadius: BorderRadius.only(topRight: Radius.circular(10))
@@ -261,7 +261,7 @@ class ManageUsersGridState extends State<ManageUsersGrid> with TickerProviderSta
                                         ),
                                       ):Container(
                                         height: 200,
-                                        width: SizeConfig.screenWidth*0.5,
+                                        width: SizeConfig.screenWidth!*0.5,
                                         color: Colors.white,
                                       ),
                                     ],
@@ -282,7 +282,7 @@ class ManageUsersGridState extends State<ManageUsersGrid> with TickerProviderSta
                                         },
                                         child: Container(
                                           height: 200,
-                                          width: SizeConfig.screenWidth*0.5,
+                                          width: SizeConfig.screenWidth!*0.5,
                                           color: Colors.white,
                                           child: Column(
                                             mainAxisAlignment: MainAxisAlignment.center,

@@ -10,8 +10,8 @@ import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
 
 class CustomAlert{
-  VoidCallback callback;
-  VoidCallback Cancelcallback;
+  VoidCallback? callback;
+  VoidCallback? Cancelcallback;
   CustomAlert({this.callback,this.Cancelcallback});
 
   // void show(BuildContext context,String text,int duration){

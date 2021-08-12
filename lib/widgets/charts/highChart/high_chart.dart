@@ -4,7 +4,6 @@ import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/foundation.dart';
-import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/charts/apexChart/apexChartScript.dart';
@@ -16,10 +15,10 @@ import 'highChartSCript2.dart';
 import 'highchart3d.dart';
 
 class HighCharts extends StatefulWidget {
-  HighCharts({Key key,  this.data,this.isHighChart,this.isLoad,this.isHighChartExtraParam=false}) : super(key: key);
-  final String data;
-  bool isHighChart;
-  bool isLoad;
+  HighCharts({Key? key,  this.data,this.isHighChart,this.isLoad,this.isHighChartExtraParam=false}) : super(key: key);
+  final String? data;
+  bool? isHighChart;
+  bool? isLoad;
   bool isHighChartExtraParam;
   @override
   _HighChartsState createState() => _HighChartsState();
@@ -52,12 +51,12 @@ const highChartHtml='data:text/html;base64, PCFET0NUWVBFIGh0bWw+PGh0bWw+PGhlYWQ+
 
 
 class _HighChartsState extends State<HighCharts> {
-  String _currentData;
+  String? _currentData;
 
-  WebViewController _controller;
+  late WebViewController _controller;
 
   double _opacity = Platform.isAndroid ? 0.0 : 1.0;
-  bool load;
+  bool? load;
   @override
   void initState() {
     super.initState();
@@ -69,7 +68,7 @@ class _HighChartsState extends State<HighCharts> {
   void didUpdateWidget(covariant HighCharts oldWidget) {
 /*    print("widget.isLoad ${widget.isLoad}");
     print("oldWidget.isLoad ${oldWidget.isLoad}");*/
-    if(widget.isLoad){
+    if(widget.isLoad!){
       setState(() {
         _currentData = widget.data;
       });
@@ -82,7 +81,7 @@ class _HighChartsState extends State<HighCharts> {
    /* setState(() {
       load=true;
     });*/
-    if(widget.isHighChart){
+    if(widget.isHighChart!){
       if(widget.isHighChartExtraParam){
         await _controller.evaluateJavascript('''
       $highChartScript2
@@ -134,12 +133,7 @@ class _HighChartsState extends State<HighCharts> {
 
   @override
   Widget build(BuildContext context) {
-    return ModalProgressHUD(
-      inAsyncCall: load||widget.isLoad,
-      opacity: 0.1,
-
-      progressIndicator: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(AppTheme.yellowColor),),
-      child: WebView(
+    return WebView(
 
         initialUrl: highChartHtml,
         javascriptMode: JavascriptMode.unrestricted,
@@ -158,7 +152,6 @@ class _HighChartsState extends State<HighCharts> {
         onWebResourceError: (WebResourceError webResourceError){
         //  CustomAlert().commonErrorAlert2(context, "Chart", "${webResourceError.description}");
         },
-      ),
     );
   }
 }

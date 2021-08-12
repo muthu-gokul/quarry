@@ -22,7 +22,7 @@ class ReportNotifier extends ChangeNotifier{
   List<FilterDetailsModel> filtersList=[];
 
   DateTime dateTime=DateTime.parse('2021-01-01');
-  List<DateTime> picked=[];
+  List<DateTime?> picked=[];
 
   /* Common Data in Report Page*/
   String reportHeader="";
@@ -40,65 +40,65 @@ class ReportNotifier extends ChangeNotifier{
   List<dynamic> reportsGridDataList=[];
   List<ReportCounterModel> counterList=[];
 
-  List<dynamic> plantList=[];/*  {
+  List<dynamic>? plantList=[];/*  {
             "PlantId": 1,
             "PlantName": "MahalakshmiRynoSands"
         }*/
-  List<dynamic> materialList=[];/*{
+  List<dynamic>? materialList=[];/*{
             "MaterialId": 2,
             "MaterialName": "M Sand",
             "IsActive": 1
         }*/
-  List<dynamic> customerList=[];/* {
+  List<dynamic>? customerList=[];/* {
             "CustomerId": null,
             "CustomerName": null,
             "IsActive": 1
         }*/
-  List<dynamic> supplierList=[];/* {
+  List<dynamic>? supplierList=[];/* {
             "SupplierId": 11,
             "SupplierName": "goks",
             "SupplierType": "External",
             "IsActive": 1
         }*/
- List<dynamic> locationList=[];/*{
+ List<dynamic>? locationList=[];/*{
             "Location": null
         }*/
- List<dynamic> paymentTypeList=[];/*{
+ List<dynamic>? paymentTypeList=[];/*{
             "PaymentCategoryId": 1,
             "PaymentType": "Cash"
         }*/
-  List<dynamic> machineList=[];/* {
+  List<dynamic>? machineList=[];/* {
             "MachineId": 9,
             "MachineName": "dddd"
         }*/
-  List<dynamic> inputMaterialList=[];/*{
+  List<dynamic>? inputMaterialList=[];/*{
             "InputMaterialId": 12,
             "InputMaterialName": "12mm Stone"
         }*/
-  List<dynamic> outputMaterialList=[];/* {
+  List<dynamic>? outputMaterialList=[];/* {
             "OutputMaterialId": 2,
             "OutputMaterialName": "M Sand"
         }*/
- List<dynamic> invoiceTypeList=[];/*{
+ List<dynamic>? invoiceTypeList=[];/*{
             "InvoiceType": "Payable"
         }*/
-  List<dynamic> paymentStatusList=[];/*{
+  List<dynamic>? paymentStatusList=[];/*{
             "PaymentStatus": "Completed"
         }*/
-  List<dynamic> partyNameList=[];/*{
+  List<dynamic>? partyNameList=[];/*{
             "PartyName": "vivek"
             PartyId
         }*/
- List<dynamic> employeeList=[];/* {
+ List<dynamic>? employeeList=[];/* {
             "EmployeeId": 2,
             "EmployeeName": "Mr Raja R",
             "IsActive": 1
         }*/
-  List<dynamic> employeeShift=[];
- List<dynamic>  dieselRateList=[];/*{
+  List<dynamic>? employeeShift=[];
+ List<dynamic>?  dieselRateList=[];/*{
             "DieselRate": 0.00
         }*/
-List<dynamic> vehicleTypeList=[];/* {
+List<dynamic>? vehicleTypeList=[];/* {
             "VehicleTypeId": 1,
             "VehicleTypeName": "Cargo",
             "IsActive": 1
@@ -409,9 +409,9 @@ List<dynamic> vehicleTypeList=[];/* {
             columnFilterAll.clear();
             columnFilterAll.add(true);
 
-            var t=parsed["Table"] as List;
-            var t1=parsed["Table1"] as List;
-            var t2=parsed["Table2"] as List;
+            var t=parsed["Table"] as List?;
+            var t1=parsed["Table1"] as List?;
+            var t2=parsed["Table2"] as List?;
 
             plantList=t;
             materialList=t1;
@@ -429,9 +429,9 @@ List<dynamic> vehicleTypeList=[];/* {
             columnFilterAll.clear();
             columnFilterAll.add(true);
 
-            var t=parsed["Table"] as List;
-            var t1=parsed["Table1"] as List;
-            var t2=parsed["Table2"] as List;
+            var t=parsed["Table"] as List?;
+            var t1=parsed["Table1"] as List?;
+            var t2=parsed["Table2"] as List?;
             plantList=t;
             materialList=t1;
             supplierList=t2;
@@ -445,11 +445,11 @@ List<dynamic> vehicleTypeList=[];/* {
             columnFilterAll.clear();
             columnFilterAll.add(true);
 
-            var t=parsed["Table"] as List;
-            var t1=parsed["Table1"] as List;
-            var t2=parsed["Table2"] as List;
-            var t3=parsed["Table3"] as List;
-            var t4=parsed["Table4"] as List;
+            var t=parsed["Table"] as List?;
+            var t1=parsed["Table1"] as List?;
+            var t2=parsed["Table2"] as List?;
+            var t3=parsed["Table3"] as List?;
+            var t4=parsed["Table4"] as List?;
             plantList=t;
             customerList=t1;
             locationList=t2;
@@ -466,9 +466,9 @@ List<dynamic> vehicleTypeList=[];/* {
           else if(typeName=="SupplierPurchaseReport"){
             columnFilterAll.clear();
             columnFilterAll.add(true);
-            var t=parsed["Table"] as List;
-            var t1=parsed["Table1"] as List;
-            var t2=parsed["Table2"] as List;
+            var t=parsed["Table"] as List?;
+            var t1=parsed["Table1"] as List?;
+            var t2=parsed["Table2"] as List?;
             plantList=t;
             materialList=t1;
             supplierList=t2;
@@ -480,10 +480,10 @@ List<dynamic> vehicleTypeList=[];/* {
           else if(typeName=="ProductionReport"){
             columnFilterAll.clear();
             columnFilterAll.add(true);
-            var t=parsed["Table"] as List;
-            var t1=parsed["Table1"] as List;
-            var t2=parsed["Table2"] as List;
-            var t3=parsed["Table3"] as List;
+            var t=parsed["Table"] as List?;
+            var t1=parsed["Table1"] as List?;
+            var t2=parsed["Table2"] as List?;
+            var t3=parsed["Table3"] as List?;
 
             plantList=t;
             machineList=t1;
@@ -499,11 +499,11 @@ List<dynamic> vehicleTypeList=[];/* {
           else if(typeName=="InvoiceReport"){
             columnFilterAll.clear();
             columnFilterAll.add(true);
-            var t=parsed["Table"] as List;
-            var t1=parsed["Table1"] as List;
-            var t2=parsed["Table2"] as List;
-            var t3=parsed["Table3"] as List;
-            var t4=parsed["Table4"] as List;
+            var t=parsed["Table"] as List?;
+            var t1=parsed["Table1"] as List?;
+            var t2=parsed["Table2"] as List?;
+            var t3=parsed["Table3"] as List?;
+            var t4=parsed["Table4"] as List?;
             plantList=t;
             invoiceTypeList=t1;
             partyNameList=t2;
@@ -519,10 +519,10 @@ List<dynamic> vehicleTypeList=[];/* {
           else if(typeName=="ReceivablePaymentReport"){
             columnFilterAll.clear();
             columnFilterAll.add(true);
-            var t=parsed["Table"] as List;
-            var t1=parsed["Table1"] as List;
-            var t2=parsed["Table2"] as List;
-            var t3=parsed["Table3"] as List;
+            var t=parsed["Table"] as List?;
+            var t1=parsed["Table1"] as List?;
+            var t2=parsed["Table2"] as List?;
+            var t3=parsed["Table3"] as List?;
 
             plantList=t;
             partyNameList=t1;
@@ -537,10 +537,10 @@ List<dynamic> vehicleTypeList=[];/* {
           else if(typeName=="PayablePaymentReport"){
             columnFilterAll.clear();
             columnFilterAll.add(true);
-            var t=parsed["Table"] as List;
-            var t1=parsed["Table1"] as List;
-            var t2=parsed["Table2"] as List;
-            var t3=parsed["Table3"] as List;
+            var t=parsed["Table"] as List?;
+            var t1=parsed["Table1"] as List?;
+            var t2=parsed["Table2"] as List?;
+            var t3=parsed["Table3"] as List?;
 
             plantList=t;
             partyNameList=t1;
@@ -555,8 +555,8 @@ List<dynamic> vehicleTypeList=[];/* {
           else if(typeName=="EmployeeReport"){
             columnFilterAll.clear();
             columnFilterAll.add(true);
-            var t=parsed["Table"] as List;
-            var t1=parsed["Table1"] as List;
+            var t=parsed["Table"] as List?;
+            var t1=parsed["Table1"] as List?;
 
 
             employeeList=t;
@@ -569,8 +569,8 @@ List<dynamic> vehicleTypeList=[];/* {
           else if(typeName=="AttendanceReport"){
             columnFilterAll.clear();
             columnFilterAll.add(true);
-            var t=parsed["Table"] as List;
-            var t1=parsed["Table1"] as List;
+            var t=parsed["Table"] as List?;
+            var t1=parsed["Table1"] as List?;
 
 
             employeeList=t;
@@ -583,10 +583,10 @@ List<dynamic> vehicleTypeList=[];/* {
           else if(typeName=="DieselPurchaseReport"){
             columnFilterAll.clear();
             columnFilterAll.add(true);
-            var t=parsed["Table"] as List;
-            var t1=parsed["Table1"] as List;
-            var t2=parsed["Table2"] as List;
-            var t3=parsed["Table3"] as List;
+            var t=parsed["Table"] as List?;
+            var t1=parsed["Table1"] as List?;
+            var t2=parsed["Table2"] as List?;
+            var t3=parsed["Table3"] as List?;
 
 
             plantList=t;
@@ -603,9 +603,9 @@ List<dynamic> vehicleTypeList=[];/* {
           else if(typeName=="DieselIssueReport"){
             columnFilterAll.clear();
             columnFilterAll.add(true);
-            var t=parsed["Table"] as List;
-            var t1=parsed["Table1"] as List;
-            var t2=parsed["Table2"] as List;
+            var t=parsed["Table"] as List?;
+            var t1=parsed["Table1"] as List?;
+            var t2=parsed["Table2"] as List?;
 
 
             plantList=t;
@@ -621,9 +621,9 @@ List<dynamic> vehicleTypeList=[];/* {
           else if(typeName=="MachineManagementReport"){
             columnFilterAll.clear();
             columnFilterAll.add(true);
-            var t=parsed["Table"] as List;
-            var t1=parsed["Table1"] as List;
-            var t2=parsed["Table2"] as List;
+            var t=parsed["Table"] as List?;
+            var t1=parsed["Table1"] as List?;
+            var t2=parsed["Table2"] as List?;
 
 
             plantList=t;
@@ -639,8 +639,8 @@ List<dynamic> vehicleTypeList=[];/* {
           else if(typeName=="SaleAuditReport"){
             columnFilterAll.clear();
             columnFilterAll.add(true);
-            var t=parsed["Table"] as List;
-            var t1=parsed["Table1"] as List;
+            var t=parsed["Table"] as List?;
+            var t1=parsed["Table1"] as List?;
 
 
             plantList=t;
@@ -655,8 +655,8 @@ List<dynamic> vehicleTypeList=[];/* {
           else if(typeName=="PurchaseAuditReport"){
             columnFilterAll.clear();
             columnFilterAll.add(true);
-            var t=parsed["Table"] as List;
-            var t1=parsed["Table1"] as List;
+            var t=parsed["Table"] as List?;
+            var t1=parsed["Table1"] as List?;
 
             plantList=t;
             supplierList=t1;
@@ -668,9 +668,9 @@ List<dynamic> vehicleTypeList=[];/* {
           else if(typeName=="VehicleMonitoringReport"){
             columnFilterAll.clear();
             columnFilterAll.add(true);
-            var t=parsed["Table"] as List;
-            var t1=parsed["Table1"] as List;
-            var t2=parsed["Table2"] as List;
+            var t=parsed["Table"] as List?;
+            var t1=parsed["Table1"] as List?;
+            var t2=parsed["Table2"] as List?;
 
             plantList=t;
             vehicleTypeList=t1;
@@ -684,9 +684,9 @@ List<dynamic> vehicleTypeList=[];/* {
           else if(typeName=="StockReport"){
             columnFilterAll.clear();
             columnFilterAll.add(true);
-            var t=parsed["Table"] as List;
-            var t1=parsed["Table1"] as List;
-            var t2=parsed["Table2"] as List;
+            var t=parsed["Table"] as List?;
+            var t1=parsed["Table1"] as List?;
+            var t2=parsed["Table2"] as List?;
 
             plantList=t;
             materialList=t1;
@@ -713,7 +713,7 @@ List<dynamic> vehicleTypeList=[];/* {
   Future<dynamic> ReportsDbHit(BuildContext context,String typeName) async {
    print(context);
 
-    String fromDate,toDate;
+    String? fromDate,toDate;
 
     if(picked.isEmpty){
       fromDate=DateFormat("yyyy-MM-dd").format(DateTime.now()).toString();
@@ -722,12 +722,12 @@ List<dynamic> vehicleTypeList=[];/* {
       picked.add(DateTime.now());
     }
     else if(picked.length==1){
-      fromDate=DateFormat("yyyy-MM-dd").format(picked[0]).toString();
-      toDate=DateFormat("yyyy-MM-dd").format(picked[0]).toString();
+      fromDate=DateFormat("yyyy-MM-dd").format(picked[0]!).toString();
+      toDate=DateFormat("yyyy-MM-dd").format(picked[0]!).toString();
     }
     else if(picked.length==2){
-      fromDate=DateFormat("yyyy-MM-dd").format(picked[0]).toString();
-      toDate=DateFormat("yyyy-MM-dd").format(picked[1]).toString();
+      fromDate=DateFormat("yyyy-MM-dd").format(picked[0]!).toString();
+      toDate=DateFormat("yyyy-MM-dd").format(picked[1]!).toString();
     }
 
     print(fromDate);
@@ -778,50 +778,50 @@ List<dynamic> vehicleTypeList=[];/* {
           var t=parsed["Table"] as List;
           print("t.ltnht${t.length}");
           if(typeName=="SaleReport"){
-            salesReportGridList.clear();
+            salesReportGridList!.clear();
            // var t=parsed["Table"] as List;
-            salesReportGridList=parsed["Table"] as List;
+            salesReportGridList=parsed["Table"] as List?;
             filterSales();
           }
           else if(typeName=="PurchaseReport"){
         //    var t=parsed["Table"] as List;
-            purchaseReportGridList=parsed["Table"] as List;
+            purchaseReportGridList=parsed["Table"] as List?;
             filterPurchase();
           }
           else if(typeName=="CustomerSaleReport"){
           //  var t=parsed["Table"] as List;
           //  print(t);
-            customerSaleReportGridList=parsed["Table"] as List;
+            customerSaleReportGridList=parsed["Table"] as List?;
             filterCustomerSale();
           }
           else if(typeName=="SupplierPurchaseReport"){
          //   var t=parsed["Table"] as List;
-            supplierPurchaseReportGridList=parsed["Table"] as List;
+            supplierPurchaseReportGridList=parsed["Table"] as List?;
             filterSupplierPurchase();
           }
           else if(typeName=="ProductionReport"){
          //   var t=parsed["Table"] as List;
-            productionReportGridList=parsed["Table"] as List;
+            productionReportGridList=parsed["Table"] as List?;
             filterProduction();
           }
           else if(typeName=="InvoiceReport"){
          //   var t=parsed["Table"] as List;
-            invoiceReportGridList=parsed["Table"] as List;
+            invoiceReportGridList=parsed["Table"] as List?;
             filterInvoice();
           }
           else if(typeName=="ReceivablePaymentReport"){
           //  var t=parsed["Table"] as List;
-            receivablePaymentReportReportGridList=parsed["Table"] as List;
+            receivablePaymentReportReportGridList=parsed["Table"] as List?;
             filterReceivablePaymentReport();
           }
           else if(typeName=="PayablePaymentReport"){
             //var t=parsed["Table"] as List;
-            payablePaymentReportGridList=parsed["Table"] as List;
+            payablePaymentReportGridList=parsed["Table"] as List?;
             filterPayablePaymentReport();
           }
           else if(typeName=="EmployeeReport"){
            // var t=parsed["Table"] as List;
-            employeeReportGridList=parsed["Table"] as List;
+            employeeReportGridList=parsed["Table"] as List?;
             filterEmployeeReport();
           }
           else if(typeName=="AttendanceReport"){
@@ -832,7 +832,7 @@ List<dynamic> vehicleTypeList=[];/* {
                 columnName: t[i]['DayNum']
               ));
             }
-            var t1=parsed["Table1"] as List;
+            var t1=parsed["Table1"] as List?;
             attendanceReportGridList=t1;
             print(attendanceReportGridList);
             filterAttendanceReport();
@@ -840,37 +840,37 @@ List<dynamic> vehicleTypeList=[];/* {
           else if(typeName=="DieselPurchaseReport"){
           //  var t=parsed["Table"] as List;
 
-            dieselPurchaseReportGridList=parsed["Table"] as List;
+            dieselPurchaseReportGridList=parsed["Table"] as List?;
             filterDieselPurchaseReport();
           }
           else if(typeName=="DieselIssueReport"){
            // var t=parsed["Table"] as List;
-            dieselIssueReportGridList=parsed["Table"] as List;
+            dieselIssueReportGridList=parsed["Table"] as List?;
             filterDieselIssueReport(context);
           }
           else if(typeName=="MachineManagementReport"){
          //   var t=parsed["Table"] as List;
-            machineManagementReportGridList=parsed["Table"] as List;
+            machineManagementReportGridList=parsed["Table"] as List?;
             filterMachineManagementReport();
           }
           else if(typeName=="SaleAuditReport"){
           //  var t=parsed["Table"] as List;
-            saleAuditReportGridList=parsed["Table"] as List;
+            saleAuditReportGridList=parsed["Table"] as List?;
             filterSaleAuditReport();
           }
           else if(typeName=="PurchaseAuditReport"){
           //  var t=parsed["Table"] as List;
-            purchaseAuditReportGridList=parsed["Table"] as List;
+            purchaseAuditReportGridList=parsed["Table"] as List?;
             filterPurchaseAuditReport();
           }
           else if(typeName=="VehicleMonitoringReport"){
            // var t=parsed["Table"] as List;
-            vehicleMonitoringReportGridList=parsed["Table"] as List;
+            vehicleMonitoringReportGridList=parsed["Table"] as List?;
             filterVehicleMonitoringReport();
           }
           else if(typeName=="StockReport"){
             //var t=parsed["Table"] as List;
-            stockReportGridList=parsed["Table"] as List;
+            stockReportGridList=parsed["Table"] as List?;
             filterStockReport();
           }
         }
@@ -890,7 +890,7 @@ List<dynamic> vehicleTypeList=[];/* {
 
 
 
-  List<dynamic> salesReportGridList=[];
+  List<dynamic>? salesReportGridList=[];
   List<dynamic> filterSalesReportGridList=[];
 
   List<dynamic> tempSalesPlantFilter=[];
@@ -912,21 +912,21 @@ List<dynamic> vehicleTypeList=[];/* {
     totalReportQty=0.0;
     totalReportAmount=0.0;
 
-    plantList.forEach((element) {
+    plantList!.forEach((element) {
       if(element['IsActive']==1){
-        tempSalesPlantFilter=tempSalesPlantFilter+salesReportGridList.where((ele) => ele['PlantId']==element['PlantId']).toList();
+        tempSalesPlantFilter=tempSalesPlantFilter+salesReportGridList!.where((ele) => ele['PlantId']==element['PlantId']).toList();
       }
     });
 
 
-    materialList.forEach((element) {
+    materialList!.forEach((element) {
       if(element['IsActive']==1){
         tempSalesMaterialFilter=tempSalesMaterialFilter+tempSalesPlantFilter.where((ele) => ele['MaterialId']==element['MaterialId']).toList();
       }
     });
 
 
-    customerList.forEach((element) {
+    customerList!.forEach((element) {
       if(element['IsActive']==1){
         filterSalesReportGridList=filterSalesReportGridList+tempSalesMaterialFilter.where((ele) => ele['CustomerId']==element['CustomerId']).toList();
       }
@@ -966,7 +966,7 @@ List<dynamic> vehicleTypeList=[];/* {
 
 
 
-  List<dynamic> purchaseReportGridList=[];
+  List<dynamic>? purchaseReportGridList=[];
   List<dynamic> filterPurchaseReportGridList=[];
 
   List<dynamic> tempPurchasePlantFilter=[];
@@ -988,22 +988,22 @@ List<dynamic> vehicleTypeList=[];/* {
     totalReportQty=0.0;
     totalReportAmount=0.0;
 
-    plantList.forEach((element) {
+    plantList!.forEach((element) {
       if(element['IsActive']==1){
-        tempPurchasePlantFilter=tempPurchasePlantFilter+purchaseReportGridList.where((ele) => ele['PlantId']==element['PlantId']).toList();
+        tempPurchasePlantFilter=tempPurchasePlantFilter+purchaseReportGridList!.where((ele) => ele['PlantId']==element['PlantId']).toList();
       }
     });
 
 
 
-    materialList.forEach((element) {
+    materialList!.forEach((element) {
       if(element['IsActive']==1){
         tempPurchaseMaterialFilter=tempPurchaseMaterialFilter+tempPurchasePlantFilter.where((ele) => ele['MaterialId']==element['MaterialId']).toList();
       }
     });
 
 
-    supplierList.forEach((element) {
+    supplierList!.forEach((element) {
       print(element['SupplierId']);
       print(element['SupplierName']);
       if(element['IsActive']==1){
@@ -1014,7 +1014,7 @@ List<dynamic> vehicleTypeList=[];/* {
 
 
 
-    Map<int,dynamic> inputQty={};
+    Map<int?,dynamic> inputQty={};
     filterPurchaseReportGridList.forEach((element) {
       if(!inputQty.containsKey(element['PurchaseOrderId'])){
         inputQty[element['PurchaseOrderId']]=element['Qty'];
@@ -1050,7 +1050,7 @@ List<dynamic> vehicleTypeList=[];/* {
 
 
 
-  List<dynamic> customerSaleReportGridList=[];
+  List<dynamic>? customerSaleReportGridList=[];
   List<dynamic> filterCustomerSaleReportGridList=[];
 
   List<dynamic> tempCustomerSalePlantFilter=[];
@@ -1072,33 +1072,33 @@ List<dynamic> vehicleTypeList=[];/* {
     tempCustomerSalePaymentTypeFilter.clear();
 
 
-    plantList.forEach((element) {
+    plantList!.forEach((element) {
       if(element['IsActive']==1){
-        tempCustomerSalePlantFilter=tempCustomerSalePlantFilter+customerSaleReportGridList.where((ele) => ele['PlantId']==element['PlantId']).toList();
+        tempCustomerSalePlantFilter=tempCustomerSalePlantFilter+customerSaleReportGridList!.where((ele) => ele['PlantId']==element['PlantId']).toList();
       }
     });
 
 
-    customerList.forEach((element) {
+    customerList!.forEach((element) {
       if(element['IsActive']==1){
         tempCustomerSaleCustomerFilter=tempCustomerSaleCustomerFilter+tempCustomerSalePlantFilter.where((ele) => ele['CustomerId']==element['CustomerId']).toList();
       }
     });
 
-    materialList.forEach((element) {
+    materialList!.forEach((element) {
       if(element['IsActive']==1){
         tempCustomerSaleMaterialFilter=tempCustomerSaleMaterialFilter+tempCustomerSaleCustomerFilter.where((ele) => ele['MaterialId']==element['MaterialId']).toList();
       }
     });
 
-    paymentTypeList.forEach((element) {
+    paymentTypeList!.forEach((element) {
       if(element['IsActive']==1){
         tempCustomerSalePaymentTypeFilter=tempCustomerSalePaymentTypeFilter+tempCustomerSaleMaterialFilter.where((ele) => ele['PaymentCategoryId']==element['PaymentCategoryId']).toList();
       }
     });
 
 
-    locationList.forEach((element) {
+    locationList!.forEach((element) {
       if(element['IsActive']==1){
         filterCustomerSaleReportGridList=filterCustomerSaleReportGridList+tempCustomerSalePaymentTypeFilter.where((ele) => ele['Location'].toString().toLowerCase()==element['Location'].toString().toLowerCase()).toList();
       }
@@ -1151,7 +1151,7 @@ List<dynamic> vehicleTypeList=[];/* {
   /*  Supplier  Purchase Report */
 
 
-  List<dynamic> supplierPurchaseReportGridList=[];
+  List<dynamic>? supplierPurchaseReportGridList=[];
   List<dynamic> filterSupplierPurchaseReportGridList=[];
 
   List<dynamic> tempSupplierPurchasePlantFilter=[];
@@ -1173,21 +1173,21 @@ List<dynamic> vehicleTypeList=[];/* {
     totalReportQty=0.0;
     totalReportAmount=0.0;
 
-    plantList.forEach((element) {
+    plantList!.forEach((element) {
       if(element['IsActive']==1){
-        tempSupplierPurchasePlantFilter=tempSupplierPurchasePlantFilter+supplierPurchaseReportGridList.where((ele) => ele['PlantId']==element['PlantId']).toList();
+        tempSupplierPurchasePlantFilter=tempSupplierPurchasePlantFilter+supplierPurchaseReportGridList!.where((ele) => ele['PlantId']==element['PlantId']).toList();
       }
     });
 
 
-    materialList.forEach((element) {
+    materialList!.forEach((element) {
       if(element['IsActive']==1){
         tempSupplierPurchaseMaterialFilter=tempSupplierPurchaseMaterialFilter+tempSupplierPurchasePlantFilter.where((ele) => ele['MaterialId']==element['MaterialId']).toList();
       }
     });
 
 
-    supplierList.forEach((element) {
+    supplierList!.forEach((element) {
       if(element['IsActive']==1){
         filterSupplierPurchaseReportGridList=filterSupplierPurchaseReportGridList+tempSupplierPurchaseMaterialFilter.where((ele) => ele['Supplier']==element['SupplierId']
             && ele['SupplierType']==element['SupplierType']).toList();
@@ -1195,7 +1195,7 @@ List<dynamic> vehicleTypeList=[];/* {
     });
 
 
-    Map<int,dynamic> inputQty={};
+    Map<int?,dynamic> inputQty={};
     filterSupplierPurchaseReportGridList.forEach((element) {
       if(!inputQty.containsKey(element['Supplier'])){
         inputQty[element['Supplier']]=element['Qty'];
@@ -1231,7 +1231,7 @@ List<dynamic> vehicleTypeList=[];/* {
 
 
 
-  List<dynamic> productionReportGridList=[];
+  List<dynamic>? productionReportGridList=[];
   List<dynamic> filterProductionReportGridList=[];
 
   List<dynamic> tempProductionPlantFilter=[];
@@ -1256,27 +1256,27 @@ List<dynamic> vehicleTypeList=[];/* {
     totalReportQty=0.0;
     totalReportAmount=0.0;
 
-    plantList.forEach((element) {
+    plantList!.forEach((element) {
       if(element['IsActive']==1){
-        tempProductionPlantFilter=tempProductionPlantFilter+productionReportGridList.where((ele) => ele['PlantId']==element['PlantId']).toList();
+        tempProductionPlantFilter=tempProductionPlantFilter+productionReportGridList!.where((ele) => ele['PlantId']==element['PlantId']).toList();
       }
     });
 
 
-    machineList.forEach((element) {
+    machineList!.forEach((element) {
       if(element['IsActive']==1){
         tempProductionMachineFilter=tempProductionMachineFilter+tempProductionPlantFilter.where((ele) => ele['MachineId']==element['MachineId']).toList();
       }
     });
 
-    inputMaterialList.forEach((element) {
+    inputMaterialList!.forEach((element) {
       if(element['IsActive']==1){
         tempProductionInputMaterialFilter=tempProductionInputMaterialFilter+tempProductionMachineFilter.where((ele) => ele['InputMaterialId']==element['InputMaterialId']).toList();
       }
     });
 
 
-    outputMaterialList.forEach((element) {
+    outputMaterialList!.forEach((element) {
       if(element['IsActive']==1){
         filterProductionReportGridList=filterProductionReportGridList+tempProductionInputMaterialFilter.where((ele) => ele['OutputMaterialId']==element['OutputMaterialId']).toList();
       }
@@ -1286,7 +1286,7 @@ List<dynamic> vehicleTypeList=[];/* {
     double inputqty=0.0;
     double outputQty=0.0;
 
-    Map<int,dynamic> inputQty={};
+    Map<int?,dynamic> inputQty={};
     filterProductionReportGridList.forEach((element) {
       if(!inputQty.containsKey(element['ProductionId'])){
         inputQty[element['ProductionId']]=element['InputMaterialQuantity'];
@@ -1327,7 +1327,7 @@ List<dynamic> vehicleTypeList=[];/* {
 
   /*  Invoice Report */
 
-  List<dynamic> invoiceReportGridList=[];
+  List<dynamic>? invoiceReportGridList=[];
   List<dynamic> filterInvoiceReportGridList=[];
 
   List<dynamic> tempInvoicePlantFilter=[];
@@ -1353,26 +1353,26 @@ List<dynamic> vehicleTypeList=[];/* {
     totalReportQty=0.0;
     totalReportAmount=0.0;
 
-    plantList.forEach((element) {
+    plantList!.forEach((element) {
       if(element['IsActive']==1){
-        tempInvoicePlantFilter=tempInvoicePlantFilter+invoiceReportGridList.where((ele) => ele['PlantId']==element['PlantId']).toList();
+        tempInvoicePlantFilter=tempInvoicePlantFilter+invoiceReportGridList!.where((ele) => ele['PlantId']==element['PlantId']).toList();
       }
     });
 
 
-    invoiceTypeList.forEach((element) {
+    invoiceTypeList!.forEach((element) {
       if(element['IsActive']==1){
         tempInvoiceTypeFilter=tempInvoiceTypeFilter+tempInvoicePlantFilter.where((ele) => ele['Invoice Type']==element['InvoiceType']).toList();
       }
     });
 
-    partyNameList.forEach((element) {
+    partyNameList!.forEach((element) {
       if(element['IsActive']==1){
         tempInvoicePartyNameFilter=tempInvoicePartyNameFilter+tempInvoiceTypeFilter.where((ele) => ele['Party Name']==element['PartyName']).toList();
       }
     });
 
-    paymentStatusList.forEach((element) {
+    paymentStatusList!.forEach((element) {
       if(element['IsActive']==1){
         filterInvoiceReportGridList=filterInvoiceReportGridList+tempInvoicePartyNameFilter.where((ele) => ele['Payment Status']==element['PaymentStatus']).toList();
      //   tempInvoicePaymentStatusFilter=tempInvoicePaymentStatusFilter+tempInvoicePartyNameFilter.where((ele) => ele['Payment Status']==element['PaymentStatus']).toList();
@@ -1412,7 +1412,7 @@ List<dynamic> vehicleTypeList=[];/* {
   /*  ReceivablePaymentReport Report */
 
 
-  List<dynamic> receivablePaymentReportReportGridList=[];
+  List<dynamic>? receivablePaymentReportReportGridList=[];
   List<dynamic> filterReceivablePaymentReportReportGridList=[];
 
   List<dynamic> tempReceivablePaymentReportPlantFilter=[];
@@ -1437,21 +1437,21 @@ List<dynamic> vehicleTypeList=[];/* {
     totalReportQty=0.0;
     totalReportAmount=0.0;
 
-    plantList.forEach((element) {
+    plantList!.forEach((element) {
       if(element['IsActive']==1){
-        tempReceivablePaymentReportPlantFilter=tempReceivablePaymentReportPlantFilter+receivablePaymentReportReportGridList.where((ele) => ele['PlantId']==element['PlantId']).toList();
+        tempReceivablePaymentReportPlantFilter=tempReceivablePaymentReportPlantFilter+receivablePaymentReportReportGridList!.where((ele) => ele['PlantId']==element['PlantId']).toList();
       }
     });
 
 
-    partyNameList.forEach((element) {
+    partyNameList!.forEach((element) {
       if(element['IsActive']==1){
         tempReceivablePaymentReportPartyNameFilter=tempReceivablePaymentReportPartyNameFilter+tempReceivablePaymentReportPlantFilter.where((ele) => ele['PartyId']==element['PartyId']).toList();
       }
     });
 
 
-    invoiceTypeList.forEach((element) {
+    invoiceTypeList!.forEach((element) {
       if(element['IsActive']==1){
         filterReceivablePaymentReportReportGridList=filterReceivablePaymentReportReportGridList+tempReceivablePaymentReportPartyNameFilter.where((ele) => ele['Payment Status']==element['InvoiceType']).toList();
       }
@@ -1505,7 +1505,7 @@ List<dynamic> vehicleTypeList=[];/* {
 
 
 
-  List<dynamic> payablePaymentReportGridList=[];
+  List<dynamic>? payablePaymentReportGridList=[];
   List<dynamic> filterPayablePaymentReportGridList=[];
 
   List<dynamic> tempPayablePaymentReportPlantFilter=[];
@@ -1530,21 +1530,21 @@ List<dynamic> vehicleTypeList=[];/* {
     totalReportQty=0.0;
     totalReportAmount=0.0;
 
-    plantList.forEach((element) {
+    plantList!.forEach((element) {
       if(element['IsActive']==1){
-        tempPayablePaymentReportPlantFilter=tempPayablePaymentReportPlantFilter+payablePaymentReportGridList.where((ele) => ele['PlantId']==element['PlantId']).toList();
+        tempPayablePaymentReportPlantFilter=tempPayablePaymentReportPlantFilter+payablePaymentReportGridList!.where((ele) => ele['PlantId']==element['PlantId']).toList();
       }
     });
 
 
-    partyNameList.forEach((element) {
+    partyNameList!.forEach((element) {
       if(element['IsActive']==1){
         tempPayablePaymentReportPartyNameFilter=tempPayablePaymentReportPartyNameFilter+tempPayablePaymentReportPlantFilter.where((ele) => ele['PartyId']==element['SupplierId']).toList();
       }
     });
 
 
-    invoiceTypeList.forEach((element) {
+    invoiceTypeList!.forEach((element) {
       if(element['IsActive']==1){
         filterPayablePaymentReportGridList=filterPayablePaymentReportGridList+tempPayablePaymentReportPartyNameFilter.where((ele) => ele['Payment Status']==element['InvoiceType']).toList();
       }
@@ -1599,7 +1599,7 @@ List<dynamic> vehicleTypeList=[];/* {
 
 
 
-  List<dynamic> employeeReportGridList=[];
+  List<dynamic>? employeeReportGridList=[];
   List<dynamic> filterEmployeeReportGridList=[];
 
   List<dynamic> tempEmployeeReportDesignationFilter=[];
@@ -1625,13 +1625,13 @@ List<dynamic> vehicleTypeList=[];/* {
 
 
 
-    employeeList.forEach((element) {
+    employeeList!.forEach((element) {
       if(element['IsActive']==1){
-        tempEmployeeReportDesignationFilter=tempEmployeeReportDesignationFilter+employeeReportGridList.where((ele) => ele['EmployeeDesignationId']==element['EmployeeDesignationId']).toList();
+        tempEmployeeReportDesignationFilter=tempEmployeeReportDesignationFilter+employeeReportGridList!.where((ele) => ele['EmployeeDesignationId']==element['EmployeeDesignationId']).toList();
       }
     });
 
-    employeeShift.forEach((element) {
+    employeeShift!.forEach((element) {
       if(element['IsActive']==1){
         filterEmployeeReportGridList=tempEmployeeReportDesignationFilter.where((ele) => ele['EmployeeShiftId']==element['EmployeeShiftId']).toList();
       }
@@ -1661,7 +1661,7 @@ List<dynamic> vehicleTypeList=[];/* {
 
 
 
-  List<dynamic> attendanceReportGridList=[];
+  List<dynamic>? attendanceReportGridList=[];
   List<dynamic> filterAttendanceReportGridList=[];
 
   List<dynamic> tempAttendanceReportDesignationFilter=[];
@@ -1687,14 +1687,14 @@ List<dynamic> vehicleTypeList=[];/* {
 
 
 
-    employeeList.forEach((element) {
+    employeeList!.forEach((element) {
       if(element['IsActive']==1){
-        tempAttendanceReportDesignationFilter=tempAttendanceReportDesignationFilter+attendanceReportGridList.where((ele) => ele['EmployeeDesignationId']==element['EmployeeDesignationId']).toList();
+        tempAttendanceReportDesignationFilter=tempAttendanceReportDesignationFilter+attendanceReportGridList!.where((ele) => ele['EmployeeDesignationId']==element['EmployeeDesignationId']).toList();
       }
     });
 
     print(tempAttendanceReportDesignationFilter);
-    employeeShift.forEach((element) {
+    employeeShift!.forEach((element) {
 
       if(element['IsActive']==1){
         filterAttendanceReportGridList=filterAttendanceReportGridList+tempAttendanceReportDesignationFilter.where((ele) => ele['EmployeeShiftId']==element['EmployeeShiftId']).toList();
@@ -1727,7 +1727,7 @@ List<dynamic> vehicleTypeList=[];/* {
 
 
 
-  List<dynamic> dieselPurchaseReportGridList=[];
+  List<dynamic>? dieselPurchaseReportGridList=[];
   List<dynamic> filterDieselPurchaseReportGridList=[];
 
   List<dynamic> tempDieselPurchaseReportPlantFilter=[];
@@ -1751,28 +1751,28 @@ List<dynamic> vehicleTypeList=[];/* {
     totalReportQty=0.0;
     totalReportAmount=0.0;
 
-    plantList.forEach((element) {
+    plantList!.forEach((element) {
       if(element['IsActive']==1){
-        tempDieselPurchaseReportPlantFilter=tempDieselPurchaseReportPlantFilter+dieselPurchaseReportGridList.where((ele) => ele['PlantId']==element['PlantId']).toList();
+        tempDieselPurchaseReportPlantFilter=tempDieselPurchaseReportPlantFilter+dieselPurchaseReportGridList!.where((ele) => ele['PlantId']==element['PlantId']).toList();
       }
     });
 
 
-    employeeList.forEach((element) {
+    employeeList!.forEach((element) {
       if(element['IsActive']==1){
         tempDieselPurchaseReportPurchaserFilter=tempDieselPurchaseReportPurchaserFilter+tempDieselPurchaseReportPlantFilter.where((ele) => ele['EmployeeId']==element['EmployeeId']).toList();
       }
     });
 
 
-    locationList.forEach((element) {
+    locationList!.forEach((element) {
       if(element['IsActive']==1){
         tempDieselPurchaseReportLocationFilter=tempDieselPurchaseReportLocationFilter+tempDieselPurchaseReportPurchaserFilter.where((ele) => ele['Location'].toString().toLowerCase()==element['DieselBunkLocation'].toString().toLowerCase()).toList();
       }
     });
 
 
-    dieselRateList.forEach((element) {
+    dieselRateList!.forEach((element) {
       if(element['IsActive']==1){
         filterDieselPurchaseReportGridList=filterDieselPurchaseReportGridList+tempDieselPurchaseReportLocationFilter.where((ele) => ele['Diesel Rate']==element['DieselRate']).toList();
       }
@@ -1816,7 +1816,7 @@ List<dynamic> vehicleTypeList=[];/* {
 
 
 
-  List<dynamic> dieselIssueReportGridList=[];
+  List<dynamic>? dieselIssueReportGridList=[];
   List<dynamic> filterDieselIssueReportGridList=[];
 
   List<dynamic> tempDieselIssueReportPlantFilter=[];
@@ -1838,19 +1838,19 @@ List<dynamic> vehicleTypeList=[];/* {
       totalReportQty=0.0;
       totalReportAmount=null;
 
-      plantList.forEach((element) {
+      plantList!.forEach((element) {
         if(element['IsActive']==1){
-          tempDieselIssueReportPlantFilter=tempDieselIssueReportPlantFilter+dieselIssueReportGridList.where((ele) => ele['PlantId']==element['PlantId']).toList();
+          tempDieselIssueReportPlantFilter=tempDieselIssueReportPlantFilter+dieselIssueReportGridList!.where((ele) => ele['PlantId']==element['PlantId']).toList();
         }
       });
 
-      machineList.forEach((element) {
+      machineList!.forEach((element) {
         if(element['IsActive']==1){
           tempDieselIssueReportMachineTypeFilter=tempDieselIssueReportMachineTypeFilter+tempDieselIssueReportPlantFilter.where((ele) => ele['Type']==element['MachineType']).toList();
         }
       });
 
-      employeeList.forEach((element) {
+      employeeList!.forEach((element) {
         if(element['IsActive']==1){
           filterDieselIssueReportGridList=filterDieselIssueReportGridList+tempDieselIssueReportMachineTypeFilter.where((ele) => ele['IssuedBy']==element['EmployeeId']).toList();
         }
@@ -1897,7 +1897,7 @@ List<dynamic> vehicleTypeList=[];/* {
   /*  MachineManagementReport Report */
 
 
-  List<dynamic> machineManagementReportGridList=[];
+  List<dynamic>? machineManagementReportGridList=[];
   List<dynamic> filterMachineManagementReportGridList=[];
 
   List<dynamic> tempMachineManagementReportPlantFilter=[];
@@ -1920,14 +1920,14 @@ List<dynamic> vehicleTypeList=[];/* {
     totalReportQty=0.0;
     totalReportAmount=null;
 
-    plantList.forEach((element) {
+    plantList!.forEach((element) {
       if(element['IsActive']==1){
-        tempMachineManagementReportPlantFilter=tempMachineManagementReportPlantFilter+machineManagementReportGridList.where((ele) => ele['PlantId']==element['PlantId']).toList();
+        tempMachineManagementReportPlantFilter=tempMachineManagementReportPlantFilter+machineManagementReportGridList!.where((ele) => ele['PlantId']==element['PlantId']).toList();
       }
     });
 
 
-    machineList.forEach((element) {
+    machineList!.forEach((element) {
       if(element['IsActive']==1){
         tempMachineManagementReportMachineFilter=tempMachineManagementReportMachineFilter+tempMachineManagementReportPlantFilter.where((ele) => ele['MachineId']==element['MachineId']).toList();
       }
@@ -1935,14 +1935,14 @@ List<dynamic> vehicleTypeList=[];/* {
 
 
 
-    employeeList.forEach((element) {
+    employeeList!.forEach((element) {
       if(element['IsActive']==1){
         filterMachineManagementReportGridList=filterMachineManagementReportGridList+tempMachineManagementReportMachineFilter.where((ele) => ele['ResponsibleEmployeeId']==element['EmployeeId']).toList();
       }
     });
 
     totalReport=filterMachineManagementReportGridList.length;
-    Map<int,dynamic> machinesTotal={};
+    Map<int?,dynamic> machinesTotal={};
 
     filterMachineManagementReportGridList.forEach((element) {
 
@@ -1975,7 +1975,7 @@ List<dynamic> vehicleTypeList=[];/* {
 
 
 
-  List<dynamic> saleAuditReportGridList=[];
+  List<dynamic>? saleAuditReportGridList=[];
   List<dynamic> filterSaleAuditReportGridList=[];
 
   List<dynamic> tempSaleAuditReportPlantFilter=[];
@@ -1995,15 +1995,15 @@ List<dynamic> vehicleTypeList=[];/* {
     totalReportQty=0.0;
     totalReportAmount=0.0;
 
-    plantList.forEach((element) {
+    plantList!.forEach((element) {
       if(element['IsActive']==1){
-        tempSaleAuditReportPlantFilter=tempSaleAuditReportPlantFilter+saleAuditReportGridList.where((ele) => ele['PlantId']==element['PlantId']).toList();
+        tempSaleAuditReportPlantFilter=tempSaleAuditReportPlantFilter+saleAuditReportGridList!.where((ele) => ele['PlantId']==element['PlantId']).toList();
       }
     });
 
 
 
-    customerList.forEach((element) {
+    customerList!.forEach((element) {
       if(element['IsActive']==1){
         filterSaleAuditReportGridList=filterSaleAuditReportGridList+tempSaleAuditReportPlantFilter.where((ele) => ele['CustomerId']==element['CustomerId']).toList();
       }
@@ -2052,7 +2052,7 @@ List<dynamic> vehicleTypeList=[];/* {
 
 
 
-  List<dynamic> purchaseAuditReportGridList=[];
+  List<dynamic>? purchaseAuditReportGridList=[];
   List<dynamic> filterPurchaseAuditReportGridList=[];
 
   List<dynamic> tempPurchaseAuditReportPlantFilter=[];
@@ -2069,12 +2069,12 @@ List<dynamic> vehicleTypeList=[];/* {
     totalReportQty=0.0;
     totalReportAmount=0.0;
 
-    plantList.forEach((element) {
+    plantList!.forEach((element) {
       if(element['IsActive']==1){
-        tempPurchaseAuditReportPlantFilter=tempPurchaseAuditReportPlantFilter+purchaseAuditReportGridList.where((ele) => ele['PlantId']==element['PlantId']).toList();
+        tempPurchaseAuditReportPlantFilter=tempPurchaseAuditReportPlantFilter+purchaseAuditReportGridList!.where((ele) => ele['PlantId']==element['PlantId']).toList();
       }
     });
-    supplierList.forEach((element) {
+    supplierList!.forEach((element) {
       if(element['IsActive']==1){
         filterPurchaseAuditReportGridList=filterPurchaseAuditReportGridList+tempPurchaseAuditReportPlantFilter.where((ele) => ele['SupplierId']==element['SupplierId']
             && ele['SupplierType']==element['SupplierType']).toList();
@@ -2118,7 +2118,7 @@ List<dynamic> vehicleTypeList=[];/* {
 
 
 
-  List<dynamic> vehicleMonitoringReportGridList=[];
+  List<dynamic>? vehicleMonitoringReportGridList=[];
   List<dynamic> filterVehicleMonitoringReportGridList=[];
 
   List<dynamic> tempVehicleMonitoringReportPlantFilter=[];
@@ -2134,20 +2134,20 @@ List<dynamic> vehicleTypeList=[];/* {
     tempVehicleMonitoringReportVehicleTypeFilter.clear();
 
 
-    plantList.forEach((element) {
+    plantList!.forEach((element) {
       if(element['IsActive']==1){
-        tempVehicleMonitoringReportPlantFilter=tempVehicleMonitoringReportPlantFilter+vehicleMonitoringReportGridList.where((ele) => ele['PlantId']==element['PlantId']).toList();
+        tempVehicleMonitoringReportPlantFilter=tempVehicleMonitoringReportPlantFilter+vehicleMonitoringReportGridList!.where((ele) => ele['PlantId']==element['PlantId']).toList();
       }
     });
 
-    vehicleTypeList.forEach((element) {
+    vehicleTypeList!.forEach((element) {
       if(element['IsActive']==1){
         tempVehicleMonitoringReportVehicleTypeFilter=tempVehicleMonitoringReportVehicleTypeFilter+tempVehicleMonitoringReportPlantFilter.where((ele) => ele['VehicleTypeId']==element['VehicleTypeId']).toList();
       }
     });
 
 
-    materialList.forEach((element) {
+    materialList!.forEach((element) {
       if(element['IsActive']==1){
         filterVehicleMonitoringReportGridList=filterVehicleMonitoringReportGridList+tempVehicleMonitoringReportVehicleTypeFilter.where((ele) => ele['MaterialId']==element['MaterialId']).toList();
       }
@@ -2199,7 +2199,7 @@ List<dynamic> vehicleTypeList=[];/* {
 
 
 
-  List<dynamic> stockReportGridList=[];
+  List<dynamic>? stockReportGridList=[];
   List<dynamic> filterStockReportGridList=[];
 
   List<dynamic> tempStockReportPlantFilter=[];
@@ -2218,18 +2218,18 @@ List<dynamic> vehicleTypeList=[];/* {
     totalReportQty=0.0;
     totalReportAmount=0.0;
 
-    plantList.forEach((element) {
+    plantList!.forEach((element) {
       if(element['IsActive']==1){
-        tempStockReportPlantFilter=tempStockReportPlantFilter+stockReportGridList.where((ele) => ele['PlantId']==element['PlantId']).toList();
+        tempStockReportPlantFilter=tempStockReportPlantFilter+stockReportGridList!.where((ele) => ele['PlantId']==element['PlantId']).toList();
       }
     });
-    materialList.forEach((element) {
+    materialList!.forEach((element) {
       if(element['IsActive']==1){
         tempStockReportMaterialFilter=tempStockReportMaterialFilter+tempStockReportPlantFilter.where((ele) => ele['MaterialId']==element['MaterialId']).toList();
       }
     });
 
-    inputMaterialList.forEach((element) {
+    inputMaterialList!.forEach((element) {
       if(element['IsActive']==1){
         filterStockReportGridList=filterStockReportGridList+tempStockReportMaterialFilter.where((ele) => ele['Type']==element['MaterialCategoryName']).toList();
       }
@@ -2278,16 +2278,16 @@ List<dynamic> vehicleTypeList=[];/* {
   }
 }
 class FilterDetailsModel{
-  String title;
-  List<dynamic> list;
-  String instanceName;
+  String? title;
+  List<dynamic>? list;
+  String? instanceName;
 
   FilterDetailsModel({this.title, this.list, this.instanceName});
 }
 
 
 class ReportCounterModel{
-  String title;
+  String? title;
   dynamic value;
   ReportCounterModel({this.value,this.title});
 }

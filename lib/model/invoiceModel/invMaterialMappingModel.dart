@@ -1,27 +1,27 @@
 import 'package:flutter/cupertino.dart';
 
 class InvoiceMaterialMappingListModel{
-  int InvoiceMaterialMappingId;
-  int  InvoiceId;
-  int MaterialId;
-  String materialName;
-  double  MaterialPrice;
-  double  PurchaseQuantity;
-  double  Subtotal;//subtotal
-  int  IsDiscount;
-  int  IsPercentage;
-  int  IsAmount;
-  double  DiscountValue;
-  double  DiscountAmount;
-  double  DiscountedSubTotal;
-  double  TaxValue;
-  double  TaxAmount;
-  double  TotalAmount;
-  int  IsActive;
-  int materialUnitId;
-  String unitName;
+  int? InvoiceMaterialMappingId;
+  int?  InvoiceId;
+  int? MaterialId;
+  String? materialName;
+  double?  MaterialPrice;
+  double?  PurchaseQuantity;
+  double?  Subtotal;//subtotal
+  int?  IsDiscount;
+  int?  IsPercentage;
+  int?  IsAmount;
+  double?  DiscountValue;
+  double?  DiscountAmount;
+  double?  DiscountedSubTotal;
+  double?  TaxValue;
+  double?  TaxAmount;
+  double?  TotalAmount;
+  int?  IsActive;
+  int? materialUnitId;
+  String? unitName;
 
-  TextEditingController purchaseQty;
+  TextEditingController? purchaseQty;
 
   InvoiceMaterialMappingListModel({
     this.InvoiceMaterialMappingId,
@@ -76,7 +76,7 @@ class InvoiceMaterialMappingListModel{
     "InvoiceId":InvoiceId,
     "MaterialId":MaterialId,
     "MaterialPrice":MaterialPrice,
-    "MaterialQuantity":purchaseQty.text.isEmpty?0.0:double.parse(purchaseQty.text),
+    "MaterialQuantity":purchaseQty!.text.isEmpty?0.0:double.parse(purchaseQty!.text),
     "Subtotal":Subtotal,
     "IsDiscount":IsDiscount,
     "IsPercentage":IsPercentage,

@@ -23,7 +23,7 @@ import 'package:quarry/widgets/validationErrorText.dart';
 
 
 class MachineManagementAddNew extends StatefulWidget {
-  VoidCallback drawerCallback;
+  VoidCallback? drawerCallback;
   bool fromsaleGrid;
   MachineManagementAddNew({this.drawerCallback,this.fromsaleGrid:false});
 
@@ -33,8 +33,8 @@ class MachineManagementAddNew extends StatefulWidget {
 
 class _MachineManagementAddNewState extends State<MachineManagementAddNew> {
 
-  ScrollController scrollController;
-  ScrollController listViewController;
+  ScrollController? scrollController;
+  ScrollController? listViewController;
   bool _keyboardVisible=false;
   bool isListScroll=false;
 
@@ -101,7 +101,7 @@ class _MachineManagementAddNewState extends State<MachineManagementAddNew> {
 
                 //Form
                 Container(
-                  height: SizeConfig.screenHeight-70,
+                  height: SizeConfig.screenHeight!-70,
                   // color: Colors.transparent,
                   child: SingleChildScrollView(
                     physics: NeverScrollableScrollPhysics(),
@@ -122,7 +122,7 @@ class _MachineManagementAddNewState extends State<MachineManagementAddNew> {
 
                               int sensitivity = 5;
                               if (details.delta.dy > sensitivity) {
-                                scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
+                                scrollController!.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
                                   if(isListScroll){
                                     setState(() {
                                       isListScroll=false;
@@ -131,7 +131,7 @@ class _MachineManagementAddNewState extends State<MachineManagementAddNew> {
                                 });
 
                               } else if(details.delta.dy < -sensitivity){
-                                scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
+                                scrollController!.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
 
                                   if(!isListScroll){
                                     setState(() {
@@ -155,11 +155,11 @@ class _MachineManagementAddNewState extends State<MachineManagementAddNew> {
                                 onNotification: (s){
                                   if(s is ScrollStartNotification){
 
-                                    if(listViewController.offset==0 && isListScroll && scrollController.offset==100 && listViewController.position.userScrollDirection==ScrollDirection.idle){
+                                    if(listViewController!.offset==0 && isListScroll && scrollController!.offset==100 && listViewController!.position.userScrollDirection==ScrollDirection.idle){
                                       Timer(Duration(milliseconds: 100), (){
-                                        if(listViewController.position.userScrollDirection!=ScrollDirection.reverse){
-                                          if(listViewController.offset==0){
-                                            scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value) {
+                                        if(listViewController!.position.userScrollDirection!=ScrollDirection.reverse){
+                                          if(listViewController!.offset==0){
+                                            scrollController!.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value) {
                                               if(isListScroll){
                                                 setState(() {
                                                   isListScroll=false;
@@ -171,7 +171,8 @@ class _MachineManagementAddNewState extends State<MachineManagementAddNew> {
                                       });
                                     }
                                   }
-                                },
+                                  return true;
+                                } ,
                                 child: ListView(
                                   controller: listViewController,
                                   scrollDirection: Axis.vertical,
@@ -245,7 +246,7 @@ class _MachineManagementAddNewState extends State<MachineManagementAddNew> {
                                       regExp: '[A-Za-z ]',
                                       scrollPadding: 550,
                                       ontap: (){
-                                        scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                        scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                         setState(() {
                                           _keyboardVisible=true;
                                           isListScroll=true;
@@ -271,7 +272,7 @@ class _MachineManagementAddNewState extends State<MachineManagementAddNew> {
                                       textInputType: TextInputType.number,
                                       scrollPadding: 550,
                                       ontap: (){
-                                        scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                        scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                         setState(() {
                                           _keyboardVisible=true;
                                           isListScroll=true;
@@ -294,9 +295,9 @@ class _MachineManagementAddNewState extends State<MachineManagementAddNew> {
                                     GestureDetector(
                                       onTap: () async{
                                         node.unfocus();
-                                        final DateTime picked = await showDatePicker(
+                                        final DateTime? picked = await showDatePicker(
                                           context: context,
-                                          initialDate:  mmn.MachineServicedate==null?DateTime.now():mmn.MachineServicedate, // Refer step 1
+                                          initialDate:  mmn.MachineServicedate==null?DateTime.now():mmn.MachineServicedate!, // Refer step 1
                                           firstDate: DateTime(2000),
                                           lastDate: DateTime(2100),
                                         );
@@ -307,22 +308,22 @@ class _MachineManagementAddNewState extends State<MachineManagementAddNew> {
                                           });
                                       },
                                       child: ExpectedDateContainer(
-                                        text:mmn.MachineServicedate==null?"${DateFormat("dd-MM-yyyy").format(DateTime.now())}" :"${DateFormat("dd-MM-yyyy").format(mmn.MachineServicedate)}",
+                                        text:mmn.MachineServicedate==null?"${DateFormat("dd-MM-yyyy").format(DateTime.now())}" :"${DateFormat("dd-MM-yyyy").format(mmn.MachineServicedate!)}",
                                         textColor:AppTheme.addNewTextFieldText,
                                       ),
                                     ),
 
                                     Container(
-                                      margin: EdgeInsets.only(left: SizeConfig.width20,right: SizeConfig.width20,top: 20),
+                                      margin: EdgeInsets.only(left: SizeConfig.width20!,right: SizeConfig.width20!,top: 20),
                                       child: Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
                                           GestureDetector(
                                             onTap: () async{
                                               node.unfocus();
-                                              final TimeOfDay picked = await showTimePicker(
+                                              final TimeOfDay? picked = await showTimePicker(
                                                 context: context,
-                                                initialTime: mmn.InTime==null?TimeOfDay.now():mmn.InTime,
+                                                initialTime: mmn.InTime==null?TimeOfDay.now():mmn.InTime!,
 
                                               );
                                               if (picked != null){
@@ -330,7 +331,7 @@ class _MachineManagementAddNewState extends State<MachineManagementAddNew> {
                                                 setState(() {
                                                   mmn.InTime=picked;
                                                   mmn.inTime = formatDate(
-                                                      DateTime(2019, 08, 1, mmn.InTime.hour, mmn.InTime.minute),
+                                                      DateTime(2019, 08, 1, mmn.InTime!.hour, mmn.InTime!.minute),
                                                       [hh, ':', nn, " ", am]).toString();
                                                 });
                                               }
@@ -338,7 +339,7 @@ class _MachineManagementAddNewState extends State<MachineManagementAddNew> {
                                             },
                                             child:Container(
                                               height: 50,
-                                              width:( SizeConfig.screenWidthM40*0.5)-10,
+                                              width:( SizeConfig.screenWidthM40!*0.5)-10,
                                               padding: EdgeInsets.only(left: 10,right: 10),
                                               decoration: BoxDecoration(
                                                   borderRadius: BorderRadius.circular(3),
@@ -362,9 +363,9 @@ class _MachineManagementAddNewState extends State<MachineManagementAddNew> {
                                           GestureDetector(
                                             onTap: () async{
                                               node.unfocus();
-                                              final TimeOfDay picked = await showTimePicker(
+                                              final TimeOfDay? picked = await showTimePicker(
                                                 context: context,
-                                                initialTime: mmn.OutTime==null?TimeOfDay.now():mmn.OutTime,
+                                                initialTime: mmn.OutTime==null?TimeOfDay.now():mmn.OutTime!,
 
                                               );
                                               if (picked != null){
@@ -372,16 +373,16 @@ class _MachineManagementAddNewState extends State<MachineManagementAddNew> {
                                                 setState(() {
                                                   mmn.OutTime=picked;
                                                   mmn.outTime = formatDate(
-                                                      DateTime(2019, 08, 1, mmn.OutTime.hour, mmn.OutTime.minute),
+                                                      DateTime(2019, 08, 1, mmn.OutTime!.hour, mmn.OutTime!.minute),
                                                       [hh, ':', nn, " ", am]).toString();
                                                 });
-                                                print(mmn.OutTime.minute);
+                                                print(mmn.OutTime!.minute);
                                               }
 
                                             },
                                             child:Container(
                                               height: 50,
-                                              width:( SizeConfig.screenWidthM40*0.5)-10,
+                                              width:( SizeConfig.screenWidthM40!*0.5)-10,
                                               padding: EdgeInsets.only(left: 10,right: 10),
                                               decoration: BoxDecoration(
                                                   borderRadius: BorderRadius.circular(3),
@@ -441,7 +442,7 @@ class _MachineManagementAddNewState extends State<MachineManagementAddNew> {
                                       regExp: '[A-Za-z ]',
                                       scrollPadding: 550,
                                       ontap: (){
-                                        scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                        scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                         setState(() {
                                           _keyboardVisible=true;
                                           isListScroll=true;
@@ -461,7 +462,7 @@ class _MachineManagementAddNewState extends State<MachineManagementAddNew> {
 
 
 
-                                    SizedBox(height: _keyboardVisible? SizeConfig.screenHeight*0.6:200,)
+                                    SizedBox(height: _keyboardVisible? SizeConfig.screenHeight!*0.6:200,)
                                   ],
                                 ),
                               ),
@@ -523,7 +524,7 @@ class _MachineManagementAddNewState extends State<MachineManagementAddNew> {
                         Container(
                           margin:EdgeInsets.only(top: 0),
                           child: CustomPaint(
-                            size: Size( SizeConfig.screenWidth, 65),
+                            size: Size( SizeConfig.screenWidth!, 65),
                             painter: RPSCustomPainter3(),
                           ),
                         ),
@@ -649,9 +650,9 @@ class _MachineManagementAddNewState extends State<MachineManagementAddNew> {
                     setState(() {
                       isMachineOpen=false;
 
-                      mmn.selectedMachineId=mmn.machineList[index]['MachineId'];
-                      mmn.selectedMachineName=mmn.machineList[index]['MachineName'];
-                      mmn.selectedMachineModel=mmn.machineList[index]['MachineModel'];
+                      mmn.selectedMachineId=mmn.machineList![index]['MachineId'];
+                      mmn.selectedMachineName=mmn.machineList![index]['MachineName'];
+                      mmn.selectedMachineModel=mmn.machineList![index]['MachineModel'];
 
                     });
                   },
@@ -675,8 +676,8 @@ class _MachineManagementAddNewState extends State<MachineManagementAddNew> {
                     setState(() {
                       isResponsiblePersonOpen=false;
 
-                      mmn.selectedPersonId=mmn.reponsiblePersonList[index]['EmployeeId'];
-                      mmn.selectedPersonName=mmn.reponsiblePersonList[index]['EmployeeName'];
+                      mmn.selectedPersonId=mmn.reponsiblePersonList![index]['EmployeeId'];
+                      mmn.selectedPersonName=mmn.reponsiblePersonList![index]['EmployeeName'];
 
 
                     });

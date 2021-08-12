@@ -31,8 +31,8 @@ class DashboardNotifier extends ChangeNotifier{
   ];
 
   //Current Sales Dashboard
-  Map currentSaleT={};
-  List<dynamic> currentSaleData;
+  Map? currentSaleT={};
+  List<dynamic>? currentSaleData;
   String currentSalesApex='';
   Future<dynamic> currentSaleDbHit(BuildContext context,String typeName,String fromDate,String toDate) async {
     updateisLoad(true);
@@ -77,12 +77,12 @@ class DashboardNotifier extends ChangeNotifier{
           var parsed=json.decode(value);
           if(typeName=='Sale'){
             currentSaleT=parsed['Table'][0];
-            currentSaleData=parsed['Table1'] as List;
+            currentSaleData=parsed['Table1'] as List?;
             currentSalesApex='''
        var options = {
         series: [{
             name: 'Sales',
-            data: ${currentSaleData.map((e) => e['TotalSale']).toList()}
+            data: ${currentSaleData!.map((e) => e['TotalSale']).toList()}
         }],
          title: {
               text: 'Sale',
@@ -97,7 +97,7 @@ class DashboardNotifier extends ChangeNotifier{
               },
           },
           subtitle: {
-              text: '${DateFormat("MMMd").format(DateTime.parse(currentSaleData[currentSaleData.length-1]['Date']))} : ${formatCurrency.format(currentSaleData[currentSaleData.length-1]['TotalSale']??0.0)} / ${currentSaleData[currentSaleData.length-1]['TotalQuantity']} ${currentSaleData[currentSaleData.length-1]['UnitName']}',
+              text: '${DateFormat("MMMd").format(DateTime.parse(currentSaleData![currentSaleData!.length-1]['Date']))} : ${formatCurrency.format(currentSaleData![currentSaleData!.length-1]['TotalSale']??0.0)} / ${currentSaleData![currentSaleData!.length-1]['TotalQuantity']} ${currentSaleData![currentSaleData!.length-1]['UnitName']}',
               align: 'left',
               offsetY: 25,
               floating: false,
@@ -186,7 +186,7 @@ class DashboardNotifier extends ChangeNotifier{
             },
         },
          xaxis: {
-          categories: ${json.encode(currentSaleData.map((e) => DateFormat("MMMd").format(DateTime.parse(e['Date']))).toList())}
+          categories: ${json.encode(currentSaleData!.map((e) => DateFormat("MMMd").format(DateTime.parse(e['Date']))).toList())}
         },
        
 
@@ -229,7 +229,7 @@ class DashboardNotifier extends ChangeNotifier{
        var options = {
         series: [{
             name: 'Sales',
-            data: ${currentSaleData.map((e) => e['TotalSale']).toList()}
+            data: ${currentSaleData!.map((e) => e['TotalSale']).toList()}
         }],
          title: {
               text: 'Sale',
@@ -244,7 +244,7 @@ class DashboardNotifier extends ChangeNotifier{
               },
           },
           subtitle: {
-              text: '${DateFormat("MMMd").format(DateTime.parse(currentSaleData[currentSaleData.length-1]['Date']))} : ${formatCurrency.format(currentSaleData[currentSaleData.length-1]['TotalSale']??0.0)} / ${currentSaleData[currentSaleData.length-1]['TotalQuantity']} ${currentSaleData[currentSaleData.length-1]['UnitName']}',
+              text: '${DateFormat("MMMd").format(DateTime.parse(currentSaleData![currentSaleData!.length-1]['Date']))} : ${formatCurrency.format(currentSaleData![currentSaleData!.length-1]['TotalSale']??0.0)} / ${currentSaleData![currentSaleData!.length-1]['TotalQuantity']} ${currentSaleData![currentSaleData!.length-1]['UnitName']}',
               align: 'left',
               offsetY: 25,
               floating: false,
@@ -333,7 +333,7 @@ class DashboardNotifier extends ChangeNotifier{
             },
         },
          xaxis: {
-          categories: ${json.encode(currentSaleData.map((e) => DateFormat("MMMd").format(DateTime.parse(e['Date']))).toList())}
+          categories: ${json.encode(currentSaleData!.map((e) => DateFormat("MMMd").format(DateTime.parse(e['Date']))).toList())}
         },
        
 
@@ -358,7 +358,7 @@ class DashboardNotifier extends ChangeNotifier{
     });
   }
 
-  Future<dynamic> DashBoardDbHit(BuildContext context,String typeName,String fromDate,String toDate, {VoidCallback voidCallback}) async {
+  Future<dynamic> DashBoardDbHit(BuildContext context,String typeName,String fromDate,String toDate, {VoidCallback? voidCallback}) async {
   updateisLoad(true);
 
     var body={
@@ -404,13 +404,13 @@ class DashboardNotifier extends ChangeNotifier{
         //  log("$value");
           if(typeName=='Sale'){
             saleT=parsed['Table'][0];
-            saleData=parsed['Table1'] as List;
-            saleT2=parsed['Table2'] as List;
-            saleMaterialWeeklyT3=parsed['Table3'] as List;
-            saleMaterialMonthlyT4=parsed['Table4'] as List;
-            saleMaterialYearT5=parsed['Table5'] as List;
-            salePaymentCategoryT6=parsed['Table6'] as List;
-            salePaymentCustomerT7=parsed['Table7'] as List;
+            saleData=parsed['Table1'] as List?;
+            saleT2=parsed['Table2'] as List?;
+            saleMaterialWeeklyT3=parsed['Table3'] as List?;
+            saleMaterialMonthlyT4=parsed['Table4'] as List?;
+            saleMaterialYearT5=parsed['Table5'] as List?;
+            salePaymentCategoryT6=parsed['Table6'] as List?;
+            salePaymentCustomerT7=parsed['Table7'] as List?;
             getSaleDetail();
           }
           else if(typeName=='Purchase'){
@@ -418,12 +418,12 @@ class DashboardNotifier extends ChangeNotifier{
           }
           else if(typeName=='Production'){
             totalProductionQty=0.0;
-            productionInputMaterialsT=parsed['Table'] as List;
-            productionOutPutMaterialsT1=parsed['Table1'] as List;
-            productionInputMaterialsT.forEach((element) {
+            productionInputMaterialsT=parsed['Table'] as List?;
+            productionOutPutMaterialsT1=parsed['Table1'] as List?;
+            productionInputMaterialsT!.forEach((element) {
               totalProductionQty=Calculation().add(totalProductionQty, element['InputMaterialQuantity']);
             });
-            if(productionInputMaterialsT.isNotEmpty){
+            if(productionInputMaterialsT!.isNotEmpty){
               getProduction(0);
               updateisLoad(false);
             }
@@ -448,11 +448,11 @@ class DashboardNotifier extends ChangeNotifier{
                 totalPresent=element['TotalCount'];
               }
               });
-            todayAttendanceListT2=parsed['Table2'] as List;
+            todayAttendanceListT2=parsed['Table2'] as List?;
             updateisLoad(false);
           }
           else if(typeName=='Counter'){
-            counterList=parsed['Table'] as List;
+            counterList=parsed['Table'] as List?;
             updateisLoad(false);
           }
           else if(typeName=='Diesel'){
@@ -477,7 +477,7 @@ class DashboardNotifier extends ChangeNotifier{
 
            // updateSeriesList();
             updateisLoad(false);
-            sl(voidCallback);
+            sl(voidCallback!);
           }
           else{
             updateisLoad(false);
@@ -499,14 +499,14 @@ class DashboardNotifier extends ChangeNotifier{
 
 
 //Sales Dashboard
-Map saleT={};
-List<dynamic> saleData=[];
-List<dynamic> saleT2=[];
-List<dynamic> saleMaterialWeeklyT3=[];
-List<dynamic> saleMaterialMonthlyT4=[];
-List<dynamic> saleMaterialYearT5=[];
-List<dynamic> salePaymentCategoryT6=[];
-List<dynamic> salePaymentCustomerT7=[];
+Map? saleT={};
+List<dynamic>? saleData=[];
+List<dynamic>? saleT2=[];
+List<dynamic>? saleMaterialWeeklyT3=[];
+List<dynamic>? saleMaterialMonthlyT4=[];
+List<dynamic>? saleMaterialYearT5=[];
+List<dynamic>? salePaymentCategoryT6=[];
+List<dynamic>? salePaymentCustomerT7=[];
 String salesApex='';
 String salesMaterialHighChart='';
 getSaleDetail(){
@@ -514,7 +514,7 @@ getSaleDetail(){
        var options = {
         series: [{
             name: 'Sales',
-            data: ${saleData.map((e) => e['TotalSale']).toList()}
+            data: ${saleData!.map((e) => e['TotalSale']).toList()}
         }],
          title: {
               text: 'Sale',
@@ -529,7 +529,7 @@ getSaleDetail(){
               },
           },
           subtitle: {
-              text: 'Total : ${formatCurrency.format(saleT['TotalSale']??0.0)} / ${saleT['TotalQuantity']} ${saleT['UnitName']}',
+              text: 'Total : ${formatCurrency.format(saleT!['TotalSale']??0.0)} / ${saleT!['TotalQuantity']} ${saleT!['UnitName']}',
               align: 'left',
               offsetY: 25,
               floating: false,
@@ -618,7 +618,7 @@ getSaleDetail(){
             },
         },
          xaxis: {
-          categories: ${json.encode(saleData.map((e) => DateFormat("MMMd").format(DateTime.parse(e['Date']))).toList())}
+          categories: ${json.encode(saleData!.map((e) => DateFormat("MMMd").format(DateTime.parse(e['Date']))).toList())}
         },
        
 
@@ -755,20 +755,20 @@ getSaleMaterialDetail(List<dynamic> data,String date,BuildContext context){
 
 
 //Production DashBoard
-List<dynamic> productionInputMaterialsT=[];
-List<dynamic> productionOutPutMaterialsT1=[];
+List<dynamic>? productionInputMaterialsT=[];
+List<dynamic>? productionOutPutMaterialsT1=[];
 List<dynamic> filterProductionOutPutMaterialsT=[];
 double totalProductionQty=0.0;
 
   List<dynamic> outputMaterials=[];
   getProduction(int i){
-    outputMaterials=productionOutPutMaterialsT1.where((element) => element['InputMaterialId']==productionInputMaterialsT[i]['InputMaterialId']).toList();
+    outputMaterials=productionOutPutMaterialsT1!.where((element) => element['InputMaterialId']==productionInputMaterialsT![i]['InputMaterialId']).toList();
     notifyListeners();
   }
 
 
   //Counter DashBoard
-  List<dynamic> counterList=[];
+  List<dynamic>? counterList=[];
 
 //Diesel DashBoard
 Map issueDiesel={};
@@ -776,13 +776,13 @@ Map balanceDiesel={};
 Map totalDiesel={};
 
   List<charts.Series> seriesList=[];
-  double low,high;
+  double? low,high;
   sl(VoidCallback voidCallback){
      low= ((totalDiesel['TotalQuantity']??0.0)/5000.0);
-     high=1-low;
-    if(high<0){
-      double temp=low;
-      low=-1*high;
+     high=1-low!;
+    if(high!<0){
+      double? temp=low;
+      low=-1*high!;
       high=temp;
     }
  /*   print((totalDiesel['TotalQuantity']??0.0)/5000.0);
@@ -807,14 +807,14 @@ Map totalDiesel={};
 
 //Attendance DashBoard
   int totalEmployee=1;
-  int  totalPresent,totalAbsent=0;
-  List<dynamic> todayAttendanceListT2=[];
+  int  totalPresent=0,totalAbsent=0;
+  List<dynamic>? todayAttendanceListT2=[];
 
 
  bool isLoad=false;
  updateisLoad(bool value){
    isLoad=value;
-   WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+   WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
      notifyListeners();
    });
 
@@ -822,7 +822,7 @@ Map totalDiesel={};
  bool isChartLoad=false;
  updateisChartLoad(bool value){
    isChartLoad=value;
-   WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+   WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
      notifyListeners();
    });
  }
@@ -830,7 +830,7 @@ Map totalDiesel={};
  bool isSaleMaterialChartLoad=false;
  updateisSaleMaterialChartLoad(bool value){
    isSaleMaterialChartLoad=value;
-   WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+   WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
      notifyListeners();
    });
  }
@@ -840,7 +840,7 @@ Map totalDiesel={};
 }
 
 class MenuModel{
-  String title;
+  String? title;
   String image;
   MenuModel({this.image="assets/svg/Planticon.svg",this.title});
 
@@ -849,7 +849,7 @@ class MenuModel{
 
 class GaugeSegment {
   final String segment;
-  final double size;
+  final double? size;
   String hex;
 
   GaugeSegment(this.segment, this.size,this.hex);

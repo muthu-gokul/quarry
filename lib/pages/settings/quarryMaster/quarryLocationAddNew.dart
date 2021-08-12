@@ -26,7 +26,7 @@ import 'plantDetailsAddNew.dart';
 
 
 class QuaryAddNew extends StatefulWidget {
-  VoidCallback drawerCallback;
+  VoidCallback? drawerCallback;
   QuaryAddNew({this.drawerCallback});
   @override
   _QuaryAddNewState createState() => _QuaryAddNewState();
@@ -37,8 +37,8 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
   bool isEdit=false;
 
   GlobalKey <ScaffoldState> scaffoldkey = new GlobalKey<ScaffoldState>();
-  ScrollController scrollController;
-  ScrollController listViewController;
+  ScrollController? scrollController;
+  ScrollController? listViewController;
   double silverBodyTopMargin=0;
 
 
@@ -51,15 +51,15 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
   bool contactNo=false;
   bool gstNo=false;
 
-  File sampleImage;
-  String imageurl;
-  String imagestring;
-  Image imagefrompreferences;
+  File? sampleImage;
+  String? imageurl;
+  String? imagestring;
+  Image? imagefrompreferences;
 
   Future getImage() async
   {
 
-     PickedFile temp=await ImagePicker().getImage(source: ImageSource.gallery);
+     PickedFile temp=await (ImagePicker().getImage(source: ImageSource.gallery) as FutureOr<PickedFile>);
      print(temp);
 
     File tempImage = File(temp.path);
@@ -71,7 +71,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
   }
 
   _cropImage(File picked) async {
-    File cropped = await ImageCropper.cropImage(
+    File? cropped = await ImageCropper.cropImage(
       androidUiSettings: AndroidUiSettings(
           statusBarColor: Colors.red,
           toolbarColor: Colors.red,
@@ -101,7 +101,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
   @override
   void initState() {
     isEdit=false;
-    WidgetsBinding.instance.addPostFrameCallback((_){
+    WidgetsBinding.instance!.addPostFrameCallback((_){
 
 
       scrollController=new ScrollController();
@@ -164,7 +164,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                  int sensitivity = 5;
 
                                  if (details.delta.dy > sensitivity) {
-                                   scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
+                                   scrollController!.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
                                      if(isListScroll){
                                        setState(() {
                                          isListScroll=false;
@@ -173,7 +173,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                    });
 
                                  } else if(details.delta.dy < -sensitivity){
-                                   scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
+                                   scrollController!.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
 
                                      if(!isListScroll){
                                        setState(() {
@@ -193,7 +193,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
 
                               // },
                                child: Container(
-                                 height: SizeConfig.screenHeight-60,
+                                 height: SizeConfig.screenHeight!-60,
                                  width: SizeConfig.screenWidth,
                                  alignment: Alignment.topCenter,
                                  decoration: BoxDecoration(
@@ -204,15 +204,15 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                    onNotification: (s){
                                      if(s is ScrollStartNotification){
 
-                                       if(listViewController.offset==0 && isListScroll && scrollController.offset==100 && listViewController.position.userScrollDirection==ScrollDirection.idle){
+                                       if(listViewController!.offset==0 && isListScroll && scrollController!.offset==100 && listViewController!.position.userScrollDirection==ScrollDirection.idle){
 
                                          Timer(Duration(milliseconds: 100), (){
-                                           if(listViewController.position.userScrollDirection!=ScrollDirection.reverse){
+                                           if(listViewController!.position.userScrollDirection!=ScrollDirection.reverse){
 
                                              //if(scrollController.position.pixels == scrollController.position.maxScrollExtent){
-                                             if(listViewController.offset==0){
+                                             if(listViewController!.offset==0){
 
-                                               scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value) {
+                                               scrollController!.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value) {
                                                  if(isListScroll){
                                                    setState(() {
                                                      isListScroll=false;
@@ -225,7 +225,8 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                          });
                                        }
                                      }
-                                   },
+                                     return true;
+                                   } ,
                                    child: ListView(
                                      controller: listViewController,
                                      scrollDirection: Axis.vertical,
@@ -235,7 +236,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                        SizedBox(height:15,),
                                        AddNewLabelTextField(
                                          ontap: (){
-                                           scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+                                           scrollController!.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
                                            setState(() {
                                              _keyboardVisible=true;
                                            });
@@ -265,7 +266,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                          textEditingController: qn.CD_address,
                                          onChange: (v){},
                                          ontap: (){
-                                           scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+                                           scrollController!.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
                                            setState(() {
                                              _keyboardVisible=true;
                                            });
@@ -288,7 +289,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                          textEditingController: qn.CD_city,
                                          onChange: (v){},
                                          ontap: (){
-                                           scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+                                           scrollController!.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
                                            setState(() {
                                              _keyboardVisible=true;
                                            });
@@ -310,7 +311,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                          textEditingController: qn.CD_state,
                                          onChange: (v){},
                                          ontap: (){
-                                           scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+                                           scrollController!.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
                                            setState(() {
                                              _keyboardVisible=true;
                                              isListScroll=true;
@@ -333,7 +334,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                          textEditingController: qn.CD_country,
                                          onChange: (v){},
                                          ontap: (){
-                                           scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+                                           scrollController!.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
                                            setState(() {
                                              _keyboardVisible=true;
                                              isListScroll=true;
@@ -358,7 +359,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                          textEditingController: qn.CD_zipcode,
                                          onChange: (v){},
                                          ontap: (){
-                                           scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+                                           scrollController!.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
                                            setState(() {
                                              _keyboardVisible=true;
                                              isListScroll=true;
@@ -383,7 +384,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                          textEditingController: qn.CD_contactNo,
                                          onChange: (v){},
                                          ontap: (){
-                                           scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+                                           scrollController!.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
                                            setState(() {
                                              _keyboardVisible=true;
                                              isListScroll=true;
@@ -408,7 +409,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                          scrollPadding: 500,
                                          onChange: (v){},
                                          ontap: (){
-                                           scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+                                           scrollController!.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
                                            setState(() {
                                              _keyboardVisible=true;
                                              isListScroll=true;
@@ -431,7 +432,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                          scrollPadding: 500,
                                          onChange: (v){},
                                          ontap: (){
-                                           scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+                                           scrollController!.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
                                            setState(() {
                                              _keyboardVisible=true;
                                              isListScroll=true;
@@ -456,7 +457,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                          textEditingController: qn.CD_gstno,
                                          onChange: (v){},
                                          ontap: (){
-                                           scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+                                           scrollController!.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
                                            setState(() {
                                              _keyboardVisible=true;
                                            });
@@ -478,7 +479,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                          textEditingController: qn.CD_Panno,
                                          onChange: (v){},
                                          ontap: (){
-                                           scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+                                           scrollController!.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
                                            setState(() {
                                              _keyboardVisible=true;
                                            });
@@ -500,7 +501,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                          textEditingController: qn.CD_Cinno,
                                          onChange: (v){},
                                          ontap: (){
-                                           scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+                                           scrollController!.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
                                            setState(() {
                                              _keyboardVisible=true;
                                            });
@@ -526,7 +527,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                          ),
                                          clipBehavior: Clip.antiAlias,
                                          child: Center(
-                                          child: sampleImage!=null? Image.file(sampleImage):
+                                          child: sampleImage!=null? Image.file(sampleImage!):
                                           SvgPicture.asset("assets/svg/upload.svg",height: 30,width: 30,),
                                         // child: SvgPicture.asset("assets/svg/upload.svg",height: 30,width: 30,),
                                          ),
@@ -544,7 +545,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                            getImage();
                                          },
                                          child: Container(
-                                           margin: EdgeInsets.only(left: SizeConfig.width90,right:  SizeConfig.width90,),
+                                           margin: EdgeInsets.only(left: SizeConfig.width90!,right:  SizeConfig.width90!,),
                                            height:45,
                                            decoration: BoxDecoration(
                                              borderRadius: BorderRadius.circular(25.0),
@@ -598,7 +599,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                            }
                                          },
                                          child: Container(
-                                           margin: EdgeInsets.only(left: SizeConfig.width90,right:  SizeConfig.width90,),
+                                           margin: EdgeInsets.only(left: SizeConfig.width90!,right:  SizeConfig.width90!,),
                                            height:45,
                                            decoration: BoxDecoration(
                                              borderRadius: BorderRadius.circular(25.0),
@@ -679,7 +680,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                              Container(
                                margin:EdgeInsets.only(top: 0),
                                child: CustomPaint(
-                                 size: Size( SizeConfig.screenWidth, 65),
+                                 size: Size( SizeConfig.screenWidth!, 65),
                                  painter: RPSCustomPainter3(),
                                ),
                              ),

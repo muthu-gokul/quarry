@@ -21,7 +21,7 @@ import 'package:quarry/widgets/sidePopUp/sidePopupWithoutModelList.dart';
 import 'package:quarry/widgets/validationErrorText.dart';
 
 class ManageUsersAddNew extends StatefulWidget {
-  VoidCallback drawerCallback;
+  VoidCallback? drawerCallback;
   ManageUsersAddNew({this.drawerCallback});
   @override
   ManageUsersAddNewState createState() => ManageUsersAddNewState();
@@ -31,8 +31,8 @@ class ManageUsersAddNewState extends State<ManageUsersAddNew> {
   GlobalKey <ScaffoldState> scaffoldkey=new GlobalKey<ScaffoldState>();
 
 
-  ScrollController scrollController;
-  ScrollController listViewController;
+  ScrollController? scrollController;
+  ScrollController? listViewController;
   bool _keyboardVisible = false;
   bool salutationOpen=false;
   bool passwordvisible=true;
@@ -49,7 +49,7 @@ class ManageUsersAddNewState extends State<ManageUsersAddNew> {
   @override
   void initState() {
 
-    WidgetsBinding.instance.addPostFrameCallback((_){
+    WidgetsBinding.instance!.addPostFrameCallback((_){
 
 
       scrollController=new ScrollController();
@@ -59,16 +59,16 @@ class ManageUsersAddNewState extends State<ManageUsersAddNew> {
       });
 
 
-      listViewController.addListener(() {
+      listViewController!.addListener(() {
 
-        if(listViewController.offset>20){
+        if(listViewController!.offset>20){
 
-          scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+          scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
 
 
         }
-        else if(listViewController.offset==0){
-          scrollController.animateTo(0, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+        else if(listViewController!.offset==0){
+          scrollController!.animateTo(0, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
         }
       });
 
@@ -124,7 +124,7 @@ class ManageUsersAddNewState extends State<ManageUsersAddNew> {
                           children: [
                             SizedBox(height: 160,),
                             Container(
-                              height: SizeConfig.screenHeight-60,
+                              height: SizeConfig.screenHeight!-60,
                               width: SizeConfig.screenWidth,
                               alignment: Alignment.topCenter,
                               decoration: BoxDecoration(
@@ -137,15 +137,15 @@ class ManageUsersAddNewState extends State<ManageUsersAddNew> {
                                   int sensitivity = 8;
 
                                   if (details.delta.dy > sensitivity) {
-                                    scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+                                    scrollController!.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
 
                                   } else if(details.delta.dy < -sensitivity){
-                                    scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+                                    scrollController!.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
                                   }
                                 },
                                 child: Container(
                                   //height:_keyboardVisible?SizeConfig.screenHeight*0.5 :SizeConfig.screenHeight-100,
-                                  height:SizeConfig.screenHeight-100,
+                                  height:SizeConfig.screenHeight!-100,
                                   width: SizeConfig.screenWidth,
 
                                   decoration: BoxDecoration(
@@ -165,7 +165,7 @@ class ManageUsersAddNewState extends State<ManageUsersAddNew> {
                                             });
                                           },
                                           child: Container(
-                                            margin: EdgeInsets.only(right: SizeConfig.width20,top: 10,bottom: 10),
+                                            margin: EdgeInsets.only(right: SizeConfig.width20!,top: 10,bottom: 10),
                                             height: 40,
                                             width: 40,
                                             decoration: BoxDecoration(
@@ -179,7 +179,7 @@ class ManageUsersAddNewState extends State<ManageUsersAddNew> {
                                           ),
                                         ),
                                       ):Container(
-                                       margin: EdgeInsets.only(right: SizeConfig.width20,top: 10,bottom: 10),
+                                       margin: EdgeInsets.only(right: SizeConfig.width20!,top: 10,bottom: 10),
                                        height: 40,
                                        width: 40,
                                      ),
@@ -197,8 +197,8 @@ class ManageUsersAddNewState extends State<ManageUsersAddNew> {
                                               alignment: Alignment.center,
                                               child: Container(
 
-                                                margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20),
-                                                padding: EdgeInsets.only(left:SizeConfig.width60,),
+                                                margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!),
+                                                padding: EdgeInsets.only(left:SizeConfig.width60!,),
                                                 decoration: BoxDecoration(
                                                   borderRadius: BorderRadius.circular(3),
                                                   border: Border.all(color: AppTheme.addNewTextFieldBorder),
@@ -211,7 +211,7 @@ class ManageUsersAddNewState extends State<ManageUsersAddNew> {
                                                   controller: mun.firstName,
                                                   enabled: mun.isEdit,
                                                   onTap: (){
-                                                    scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                                    scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                                     setState(() {
                                                       _keyboardVisible=true;
                                                     });
@@ -254,7 +254,7 @@ class ManageUsersAddNewState extends State<ManageUsersAddNew> {
                                                 width: 60,
                                                 duration: Duration(milliseconds: 300),
                                                 curve: Curves.easeIn,
-                                                margin: EdgeInsets.only(left: SizeConfig.width30),
+                                                margin: EdgeInsets.only(left: SizeConfig.width30!),
                                                 decoration: BoxDecoration(
                                                     color: AppTheme.yellowColor,
                                                     borderRadius: BorderRadius.circular(10)
@@ -326,7 +326,7 @@ class ManageUsersAddNewState extends State<ManageUsersAddNew> {
                                         regExp: '[A-Za-z ]',
                                         textEditingController: mun.lastName,
                                         ontap: (){
-                                          scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                          scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                           setState(() {
                                             _keyboardVisible=true;
                                           });
@@ -357,7 +357,7 @@ class ManageUsersAddNewState extends State<ManageUsersAddNew> {
                                           });
                                         },
                                         ontap: (){
-                                          scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                          scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                           setState(() {
                                             _keyboardVisible=true;
                                           });
@@ -380,7 +380,7 @@ class ManageUsersAddNewState extends State<ManageUsersAddNew> {
                                           });
                                         },
                                         ontap: (){
-                                          scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                          scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                           setState(() {
                                             _keyboardVisible=true;
                                           });
@@ -404,7 +404,7 @@ class ManageUsersAddNewState extends State<ManageUsersAddNew> {
                                           });
                                         },
                                         ontap: (){
-                                          scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                          scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                           setState(() {
                                             _keyboardVisible=true;
                                           });
@@ -464,7 +464,7 @@ class ManageUsersAddNewState extends State<ManageUsersAddNew> {
 
 
 
-                                      SizedBox(height: _keyboardVisible?SizeConfig.screenHeight*0.5: SizeConfig.height150,),
+                                      SizedBox(height: _keyboardVisible?SizeConfig.screenHeight!*0.5: SizeConfig.height150,),
                                     ],
                                   ),
                                 ),
@@ -552,7 +552,7 @@ class ManageUsersAddNewState extends State<ManageUsersAddNew> {
                           ),
                           margin:EdgeInsets.only(top: 0),
                           child: CustomPaint(
-                            size: Size( SizeConfig.screenWidth, 65),
+                            size: Size( SizeConfig.screenWidth!, 65),
                             painter: RPSCustomPainter3(),
                           ),
                         ),
@@ -694,8 +694,8 @@ class ManageUsersAddNewState extends State<ManageUsersAddNew> {
                   selectedId: mun.userGroupId,
                   itemOnTap: (index){
                     setState(() {
-                      mun.userGroupId=mun.userGroupList[index]['UserGroupId'];
-                      mun.userGroupName=mun.userGroupList[index]['UserGroupName'];
+                      mun.userGroupId=mun.userGroupList![index]['UserGroupId'];
+                      mun.userGroupName=mun.userGroupList![index]['UserGroupName'];
 
                       userGroupOpen=false;
                     });
@@ -720,8 +720,8 @@ class ManageUsersAddNewState extends State<ManageUsersAddNew> {
                     ),
                     clipBehavior: Clip.antiAlias,
                     padding: EdgeInsets.only(top: 20,bottom: 20,),
-                    margin: EdgeInsets.only(left: SizeConfig.width25,right: SizeConfig.width25),
-                    transform: Matrix4.translationValues(plantAccessOpen?0:SizeConfig.screenWidth, 0, 0),
+                    margin: EdgeInsets.only(left: SizeConfig.width25!,right: SizeConfig.width25!),
+                    transform: Matrix4.translationValues(plantAccessOpen?0:SizeConfig.screenWidth!, 0, 0),
                     child: Stack(
                       children: [
 
@@ -731,10 +731,10 @@ class ManageUsersAddNewState extends State<ManageUsersAddNew> {
                           height: (mun.plantList.length*60.0)+150,
                           constraints: BoxConstraints(
                               minHeight: 60,
-                              maxHeight: SizeConfig.screenHeight*0.63
+                              maxHeight: SizeConfig.screenHeight!*0.63
                           ),
                           width: SizeConfig.screenWidth,
-                          margin: EdgeInsets.only(left: SizeConfig.width16,right: SizeConfig.width16,top: 10),
+                          margin: EdgeInsets.only(left: SizeConfig.width16!,right: SizeConfig.width16!,top: 10),
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               color: Colors.white
@@ -748,12 +748,12 @@ class ManageUsersAddNewState extends State<ManageUsersAddNew> {
                                 height:mun.plantList.length*60.0,
                                 constraints: BoxConstraints(
                                     minHeight: 60,
-                                    maxHeight: SizeConfig.screenHeight*0.55-70
+                                    maxHeight: SizeConfig.screenHeight!*0.55-70
                                 ),
                                 decoration: BoxDecoration(
                                   color: Colors.white,
                                 ),
-                                width: SizeConfig.screenWidth-SizeConfig.width60,
+                                width: SizeConfig.screenWidth!-SizeConfig.width60!,
 
                                 child: ListView.builder(
                                     itemCount: mun.plantList.length,
@@ -782,7 +782,7 @@ class ManageUsersAddNewState extends State<ManageUsersAddNew> {
 
                                         },
                                         child: Container(
-                                          margin: EdgeInsets.only(left: SizeConfig.width40,right:  SizeConfig.width40,top: 20),
+                                          margin: EdgeInsets.only(left: SizeConfig.width40!,right:  SizeConfig.width40!,top: 20),
                                           padding: EdgeInsets.only(left:5,right:5),
 
                                           height: 40,

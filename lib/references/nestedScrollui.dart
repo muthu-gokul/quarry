@@ -30,7 +30,7 @@ import 'package:quarry/widgets/validationErrorText.dart';
 
 
 class PlantDetailsGrid extends StatefulWidget {
-  VoidCallback drawerCallback;
+  VoidCallback? drawerCallback;
   PlantDetailsGrid({this.drawerCallback});
   @override
   PlantDetailsGridState createState() => PlantDetailsGridState();
@@ -41,15 +41,15 @@ class PlantDetailsGridState extends State<PlantDetailsGrid> with TickerProviderS
   bool isEdit=false;
 
 
-  ScrollController scrollController;
-  ScrollController listViewController;
+  ScrollController? scrollController;
+  ScrollController? listViewController;
   bool _keyboardVisible = false;
 
 
   @override
   void initState() {
     isEdit=false;
-    WidgetsBinding.instance.addPostFrameCallback((_){
+    WidgetsBinding.instance!.addPostFrameCallback((_){
 
 
       scrollController=new ScrollController();
@@ -59,16 +59,16 @@ class PlantDetailsGridState extends State<PlantDetailsGrid> with TickerProviderS
       });
 
 
-      listViewController.addListener(() {
-        print("List SCROLL--${listViewController.offset}");
-        if(listViewController.offset>20){
+      listViewController!.addListener(() {
+        print("List SCROLL--${listViewController!.offset}");
+        if(listViewController!.offset>20){
 
-          scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+          scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
 
 
         }
-        else if(listViewController.offset==0){
-          scrollController.animateTo(0, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+        else if(listViewController!.offset==0){
+          scrollController!.animateTo(0, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
         }
       });
 
@@ -151,7 +151,7 @@ class PlantDetailsGridState extends State<PlantDetailsGrid> with TickerProviderS
                     children: [
                       SizedBox(height: 160,),
                       Container(
-                        height: SizeConfig.screenHeight-60,
+                        height: SizeConfig.screenHeight!-60,
                         width: SizeConfig.screenWidth,
 
                         decoration: BoxDecoration(
@@ -169,7 +169,7 @@ class PlantDetailsGridState extends State<PlantDetailsGrid> with TickerProviderS
                                 children: [
                                   Container(
                                     height: 200,
-                                    width: SizeConfig.screenWidth*0.5,
+                                    width: SizeConfig.screenWidth!*0.5,
                                     color: Colors.white,
                                     child: Center(
                                       child: Container(
@@ -195,7 +195,7 @@ class PlantDetailsGridState extends State<PlantDetailsGrid> with TickerProviderS
                                   ),
                                   Container(
                                     height: 200,
-                                    width: SizeConfig.screenWidth*0.5,
+                                    width: SizeConfig.screenWidth!*0.5,
                                     color: Colors.white,
                                     child: Column(
                                       mainAxisAlignment: MainAxisAlignment.center,
@@ -349,7 +349,7 @@ if(s is ScrollStartNotification){
 
 
 class EmployeeAdvanceAddNew extends StatefulWidget {
-  VoidCallback drawerCallback;
+  VoidCallback? drawerCallback;
   bool fromsaleGrid;
   EmployeeAdvanceAddNew({this.drawerCallback,this.fromsaleGrid:false});
 
@@ -359,8 +359,8 @@ class EmployeeAdvanceAddNew extends StatefulWidget {
 
 class _EmployeeAdvanceAddNewState extends State<EmployeeAdvanceAddNew> {
 
-  ScrollController scrollController;
-  ScrollController listViewController;
+  ScrollController? scrollController;
+  ScrollController? listViewController;
   bool _keyboardVisible=false;
   bool isListScroll=false;
   bool isAmountTypeOpen=false;
@@ -422,7 +422,7 @@ class _EmployeeAdvanceAddNewState extends State<EmployeeAdvanceAddNew> {
 
                 //Form
                 Container(
-                  height: SizeConfig.screenHeight-70,
+                  height: SizeConfig.screenHeight!-70,
                   // color: Colors.transparent,
                   child: SingleChildScrollView(
                     physics: NeverScrollableScrollPhysics(),
@@ -443,7 +443,7 @@ class _EmployeeAdvanceAddNewState extends State<EmployeeAdvanceAddNew> {
 
                               int sensitivity = 5;
                               if (details.delta.dy > sensitivity) {
-                                scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
+                                scrollController!.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
                                   if(isListScroll){
                                     setState(() {
                                       isListScroll=false;
@@ -452,7 +452,7 @@ class _EmployeeAdvanceAddNewState extends State<EmployeeAdvanceAddNew> {
                                 });
 
                               } else if(details.delta.dy < -sensitivity){
-                                scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
+                                scrollController!.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
 
                                   if(!isListScroll){
                                     setState(() {
@@ -476,11 +476,11 @@ class _EmployeeAdvanceAddNewState extends State<EmployeeAdvanceAddNew> {
                                 onNotification: (s){
                                   if(s is ScrollStartNotification){
 
-                                    if(listViewController.offset==0 && isListScroll && scrollController.offset==100 && listViewController.position.userScrollDirection==ScrollDirection.idle){
+                                    if(listViewController!.offset==0 && isListScroll && scrollController!.offset==100 && listViewController!.position.userScrollDirection==ScrollDirection.idle){
                                       Timer(Duration(milliseconds: 100), (){
-                                        if(listViewController.position.userScrollDirection!=ScrollDirection.reverse){
-                                          if(listViewController.offset==0){
-                                            scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value) {
+                                        if(listViewController!.position.userScrollDirection!=ScrollDirection.reverse){
+                                          if(listViewController!.offset==0){
+                                            scrollController!.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value) {
                                               if(isListScroll){
                                                 setState(() {
                                                   isListScroll=false;
@@ -492,7 +492,7 @@ class _EmployeeAdvanceAddNewState extends State<EmployeeAdvanceAddNew> {
                                       });
                                     }
                                   }
-                                },
+                                } as bool Function(ScrollNotification)?,
                                 child: ListView(
                                   controller: listViewController,
                                   scrollDirection: Axis.vertical,
@@ -509,7 +509,7 @@ class _EmployeeAdvanceAddNewState extends State<EmployeeAdvanceAddNew> {
                                         setState(() {
                                           _keyboardVisible=true;
                                         });
-                                        scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                        scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                       },
                                       value: eal.employeeCodeController.text,
                                       controller: eal.employeeCodeController,
@@ -525,7 +525,7 @@ class _EmployeeAdvanceAddNewState extends State<EmployeeAdvanceAddNew> {
                                         setState(() {
                                           eal.selectedEmployeeCode=v;
                                           int index;
-                                          index=eal.empList.indexWhere((element) => "${element.employeeName}  -  ${element.employeePrefix+element.employeeCode}"==v.toString()).toInt();
+                                          index=eal.empList.indexWhere((element) => "${element.employeeName}  -  ${element.employeePrefix!+element.employeeCode!}"==v.toString()).toInt();
                                           eal.showEmpName=eal.empList[index].employeeName;
                                           eal.showEmpDesg=eal.empList[index].employeeDesignationName;
                                           eal.showEmpWorkingDays=eal.empList[index].workingDays;
@@ -572,7 +572,7 @@ class _EmployeeAdvanceAddNewState extends State<EmployeeAdvanceAddNew> {
 
 
 
-                                    SizedBox(height: _keyboardVisible? SizeConfig.screenHeight*0.6:200,)
+                                    SizedBox(height: _keyboardVisible? SizeConfig.screenHeight!*0.6:200,)
                                   ],
                                 ),
                               ),
@@ -629,7 +629,7 @@ class _EmployeeAdvanceAddNewState extends State<EmployeeAdvanceAddNew> {
                         Container(
                           margin:EdgeInsets.only(top: 0),
                           child: CustomPaint(
-                            size: Size( SizeConfig.screenWidth, 65),
+                            size: Size( SizeConfig.screenWidth!, 65),
                             painter: RPSCustomPainter3(),
                           ),
                         ),

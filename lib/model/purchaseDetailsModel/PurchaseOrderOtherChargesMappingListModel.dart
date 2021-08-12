@@ -1,10 +1,10 @@
 class PurchaseOrderOtherChargesMappingList{
 
- int  PurchaseOrderOtherChargesMappingId;
- int PurchaseOrderId;
-String  OtherChargesName;
- double OtherChargesAmount;
- int IsActive;
+ int?  PurchaseOrderOtherChargesMappingId;
+ int? PurchaseOrderId;
+String?  OtherChargesName;
+ double? OtherChargesAmount;
+ int? IsActive;
 
  PurchaseOrderOtherChargesMappingList({
       this.PurchaseOrderOtherChargesMappingId,

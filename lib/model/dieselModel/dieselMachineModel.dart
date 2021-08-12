@@ -5,8 +5,8 @@ class DieselMachineModel {
     this.machineName,
   });
 
-  int machineId;
-  String machineName;
+  int? machineId;
+  String? machineName;
 
   factory DieselMachineModel.fromJson(Map<String, dynamic> json) => DieselMachineModel(
     machineId: json["MachineId"],

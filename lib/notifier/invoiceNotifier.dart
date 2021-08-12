@@ -29,23 +29,23 @@ class InvoiceNotifier extends ChangeNotifier{
 
 
 
-  DateTime invoiceCurrentDate;
+  late DateTime invoiceCurrentDate;
 
 
-  int InvoiceEditId=null;
-  String InvoiceEditNumber=null;
+  int? InvoiceEditId=null;
+  String? InvoiceEditNumber=null;
 
 
 
 
-  int PlantId=null;
-  int EditPlantId=null;
-  String PlantName=null;
+  int? PlantId=null;
+  int? EditPlantId=null;
+  String? PlantName=null;
 
-  String selectedInvoiceType=null;
-  int selectedPartyId=null;
-  String selectedPartyName=null;
-  DateTime expectedDate;
+  String? selectedInvoiceType=null;
+  int? selectedPartyId=null;
+  String? selectedPartyName=null;
+  DateTime? expectedDate;
   TextEditingController notes=new TextEditingController();
   TextEditingController terms=new TextEditingController();
 
@@ -88,7 +88,7 @@ class InvoiceNotifier extends ChangeNotifier{
         if(value!=null){
           var parsed=json.decode(value);
 
-          var t=parsed['Table'] as List;
+          var t=parsed['Table'] as List?;
           var t1=parsed['Table1'] as List;
           plantList=t1.map((e) => PlantUserModel.fromJson(e)).toList();
           plantList.forEach((element) {
@@ -205,7 +205,7 @@ class InvoiceNotifier extends ChangeNotifier{
     }
     else{
      // filtermaterialList=materialList.where((element) => element.materialName.toLowerCase().contains(value.toLowerCase())).toList();
-      searchFilterMaterialList=filtermaterialList.where((element) => element.materialName.toLowerCase().contains(value.toLowerCase())).toList();
+      searchFilterMaterialList=filtermaterialList.where((element) => element.materialName!.toLowerCase().contains(value.toLowerCase())).toList();
     }
     notifyListeners();
   }
@@ -214,7 +214,7 @@ class InvoiceNotifier extends ChangeNotifier{
 
   List<InvoiceMaterialMappingListModel> invoiceMaterialMappingList=[];
   List<InvoiceOtherChargesMappingList> invoiceOtherChargesMappingList=[];
-  bool IsTax=false;
+  bool? IsTax=false;
 
   bool isDiscountPercentage=true;
   updateisDiscountPercentage(bool value){
@@ -240,10 +240,10 @@ class InvoiceNotifier extends ChangeNotifier{
       invoiceMaterialMappingList[index].DiscountedSubTotal=0.0;
 
       if(purchaseqty.isEmpty){
-        invoiceMaterialMappingList[index].purchaseQty..text="";
+        invoiceMaterialMappingList[index].purchaseQty!..text="";
         purchaseOrdersCalc(index,"0");
       }else{
-        invoiceMaterialMappingList[index].purchaseQty..text=purchaseqty;
+        invoiceMaterialMappingList[index].purchaseQty!..text=purchaseqty;
         purchaseOrdersCalc(index,purchaseqty);
       }
 
@@ -262,10 +262,10 @@ class InvoiceNotifier extends ChangeNotifier{
       invoiceMaterialMappingList[index].DiscountedSubTotal=0.0;
 
       if(purchaseqty.isEmpty){
-        invoiceMaterialMappingList[index].purchaseQty..text="";
+        invoiceMaterialMappingList[index].purchaseQty!..text="";
         purchaseOrdersCalc(index,"0");
       }else{
-        invoiceMaterialMappingList[index].purchaseQty..text=purchaseqty;
+        invoiceMaterialMappingList[index].purchaseQty!..text=purchaseqty;
         purchaseOrdersCalc(index,purchaseqty);
       }
 
@@ -294,7 +294,7 @@ class InvoiceNotifier extends ChangeNotifier{
 
       if( invoiceMaterialMappingList[index].IsDiscount==0){
         invoiceMaterialMappingList[index].Subtotal=double.parse((Decimal.parse(purchaseQty)*Decimal.parse(invoiceMaterialMappingList[index].MaterialPrice.toString())).toString());
-        if(IsTax){
+        if(IsTax!){
           invoiceMaterialMappingList[index].TaxAmount=double.parse(((Decimal.parse(invoiceMaterialMappingList[index].TaxValue.toString())*(Decimal.parse(invoiceMaterialMappingList[index].Subtotal.toString())-Decimal.parse(invoiceMaterialMappingList[index].DiscountAmount.toString())))/Decimal.parse("100")).toString());
         }
         else{
@@ -310,7 +310,7 @@ class InvoiceNotifier extends ChangeNotifier{
           invoiceMaterialMappingList[index].Subtotal=double.parse((Decimal.parse(purchaseQty)*Decimal.parse(invoiceMaterialMappingList[index].MaterialPrice.toString())).toString());
           invoiceMaterialMappingList[index].DiscountAmount=double.parse(((Decimal.parse(invoiceMaterialMappingList[index].DiscountValue.toString())*Decimal.parse(invoiceMaterialMappingList[index].Subtotal.toString()))/Decimal.parse("100")).toString());
           invoiceMaterialMappingList[index].DiscountedSubTotal=double.parse((((Decimal.parse(invoiceMaterialMappingList[index].Subtotal.toString()))-Decimal.parse(invoiceMaterialMappingList[index].DiscountAmount.toString()))).toString());
-          if(IsTax){
+          if(IsTax!){
             invoiceMaterialMappingList[index].TaxAmount=double.parse(((((Decimal.parse(invoiceMaterialMappingList[index].Subtotal.toString()))-Decimal.parse(invoiceMaterialMappingList[index].DiscountAmount.toString())) * Decimal.parse(invoiceMaterialMappingList[index].TaxValue.toString()) )/Decimal.parse("100")).toString());
           }
           else{
@@ -324,7 +324,7 @@ class InvoiceNotifier extends ChangeNotifier{
           invoiceMaterialMappingList[index].Subtotal=double.parse((Decimal.parse(purchaseQty)*Decimal.parse(invoiceMaterialMappingList[index].MaterialPrice.toString())).toString());
           invoiceMaterialMappingList[index].DiscountAmount=double.parse((Decimal.parse(invoiceMaterialMappingList[index].DiscountValue.toString())).toString());
           invoiceMaterialMappingList[index].DiscountedSubTotal=double.parse((((Decimal.parse(invoiceMaterialMappingList[index].Subtotal.toString()))-Decimal.parse(invoiceMaterialMappingList[index].DiscountAmount.toString()))).toString());
-          if(IsTax){
+          if(IsTax!){
             invoiceMaterialMappingList[index].TaxAmount=double.parse(((((Decimal.parse(invoiceMaterialMappingList[index].Subtotal.toString()))-Decimal.parse(invoiceMaterialMappingList[index].DiscountAmount.toString())) * Decimal.parse(invoiceMaterialMappingList[index].TaxValue.toString()) )/Decimal.parse("100")).toString());
           }
           else{
@@ -342,11 +342,11 @@ class InvoiceNotifier extends ChangeNotifier{
 
 
 
-  double subtotal=0.0;
-  double taxAmount=0.0;
-  double discountAmount=0.0;
-  double discountedSubtotal=0.0;
-  double grandTotal=0.0;
+  double? subtotal=0.0;
+  double? taxAmount=0.0;
+  double? discountAmount=0.0;
+  double? discountedSubtotal=0.0;
+  double? grandTotal=0.0;
   double otherCharges=0.0;
 
 
@@ -415,7 +415,7 @@ class InvoiceNotifier extends ChangeNotifier{
         {
           "Key": "ExpectedDate",
           "Type": "String",
-          "Value":expectedDate==null?null: DateFormat("yyyy-MM-dd").format(expectedDate)
+          "Value":expectedDate==null?null: DateFormat("yyyy-MM-dd").format(expectedDate!)
         },
         {
           "Key": "PlantId",
@@ -425,7 +425,7 @@ class InvoiceNotifier extends ChangeNotifier{
         {
           "Key": "IsTax",
           "Type": "int",
-          "Value": IsTax?1:0
+          "Value": IsTax!?1:0
         },
         {
           "Key": "PurchaseOrderId",
@@ -538,31 +538,31 @@ class InvoiceNotifier extends ChangeNotifier{
   List<InvoiceCounterModel> counterList=[];
 
 
-  List<dynamic> pdfHeader=[];
+  List<dynamic>? pdfHeader=[];
   List<dynamic> pdfMaterial=[];
   List<dynamic> pdfOtherCharges=[];
 
-  List<DateTime> picked=[];
+  List<DateTime?> picked=[];
   List<ManageUserPlantModel> filterUsersPlantList=[];
 
- Future<dynamic> GetInvoiceDbHit(BuildContext context,int InvoiceId)  async{
+ Future<dynamic> GetInvoiceDbHit(BuildContext context,int? InvoiceId)  async{
     updateInvoiceLoader(true);
-    pdfHeader.clear();
+    pdfHeader!.clear();
     pdfMaterial.clear();
     pdfOtherCharges.clear();
-    String fromDate,toDate;
+    String? fromDate,toDate;
 
     if(picked.isEmpty){
       fromDate=DateFormat("yyyy-MM-dd").format(DateTime.now()).toString();
       toDate=DateFormat("yyyy-MM-dd").format(DateTime.now()).toString();
     }
     else if(picked.length==1){
-      fromDate=DateFormat("yyyy-MM-dd").format(picked[0]).toString();
-      toDate=DateFormat("yyyy-MM-dd").format(picked[0]).toString();
+      fromDate=DateFormat("yyyy-MM-dd").format(picked[0]!).toString();
+      toDate=DateFormat("yyyy-MM-dd").format(picked[0]!).toString();
     }
     else if(picked.length==2){
-      fromDate=DateFormat("yyyy-MM-dd").format(picked[0]).toString();
-      toDate=DateFormat("yyyy-MM-dd").format(picked[1]).toString();
+      fromDate=DateFormat("yyyy-MM-dd").format(picked[0]!).toString();
+      toDate=DateFormat("yyyy-MM-dd").format(picked[1]!).toString();
     }
     var body={
       "Fields": [
@@ -604,7 +604,7 @@ class InvoiceNotifier extends ChangeNotifier{
       await call.ApiCallGetInvoke(body,context).then((value) {
         if(value!=null){
           var parsed=json.decode(value);
-          var t=parsed['Table'] as List;
+          var t=parsed['Table'] as List?;
           if(filterUsersPlantList.isEmpty){
 
             Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.forEach((element) {
@@ -638,7 +638,7 @@ class InvoiceNotifier extends ChangeNotifier{
             pdfMaterial=t1;
             pdfOtherCharges=t2;
 
-            InvoiceEditId=t[0]['InvoiceId'];
+            InvoiceEditId=t![0]['InvoiceId'];
 
             InvoiceEditNumber=t[0]['InvoiceNumber'];
             invoiceCurrentDate=DateTime.parse(t[0]['InvoiceDate']);
@@ -661,7 +661,7 @@ class InvoiceNotifier extends ChangeNotifier{
             selectedPartyId=t[0]['PartyId'];
             selectedPartyName=t[0]['PartyName'];
 
-            filterInvoiceSupplierList=invoiceSupplierList.where((element) => element.supplierType.toLowerCase()==selectedInvoiceType.toLowerCase()).toList();
+            filterInvoiceSupplierList=invoiceSupplierList.where((element) => element.supplierType!.toLowerCase()==selectedInvoiceType!.toLowerCase()).toList();
 
             if(selectedInvoiceType=='Payable'){
               filtermaterialList=materialList.where((element) => element.supplierId==selectedPartyId && element.supplierType=='Payable').toList();
@@ -693,7 +693,7 @@ class InvoiceNotifier extends ChangeNotifier{
           }
           else{
             print(t);
-            invoiceGridList=t.map((e) => InvoiceGridModel.fromJson(e)).toList();
+            invoiceGridList=t!.map((e) => InvoiceGridModel.fromJson(e)).toList();
           //  filterInvoiceGridList=t.map((e) => InvoiceGridModel.fromJson(e)).toList();
             filterGridValues();
 
@@ -760,7 +760,7 @@ class InvoiceNotifier extends ChangeNotifier{
       filterInvoiceGridList2=invoiceGridList.where((element) => element.invoiceType=="Receivable").toList();
 
       filterUsersPlantList.forEach((element) {
-        if(element.isActive){
+        if(element.isActive!){
           filterInvoiceGridList=filterInvoiceGridList+filterInvoiceGridList2.where((ele) => ele.plantId==element.plantId).toList();
         }
       });
@@ -781,7 +781,7 @@ class InvoiceNotifier extends ChangeNotifier{
       filterInvoiceGridList2=invoiceGridList.where((element) => element.invoiceType=="Payable").toList();
 
       filterUsersPlantList.forEach((element) {
-        if(element.isActive){
+        if(element.isActive!){
           filterInvoiceGridList=filterInvoiceGridList+filterInvoiceGridList2.where((ele) => ele.plantId==element.plantId).toList();
         }
       });
@@ -823,7 +823,7 @@ updateInvoiceLoader(bool value){
 
 
 class InvoiceCounterModel{
-  String name;
+  String? name;
   dynamic value;
   InvoiceCounterModel({this.value,this.name});
 }

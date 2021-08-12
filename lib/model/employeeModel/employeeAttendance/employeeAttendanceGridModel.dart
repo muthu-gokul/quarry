@@ -17,21 +17,21 @@ class EmployeeAttendanceGridModel {
     this. employeeAttendanceId,
   });
 
-  int employeeId;
-  String employeePrefix;
-  String employeeCode;
-  String employeeName;
-  int employeeDesignationId;
-  String employeeDesignationName;
-  int employeeShiftId;
-  String employeeShiftName;
-  String employeeAttendanceDate;
-  String employeeInTime;
-  String employeeOutTime;
-  String employeeOverTime;
-  int attendanceStatusId;
-  int  employeeAttendanceId;
-  String status;
+  int? employeeId;
+  String? employeePrefix;
+  String? employeeCode;
+  String? employeeName;
+  int? employeeDesignationId;
+  String? employeeDesignationName;
+  int? employeeShiftId;
+  String? employeeShiftName;
+  String? employeeAttendanceDate;
+  String? employeeInTime;
+  String? employeeOutTime;
+  String? employeeOverTime;
+  int? attendanceStatusId;
+  int?  employeeAttendanceId;
+  String? status;
 
   factory EmployeeAttendanceGridModel.fromJson(Map<String, dynamic> json) => EmployeeAttendanceGridModel(
     employeeId: json["EmployeeId"],
@@ -53,7 +53,7 @@ class EmployeeAttendanceGridModel {
 
   Map<String, dynamic> toGridJson() => {
 
-    "Employee Code": employeePrefix+employeeCode,
+    "Employee Code": employeePrefix!+employeeCode!,
     "Name": employeeName,
     "Designation": employeeDesignationName,
     "Shift": employeeShiftName,

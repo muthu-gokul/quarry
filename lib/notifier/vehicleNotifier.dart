@@ -25,10 +25,10 @@ class VehicleNotifier extends ChangeNotifier{
   TextEditingController VehicleWeight=new TextEditingController();
 
 
-  int selectedVehicleTypeId=null;
-  var selectedVehicleTypeName=null;
+  int? selectedVehicleTypeId=null;
+  dynamic selectedVehicleTypeName=null;
 
-  int editVehicleId=null;
+  int? editVehicleId=null;
 
   List<VehicleTypeModel> vehicleTypeList=[];
   List<VehicleTypeModel> filterVehicleTypeList=[];
@@ -144,7 +144,7 @@ class VehicleNotifier extends ChangeNotifier{
       filterVehicleTypeList=vehicleTypeList;
     }
     else{
-      filterVehicleTypeList=vehicleTypeList.where((element) => element.VehicleTypeName.toLowerCase().contains(value.toLowerCase())).toList();
+      filterVehicleTypeList=vehicleTypeList.where((element) => element.VehicleTypeName!.toLowerCase().contains(value.toLowerCase())).toList();
     }
     notifyListeners();
   }
@@ -226,7 +226,7 @@ class VehicleNotifier extends ChangeNotifier{
 
 
 
-  GetVehicleDbHit(BuildContext context,int vehicleId)  async{
+  GetVehicleDbHit(BuildContext context,int? vehicleId)  async{
 
     updatevehicleLoader(true);
 
@@ -261,12 +261,12 @@ class VehicleNotifier extends ChangeNotifier{
 
         if(value!=null){
           var parsed=json.decode(value);
-          var t=parsed['Table'] as List;
+          var t=parsed['Table'] as List?;
           print(parsed);
 
 
           if(vehicleId!=null){
-            editVehicleId=t[0]['VehicleId'];
+            editVehicleId=t![0]['VehicleId'];
             VehicleNo.text=t[0]['VehicleNumber'];
             VehicleDescript.text=t[0]['VehicleDescription'];
             selectedVehicleTypeName=t[0]['VehicleTypeName'];
@@ -275,7 +275,7 @@ class VehicleNotifier extends ChangeNotifier{
             VehicleWeight.text=t[0]['EmptyWeightOfVehicle'];
           }
           else{
-            vehicleGridList=t.map((e) => VehicleGridModel.fromJson(e)).toList();
+            vehicleGridList=t!.map((e) => VehicleGridModel.fromJson(e)).toList();
           }
 
         }

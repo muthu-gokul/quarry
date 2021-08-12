@@ -4,8 +4,8 @@ class PaymentTypeModel {
     this.paymentCategoryName,
   });
 
-  int paymentCategoryId;
-  String paymentCategoryName;
+  int? paymentCategoryId;
+  String? paymentCategoryName;
 
   factory PaymentTypeModel.fromJson(Map<String, dynamic> json) => PaymentTypeModel(
     paymentCategoryId: json["PaymentCategoryId"],

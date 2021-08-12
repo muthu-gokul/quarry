@@ -42,36 +42,36 @@ import 'package:quarry/styles/size.dart';
 ///itemsVisibleInDropdown - int - Number of suggestions to be shown by default in the Dropdown after which the list scrolls. Defaults to 3
 class DropDownField extends FormField<String> {
   final dynamic value;
-  final Widget icon;
-  final String hintText;
+  final Widget? icon;
+  final String? hintText;
   final TextStyle hintStyle;
-  final String labelText;
+  final String? labelText;
   final TextStyle labelStyle;
   final TextStyle textStyle;
   final bool required;
   final bool enabled;
-  final List<dynamic> items;
-  final List<TextInputFormatter> inputFormatters;
-  final FormFieldSetter<dynamic> setter;
-  final ValueChanged<dynamic> onValueChanged;
+  final List<dynamic>? items;
+  final List<TextInputFormatter>? inputFormatters;
+  final FormFieldSetter<dynamic>? setter;
+  final ValueChanged<dynamic>? onValueChanged;
   final bool strict;
   final int itemsVisibleInDropdown;
-  VoidCallback nodeFocus;
-  VoidCallback add;
-  VoidCallback ontap;
-  VoidCallback onEditingcomplete;
-  String unit;
-  double reduceWidth;
+  VoidCallback? nodeFocus;
+  VoidCallback? add;
+  VoidCallback? ontap;
+  VoidCallback? onEditingcomplete;
+  String? unit;
+  double? reduceWidth;
   /// Controls the text being edited.
   ///
   /// If null, this widget will create its own [TextEditingController] and
   /// initialize its [TextEditingController.text] with [initialValue].
-  final TextEditingController controller;
-  final TextEditingController qtycontroller;
+  final TextEditingController? controller;
+  final TextEditingController? qtycontroller;
 
 
   DropDownField(
-      {Key key,
+      {Key? key,
         this.controller,
         this.value,
         this.required: false,
@@ -104,7 +104,7 @@ class DropDownField extends FormField<String> {
     initialValue: controller != null ? controller.text : (value ?? ''),
     onSaved: setter,
     builder: (FormFieldState<String> field) {
-      final DropDownFieldState state = field;
+      final DropDownFieldState state = field as DropDownFieldState;
       final ScrollController _scrollController = ScrollController();
       final InputDecoration effectiveDecoration = InputDecoration(
           border: OutlineInputBorder(
@@ -137,7 +137,7 @@ class DropDownField extends FormField<String> {
         constraints: BoxConstraints(
           minHeight:20
         ),
-        margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,top:SizeConfig.height20,),
+        margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!,top:SizeConfig.height20!,),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -151,14 +151,14 @@ class DropDownField extends FormField<String> {
                   height:50,
                   //width: SizeConfig.screenWidth-(SizeConfig.width40),
 
-                  width: SizeConfig.screenWidth-(reduceWidth),
+                  width: SizeConfig.screenWidth!-reduceWidth!,
                   constraints: BoxConstraints(
                       minHeight:20
                   ),
                   child: TextFormField(
                     onTap: (){
                       state._showdropdown=true;
-                      ontap();
+                      ontap!();
                     },
                     // autovalidate: true,
                     controller: state._effectiveController,
@@ -194,19 +194,19 @@ class DropDownField extends FormField<String> {
 
                         // print(items.length);
                       }
-                      add();
-                      state._getChildren( items);
+                      add!();
+                      state._getChildren( items as List<String?>);
                       // print(state.noitems);
                     },
                     onEditingComplete: (){
-                      state._effectiveController.text = state._searchText;
+                      state._effectiveController!.text = state._searchText;
                      // state.clearValue();
                       state._showdropdown=false;
                       // state._showdropdown=false;
                       print(state._showdropdown);
-                      nodeFocus();
+                      nodeFocus!();
                       SystemChannels.textInput.invokeMethod('TextInput.hide');
-                      onEditingcomplete();
+                      onEditingcomplete!();
                     },
 
                     onSaved: setter,
@@ -290,7 +290,7 @@ class DropDownField extends FormField<String> {
               // alignment: Alignment.centerLeft,
               height: itemsVisibleInDropdown * 48.0, //limit to default 3 items in dropdownlist view and then remaining scrolls
               //width: SizeConfig.screenWidth-(SizeConfig.width40),
-              width: SizeConfig.screenWidth-(reduceWidth),
+              width: SizeConfig.screenWidth!-(reduceWidth),
 
               // margin: EdgeInsets.only(left: 20),
               decoration: BoxDecoration(
@@ -314,12 +314,12 @@ class DropDownField extends FormField<String> {
                   scrollDirection: Axis.vertical,
                   controller: _scrollController,
                   // padding: EdgeInsets.only(left: 40.0),
-                  children: items.isNotEmpty
+                  children: items!.isNotEmpty
                       ? ListTile.divideTiles(
                       context: field.context,
-                      tiles: state._getChildren(state._items))
+                      tiles: state._getChildren(state._items!))
                       .toList()
-                      : List(),
+                      : [],
                 ),
               ),
             ):Container(),
@@ -334,24 +334,24 @@ class DropDownField extends FormField<String> {
 }
 
 class DropDownFieldState extends FormFieldState<String> {
-  TextEditingController _controller;
+  TextEditingController? _controller;
   bool _showdropdown = false;
   bool _isSearching = true;
   String _searchText = "";
 
   bool noitems=false;
   @override
-  DropDownField get widget => super.widget;
-  TextEditingController get _effectiveController =>
+  DropDownField get widget => super.widget as DropDownField;
+  TextEditingController? get _effectiveController =>
       widget.controller ?? _controller;
 
-  List<String> get _items => widget.items;
+  List<String?>? get _items => widget.items as List<String?>?;
   var node;
   void toggleDropDownVisibility() {}
 
   void clearValue() {
     setState(() {
-      _effectiveController.text = '';
+      _effectiveController!.text = '';
     });
   }
 
@@ -366,9 +366,9 @@ class DropDownFieldState extends FormFieldState<String> {
 
       if (oldWidget.controller != null && widget.controller == null)
         _controller =
-            TextEditingController.fromValue(oldWidget.controller.value);
+            TextEditingController.fromValue(oldWidget.controller!.value);
       if (widget.controller != null) {
-        setValue(widget.controller.text);
+        setValue(widget.controller!.text);
         if (oldWidget.controller == null) _controller = null;
       }
     }
@@ -391,16 +391,16 @@ class DropDownFieldState extends FormFieldState<String> {
       _controller = TextEditingController(text: widget.initialValue);
     }
 
-    _effectiveController.addListener(_handleControllerChanged);
+    _effectiveController!.addListener(_handleControllerChanged);
 
-    _searchText = _effectiveController.text;
+    _searchText = _effectiveController!.text;
   }
 
   @override
   void reset() {
     super.reset();
     setState(() {
-      _effectiveController.text = widget.initialValue;
+      _effectiveController!.text = widget.initialValue!;
     });
   }
 
@@ -411,24 +411,24 @@ class DropDownFieldState extends FormFieldState<String> {
     });
   }
 
-  List<ListTile> _getChildren(List<String> items) {
-    List<ListTile> childItems = List();
+  List<ListTile> _getChildren(List<String?> items) {
+    List<ListTile> childItems = [];
     for (var item in items) {
       if (_searchText.isNotEmpty) {
-        if (item.toUpperCase().contains(_searchText.toUpperCase())){
+        if (item!.toUpperCase().contains(_searchText.toUpperCase())){
           childItems.add(_getListTile(item));
           setState(() {
             noitems=false;
           });
         }
       } else {
-        childItems.add(_getListTile(item));
+        childItems.add(_getListTile(item!));
         setState(() {
           noitems=false;
         });
       }
     }
-    _isSearching ? childItems : List();
+    _isSearching ? childItems : [];
     // print(childItems.length);
     if(childItems.length==0){
       setState(() {
@@ -451,11 +451,11 @@ class DropDownFieldState extends FormFieldState<String> {
         // node.unfocus();
         SystemChannels.textInput.invokeMethod('TextInput.hide');
         setState(() {
-          _effectiveController.text = text;
+          _effectiveController!.text = text;
           _handleControllerChanged();
           _showdropdown = false;
           _isSearching = false;
-          if (widget.onValueChanged != null) widget.onValueChanged(text);
+          if (widget.onValueChanged != null) widget.onValueChanged!(text);
         });
       },
     );
@@ -469,10 +469,10 @@ class DropDownFieldState extends FormFieldState<String> {
     // notifications for changes originating from within this class -- for
     // example, the reset() method. In such cases, the FormField value will
     // already have been set.
-    if (_effectiveController.text != value)
-      didChange(_effectiveController.text);
+    if (_effectiveController!.text != value)
+      didChange(_effectiveController!.text);
 
-    if (_effectiveController.text.isEmpty) {
+    if (_effectiveController!.text.isEmpty) {
       setState(() {
         _isSearching = false;
         _searchText = "";
@@ -480,7 +480,7 @@ class DropDownFieldState extends FormFieldState<String> {
     } else {
       setState(() {
         _isSearching = true;
-        _searchText = _effectiveController.text;
+        _searchText = _effectiveController!.text;
        _showdropdown = true;
       });
 

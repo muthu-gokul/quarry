@@ -68,26 +68,26 @@ class ControlledAnimation<T> extends StatefulWidget {
   final Animatable<T> tween;
   final Curve curve;
   final Duration duration;
-  final Duration delay;
-  final Widget Function(BuildContext buildContext, T animatedValue) builder;
-  final Widget Function(BuildContext, Widget child, T animatedValue)
+  final Duration? delay;
+  final Widget Function(BuildContext buildContext, T animatedValue)? builder;
+  final Widget Function(BuildContext, Widget? child, T animatedValue)?
   builderWithChild;
-  final Widget child;
-  final AnimationStatusListener animationControllerStatusListener;
+  final Widget? child;
+  final AnimationStatusListener? animationControllerStatusListener;
   final double startPosition;
 
   ControlledAnimation(
       {this.playback = Playback.PLAY_FORWARD,
-        this.tween,
+        required this.tween,
         this.curve = Curves.linear,
-        this.duration,
+        required this.duration,
         this.delay,
         this.builder,
         this.builderWithChild,
         this.child,
         this.animationControllerStatusListener,
         this.startPosition = 0.0,
-        Key key})
+        Key? key})
       : assert(duration != null,
   "Please set property duration. Example: Duration(milliseconds: 500)"),
         assert(tween != null,
@@ -109,8 +109,8 @@ class ControlledAnimation<T> extends StatefulWidget {
 
 class _ControlledAnimationState<T> extends State<ControlledAnimation<T>>
     with SingleTickerProviderStateMixin {
-  AnimationController _controller;
-  Animation<T> _animation;
+  late AnimationController _controller;
+  late Animation<T> _animation;
   bool _isDisposed = false;
   bool _waitForDelay = true;
   bool _isCurrentlyMirroring = false;
@@ -128,7 +128,7 @@ class _ControlledAnimationState<T> extends State<ControlledAnimation<T>>
         .animate(_controller);
 
     if (widget.animationControllerStatusListener != null) {
-      _controller.addStatusListener(widget.animationControllerStatusListener);
+      _controller.addStatusListener(widget.animationControllerStatusListener!);
     }
 
     initialize();
@@ -137,7 +137,7 @@ class _ControlledAnimationState<T> extends State<ControlledAnimation<T>>
 
   void initialize() async {
     if (widget.delay != null) {
-      await Future.delayed(widget.delay);
+      await Future.delayed(widget.delay!);
     }
     _waitForDelay = false;
     executeInstruction();
@@ -191,9 +191,9 @@ class _ControlledAnimationState<T> extends State<ControlledAnimation<T>>
   @override
   Widget build(BuildContext context) {
     if (widget.builder != null) {
-      return widget.builder(context, _animation.value);
+      return widget.builder!(context, _animation.value);
     } else if (widget.builderWithChild != null && widget.child != null) {
-      return widget.builderWithChild(context, widget.child, _animation.value);
+      return widget.builderWithChild!(context, widget.child, _animation.value);
     }
     return Container();
   }

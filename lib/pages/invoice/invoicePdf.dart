@@ -42,7 +42,7 @@ invoicePdf(context,bool view) async {
 
                     pw.Text("Invoice",style: pw.TextStyle(fontSize: 30,color: PdfColor.fromInt(0xFF3b3b3d),fontWeight: pw.FontWeight.bold)),
                     pw.Spacer(),
-                    pw.Text(inv.pdfHeader[0]['InvoiceDate']==null?"":"${DateFormat.yMMMd().format(DateTime.parse(inv.pdfHeader[0]['InvoiceDate']))}",
+                    pw.Text(inv.pdfHeader![0]['InvoiceDate']==null?"":"${DateFormat.yMMMd().format(DateTime.parse(inv.pdfHeader![0]['InvoiceDate']))}",
                         style: pw.TextStyle(fontSize: 20,color: PdfColor.fromInt(0xFF3b3b3d),fontWeight: pw.FontWeight.bold)),
 
                   ]
@@ -67,7 +67,7 @@ invoicePdf(context,bool view) async {
                         pw.Text("From",style: pw.TextStyle(fontSize: 16,color: PdfColor.fromInt(0xFF3b3b3d),fontWeight: pw.FontWeight.bold)),
                         pw.SizedBox(height: 10),
                         pw.FittedBox(
-                          child:  pw.Text(inv.pdfHeader[0]['InvoiceType']=='Receivable'?"${inv.pdfHeader[0]['PlantName']}":"${inv.pdfHeader[0]['PartyName']}",
+                          child:  pw.Text(inv.pdfHeader![0]['InvoiceType']=='Receivable'?"${inv.pdfHeader![0]['PlantName']}":"${inv.pdfHeader![0]['PartyName']}",
                               style: pw.TextStyle(fontSize: 25,color: PdfColor.fromInt(0xFF3b3b3d),fontWeight: pw.FontWeight.bold)),
                         ),
                         pw.SizedBox(height: 10),
@@ -86,7 +86,7 @@ invoicePdf(context,bool view) async {
                         pw.Text("To",style: pw.TextStyle(fontSize: 16,color: PdfColor.fromInt(0xFF3b3b3d),fontWeight: pw.FontWeight.bold)),
                         pw.SizedBox(height: 10),
                         pw.FittedBox(
-                          child:  pw.Text(inv.pdfHeader[0]['InvoiceType']=='Receivable'?"${inv.pdfHeader[0]['PartyName']}":"${inv.pdfHeader[0]['PlantName']}",
+                          child:  pw.Text(inv.pdfHeader![0]['InvoiceType']=='Receivable'?"${inv.pdfHeader![0]['PartyName']}":"${inv.pdfHeader![0]['PlantName']}",
                               style: pw.TextStyle(fontSize: 25,color: PdfColor.fromInt(0xFF3b3b3d),fontWeight: pw.FontWeight.bold)),
                         ),
                         pw.SizedBox(height: 10),
@@ -115,7 +115,7 @@ invoicePdf(context,bool view) async {
                               text: 'Invoice : ',
                               style:pw.TextStyle(fontSize: 14,color: PdfColor.fromInt(0xFF3b3b3d),fontWeight: pw.FontWeight.bold),
                               children: <TextSpan>[
-                                TextSpan(text: '${inv.pdfHeader[0]['InvoiceNumber']}', style: pw.TextStyle(fontSize: 16,color: PdfColor.fromInt(0xFF3b3b3d),fontWeight: pw.FontWeight.normal)),
+                                TextSpan(text: '${inv.pdfHeader![0]['InvoiceNumber']}', style: pw.TextStyle(fontSize: 16,color: PdfColor.fromInt(0xFF3b3b3d),fontWeight: pw.FontWeight.normal)),
                               ],
                             ),
                           ),
@@ -131,7 +131,7 @@ invoicePdf(context,bool view) async {
                               text: 'Purchase No : ',
                               style:pw.TextStyle(fontSize: 14,color: PdfColor.fromInt(0xFF3b3b3d),fontWeight: pw.FontWeight.bold),
                               children: <TextSpan>[
-                                TextSpan(text: '${inv.pdfHeader[0]['PurchaseNumber']??""}', style: pw.TextStyle(fontSize: 16,color: PdfColor.fromInt(0xFF3b3b3d),fontWeight: pw.FontWeight.normal)),
+                                TextSpan(text: '${inv.pdfHeader![0]['PurchaseNumber']??""}', style: pw.TextStyle(fontSize: 16,color: PdfColor.fromInt(0xFF3b3b3d),fontWeight: pw.FontWeight.normal)),
                               ],
                             ),
                           ),
@@ -146,7 +146,7 @@ invoicePdf(context,bool view) async {
                               text: 'Expected Date : ',
                               style:pw.TextStyle(fontSize: 14,color: PdfColor.fromInt(0xFF3b3b3d),fontWeight: pw.FontWeight.bold),
                               children: <TextSpan>[
-                                TextSpan(text: '${inv.pdfHeader[0]['ExpectedDate']==null?"":DateFormat.yMMMd().format(DateTime.parse(inv.pdfHeader[0]['ExpectedDate']))}',
+                                TextSpan(text: '${inv.pdfHeader![0]['ExpectedDate']==null?"":DateFormat.yMMMd().format(DateTime.parse(inv.pdfHeader![0]['ExpectedDate']))}',
                                     style: pw.TextStyle(fontSize: 16,color: PdfColor.fromInt(0xFF3b3b3d),fontWeight: pw.FontWeight.normal)),
                               ],
                             ),
@@ -309,11 +309,11 @@ invoicePdf(context,bool view) async {
                     mainAxisAlignment: pw.MainAxisAlignment.start,
                     crossAxisAlignment: pw.CrossAxisAlignment.start,
                     children: [
-                      Text(inv.pdfHeader[0]['Notes']==null?"":"Notes: ",style: pw.TextStyle(fontSize: 18,color: PdfColor.fromInt(0xFF3b3b3d),fontWeight: pw.FontWeight.bold)),
-                      Text("${inv.pdfHeader[0]['Notes']??""}",style: pw.TextStyle(fontSize: 16,color: PdfColor.fromInt(0xFF3b3b3d),fontWeight: pw.FontWeight.normal)),
+                      Text(inv.pdfHeader![0]['Notes']==null?"":"Notes: ",style: pw.TextStyle(fontSize: 18,color: PdfColor.fromInt(0xFF3b3b3d),fontWeight: pw.FontWeight.bold)),
+                      Text("${inv.pdfHeader![0]['Notes']??""}",style: pw.TextStyle(fontSize: 16,color: PdfColor.fromInt(0xFF3b3b3d),fontWeight: pw.FontWeight.normal)),
                       pw.SizedBox(height: 20),
-                      Text(inv.pdfHeader[0]['TermsandConditions']==null?"":"Terms and Conditions: ",style: pw.TextStyle(fontSize: 18,color: PdfColor.fromInt(0xFF3b3b3d),fontWeight: pw.FontWeight.bold)),
-                      Text("${inv.pdfHeader[0]['TermsandConditions']??""}",style: pw.TextStyle(fontSize: 16,color: PdfColor.fromInt(0xFF3b3b3d),fontWeight: pw.FontWeight.normal)),
+                      Text(inv.pdfHeader![0]['TermsandConditions']==null?"":"Terms and Conditions: ",style: pw.TextStyle(fontSize: 18,color: PdfColor.fromInt(0xFF3b3b3d),fontWeight: pw.FontWeight.bold)),
+                      Text("${inv.pdfHeader![0]['TermsandConditions']??""}",style: pw.TextStyle(fontSize: 16,color: PdfColor.fromInt(0xFF3b3b3d),fontWeight: pw.FontWeight.normal)),
                       pw.SizedBox(height: 20),
                     ]
                   )
@@ -326,15 +326,15 @@ invoicePdf(context,bool view) async {
                         crossAxisAlignment: pw.CrossAxisAlignment.end,
                         children: [
                           pw.FittedBox(
-                            child: Text("Sub Total Amount : ${inv.pdfHeader[0]['Subtotal']}",style: pw.TextStyle(fontSize: 18,color: PdfColor.fromInt(0xFF3b3b3d),fontWeight: pw.FontWeight.normal))
+                            child: Text("Sub Total Amount : ${inv.pdfHeader![0]['Subtotal']}",style: pw.TextStyle(fontSize: 18,color: PdfColor.fromInt(0xFF3b3b3d),fontWeight: pw.FontWeight.normal))
                           ),
                           pw.SizedBox(height: 10),
                           pw.FittedBox(
-                              child: Text("GST : ${inv.pdfHeader[0]['TaxAmount']}",style: pw.TextStyle(fontSize: 18,color: PdfColor.fromInt(0xFF3b3b3d),fontWeight: pw.FontWeight.normal))
+                              child: Text("GST : ${inv.pdfHeader![0]['TaxAmount']}",style: pw.TextStyle(fontSize: 18,color: PdfColor.fromInt(0xFF3b3b3d),fontWeight: pw.FontWeight.normal))
                           ),
                           pw.SizedBox(height: 10),
-                          inv.pdfHeader[0]['DiscountAmount']>0?pw.FittedBox(
-                              child: Text("Discount : -${inv.pdfHeader[0]['DiscountAmount']}",style: pw.TextStyle(fontSize: 18,color: PdfColor.fromInt(0xFF3b3b3d),fontWeight: pw.FontWeight.normal))
+                          inv.pdfHeader![0]['DiscountAmount']>0?pw.FittedBox(
+                              child: Text("Discount : -${inv.pdfHeader![0]['DiscountAmount']}",style: pw.TextStyle(fontSize: 18,color: PdfColor.fromInt(0xFF3b3b3d),fontWeight: pw.FontWeight.normal))
                           ):pw.Container(),
                           pw.SizedBox(height:otherCharges>0? 10:0),
                           otherCharges>0?  pw.FittedBox(
@@ -347,7 +347,7 @@ invoicePdf(context,bool view) async {
                           ),
                           pw.SizedBox(height: 20),
                           pw.FittedBox(
-                              child: Text("Total : ${inv.pdfHeader[0]['GrandTotalAmount']}",style: pw.TextStyle(fontSize: 25,color: PdfColor.fromInt(0xFF3b3b3d),fontWeight: pw.FontWeight.bold))
+                              child: Text("Total : ${inv.pdfHeader![0]['GrandTotalAmount']}",style: pw.TextStyle(fontSize: 25,color: PdfColor.fromInt(0xFF3b3b3d),fontWeight: pw.FontWeight.bold))
                           ),
                           pw.SizedBox(height: 10),
                         ]
@@ -364,7 +364,7 @@ invoicePdf(context,bool view) async {
 
   final String dirr ='/storage/emulated/0/Download/quarry/invoice';
 
-  String filename="${inv.pdfHeader[0]['InvoiceNumber']}";
+  String filename="${inv.pdfHeader![0]['InvoiceNumber']}";
   await Directory('/storage/emulated/0/Download/quarry/invoice').create(recursive: true);
   final String path = '$dirr/$filename.pdf';
 

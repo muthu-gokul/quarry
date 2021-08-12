@@ -28,8 +28,8 @@ class ReportSettingsState extends State<ReportSettings> with TickerProviderState
   GlobalKey <ScaffoldState> scaffoldkey = new GlobalKey<ScaffoldState>();
 
 
-  ScrollController scrollController;
-  ScrollController listViewController;
+  ScrollController? scrollController;
+  ScrollController? listViewController;
 
   bool _keyboardVisible = false;
 
@@ -41,7 +41,7 @@ class ReportSettingsState extends State<ReportSettings> with TickerProviderState
   @override
   void initState() {
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       scrollController = new ScrollController();
       listViewController = new ScrollController();
 
@@ -98,7 +98,7 @@ class ReportSettingsState extends State<ReportSettings> with TickerProviderState
                       children: [
                         SizedBox(height: 160,),
                         Container(
-                          height: SizeConfig.screenHeight - 60,
+                          height: SizeConfig.screenHeight! - 60,
                           width: SizeConfig.screenWidth,
                           alignment: Alignment.topCenter,
                           decoration: BoxDecoration(
@@ -111,7 +111,7 @@ class ReportSettingsState extends State<ReportSettings> with TickerProviderState
                               int sensitivity = 5;
 
                               if (details.delta.dy > sensitivity) {
-                                scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
+                                scrollController!.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
                                   if(isListScroll){
 
                                     setState(() {
@@ -121,7 +121,7 @@ class ReportSettingsState extends State<ReportSettings> with TickerProviderState
                                 });
 
                               } else if(details.delta.dy < -sensitivity){
-                                scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
+                                scrollController!.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
 
                                   if(!isListScroll){
 
@@ -134,7 +134,7 @@ class ReportSettingsState extends State<ReportSettings> with TickerProviderState
                               }
                             },
                             child: Container(
-                              height: _keyboardVisible ? SizeConfig.screenHeight * 0.5 : SizeConfig.screenHeight - 100,
+                              height: _keyboardVisible ? SizeConfig.screenHeight! * 0.5 : SizeConfig.screenHeight! - 100,
                               width: SizeConfig.screenWidth,
 
                               decoration: BoxDecoration(
@@ -148,13 +148,13 @@ class ReportSettingsState extends State<ReportSettings> with TickerProviderState
                                   if(s is ScrollStartNotification){
 
                                     //    print(listViewController.position);
-                                    if(listViewController.offset==0 && isListScroll && scrollController.offset==100 && listViewController.position.userScrollDirection==ScrollDirection.idle){
+                                    if(listViewController!.offset==0 && isListScroll && scrollController!.offset==100 && listViewController!.position.userScrollDirection==ScrollDirection.idle){
 
                                       Timer(Duration(milliseconds: 100), (){
-                                        if(listViewController.position.userScrollDirection!=ScrollDirection.reverse){
-                                          if(scrollController.position.pixels == scrollController.position.maxScrollExtent){
+                                        if(listViewController!.position.userScrollDirection!=ScrollDirection.reverse){
+                                          if(scrollController!.position.pixels == scrollController!.position.maxScrollExtent){
                                             //scroll end
-                                            scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value) {
+                                            scrollController!.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value) {
                                               if(isListScroll){
                                                 setState(() {
                                                   isListScroll=false;
@@ -169,7 +169,8 @@ class ReportSettingsState extends State<ReportSettings> with TickerProviderState
 
                                     }
                                   }
-                                },
+                                  return true;
+                                } ,
                                 child: ListView(
                                   physics: isListScroll?AlwaysScrollableScrollPhysics():NeverScrollableScrollPhysics(),
                                   controller: listViewController,
@@ -256,7 +257,7 @@ class ReportSettingsState extends State<ReportSettings> with TickerProviderState
                         Container(
                           margin:EdgeInsets.only(top: 0),
                           child: CustomPaint(
-                            size: Size( SizeConfig.screenWidth, 65),
+                            size: Size( SizeConfig.screenWidth!, 65),
                             painter: RPSCustomPainter3(),
                           ),
                         ),
@@ -397,12 +398,12 @@ class ReportSettingsState extends State<ReportSettings> with TickerProviderState
 class ReportSettingsHeader extends StatefulWidget {
 
 
-  String title;
-  List<dynamic> list=[];
-  String instanceName;
-  int index;
-  List<int> all;
-  VoidCallback ontap;
+  String? title;
+  List<dynamic>? list=[];
+  String? instanceName;
+  int? index;
+  List<int>? all;
+  VoidCallback? ontap;
 
   ReportSettingsHeader({  this.title,this.list,this.instanceName,this.index,this.all,this.ontap});
 
@@ -411,8 +412,8 @@ class ReportSettingsHeader extends StatefulWidget {
 }
 
 class _ReportSettingsHeaderState extends State<ReportSettingsHeader> with TickerProviderStateMixin{
-  Animation arrowAnimation;
-  AnimationController arrowAnimationController;
+  late Animation arrowAnimation;
+  late AnimationController arrowAnimationController;
   bool open=false;
 
   @override
@@ -436,20 +437,20 @@ class _ReportSettingsHeaderState extends State<ReportSettingsHeader> with Ticker
             setState(() {
               open=!open;
             });
-            widget.ontap();
+            widget.ontap!();
           },
           child: Container(
             height: 50,
             width: SizeConfig.screenWidth,
-            margin: EdgeInsets.only(left: SizeConfig.width20,right: SizeConfig.width20,top: 20),
-            padding: EdgeInsets.only(left: SizeConfig.width10,right: SizeConfig.width10),
+            margin: EdgeInsets.only(left: SizeConfig.width20!,right: SizeConfig.width20!,top: 20),
+            padding: EdgeInsets.only(left: SizeConfig.width10!,right: SizeConfig.width10!),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(25),
               color: AppTheme.yellowColor,
             ),
             child: Row(
               children: [
-                Text(widget.title,style:TextStyle(fontFamily: 'RM',color: AppTheme.bgColor,fontSize: 16)),
+                Text(widget.title!,style:TextStyle(fontFamily: 'RM',color: AppTheme.bgColor,fontSize: 16)),
                 Spacer(),
                 Container(
                   height: 30,
@@ -479,8 +480,8 @@ class _ReportSettingsHeaderState extends State<ReportSettingsHeader> with Ticker
           duration: Duration(milliseconds: 300),
           curve: Curves.easeIn,
           width: SizeConfig.screenWidth,
-          height:!open ?0: (widget.list.length*50.0)+50,
-          margin: EdgeInsets.only(left: SizeConfig.width40,right: SizeConfig.width40),
+          height:!open ?0: (widget.list!.length*50.0)+50,
+          margin: EdgeInsets.only(left: SizeConfig.width40!,right: SizeConfig.width40!),
           child: Column(
             children: [
               Container(
@@ -493,15 +494,15 @@ class _ReportSettingsHeaderState extends State<ReportSettingsHeader> with Ticker
                       onTap: (){
 
                         setState(() {
-                          if(widget.all[widget.index]==1){
-                            widget.all[widget.index]=0;
+                          if(widget.all![widget.index!]==1){
+                            widget.all![widget.index!]=0;
                           }
-                          else if(widget.all[widget.index]==0){
-                            widget.all[widget.index]=1;
+                          else if(widget.all![widget.index!]==0){
+                            widget.all![widget.index!]=1;
                           }
 
-                          widget.list.forEach((element) {
-                            element['IsActive']=widget.all[widget.index];
+                          widget.list!.forEach((element) {
+                            element['IsActive']=widget.all![widget.index!];
                           });
                         });
 
@@ -517,11 +518,11 @@ class _ReportSettingsHeaderState extends State<ReportSettingsHeader> with Ticker
                         width: 20,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(3),
-                           border: Border.all(color:widget.all[widget.index]==1?Colors.transparent: AppTheme.addNewTextFieldBorder.withOpacity(0.5)),
-                            color:widget.all[widget.index]==1?AppTheme.yellowColor: AppTheme.disableColor
+                           border: Border.all(color:widget.all![widget.index!]==1?Colors.transparent: AppTheme.addNewTextFieldBorder.withOpacity(0.5)),
+                            color:widget.all![widget.index!]==1?AppTheme.yellowColor: AppTheme.disableColor
                         ),
                         child: Center(
-                         child: Icon(Icons.done,color:widget.all[widget.index]==1?AppTheme.bgColor: AppTheme.addNewTextFieldBorder.withOpacity(0.8),size: 15,),
+                         child: Icon(Icons.done,color:widget.all![widget.index!]==1?AppTheme.bgColor: AppTheme.addNewTextFieldBorder.withOpacity(0.8),size: 15,),
                         ),
 
                       ),
@@ -532,18 +533,18 @@ class _ReportSettingsHeaderState extends State<ReportSettingsHeader> with Ticker
               Expanded(
                 child: ListView.builder(
                   physics: NeverScrollableScrollPhysics(),
-                  itemCount: widget.list.length,
+                  itemCount: widget.list!.length,
                   itemBuilder: (context,index){
                     return  Container(
                       height: 50,
                       child: Row(
                         children: [
                           Container(
-                            width:SizeConfig.screenWidth*0.6,
-                              child: widget.title=="Location Filter"?Text("${widget.list[index][widget.instanceName].toString().isEmpty?"Empty":
-                              widget.list[index][widget.instanceName]}",
+                            width:SizeConfig.screenWidth!*0.6,
+                              child: widget.title=="Location Filter"?Text("${widget.list![index][widget.instanceName].toString().isEmpty?"Empty":
+                              widget.list![index][widget.instanceName]}",
                                 style:TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 14),) :
-                                    Text("${widget.list[index][widget.instanceName]}",
+                                    Text("${widget.list![index][widget.instanceName]}",
                                 style:TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 14),)
                           ),
                           Spacer(),
@@ -551,28 +552,28 @@ class _ReportSettingsHeaderState extends State<ReportSettingsHeader> with Ticker
                             onTap: (){
 
                               setState(() {
-                                 if(widget.list[index]['IsActive']==1){
-                                  widget.list[index]['IsActive']=0;
+                                 if(widget.list![index]['IsActive']==1){
+                                  widget.list![index]['IsActive']=0;
                                 }
-                                else if(widget.list[index]['IsActive']==0){
-                                  widget.list[index]['IsActive']=1;
+                                else if(widget.list![index]['IsActive']==0){
+                                  widget.list![index]['IsActive']=1;
                                 }
                               });
 
                               int count=0;
-                              widget.list.forEach((element) {
+                              widget.list!.forEach((element) {
                                 if(element['IsActive']==1){
                                   count=count+1;
                                 }
                               });
-                              if(count==widget.list.length){
+                              if(count==widget.list!.length){
                                 setState(() {
-                                  widget.all[widget.index]=1;
+                                  widget.all![widget.index!]=1;
                                 });
                               }
                               else{
                                 setState(() {
-                                  widget.all[widget.index]=0;
+                                  widget.all![widget.index!]=0;
                                 });
                               }
 
@@ -585,11 +586,11 @@ class _ReportSettingsHeaderState extends State<ReportSettingsHeader> with Ticker
                               width: 20,
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(3),
-                                  border: Border.all(color:widget.list[index]['IsActive']==1?Colors.transparent: AppTheme.addNewTextFieldBorder.withOpacity(0.5)),
-                                  color:widget.list[index]['IsActive']==1?AppTheme.yellowColor: AppTheme.disableColor
+                                  border: Border.all(color:widget.list![index]['IsActive']==1?Colors.transparent: AppTheme.addNewTextFieldBorder.withOpacity(0.5)),
+                                  color:widget.list![index]['IsActive']==1?AppTheme.yellowColor: AppTheme.disableColor
                               ),
                               child: Center(
-                                child: Icon(Icons.done,color:widget.list[index]['IsActive']==1?AppTheme.bgColor: AppTheme.addNewTextFieldBorder.withOpacity(0.8),size: 15,),
+                                child: Icon(Icons.done,color:widget.list![index]['IsActive']==1?AppTheme.bgColor: AppTheme.addNewTextFieldBorder.withOpacity(0.8),size: 15,),
                               ),
 
                             ),
@@ -612,11 +613,11 @@ class _ReportSettingsHeaderState extends State<ReportSettingsHeader> with Ticker
 
 class ReportSettingsColumnFilter extends StatefulWidget {
 
-  String title;
-  List<dynamic> list=[];
-  String instanceName;
-  List<bool> all;
-  VoidCallback ontap;
+  String? title;
+  List<dynamic>? list=[];
+  String? instanceName;
+  List<bool>? all;
+  VoidCallback? ontap;
 
   ReportSettingsColumnFilter({  this.title,this.list,this.instanceName,this.all,this.ontap});
   @override
@@ -626,8 +627,8 @@ class ReportSettingsColumnFilter extends StatefulWidget {
 class _ReportSettingsColumnFilterState extends State<ReportSettingsColumnFilter> with TickerProviderStateMixin{
 
 
-  Animation arrowAnimation;
-  AnimationController arrowAnimationController;
+  late Animation arrowAnimation;
+  late AnimationController arrowAnimationController;
   bool open=false;
 
 
@@ -658,15 +659,15 @@ class _ReportSettingsColumnFilterState extends State<ReportSettingsColumnFilter>
           child: Container(
             height: 50,
             width: SizeConfig.screenWidth,
-            margin: EdgeInsets.only(left: SizeConfig.width20,right: SizeConfig.width20,top: 20),
-            padding: EdgeInsets.only(left: SizeConfig.width10,right: SizeConfig.width10),
+            margin: EdgeInsets.only(left: SizeConfig.width20!,right: SizeConfig.width20!,top: 20),
+            padding: EdgeInsets.only(left: SizeConfig.width10!,right: SizeConfig.width10!),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(25),
               color: AppTheme.yellowColor,
             ),
             child: Row(
               children: [
-                Text(widget.title,style:TextStyle(fontFamily: 'RM',color: AppTheme.bgColor,fontSize: 16)),
+                Text(widget.title!,style:TextStyle(fontFamily: 'RM',color: AppTheme.bgColor,fontSize: 16)),
                 Spacer(),
                 Container(
                   height: 30,
@@ -697,8 +698,8 @@ class _ReportSettingsColumnFilterState extends State<ReportSettingsColumnFilter>
           duration: Duration(milliseconds: 300),
           curve: Curves.easeIn,
           width: SizeConfig.screenWidth,
-          height:!open ?0: (widget.list.length*50.0),
-          margin: EdgeInsets.only(left: SizeConfig.width40,right: SizeConfig.width40),
+          height:!open ?0: (widget.list!.length*50.0),
+          margin: EdgeInsets.only(left: SizeConfig.width40!,right: SizeConfig.width40!),
           child: Column(
             children: [
               Container(
@@ -711,9 +712,9 @@ class _ReportSettingsColumnFilterState extends State<ReportSettingsColumnFilter>
                     onTap: (){
 
                       setState(() {
-                        widget.all[0]=!widget.all[0];
-                        widget.list.forEach((element) {
-                          element.isActive=widget.all[0];
+                        widget.all![0]=!widget.all![0];
+                        widget.list!.forEach((element) {
+                          element.isActive=widget.all![0];
                         });
                       });
 
@@ -727,11 +728,11 @@ class _ReportSettingsColumnFilterState extends State<ReportSettingsColumnFilter>
                       width: 20,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(3),
-                         border: Border.all(color:widget.all[0]?Colors.transparent: AppTheme.addNewTextFieldBorder.withOpacity(0.5)),
-                        color:widget.all[0]?AppTheme.yellowColor: AppTheme.disableColor
+                         border: Border.all(color:widget.all![0]?Colors.transparent: AppTheme.addNewTextFieldBorder.withOpacity(0.5)),
+                        color:widget.all![0]?AppTheme.yellowColor: AppTheme.disableColor
                       ),
                       child: Center(
-                        child: Icon(Icons.done,color:widget.all[0]?AppTheme.bgColor: AppTheme.addNewTextFieldBorder.withOpacity(0.8),size: 15,),
+                        child: Icon(Icons.done,color:widget.all![0]?AppTheme.bgColor: AppTheme.addNewTextFieldBorder.withOpacity(0.8),size: 15,),
                       ),
 
                     ),
@@ -742,35 +743,35 @@ class _ReportSettingsColumnFilterState extends State<ReportSettingsColumnFilter>
               Expanded(
                 child: ListView.builder(
                   physics: NeverScrollableScrollPhysics(),
-                  itemCount: widget.list.length,
+                  itemCount: widget.list!.length,
                   itemBuilder: (context,index){
                     return index==0?Container():  Container(
                       height: 50,
                       child: Row(
                         children: [
-                          Text("${widget.list[index].get(widget.instanceName)}",style:TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 14),),
+                          Text("${widget.list![index].get(widget.instanceName)}",style:TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 14),),
                           Spacer(),
                           GestureDetector(
                             onTap: (){
 
                               setState(() {
-                                widget.list[index].isActive=!widget.list[index].isActive;
+                                widget.list![index].isActive=!widget.list![index].isActive;
                               });
 
                               int count=0;
-                              widget.list.forEach((element) {
+                              widget.list!.forEach((element) {
                                 if(element.isActive){
                                   count=count+1;
                                 }
                               });
-                              if(count==widget.list.length){
+                              if(count==widget.list!.length){
                                 setState(() {
-                                  widget.all[0]=true;
+                                  widget.all![0]=true;
                                 });
                               }
                               else{
                                 setState(() {
-                                  widget.all[0]=false;
+                                  widget.all![0]=false;
                                 });
                               }
 
@@ -783,11 +784,11 @@ class _ReportSettingsColumnFilterState extends State<ReportSettingsColumnFilter>
                               width: 20,
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(3),
-                                  border: Border.all(color:widget.list[index].isActive?Colors.transparent: AppTheme.addNewTextFieldBorder.withOpacity(0.5)),
-                                  color:widget.list[index].isActive?AppTheme.yellowColor: AppTheme.disableColor
+                                  border: Border.all(color:widget.list![index].isActive?Colors.transparent: AppTheme.addNewTextFieldBorder.withOpacity(0.5)),
+                                  color:widget.list![index].isActive?AppTheme.yellowColor: AppTheme.disableColor
                               ),
                               child: Center(
-                                child: Icon(Icons.done,color:widget.list[index].isActive?AppTheme.bgColor: AppTheme.addNewTextFieldBorder.withOpacity(0.8),size: 15,),
+                                child: Icon(Icons.done,color:widget.list![index].isActive?AppTheme.bgColor: AppTheme.addNewTextFieldBorder.withOpacity(0.8),size: 15,),
                               ),
 
                             ),

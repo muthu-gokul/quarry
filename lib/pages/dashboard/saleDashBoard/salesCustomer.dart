@@ -20,17 +20,17 @@ import 'package:quarry/widgets/dateRangePicker.dart' as DateRagePicker;
 
 class SalesCustomer extends StatefulWidget {
 
-  List<dynamic> customerList;
-  double totalAmount;
-  String paymentType;
-  Color color;
+  List<dynamic>? customerList;
+  double? totalAmount;
+  String? paymentType;
+  Color? color;
   SalesCustomer({this.customerList,this.paymentType,this.totalAmount,this.color});
   @override
   _SalesCustomerState createState() => _SalesCustomerState();
 }
 
 class _SalesCustomerState extends State<SalesCustomer> {
-  ScrollController silverController;
+  ScrollController? silverController;
   double silverBodyTopMargin=0;
   List<DateTime> picked=[];
   int selIndex=-1;
@@ -38,23 +38,23 @@ class _SalesCustomerState extends State<SalesCustomer> {
   @override
   void initState() {
 
-    WidgetsBinding.instance.addPostFrameCallback((_){
+    WidgetsBinding.instance!.addPostFrameCallback((_){
       silverController=new ScrollController();
 
       setState(() {
         silverBodyTopMargin=0;
       });
 
-      silverController.addListener(() {
-        if(silverController.offset>250){
+      silverController!.addListener(() {
+        if(silverController!.offset>250){
           setState(() {
-            silverBodyTopMargin=50-(-(silverController.offset-300));
+            silverBodyTopMargin=50-(-(silverController!.offset-300));
             if(silverBodyTopMargin<0){
               silverBodyTopMargin=0;
             }
           });
         }
-        else if(silverController.offset<270){
+        else if(silverController!.offset<270){
           setState(() {
             silverBodyTopMargin=0;
           });
@@ -159,7 +159,7 @@ class _SalesCustomerState extends State<SalesCustomer> {
                   color: Color(0xFFF6F7F9),
                 ),
                 child: ListView.builder(
-                  itemCount: widget.customerList.length,
+                  itemCount: widget.customerList!.length,
                   itemBuilder: (ctx,i){
                     return Container(
                       height: 50,
@@ -171,8 +171,8 @@ class _SalesCustomerState extends State<SalesCustomer> {
                       ),
                       child: Row(
                         children: [
-                          Text("${widget.customerList[i]['CustomerName']??""} / ",style: TextStyle(fontFamily: 'RR',color: Color(0xFFBDBCBD),fontSize: 14),),
-                          Text("${formatCurrency.format(widget.customerList[i]['GrandTotalAmount']??0.0)}",style: TextStyle(fontFamily: 'RM',color: Color(0xFF999999),fontSize: 14),),
+                          Text("${widget.customerList![i]['CustomerName']??""} / ",style: TextStyle(fontFamily: 'RR',color: Color(0xFFBDBCBD),fontSize: 14),),
+                          Text("${formatCurrency.format(widget.customerList![i]['GrandTotalAmount']??0.0)}",style: TextStyle(fontFamily: 'RM',color: Color(0xFF999999),fontSize: 14),),
                         ],
                       ),
                     );

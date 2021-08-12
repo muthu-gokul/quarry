@@ -24,16 +24,16 @@ import 'package:quarry/widgets/dateRangePicker.dart' as DateRagePicker;
 import 'package:charts_flutter/flutter.dart' as charts;
 class InvoiceDashBoard extends StatefulWidget {
 
-  VoidCallback drawerCallback;
+  VoidCallback? drawerCallback;
   InvoiceDashBoard({this.drawerCallback});
   @override
   _InvoiceDashBoardState createState() => _InvoiceDashBoardState();
 }
 
 class _InvoiceDashBoardState extends State<InvoiceDashBoard> {
-  ScrollController silverController;
+  ScrollController? silverController;
   double silverBodyTopMargin=0;
-  List<DateTime> picked=[];
+  List<DateTime?> picked=[];
   int selIndex=-1;
   @override
   void initState() {
@@ -43,23 +43,23 @@ class _InvoiceDashBoardState extends State<InvoiceDashBoard> {
         DateFormat("yyyy-MM-dd").format(DateTime.now()).toString()
     );*/
 
-    WidgetsBinding.instance.addPostFrameCallback((_){
+    WidgetsBinding.instance!.addPostFrameCallback((_){
       silverController=new ScrollController();
 
       setState(() {
         silverBodyTopMargin=0;
       });
 
-      silverController.addListener(() {
-        if(silverController.offset>150){
+      silverController!.addListener(() {
+        if(silverController!.offset>150){
           setState(() {
-            silverBodyTopMargin=50-(-(silverController.offset-200));
+            silverBodyTopMargin=50-(-(silverController!.offset-200));
             if(silverBodyTopMargin<0){
               silverBodyTopMargin=0;
             }
           });
         }
-        else if(silverController.offset<170){
+        else if(silverController!.offset<170){
           setState(() {
             silverBodyTopMargin=0;
           });
@@ -68,7 +68,7 @@ class _InvoiceDashBoardState extends State<InvoiceDashBoard> {
     });
     super.initState();
   }
-  double tabWidth;
+  double? tabWidth;
   double position=5;
 
 
@@ -125,7 +125,7 @@ class _InvoiceDashBoardState extends State<InvoiceDashBoard> {
 
   @override
   Widget build(BuildContext context) {
-    tabWidth=SizeConfig.screenWidth-40;
+    tabWidth=SizeConfig.screenWidth!-40;
     return Scaffold(
       backgroundColor: AppTheme.yellowColor,
       bottomNavigationBar: Container(
@@ -148,7 +148,7 @@ class _InvoiceDashBoardState extends State<InvoiceDashBoard> {
             Container(
               margin:EdgeInsets.only(top: 0),
               child: CustomPaint(
-                size: Size( SizeConfig.screenWidth, 65),
+                size: Size( SizeConfig.screenWidth!, 65),
                 painter: RPSCustomPainter3(),
               ),
             ),
@@ -193,7 +193,7 @@ class _InvoiceDashBoardState extends State<InvoiceDashBoard> {
                             GestureDetector(
                                 onTap: () async{
 
-                                  final List<DateTime>  picked1 = await DateRagePicker.showDatePicker(
+                                  final List<DateTime?>?  picked1 = await DateRagePicker.showDatePicker(
                                       context: context,
                                       initialFirstDate: new DateTime.now(),
                                       initialLastDate: (new DateTime.now()),
@@ -206,8 +206,8 @@ class _InvoiceDashBoardState extends State<InvoiceDashBoard> {
                                     });
                                     db.DashBoardDbHit(context,
                                         "Attendance",
-                                        DateFormat("yyyy-MM-dd").format(picked[0]).toString(),
-                                        DateFormat("yyyy-MM-dd").format(picked[1]).toString()
+                                        DateFormat("yyyy-MM-dd").format(picked[0]!).toString(),
+                                        DateFormat("yyyy-MM-dd").format(picked[1]!).toString()
                                     );
                                   }
                                   else if(picked1!=null && picked1.length ==1){
@@ -216,8 +216,8 @@ class _InvoiceDashBoardState extends State<InvoiceDashBoard> {
                                     });
                                     db.DashBoardDbHit(context,
                                         "Attendance",
-                                        DateFormat("yyyy-MM-dd").format(picked[0]).toString(),
-                                        DateFormat("yyyy-MM-dd").format(picked[0]).toString()
+                                        DateFormat("yyyy-MM-dd").format(picked[0]!).toString(),
+                                        DateFormat("yyyy-MM-dd").format(picked[0]!).toString()
                                     );
                                   }
 
@@ -273,8 +273,8 @@ class _InvoiceDashBoardState extends State<InvoiceDashBoard> {
                               ),
                               alignment: Alignment.center,
                               padding: EdgeInsets.only(left: 10,right: 10),
-                              child: Text(picked.length==1?"${DateFormat("dd/MM/yyyy").format(picked[0])}":
-                              picked.length==2?"${DateFormat("dd/MM/yyyy").format(picked[0])} - ${DateFormat("dd/MM/yyyy").format(picked[1])}":"Today",
+                              child: Text(picked.length==1?"${DateFormat("dd/MM/yyyy").format(picked[0]!)}":
+                              picked.length==2?"${DateFormat("dd/MM/yyyy").format(picked[0]!)} - ${DateFormat("dd/MM/yyyy").format(picked[1]!)}":"Today",
                                 style: TextStyle(color:AppTheme.yellowColor,fontFamily: 'RM',fontSize: 14),
                               ),
                             ),
@@ -379,8 +379,8 @@ class _InvoiceDashBoardState extends State<InvoiceDashBoard> {
 
   counter(Color color,String title,dynamic value){
     return  Container(
-      height: SizeConfig.screenWidth*0.4,
-      width: SizeConfig.screenWidth*0.4,
+      height: SizeConfig.screenWidth!*0.4,
+      width: SizeConfig.screenWidth!*0.4,
       padding: EdgeInsets.only(left: 10,right: 10),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),

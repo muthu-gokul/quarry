@@ -14,17 +14,17 @@ class MaterialGridModel {
     this.taxValue,
   });
 
-  int materialId;
-  String materialCode;
-  String materialName;
-  int materialCategoryId;
-  String materialCategoryName;
-  int materialUnitId;
-  String unitName;
-  double materialUnitPrice;
-  String materialDescription;
-  String materialHsnCode;
-  double taxValue;
+  int? materialId;
+  String? materialCode;
+  String? materialName;
+  int? materialCategoryId;
+  String? materialCategoryName;
+  int? materialUnitId;
+  String? unitName;
+  double? materialUnitPrice;
+  String? materialDescription;
+  String? materialHsnCode;
+  double? taxValue;
 
   factory MaterialGridModel.fromJson(Map<String, dynamic> json) => MaterialGridModel(
     materialId: json["MaterialId"],

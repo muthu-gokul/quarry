@@ -23,16 +23,16 @@ import 'package:quarry/widgets/dateRangePicker.dart' as DateRagePicker;
 import 'package:charts_flutter/flutter.dart' as charts;
 class AttendanceDashBoard extends StatefulWidget {
 
-  VoidCallback drawerCallback;
+  VoidCallback? drawerCallback;
   AttendanceDashBoard({this.drawerCallback});
   @override
   _AttendanceDashBoardState createState() => _AttendanceDashBoardState();
 }
 
 class _AttendanceDashBoardState extends State<AttendanceDashBoard> {
-  ScrollController silverController;
+  ScrollController? silverController;
   double silverBodyTopMargin=0;
-  List<DateTime> picked=[];
+  List<DateTime?> picked=[];
   int selIndex=-1;
 
   @override
@@ -43,23 +43,23 @@ class _AttendanceDashBoardState extends State<AttendanceDashBoard> {
         DateFormat("yyyy-MM-dd").format(DateTime.now()).toString()
     );
 
-    WidgetsBinding.instance.addPostFrameCallback((_){
+    WidgetsBinding.instance!.addPostFrameCallback((_){
       silverController=new ScrollController();
 
       setState(() {
         silverBodyTopMargin=0;
       });
 
-      silverController.addListener(() {
-        if(silverController.offset>150){
+      silverController!.addListener(() {
+        if(silverController!.offset>150){
           setState(() {
-            silverBodyTopMargin=50-(-(silverController.offset-200));
+            silverBodyTopMargin=50-(-(silverController!.offset-200));
             if(silverBodyTopMargin<0){
               silverBodyTopMargin=0;
             }
           });
         }
-        else if(silverController.offset<170){
+        else if(silverController!.offset<170){
           setState(() {
             silverBodyTopMargin=0;
           });
@@ -68,11 +68,11 @@ class _AttendanceDashBoardState extends State<AttendanceDashBoard> {
     });
     super.initState();
   }
-  double tabWidth;
+  late double tabWidth;
   double position=5;
   @override
   Widget build(BuildContext context) {
-    tabWidth=SizeConfig.screenWidth-40;
+    tabWidth=SizeConfig.screenWidth!-40;
     return Scaffold(
       backgroundColor: AppTheme.yellowColor,
       body: Consumer<DashboardNotifier>(
@@ -104,7 +104,7 @@ class _AttendanceDashBoardState extends State<AttendanceDashBoard> {
                             GestureDetector(
                                 onTap: () async{
 
-                                  final List<DateTime>  picked1 = await DateRagePicker.showDatePicker(
+                                  final List<DateTime?>?  picked1 = await DateRagePicker.showDatePicker(
                                       context: context,
                                       initialFirstDate: new DateTime.now(),
                                       initialLastDate: (new DateTime.now()),
@@ -117,8 +117,8 @@ class _AttendanceDashBoardState extends State<AttendanceDashBoard> {
                                     });
                                     db.DashBoardDbHit(context,
                                         "Attendance",
-                                        DateFormat("yyyy-MM-dd").format(picked[0]).toString(),
-                                        DateFormat("yyyy-MM-dd").format(picked[1]).toString()
+                                        DateFormat("yyyy-MM-dd").format(picked[0]!).toString(),
+                                        DateFormat("yyyy-MM-dd").format(picked[1]!).toString()
                                     );
                                   }
                                   else if(picked1!=null && picked1.length ==1){
@@ -127,8 +127,8 @@ class _AttendanceDashBoardState extends State<AttendanceDashBoard> {
                                     });
                                     db.DashBoardDbHit(context,
                                         "Attendance",
-                                        DateFormat("yyyy-MM-dd").format(picked[0]).toString(),
-                                        DateFormat("yyyy-MM-dd").format(picked[0]).toString()
+                                        DateFormat("yyyy-MM-dd").format(picked[0]!).toString(),
+                                        DateFormat("yyyy-MM-dd").format(picked[0]!).toString()
                                     );
                                   }
 
@@ -299,7 +299,7 @@ class _AttendanceDashBoardState extends State<AttendanceDashBoard> {
                     //  width: double.maxFinite,
                       child: ListView.builder(
                         physics: NeverScrollableScrollPhysics(),
-                        itemCount: db.todayAttendanceListT2.length,
+                        itemCount: db.todayAttendanceListT2!.length,
                         itemBuilder: (ctx,i){
                           return Container(
                            // height: 50,
@@ -326,8 +326,8 @@ class _AttendanceDashBoardState extends State<AttendanceDashBoard> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Container(
-                                        width:(SizeConfig.screenWidth-40)*0.6,
-                                        child: Text("${db.todayAttendanceListT2[i]['Employee']}",
+                                        width:(SizeConfig.screenWidth!-40)*0.6,
+                                        child: Text("${db.todayAttendanceListT2![i]['Employee']}",
                                           style: TextStyle(fontSize: 12,color: AppTheme.attendanceDashText1,fontFamily: 'RM'),
                                         )
                                     ),
@@ -335,7 +335,7 @@ class _AttendanceDashBoardState extends State<AttendanceDashBoard> {
                                     Row(
                                       children: [
                                         SvgPicture.asset("assets/svg/drawer/reports/receivablePayment.svg",height: 15,),
-                                        Text("  ${db.todayAttendanceListT2[i]['PerdaySalary']}",
+                                        Text("  ${db.todayAttendanceListT2![i]['PerdaySalary']}",
                                           style: TextStyle(fontSize: 12,color: AppTheme.attendanceDashText1,fontFamily: 'RR'),
                                         ),
                                       ],
@@ -382,8 +382,8 @@ class _AttendanceDashBoardState extends State<AttendanceDashBoard> {
 
   counter(Color color,String title,dynamic value){
     return  Container(
-      height: SizeConfig.screenWidth*0.4,
-      width: SizeConfig.screenWidth*0.4,
+      height: SizeConfig.screenWidth!*0.4,
+      width: SizeConfig.screenWidth!*0.4,
       padding: EdgeInsets.only(left: 10,right: 10),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),

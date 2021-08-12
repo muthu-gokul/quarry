@@ -19,15 +19,15 @@ import 'package:quarry/widgets/validationErrorText.dart';
 import 'employeeMasterAddNew.dart';
 
 class EmployeeMasterView extends StatefulWidget {
-  const EmployeeMasterView({Key key}) : super(key: key);
+  const EmployeeMasterView({Key? key}) : super(key: key);
 
   @override
   _EmployeeMasterViewState createState() => _EmployeeMasterViewState();
 }
 
 class _EmployeeMasterViewState extends State<EmployeeMasterView> with TickerProviderStateMixin{
-  ScrollController scrollController;
-  ScrollController listViewController;
+  ScrollController? scrollController;
+  ScrollController? listViewController;
   bool isListScroll=false;
   bool _keyboardVisible=false;
   bool salutationOpen=false;
@@ -41,16 +41,16 @@ class _EmployeeMasterViewState extends State<EmployeeMasterView> with TickerProv
   bool isPaymentTypeOpen=false;
 
 
-  Animation contactArrowAnimation;
-  AnimationController contactArrowAnimationController;
+  Animation? contactArrowAnimation;
+  late AnimationController contactArrowAnimationController;
   bool contactOpen=false;
 
-  Animation otherDetailsArrowAnimation;
-  AnimationController otherDetailsArrowAnimationController;
+  Animation? otherDetailsArrowAnimation;
+  late AnimationController otherDetailsArrowAnimationController;
   bool otherDetailsOpen=false;
 
-  Animation BankDetailsArrowAnimation;
-  AnimationController BankDetailsArrowAnimationController;
+  Animation? BankDetailsArrowAnimation;
+  late AnimationController BankDetailsArrowAnimationController;
   bool BankDetailsOpen=false;
 
 
@@ -120,7 +120,7 @@ class _EmployeeMasterViewState extends State<EmployeeMasterView> with TickerProv
 
               //FORM
               Container(
-                height: SizeConfig.screenHeight-(65),
+                height: SizeConfig.screenHeight!-(65),
                 // color: Colors.transparent,
                 child: SingleChildScrollView(
                   physics: NeverScrollableScrollPhysics(),
@@ -143,7 +143,7 @@ class _EmployeeMasterViewState extends State<EmployeeMasterView> with TickerProv
 
                                 int sensitivity = 5;
                                 if (details.delta.dy > sensitivity) {
-                                  scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
+                                  scrollController!.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
                                     if(isListScroll){
                                       setState(() {
                                         isListScroll=false;
@@ -152,7 +152,7 @@ class _EmployeeMasterViewState extends State<EmployeeMasterView> with TickerProv
                                   });
 
                                 } else if(details.delta.dy < -sensitivity){
-                                  scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
+                                  scrollController!.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
 
                                     if(!isListScroll){
                                       setState(() {
@@ -178,15 +178,15 @@ class _EmployeeMasterViewState extends State<EmployeeMasterView> with TickerProv
                                     //   print(ScrollStartNotification);
                                     if(s is ScrollStartNotification){
 
-                                      if(listViewController.offset==0 && isListScroll && scrollController.offset==100 && listViewController.position.userScrollDirection==ScrollDirection.idle){
+                                      if(listViewController!.offset==0 && isListScroll && scrollController!.offset==100 && listViewController!.position.userScrollDirection==ScrollDirection.idle){
 
                                         Timer(Duration(milliseconds: 100), (){
-                                          if(listViewController.position.userScrollDirection!=ScrollDirection.reverse){
+                                          if(listViewController!.position.userScrollDirection!=ScrollDirection.reverse){
 
                                             //if(scrollController.position.pixels == scrollController.position.maxScrollExtent){
-                                            if(listViewController.offset==0){
+                                            if(listViewController!.offset==0){
 
-                                              scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value) {
+                                              scrollController!.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value) {
                                                 if(isListScroll){
                                                   setState(() {
                                                     isListScroll=false;
@@ -200,7 +200,7 @@ class _EmployeeMasterViewState extends State<EmployeeMasterView> with TickerProv
                                       }
                                     }
 
-                                  },
+                                  } as bool Function(ScrollNotification)?,
                                   child: ListView(
                                     controller: listViewController,
                                     scrollDirection: Axis.vertical,
@@ -218,7 +218,7 @@ class _EmployeeMasterViewState extends State<EmployeeMasterView> with TickerProv
                                             Navigator.push(context, _createRoute());
                                           },
                                           child: Container(
-                                            margin: EdgeInsets.only(right: SizeConfig.width20,top: 10,bottom: 10),
+                                            margin: EdgeInsets.only(right: SizeConfig.width20!,top: 10,bottom: 10),
                                             height: 40,
                                             width: 40,
                                             decoration: BoxDecoration(
@@ -249,7 +249,7 @@ class _EmployeeMasterViewState extends State<EmployeeMasterView> with TickerProv
                                       ),
 
                                       Container(
-                                        margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,),
+                                        margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!,),
                                         height:40,
                                         width: SizeConfig.screenWidthM40,
                                         decoration: BoxDecoration(
@@ -261,8 +261,8 @@ class _EmployeeMasterViewState extends State<EmployeeMasterView> with TickerProv
                                         child:Row(
                                           children: [
                                             Container(
-                                                padding: EdgeInsets.only(left: SizeConfig.width10),
-                                                width: (SizeConfig.screenWidthM40*0.5)-2,
+                                                padding: EdgeInsets.only(left: SizeConfig.width10!),
+                                                width: (SizeConfig.screenWidthM40!*0.5)-2,
                                                 child: Text("Employee Code",style: tableTextStyle,)
                                             ),
 
@@ -273,10 +273,10 @@ class _EmployeeMasterViewState extends State<EmployeeMasterView> with TickerProv
                                             ),
 
                                             Container(
-                                                padding: EdgeInsets.only(left: SizeConfig.width10),
+                                                padding: EdgeInsets.only(left: SizeConfig.width10!),
                                                 height: 16,
                                                 alignment: Alignment.centerLeft,
-                                                width: (SizeConfig.screenWidthM40*0.5)-1,
+                                                width: (SizeConfig.screenWidthM40!*0.5)-1,
                                                 child: FittedBox(child: Text("${en.EmployeePrefix}${en.EmployeeCode}",
 
                                                 style:tableTextStyle,
@@ -288,7 +288,7 @@ class _EmployeeMasterViewState extends State<EmployeeMasterView> with TickerProv
                                         ),
                                       ),
                                       Container(
-                                        margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,),
+                                        margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!,),
                                         height:40,
                                         width: SizeConfig.screenWidthM40,
                                         decoration: BoxDecoration(
@@ -303,8 +303,8 @@ class _EmployeeMasterViewState extends State<EmployeeMasterView> with TickerProv
                                         child:Row(
                                           children: [
                                             Container(
-                                                padding: EdgeInsets.only(left: SizeConfig.width10),
-                                                width: (SizeConfig.screenWidthM40*0.5)-2,
+                                                padding: EdgeInsets.only(left: SizeConfig.width10!),
+                                                width: (SizeConfig.screenWidthM40!*0.5)-2,
                                                 child: Text("Employee Type",style: tableTextStyle,)
                                             ),
 
@@ -315,10 +315,10 @@ class _EmployeeMasterViewState extends State<EmployeeMasterView> with TickerProv
                                             ),
 
                                             Container(
-                                                padding: EdgeInsets.only(left: SizeConfig.width10),
+                                                padding: EdgeInsets.only(left: SizeConfig.width10!),
                                                 height: 16,
                                                 alignment: Alignment.centerLeft,
-                                                width: (SizeConfig.screenWidthM40*0.5)-1,
+                                                width: (SizeConfig.screenWidthM40!*0.5)-1,
                                                 child: FittedBox(child: Text("${en.selectEmployeeTypeName??""}",
 
                                                 style:tableTextStyle,
@@ -331,7 +331,7 @@ class _EmployeeMasterViewState extends State<EmployeeMasterView> with TickerProv
                                       ),
                                       for(int i=0;i<3;i++)
                                       Container(
-                                        margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,),
+                                        margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!,),
                                         height:40,
                                         width: SizeConfig.screenWidthM40,
                                         decoration: BoxDecoration(
@@ -346,8 +346,8 @@ class _EmployeeMasterViewState extends State<EmployeeMasterView> with TickerProv
                                         child:Row(
                                           children: [
                                             Container(
-                                                padding: EdgeInsets.only(left: SizeConfig.width10),
-                                                width: (SizeConfig.screenWidthM40*0.5)-2,
+                                                padding: EdgeInsets.only(left: SizeConfig.width10!),
+                                                width: (SizeConfig.screenWidthM40!*0.5)-2,
                                                 child: Text(i==0?"Shift":i==1?"Salary":"Date of Join",
                                                   style: tableTextStyle,
                                                 )
@@ -360,12 +360,12 @@ class _EmployeeMasterViewState extends State<EmployeeMasterView> with TickerProv
                                             ),
 
                                             Container(
-                                                padding: EdgeInsets.only(left: SizeConfig.width10),
+                                                padding: EdgeInsets.only(left: SizeConfig.width10!),
                                                 height: 16,
                                                 alignment: Alignment.centerLeft,
-                                                width: (SizeConfig.screenWidthM40*0.5)-1,
+                                                width: (SizeConfig.screenWidthM40!*0.5)-1,
                                                 child: FittedBox(
-                                                  child: Text("${i==0?en.selectShiftName??"":i==1?"${en.employeeSalary.text} / ${en.selectSalaryTypeName}":en.joiningDate!=null?DateFormat('dd-MM-yyyy').format(en.joiningDate):""}",
+                                                  child: Text("${i==0?en.selectShiftName??"":i==1?"${en.employeeSalary.text} / ${en.selectSalaryTypeName}":en.joiningDate!=null?DateFormat('dd-MM-yyyy').format(en.joiningDate!):""}",
                                                 style: tableTextStyle,
                                                 ),
 
@@ -379,13 +379,13 @@ class _EmployeeMasterViewState extends State<EmployeeMasterView> with TickerProv
                                       Align(
                                         alignment: Alignment.centerLeft,
                                         child: Padding(
-                                          padding: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,),
+                                          padding: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!,),
                                           child: Text("Contact Details",style: TextStyle(fontFamily: 'RR',fontSize: 14,color: AppTheme.bgColor),),
                                         ),
                                       ),
                                       SizedBox(height: 5,),
                                       Container(
-                                        margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,),
+                                        margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!,),
                                         height:40,
                                         width: SizeConfig.screenWidthM40,
                                         decoration: BoxDecoration(
@@ -397,8 +397,8 @@ class _EmployeeMasterViewState extends State<EmployeeMasterView> with TickerProv
                                         child:Row(
                                           children: [
                                             Container(
-                                                padding: EdgeInsets.only(left: SizeConfig.width10),
-                                                width: (SizeConfig.screenWidthM40*0.5)-2,
+                                                padding: EdgeInsets.only(left: SizeConfig.width10!),
+                                                width: (SizeConfig.screenWidthM40!*0.5)-2,
                                                 child: Text("Phone",style: tableTextStyle,)
                                             ),
 
@@ -409,10 +409,10 @@ class _EmployeeMasterViewState extends State<EmployeeMasterView> with TickerProv
                                             ),
 
                                             Container(
-                                              padding: EdgeInsets.only(left: SizeConfig.width10),
+                                              padding: EdgeInsets.only(left: SizeConfig.width10!),
                                               height: 16,
                                               alignment: Alignment.centerLeft,
-                                              width: (SizeConfig.screenWidthM40*0.5)-1,
+                                              width: (SizeConfig.screenWidthM40!*0.5)-1,
                                               child: FittedBox(child: Text("${en.employeePhoneNumber.text??""}",
 
                                                 style:tableTextStyle,
@@ -425,7 +425,7 @@ class _EmployeeMasterViewState extends State<EmployeeMasterView> with TickerProv
                                       ),
                                       for(int i=0;i<4;i++)
                                         Container(
-                                          margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,),
+                                          margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!,),
                                           height:40,
                                           width: SizeConfig.screenWidthM40,
                                           decoration: BoxDecoration(
@@ -440,8 +440,8 @@ class _EmployeeMasterViewState extends State<EmployeeMasterView> with TickerProv
                                           child:Row(
                                             children: [
                                               Container(
-                                                  padding: EdgeInsets.only(left: SizeConfig.width10),
-                                                  width: (SizeConfig.screenWidthM40*0.5)-2,
+                                                  padding: EdgeInsets.only(left: SizeConfig.width10!),
+                                                  width: (SizeConfig.screenWidthM40!*0.5)-2,
                                                   child: Text(i==0?"Email":i==1?"Address":i==2?"City":i==3?"State":"Zipcode",
                                                     style: tableTextStyle,
                                                   )
@@ -454,10 +454,10 @@ class _EmployeeMasterViewState extends State<EmployeeMasterView> with TickerProv
                                               ),
 
                                               Container(
-                                                padding: EdgeInsets.only(left: SizeConfig.width10),
+                                                padding: EdgeInsets.only(left: SizeConfig.width10!),
                                                 height: 16,
                                                 alignment: Alignment.centerLeft,
-                                                width: (SizeConfig.screenWidthM40*0.5)-1,
+                                                width: (SizeConfig.screenWidthM40!*0.5)-1,
                                                 child: FittedBox(
                                                   child: Text("${i==0?en.employeeEmail.text??"":i==1?en.employeeAddress.text:i==2?en.employeeCity.text:en.employeeState.text}",
                                                     style: tableTextStyle,
@@ -475,13 +475,13 @@ class _EmployeeMasterViewState extends State<EmployeeMasterView> with TickerProv
                                       Align(
                                         alignment: Alignment.centerLeft,
                                         child: Padding(
-                                          padding: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,),
+                                          padding: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!,),
                                           child: Text("Other Details",style: TextStyle(fontFamily: 'RR',fontSize: 14,color: AppTheme.bgColor),),
                                         ),
                                       ),
                                       SizedBox(height: 5,),
                                       Container(
-                                        margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,),
+                                        margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!,),
                                         height:40,
                                         width: SizeConfig.screenWidthM40,
                                         decoration: BoxDecoration(
@@ -493,8 +493,8 @@ class _EmployeeMasterViewState extends State<EmployeeMasterView> with TickerProv
                                         child:Row(
                                           children: [
                                             Container(
-                                                padding: EdgeInsets.only(left: SizeConfig.width10),
-                                                width: (SizeConfig.screenWidthM40*0.5)-2,
+                                                padding: EdgeInsets.only(left: SizeConfig.width10!),
+                                                width: (SizeConfig.screenWidthM40!*0.5)-2,
                                                 child: Text("Date of Birth",style: tableTextStyle,)
                                             ),
 
@@ -505,11 +505,11 @@ class _EmployeeMasterViewState extends State<EmployeeMasterView> with TickerProv
                                             ),
 
                                             Container(
-                                              padding: EdgeInsets.only(left: SizeConfig.width10),
+                                              padding: EdgeInsets.only(left: SizeConfig.width10!),
                                               height: 16,
                                               alignment: Alignment.centerLeft,
-                                              width: (SizeConfig.screenWidthM40*0.5)-1,
-                                              child: FittedBox(child: Text("${en.dob!=null?DateFormat('dd-MM-yyyy').format(en.dob):""}",
+                                              width: (SizeConfig.screenWidthM40!*0.5)-1,
+                                              child: FittedBox(child: Text("${en.dob!=null?DateFormat('dd-MM-yyyy').format(en.dob!):""}",
 
                                                 style:tableTextStyle,
                                               ),
@@ -521,7 +521,7 @@ class _EmployeeMasterViewState extends State<EmployeeMasterView> with TickerProv
                                       ),
                                       for(int i=0;i<7;i++)
                                         Container(
-                                          margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,),
+                                          margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!,),
                                           height:40,
                                           width: SizeConfig.screenWidthM40,
                                           decoration: BoxDecoration(
@@ -536,8 +536,8 @@ class _EmployeeMasterViewState extends State<EmployeeMasterView> with TickerProv
                                           child:Row(
                                             children: [
                                               Container(
-                                                  padding: EdgeInsets.only(left: SizeConfig.width10),
-                                                  width: (SizeConfig.screenWidthM40*0.5)-2,
+                                                  padding: EdgeInsets.only(left: SizeConfig.width10!),
+                                                  width: (SizeConfig.screenWidthM40!*0.5)-2,
                                                   child: Text(i==0?"Blood Group":i==1?"Marital Status":i==2?"Referred By":i==3?"Remarks":i==4?"Aadhaar Number":i==5?"Pan Number":"Payment Method",
                                                     style: tableTextStyle,
                                                   )
@@ -550,10 +550,10 @@ class _EmployeeMasterViewState extends State<EmployeeMasterView> with TickerProv
                                               ),
 
                                               Container(
-                                                padding: EdgeInsets.only(left: SizeConfig.width10),
+                                                padding: EdgeInsets.only(left: SizeConfig.width10!),
                                                 height: 16,
                                                 alignment: Alignment.centerLeft,
-                                                width: (SizeConfig.screenWidthM40*0.5)-1,
+                                                width: (SizeConfig.screenWidthM40!*0.5)-1,
                                                 child: FittedBox(
                                                   child: Text("${i==0?en.selectBloodGroupName??"":i==1?en.selectMartialStatusName??"": i==2?en.employeeReferredBy.text??"":
                                                   i==3?en.employeeRemarks.text??"":i==4?en.employeeAadhaarNo.text:i==5?en.employeePanNo.text:en.selectPaymentMethodName??""}",
@@ -572,13 +572,13 @@ class _EmployeeMasterViewState extends State<EmployeeMasterView> with TickerProv
                                       Align(
                                         alignment: Alignment.centerLeft,
                                         child: Padding(
-                                          padding: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,),
+                                          padding: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!,),
                                           child: Text("Bank Details",style: TextStyle(fontFamily: 'RR',fontSize: 14,color: AppTheme.bgColor),),
                                         ),
                                       ),
                                       SizedBox(height: 5,),
                                       Container(
-                                        margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,),
+                                        margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!,),
                                         height:40,
                                         width: SizeConfig.screenWidthM40,
                                         decoration: BoxDecoration(
@@ -592,8 +592,8 @@ class _EmployeeMasterViewState extends State<EmployeeMasterView> with TickerProv
                                             Container(
 
                                               height:16,
-                                                padding: EdgeInsets.only(left: SizeConfig.width10),
-                                                width: (SizeConfig.screenWidthM40*0.5)-2,
+                                                padding: EdgeInsets.only(left: SizeConfig.width10!),
+                                                width: (SizeConfig.screenWidthM40!*0.5)-2,
                                                 alignment: Alignment.centerLeft,
                                                 child: FittedBox(child: Text("Account Holder Name",style: tableTextStyle,))
                                             ),
@@ -605,10 +605,10 @@ class _EmployeeMasterViewState extends State<EmployeeMasterView> with TickerProv
                                             ),
 
                                             Container(
-                                              padding: EdgeInsets.only(left: SizeConfig.width10),
+                                              padding: EdgeInsets.only(left: SizeConfig.width10!),
                                               height: 16,
                                               alignment: Alignment.centerLeft,
-                                              width: (SizeConfig.screenWidthM40*0.5)-1,
+                                              width: (SizeConfig.screenWidthM40!*0.5)-1,
                                               child: FittedBox(child: Text("${en.employeeHolderName.text??""}",
 
                                                 style:tableTextStyle,
@@ -621,7 +621,7 @@ class _EmployeeMasterViewState extends State<EmployeeMasterView> with TickerProv
                                       ),
                                       for(int i=0;i<4;i++)
                                         Container(
-                                          margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,),
+                                          margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!,),
                                           height:40,
                                           width: SizeConfig.screenWidthM40,
                                           decoration: BoxDecoration(
@@ -636,8 +636,8 @@ class _EmployeeMasterViewState extends State<EmployeeMasterView> with TickerProv
                                           child:Row(
                                             children: [
                                               Container(
-                                                  padding: EdgeInsets.only(left: SizeConfig.width10),
-                                                  width: (SizeConfig.screenWidthM40*0.5)-2,
+                                                  padding: EdgeInsets.only(left: SizeConfig.width10!),
+                                                  width: (SizeConfig.screenWidthM40!*0.5)-2,
                                                   child: Text(i==0?"Bank Name":i==1?"Account Number":i==2?"Branch":"IFSC Code",
                                                     style: tableTextStyle,
                                                   )
@@ -650,10 +650,10 @@ class _EmployeeMasterViewState extends State<EmployeeMasterView> with TickerProv
                                               ),
 
                                               Container(
-                                                padding: EdgeInsets.only(left: SizeConfig.width10),
+                                                padding: EdgeInsets.only(left: SizeConfig.width10!),
                                                 height: 16,
                                                 alignment: Alignment.centerLeft,
-                                                width: (SizeConfig.screenWidthM40*0.5)-1,
+                                                width: (SizeConfig.screenWidthM40!*0.5)-1,
                                                 child: FittedBox(
                                                   child: Text("${i==0?en.employeeBankName.text??"":i==1?en.employeeAccNo.text:i==2?en.employeeBranchName.text:en.employeeIFSC.text}",
                                                     style: tableTextStyle,
@@ -665,7 +665,7 @@ class _EmployeeMasterViewState extends State<EmployeeMasterView> with TickerProv
                                           ),
                                         ),
 
-                                      SizedBox(height: _keyboardVisible? SizeConfig.screenHeight*0.6:200,)
+                                      SizedBox(height: _keyboardVisible? SizeConfig.screenHeight!*0.6:200,)
                                     ],
                                   ),
                                 ),
@@ -757,7 +757,7 @@ class _EmployeeMasterViewState extends State<EmployeeMasterView> with TickerProv
                         ),
                         margin:EdgeInsets.only(top: 0),
                         child: CustomPaint(
-                          size: Size( SizeConfig.screenWidth, 65),
+                          size: Size( SizeConfig.screenWidth!, 65),
                           painter: RPSCustomPainter3(),
                         ),
                       ),

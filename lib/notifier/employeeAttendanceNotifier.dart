@@ -54,7 +54,7 @@ class EmployeeAttendanceNotifier extends ChangeNotifier{
         if(value!=null){
           var parsed=json.decode(value);
 
-          var t=parsed['Table'] as List;
+          var t=parsed['Table'] as List?;
           var t1=parsed['Table1'] as List;
           plantList=t1.map((e) => PlantUserModel.fromJson(e)).toList();
           plantList.forEach((element) {
@@ -94,17 +94,17 @@ class EmployeeAttendanceNotifier extends ChangeNotifier{
   TextEditingController employeeCodeController=new TextEditingController();
 
 
-  String showEmpName="";
-  String showEmpDesg="";
-  String showEmpLoginInTime="";
-  int showEmpId;
+  String? showEmpName="";
+  String? showEmpDesg="";
+  String? showEmpLoginInTime="";
+  int? showEmpId;
 
-  DateTime selectedDate;
-  TimeOfDay selectedTime;
-  String  time;
+  late DateTime selectedDate;
+  late TimeOfDay selectedTime;
+  String?  time;
 
 
-  int logoutAttendanceId=null;
+  int? logoutAttendanceId=null;
 
 
   clearinsertForm(){
@@ -205,7 +205,7 @@ class EmployeeAttendanceNotifier extends ChangeNotifier{
   }
 
 
-  DateTime reportDate=null;
+  DateTime? reportDate=null;
 
   int totalEmployee=0;
   int totalPresent=0;
@@ -215,7 +215,7 @@ class EmployeeAttendanceNotifier extends ChangeNotifier{
   List<String> employeeCode=[];
 
 
-  GetEmployeeAttendanceIssueDbHit(BuildContext context,int EmployeeAttendanceId)  async{
+  GetEmployeeAttendanceIssueDbHit(BuildContext context,int? EmployeeAttendanceId)  async{
   employeeCode.clear();
     updateEmployeeAttendanceLoader(true);
 
@@ -240,7 +240,7 @@ class EmployeeAttendanceNotifier extends ChangeNotifier{
           "Key": "Date",
           "Type": "String",
           "Value": reportDate==null?DateFormat("yyyy-MM-dd").format(DateTime.now()).toString():
-          DateFormat("yyyy-MM-dd").format(reportDate).toString()
+          DateFormat("yyyy-MM-dd").format(reportDate!).toString()
         },
 
         {
@@ -255,17 +255,17 @@ class EmployeeAttendanceNotifier extends ChangeNotifier{
       await call.ApiCallGetInvoke(body,context).then((value) {
         if(value!=null){
           var parsed=json.decode(value);
-          var t=parsed['Table'] as List;
+          var t=parsed['Table'] as List?;
           if(EmployeeAttendanceId!=null ){
 
           }
           else{
-            EmployeeAttendanceGridList=t.map((e) => EmployeeAttendanceGridModel.fromJson(e)).toList();
+            EmployeeAttendanceGridList=t!.map((e) => EmployeeAttendanceGridModel.fromJson(e)).toList();
             totalEmployee=EmployeeAttendanceGridList.length;
             totalPresent=EmployeeAttendanceGridList.where((element) => element.status=='Present').toList().length;
             totalAbsent=EmployeeAttendanceGridList.where((element) => element.status=='Absent').toList().length;
             EmployeeAttendanceGridList.forEach((element) {
-              employeeCode.add("${element.employeeName}  -  ${element.employeePrefix+element.employeeCode}");
+              employeeCode.add("${element.employeeName}  -  ${element.employeePrefix!+element.employeeCode!}");
             });
           }
         }

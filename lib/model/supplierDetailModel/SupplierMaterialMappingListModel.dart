@@ -4,18 +4,18 @@ import 'package:flutter/cupertino.dart';
 class SupplierMaterialMappingListModel{
 
 
-  int SupplierMaterialMappingId;
-  int SupplierId;
-  int MaterialId;
-  int IsActive;
-  double MaterialPrice;
-  String MaterialName;
-  String UnitName;
+  int? SupplierMaterialMappingId;
+  int? SupplierId;
+  int? MaterialId;
+  int? IsActive;
+  double? MaterialPrice;
+  String? MaterialName;
+  String? UnitName;
 
-  AnimationController scaleController;
-  Animation<double> scaleAnimation;
-  bool isEdit;
-  bool isDelete;
+  AnimationController? scaleController;
+  Animation<double>? scaleAnimation;
+  bool? isEdit;
+  bool? isDelete;
 
 /*  guestNoController=AnimationController(duration: const Duration(milliseconds: 300), vsync: this);
   scaleAnimation = new Tween(begin: 0.0, end: 1.0)

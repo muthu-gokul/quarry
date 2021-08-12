@@ -30,8 +30,8 @@ class GoodsToPurchaseState extends State<GoodsToPurchase> with TickerProviderSta
   bool isEdit=false;
 
 
-  ScrollController scrollController;
-  ScrollController listViewController;
+  ScrollController? scrollController;
+  ScrollController? listViewController;
 
   ScrollController header=new ScrollController();
   ScrollController body=new ScrollController();
@@ -51,7 +51,7 @@ class GoodsToPurchaseState extends State<GoodsToPurchase> with TickerProviderSta
   @override
   void initState() {
     isEdit=false;
-    WidgetsBinding.instance.addPostFrameCallback((_){
+    WidgetsBinding.instance!.addPostFrameCallback((_){
       scrollController=new ScrollController();
       listViewController=new ScrollController();
       setState(() {
@@ -59,15 +59,15 @@ class GoodsToPurchaseState extends State<GoodsToPurchase> with TickerProviderSta
       });
 
 
-      listViewController.addListener(() {
-        if(listViewController.offset>10){
-          if(scrollController.offset==0){
-            scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+      listViewController!.addListener(() {
+        if(listViewController!.offset>10){
+          if(scrollController!.offset==0){
+            scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
           }
 
         }
-        else if(listViewController.offset==0){
-          scrollController.animateTo(0, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+        else if(listViewController!.offset==0){
+          scrollController!.animateTo(0, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
         }
       });
 
@@ -162,7 +162,7 @@ class GoodsToPurchaseState extends State<GoodsToPurchase> with TickerProviderSta
                     children: [
                       SizedBox(height: 160,),
                       Container(
-                          height: SizeConfig.screenHeight-60,
+                          height: SizeConfig.screenHeight!-60,
                           width: SizeConfig.screenWidth,
                           padding: EdgeInsets.only(top: 20,bottom: 60),
                           decoration: BoxDecoration(
@@ -178,7 +178,7 @@ class GoodsToPurchaseState extends State<GoodsToPurchase> with TickerProviderSta
                                   height: dataTableheight,
                                   width: SizeConfig.screenWidth,
                                   clipBehavior: Clip.antiAlias,
-                                  margin: EdgeInsets.only(left:SizeConfig.screenWidth*0.02,right:SizeConfig.screenWidth*0.02),
+                                  margin: EdgeInsets.only(left:SizeConfig.screenWidth!*0.02,right:SizeConfig.screenWidth!*0.02),
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(10),
                                       color: Colors.white,
@@ -202,7 +202,7 @@ class GoodsToPurchaseState extends State<GoodsToPurchase> with TickerProviderSta
                                           children: [
                                             Container(
                                               height: 50,
-                                              width: SizeConfig.screenWidth-valueContainerWidth-SizeConfig.screenWidth*0.04,
+                                              width: SizeConfig.screenWidth!-valueContainerWidth-SizeConfig.screenWidth!*0.04,
                                               color: showShadow? AppTheme.f737373.withOpacity(0.8):AppTheme.f737373,
                                               child: SingleChildScrollView(
                                                 controller: header,
@@ -223,7 +223,7 @@ class GoodsToPurchaseState extends State<GoodsToPurchase> with TickerProviderSta
                                             ),
                                             Container(
                                               height: dataTableBodyheight,
-                                              width: SizeConfig.screenWidth-valueContainerWidth-SizeConfig.screenWidth*0.04,
+                                              width: SizeConfig.screenWidth!-valueContainerWidth-SizeConfig.screenWidth!*0.04,
                                               alignment: Alignment.topCenter,
                                               color: Colors.white,
                                               child: SingleChildScrollView(
@@ -505,7 +505,7 @@ class GoodsToPurchaseState extends State<GoodsToPurchase> with TickerProviderSta
 
                     children: [
                       CustomPaint(
-                        size: Size( SizeConfig.screenWidth, 55),
+                        size: Size( SizeConfig.screenWidth!, 55),
                         painter: RPSCustomPainter(),
                       ),
 
@@ -532,7 +532,7 @@ class GoodsToPurchaseState extends State<GoodsToPurchase> with TickerProviderSta
 
                                       },
                                       child: Container(
-                                        width: SizeConfig.screenWidth*0.4,
+                                        width: SizeConfig.screenWidth!*0.4,
                                         child:Center(
                                           child: Image.asset("assets/goodsIcons/yes.jpg"),
                                         ),
@@ -549,7 +549,7 @@ class GoodsToPurchaseState extends State<GoodsToPurchase> with TickerProviderSta
                                         gr.GetGoodsDbHit(context, null, null,false,GoodsReceivedGridState());
                                       },
                                       child: Container(
-                                        width: SizeConfig.screenWidth*0.4,
+                                        width: SizeConfig.screenWidth!*0.4,
                                         child:Center(
                                           child: Image.asset("assets/goodsIcons/no.jpg"),
                                         ),
@@ -645,8 +645,8 @@ class GoodsToPurchaseState extends State<GoodsToPurchase> with TickerProviderSta
                 itemOnTap: (index){
 
                   setState(() {
-                    gr.GPO_SupplierId=gr.filterSupplierList[index]['SupplierId'];
-                    gr.GPO_SupplierType=gr.filterSupplierList[index]['SupplierType'];
+                    gr.GPO_SupplierId=gr.filterSupplierList![index]['SupplierId'];
+                    gr.GPO_SupplierType=gr.filterSupplierList![index]['SupplierType'];
                     isSupplierOpen=false;
                     gr.filterSupplierList=gr.supplierList;
                   });

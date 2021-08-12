@@ -22,7 +22,7 @@ import 'package:quarry/widgets/staticColumnScroll/customDataTable.dart';
 
 
 class ProductionGrid extends StatefulWidget {
-  VoidCallback drawerCallback;
+  VoidCallback? drawerCallback;
   ProductionGrid({this.drawerCallback});
   @override
   ProductionGridState createState() => ProductionGridState();
@@ -31,7 +31,7 @@ class ProductionGrid extends StatefulWidget {
 class ProductionGridState extends State<ProductionGrid> with TickerProviderStateMixin{
 
   bool showEdit=false;
-  int selectedIndex;
+  int? selectedIndex;
 
 
 
@@ -145,8 +145,8 @@ class ProductionGridState extends State<ProductionGrid> with TickerProviderState
                           map((i, value) => MapEntry(i,
                             Container(
                               height: 85,
-                             width: SizeConfig.screenWidth*0.33,
-                              margin: EdgeInsets.only(right: SizeConfig.width10),
+                             width: SizeConfig.screenWidth!*0.33,
+                              margin: EdgeInsets.only(right: SizeConfig.width10!),
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(5),
                                   color: AppTheme.bgColor
@@ -155,7 +155,7 @@ class ProductionGridState extends State<ProductionGrid> with TickerProviderState
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Text(value.materialName,style: TextStyle(fontFamily: 'RR',fontSize: 16,color:
+                                  Text(value.materialName!,style: TextStyle(fontFamily: 'RR',fontSize: 16,color:
                                   value.materialType==1?Color(0xFF1293ff):value.materialType==2?Color(0xFF01b075):Color(0xFF979797),letterSpacing: 0.1),),
                                   SizedBox(height: 5,),
                                   Container(
@@ -240,7 +240,7 @@ class ProductionGridState extends State<ProductionGrid> with TickerProviderState
                         Container(
                           margin:EdgeInsets.only(top: 0),
                           child: CustomPaint(
-                            size: Size( SizeConfig.screenWidth, 65),
+                            size: Size( SizeConfig.screenWidth!, 65),
                             painter: RPSCustomPainter3(),
                           ),
                         ),
@@ -304,10 +304,10 @@ class ProductionGridState extends State<ProductionGrid> with TickerProviderState
                                               color: pro.usersPlantList.length<=1?AppTheme.bgColor.withOpacity(0.4):AppTheme.bgColor,),
                                           )
                                       ),
-                                      SizedBox(width: SizeConfig.screenWidth*0.6,),
+                                      SizedBox(width: SizeConfig.screenWidth!*0.6,),
                                       GestureDetector(
                                         onTap: () async{
-                                          final List<DateTime>  picked1 = await DateRagePicker.showDatePicker(
+                                          final List<DateTime?>?  picked1 = await DateRagePicker.showDatePicker(
                                               context: context,
                                               initialFirstDate: new DateTime.now(),
                                               initialLastDate: (new DateTime.now()),
@@ -348,7 +348,7 @@ class ProductionGridState extends State<ProductionGrid> with TickerProviderState
                                   pn.ProductionDropDownValues(context);pn.PlantUserDropDownValues(context).then((value) {
 
 
-                                    pn.GetProductionDbHit(context, pn.productionGridValues[selectedIndex].productionId, ProductionDetailAddNewState());
+                                    pn.GetProductionDbHit(context, pn.productionGridValues[selectedIndex!].productionId, ProductionDetailAddNewState());
                                     pn.updateProductionEdit(true);
                                     Navigator.push(context, _createRoute());
                                     setState(() {

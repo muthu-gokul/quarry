@@ -32,8 +32,8 @@ class PaymentAddNewFormState extends State<PaymentAddNewForm> with TickerProvide
   GlobalKey <ScaffoldState> scaffoldkey = new GlobalKey<ScaffoldState>();
 
 
-  ScrollController scrollController;
-  ScrollController listViewController;
+  ScrollController? scrollController;
+  ScrollController? listViewController;
 
   bool _keyboardVisible = false;
 
@@ -50,7 +50,7 @@ class PaymentAddNewFormState extends State<PaymentAddNewForm> with TickerProvide
   @override
   void initState() {
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       scrollController = new ScrollController();
       listViewController = new ScrollController();
       setState(() {
@@ -111,7 +111,7 @@ class PaymentAddNewFormState extends State<PaymentAddNewForm> with TickerProvide
                       children: [
                         SizedBox(height: 160,),
                         Container(
-                          height: SizeConfig.screenHeight - 60,
+                          height: SizeConfig.screenHeight! - 60,
                           width: SizeConfig.screenWidth,
                           alignment: Alignment.topCenter,
                           decoration: BoxDecoration(
@@ -124,7 +124,7 @@ class PaymentAddNewFormState extends State<PaymentAddNewForm> with TickerProvide
                               int sensitivity = 5;
 
                               if (details.delta.dy > sensitivity) {
-                                scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
+                                scrollController!.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
                                   if(isListScroll){
 
                                     setState(() {
@@ -134,7 +134,7 @@ class PaymentAddNewFormState extends State<PaymentAddNewForm> with TickerProvide
                                 });
 
                               } else if(details.delta.dy < -sensitivity){
-                                scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
+                                scrollController!.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
 
                                   if(!isListScroll){
 
@@ -150,7 +150,7 @@ class PaymentAddNewFormState extends State<PaymentAddNewForm> with TickerProvide
                               }
                             },
                             child: Container(
-                              height: SizeConfig.screenHeight - 100,
+                              height: SizeConfig.screenHeight! - 100,
                               width: SizeConfig.screenWidth,
 
                               decoration: BoxDecoration(
@@ -162,16 +162,16 @@ class PaymentAddNewFormState extends State<PaymentAddNewForm> with TickerProvide
                               child: NotificationListener<ScrollNotification>(
                                 onNotification: (s){
                                   if(s is ScrollStartNotification){
-                                    print(listViewController.hasListeners);
-                                    print(listViewController.position.userScrollDirection);
+                                    print(listViewController!.hasListeners);
+                                    print(listViewController!.position.userScrollDirection);
                                     //    print(listViewController.position);
-                                    if(listViewController.offset==0 && isListScroll && scrollController.offset==100 && listViewController.position.userScrollDirection==ScrollDirection.idle){
+                                    if(listViewController!.offset==0 && isListScroll && scrollController!.offset==100 && listViewController!.position.userScrollDirection==ScrollDirection.idle){
 
                                       Timer(Duration(milliseconds: 100), (){
-                                        if(listViewController.position.userScrollDirection!=ScrollDirection.reverse){
-                                          if(scrollController.position.pixels == scrollController.position.maxScrollExtent){
+                                        if(listViewController!.position.userScrollDirection!=ScrollDirection.reverse){
+                                          if(scrollController!.position.pixels == scrollController!.position.maxScrollExtent){
                                             //scroll end
-                                            scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value) {
+                                            scrollController!.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value) {
                                               if(isListScroll){
                                                 setState(() {
                                                   isListScroll=false;
@@ -186,7 +186,8 @@ class PaymentAddNewFormState extends State<PaymentAddNewForm> with TickerProvide
 
                                     }
                                   }
-                                },
+                                  return true;
+                                } ,
                                 child: ListView(
                                   physics: isListScroll?AlwaysScrollableScrollPhysics():NeverScrollableScrollPhysics(),
                                   controller: listViewController,
@@ -195,12 +196,12 @@ class PaymentAddNewFormState extends State<PaymentAddNewForm> with TickerProvide
                                   children: [
                                     GestureDetector(
                                       onTap: () async{
-                                        final DateTime picked = await showDatePicker2(
+                                        final DateTime? picked = await showDatePicker2(
                                             context: context,
-                                            initialDate:  qn.paymentDate==null?DateTime.now():qn.paymentDate, // Refer step 1
+                                            initialDate:  qn.paymentDate==null?DateTime.now():qn.paymentDate!, // Refer step 1
                                             firstDate: DateTime(1900),
                                             lastDate: DateTime(2100),
-                                            builder: (BuildContext context,Widget child){
+                                            builder: (BuildContext context,Widget? child){
                                               return Theme(
                                                 data: Theme.of(context).copyWith(
                                                   colorScheme: ColorScheme.light(
@@ -210,7 +211,7 @@ class PaymentAddNewFormState extends State<PaymentAddNewForm> with TickerProvide
                                                   ),
 
                                                 ),
-                                                child: child,
+                                                child: child!,
                                               );
                                             });
                                         if (picked != null)
@@ -219,7 +220,7 @@ class PaymentAddNewFormState extends State<PaymentAddNewForm> with TickerProvide
                                           });
                                       },
                                       child: ExpectedDateContainer(
-                                        text: qn.paymentDate==null?"Date":"${DateFormat.yMMMd().format(qn.paymentDate)}",
+                                        text: qn.paymentDate==null?"Date":"${DateFormat.yMMMd().format(qn.paymentDate!)}",
                                         textColor: qn.paymentDate==null? AppTheme.addNewTextFieldText.withOpacity(0.5):AppTheme.addNewTextFieldText,
                                       ),
                                     ),
@@ -232,7 +233,7 @@ class PaymentAddNewFormState extends State<PaymentAddNewForm> with TickerProvide
                                         setState(() {
                                           _keyboardVisible=true;
                                         });
-                                        scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                        scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
 
                                       },
                                       onEditComplete: (){
@@ -318,7 +319,7 @@ class PaymentAddNewFormState extends State<PaymentAddNewForm> with TickerProvide
                                         setState(() {
                                           _keyboardVisible=true;
                                         });
-                                        scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                        scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
 
                                       },
                                       onEditComplete: (){
@@ -361,7 +362,7 @@ class PaymentAddNewFormState extends State<PaymentAddNewForm> with TickerProvide
 
 
 
-                                    SizedBox(height:_keyboardVisible ? SizeConfig.screenHeight * 0.5 :  SizeConfig.height50,)
+                                    SizedBox(height:_keyboardVisible ? SizeConfig.screenHeight! * 0.5 :  SizeConfig.height50,)
                                   ],
                                 ),
                               ),
@@ -420,7 +421,7 @@ class PaymentAddNewFormState extends State<PaymentAddNewForm> with TickerProvide
                         Container(
                           margin:EdgeInsets.only(top: 0),
                           child: CustomPaint(
-                            size: Size( SizeConfig.screenWidth, 65),
+                            size: Size( SizeConfig.screenWidth!, 65),
                             painter: RPSCustomPainter3(),
                           ),
                         ),

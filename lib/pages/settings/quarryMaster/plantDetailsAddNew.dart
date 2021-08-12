@@ -27,7 +27,7 @@ import 'package:quarry/widgets/validationErrorText.dart';
 
 
 class PlantDetailsAddNew extends StatefulWidget {
-  VoidCallback drawerCallback;
+  VoidCallback? drawerCallback;
   PlantDetailsAddNew({this.drawerCallback});
   @override
   PlantDetailsAddNewState createState() => PlantDetailsAddNewState();
@@ -38,8 +38,8 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
   bool isEdit=false;
 
 
-  ScrollController scrollController;
-  ScrollController listViewController;
+  ScrollController? scrollController;
+  ScrollController? listViewController;
   bool _keyboardVisible = false;
   bool isListScroll=false;
   bool plantTypeOpen=false;
@@ -58,7 +58,7 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
   @override
   void initState() {
 
-    WidgetsBinding.instance.addPostFrameCallback((_){
+    WidgetsBinding.instance!.addPostFrameCallback((_){
 
 
       scrollController=new ScrollController();
@@ -134,7 +134,7 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
 
                           int sensitivity = 5;
                           if (details.delta.dy > sensitivity) {
-                            scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
+                            scrollController!.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
                               if(isListScroll){
                                 setState(() {
                                   isListScroll=false;
@@ -143,7 +143,7 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
                             });
 
                           } else if(details.delta.dy < -sensitivity){
-                            scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
+                            scrollController!.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
 
                               if(!isListScroll){
                                 setState(() {
@@ -154,7 +154,7 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
                           }
                         },
                         child: Container(
-                          height: SizeConfig.screenHeight-60,
+                          height: SizeConfig.screenHeight!-60,
                           width: SizeConfig.screenWidth,
                           decoration: BoxDecoration(
                               color: AppTheme.gridbodyBgColor,
@@ -164,15 +164,15 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
                             onNotification: (s){
                               if(s is ScrollStartNotification){
 
-                                if(listViewController.offset==0 && isListScroll && scrollController.offset==100 && listViewController.position.userScrollDirection==ScrollDirection.idle){
+                                if(listViewController!.offset==0 && isListScroll && scrollController!.offset==100 && listViewController!.position.userScrollDirection==ScrollDirection.idle){
 
                                   Timer(Duration(milliseconds: 100), (){
-                                    if(listViewController.position.userScrollDirection!=ScrollDirection.reverse){
+                                    if(listViewController!.position.userScrollDirection!=ScrollDirection.reverse){
 
                                       //if(scrollController.position.pixels == scrollController.position.maxScrollExtent){
-                                      if(listViewController.offset==0){
+                                      if(listViewController!.offset==0){
 
-                                        scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value) {
+                                        scrollController!.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value) {
                                           if(isListScroll){
                                             setState(() {
                                               isListScroll=false;
@@ -185,7 +185,8 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
                                   });
                                 }
                               }
-                            },
+                              return true;
+                            } ,
                             child: ListView(
                               controller: listViewController,
                               scrollDirection: Axis.vertical,
@@ -204,7 +205,7 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
                                     });
                                   },
                                   ontap: (){
-                                    scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                    scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                     setState(() {
                                       _keyboardVisible=true;
                                     });
@@ -222,7 +223,7 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
                                     });
                                   },
                                   ontap: (){
-                                    scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                    scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                     setState(() {
                                       _keyboardVisible=true;
                                       setState(() {
@@ -248,7 +249,7 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
                                     });
                                   },
                                   ontap: (){
-                                    scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                    scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                     setState(() {
                                       _keyboardVisible=true;
                                     });
@@ -267,7 +268,7 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
                                     });
                                   },
                                   ontap: (){
-                                    scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                    scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                     setState(() {
                                       _keyboardVisible=true;
                                     });
@@ -286,7 +287,7 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
                                     });
                                   },
                                   ontap: (){
-                                    scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                    scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                     setState(() {
                                       _keyboardVisible=true;
                                       isListScroll=true;
@@ -308,7 +309,7 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
                                     });
                                   },
                                   ontap: (){
-                                    scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                    scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                     setState(() {
                                       _keyboardVisible=true;
                                       isListScroll=true;
@@ -330,7 +331,7 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
                                     });
                                   },
                                   ontap: (){
-                                    scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                    scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                     setState(() {
                                       _keyboardVisible=true;
                                       isListScroll=true;
@@ -351,7 +352,7 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
                                     });
                                   },
                                   ontap: (){
-                                    scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                    scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                     setState(() {
                                       _keyboardVisible=true;
                                       isListScroll=true;
@@ -391,7 +392,7 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
                                     });
                                   },
                                   ontap: (){
-                                    scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                    scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                     setState(() {
                                       _keyboardVisible=true;
                                       isListScroll=true;
@@ -410,7 +411,7 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
                                     });
                                   },
                                   ontap: (){
-                                    scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                    scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                     setState(() {
                                       _keyboardVisible=true;
                                       isListScroll=true;
@@ -433,9 +434,9 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
                                   width: SizeConfig.screenWidth,
 
                                   margin: EdgeInsets.only(
-                                    left: SizeConfig.width20,
-                                    right: SizeConfig.width20,
-                                    top: SizeConfig.height20,),
+                                    left: SizeConfig.width20!,
+                                    right: SizeConfig.width20!,
+                                    top: SizeConfig.height20!,),
                                   clipBehavior: Clip.antiAlias,
                                   decoration: BoxDecoration(
                                       color: Colors.white,
@@ -470,9 +471,9 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
                                         child: Row(
                                           //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Container(width: SizeConfig.screenWidthM40*0.30,child: Text("License Number")),
-                                            Container(padding: EdgeInsets.only(left: 10),alignment: Alignment.centerLeft, width: SizeConfig.screenWidthM40*0.29,child: Text("License Name")),
-                                            Container(padding: EdgeInsets.only(left: 10), width: SizeConfig.screenWidthM40*0.25,child: Text("Date")),
+                                            Container(width: SizeConfig.screenWidthM40!*0.30,child: Text("License Number")),
+                                            Container(padding: EdgeInsets.only(left: 10),alignment: Alignment.centerLeft, width: SizeConfig.screenWidthM40!*0.29,child: Text("License Name")),
+                                            Container(padding: EdgeInsets.only(left: 10), width: SizeConfig.screenWidthM40!*0.25,child: Text("Date")),
 
                                           ],
 
@@ -484,16 +485,16 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
                                           itemCount: qn.PO_PlantLicenseList.length,
                                           itemBuilder: (context, index) {
                                             return SlideTransition(
-                                              position: Tween<Offset>(begin: Offset(qn.PO_PlantLicenseList[index].isEdit ? 0.0 :
-                                              qn.PO_PlantLicenseList[index].isDelete ?1.0:0.0,
-                                                  qn.PO_PlantLicenseList[index].isEdit ? 0.0 :qn.PO_PlantLicenseList[index].isDelete ?0.0: 1.0),
-                                                  end:qn.PO_PlantLicenseList[index].isEdit ?Offset(1, 0): Offset.zero)
-                                                  .animate(qn.PO_PlantLicenseList[index].scaleController),
+                                              position: Tween<Offset>(begin: Offset(qn.PO_PlantLicenseList[index].isEdit! ? 0.0 :
+                                              qn.PO_PlantLicenseList[index].isDelete! ?1.0:0.0,
+                                                  qn.PO_PlantLicenseList[index].isEdit! ? 0.0 :qn.PO_PlantLicenseList[index].isDelete! ?0.0: 1.0),
+                                                  end:qn.PO_PlantLicenseList[index].isEdit! ?Offset(1, 0): Offset.zero)
+                                                  .animate(qn.PO_PlantLicenseList[index].scaleController!),
 
                                               child: FadeTransition(
-                                                opacity: Tween(begin: qn.PO_PlantLicenseList[index].isEdit ? 1.0 : 0.0,
-                                                    end: qn.PO_PlantLicenseList[index].isEdit ? 0.0 : 1.0)
-                                                    .animate(qn.PO_PlantLicenseList[index].scaleController),
+                                                opacity: Tween(begin: qn.PO_PlantLicenseList[index].isEdit! ? 1.0 : 0.0,
+                                                    end: qn.PO_PlantLicenseList[index].isEdit! ? 0.0 : 1.0)
+                                                    .animate(qn.PO_PlantLicenseList[index].scaleController!),
                                                 child: Container(
                                                   padding: EdgeInsets.only(top: 5, bottom: 5,left: 10,right: 10),
                                                   decoration: BoxDecoration(
@@ -509,7 +510,7 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
                                                         children: [
 
                                                           Container(
-                                                            width: SizeConfig.screenWidthM40*0.30,
+                                                            width: SizeConfig.screenWidthM40!*0.30,
                                                             alignment:Alignment.centerLeft,
 
                                                             child: Text("${qn.PO_PlantLicenseList[index].licenseNumber}",
@@ -520,17 +521,17 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
                                                             padding: EdgeInsets.only(left: 10),
                                                             alignment: Alignment.centerLeft,
 
-                                                            width: SizeConfig.screenWidthM40*0.25,
+                                                            width: SizeConfig.screenWidthM40!*0.25,
                                                             child: Text("${qn.PO_PlantLicenseList[index].licenseDescription}",
                                                               style: TextStyle(fontSize: 14, fontFamily: 'RR', color: AppTheme.gridTextColor, letterSpacing: 0.2),
                                                             ),
                                                           ),
                                                           Container(
                                                             alignment: Alignment.centerRight,
-                                                            width:SizeConfig.screenWidthM40*0.26,
+                                                            width:SizeConfig.screenWidthM40!*0.26,
                                                             padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
 
-                                                            child: Text("${qn.PO_PlantLicenseList[index].fromDate!=null?DateFormat('dd-MM-yyyy').format(qn.PO_PlantLicenseList[index].fromDate):""} to \n${qn.PO_PlantLicenseList[index].toDate!=null?DateFormat('dd-MM-yyyy').format(qn.PO_PlantLicenseList[index].toDate):""}",
+                                                            child: Text("${qn.PO_PlantLicenseList[index].fromDate!=null?DateFormat('dd-MM-yyyy').format(qn.PO_PlantLicenseList[index].fromDate!):""} to \n${qn.PO_PlantLicenseList[index].toDate!=null?DateFormat('dd-MM-yyyy').format(qn.PO_PlantLicenseList[index].toDate!):""}",
                                                               style: TextStyle(fontSize: 10, fontFamily: 'RR', color: AppTheme.gridTextColor,letterSpacing: 0.2),
                                                             ),
                                                           ),
@@ -545,8 +546,8 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
                                                                 Navigator.pop(context);
                                                                 Timer(Duration(milliseconds: 200), (){
                                                                   if(isEdit){
-                                                                    if (qn.PO_PlantLicenseList[index].isEdit) {
-                                                                      qn.PO_PlantLicenseList[index].scaleController.forward().whenComplete(() {
+                                                                    if (qn.PO_PlantLicenseList[index].isEdit!) {
+                                                                      qn.PO_PlantLicenseList[index].scaleController!.forward().whenComplete(() {
                                                                         print("EIT");
                                                                         if (this.mounted) {
                                                                           setState(() {
@@ -560,7 +561,7 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
                                                                       setState(() {
                                                                         qn.PO_PlantLicenseList[index].isDelete=true;
                                                                       });
-                                                                      qn.PO_PlantLicenseList[index].scaleController.reverse().whenComplete(() {
+                                                                      qn.PO_PlantLicenseList[index].scaleController!.reverse().whenComplete(() {
                                                                         if (this.mounted) {
 
                                                                           setState(() {
@@ -609,7 +610,7 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
 
                                 Container(
                                   width: SizeConfig.screenWidth,
-                                  margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20,top:SizeConfig.height20,),
+                                  margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!,top:SizeConfig.height20!,),
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(3),
                                       color: Colors.transparent
@@ -618,7 +619,7 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       Container(
-                                        width: SizeConfig.screenWidth*0.42,
+                                        width: SizeConfig.screenWidth!*0.42,
                                         child: TextFormField(
                                           enabled: isEdit,
                                           scrollPadding: EdgeInsets.only(bottom: 400),
@@ -655,7 +656,7 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
                                         ),
                                       ),
                                       Container(
-                                        width:SizeConfig.screenWidth*0.42,
+                                        width:SizeConfig.screenWidth!*0.42,
                                         child: TextFormField(
                                           enabled: isEdit,
                                           scrollPadding: EdgeInsets.only(bottom: 100),
@@ -680,7 +681,7 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
                                               onTap: () async {
                                                 node.unfocus();
 
-                                                final List<DateTime>  picked1 = await DateRagePicker.showDatePicker(
+                                                final List<DateTime?>?  picked1 = await DateRagePicker.showDatePicker(
                                                     context: context,
                                                     initialFirstDate: new DateTime.now(),
                                                     initialLastDate: new DateTime.now(),
@@ -790,7 +791,7 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
                                           );
                                         });
                                         qn.clearPlantLicenseForm();
-                                        qn.PO_PlantLicenseList[qn.PO_PlantLicenseList.length-1].scaleController.forward();
+                                        qn.PO_PlantLicenseList[qn.PO_PlantLicenseList.length-1].scaleController!.forward();
                                       }
 
 
@@ -798,7 +799,7 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
 
                                   },
                                   child: Container(
-                                    margin: EdgeInsets.only(left: SizeConfig.width90,right:  SizeConfig.width90,),
+                                    margin: EdgeInsets.only(left: SizeConfig.width90!,right:  SizeConfig.width90!,),
                                     height:45,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(25.0),
@@ -861,7 +862,7 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
                         ),
                         margin:EdgeInsets.only(top: 0),
                         child: CustomPaint(
-                          size: Size( SizeConfig.screenWidth, 65),
+                          size: Size( SizeConfig.screenWidth!, 65),
                           painter: RPSCustomPainter3(),
                         ),
                       ),

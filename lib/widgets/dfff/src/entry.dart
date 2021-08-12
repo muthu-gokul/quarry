@@ -23,7 +23,7 @@ class CircularSegmentEntry {
 
   /// An optional String key, used when animating charts to preserve semantics when
   /// transitioning between data points.
-  final String rankKey;
+  final String? rankKey;
 
   String toString() {
     return '$rankKey: $value $color';
@@ -45,5 +45,5 @@ class CircularStackEntry {
 
   /// An optional String key, used when animating charts to preserve semantics when
   /// transitioning between data points.
-  final String rankKey;
+  final String? rankKey;
 }

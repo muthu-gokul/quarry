@@ -1,6 +1,6 @@
 class ProductionMachineListModel{
-  int machineId;
-  String machineName;
+  int? machineId;
+  String? machineName;
   ProductionMachineListModel({this.machineId,this.machineName});
 
   factory ProductionMachineListModel.fromJson(Map<String, dynamic> json) => ProductionMachineListModel(
