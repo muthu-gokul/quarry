@@ -206,32 +206,7 @@ class _DieselDashBoardState extends State<DieselDashBoard> {
                             ),
                             child: Stack(
                               children: [
-                                Align(
-                                  alignment: Alignment.center,
-                                  child: Container(
-                                    height:144,
-                                    width: 144,
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Colors.white,
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: AppTheme.yellowColor.withOpacity(0.4),
-                                            spreadRadius: 1,
-                                            blurRadius: 20,
-                                            offset: Offset(5, 10), // changes position of shadow
-                                          )
-                                        ]
-                                    ),
-                                    child: LiquidCircularProgressIndicator(
-                                      value:db.low,
-                                      backgroundColor: Colors.white,
-                                      valueColor: AlwaysStoppedAnimation(Color(0xFFF3C253).withOpacity(0.5)),
-                                      borderColor: Colors.transparent,
-                                      borderWidth: 0.0,
-                                    ),
-                                  ),
-                                ),
+                               
                                 Align(
                                   alignment: Alignment.center,
                                   child: Container(
@@ -378,30 +353,19 @@ class _DieselDashBoardState extends State<DieselDashBoard> {
                             Container(
                                 height:100,
                                 width: 100,
-                                child: Stack(
-                                  children: [
-                                    LiquidCircularProgressIndicator(
-                                      value: (db.issueDiesel['IssuePercentage']??0)/100,
-                                      backgroundColor: Colors.white,
-                                      valueColor: AlwaysStoppedAnimation(AppTheme.yellowColor.withOpacity(0.5)),
-                                      borderColor: Color(0xffe4e4e4),
-                                      borderWidth: 1.0,
-                                    ),
-                                    LiquidCircularProgressIndicator(
-                                      value: (db.issueDiesel['IssuePercentage']??0)/100,
-                                      backgroundColor: Colors.transparent,
-                                      valueColor: AlwaysStoppedAnimation(AppTheme.yellowColor),
-                                      borderColor: Color(0xffe4e4e4),
-                                      borderWidth: 1.0,
-                                     center: FittedText(
-                                       height: 16,
-                                       width: 95,
-                                       text: "${db.issueDiesel['IssuePercentage']??0.0}%",
-                                       alignment: Alignment.center,
-                                       textStyle: TextStyle(fontSize: 14,color: Color(0xFF676767),fontFamily: 'RM'),
-                                     ),
-                                    ),
-                                  ],
+                                child: LiquidCircularProgressIndicator(
+                                  value: (db.issueDiesel['IssuePercentage']??0)/100,
+                                  backgroundColor: Colors.transparent,
+                                  valueColor: AlwaysStoppedAnimation(AppTheme.yellowColor),
+                                  borderColor: Color(0xffe4e4e4),
+                                  borderWidth: 1.0,
+                                 center: FittedText(
+                                   height: 25,
+                                   width: 95,
+                                   text: "${db.issueDiesel['IssuePercentage']??0.0}%",
+                                   alignment: Alignment.center,
+                                   textStyle: TextStyle(fontSize: 20,color: Color(0xFF676767),fontFamily: 'RM'),
+                                 ),
                                 )
                             ),
                             SizedBox(height: 10,),
@@ -422,11 +386,11 @@ class _DieselDashBoardState extends State<DieselDashBoard> {
                                   borderColor: Color(0xffe4e4e4),
                                   borderWidth: 1.0,
                                   center: FittedText(
-                                    height: 16,
+                                    height: 25,
                                     width: 95,
                                     text: "${db.balanceDiesel['BalancePercentage']??0.0}%",
                                     alignment: Alignment.center,
-                                    textStyle: TextStyle(fontSize: 14,color: Color(0xFF676767),fontFamily: 'RM'),
+                                    textStyle: TextStyle(fontSize: 20,color: Color(0xFF676767),fontFamily: 'RM'),
                                   ),
                                 )
                             ),

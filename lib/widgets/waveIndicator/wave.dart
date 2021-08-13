@@ -6,12 +6,15 @@ class Wave extends StatefulWidget {
   final double? value;
   final Color? color;
   final Axis? direction;
+  final bool? inverse;
+
 
   const Wave({
     Key? key,
      this.value,
      this.color,
      this.direction,
+    this.inverse
   }) : super(key: key);
 
   @override
@@ -50,6 +53,7 @@ class _WaveState extends State<Wave> with SingleTickerProviderStateMixin {
           animationValue: _animationController.value,
           value: widget.value,
           direction: widget.direction,
+          inverse: widget.inverse
         ),
       ),
     );
@@ -60,11 +64,13 @@ class _WaveClipper extends CustomClipper<Path> {
   final double? animationValue;
   final double? value;
   final Axis? direction;
+  final bool? inverse;
 
   _WaveClipper({
      this.animationValue,
      this.value,
      this.direction,
+    this.inverse
   });
 
   @override
@@ -101,11 +107,21 @@ class _WaveClipper extends CustomClipper<Path> {
   List<Offset> _generateVerticalWavePath(Size size) {
     final waveList = <Offset>[];
     for (int i = -2; i <= size.width.toInt() + 2; i++) {
-      final waveHeight = (size.height / 20);
-      final dy = math.sin((animationValue! * 360 - i) % 360 * (math.pi / 180)) *
-              waveHeight +
-          (size.height - (size.height * value!));
-      waveList.add(Offset(i.toDouble(), dy));
+      final waveHeight = (size.height / 10);
+      if(inverse!){
+        final dy = math.sin((animationValue! * 360 - i) % 360 * (math.pi / 180)) *
+            waveHeight + (size.height - (size.height * value!));
+        waveList.add(Offset((i.toDouble()), dy));
+      }
+      else{
+        final dy = math.sin((animationValue! * 360 + i) % 360 * (math.pi / 180)) *
+            waveHeight + (size.height - (size.height * value!));
+        waveList.add(Offset(i.toDouble(), dy));
+      }
+
+
+
+
     }
     return waveList;
   }

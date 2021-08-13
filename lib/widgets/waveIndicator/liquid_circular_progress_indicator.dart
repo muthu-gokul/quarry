@@ -71,8 +71,15 @@ class _LiquidCircularProgressIndicatorState
           children: [
             Wave(
               value: widget.value,
+              color: widget._getValueColor(context).withOpacity(0.4),
+              direction: widget.direction,
+              inverse: true,
+            ),
+            Wave(
+              value: widget.value,
               color: widget._getValueColor(context),
               direction: widget.direction,
+              inverse: false,
             ),
             if (widget.center != null) Center(child: widget.center),
           ],
