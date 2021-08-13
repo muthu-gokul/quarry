@@ -1,26 +1,16 @@
 
-import 'dart:async';
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/notifier/dashboardNotifier.dart';
-import 'package:quarry/pages/dashboard/saleDashBoard/salesDashBoard.dart';
 import 'package:quarry/styles/app_theme.dart';
-import 'package:quarry/styles/constants.dart';
 import 'package:quarry/styles/size.dart';
-import 'package:quarry/widgets/arrowBack.dart';
 import 'package:quarry/widgets/bottomBarAddButton.dart';
-import 'package:quarry/widgets/charts/highChart/high_chart.dart';
-import 'package:quarry/widgets/circularProgress/circleProgressBar.dart';
 import 'package:quarry/widgets/circularProgress/circleProgressBar2.dart';
-import 'package:quarry/widgets/fittedText.dart';
 import 'package:quarry/widgets/loader.dart';
-import 'package:quarry/widgets/navigationBarIcon.dart';
 import 'package:quarry/widgets/dateRangePicker.dart' as DateRagePicker;
-import 'package:charts_flutter/flutter.dart' as charts;
+
 class AttendanceDashBoard extends StatefulWidget {
 
   VoidCallback? drawerCallback;

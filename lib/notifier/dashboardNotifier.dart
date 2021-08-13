@@ -1,14 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
-import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/cupertino.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/api/ApiManager.dart';
 import 'package:quarry/api/sp.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
-import 'package:quarry/styles/constants.dart';
+import 'package:quarry/pages/dashboard/dieselDashBoard/dieselDashBoard.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/calculation.dart';
 
@@ -267,20 +265,25 @@ Map issueDiesel={};
 Map balanceDiesel={};
 Map totalDiesel={};
 
-  List<charts.Series> seriesList=[];
-  double? low,high;
+
+  List<ChartData> chartData=[];
+  double low=0,high=0;
   sl(VoidCallback voidCallback){
      low= ((totalDiesel['TotalQuantity']??0.0)/5000.0);
-     high=1-low!;
-    if(high!<0){
+     high=1-low;
+    if(high<0){
       double? temp=low;
-      low=-1*high!;
+      low=-1*high;
       high=temp;
     }
  /*   print((totalDiesel['TotalQuantity']??0.0)/5000.0);
     print(low);
     print(high);*/
-    seriesList= [
+     chartData = [
+       ChartData('Low', low,Color(0xFFF1AC3D)),
+       ChartData('high', high,Color(0xFFCACACA)),
+     ];
+/*    seriesList= [
       new charts.Series<GaugeSegment, String>(
         id: 'Segments',
         domainFn: (GaugeSegment segment, _) => segment.segment,
@@ -293,7 +296,7 @@ Map totalDiesel={};
 
         ],
       )
-    ];
+    ];*/
     voidCallback();
   }
 

@@ -7,21 +7,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/notifier/dashboardNotifier.dart';
-import 'package:quarry/pages/dashboard/saleDashBoard/salesDashBoard.dart';
 import 'package:quarry/styles/app_theme.dart';
-import 'package:quarry/styles/constants.dart';
 import 'package:quarry/styles/size.dart';
-import 'package:quarry/widgets/arrowBack.dart';
 import 'package:quarry/widgets/bottomBarAddButton.dart';
-import 'package:quarry/widgets/charts/highChart/high_chart.dart';
-import 'package:quarry/widgets/circularProgress/circleProgressBar.dart';
-import 'package:quarry/widgets/circularProgress/circularBar.dart';
 import 'package:quarry/widgets/fittedText.dart';
 import 'package:quarry/widgets/loader.dart';
-import 'package:quarry/widgets/navigationBarIcon.dart';
 import 'package:quarry/widgets/dateRangePicker.dart' as DateRagePicker;
 import 'package:quarry/widgets/waveIndicator/liquid_circular_progress_indicator.dart';
-import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:syncfusion_flutter_charts/charts.dart';
 class DieselDashBoard extends StatefulWidget {
 
   VoidCallback? drawerCallback;
@@ -36,6 +29,11 @@ class _DieselDashBoardState extends State<DieselDashBoard> {
   List<DateTime?> picked=[];
   int selIndex=0;
 
+  getData(){
+    chartData=Provider.of<DashboardNotifier>(context,listen: false).chartData;
+    return Future.value(chartData);
+  }
+
   @override
   void initState() {
     Provider.of<DashboardNotifier>(context,listen: false).DashBoardDbHit(context,
@@ -43,13 +41,14 @@ class _DieselDashBoardState extends State<DieselDashBoard> {
         DateFormat("yyyy-MM-dd").format(DateTime.now()).toString(),
         DateFormat("yyyy-MM-dd").format(DateTime.now()).toString(),
         voidCallback: (){
-          Timer(Duration(milliseconds: 500), (){
+         /* Timer(Duration(milliseconds: 500), (){
             setState(() {
               seriesList= Provider.of<DashboardNotifier>(context,listen: false).seriesList;
             });
-          });
+          });*/
         }
     );
+    getData();
     WidgetsBinding.instance!.addPostFrameCallback((_){
       silverController=new ScrollController();
 
@@ -76,7 +75,7 @@ class _DieselDashBoardState extends State<DieselDashBoard> {
     super.initState();
   }
 
-  List<charts.Series> seriesList=[];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -137,13 +136,7 @@ class _DieselDashBoardState extends State<DieselDashBoard> {
                                       "Diesel",
                                       DateFormat("yyyy-MM-dd").format(picked[0]!).toString(),
                                       DateFormat("yyyy-MM-dd").format(picked[1]!).toString(),
-                                      voidCallback: (){
-                                        Timer(Duration(milliseconds: 500), (){
-                                          setState(() {
-                                            seriesList= db.seriesList;
-                                          });
-                                        });
-                                      }
+                                      voidCallback: (){}
                                   );
                                 }
                                 else if(picked1!=null && picked1.length ==1){
@@ -155,13 +148,7 @@ class _DieselDashBoardState extends State<DieselDashBoard> {
                                       "Diesel",
                                       DateFormat("yyyy-MM-dd").format(picked[0]!).toString(),
                                       DateFormat("yyyy-MM-dd").format(picked[0]!).toString(),
-                                    voidCallback: (){
-                                      Timer(Duration(milliseconds: 500), (){
-                                        setState(() {
-                                          seriesList= db.seriesList;
-                                        });
-                                      });
-                                    }
+                                    voidCallback: (){}
                                   );
                                 }
                               },
@@ -287,18 +274,40 @@ class _DieselDashBoardState extends State<DieselDashBoard> {
                                     ),
                                   ),
                                 ),
-                              /*  Align(
+                                Align(
                                   alignment: Alignment.center,
-                                  child:Container(
-                                    height:220,
-                                    child: charts.PieChart(
-                                        seriesList,
-                                        animate: true,
-                                        defaultRenderer: new charts.ArcRendererConfig(
-                                            arcWidth: 20, startAngle: 4 / 5 * pi, arcLength: 7 / 5 * pi)
+                                  child: Container(
+                                    height: 220,
+                                    child:FutureBuilder<dynamic>(
+                                      future: getData(),
+                                      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                                        if( snapshot.connectionState == ConnectionState.waiting){
+                                          return Container();
+                                          // return  Center(child: Text('Please wait its loading...'));
+                                        }
+                                        else{
+                                          if (snapshot.hasError)
+                                            return Center(child: Text('Error: ${snapshot.error}',style: AppTheme.TSWhite16,));
+                                          else
+                                            return  SfCircularChart(
+                                                series: <CircularSeries>[
+                                                  DoughnutSeries<ChartData, String>(
+                                                      dataSource: chartData,
+                                                      xValueMapper: (ChartData data, _) => data.x,
+                                                      yValueMapper: (ChartData data, _) => data.y,
+                                                      pointColorMapper:(ChartData data,  _) => data.color,
+                                                      startAngle: 210, // starting angle of pie
+                                                      endAngle: 150,
+                                                      radius: "90%",
+                                                      innerRadius: "80%"
+                                                  )
+                                                ]
+                                            );
+                                        }
+                                      },
                                     ),
                                   ),
-                                ),*/
+                                ),
                               ],
                             )
                           ),
@@ -396,5 +405,13 @@ class _DieselDashBoardState extends State<DieselDashBoard> {
       ),
     );
   }
+   List<ChartData> chartData = [];
+}
 
+
+class ChartData {
+  ChartData(this.x, this.y,this.color);
+  final String x;
+  final double y;
+  final Color color;
 }
