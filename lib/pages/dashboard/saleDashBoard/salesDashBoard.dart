@@ -179,53 +179,80 @@ List<DateTime?> picked=[];
                                 if (snapshot.hasError)
                                   return Center(child: Text('Error: ${snapshot.error}',style: AppTheme.TSWhite16,));
                                 else
-                                  return  SfCartesianChart(
-                                    legend: Legend(isVisible: false, opacity: 0.7),
-                                    title: ChartTitle(text: ''),
-                                    plotAreaBorderWidth: 0,
-                                    primaryXAxis: CategoryAxis(
-                                        interval: 1,
-                                        majorGridLines: const MajorGridLines(width: 0),
-                                        //  minorGridLines: const MinorGridLines(width: 1,color: Colors.white),
-                                        axisLine:const AxisLine(width: 1),
-                                        edgeLabelPlacement: EdgeLabelPlacement.shift
-                                    ),
-                                    primaryYAxis: NumericAxis(
-                                      labelFormat: '{value}',
-                                      axisLine: const AxisLine(width: 0),
-                                      majorTickLines: const MajorTickLines(size: 0),
-                                      majorGridLines: const MajorGridLines(width: 0),
-                                      //    minorGridLines: const MinorGridLines(width: 1,color: Colors.white),
-                                    ),
-                                    series:[
-                                      SplineAreaSeries<dynamic, String>(
-                                        animationDuration:2000,
-                                        onRendererCreated: (ChartSeriesController c){
-                                          chartSeriesController=c;
-                                        },
-                                        markerSettings: MarkerSettings(
-                                            isVisible:saleData.length==1? true:false,
-                                            color: AppTheme.yellowColor
+                                  return  Stack(
+                                    children: [
+                                      Positioned(
+                                          left:80,
+                                          child:saleData.isEmpty?Container(): Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text("Sale",style: TextStyle(fontFamily: 'RR',fontSize: 18,color: AppTheme.yellowColor,letterSpacing: 0.1),),
+                                              RichText(
+                                                text: TextSpan(
+                                                  text: 'Total : ${formatCurrency.format(db.saleT!['TotalSale'])} / ',
+                                                  style: AppTheme.saleChartTotal,
+                                                  children: <TextSpan>[
+                                                    TextSpan(text: '${db.saleT!['TotalQuantity']} ${db.saleT!['UnitName']}',
+                                                      style: AppTheme.saleChartQty,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+
+
+                                            ],
+                                          )
+                                      ),
+                                      SfCartesianChart(
+                                        legend: Legend(isVisible: false, opacity: 0.7),
+                                        title: ChartTitle(text: ''),
+                                        plotAreaBorderWidth: 0,
+                                        primaryXAxis: CategoryAxis(
+                                            interval: 1,
+                                            majorGridLines: const MajorGridLines(width: 0),
+                                            //  minorGridLines: const MinorGridLines(width: 1,color: Colors.white),
+                                            axisLine:const AxisLine(width: 1),
+                                            edgeLabelPlacement: EdgeLabelPlacement.shift,
+                                            labelPlacement:saleData.length==1?LabelPlacement.betweenTicks: LabelPlacement.onTicks
                                         ),
-                                        dataSource: saleData,
-                                        borderColor: Color(0xFFFEBF10),
-                                        borderWidth: 3,
-                                        gradient: LinearGradient(
-                                          colors: [Color(0xFF343434),Color(0xFFFEBF10).withOpacity(0.5)],
-                                          begin: Alignment.bottomCenter,
-                                          end: Alignment.topCenter,
-                                          //  stops: [0,30]
+                                        primaryYAxis: NumericAxis(
+                                          numberFormat: NumberFormat.currency(locale: 'HI',name: "",decimalDigits: 1),
+                                          axisLine: const AxisLine(width: 0),
+                                          majorTickLines: const MajorTickLines(size: 0),
+                                          majorGridLines: const MajorGridLines(width: 0),
+                                          //    minorGridLines: const MinorGridLines(width: 1,color: Colors.white),
                                         ),
-                                        name: 'Sales',
-                                        xValueMapper: (dynamic sales, _) =>DateFormat("MMMd").format(DateTime.parse(sales['Date'])),
-                                        yValueMapper: (dynamic sales, _) => sales['TotalSale'],
+                                        series:[
+                                          SplineAreaSeries<dynamic, String>(
+                                            animationDuration:2000,
+                                            onRendererCreated: (ChartSeriesController c){
+                                              chartSeriesController=c;
+                                            },
+                                            markerSettings: MarkerSettings(
+                                                isVisible:saleData.length==1? true:false,
+                                                color: AppTheme.yellowColor
+                                            ),
+                                            dataSource: saleData,
+                                            borderColor: Color(0xFFFEBF10),
+                                            borderWidth: 3,
+                                            gradient: LinearGradient(
+                                              colors: [Color(0xFF343434),Color(0xFFFEBF10).withOpacity(0.5)],
+                                              begin: Alignment.bottomCenter,
+                                              end: Alignment.topCenter,
+                                              //  stops: [0,30]
+                                            ),
+                                            name: 'Sales',
+                                            xValueMapper: (dynamic sales, _) =>DateFormat("MMMd").format(DateTime.parse(sales['Date'])),
+                                            yValueMapper: (dynamic sales, _) => sales['TotalSale'],
+                                          ),
+                                        ],
+                                        tooltipBehavior: TooltipBehavior(
+                                            enable: true,
+                                            duration: 10000,
+                                            format: "point.x : point.y"
+                                        ),
                                       ),
                                     ],
-                                    tooltipBehavior: TooltipBehavior(
-                                        enable: true,
-                                        duration: 10000,
-                                        format: "point.x : point.y"
-                                    ),
                                   );
                               }
                             },

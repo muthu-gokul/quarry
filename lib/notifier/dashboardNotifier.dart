@@ -73,7 +73,7 @@ class DashboardNotifier extends ChangeNotifier{
     };
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
-        if(value!=null){
+        if(value!='F'){
           var parsed=json.decode(value);
           if(typeName=='Sale'){
             currentSaleT=parsed['Table'][0];
@@ -135,6 +135,7 @@ class DashboardNotifier extends ChangeNotifier{
 
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
+
         if(value!='F'){
           var parsed=json.decode(value);
         //  log("$value");
@@ -241,117 +242,6 @@ List<dynamic>? saleMaterialMonthlyT4=[];
 List<dynamic>? saleMaterialYearT5=[];
 List<dynamic>? salePaymentCategoryT6=[];
 List<dynamic>? salePaymentCustomerT7=[];
-
-String salesMaterialHighChart='';
-
-
-getSaleMaterialDetail(List<dynamic> data,String date,BuildContext context){
- // print(data);
- // print(date);
-   try{
-    salesMaterialHighChart='''
-
-      {
-    chart:{
-      height:250,
-    },
-    title: {
-        text: ''
-    },
-    xAxis: {
-        categories: $date,
-        gridLineWidth: 0,
-    },
-      yAxis: {
-        gridLineWidth: 0,
-            gridLineColor: 'transparent',
-            gridTextColor: '#ffffff',
-            lineColor: 'transparent',
-            tickColor: 'transparent',
-            showEmpty: false,
-            title:{
-                text:'',
-            }
-    },
-   
-    labels: {
-        items: [{
-            html: '',
-            style: {
-                left: '50px',
-                top: '18px',
-                color: ( // theme
-                    Highcharts.defaultOptions.title.style &&
-                    Highcharts.defaultOptions.title.style.color
-                ) || 'black'
-            }
-        }]
-    },
-    
-    legend: {
-            enabled: false
-        },
-       
-        plotOptions: {
-          
-            column: {
-                borderRadiusTopLeft: 10,
-            	borderRadiusTopRight: 10,
-                grouping: false,
-            },
-        
-        },
-         tooltip: {
-        pointFormat: '<span style="color:#F8C85A">\u25CF</span> {series.name}: <b>{point.y}</b><br/>',
-        useHTML: true,
-        backgroundColor: '#000000',
-        style:{color:'#ffffff'},
-        borderWidth: 0,
-        shadow: false,
-    },
-    series: [{
-        type: 'column',
-        name: 'Sales',
-        data: $data,
-        color: {
-                    linearGradient: { x1: 0, x2: 0, y1: 0, y2: 1 },
-                    stops: [
-                        [0, '#FAFAFA'],
-                        [1, '#D7D7D7']
-                    ]
-                }
-      } ,
-     {
-        type: 'spline',
-        name: 'Sales',
-        data: $data,
-         color: '#F8C85A',
-        marker: {
-            lineWidth: 2,
-            lineColor: Highcharts.getOptions().colors[3],
-            fillColor: 'white'
-        }
-    },  ]
-}
-
-     
-  ''';
-    updateisSaleMaterialChartLoad(true);
-    Timer(Duration(milliseconds: 300), (){
-      updateisSaleMaterialChartLoad(false);
-    });
-  }
-  catch(e,t){
-
-    /* updateisSaleMaterialChartLoad(true);
-     Timer(Duration(milliseconds: 500), (){
-       updateisSaleMaterialChartLoad(false);
-     });
-    CustomAlert().commonErrorAlert2(context, e, t.toString());*/
-  }
-
-
-}
 
 
 

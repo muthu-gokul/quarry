@@ -42,21 +42,40 @@ class _SalesMaterialState extends State<SalesMaterial> {
   ScrollController? silverController;
   double silverBodyTopMargin=0;
 
-  int selIndex=-1;
+  int selIndex=1;
   late  Future userFuture;
   List<dynamic> saleData=[];
   getData(){
     saleData=Provider.of<DashboardNotifier>(context,listen: false).saleData;
     return Future.value(saleData);
   }
+
+  List<dynamic> saleMaterialData=[];
+  getMaterialData(){
+    if(selIndex==1){
+      saleMaterialData=widget.weekList!;
+      return Future.value(saleMaterialData);
+    }
+    else if(selIndex==2){
+      saleMaterialData=widget.monthList!;
+      return Future.value(saleMaterialData);
+    }
+    else if(selIndex==3){
+      saleMaterialData=widget.yearList!;
+      return Future.value(saleMaterialData);
+    }
+  }
+
+
   @override
   void initState() {
     userFuture = getData();
-    Provider.of<DashboardNotifier>(context,listen: false).getSaleMaterialDetail(
+    getMaterialData();
+  /*  Provider.of<DashboardNotifier>(context,listen: false).getSaleMaterialDetail(
         widget.weekList!.map((e) => e['TotalSale']).toList(),
         json.encode(widget.weekList!.map((e) => e['WeekDay'].toString().substring(0,3)).toList()),
       context
-    );
+    );*/
     Timer(Duration(milliseconds: 400),(){
       chartSeriesController?.animate();
     });
@@ -160,53 +179,80 @@ class _SalesMaterialState extends State<SalesMaterial> {
                                 if (snapshot.hasError)
                                   return Center(child: Text('Error: ${snapshot.error}',style: AppTheme.TSWhite16,));
                                 else
-                                  return  SfCartesianChart(
-                                    legend: Legend(isVisible: false, opacity: 0.7),
-                                    title: ChartTitle(text: ''),
-                                    plotAreaBorderWidth: 0,
-                                    primaryXAxis: CategoryAxis(
-                                        interval: 1,
-                                        majorGridLines: const MajorGridLines(width: 0),
-                                        //  minorGridLines: const MinorGridLines(width: 1,color: Colors.white),
-                                        axisLine:const AxisLine(width: 1),
-                                        edgeLabelPlacement: EdgeLabelPlacement.shift
-                                    ),
-                                    primaryYAxis: NumericAxis(
-                                      labelFormat: '{value}',
-                                      axisLine: const AxisLine(width: 0),
-                                      majorTickLines: const MajorTickLines(size: 0),
-                                      majorGridLines: const MajorGridLines(width: 0),
-                                      //    minorGridLines: const MinorGridLines(width: 1,color: Colors.white),
-                                    ),
-                                    series:[
-                                      SplineAreaSeries<dynamic, String>(
-                                        animationDuration:2000,
-                                        onRendererCreated: (ChartSeriesController c){
-                                          chartSeriesController=c;
-                                        },
-                                        markerSettings: MarkerSettings(
-                                          isVisible:saleData.length==1? true:false,
-                                          color: AppTheme.yellowColor
+                                  return  Stack(
+                                    children: [
+                                      Positioned(
+                                          left:80,
+                                          child:saleData.isEmpty?Container(): Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text("Sale",style: TextStyle(fontFamily: 'RR',fontSize: 18,color: AppTheme.yellowColor,letterSpacing: 0.1),),
+                                              RichText(
+                                                text: TextSpan(
+                                                  text: 'Total : ${formatCurrency.format(db.saleT!['TotalSale'])} / ',
+                                                  style: AppTheme.saleChartTotal,
+                                                  children: <TextSpan>[
+                                                    TextSpan(text: '${db.saleT!['TotalQuantity']} ${db.saleT!['UnitName']}',
+                                                      style: AppTheme.saleChartQty,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+
+
+                                            ],
+                                          )
+                                      ),
+                                      SfCartesianChart(
+                                        legend: Legend(isVisible: false, opacity: 0.7),
+                                        title: ChartTitle(text: ''),
+                                        plotAreaBorderWidth: 0,
+                                        primaryXAxis: CategoryAxis(
+                                            interval: 1,
+                                            majorGridLines: const MajorGridLines(width: 0),
+                                            axisLine:const AxisLine(width: 1),
+                                            edgeLabelPlacement: EdgeLabelPlacement.shift,
+                                            labelPlacement:saleData.length==1?LabelPlacement.betweenTicks: LabelPlacement.onTicks
                                         ),
-                                        dataSource: saleData,
-                                        borderColor: Color(0xFFFEBF10),
-                                        borderWidth: 3,
-                                        gradient: LinearGradient(
-                                          colors: [Color(0xFF343434),Color(0xFFFEBF10).withOpacity(0.5)],
-                                          begin: Alignment.bottomCenter,
-                                          end: Alignment.topCenter,
-                                          //  stops: [0,30]
+                                        primaryYAxis: NumericAxis(
+                                         //   rangePadding: ChartRangePadding.round,
+                                          numberFormat: NumberFormat.currency(locale: 'HI',name: "",decimalDigits: 1),
+                                          axisLine: const AxisLine(width: 0),
+                                          majorTickLines: const MajorTickLines(size: 0),
+                                          majorGridLines: const MajorGridLines(width: 0),
+                                          //    minorGridLines: const MinorGridLines(width: 1,color: Colors.white),
                                         ),
-                                        name: 'Sales',
-                                        xValueMapper: (dynamic sales, _) =>DateFormat("MMMd").format(DateTime.parse(sales['Date'])),
-                                        yValueMapper: (dynamic sales, _) => sales['TotalSale'],
+                                        series:[
+                                          SplineAreaSeries<dynamic, String>(
+                                            animationDuration:2000,
+                                            onRendererCreated: (ChartSeriesController c){
+                                              chartSeriesController=c;
+                                            },
+                                            markerSettings: MarkerSettings(
+                                              isVisible:saleData.length==1? true:false,
+                                              color: AppTheme.yellowColor
+                                            ),
+                                            dataSource: saleData,
+                                            borderColor: Color(0xFFFEBF10),
+                                            borderWidth: 3,
+                                            gradient: LinearGradient(
+                                              colors: [Color(0xFF343434),Color(0xFFFEBF10).withOpacity(0.5)],
+                                              begin: Alignment.bottomCenter,
+                                              end: Alignment.topCenter,
+                                              //  stops: [0,30]
+                                            ),
+                                            name: 'Sales',
+                                            xValueMapper: (dynamic sales, _) =>DateFormat("MMMd").format(DateTime.parse(sales['Date'])),
+                                            yValueMapper: (dynamic sales, _) => sales['TotalSale'],
+                                          ),
+                                        ],
+                                        tooltipBehavior: TooltipBehavior(
+                                            enable: true,
+                                            duration: 10000,
+                                            format: "point.x : point.y"
+                                        ),
                                       ),
                                     ],
-                                    tooltipBehavior: TooltipBehavior(
-                                        enable: true,
-                                        duration: 10000,
-                                        format: "point.x : point.y"
-                                    ),
                                   );
                               }
                             },
@@ -346,19 +392,21 @@ class _SalesMaterialState extends State<SalesMaterial> {
                                 onTap:db.isSaleMaterialChartLoad?null:(){
                                   setState(() {
                                     position=5;
+                                    selIndex=1;
                                   });
-                                  db.getSaleMaterialDetail(
+                                  getMaterialData();
+                                  /*db.getSaleMaterialDetail(
                                     widget.weekList!.map((e) => e['TotalSale']).toList(),
                                     json.encode(widget.weekList!.map((e) => e['WeekDay'].toString().substring(0,3)).toList()),
                                     context
-                                  );
+                                  );*/
                                 },
                                 child: Container(
                                   width: tabWidth*0.33,
                                   height: 50,
                                   color: Colors.transparent,
                                   child: Center(
-                                      child: Text("Week",style: TextStyle(fontFamily: 'RR',fontSize: 14,color:position==5?AppTheme.bgColor: Colors.grey),)
+                                      child: Text("Week",style: TextStyle(fontFamily: 'RR',fontSize: 14,color:selIndex==1?AppTheme.bgColor: Colors.grey),)
 
                                   ),
                                 ),
@@ -368,19 +416,21 @@ class _SalesMaterialState extends State<SalesMaterial> {
                                 onTap:db.isSaleMaterialChartLoad?null:(){
                                   setState(() {
                                     position=tabWidth*0.33;
+                                    selIndex=2;
                                   });
-                                  db.getSaleMaterialDetail(
+                                   getMaterialData();
+                                 /* db.getSaleMaterialDetail(
                                     widget.monthList!.map((e) => e['TotalSale']).toList(),
                                     json.encode(widget.monthList!.map((e) => e['MName']).toList()),
                                     context
-                                  );
+                                  );*/
                                 },
                                 child: Container(
                                   width: tabWidth*0.33,
                                   height: 50,
                                   color: Colors.transparent,
                                   child: Center(
-                                      child: Text("Month",style: TextStyle(fontFamily: 'RR',fontSize: 14,color:position==tabWidth*0.33?AppTheme.bgColor:  Colors.grey),)
+                                      child: Text("Month",style: TextStyle(fontFamily: 'RR',fontSize: 14,color:selIndex==2?AppTheme.bgColor:  Colors.grey),)
                                   ),
                                 ),
                               ),
@@ -389,19 +439,21 @@ class _SalesMaterialState extends State<SalesMaterial> {
                                 onTap:db.isSaleMaterialChartLoad?null:(){
                                   setState(() {
                                     position=tabWidth*0.66;
+                                    selIndex=3;
                                   });
-                                  db.getSaleMaterialDetail(
+                                  getMaterialData();
+                                /*  db.getSaleMaterialDetail(
                                     widget.yearList!.map((e) => e['TotalSale']).toList(),
                                     json.encode(widget.yearList!.map((e) => e['Year']).toList()),
                                     context
-                                  );
+                                  );*/
                                 },
                                 child: Container(
                                   width: tabWidth*0.33,
                                   height: 50,
                                   color: Colors.transparent,
                                   child: Center(
-                                      child: Text("Year",style: TextStyle(fontFamily: 'RR',fontSize: 14,color:position==tabWidth*0.66?AppTheme.bgColor: Colors.grey),)
+                                      child: Text("Year",style: TextStyle(fontFamily: 'RR',fontSize: 14,color:selIndex==3?AppTheme.bgColor: Colors.grey),)
                                   ),
                                 ),
                               ),
@@ -414,15 +466,156 @@ class _SalesMaterialState extends State<SalesMaterial> {
 
                     Container(
                       height: 250,
-                      color: Color(0XFFFFFFFF),
+                      color: AppTheme.gridbodyBgColor,
                       width: SizeConfig.screenWidth,
                       margin:EdgeInsets.only(top: 10,bottom: 20),
-                      child: HighCharts(
+                      /*child: SfCartesianChart(
+                        legend: Legend(isVisible: false, opacity: 0.7),
+                        title: ChartTitle(text: ''),
+                        plotAreaBorderWidth: 0,
+                        primaryXAxis: CategoryAxis(
+                            interval: 1,
+                            majorGridLines: const MajorGridLines(width: 0),
+                            //  minorGridLines: const MinorGridLines(width: 1,color: Colors.white),
+                            axisLine:const AxisLine(width: 1),
+                            edgeLabelPlacement: EdgeLabelPlacement.shift
+                        ),
+                        primaryYAxis: NumericAxis(
+                          labelFormat: '{value}',
+                          axisLine: const AxisLine(width: 0),
+                          majorTickLines: const MajorTickLines(size: 0),
+                          majorGridLines: const MajorGridLines(width: 0),
+                          //    minorGridLines: const MinorGridLines(width: 1,color: Colors.white),
+                        ),
+                        series:[
+                          ColumnSeries<dynamic, String>(
+                            animationDuration:2000,
+                            onRendererCreated: (ChartSeriesController c){
+                              //  chartSeriesController=c;
+                            },
+                            gradient: LinearGradient(
+                                colors: [Color(0xFFD7D7D7),Color(0xFFFAFAFA)],
+                                begin: Alignment.bottomCenter,
+                                end: Alignment.topCenter,
+                                stops: [0.25,0.75]
+                            ),
+                            dataSource: saleMaterialData,
+                            name: 'Sales',
+                          //  xValueMapper: (dynamic sales, _) =>DateFormat("MMMd").format(DateTime.parse(sales['WeekDay'])),
+                            xValueMapper: (dynamic sales, _) =>(sales['WeekDay']),
+                            yValueMapper: (dynamic sales, _) => sales['TotalSale'],
+                          ),
+                          SplineSeries<dynamic, String>(
+                            animationDuration:2000,
+                            onRendererCreated: (ChartSeriesController c){
+                              //  chartSeriesController=c;
+                            },
+                            markerSettings: MarkerSettings(
+                                isVisible:saleMaterialData.length==1? true:false,
+                                color: AppTheme.yellowColor
+                            ),
+                            dataSource: saleMaterialData,
+                            color: Color(0xFFFEBF10),
+
+                            name: 'Sales',
+                           // xValueMapper: (dynamic sales, _) =>DateFormat("MMMd").format(DateTime.parse(sales['Date'])),
+                            xValueMapper: (dynamic sales, _) =>(sales['WeekDay']),
+                            yValueMapper: (dynamic sales, _) => sales['TotalSale'],
+                          ),
+                        ],
+                        tooltipBehavior: TooltipBehavior(
+                            enable: true,
+                            duration: 10000,
+                            format: "point.x : point.y"
+                        ),
+                      ),*/
+
+
+                      child: FutureBuilder<dynamic>(
+                        future: getMaterialData(),
+                        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                          if( snapshot.connectionState == ConnectionState.waiting){
+                            return Container();
+                            // return  Center(child: Text('Please wait its loading...'));
+                          }
+                          else{
+                            if (snapshot.hasError)
+                              return Center(child: Text('Error: ${snapshot.error}',style: AppTheme.TSWhite16,));
+                            else
+                              return  SfCartesianChart(
+                                legend: Legend(isVisible: false, opacity: 0.7),
+                                title: ChartTitle(text: ''),
+                                plotAreaBorderWidth: 0,
+                                primaryXAxis: CategoryAxis(
+                                    interval: 1,
+                                    majorGridLines: const MajorGridLines(width: 0),
+                                    axisLine:const AxisLine(width: 1),
+                                    edgeLabelPlacement: EdgeLabelPlacement.shift,
+                                    labelPlacement:saleMaterialData.length==1?LabelPlacement.betweenTicks: LabelPlacement.onTicks
+                                ),
+                                primaryYAxis: NumericAxis(
+                                  //rangePadding: ChartRangePadding.round,
+                                  numberFormat: NumberFormat.currency(locale: 'HI',name: "",decimalDigits: 1),
+                                  axisLine: const AxisLine(width: 0),
+                                  majorTickLines: const MajorTickLines(size: 0),
+                                  majorGridLines: const MajorGridLines(width: 0),
+                                  //    minorGridLines: const MinorGridLines(width: 1,color: Colors.white),
+                                ),
+                                series:[
+                                  ColumnSeries<dynamic, String>(
+                                    animationDuration:2000,
+                                    onRendererCreated: (ChartSeriesController c){
+                                      //  chartSeriesController=c;
+                                    },
+                                    gradient: LinearGradient(
+                                        colors: [Color(0xFFD7D7D7).withOpacity(0.7),Color(0xFFFAFAFA)],
+                                        begin: Alignment.bottomCenter,
+                                        end: Alignment.topCenter,
+                                        stops: [0.2,0.8]
+                                    ),
+                                    dataSource: saleMaterialData,
+                                    name: 'Sales',
+                                    //  xValueMapper: (dynamic sales, _) =>DateFormat("MMMd").format(DateTime.parse(sales['WeekDay'])),
+                                    xValueMapper: (dynamic sales, _) =>selIndex==1?(sales['WeekDay'].toString().substring(0,3)):
+                                    selIndex==2?(sales['MName'].toString().substring(0,3)):(sales['Year'].toString()),
+
+                                    yValueMapper: (dynamic sales, _) => sales['TotalSale'],
+                                  ),
+                                  SplineSeries<dynamic, String>(
+                                    animationDuration:2000,
+                                    onRendererCreated: (ChartSeriesController c){
+                                      //  chartSeriesController=c;
+                                    },
+                                    markerSettings: MarkerSettings(
+                                        isVisible:saleMaterialData.length==1? true:false,
+                                        color: AppTheme.yellowColor
+                                    ),
+                                    dataSource: saleMaterialData,
+                                    color: Color(0xFFFEBF10),
+
+                                    name: 'Sales',
+                                    // xValueMapper: (dynamic sales, _) =>DateFormat("MMMd").format(DateTime.parse(sales['Date'])),
+                                    xValueMapper: (dynamic sales, _) =>selIndex==1?(sales['WeekDay'].toString().substring(0,3)):
+                                    selIndex==2?(sales['MName'].toString().substring(0,3)):(sales['Year'].toString()),
+                                    yValueMapper: (dynamic sales, _) => sales['TotalSale'],
+                                  ),
+                                ],
+                                tooltipBehavior: TooltipBehavior(
+                                    enable: true,
+                                    duration: 10000,
+                                    format: "point.x : point.y"
+                                ),
+                              );
+                          }
+                        },
+                      ),
+
+                     /* child: HighCharts(
                         data: db.salesMaterialHighChart,
                         isHighChart: true,
                         isHighChartExtraParam: false,
                         isLoad: db.isSaleMaterialChartLoad,
-                      ),
+                      ),*/
                     ),
 
                     Container(

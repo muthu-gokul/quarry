@@ -272,24 +272,23 @@ class _DashBoardHomeState extends State<DashBoardHome> {
                                   return  Stack(
                                     children: [
                                       Positioned(
-                                          left:70,
-                                          child: Column(
+                                          left:80,
+                                          child:currentSaleData.isEmpty?Container(): Column(
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
                                               Text("Sale",style: TextStyle(fontFamily: 'RR',fontSize: 18,color: AppTheme.yellowColor,letterSpacing: 0.1),),
                                               RichText(
                                                 text: TextSpan(
                                                   text: '${DateFormat("MMMd").format(DateTime.parse(currentSaleData[currentSaleData.length-1]['Date']))} : ${formatCurrency.format(currentSaleData[currentSaleData.length-1]['TotalSale']??0.0)} / ',
-                                                  style: TextStyle(fontFamily: 'RR',fontSize: 12,color: Colors.white,letterSpacing: 0.1),
+                                                  style: AppTheme.saleChartTotal,
                                                   children: <TextSpan>[
                                                     TextSpan(text: '${currentSaleData[currentSaleData.length-1]['TotalQuantity']} ${currentSaleData[currentSaleData.length-1]['UnitName']}',
-                                                        style: TextStyle(fontFamily: 'RR',fontSize: 12,color: Color(0xFF6a6a6a),letterSpacing: 0.1),
+                                                        style:AppTheme.saleChartQty
                                                     ),
                                                   ],
                                                 ),
                                               ),
-                                              //Text('${DateFormat("MMMd").format(DateTime.parse(currentSaleData[currentSaleData.length-1]['Date']))} : ${formatCurrency.format(currentSaleData[currentSaleData.length-1]['TotalSale']??0.0)} / ${currentSaleData[currentSaleData.length-1]['TotalQuantity']} ${currentSaleData[currentSaleData.length-1]['UnitName']}',
-                                              //  style: TextStyle(fontFamily: 'RR',fontSize: 12,color: Colors.white,letterSpacing: 0.1),),
+
 
                                             ],
                                           )
@@ -303,10 +302,11 @@ class _DashBoardHomeState extends State<DashBoardHome> {
                                             majorGridLines: const MajorGridLines(width: 0),
                                             //  minorGridLines: const MinorGridLines(width: 1,color: Colors.white),
                                             axisLine:const AxisLine(width: 1),
-                                            edgeLabelPlacement: EdgeLabelPlacement.shift
+                                            edgeLabelPlacement: EdgeLabelPlacement.shift,
+                                            labelPlacement:snapshot.data==1?LabelPlacement.betweenTicks: LabelPlacement.onTicks
                                         ),
                                         primaryYAxis: NumericAxis(
-                                          labelFormat: '{value}',
+                                          numberFormat: NumberFormat.currency(locale: 'HI',name: "",decimalDigits: 1),
                                           axisLine: const AxisLine(width: 0),
                                           majorTickLines: const MajorTickLines(size: 0),
                                           majorGridLines: const MajorGridLines(width: 0),
@@ -335,8 +335,7 @@ class _DashBoardHomeState extends State<DashBoardHome> {
                                         tooltipBehavior: TooltipBehavior(
                                           enable: true,
                                           duration: 10000,
-                                          format: "point.x : point.y",
-
+                                          format: "point.x: point.y",
                                         ),
                                       ),
                                     ],
