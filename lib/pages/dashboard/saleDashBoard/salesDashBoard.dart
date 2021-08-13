@@ -36,6 +36,11 @@ class _SalesDashBoardState extends State<SalesDashBoard> {
   double silverBodyTopMargin=0;
 
   int selIndex=-1;
+  List<dynamic> saleData=[];
+  getData(){
+    saleData=Provider.of<DashboardNotifier>(context,listen: false).saleData;
+    return Future.value(saleData);
+  }
 
   @override
   void initState() {
@@ -44,9 +49,9 @@ class _SalesDashBoardState extends State<SalesDashBoard> {
         DateFormat("yyyy-MM-dd").format(DateTime.now().subtract(Duration(days: 6))).toString(),
         DateFormat("yyyy-MM-dd").format(DateTime.now()).toString()
     ).then((value){
-      Timer(Duration(milliseconds: 100),(){
+      /*Timer(Duration(milliseconds: 100),(){
         chartSeriesController?.animate();
-      });
+      });*/
     });
     WidgetsBinding.instance!.addPostFrameCallback((_){
       silverController=new ScrollController();
@@ -127,9 +132,9 @@ List<DateTime?> picked=[];
                                       DateFormat("yyyy-MM-dd").format(picked[0]!).toString(),
                                       DateFormat("yyyy-MM-dd").format(picked[1]!).toString()
                                   ).then((value){
-                                    Timer(Duration(milliseconds: 100),(){
+                                   /* Timer(Duration(milliseconds: 100),(){
                                       chartSeriesController?.animate();
-                                    });
+                                    });*/
                                   });
                                 }
                                 else if(picked1!=null && picked1.length ==1){
@@ -143,9 +148,9 @@ List<DateTime?> picked=[];
                                       DateFormat("yyyy-MM-dd").format(picked[0]!).toString(),
                                       DateFormat("yyyy-MM-dd").format(picked[0]!).toString()
                                   ).then((value){
-                                    Timer(Duration(milliseconds: 100),(){
+                                  /*  Timer(Duration(milliseconds: 100),(){
                                       chartSeriesController?.animate();
-                                    });
+                                    });*/
                                   });
                                 }
                              },
@@ -163,7 +168,70 @@ List<DateTime?> picked=[];
                         background: Container(
                           width: SizeConfig.screenWidth,
                           margin:EdgeInsets.only(top: 55),
-                          child: SfCartesianChart(
+                          child: FutureBuilder<dynamic>(
+                            future: getData(),
+                            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                              if( snapshot.connectionState == ConnectionState.waiting){
+                                return Container();
+                                // return  Center(child: Text('Please wait its loading...'));
+                              }
+                              else{
+                                if (snapshot.hasError)
+                                  return Center(child: Text('Error: ${snapshot.error}',style: AppTheme.TSWhite16,));
+                                else
+                                  return  SfCartesianChart(
+                                    legend: Legend(isVisible: false, opacity: 0.7),
+                                    title: ChartTitle(text: ''),
+                                    plotAreaBorderWidth: 0,
+                                    primaryXAxis: CategoryAxis(
+                                        interval: 1,
+                                        majorGridLines: const MajorGridLines(width: 0),
+                                        //  minorGridLines: const MinorGridLines(width: 1,color: Colors.white),
+                                        axisLine:const AxisLine(width: 1),
+                                        edgeLabelPlacement: EdgeLabelPlacement.shift
+                                    ),
+                                    primaryYAxis: NumericAxis(
+                                      labelFormat: '{value}',
+                                      axisLine: const AxisLine(width: 0),
+                                      majorTickLines: const MajorTickLines(size: 0),
+                                      majorGridLines: const MajorGridLines(width: 0),
+                                      //    minorGridLines: const MinorGridLines(width: 1,color: Colors.white),
+                                    ),
+                                    series:[
+                                      SplineAreaSeries<dynamic, String>(
+                                        animationDuration:2000,
+                                        onRendererCreated: (ChartSeriesController c){
+                                          chartSeriesController=c;
+                                        },
+                                        markerSettings: MarkerSettings(
+                                            isVisible:saleData.length==1? true:false,
+                                            color: AppTheme.yellowColor
+                                        ),
+                                        dataSource: saleData,
+                                        borderColor: Color(0xFFFEBF10),
+                                        borderWidth: 3,
+                                        gradient: LinearGradient(
+                                          colors: [Color(0xFF343434),Color(0xFFFEBF10).withOpacity(0.5)],
+                                          begin: Alignment.bottomCenter,
+                                          end: Alignment.topCenter,
+                                          //  stops: [0,30]
+                                        ),
+                                        name: 'Sales',
+                                        xValueMapper: (dynamic sales, _) =>DateFormat("MMMd").format(DateTime.parse(sales['Date'])),
+                                        yValueMapper: (dynamic sales, _) => sales['TotalSale'],
+                                      ),
+                                    ],
+                                    tooltipBehavior: TooltipBehavior(
+                                        enable: true,
+                                        duration: 10000,
+                                        format: "point.x : point.y"
+                                    ),
+                                  );
+                              }
+                            },
+                          ),
+
+                         /* child: SfCartesianChart(
                             legend: Legend(isVisible: false, opacity: 0.7),
                             title: ChartTitle(text: ''),
                             plotAreaBorderWidth: 0,
@@ -207,7 +275,7 @@ List<DateTime?> picked=[];
                                 duration: 10000,
                                 format: "point.x : point.y"
                             ),
-                          ),
+                          ),*/
 
 
                          /* child: HighCharts(

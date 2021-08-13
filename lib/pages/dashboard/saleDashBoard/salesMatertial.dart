@@ -43,14 +43,23 @@ class _SalesMaterialState extends State<SalesMaterial> {
   double silverBodyTopMargin=0;
 
   int selIndex=-1;
-
+  late  Future userFuture;
+  List<dynamic> saleData=[];
+  getData(){
+    saleData=Provider.of<DashboardNotifier>(context,listen: false).saleData;
+    return Future.value(saleData);
+  }
   @override
   void initState() {
+    userFuture = getData();
     Provider.of<DashboardNotifier>(context,listen: false).getSaleMaterialDetail(
         widget.weekList!.map((e) => e['TotalSale']).toList(),
         json.encode(widget.weekList!.map((e) => e['WeekDay'].toString().substring(0,3)).toList()),
       context
     );
+    Timer(Duration(milliseconds: 400),(){
+      chartSeriesController?.animate();
+    });
     WidgetsBinding.instance!.addPostFrameCallback((_){
       silverController=new ScrollController();
 
@@ -82,13 +91,13 @@ class _SalesMaterialState extends State<SalesMaterial> {
   double position=5;
   ChartSeriesController? chartSeriesController;
 
-  @override
+/*  @override
   void didChangeDependencies() {
     Timer(Duration(milliseconds: 400),(){
       chartSeriesController?.animate();
     });
     super.didChangeDependencies();
-  }
+  }*/
 
   @override
   void dispose() {
@@ -140,49 +149,67 @@ class _SalesMaterialState extends State<SalesMaterial> {
                           color: Color(0XFF353535),
                           width: SizeConfig.screenWidth,
                           margin:EdgeInsets.only(top: 55),
-                          child: SfCartesianChart(
-                            legend: Legend(isVisible: false, opacity: 0.7),
-                            title: ChartTitle(text: ''),
-                            plotAreaBorderWidth: 0,
-                            primaryXAxis: CategoryAxis(
-                                interval: 1,
-                                majorGridLines: const MajorGridLines(width: 0),
-                                //  minorGridLines: const MinorGridLines(width: 1,color: Colors.white),
-                                axisLine:const AxisLine(width: 1),
-                                edgeLabelPlacement: EdgeLabelPlacement.shift
-                            ),
-                            primaryYAxis: NumericAxis(
-                              labelFormat: '{value}',
-                              axisLine: const AxisLine(width: 0),
-                              majorTickLines: const MajorTickLines(size: 0),
-                              majorGridLines: const MajorGridLines(width: 0),
-                              //    minorGridLines: const MinorGridLines(width: 1,color: Colors.white),
-                            ),
-                            series:[
-                              SplineAreaSeries<dynamic, String>(
-                                animationDuration:2000,
-                                onRendererCreated: (ChartSeriesController c){
-                                  chartSeriesController=c;
-                                },
-                                dataSource: db.saleData,
-                                borderColor: Color(0xFFFEBF10),
-                                borderWidth: 3,
-                                gradient: LinearGradient(
-                                  colors: [Color(0xFF343434),Color(0xFFFEBF10).withOpacity(0.5)],
-                                  begin: Alignment.bottomCenter,
-                                  end: Alignment.topCenter,
-                                  //  stops: [0,30]
-                                ),
-                                name: 'Sales',
-                                xValueMapper: (dynamic sales, _) =>DateFormat("MMMd").format(DateTime.parse(sales['Date'])),
-                                yValueMapper: (dynamic sales, _) => sales['TotalSale'],
-                              ),
-                            ],
-                            tooltipBehavior: TooltipBehavior(
-                                enable: true,
-                                duration: 10000,
-                                format: "point.x : point.y"
-                            ),
+                          child: FutureBuilder<dynamic>(
+                            future: userFuture,
+                            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                              if( snapshot.connectionState == ConnectionState.waiting){
+                                return Container();
+                                // return  Center(child: Text('Please wait its loading...'));
+                              }
+                              else{
+                                if (snapshot.hasError)
+                                  return Center(child: Text('Error: ${snapshot.error}',style: AppTheme.TSWhite16,));
+                                else
+                                  return  SfCartesianChart(
+                                    legend: Legend(isVisible: false, opacity: 0.7),
+                                    title: ChartTitle(text: ''),
+                                    plotAreaBorderWidth: 0,
+                                    primaryXAxis: CategoryAxis(
+                                        interval: 1,
+                                        majorGridLines: const MajorGridLines(width: 0),
+                                        //  minorGridLines: const MinorGridLines(width: 1,color: Colors.white),
+                                        axisLine:const AxisLine(width: 1),
+                                        edgeLabelPlacement: EdgeLabelPlacement.shift
+                                    ),
+                                    primaryYAxis: NumericAxis(
+                                      labelFormat: '{value}',
+                                      axisLine: const AxisLine(width: 0),
+                                      majorTickLines: const MajorTickLines(size: 0),
+                                      majorGridLines: const MajorGridLines(width: 0),
+                                      //    minorGridLines: const MinorGridLines(width: 1,color: Colors.white),
+                                    ),
+                                    series:[
+                                      SplineAreaSeries<dynamic, String>(
+                                        animationDuration:2000,
+                                        onRendererCreated: (ChartSeriesController c){
+                                          chartSeriesController=c;
+                                        },
+                                        markerSettings: MarkerSettings(
+                                          isVisible:saleData.length==1? true:false,
+                                          color: AppTheme.yellowColor
+                                        ),
+                                        dataSource: saleData,
+                                        borderColor: Color(0xFFFEBF10),
+                                        borderWidth: 3,
+                                        gradient: LinearGradient(
+                                          colors: [Color(0xFF343434),Color(0xFFFEBF10).withOpacity(0.5)],
+                                          begin: Alignment.bottomCenter,
+                                          end: Alignment.topCenter,
+                                          //  stops: [0,30]
+                                        ),
+                                        name: 'Sales',
+                                        xValueMapper: (dynamic sales, _) =>DateFormat("MMMd").format(DateTime.parse(sales['Date'])),
+                                        yValueMapper: (dynamic sales, _) => sales['TotalSale'],
+                                      ),
+                                    ],
+                                    tooltipBehavior: TooltipBehavior(
+                                        enable: true,
+                                        duration: 10000,
+                                        format: "point.x : point.y"
+                                    ),
+                                  );
+                              }
+                            },
                           ),
 
                          /* child: HighCharts(

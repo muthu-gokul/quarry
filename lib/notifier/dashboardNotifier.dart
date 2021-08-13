@@ -78,139 +78,7 @@ class DashboardNotifier extends ChangeNotifier{
           if(typeName=='Sale'){
             currentSaleT=parsed['Table'][0];
             currentSaleData=parsed['Table1'] as List;
-            currentSalesApex='''
-       var options = {
-        series: [{
-            name: 'Sales',
-            data: ${currentSaleData.map((e) => e['TotalSale']).toList()}
-        }],
-         title: {
-              text: 'Sale',
-              align: 'left',
-              margin: 10,
-              offsetY: 0,
-              floating: false,
-              style: {
-                fontSize:  '18px',
-                fontWeight:  '500',
-                color:  '#FFC010'
-              },
-          },
-          subtitle: {
-              text: '${DateFormat("MMMd").format(DateTime.parse(currentSaleData![currentSaleData!.length-1]['Date']))} : ${formatCurrency.format(currentSaleData![currentSaleData!.length-1]['TotalSale']??0.0)} / ${currentSaleData![currentSaleData!.length-1]['TotalQuantity']} ${currentSaleData![currentSaleData!.length-1]['UnitName']}',
-              align: 'left',
-              offsetY: 25,
-              floating: false,
-              style: {
-                fontSize:  '12px',
-                color:  '#ffffff'
-              },
-          },
-        chart: {
-           
-            background: '#343434',
-            type: 'area',
-            foreColor: '#9a9797',
-            height: 250,
-            width:'100%',
-            toolbar: {
-                show: false
-            },
-           
-            zoom: {
-                enabled: false
-            },
-            
-            dropShadow: {
-                enabled: false,
-                top: 3,
-                left: 14,
-                blur: 4,
-                opacity: 0.12,
-                color: '#FEBF10',
-            },
-            sparkline: {
-                enabled: false
-            }
-        },
-        markers: {
-            size: 0,
-            colors: ["#FEBF10"],
-            strokeColors: "#FEBF10",
-            strokeWidth: 2,
-            hover: {
-                size: 7,
-            }
-        },
-        plotOptions: {
-            bar: {
-                horizontal: false,
-                columnWidth: '45%',
-                endingShape: 'rounded'
-            },
-        },
-
-        dataLabels: {
-            enabled: false
-        },
-        stroke: {
-            show: true,
-            width: 3,
-            curve: 'smooth'
-        },
-        fill: {
-            type: 'gradient',
-            gradient: {
-                shade: 'light',
-                type: 'vertical',
-                shadeIntensity: 0.5,
-                gradientToColors: ['#343434'],
-                inverseColors: false,
-                opacityFrom: 0.8,
-                opacityTo: 0.5,
-                stops: [0, 100]
-            }
-        },
-        colors: ["#FEBF10"],
-        grid: {
-            show: false,
-            borderColor: '#ededed',
-            //strokeDashArray: 4,
-         
-        },
-        yaxis: {
-            labels: {
-                formatter: function(value) {
-                    return value;
-                }
-            },
-        },
-         xaxis: {
-          categories: ${json.encode(currentSaleData!.map((e) => DateFormat("MMMd").format(DateTime.parse(e['Date']))).toList())}
-        },
-       
-
-        tooltip: {
-            theme: 'dark',
-            y: {
-                formatter: function(val) {
-                    return val
-                }
-            },
-        
-        }
-    };
-    var chart = new ApexCharts(document.querySelector("#chart"), options);
-    chart.render();
-  ''';
             updateisLoad(false);
-
-           /* updateisChartLoad(true);
-            Timer(Duration(milliseconds: 500), (){
-              updateisChartLoad(false);
-              updateisLoad(false);
-            });
-            currentSaleReload();*/
           }
 
         }
@@ -225,143 +93,10 @@ class DashboardNotifier extends ChangeNotifier{
     }
   }
 
-  currentSaleReload(){
-    currentSalesApex='''
-       var options = {
-        series: [{
-            name: 'Sales',
-            data: ${currentSaleData!.map((e) => e['TotalSale']).toList()}
-        }],
-         title: {
-              text: 'Sale',
-              align: 'left',
-              margin: 10,
-              offsetY: 0,
-              floating: false,
-              style: {
-                fontSize:  '18px',
-                fontWeight:  '500',
-                color:  '#FFC010'
-              },
-          },
-          subtitle: {
-              text: '${DateFormat("MMMd").format(DateTime.parse(currentSaleData![currentSaleData!.length-1]['Date']))} : ${formatCurrency.format(currentSaleData![currentSaleData!.length-1]['TotalSale']??0.0)} / ${currentSaleData![currentSaleData!.length-1]['TotalQuantity']} ${currentSaleData![currentSaleData!.length-1]['UnitName']}',
-              align: 'left',
-              offsetY: 25,
-              floating: false,
-              style: {
-                fontSize:  '12px',
-                color:  '#ffffff'
-              },
-          },
-        chart: {
-           
-            background: '#343434',
-            type: 'area',
-            foreColor: '#9a9797',
-            height: 250,
-            width:'100%',
-            toolbar: {
-                show: false
-            },
-           
-            zoom: {
-                enabled: false
-            },
-            
-            dropShadow: {
-                enabled: false,
-                top: 3,
-                left: 14,
-                blur: 4,
-                opacity: 0.12,
-                color: '#FEBF10',
-            },
-            sparkline: {
-                enabled: false
-            }
-        },
-        markers: {
-            size: 0,
-            colors: ["#FEBF10"],
-            strokeColors: "#FEBF10",
-            strokeWidth: 2,
-            hover: {
-                size: 7,
-            }
-        },
-        plotOptions: {
-            bar: {
-                horizontal: false,
-                columnWidth: '45%',
-                endingShape: 'rounded'
-            },
-        },
-
-        dataLabels: {
-            enabled: false
-        },
-        stroke: {
-            show: true,
-            width: 3,
-            curve: 'smooth'
-        },
-        fill: {
-            type: 'gradient',
-            gradient: {
-                shade: 'light',
-                type: 'vertical',
-                shadeIntensity: 0.5,
-                gradientToColors: ['#343434'],
-                inverseColors: false,
-                opacityFrom: 0.8,
-                opacityTo: 0.5,
-                stops: [0, 100]
-            }
-        },
-        colors: ["#FEBF10"],
-        grid: {
-            show: false,
-            borderColor: '#ededed',
-            //strokeDashArray: 4,
-         
-        },
-        yaxis: {
-            labels: {
-                formatter: function(value) {
-                    return value;
-                }
-            },
-        },
-         xaxis: {
-          categories: ${json.encode(currentSaleData!.map((e) => DateFormat("MMMd").format(DateTime.parse(e['Date']))).toList())}
-        },
-       
-
-        tooltip: {
-            theme: 'dark',
-            y: {
-                formatter: function(val) {
-                    return val
-                }
-            },
-        
-        }
-    };
-    var chart = new ApexCharts(document.querySelector("#chart"), options);
-    chart.render();
-  ''';
-
-    updateisChartLoad(true);
-    Timer(Duration(milliseconds: 500), (){
-      updateisChartLoad(false);
-      updateisLoad(false);
-    });
-  }
 
   Future<dynamic> DashBoardDbHit(BuildContext context,String typeName,String fromDate,String toDate, {VoidCallback? voidCallback}) async {
   updateisLoad(true);
-  saleData.clear();
+ // saleData.clear();
     var body={
       "Fields": [
         {
@@ -400,7 +135,7 @@ class DashboardNotifier extends ChangeNotifier{
 
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
-        if(value!=null){
+        if(value!='F'){
           var parsed=json.decode(value);
         //  log("$value");
           if(typeName=='Sale'){
@@ -413,7 +148,6 @@ class DashboardNotifier extends ChangeNotifier{
             salePaymentCategoryT6=parsed['Table6'] as List?;
             salePaymentCustomerT7=parsed['Table7'] as List?;
             updateisLoad(false);
-          //  getSaleDetail();
           }
           else if(typeName=='Purchase'){
             updateisLoad(false);
@@ -489,8 +223,6 @@ class DashboardNotifier extends ChangeNotifier{
         else{
           updateisLoad(false);
         }
-
-
       });
     }
     catch(e,t){
@@ -509,141 +241,9 @@ List<dynamic>? saleMaterialMonthlyT4=[];
 List<dynamic>? saleMaterialYearT5=[];
 List<dynamic>? salePaymentCategoryT6=[];
 List<dynamic>? salePaymentCustomerT7=[];
-String salesApex='';
+
 String salesMaterialHighChart='';
-getSaleDetail(){
-   salesApex='''
-       var options = {
-        series: [{
-            name: 'Sales',
-            data: ${saleData.map((e) => e['TotalSale']).toList()}
-        }],
-         title: {
-              text: 'Sale',
-              align: 'left',
-              margin: 10,
-              offsetY: 0,
-              floating: false,
-              style: {
-                fontSize:  '18px',
-                fontWeight:  '500',
-                color:  '#FFC010'
-              },
-          },
-          subtitle: {
-              text: 'Total : ${formatCurrency.format(saleT!['TotalSale']??0.0)} / ${saleT!['TotalQuantity']} ${saleT!['UnitName']}',
-              align: 'left',
-              offsetY: 25,
-              floating: false,
-              style: {
-                fontSize:  '12px',
-                color:  '#ffffff'
-              },
-          },
-        chart: {
-           
-            background: '#343434',
-            type: 'area',
-            foreColor: '#9a9797',
-            height: 250,
-            width:'100%',
-            toolbar: {
-                show: false
-            },
-           
-            zoom: {
-                enabled: false
-            },
-            
-            dropShadow: {
-                enabled: false,
-                top: 3,
-                left: 14,
-                blur: 4,
-                opacity: 0.12,
-                color: '#FEBF10',
-            },
-            sparkline: {
-                enabled: false
-            }
-        },
-        markers: {
-            size: 0,
-            colors: ["#FEBF10"],
-            strokeColors: "#FEBF10",
-            strokeWidth: 2,
-            hover: {
-                size: 7,
-            }
-        },
-        plotOptions: {
-            bar: {
-                horizontal: false,
-                columnWidth: '45%',
-                endingShape: 'rounded'
-            },
-        },
 
-        dataLabels: {
-            enabled: false
-        },
-        stroke: {
-            show: true,
-            width: 3,
-            curve: 'smooth'
-        },
-        fill: {
-            type: 'gradient',
-            gradient: {
-                shade: 'light',
-                type: 'vertical',
-                shadeIntensity: 0.5,
-                gradientToColors: ['#343434'],
-                inverseColors: false,
-                opacityFrom: 0.8,
-                opacityTo: 0.5,
-                stops: [0, 100]
-            }
-        },
-        colors: ["#FEBF10"],
-        grid: {
-            show: false,
-            borderColor: '#ededed',
-            //strokeDashArray: 4,
-         
-        },
-        yaxis: {
-            labels: {
-                formatter: function(value) {
-                    return value;
-                }
-            },
-        },
-         xaxis: {
-          categories: ${json.encode(saleData.map((e) => DateFormat("MMMd").format(DateTime.parse(e['Date']))).toList())}
-        },
-       
-
-        tooltip: {
-            theme: 'dark',
-            y: {
-                formatter: function(val) {
-                    return val
-                }
-            },
-        }
-    };
-    var chart = new ApexCharts(document.querySelector("#chart"), options);
-    chart.render();
-  ''';
-   updateisChartLoad(true);
-
-   Timer(Duration(milliseconds: 500), (){
-     updateisChartLoad(false);
-     updateisLoad(false);
-   });
-
- }
 
 getSaleMaterialDetail(List<dynamic> data,String date,BuildContext context){
  // print(data);

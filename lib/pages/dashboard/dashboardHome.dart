@@ -46,9 +46,12 @@ class _DashBoardHomeState extends State<DashBoardHome> {
         DateFormat("yyyy-MM-dd").format(DateTime.now().subtract(Duration(days: 6))).toString(),
         DateFormat("yyyy-MM-dd").format(DateTime.now()).toString()
     ).then((value){
+      /*setState(() {
+        currentSaleData=Provider.of<DashboardNotifier>(context,listen: false).currentSaleData;
+      });
       Timer(Duration(milliseconds: 600),(){
         chartSeriesController?.animate();
-      });
+      });*/
     });
     super.didChangeDependencies();
   }
@@ -82,20 +85,35 @@ class _DashBoardHomeState extends State<DashBoardHome> {
   }
   ChartSeriesController? chartSeriesController;
 
-  @override
-  void didUpdateWidget(covariant DashBoardHome oldWidget) {
-    Timer(Duration(milliseconds: 300),(){
-      chartSeriesController?.animate();
-    });
-    super.didUpdateWidget(oldWidget);
+
+  getData(){
+    currentSaleData=Provider.of<DashboardNotifier>(context,listen: false).currentSaleData;
+    return Future.value(currentSaleData);
   }
 
+  @override
+  void didUpdateWidget(covariant DashBoardHome oldWidget) {
+    //print("DID UPDATE WIDGet");
+/*    setState(() {
+      currentSaleData=Provider.of<DashboardNotifier>(context,listen: false).currentSaleData;
+    });
+    Timer(Duration(milliseconds: 600),(){
+      chartSeriesController?.animate();
+    });*/
+    /*Timer(Duration(milliseconds: 300),(){
+      chartSeriesController?.animate();
+    });*/
+   // super.didUpdateWidget(oldWidget);
+  }
+  List<dynamic> currentSaleData=[];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.bgColor,
-      body: Consumer<DashboardNotifier>(
-        builder:(ctx,db,c)=> Stack(
+      body:
+      Consumer<DashboardNotifier>(
+        builder:(ctx,db,c)=>
+            Stack(
           children: [
             NestedScrollView(
               controller: silverController,
@@ -219,9 +237,12 @@ class _DashBoardHomeState extends State<DashBoardHome> {
                                   DateFormat("yyyy-MM-dd").format(DateTime.now().subtract(Duration(days: 6))).toString(),
                                   DateFormat("yyyy-MM-dd").format(DateTime.now()).toString()
                               ).then((value){
+                               /* setState(() {
+                                  currentSaleData=Provider.of<DashboardNotifier>(context,listen: false).currentSaleData;
+                                });
                                 Timer(Duration(milliseconds: 100),(){
                                   chartSeriesController?.animate();
-                                });
+                                });*/
                               });
                             }, icon: Icon(Icons.refresh,color: AppTheme.dashCalendar,)),
                             SizedBox(width: 20,)
@@ -237,7 +258,94 @@ class _DashBoardHomeState extends State<DashBoardHome> {
                           color: Color(0XFF353535),
                           width: SizeConfig.screenWidth,
                           margin:EdgeInsets.only(top: 55),
-                          child: SfCartesianChart(
+                          child: FutureBuilder<dynamic>(
+                            future: getData(), // function where you call your api
+                            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {  // AsyncSnapshot<Your object type>
+                              if( snapshot.connectionState == ConnectionState.waiting){
+                                return Container();
+                               // return  Center(child: Text('Please wait its loading...'));
+                              }
+                              else{
+                                if (snapshot.hasError)
+                                  return Center(child: Text('Error: ${snapshot.error}',style: AppTheme.TSWhite16,));
+                                else
+                                  return  Stack(
+                                    children: [
+                                      Positioned(
+                                          left:70,
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text("Sale",style: TextStyle(fontFamily: 'RR',fontSize: 18,color: AppTheme.yellowColor,letterSpacing: 0.1),),
+                                              RichText(
+                                                text: TextSpan(
+                                                  text: '${DateFormat("MMMd").format(DateTime.parse(currentSaleData[currentSaleData.length-1]['Date']))} : ${formatCurrency.format(currentSaleData[currentSaleData.length-1]['TotalSale']??0.0)} / ',
+                                                  style: TextStyle(fontFamily: 'RR',fontSize: 12,color: Colors.white,letterSpacing: 0.1),
+                                                  children: <TextSpan>[
+                                                    TextSpan(text: '${currentSaleData[currentSaleData.length-1]['TotalQuantity']} ${currentSaleData[currentSaleData.length-1]['UnitName']}',
+                                                        style: TextStyle(fontFamily: 'RR',fontSize: 12,color: Color(0xFF6a6a6a),letterSpacing: 0.1),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              //Text('${DateFormat("MMMd").format(DateTime.parse(currentSaleData[currentSaleData.length-1]['Date']))} : ${formatCurrency.format(currentSaleData[currentSaleData.length-1]['TotalSale']??0.0)} / ${currentSaleData[currentSaleData.length-1]['TotalQuantity']} ${currentSaleData[currentSaleData.length-1]['UnitName']}',
+                                              //  style: TextStyle(fontFamily: 'RR',fontSize: 12,color: Colors.white,letterSpacing: 0.1),),
+
+                                            ],
+                                          )
+                                      ),
+                                      SfCartesianChart(
+                                        legend: Legend(isVisible: false, opacity: 0.7),
+                                        title: ChartTitle(text: ''),
+                                        plotAreaBorderWidth: 0,
+                                        primaryXAxis: CategoryAxis(
+                                            interval: 1,
+                                            majorGridLines: const MajorGridLines(width: 0),
+                                            //  minorGridLines: const MinorGridLines(width: 1,color: Colors.white),
+                                            axisLine:const AxisLine(width: 1),
+                                            edgeLabelPlacement: EdgeLabelPlacement.shift
+                                        ),
+                                        primaryYAxis: NumericAxis(
+                                          labelFormat: '{value}',
+                                          axisLine: const AxisLine(width: 0),
+                                          majorTickLines: const MajorTickLines(size: 0),
+                                          majorGridLines: const MajorGridLines(width: 0),
+                                          //    minorGridLines: const MinorGridLines(width: 1,color: Colors.white),
+                                        ),
+                                        series:[
+                                          SplineAreaSeries<dynamic, String>(
+                                            animationDuration:2000,
+                                            onRendererCreated: (ChartSeriesController c){
+                                              chartSeriesController=c;
+                                            },
+                                            dataSource: snapshot.data,
+                                            borderColor: Color(0xFFFEBF10),
+                                            borderWidth: 3,
+                                            gradient: LinearGradient(
+                                              colors: [Color(0xFF343434),Color(0xFFFEBF10).withOpacity(0.5)],
+                                              begin: Alignment.bottomCenter,
+                                              end: Alignment.topCenter,
+                                              //  stops: [0,30]
+                                            ),
+                                            name: 'Sales',
+                                            xValueMapper: (dynamic sales, _) =>DateFormat("MMMd").format(DateTime.parse(sales['Date'])),
+                                            yValueMapper: (dynamic sales, _) => sales['TotalSale'],
+                                          ),
+                                        ],
+                                        tooltipBehavior: TooltipBehavior(
+                                          enable: true,
+                                          duration: 10000,
+                                          format: "point.x : point.y",
+
+                                        ),
+                                      ),
+                                    ],
+                                  );  // snapshot.data  :- get your object which is pass from your downloadData() function
+                              }
+                            },
+                          ),
+
+                          /*child: SfCartesianChart(
                             legend: Legend(isVisible: false, opacity: 0.7),
                             title: ChartTitle(text: ''),
                             plotAreaBorderWidth: 0,
@@ -261,7 +369,7 @@ class _DashBoardHomeState extends State<DashBoardHome> {
                                 onRendererCreated: (ChartSeriesController c){
                                   chartSeriesController=c;
                                 },
-                                dataSource: db.currentSaleData,
+                                dataSource: currentSaleData,
                                 borderColor: Color(0xFFFEBF10),
                                 borderWidth: 3,
                                 gradient: LinearGradient(
@@ -281,7 +389,7 @@ class _DashBoardHomeState extends State<DashBoardHome> {
                                 format: "point.x : point.y",
 
                             ),
-                          ),
+                          ),*/
 
 
                         /*  child: HighCharts(
@@ -342,7 +450,6 @@ class _DashBoardHomeState extends State<DashBoardHome> {
                         else if(i==7){
                           Navigator.push(context, MaterialPageRoute(builder: (context)=>InvoiceDashBoard()));
                         }
-
                       },
                       child: Container(
                         height: SizeConfig.screenWidth!*0.27,
@@ -376,7 +483,6 @@ class _DashBoardHomeState extends State<DashBoardHome> {
                     ))).values.toList(),
                   ),
                 )
-
               ),
             ),
 

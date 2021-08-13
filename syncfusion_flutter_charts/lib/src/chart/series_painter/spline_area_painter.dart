@@ -130,7 +130,9 @@ class _SplineAreaChartPainter extends CustomPainter {
                     currentPoint.x, seriesRenderer)
                 : y = _getAnimateValue(animationFactor, y, oldPointLocation.y,
                     currentPoint.y, seriesRenderer);
+
             if (point.startControl != null) {
+          //    print("point.startControl ${point.startControl}");
               startControlY = _getAnimateValue(
                   animationFactor,
                   startControlY,
