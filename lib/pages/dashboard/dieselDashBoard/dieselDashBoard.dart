@@ -247,7 +247,18 @@ class _DieselDashBoardState extends State<DieselDashBoard> {
                                       valueColor: AlwaysStoppedAnimation(Color(0xFFF3C253)),
                                       borderColor: Colors.transparent,
                                       borderWidth: 0.0,
-                                      center: Text("${db.totalDiesel['TotalQuantity']??0.0} Ltr", style:  TextStyle(fontSize: 18,color: Color(0xFF676767),fontFamily: 'RM'),
+                                      center: Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          FittedText(
+                                            textStyle: TextStyle(fontSize: 30,color: Color(0xFF676767),fontFamily: 'RM'),
+                                            text: "${db.totalDiesel['TotalQuantity']??0.0}",
+                                            alignment: Alignment.center,
+                                            width: 140,
+                                            height: 35,
+                                          ),
+                                          Text("Ltr", style:  TextStyle(fontSize: 14,color: Color(0xFF676767),fontFamily: 'RL')),
+                                        ],
                                       ),
                                     ),
                                   ),
