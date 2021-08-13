@@ -28,9 +28,10 @@ class _DieselDashBoardState extends State<DieselDashBoard> {
   double silverBodyTopMargin=0;
   List<DateTime?> picked=[];
   int selIndex=0;
-
+  int spike=0;
   getData(){
     chartData=Provider.of<DashboardNotifier>(context,listen: false).chartData;
+    spike=Provider.of<DashboardNotifier>(context,listen: false).spike;
     return Future.value(chartData);
   }
 
@@ -193,6 +194,7 @@ class _DieselDashBoardState extends State<DieselDashBoard> {
                             width: 220,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
+
                               boxShadow: [
                                 /*BoxShadow(
                                   color: AppTheme.yellowColor.withOpacity(0.4),
@@ -204,30 +206,6 @@ class _DieselDashBoardState extends State<DieselDashBoard> {
                             ),
                             child: Stack(
                               children: [
-
-                               /* Align(
-                                  alignment: Alignment.center,
-                                  child: Container(
-                                    height:180,
-                                   child: charts.PieChart(
-                                       db.seriesList,
-                                       animate: true,
-                                       defaultRenderer: new charts.ArcRendererConfig(
-                                           arcWidth: 30, startAngle: 4 / 5 * pi, arcLength: 7 / 5 * pi)
-                                   ),
-                                   */
-                                /* child: Transform.rotate(
-                                      angle: 110,
-                                      child: CircleProgressBar(
-                                        extraStrokeWidth: 10,
-                                        innerStrokeWidth: 10,
-                                        backgroundColor: Color(0xFFd7d7d7),
-                                        foregroundColor: AppTheme.yellowColor,
-                                        value: (db.totalDiesel['TotalQuantity']??0.0)/5000.0,
-                                      ),
-                                    ),*//*
-                                  ),
-                                ),*/
                                 Align(
                                   alignment: Alignment.center,
                                   child: Container(
@@ -308,6 +286,67 @@ class _DieselDashBoardState extends State<DieselDashBoard> {
                                     ),
                                   ),
                                 ),
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: Container(
+                                    height: 250,
+                                    child:FutureBuilder<dynamic>(
+                                      future: getData(),
+                                      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                                        if( snapshot.connectionState == ConnectionState.waiting){
+                                          return Container();
+                                          // return  Center(child: Text('Please wait its loading...'));
+                                        }
+                                        else{
+                                          if (snapshot.hasError)
+                                            return Center(child: Text('Error: ${snapshot.error}',style: AppTheme.TSWhite16,));
+                                          else
+                                            return  SfCircularChart(
+                                                series: <CircularSeries>[
+                                                  DoughnutSeries<ChartData, String>(
+                                                      dataSource: [
+                                                        ChartData('', 0.3,AppTheme.gridbodyBgColor),
+                                                        ChartData('', 0.03,db.spike>=1?Color(0xFFF1AC3D):AppTheme.spikeColor),
+                                                        ChartData('', 1,AppTheme.gridbodyBgColor),
+
+                                                        ChartData('', 0.03,db.spike>=2?Color(0xFFF1AC3D):AppTheme.spikeColor),
+                                                        ChartData('', 1,AppTheme.gridbodyBgColor),
+
+                                                        ChartData('', 0.03,db.spike>=3?Color(0xFFF1AC3D):AppTheme.spikeColor),
+                                                        ChartData('', 1,AppTheme.gridbodyBgColor),
+
+                                                        ChartData('', 0.03,db.spike>=4?Color(0xFFF1AC3D):AppTheme.spikeColor),
+                                                        ChartData('', 1,AppTheme.gridbodyBgColor),
+
+                                                        ChartData('', 0.03,db.spike>=5?Color(0xFFF1AC3D):AppTheme.spikeColor),
+                                                        ChartData('', 1,AppTheme.gridbodyBgColor),
+
+                                                        ChartData('', 0.03,db.spike>=6?Color(0xFFF1AC3D):AppTheme.spikeColor),
+                                                        ChartData('',1,AppTheme.gridbodyBgColor),
+
+                                                        ChartData('', 0.03,db.spike>=7?Color(0xFFF1AC3D):AppTheme.spikeColor),
+                                                        ChartData('', 0.3,AppTheme.gridbodyBgColor),
+
+
+
+                                                      ],
+                                                      xValueMapper: (ChartData data, _) => data.x,
+                                                      yValueMapper: (ChartData data, _) => data.y,
+                                                      pointColorMapper:(ChartData data,  _) => data.color,
+                                                      startAngle: 210, // starting angle of pie
+                                                      endAngle: 150,
+                                                      radius: "108%",
+                                                      innerRadius: "87%",
+                                                  )
+                                                ]
+                                            );
+                                        }
+                                      },
+                                    ),
+                                  ),
+                                ),
+
+
                               ],
                             )
                           ),

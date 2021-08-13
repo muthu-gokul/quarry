@@ -212,7 +212,10 @@ class DashboardNotifier extends ChangeNotifier{
 
            // updateSeriesList();
             updateisLoad(false);
-            sl(voidCallback!);
+            int d1 = DateTime.parse(fromDate).month;
+            int d2 = DateTime.parse(toDate).month;
+            int diff =  (d2-d1)+1;
+            sl(voidCallback!,diff);
           }
           else{
             updateisLoad(false);
@@ -268,35 +271,25 @@ Map totalDiesel={};
 
   List<ChartData> chartData=[];
   double low=0,high=0;
-  sl(VoidCallback voidCallback){
-     low= ((totalDiesel['TotalQuantity']??0.0)/5000.0);
+  int spike=0;
+  sl(VoidCallback voidCallback,int month){
+     low= ((totalDiesel['TotalQuantity']??0.0)/(month*5000.0));
      high=1-low;
     if(high<0){
       double? temp=low;
       low=-1*high;
       high=temp;
     }
- /*   print((totalDiesel['TotalQuantity']??0.0)/5000.0);
-    print(low);
-    print(high);*/
+   // print((totalDiesel['TotalQuantity']??0.0)/5000.0);
+ /*   print(low);
+    print(high);
+    print((low+high)/7);
+    print((low/((low+high)/7)).round());*/
+    spike=(low/((low+high)/7)).round();
      chartData = [
        ChartData('Low', low,Color(0xFFF1AC3D)),
-       ChartData('high', high,Color(0xFFCACACA)),
+       ChartData('high', high,Color(0xFFDFE8E8)),
      ];
-/*    seriesList= [
-      new charts.Series<GaugeSegment, String>(
-        id: 'Segments',
-        domainFn: (GaugeSegment segment, _) => segment.segment,
-        measureFn: (GaugeSegment segment, _) => segment.size,
-        colorFn: (GaugeSegment sales, _) => charts.Color.fromHex(code: sales.hex),
-        data:  [
-          //F3C253
-          new GaugeSegment('Low', low,'#F1AC3D'),
-          new GaugeSegment('high', high,'#CACACA'),
-
-        ],
-      )
-    ];*/
     voidCallback();
   }
 
