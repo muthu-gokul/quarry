@@ -670,12 +670,12 @@ reportView(context,String mailid,int saleIndex) async {
  //final String dirr = (await  getExternalStorageDirectory()).path;
  final String dirr ='/storage/emulated/0/Download/quarry';
 // final String path = '$dir/report.pdf';
-  print(dirr);
+
   String filename="INV_${qn.saleDetailsGrid[saleIndex].SaleNumber}";
   await Directory('/storage/emulated/0/Download/quarry').create(recursive: true);
   final String path = '$dirr/$filename.pdf';
 // final String path = '/storage/emulated/0/Download/report.pdf';
-
+  print(path);
    final File file = File(path);
   await file.writeAsBytes(await pdf.save()).then((value) async {
 

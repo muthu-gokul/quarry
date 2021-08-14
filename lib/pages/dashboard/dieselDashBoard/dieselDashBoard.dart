@@ -311,6 +311,15 @@ class _DieselDashBoardState extends State<DieselDashBoard> {
                                                         ChartData('',1,AppTheme.gridbodyBgColor),
 
                                                         ChartData('', 0.03,db.spike>=7?Color(0xFFF1AC3D):AppTheme.spikeColor),
+                                                        ChartData('',1,AppTheme.gridbodyBgColor),
+
+                                                        ChartData('', 0.03,db.spike>=8?Color(0xFFF1AC3D):AppTheme.spikeColor),
+                                                        ChartData('',1,AppTheme.gridbodyBgColor),
+
+                                                        ChartData('', 0.03,db.spike>=9?Color(0xFFF1AC3D):AppTheme.spikeColor),
+                                                        ChartData('',1,AppTheme.gridbodyBgColor),
+
+                                                        ChartData('', 0.03,db.spike>=10?Color(0xFFF1AC3D):AppTheme.spikeColor),
                                                         ChartData('', 0.3,AppTheme.gridbodyBgColor),
 
 
@@ -343,38 +352,156 @@ class _DieselDashBoardState extends State<DieselDashBoard> {
                   ),
                   SizedBox(height: 20,),
                   Container(
-                    height: 150,
+                    height: 200,
+                   // color: Colors.red,
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                     // mainAxisAlignment: MainAxisAlignment.spaceAround,
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        Column(
-                          children: [
-                            Container(
-                                height:100,
-                                width: 100,
-                                child: LiquidCircularProgressIndicator(
-                                  value: (db.issueDiesel['IssuePercentage']??0)/100,
-                                  backgroundColor: Colors.transparent,
-                                  valueColor: AlwaysStoppedAnimation(AppTheme.yellowColor),
-                                  borderColor: Color(0xffe4e4e4),
-                                  borderWidth: 1.0,
-                                 center: FittedText(
-                                   height: 25,
-                                   width: 95,
-                                   text: "${db.issueDiesel['IssuePercentage']??0.0}%",
-                                   alignment: Alignment.center,
-                                   textStyle: TextStyle(fontSize: 20,color: Color(0xFF676767),fontFamily: 'RM'),
-                                 ),
-                                )
-                            ),
-                            SizedBox(height: 10,),
-                            Text("Diesel Issue",style: TextStyle(fontFamily: 'RM',fontSize: 14,color: Color(0xFF78787A)),),
-                            SizedBox(height: 5,),
-                            Text("${db.issueDiesel['TotalQuantity']??0.0} Ltr",style: TextStyle(fontFamily: 'RR',fontSize: 12,color: Color(0xFF78787A)),),
-                          ],
+                        Container(
+                          width:SizeConfig.screenWidth!*0.5,
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Align(
+                                alignment: Alignment.center,
+                                child: Container(
+                                    height:100,
+                                    width: 100,
+                                    child: LiquidCircularProgressIndicator(
+                                      value: (db.issueDiesel['IssuePercentage']??0)/100,
+                                      backgroundColor: Colors.white,
+                                      valueColor: AlwaysStoppedAnimation(AppTheme.yellowColor),
+                                      borderColor: Color(0xffe4e4e4),
+                                      borderWidth: 0.0,
+                                     center: FittedText(
+                                       height: 25,
+                                       width: 95,
+                                       text: "${db.issueDiesel['IssuePercentage']??0.0}%",
+                                       alignment: Alignment.center,
+                                       textStyle: TextStyle(fontSize: 20,color: Color(0xFF676767),fontFamily: 'RM'),
+                                     ),
+                                    )
+                                ),
+                              ),
+                              Positioned(
+                                  bottom: 20,
+                                  child: Text("Diesel Issue",style: TextStyle(fontFamily: 'RM',fontSize: 14,color: Color(0xFF78787A)),)
+                              ),
+                              Positioned(
+                                  bottom: 0,
+                                  child: Text("${db.issueDiesel['TotalQuantity']??0.0} Ltr",style: TextStyle(fontFamily: 'RR',fontSize: 12,color: Color(0xFF78787A)),)
+                              ),
+                              Container(
+                                height: 159,
+                                child:FutureBuilder<dynamic>(
+                                  future: getData(),
+                                  builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                                    if( snapshot.connectionState == ConnectionState.waiting){
+                                      return Container();
+                                      // return  Center(child: Text('Please wait its loading...'));
+                                    }
+                                    else{
+                                      if (snapshot.hasError)
+                                        return Center(child: Text('Error: ${snapshot.error}',style: AppTheme.TSWhite16,));
+                                      else
+                                        return  SfCircularChart(
+                                            series: <CircularSeries>[
+                                              DoughnutSeries<ChartData, String>(
+                                                  dataSource: [
+                                                    ChartData('Low',db.issueDiesel.isEmpty?0: (db.issueDiesel['IssuePercentage']??0.0),Color(0xFFF1AC3D)),
+                                                    ChartData('high',db.issueDiesel.isEmpty?0:  (100.0-(db.issueDiesel['IssuePercentage']??0)),Color(0xFFDFE8E8)),
+                                                  ],
+                                                  xValueMapper: (ChartData data, _) => data.x,
+                                                  yValueMapper: (ChartData data, _) => data.y,
+                                                  pointColorMapper:(ChartData data,  _) => data.color,
+                                                  startAngle: 210, // starting angle of pie
+                                                  endAngle: 150,
+                                                  radius: "90%",
+                                                  innerRadius: "80%"
+                                              )
+                                            ]
+                                        );
+                                    }
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                        Column(
+                        Container(
+                          width:SizeConfig.screenWidth!*0.5,
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Align(
+                                alignment: Alignment.center,
+                                child: Container(
+                                    height:100,
+                                    width: 100,
+                                    child: LiquidCircularProgressIndicator(
+                                      value: (db.balanceDiesel['BalancePercentage']??0)/100,
+                                      backgroundColor: Colors.white,
+                                      valueColor: AlwaysStoppedAnimation(AppTheme.yellowColor),
+                                      borderColor: Color(0xffe4e4e4),
+                                      borderWidth: 0.0,
+                                     center: FittedText(
+                                       height: 25,
+                                       width: 95,
+                                       text: "${db.balanceDiesel['BalancePercentage']??0.0}%",
+                                       alignment: Alignment.center,
+                                       textStyle: TextStyle(fontSize: 20,color: Color(0xFF676767),fontFamily: 'RM'),
+                                     ),
+                                    )
+                                ),
+                              ),
+                              Positioned(
+                                  bottom: 20,
+                                  child: Text("Balance Diesel",style: TextStyle(fontFamily: 'RM',fontSize: 14,color: Color(0xFF78787A)),)
+                              ),
+                              Positioned(
+                                  bottom: 0,
+                                  child: Text("${db.balanceDiesel['BalanceQuantity']??0.0} Ltr",style: TextStyle(fontFamily: 'RR',fontSize: 12,color: Color(0xFF78787A)),)
+                              ),
+                              Container(
+                                height: 159,
+                                child:FutureBuilder<dynamic>(
+                                  future: getData(),
+                                  builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                                    if( snapshot.connectionState == ConnectionState.waiting){
+                                      return Container();
+                                      // return  Center(child: Text('Please wait its loading...'));
+                                    }
+                                    else{
+                                      if (snapshot.hasError)
+                                        return Center(child: Text('Error: ${snapshot.error}',style: AppTheme.TSWhite16,));
+                                      else
+                                        return  SfCircularChart(
+                                            series: <CircularSeries>[
+                                              DoughnutSeries<ChartData, String>(
+                                                  dataSource: [
+                                                    ChartData('Low', db.balanceDiesel.isEmpty?0:(db.balanceDiesel['BalancePercentage']??0),Color(0xFFF1AC3D)),
+                                                    ChartData('high', db.balanceDiesel.isEmpty?0:(100.0-(db.balanceDiesel['BalancePercentage']??0)),Color(0xFFDFE8E8)),
+                                                  ],
+                                                  xValueMapper: (ChartData data, _) => data.x,
+                                                  yValueMapper: (ChartData data, _) => data.y,
+                                                  pointColorMapper:(ChartData data,  _) => data.color,
+                                                  startAngle: 210, // starting angle of pie
+                                                  endAngle: 150,
+                                                  radius: "90%",
+                                                  innerRadius: "80%"
+                                              )
+                                            ]
+                                        );
+                                    }
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                     /*   Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             Container(
                                 height:100,
@@ -399,7 +526,7 @@ class _DieselDashBoardState extends State<DieselDashBoard> {
                             SizedBox(height: 5,),
                             Text("${db.balanceDiesel['BalanceQuantity']??0.0} Ltr",style: TextStyle(fontFamily: 'RR',fontSize: 12,color: Color(0xFF78787A)),),
                           ],
-                        ),
+                        ),*/
                       ],
                     ),
                   ),

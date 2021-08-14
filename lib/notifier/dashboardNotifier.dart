@@ -285,7 +285,7 @@ Map totalDiesel={};
     print(high);
     print((low+high)/7);
     print((low/((low+high)/7)).round());*/
-    spike=(low/((low+high)/7)).round();
+    spike=(low/((low+high)/10)).round();
      chartData = [
        ChartData('Low', low,Color(0xFFF1AC3D)),
        ChartData('high', high,Color(0xFFDFE8E8)),
