@@ -10,7 +10,9 @@ import 'package:quarry/api/sp.dart';
 import 'package:quarry/model/employeeModel/empAdvanceLoan/empLoanAmountTypeModel.dart';
 import 'package:quarry/model/employeeModel/empAdvanceLoan/empLoanEmployeeModel.dart';
 import 'package:quarry/model/employeeModel/employeeAttendance/employeeAttendanceGridModel.dart';
+import 'package:quarry/model/parameterMode.dart';
 import 'package:quarry/model/plantModel/plantUserModel.dart';
+import 'package:quarry/styles/constants.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/calculation.dart';
 import 'package:quarry/widgets/staticColumnScroll/customDataTableWithoutModel.dart';
@@ -29,29 +31,14 @@ class EmployeeAdvanceLoanNotifier extends ChangeNotifier{
 
     plantCount=0;
     updateEmployeeAttendanceLoader(true);
+    parameters=[
+      ParameterModel(Key: "SpName", Type: "String", Value: "${Sp.MasterdropDown}"),
+      ParameterModel(Key: "LoginUserId", Type: "int", Value: Provider.of<QuarryNotifier>(context,listen: false).UserId),
+      ParameterModel(Key: "TypeName", Type: "String", Value:"User"),
+      ParameterModel(Key: "database", Type: "String", Value:Provider.of<QuarryNotifier>(context,listen: false).DataBaseName),
+    ];
     var body={
-      "Fields": [
-        {
-          "Key": "SpName",
-          "Type": "String",
-          "Value": "${Sp.MasterdropDown}"
-        },
-        {
-          "Key": "LoginUserId",
-          "Type": "int",
-          "Value": Provider.of<QuarryNotifier>(context,listen: false).UserId
-        },
-        {
-          "Key": "TypeName",
-          "Type": "String",
-          "Value": "User"
-        },
-        {
-          "Key": "database",
-          "Type": "String",
-          "Value": Provider.of<QuarryNotifier>(context,listen: false).DataBaseName
-        },
-      ]
+      "Fields": parameters.map((e) => e.toJson()).toList()
     };
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
@@ -100,30 +87,14 @@ class EmployeeAdvanceLoanNotifier extends ChangeNotifier{
   List<dynamic> amountTypeList=[];
   Future<dynamic> EmployeeAdvanceDropDownValues(BuildContext context) async {
     updateEmployeeAttendanceLoader(true);
+    parameters=[
+      ParameterModel(Key: "SpName", Type: "String", Value: "${Sp.MasterdropDown}"),
+      ParameterModel(Key: "LoginUserId", Type: "int", Value: Provider.of<QuarryNotifier>(context,listen: false).UserId),
+      ParameterModel(Key: "TypeName", Type: "String", Value:"EmployeeAdvance"),
+      ParameterModel(Key: "database", Type: "String", Value:Provider.of<QuarryNotifier>(context,listen: false).DataBaseName),
+    ];
     var body = {
-      "Fields": [
-        {
-          "Key": "SpName",
-          "Type": "String",
-          "Value": "${Sp.MasterdropDown}"
-        },
-
-        {
-          "Key": "LoginUserId",
-          "Type": "int",
-          "Value":  Provider.of<QuarryNotifier>(context,listen: false).UserId
-        },
-        {
-          "Key": "TypeName",
-          "Type": "String",
-          "Value": "EmployeeAdvance"
-        },
-        {
-          "Key": "database",
-          "Type": "String",
-          "Value":  Provider.of<QuarryNotifier>(context,listen: false).DataBaseName
-        }
-      ]
+      "Fields": parameters.map((e) => e.toJson()).toList()
     };
 
     try {
@@ -243,74 +214,22 @@ class EmployeeAdvanceLoanNotifier extends ChangeNotifier{
 
   InsertEmployeeLoanAttendanceDbHit(BuildContext context)  async{
     updateEmployeeAttendanceLoader(true);
-
+    parameters=[
+      ParameterModel(Key: "SpName", Type: "String", Value: !isEdit?"${Sp.insertEmployeeAdvanceLoanDetail}": "${Sp.updateEmployeeAdvanceLoanDetail}"),
+      ParameterModel(Key: "LoginUserId", Type: "int", Value: Provider.of<QuarryNotifier>(context,listen: false).UserId),
+      ParameterModel(Key: "EmployeeId", Type: "int", Value:showEmpId),
+      ParameterModel(Key: "AmountType", Type: "String", Value:selectedAmountType),
+      ParameterModel(Key: "IsAdvance", Type: "int", Value:selectedAmountType=="Advance"?1:0),
+      ParameterModel(Key: "AdvanceAmount", Type: "String", Value:advanceAmountController.text.isNotEmpty?double.parse(advanceAmountController.text):0.0),
+      ParameterModel(Key: "IsLoan", Type: "int", Value:selectedAmountType=="Loan"?1:0),
+      ParameterModel(Key: "LoanAmount", Type: "String", Value:loanAmountController.text.isNotEmpty?double.parse(loanAmountController.text):0.0),
+      ParameterModel(Key: "LoanDueMonth", Type: "String", Value:selectedMonthDue),
+      ParameterModel(Key: "LoanEMIAmount", Type: "String", Value:emiAmount),
+      ParameterModel(Key: "Reason", Type: "String", Value:selectedAmountType=="Advance"?advanceReasonController.text:loanReasonController.text),
+      ParameterModel(Key: "database", Type: "String", Value:Provider.of<QuarryNotifier>(context,listen: false).DataBaseName),
+    ];
     var body={
-      "Fields": [
-        {
-          "Key": "SpName",
-          "Type": "String",
-          "Value": !isEdit?"${Sp.insertEmployeeAdvanceLoanDetail}": "${Sp.updateEmployeeAdvanceLoanDetail}"
-        },
-        {
-          "Key": "LoginUserId",
-          "Type": "int",
-          "Value": Provider.of<QuarryNotifier>(context,listen: false).UserId
-        },
-        {
-          "Key": "EmployeeId",
-          "Type": "int",
-          "Value": showEmpId
-        },
-        {
-          "Key": "AmountType",
-          "Type": "String",
-          "Value": selectedAmountType
-        },
-        {
-          "Key": "IsAdvance",
-          "Type": "int",
-          "Value": selectedAmountType=="Advance"?1:0
-        },
-        {
-          "Key": "AdvanceAmount",
-          "Type": "String",
-          "Value": advanceAmountController.text.isNotEmpty?double.parse(advanceAmountController.text):0.0
-        },
-        {
-          "Key": "IsLoan",
-          "Type": "int",
-          "Value": selectedAmountType=="Loan"?1:0
-        },
-        {
-          "Key": "LoanAmount",
-          "Type": "String",
-          "Value": loanAmountController.text.isNotEmpty?double.parse(loanAmountController.text):0.0
-        },
-        {
-          "Key": "LoanDueMonth",
-          "Type": "String",
-          "Value": selectedMonthDue
-        },
-        {
-          "Key": "LoanEMIAmount",
-          "Type": "String",
-          "Value": emiAmount
-        },
-
-        {
-          "Key": "Reason",
-          "Type": "String",
-          "Value": selectedAmountType=="Advance"?advanceReasonController.text:loanReasonController.text
-        },
-
-
-
-        {
-          "Key": "database",
-          "Type": "String",
-          "Value": Provider.of<QuarryNotifier>(context,listen: false).DataBaseName
-        }
-      ]
+      "Fields": parameters.map((e) => e.toJson()).toList()
     };
 
     try{
@@ -362,31 +281,14 @@ class EmployeeAdvanceLoanNotifier extends ChangeNotifier{
   GetEmployeeAttendanceLoanDbHit(BuildContext context,int? EmployeeId)  async{
 
     updateEmployeeAttendanceLoader(true);
-
+    parameters=[
+      ParameterModel(Key: "SpName", Type: "String", Value: "${Sp.getEmployeeAdvanceLoanDetail}"),
+      ParameterModel(Key: "LoginUserId", Type: "int", Value: Provider.of<QuarryNotifier>(context,listen: false).UserId),
+      ParameterModel(Key: "EmployeeId", Type: "int", Value:EmployeeId),
+      ParameterModel(Key: "database", Type: "String", Value:Provider.of<QuarryNotifier>(context,listen: false).DataBaseName),
+    ];
     var body={
-      "Fields": [
-        {
-          "Key": "SpName",
-          "Type": "String",
-          "Value": "${Sp.getEmployeeAdvanceLoanDetail}"
-        },
-        {
-          "Key": "LoginUserId",
-          "Type": "int",
-          "Value": Provider.of<QuarryNotifier>(context,listen: false).UserId
-        },
-        {
-          "Key": "EmployeeId",
-          "Type": "int",
-          "Value": EmployeeId
-        },
-
-        {
-          "Key": "database",
-          "Type": "String",
-          "Value": Provider.of<QuarryNotifier>(context,listen: false).DataBaseName
-        }
-      ]
+      "Fields": parameters.map((e) => e.toJson()).toList()
     };
 
     try{

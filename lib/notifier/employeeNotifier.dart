@@ -13,7 +13,9 @@ import 'package:quarry/model/employeeModel/employeePaymentTypeModel.dart';
 import 'package:quarry/model/employeeModel/employeeSalaryType.dart';
 import 'package:quarry/model/employeeModel/employeeShiftModel.dart';
 import 'package:quarry/model/employeeModel/employeeTypeModel.dart';
+import 'package:quarry/model/parameterMode.dart';
 import 'package:quarry/model/plantModel/plantUserModel.dart';
+import 'package:quarry/styles/constants.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 
 import 'quarryNotifier.dart';
@@ -30,29 +32,14 @@ class EmployeeNotifier extends ChangeNotifier{
 
     plantCount=0;
     updateEmployeeLoader(true);
+    parameters=[
+      ParameterModel(Key: "SpName", Type: "String", Value: "${Sp.MasterdropDown}"),
+      ParameterModel(Key: "LoginUserId", Type: "int", Value: Provider.of<QuarryNotifier>(context,listen: false).UserId),
+      ParameterModel(Key: "TypeName", Type: "String", Value:"User"),
+      ParameterModel(Key: "database", Type: "String", Value:Provider.of<QuarryNotifier>(context,listen: false).DataBaseName),
+    ];
     var body={
-      "Fields": [
-        {
-          "Key": "SpName",
-          "Type": "String",
-          "Value": "${Sp.MasterdropDown}"
-        },
-        {
-          "Key": "LoginUserId",
-          "Type": "int",
-          "Value": Provider.of<QuarryNotifier>(context,listen: false).UserId
-        },
-        {
-          "Key": "TypeName",
-          "Type": "String",
-          "Value": "User"
-        },
-        {
-          "Key": "database",
-          "Type": "String",
-          "Value": Provider.of<QuarryNotifier>(context,listen: false).DataBaseName
-        },
-      ]
+      "Fields": parameters.map((e) => e.toJson()).toList()
     };
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
@@ -104,30 +91,14 @@ class EmployeeNotifier extends ChangeNotifier{
 
   EmployeeDropDownValues(BuildContext context) async {
     updateEmployeeLoader(true);
+    parameters=[
+      ParameterModel(Key: "SpName", Type: "String", Value: "${Sp.MasterdropDown}"),
+      ParameterModel(Key: "LoginUserId", Type: "int", Value: Provider.of<QuarryNotifier>(context,listen: false).UserId),
+      ParameterModel(Key: "TypeName", Type: "String", Value:"Employee"),
+      ParameterModel(Key: "database", Type: "String", Value:Provider.of<QuarryNotifier>(context,listen: false).DataBaseName),
+    ];
     var body = {
-      "Fields": [
-        {
-          "Key": "SpName",
-          "Type": "String",
-          "Value": "${Sp.MasterdropDown}"
-        },
-
-        {
-          "Key": "LoginUserId",
-          "Type": "int",
-          "Value":  Provider.of<QuarryNotifier>(context,listen: false).UserId
-        },
-        {
-          "Key": "TypeName",
-          "Type": "String",
-          "Value": "Employee"
-        },
-        {
-          "Key": "database",
-          "Type": "String",
-          "Value":  Provider.of<QuarryNotifier>(context,listen: false).DataBaseName
-        }
-      ]
+      "Fields": parameters.map((e) => e.toJson()).toList()
     };
 
     try {
@@ -291,200 +262,48 @@ class EmployeeNotifier extends ChangeNotifier{
 
   InsertEmployeeDbHit(BuildContext context)  async{
     updateEmployeeLoader(true);
-
+    parameters=[
+      ParameterModel(Key: "SpName", Type: "String", Value: isEmployeeEdit?"${Sp.updateEmployeeDetail}": "${Sp.insertEmployeeDetail}"),
+      ParameterModel(Key: "LoginUserId", Type: "int", Value: Provider.of<QuarryNotifier>(context,listen: false).UserId),
+      ParameterModel(Key: "EmployeeId", Type: "int", Value:editEmployeeId),
+      ParameterModel(Key: "EmployeeCode", Type: "String", Value:EmployeeCode),
+      ParameterModel(Key: "EmployeeSalutation", Type: "String", Value:selectedSalutation),
+      ParameterModel(Key: "EmployeeFirstName", Type: "String", Value:employeeFirstName.text),
+      ParameterModel(Key: "EmployeeLastName", Type: "String", Value:employeeLastName.text),
+      ParameterModel(Key: "EmployeePassword", Type: "String", Value:""),
+      ParameterModel(Key: "EmployeeDesignationId", Type: "int", Value:selectEmployeeDesignationId),
+      ParameterModel(Key: "EmployeeTypeId", Type: "int", Value:selectEmployeeTypeId),
+      ParameterModel(Key: "EmployeeShiftId", Type: "int", Value:selectShiftId),
+      ParameterModel(Key: "EmployeeDateOfJoin", Type: "String", Value:joiningDate!=null?DateFormat("yyyy-MM-dd").format(joiningDate!):null),
+      ParameterModel(Key: "EmployeeSalary", Type: "String", Value:employeeSalary.text.isNotEmpty?double.parse(employeeSalary.text):0.0),
+      ParameterModel(Key: "EmployeeSalaryTypeId", Type: "int", Value:selectSalaryTypeId),
+      ParameterModel(Key: "EmployeeContactNumber", Type: "String", Value:employeePhoneNumber.text),
+      ParameterModel(Key: "EmployeeEmail", Type: "String", Value:employeeEmail.text),
+      ParameterModel(Key: "EmployeeAddress", Type: "String", Value:employeeAddress.text),
+      ParameterModel(Key: "EmployeeCity", Type: "String", Value:employeeCity.text),
+      ParameterModel(Key: "EmployeeState", Type: "String", Value:employeeState.text),
+      ParameterModel(Key: "EmployeeCountry", Type: "String", Value:employeeCountry.text),
+      ParameterModel(Key: "EmployeeZipcode", Type: "String", Value:employeeZipcode.text),
+      ParameterModel(Key: "EmployeeDateOfBirth", Type: "String", Value:dob!=null?DateFormat("yyyy-MM-dd").format(dob!):null),
+      ParameterModel(Key: "EmployeeBloodGroupId", Type: "int", Value:selectBloodGroupId),
+      ParameterModel(Key: "EmployeeMaritalStatusId", Type: "int", Value:selectMartialStatusId),
+      ParameterModel(Key: "EmployeeReferredBy", Type: "String", Value:employeeReferredBy.text),
+      ParameterModel(Key: "EmployeeRemarks", Type: "String", Value:employeeRemarks.text),
+      ParameterModel(Key: "EmployeeAadhaarNumber", Type: "String", Value:employeeAadhaarNo.text),
+      ParameterModel(Key: "EmployeePanNumber", Type: "String", Value:employeePanNo.text),
+      ParameterModel(Key: "EmployeeSalaryModeId", Type: "int", Value:selectPaymentMethodId),
+      ParameterModel(Key: "BankAccountHolderName", Type: "String", Value:employeeHolderName.text),
+      ParameterModel(Key: "BankName", Type: "String", Value:employeeBankName.text),
+      ParameterModel(Key: "BankAccountNumber", Type: "String", Value:employeeAccNo.text),
+      ParameterModel(Key: "BankIFSCCode", Type: "String", Value:employeeIFSC.text),
+      ParameterModel(Key: "BankBranchName", Type: "String", Value:employeeBranchName.text),
+      ParameterModel(Key: "EmployeeImageFileName", Type: "String", Value:""),
+      ParameterModel(Key: "EmployeeImageFolderName", Type: "String", Value:""),
+      ParameterModel(Key: "database", Type: "String", Value:Provider.of<QuarryNotifier>(context,listen: false).DataBaseName),
+    ];
 
     var body={
-      "Fields": [
-        {
-          "Key": "SpName",
-          "Type": "String",
-          "Value": isEmployeeEdit?"${Sp.updateEmployeeDetail}": "${Sp.insertEmployeeDetail}"
-        },
-        {
-          "Key": "LoginUserId",
-          "Type": "int",
-          "Value": Provider.of<QuarryNotifier>(context,listen: false).UserId
-        },
-        {
-          "Key": "EmployeeId",
-          "Type": "int",
-          "Value": editEmployeeId
-        },
-        {
-          "Key": "EmployeeCode",
-          "Type": "String",
-          "Value": EmployeeCode
-        },
-        {
-          "Key": "EmployeeSalutation",
-          "Type": "String",
-          "Value": selectedSalutation
-        },
-        {
-          "Key": "EmployeeFirstName",
-          "Type": "String",
-          "Value": employeeFirstName.text
-        },
-        {
-          "Key": "EmployeeLastName",
-          "Type": "String",
-          "Value": employeeLastName.text
-        },
-        {
-          "Key": "EmployeePassword",
-          "Type": "String",
-          "Value": ""
-        },
-        {
-          "Key": "EmployeeDesignationId",
-          "Type": "int",
-          "Value": selectEmployeeDesignationId
-        },
-        {
-          "Key": "EmployeeTypeId",
-          "Type": "int",
-          "Value": selectEmployeeTypeId
-        },
-        {
-          "Key": "EmployeeShiftId",
-          "Type": "int",
-          "Value": selectShiftId
-        },
-        {
-          "Key": "EmployeeDateOfJoin",
-          "Type": "String",
-          "Value": joiningDate!=null?DateFormat("yyyy-MM-dd").format(joiningDate!):null
-        },
-        {
-          "Key": "EmployeeSalary",
-          "Type": "String",
-          "Value": employeeSalary.text.isNotEmpty?double.parse(employeeSalary.text):0.0
-        },
-        {
-          "Key": "EmployeeSalaryTypeId",
-          "Type": "int",
-          "Value": selectSalaryTypeId
-        },
-        {
-          "Key": "EmployeeContactNumber",
-          "Type": "String",
-          "Value": employeePhoneNumber.text
-        },
-        {
-          "Key": "EmployeeEmail",
-          "Type": "String",
-          "Value": employeeEmail.text
-        },
-        {
-          "Key": "EmployeeAddress",
-          "Type": "String",
-          "Value": employeeAddress.text
-        },
-        {
-          "Key": "EmployeeCity",
-          "Type": "String",
-          "Value": employeeCity.text
-        },
-        {
-          "Key": "EmployeeState",
-          "Type": "String",
-          "Value": employeeState.text
-        },
-        {
-          "Key": "EmployeeCountry",
-          "Type": "String",
-          "Value": employeeCountry.text
-        },
-        {
-          "Key": "EmployeeZipcode",
-          "Type": "String",
-          "Value": employeeZipcode.text
-        },
-
-        {
-          "Key": "EmployeeDateOfBirth",
-          "Type": "String",
-          "Value": dob!=null?DateFormat("yyyy-MM-dd").format(dob!):null
-        },
-        {
-          "Key": "EmployeeBloodGroupId",
-          "Type": "int",
-          "Value": selectBloodGroupId
-        },
-        {
-          "Key": "EmployeeMaritalStatusId",
-          "Type": "int",
-          "Value": selectMartialStatusId
-        },
-        {
-          "Key": "EmployeeReferredBy",
-          "Type": "String",
-          "Value": employeeReferredBy.text
-        },
-        {
-          "Key": "EmployeeRemarks",
-          "Type": "String",
-          "Value": employeeRemarks.text
-        },
-        {
-          "Key": "EmployeeAadhaarNumber",
-          "Type": "String",
-          "Value": employeeAadhaarNo.text
-        },
-        {
-          "Key": "EmployeePanNumber",
-          "Type": "String",
-          "Value": employeePanNo.text
-        },
-        {
-          "Key": "EmployeeSalaryModeId",
-          "Type": "int",
-          "Value": selectPaymentMethodId
-        },
-        {
-          "Key": "BankAccountHolderName",
-          "Type": "String",
-          "Value": employeeHolderName.text
-        },
-        {
-          "Key": "BankName",
-          "Type": "String",
-          "Value": employeeBankName.text
-        },
-        {
-          "Key": "BankAccountNumber",
-          "Type": "String",
-          "Value": employeeAccNo.text
-        },
-        {
-          "Key": "BankIFSCCode",
-          "Type": "String",
-          "Value": employeeIFSC.text
-        },
-        {
-          "Key": "BankBranchName",
-          "Type": "String",
-          "Value": employeeBranchName.text
-        },
-        {
-          "Key": "EmployeeImageFileName",
-          "Type": "String",
-          "Value": ""
-        },
-        {
-          "Key": "EmployeeImageFolderName",
-          "Type": "String",
-          "Value": ""
-        },
-
-
-
-        {
-          "Key": "database",
-          "Type": "String",
-          "Value": Provider.of<QuarryNotifier>(context,listen: false).DataBaseName
-        }
-      ]
+      "Fields": parameters.map((e) => e.toJson()).toList()
     };
 
     try{
@@ -517,31 +336,14 @@ class EmployeeNotifier extends ChangeNotifier{
   GetEmployeeIssueDbHit(BuildContext context,int? EmployeeId)  async{
 
     updateEmployeeLoader(true);
-
+    parameters=[
+      ParameterModel(Key: "SpName", Type: "String", Value: "${Sp.getEmployeeDetail}"),
+      ParameterModel(Key: "LoginEmployeeId", Type: "int", Value: Provider.of<QuarryNotifier>(context,listen: false).UserId),
+      ParameterModel(Key: "EmployeeId", Type: "int", Value:EmployeeId),
+      ParameterModel(Key: "database", Type: "String", Value:Provider.of<QuarryNotifier>(context,listen: false).DataBaseName),
+    ];
     var body={
-      "Fields": [
-        {
-          "Key": "SpName",
-          "Type": "String",
-          "Value": "${Sp.getEmployeeDetail}"
-        },
-        {
-          "Key": "LoginEmployeeId",
-          "Type": "int",
-          "Value": Provider.of<QuarryNotifier>(context,listen: false).UserId
-        },
-        {
-          "Key": "EmployeeId",
-          "Type": "int",
-          "Value": EmployeeId
-        },
-
-        {
-          "Key": "database",
-          "Type": "String",
-          "Value": Provider.of<QuarryNotifier>(context,listen: false).DataBaseName
-        }
-      ]
+      "Fields": parameters.map((e) => e.toJson()).toList()
     };
 
     try{

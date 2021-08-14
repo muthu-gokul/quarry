@@ -8,7 +8,9 @@ import 'package:provider/provider.dart';
 import 'package:quarry/api/ApiManager.dart';
 import 'package:quarry/api/sp.dart';
 import 'package:quarry/model/employeeModel/employeeAttendance/employeeAttendanceGridModel.dart';
+import 'package:quarry/model/parameterMode.dart';
 import 'package:quarry/model/plantModel/plantUserModel.dart';
+import 'package:quarry/styles/constants.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 
 import 'quarryNotifier.dart';
@@ -22,32 +24,16 @@ class EmployeeAttendanceNotifier extends ChangeNotifier{
   List<PlantUserModel> plantList=[];
   int plantCount=0;
   Future<dynamic>  PlantUserDropDownValues(BuildContext context) async {
-
     plantCount=0;
     updateEmployeeAttendanceLoader(true);
+    parameters=[
+      ParameterModel(Key: "SpName", Type: "String", Value: "${Sp.MasterdropDown}"),
+      ParameterModel(Key: "LoginUserId", Type: "int", Value: Provider.of<QuarryNotifier>(context,listen: false).UserId),
+      ParameterModel(Key: "TypeName", Type: "String", Value:"User"),
+      ParameterModel(Key: "database", Type: "String", Value:Provider.of<QuarryNotifier>(context,listen: false).DataBaseName),
+    ];
     var body={
-      "Fields": [
-        {
-          "Key": "SpName",
-          "Type": "String",
-          "Value": "${Sp.MasterdropDown}"
-        },
-        {
-          "Key": "LoginUserId",
-          "Type": "int",
-          "Value": Provider.of<QuarryNotifier>(context,listen: false).UserId
-        },
-        {
-          "Key": "TypeName",
-          "Type": "String",
-          "Value": "User"
-        },
-        {
-          "Key": "database",
-          "Type": "String",
-          "Value": Provider.of<QuarryNotifier>(context,listen: false).DataBaseName
-        },
-      ]
+      "Fields": parameters.map((e) => e.toJson()).toList()
     };
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
@@ -129,55 +115,18 @@ class EmployeeAttendanceNotifier extends ChangeNotifier{
 
   InsertEmployeeAttendanceDbHit(BuildContext context)  async{
     updateEmployeeAttendanceLoader(true);
-
+    parameters=[
+      ParameterModel(Key: "SpName", Type: "String", Value: isEmployeeLogin?"${Sp.insertEmployeeAttendanceDetail}": "${Sp.updateEmployeeAttendanceDetail}"),
+      ParameterModel(Key: "LoginUserId", Type: "int", Value: Provider.of<QuarryNotifier>(context,listen: false).UserId),
+      ParameterModel(Key: "EmployeeId", Type: "int", Value:showEmpId),
+      ParameterModel(Key: "EmployeeAttendanceDate", Type: "String", Value:DateFormat('yyyy-MM-dd').format(selectedDate)),
+      ParameterModel(Key: "EmployeeInTime", Type: "String", Value:"${selectedTime.hour}:${selectedTime.minute}"),
+      ParameterModel(Key: "EmployeeOutTime", Type: "String", Value:"${selectedTime.hour}:${selectedTime.minute}"),
+      ParameterModel(Key: "EmployeeAttendanceId", Type: "int", Value:logoutAttendanceId),
+      ParameterModel(Key: "database", Type: "String", Value:Provider.of<QuarryNotifier>(context,listen: false).DataBaseName),
+    ];
     var body={
-      "Fields": [
-        {
-          "Key": "SpName",
-          "Type": "String",
-          "Value": isEmployeeLogin?"${Sp.insertEmployeeAttendanceDetail}": "${Sp.updateEmployeeAttendanceDetail}"
-        },
-        {
-          "Key": "LoginUserId",
-          "Type": "int",
-          "Value": Provider.of<QuarryNotifier>(context,listen: false).UserId
-        },
-        {
-          "Key": "EmployeeId",
-          "Type": "int",
-          "Value": showEmpId
-        },
-        {
-          "Key": "EmployeeAttendanceDate",
-          "Type": "String",
-          "Value": DateFormat('yyyy-MM-dd').format(selectedDate)
-        },
-        {
-          "Key": "EmployeeInTime",
-          "Type": "String",
-          "Value": "${selectedTime.hour}:${selectedTime.minute}"
-        },
-        {
-          "Key": "EmployeeOutTime",
-          "Type": "String",
-          "Value": "${selectedTime.hour}:${selectedTime.minute}"
-        },
-
-
-        {
-          "Key": "EmployeeAttendanceId",
-          "Type": "int",
-          "Value": logoutAttendanceId
-        },
-
-
-
-        {
-          "Key": "database",
-          "Type": "String",
-          "Value": Provider.of<QuarryNotifier>(context,listen: false).DataBaseName
-        }
-      ]
+      "Fields": parameters.map((e) => e.toJson()).toList()
     };
 
     try{
@@ -218,37 +167,16 @@ class EmployeeAttendanceNotifier extends ChangeNotifier{
   GetEmployeeAttendanceIssueDbHit(BuildContext context,int? EmployeeAttendanceId)  async{
   employeeCode.clear();
     updateEmployeeAttendanceLoader(true);
-
+  parameters=[
+    ParameterModel(Key: "SpName", Type: "String", Value: "${Sp.getEmployeeAttendanceDetail}"),
+    ParameterModel(Key: "LoginEmployeeId", Type: "int", Value: Provider.of<QuarryNotifier>(context,listen: false).UserId),
+    ParameterModel(Key: "EmployeeId", Type: "int", Value:EmployeeAttendanceId),
+    ParameterModel(Key: "Date", Type: "String", Value:reportDate==null?DateFormat("yyyy-MM-dd").format(DateTime.now()).toString():
+    DateFormat("yyyy-MM-dd").format(reportDate!).toString()),
+    ParameterModel(Key: "database", Type: "String", Value:Provider.of<QuarryNotifier>(context,listen: false).DataBaseName),
+  ];
     var body={
-      "Fields": [
-        {
-          "Key": "SpName",
-          "Type": "String",
-          "Value": "${Sp.getEmployeeAttendanceDetail}"
-        },
-        {
-          "Key": "LoginEmployeeId",
-          "Type": "int",
-          "Value": Provider.of<QuarryNotifier>(context,listen: false).UserId
-        },
-        {
-          "Key": "EmployeeId",
-          "Type": "int",
-          "Value": EmployeeAttendanceId
-        },
-        {
-          "Key": "Date",
-          "Type": "String",
-          "Value": reportDate==null?DateFormat("yyyy-MM-dd").format(DateTime.now()).toString():
-          DateFormat("yyyy-MM-dd").format(reportDate!).toString()
-        },
-
-        {
-          "Key": "database",
-          "Type": "String",
-          "Value": Provider.of<QuarryNotifier>(context,listen: false).DataBaseName
-        }
-      ]
+      "Fields": parameters.map((e) => e.toJson()).toList()
     };
 
     try{

@@ -9,8 +9,6 @@ import 'package:quarry/widgets/alertDialog.dart';
 //BuildContext context
 class ApiManager{
 
-
-
   Future<String> ApiCallGetInvoke(var body,BuildContext context) async {
     try{
       var itemsUrl="http://183.82.32.76/restroApi///api/Mobile/GetInvoke";
@@ -19,7 +17,6 @@ class ApiManager{
           headers: {"Content-Type": "application/json"},
           body: json.encode(body)
       );
-
       if(response.statusCode==200){
         return response.body;
       }
@@ -32,12 +29,12 @@ class ApiManager{
         // print(msg);
         // print(response.body);
         msg=json.decode(response.body);
-
          CustomAlert().commonErrorAlert2(context, "${msg['Message']}", "");
         return "F";
         // return response.statusCode.toString();
       }
-    }catch(e){
+    }
+    catch(e){
       return "F";
       print("NETWORK ISSUE--$e");
       // CustomAlert().commonErrorAlert(context, "Network Issue", "Your Internet Connectivity or Server is Slow..");

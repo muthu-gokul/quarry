@@ -4,8 +4,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/api/ApiManager.dart';
 import 'package:quarry/api/sp.dart';
+import 'package:quarry/model/parameterMode.dart';
 import 'package:quarry/model/plantModel/plantUserModel.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
+import 'package:quarry/styles/constants.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/calculation.dart';
 import 'package:quarry/widgets/staticColumnScroll/customDataTableWithoutModel.dart';
@@ -23,29 +25,14 @@ class EmployeeSalaryNotifier extends ChangeNotifier{
 
     plantCount=0;
     updateEmployeeSalaryLoader(true);
+    parameters=[
+      ParameterModel(Key: "SpName", Type: "String", Value: "${Sp.MasterdropDown}"),
+      ParameterModel(Key: "LoginUserId", Type: "int", Value: Provider.of<QuarryNotifier>(context,listen: false).UserId),
+      ParameterModel(Key: "TypeName", Type: "String", Value:"User"),
+      ParameterModel(Key: "database", Type: "String", Value:Provider.of<QuarryNotifier>(context,listen: false).DataBaseName),
+    ];
     var body={
-      "Fields": [
-        {
-          "Key": "SpName",
-          "Type": "String",
-          "Value": "${Sp.MasterdropDown}"
-        },
-        {
-          "Key": "LoginUserId",
-          "Type": "int",
-          "Value": Provider.of<QuarryNotifier>(context,listen: false).UserId
-        },
-        {
-          "Key": "TypeName",
-          "Type": "String",
-          "Value": "User"
-        },
-        {
-          "Key": "database",
-          "Type": "String",
-          "Value": Provider.of<QuarryNotifier>(context,listen: false).DataBaseName
-        },
-      ]
+      "Fields": parameters.map((e) => e.toJson()).toList()
     };
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
@@ -136,66 +123,20 @@ clearInsertForm(){
 
   InsertEmployeeSalaryDbHit(BuildContext context)  async{
     updateEmployeeSalaryLoader(true);
-
+    parameters=[
+      ParameterModel(Key: "SpName", Type: "String", Value: "USP_InsertEmployeeSalaryDetail"),
+      ParameterModel(Key: "LoginUserId", Type: "int", Value: Provider.of<QuarryNotifier>(context,listen: false).UserId),
+      ParameterModel(Key: "EmployeeId", Type: "int", Value:showEmpId),
+      ParameterModel(Key: "NumberOfWorkingDays", Type: "int", Value:TotalPresentDays),
+      ParameterModel(Key: "EarnedSalary", Type: "String", Value:double.parse(showEmpEarnedSalary)),
+      ParameterModel(Key: "OverTimeSalary", Type: "String", Value:double.parse(showEmpOvertime)),
+      ParameterModel(Key: "AdvancedAmount", Type: "String", Value:double.parse(showEmpAdvanceAmount)),
+      ParameterModel(Key: "LoanEMI", Type: "String", Value:double.parse(showEmpEMI)),
+      ParameterModel(Key: "NetPay", Type: "String", Value:double.parse(showEmpNetPay)),
+      ParameterModel(Key: "database", Type: "String", Value:Provider.of<QuarryNotifier>(context,listen: false).DataBaseName),
+    ];
     var body={
-      "Fields": [
-        {
-          "Key": "SpName",
-          "Type": "String",
-          "Value": "USP_InsertEmployeeSalaryDetail"
-        },
-        {
-          "Key": "LoginUserId",
-          "Type": "int",
-          "Value": Provider.of<QuarryNotifier>(context,listen: false).UserId
-        },
-        {
-          "Key": "EmployeeId",
-          "Type": "int",
-          "Value": showEmpId
-        },
-        {
-          "Key": "NumberOfWorkingDays",
-          "Type": "int",
-          "Value": TotalPresentDays
-        },
-        {
-          "Key": "EarnedSalary",
-          "Type": "String",
-          "Value": double.parse(showEmpEarnedSalary)
-        },
-
-        {
-          "Key": "OverTimeSalary",
-          "Type": "String",
-          "Value": double.parse(showEmpOvertime)
-        },
-        {
-          "Key": "AdvancedAmount",
-          "Type": "String",
-          "Value": double.parse(showEmpAdvanceAmount)
-        },
-        {
-          "Key": "LoanEMI",
-          "Type": "String",
-          "Value": double.parse(showEmpEMI)
-        },
-
-        {
-          "Key": "NetPay",
-          "Type": "String",
-          "Value": double.parse(showEmpNetPay)
-        },
-
-
-
-
-        {
-          "Key": "database",
-          "Type": "String",
-          "Value": Provider.of<QuarryNotifier>(context,listen: false).DataBaseName
-        }
-      ]
+      "Fields": parameters.map((e) => e.toJson()).toList()
     };
 
     try{
