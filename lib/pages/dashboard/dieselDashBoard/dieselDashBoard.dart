@@ -206,7 +206,7 @@ class _DieselDashBoardState extends State<DieselDashBoard> {
                             ),
                             child: Stack(
                               children: [
-                               
+
                                 Align(
                                   alignment: Alignment.center,
                                   child: Container(
