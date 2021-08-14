@@ -5,8 +5,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/api/ApiManager.dart';
 import 'package:quarry/api/sp.dart';
+import 'package:quarry/model/parameterMode.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/pages/dashboard/dieselDashBoard/dieselDashBoard.dart';
+import 'package:quarry/styles/constants.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/calculation.dart';
 
@@ -32,42 +34,20 @@ class DashboardNotifier extends ChangeNotifier{
   Map? currentSaleT={};
   List<dynamic> currentSaleData=[];
   String currentSalesApex='';
+
   Future<dynamic> currentSaleDbHit(BuildContext context,String typeName,String fromDate,String toDate) async {
     updateisLoad(true);
-    var body={
-      "Fields": [
-        {
-          "Key": "SpName",
-          "Type": "String",
-          "Value": "${Sp.getDashboard}"
-        },
-        {
-          "Key": "LoginUserId",
-          "Type": "int",
-          "Value": Provider.of<QuarryNotifier>(context,listen: false).UserId
-        },
-        {
-          "Key": "FromDate",
-          "Type": "String",
-          "Value": fromDate
-        },
+    parameters=[
+      ParameterModel(Key: "SpName", Type: "String", Value: "${Sp.getDashboard}"),
+      ParameterModel(Key: "LoginUserId", Type: "int", Value: Provider.of<QuarryNotifier>(context,listen: false).UserId),
+      ParameterModel(Key: "FromDate", Type: "String", Value: fromDate),
+      ParameterModel(Key: "ToDate", Type: "String", Value:toDate),
+      ParameterModel(Key: "TypeName", Type: "String", Value:typeName),
+      ParameterModel(Key: "database", Type: "String", Value:Provider.of<QuarryNotifier>(context,listen: false).DataBaseName),
+    ];
 
-        {
-          "Key": "ToDate",
-          "Type": "String",
-          "Value": toDate
-        },
-        {
-          "Key": "TypeName",
-          "Type": "String",
-          "Value": typeName
-        },
-        {
-          "Key": "database",
-          "Type": "String",
-          "Value": Provider.of<QuarryNotifier>(context,listen: false).DataBaseName
-        }
-      ]
+    var body={
+      "Fields": parameters.map((e) => e.toJson()).toList()
     };
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
@@ -94,42 +74,17 @@ class DashboardNotifier extends ChangeNotifier{
 
   Future<dynamic> DashBoardDbHit(BuildContext context,String typeName,String fromDate,String toDate, {VoidCallback? voidCallback}) async {
   updateisLoad(true);
- // saleData.clear();
-    var body={
-      "Fields": [
-        {
-          "Key": "SpName",
-          "Type": "String",
-          "Value": "${Sp.getDashboard}"
-        },
-        {
-          "Key": "LoginUserId",
-          "Type": "int",
-          "Value": Provider.of<QuarryNotifier>(context,listen: false).UserId
-        },
-        {
-          "Key": "FromDate",
-          "Type": "String",
-          "Value": fromDate
-        },
-
-        {
-          "Key": "ToDate",
-          "Type": "String",
-          "Value": toDate
-        },
-        {
-          "Key": "TypeName",
-          "Type": "String",
-          "Value": typeName
-        },
-        {
-          "Key": "database",
-          "Type": "String",
-          "Value": Provider.of<QuarryNotifier>(context,listen: false).DataBaseName
-        }
-      ]
-    };
+  parameters=[
+    ParameterModel(Key: "SpName", Type: "String", Value: "${Sp.getDashboard}"),
+    ParameterModel(Key: "LoginUserId", Type: "int", Value: Provider.of<QuarryNotifier>(context,listen: false).UserId),
+    ParameterModel(Key: "FromDate", Type: "String", Value: fromDate),
+    ParameterModel(Key: "ToDate", Type: "String", Value:toDate),
+    ParameterModel(Key: "TypeName", Type: "String", Value:typeName),
+    ParameterModel(Key: "database", Type: "String", Value:Provider.of<QuarryNotifier>(context,listen: false).DataBaseName),
+  ];
+  var body={
+    "Fields": parameters.map((e) => e.toJson()).toList()
+  };
 
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {

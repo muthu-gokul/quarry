@@ -13,9 +13,11 @@ import 'package:quarry/model/dieselModel/dieselVehicleModel.dart';
 import 'package:quarry/model/dieselModel/fuelPurchaserModel.dart';
 import 'package:quarry/model/dieselModel/fuelSupplierModel.dart';
 import 'package:quarry/model/manageUsersModel/manageUsersPlantModel.dart';
+import 'package:quarry/model/parameterMode.dart';
 import 'package:quarry/model/plantModel/plantUserModel.dart';
 import 'package:quarry/notifier/profileNotifier.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
+import 'package:quarry/styles/constants.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/calculation.dart';
 import 'package:quarry/widgets/decimal.dart';
@@ -29,8 +31,7 @@ class DieselNotifier extends ChangeNotifier{
   List<PlantUserModel> plantList=[];
   int plantCount=0;
   Future<dynamic>  PlantUserDropDownValues(BuildContext context) async {
-    print("ISDIESE LEDIT $isDieselEdit");
-    print("USER ID ${Provider.of<QuarryNotifier>(context,listen: false).UserId}");
+
     plantCount=0;
     updateDieselLoader(true);
     var body={
@@ -93,7 +94,7 @@ class DieselNotifier extends ChangeNotifier{
               plantList=plantList.where((element) => element.userId==Provider.of<QuarryNotifier>(context,listen: false).UserId).toList();
             }
           }
-          print("plantCount$plantCount");
+
 
         }
         updateDieselLoader(false);
@@ -165,9 +166,7 @@ class DieselNotifier extends ChangeNotifier{
           var t3=parsed['Table3'] as List?;
           var t4=parsed['Table4'] as List?;
           var t5=parsed['Table5'] as List?;
-          print("t_$t");
-          print("t1_$t1");
-          print("t2_$t2");
+
 
           fuelSupplierList=t;
           filterFuelSupplierList=t;
@@ -306,96 +305,27 @@ double? totalAmount=0.0;
 
   InsertDieselPurchaseDbHit(BuildContext context)  async{
     updateDieselLoader(true);
+    parameters=[
+      ParameterModel(Key: "SpName", Type: "String", Value: isDieselEdit?"${Sp.updateDieselDetail}": "${Sp.insertDieselDetail}"),
+      ParameterModel(Key: "LoginUserId", Type: "int", Value: Provider.of<QuarryNotifier>(context,listen: false).UserId),
+      ParameterModel(Key: "PlantId", Type: "int", Value: DP_PlantId),
+      ParameterModel(Key: "BillNumber", Type: "String", Value:DP_billno.text),
+      ParameterModel(Key: "BillDate", Type: "String", Value:DateFormat("yyyy-MM-dd").format(DP_billDate!).toString()),
+      ParameterModel(Key: "SupplierId", Type: "int", Value: DP_supplierId),
+      ParameterModel(Key: "EmployeeId", Type: "int", Value: DP_purchaserId),
+      ParameterModel(Key: "DieselBunkLocation", Type: "String", Value: DP_location.text),
+      ParameterModel(Key: "DieselBunkContactNumber", Type: "String", Value: DP_contactNo.text),
+      ParameterModel(Key: "IsVehicle", Type: "int", Value: DP_isVehicle?1:0),
+      ParameterModel(Key: "VehicleId", Type: "int", Value: DP_vehicleId),
+      ParameterModel(Key: "DieselQuantity", Type: "String", Value: DP_dieselQTY.text.isNotEmpty?double.parse(DP_dieselQTY.text):0.0),
+      ParameterModel(Key: "DieselRate", Type: "String", Value: DP_dieselPrice.text.isNotEmpty?double.parse(DP_dieselPrice.text):0.0),
+      ParameterModel(Key: "TotalAmount", Type: "String", Value: totalAmount),
+      ParameterModel(Key: "DieselPurchaseId", Type: "int", Value: EditDieselPurchaseId),
+      ParameterModel(Key: "UnitId", Type: "int", Value: null),
+      ParameterModel(Key: "database", Type: "String", Value:Provider.of<QuarryNotifier>(context,listen: false).DataBaseName),
+    ];
     var body={
-      "Fields": [
-        {
-          "Key": "SpName",
-          "Type": "String",
-          "Value": isDieselEdit?"${Sp.updateDieselDetail}": "${Sp.insertDieselDetail}"
-        },
-        {
-          "Key": "LoginUserId",
-          "Type": "int",
-          "Value": Provider.of<QuarryNotifier>(context,listen: false).UserId
-        },
-        {
-          "Key": "PlantId",
-          "Type": "int",
-          "Value": DP_PlantId
-        },
-        {
-          "Key": "BillNumber",
-          "Type": "String",
-          "Value": DP_billno.text
-        },
-        {
-          "Key": "BillDate",
-          "Type": "String",
-          "Value": DateFormat("yyyy-MM-dd").format(DP_billDate!).toString()
-        },
-
-        {
-          "Key": "SupplierId",
-          "Type": "int",
-          "Value": DP_supplierId
-        },
-        {
-          "Key": "EmployeeId",
-          "Type": "int",
-          "Value": DP_purchaserId
-        },
-        {
-          "Key": "DieselBunkLocation",
-          "Type": "String",
-          "Value": DP_location.text
-        },
-        {
-          "Key": "DieselBunkContactNumber",
-          "Type": "String",
-          "Value": DP_contactNo.text
-        },
-        {
-          "Key": "IsVehicle",
-          "Type": "int",
-          "Value": DP_isVehicle?1:0
-        },
-        {
-          "Key": "VehicleId",
-          "Type": "int",
-          "Value": DP_vehicleId
-        },
-        {
-          "Key": "DieselQuantity",
-          "Type": "String",
-          "Value": DP_dieselQTY.text.isNotEmpty?double.parse(DP_dieselQTY.text):0.0
-        },
-        {
-          "Key": "DieselRate",
-          "Type": "String",
-          "Value": DP_dieselPrice.text.isNotEmpty?double.parse(DP_dieselPrice.text):0.0
-        },
-        {
-          "Key": "TotalAmount",
-          "Type": "String",
-          "Value": totalAmount
-        },
-        {
-          "Key": "DieselPurchaseId",
-          "Type": "int",
-          "Value": EditDieselPurchaseId
-        },
-        {
-          "Key": "UnitId",
-          "Type": "int",
-          "Value": null
-        },
-
-        {
-          "Key": "database",
-          "Type": "String",
-          "Value": Provider.of<QuarryNotifier>(context,listen: false).DataBaseName
-        }
-      ]
+      "Fields": parameters.map((e) => e.toJson()).toList()
     };
 
     try{
@@ -473,39 +403,18 @@ double? totalAmount=0.0;
       fromDate=DateFormat("yyyy-MM-dd").format(picked[0]!).toString();
       toDate=DateFormat("yyyy-MM-dd").format(picked[1]!).toString();
     }
+
+    parameters=[
+      ParameterModel(Key: "SpName", Type: "String", Value: "${Sp.getDieselDetail}"),
+      ParameterModel(Key: "LoginUserId", Type: "int", Value: Provider.of<QuarryNotifier>(context,listen: false).UserId),
+      ParameterModel(Key: "DieselPurchaseId", Type: "int", Value: dieselPurchaseId),
+      ParameterModel(Key: "FromDate", Type: "String", Value:fromDate),
+      ParameterModel(Key: "ToDate", Type: "String", Value:toDate),
+      ParameterModel(Key: "database", Type: "String", Value:Provider.of<QuarryNotifier>(context,listen: false).DataBaseName),
+    ];
+
     var body={
-      "Fields": [
-        {
-          "Key": "SpName",
-          "Type": "String",
-          "Value": "${Sp.getDieselDetail}"
-        },
-        {
-          "Key": "LoginUserId",
-          "Type": "int",
-          "Value": Provider.of<QuarryNotifier>(context,listen: false).UserId
-        },
-        {
-          "Key": "DieselPurchaseId",
-          "Type": "int",
-          "Value": dieselPurchaseId
-        },
-        {
-          "Key": "FromDate",
-          "Type": "String",
-          "Value": fromDate
-        },
-        {
-          "Key": "ToDate",
-          "Type": "String",
-          "Value":toDate
-        },
-        {
-          "Key": "database",
-          "Type": "String",
-          "Value": Provider.of<QuarryNotifier>(context,listen: false).DataBaseName
-        }
-      ]
+      "Fields": parameters.map((e) => e.toJson()).toList()
     };
 
     try{
@@ -541,7 +450,7 @@ double? totalAmount=0.0;
             DP_PlantName=t[0]['PlantName'];
             DP_billno.text=t[0]['BillNumber'];
             DP_billDate=DateFormat("yyyy-MM-dd").parse(t[0]['BillDate']);
-            print("DP_billDate$DP_billDate");
+
             DP_purchaserId=t[0]['EmployeeId'];
             DP_purchaserName=t[0]['PurchaserName'];
             DP_supplierId=t[0]['SupplierId'];
@@ -559,12 +468,13 @@ double? totalAmount=0.0;
             totalAmount=t[0]['TotalAmount'];
           }
           else{
-            print(t);
-            print(parsed['Table1']);
 
-            dbCounterValues=parsed['Table1'] as List?;
-            filterDieselPurchaseGridList=t!.map((e) => DieselPurchaseGridModel.fromJson(e)).toList();
-            filterDieselPurchaseGrid();
+            if(parsed['Table1']!=null){
+              dbCounterValues=parsed['Table1'] as List?;
+              filterDieselPurchaseGridList=t!.map((e) => DieselPurchaseGridModel.fromJson(e)).toList();
+              filterDieselPurchaseGrid();
+            }
+
           }
         }
 
@@ -634,75 +544,22 @@ double? totalAmount=0.0;
 
   InsertDieselIssueDbHit(BuildContext context)  async{
     updateDieselLoader(true);
+    parameters=[
+      ParameterModel(Key: "SpName", Type: "String", Value: isDieselIssueEdit?"${Sp.updateDieselIssueDetail}": "${Sp.insertDieselIssueDetail}"),
+      ParameterModel(Key: "LoginUserId", Type: "int", Value: Provider.of<QuarryNotifier>(context,listen: false).UserId),
+      ParameterModel(Key: "PlantId", Type: "int", Value: DI_plantID),
+      ParameterModel(Key: "IsMachine", Type: "int", Value:isMachine!?1:0),
+      ParameterModel(Key: "IsVehicle", Type: "int", Value:isVehicle!?1:0),
+      ParameterModel(Key: "MachineId", Type: "int", Value:isMachine!? DI_machineID:null),
+      ParameterModel(Key: "VehicleId", Type: "int", Value:isVehicle!? DI_machineID:null),
+      ParameterModel(Key: "IssuedBy", Type: "int", Value:DI_issueID),
+      ParameterModel(Key: "DieselIssuedQuantity", Type: "String", Value:DI_dieselQty.text.isNotEmpty?double.parse(DI_dieselQty.text):0.0),
+      ParameterModel(Key: "MachineFuelReadingQuantity", Type: "String", Value:DI_machineRunningMeter.text.isNotEmpty?double.parse(DI_machineRunningMeter.text):0.0),
+      ParameterModel(Key: "DieselIssueId", Type: "int", Value:EditDieselIssueId),
+      ParameterModel(Key: "database", Type: "String", Value:Provider.of<QuarryNotifier>(context,listen: false).DataBaseName),
+    ];
     var body={
-      "Fields": [
-        {
-          "Key": "SpName",
-          "Type": "String",
-          "Value": isDieselIssueEdit?"${Sp.updateDieselIssueDetail}": "${Sp.insertDieselIssueDetail}"
-        },
-        {
-          "Key": "LoginUserId",
-          "Type": "int",
-          "Value": Provider.of<QuarryNotifier>(context,listen: false).UserId
-        },
-        {
-          "Key": "PlantId",
-          "Type": "int",
-          "Value": DI_plantID
-        },
-        {
-          "Key": "IsMachine",
-          "Type": "int",
-          "Value": isMachine!?1:0
-        },
-        {
-          "Key": "IsVehicle",
-          "Type": "int",
-          "Value": isVehicle!?1:0
-        },
-        {
-          "Key": "MachineId",
-          "Type": "int",
-          "Value":isMachine!? DI_machineID:null
-        },
-        {
-          "Key": "VehicleId",
-          "Type": "int",
-          "Value":isVehicle!? DI_machineID:null
-        },
-
-        {
-          "Key": "IssuedBy",
-          "Type": "int",
-          "Value": DI_issueID
-        },
-
-
-        {
-          "Key": "DieselIssuedQuantity",
-          "Type": "String",
-          "Value": DI_dieselQty.text.isNotEmpty?double.parse(DI_dieselQty.text):0.0
-        },
-        {
-          "Key": "MachineFuelReadingQuantity",
-          "Type": "String",
-          "Value": DI_machineRunningMeter.text.isNotEmpty?double.parse(DI_machineRunningMeter.text):0.0
-        },
-
-        {
-          "Key": "DieselIssueId",
-          "Type": "int",
-          "Value": EditDieselIssueId
-        },
-
-
-        {
-          "Key": "database",
-          "Type": "String",
-          "Value": Provider.of<QuarryNotifier>(context,listen: false).DataBaseName
-        }
-      ]
+      "Fields": parameters.map((e) => e.toJson()).toList()
     };
 
     try{
@@ -771,39 +628,17 @@ double? totalAmount=0.0;
       fromDate=DateFormat("yyyy-MM-dd").format(picked[0]!).toString();
       toDate=DateFormat("yyyy-MM-dd").format(picked[1]!).toString();
     }
+    parameters=[
+      ParameterModel(Key: "SpName", Type: "String", Value: "${Sp.getDieselIssueDetail}"),
+      ParameterModel(Key: "LoginUserId", Type: "int", Value: Provider.of<QuarryNotifier>(context,listen: false).UserId),
+      ParameterModel(Key: "DieselIssueId", Type: "int", Value: dieselIssueId),
+      ParameterModel(Key: "FromDate", Type: "String", Value:fromDate),
+      ParameterModel(Key: "ToDate", Type: "String", Value:toDate),
+      ParameterModel(Key: "database", Type: "String", Value:Provider.of<QuarryNotifier>(context,listen: false).DataBaseName),
+    ];
+
     var body={
-      "Fields": [
-        {
-          "Key": "SpName",
-          "Type": "String",
-          "Value": "${Sp.getDieselIssueDetail}"
-        },
-        {
-          "Key": "LoginUserId",
-          "Type": "int",
-          "Value": Provider.of<QuarryNotifier>(context,listen: false).UserId
-        },
-        {
-          "Key": "DieselIssueId",
-          "Type": "int",
-          "Value": dieselIssueId
-        },
-        {
-          "Key": "FromDate",
-          "Type": "String",
-          "Value": fromDate
-        },
-        {
-          "Key": "ToDate",
-          "Type": "String",
-          "Value":toDate
-        },
-        {
-          "Key": "database",
-          "Type": "String",
-          "Value": Provider.of<QuarryNotifier>(context,listen: false).DataBaseName
-        }
-      ]
+      "Fields": parameters.map((e) => e.toJson()).toList()
     };
 
 
@@ -812,7 +647,7 @@ double? totalAmount=0.0;
         if(value!=null){
           var parsed=json.decode(value);
           var t=parsed['Table'] as List?;
-          print(t);
+
           if(dieselIssueId!=null ){
             EditDieselIssueId=t![0]['DieselIssueId'];
             DI_plantID=t[0]['PlantId'];
@@ -837,10 +672,13 @@ double? totalAmount=0.0;
 
           }
           else{
-            dbIssueCounterValues=parsed['Table1'] as List?;
-            print(dbIssueCounterValues);
-            filterDieselIssueGridList=t!.map((e) => DieselIssueGridModel.fromJson(e)).toList();
-            filterDieselIssueGrid();
+            if(parsed['Table1']!=null){
+              dbIssueCounterValues=parsed['Table1'] as List?;
+
+              filterDieselIssueGridList=t!.map((e) => DieselIssueGridModel.fromJson(e)).toList();
+              filterDieselIssueGrid();
+            }
+
           }
         }
 

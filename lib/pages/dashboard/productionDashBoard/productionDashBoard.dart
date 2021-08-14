@@ -312,7 +312,7 @@ class _ProductionDashBoardState extends State<ProductionDashBoard> {
 
                   SvgPicture.asset("assets/nodata.svg",height: 350,),
                   SizedBox(height: 30,),
-                  Text("No Data Found",style: TextStyle(fontSize: 18,fontFamily:'RMI',color: AppTheme.addNewTextFieldText),),
+                  Text("No Data",style: TextStyle(fontSize: 18,fontFamily:'RMI',color: AppTheme.addNewTextFieldText),),
 
                 ],
               ),

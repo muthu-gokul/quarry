@@ -258,58 +258,8 @@ List<DateTime?> picked=[];
                             },
                           ),
 
-                         /* child: SfCartesianChart(
-                            legend: Legend(isVisible: false, opacity: 0.7),
-                            title: ChartTitle(text: ''),
-                            plotAreaBorderWidth: 0,
-                            primaryXAxis: CategoryAxis(
-                                interval: 1,
-                                majorGridLines: const MajorGridLines(width: 0),
-                                //  minorGridLines: const MinorGridLines(width: 1,color: Colors.white),
-                                axisLine:const AxisLine(width: 1),
-                                edgeLabelPlacement: EdgeLabelPlacement.shift
-                            ),
-                            primaryYAxis: NumericAxis(
-                              labelFormat: '{value}',
-                              axisLine: const AxisLine(width: 0),
-                              majorTickLines: const MajorTickLines(size: 0),
-                              majorGridLines: const MajorGridLines(width: 0),
-                              //    minorGridLines: const MinorGridLines(width: 1,color: Colors.white),
-                            ),
-                            series:[
-                              SplineAreaSeries<dynamic, String>(
-                                animationDuration:2000,
-
-                                onRendererCreated: (ChartSeriesController c){
-                                  chartSeriesController=c;
-                                },
-                                dataSource: db.saleData,
-                                borderColor: Color(0xFFFEBF10),
-                                borderWidth: 3,
-                                gradient: LinearGradient(
-                                  colors: [Color(0xFF343434),Color(0xFFFEBF10).withOpacity(0.5)],
-                                  begin: Alignment.bottomCenter,
-                                  end: Alignment.topCenter,
-                                  //  stops: [0,30]
-                                ),
-                                name: 'Sales',
-                                xValueMapper: (dynamic sales, _) =>DateFormat("MMMd").format(DateTime.parse(sales['Date'])),
-                                yValueMapper: (dynamic sales, _) => sales['TotalSale'],
-                              ),
-                            ],
-                            tooltipBehavior: TooltipBehavior(
-                                enable: true,
-                                duration: 10000,
-                                format: "point.x : point.y"
-                            ),
-                          ),*/
 
 
-                         /* child: HighCharts(
-                            data: db.salesApex,
-                            isHighChart: false,
-                            isLoad: db.isChartLoad,
-                          ),*/
                         )
                     ),
                   ),
@@ -324,7 +274,21 @@ List<DateTime?> picked=[];
                   borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10)),
                   color: Color(0xFFF6F7F9),
                 ),
-                child: ListView.builder(
+                child: db.saleT2!.isEmpty?Container(
+                  width: SizeConfig.screenWidth,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+
+
+                      SvgPicture.asset("assets/nodata.svg",height: 300,),
+                      SizedBox(height: 30,),
+                      Text("No Data",style: TextStyle(fontSize: 18,fontFamily:'RMI',color: AppTheme.addNewTextFieldText),),
+
+                    ],
+                  ),
+                ): ListView.builder(
                   itemCount: db.saleT2!.length,
                   itemBuilder: (ctx,i){
                     return Align(
@@ -422,6 +386,9 @@ List<DateTime?> picked=[];
 
               ),
             ),
+
+
+
 
             Loader(
               isLoad: db.isLoad,

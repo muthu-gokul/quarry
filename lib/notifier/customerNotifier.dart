@@ -5,7 +5,9 @@ import 'package:provider/provider.dart';
 import 'package:quarry/api/ApiManager.dart';
 import 'package:quarry/api/sp.dart';
 import 'package:quarry/model/customerDetailsModel.dart';
+import 'package:quarry/model/parameterMode.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
+import 'package:quarry/styles/constants.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 
 class CustomerNotifier extends ChangeNotifier {
@@ -39,102 +41,27 @@ class CustomerNotifier extends ChangeNotifier {
 
   Future<dynamic> InsertCustomerDbHit(BuildContext context,bool fromSale) async {
     updatecustomerLoader(true);
+    parameters=[
+      ParameterModel(Key: "SpName", Type: "String", Value: fromSale?"${Sp.insertCustomerDetail}": isCustomerEdit ? "${Sp.updateCustomerDetail}" : "${Sp.insertCustomerDetail}"),
+      ParameterModel(Key: "LoginUserId", Type: "int", Value: Provider.of<QuarryNotifier>(context,listen: false).UserId),
+      ParameterModel(Key: "CustomerId", Type: "int", Value: editCustomerId),
+      ParameterModel(Key: "CustomerName", Type: "String", Value:customerName.text),
+      ParameterModel(Key: "CustomerContactNumber", Type: "String", Value:customerContactNumber.text),
+      ParameterModel(Key: "CustomerEmail", Type: "String", Value:customerEmail.text),
+      ParameterModel(Key: "CustomerAddress", Type: "String", Value:customerAddress.text),
+      ParameterModel(Key: "CustomerCity", Type: "String", Value:customerCity.text),
+      ParameterModel(Key: "CustomerState", Type: "String", Value:customerState.text),
+      ParameterModel(Key: "CustomerCountry", Type: "String", Value:customerCountry.text),
+      ParameterModel(Key: "CustomerZipCode", Type: "String", Value:customerZipcode.text),
+      ParameterModel(Key: "CustomerGSTNumber", Type: "String", Value:customerGstNumber.text),
+      ParameterModel(Key: "IsCreditCustomer", Type: "int", Value:isCreditCustomer!?1:0),
+      ParameterModel(Key: "CustomerCreditLimit", Type: "String", Value:customerCreditLimit.text.isNotEmpty?double.parse(customerCreditLimit.text):0.0),
+      ParameterModel(Key: "CustomerLogoFileName", Type: "String", Value:null),
+      ParameterModel(Key: "CustomerLogoFolderName", Type: "String", Value:null),
+      ParameterModel(Key: "database", Type: "String", Value:Provider.of<QuarryNotifier>(context,listen: false).DataBaseName),
+    ];
     var body = {
-      "Fields": [
-        {
-          "Key": "SpName",
-          "Type": "String",
-          "Value":fromSale?"${Sp.insertCustomerDetail}": isCustomerEdit ? "${Sp.updateCustomerDetail}" : "${Sp.insertCustomerDetail}"
-        },
-        {
-          "Key": "LoginUserId",
-          "Type": "int",
-          "Value": Provider.of<QuarryNotifier>(context, listen: false).UserId
-        },
-
-        {
-          "Key": "CustomerId",
-          "Type": "int",
-          "Value": editCustomerId
-        },
-
-        {
-          "Key": "CustomerName",
-          "Type": "String",
-          "Value": customerName.text
-        },
-        {
-          "Key": "CustomerContactNumber",
-          "Type": "String",
-          "Value": customerContactNumber.text
-        },
-        {
-          "Key": "CustomerEmail",
-          "Type": "String",
-          "Value": customerEmail.text
-        },
-
-        {
-          "Key": "CustomerAddress",
-          "Type": "String",
-          "Value": customerAddress.text
-        },
-        {
-          "Key": "CustomerCity",
-          "Type": "String",
-          "Value": customerCity.text
-        },
-        {
-          "Key": "CustomerState",
-          "Type": "String",
-          "Value": customerState.text
-        },
-        {
-          "Key": "CustomerCountry",
-          "Type": "String",
-          "Value": customerCountry.text
-        },
-        {
-          "Key": "CustomerZipCode",
-          "Type": "String",
-          "Value": customerZipcode.text
-        },
-
-
-        {
-          "Key": "CustomerGSTNumber",
-          "Type": "String",
-          "Value": customerGstNumber.text
-        },
-        {
-          "Key": "IsCreditCustomer",
-          "Type": "int",
-          "Value": isCreditCustomer!?1:0
-        },
-        {
-          "Key": "CustomerCreditLimit",
-          "Type": "String",
-          "Value": customerCreditLimit.text.isNotEmpty?double.parse(customerCreditLimit.text):0.0
-        },
-        {
-          "Key": "CustomerLogoFileName",
-          "Type": "String",
-          "Value": null
-        },
-        {
-          "Key": "CustomerLogoFolderName",
-          "Type": "String",
-          "Value": null
-        },
-
-
-        {
-          "Key": "database",
-          "Type": "String",
-          "Value": Provider.of<QuarryNotifier>(context, listen: false)
-              .DataBaseName
-        }
-      ]
+      "Fields": parameters.map((e) => e.toJson()).toList()
     };
     try {
       await call.ApiCallGetInvoke(body, context).then((value) {
@@ -167,33 +94,14 @@ class CustomerNotifier extends ChangeNotifier {
   GetCustomerDetailDbhit(BuildContext context, int? customerId) async {
     print(customerId);
     updatecustomerLoader(true);
+    parameters=[
+      ParameterModel(Key: "SpName", Type: "String", Value: "${Sp.getCustomerDetail}"),
+      ParameterModel(Key: "LoginUserId", Type: "int", Value: Provider.of<QuarryNotifier>(context,listen: false).UserId),
+      ParameterModel(Key: "CustomerId", Type: "int", Value: customerId),
+      ParameterModel(Key: "database", Type: "String", Value:Provider.of<QuarryNotifier>(context,listen: false).DataBaseName),
+    ];
     var body = {
-      "Fields": [
-        {
-          "Key": "SpName",
-          "Type": "String",
-          "Value": "${Sp.getCustomerDetail}"
-        },
-        {
-          "Key": "LoginUserId",
-          "Type": "int",
-          "Value": Provider
-              .of<QuarryNotifier>(context, listen: false)
-              .UserId
-        },
-        {
-          "Key": "CustomerId",
-          "Type": "int",
-          "Value": customerId
-        },
-        {
-          "Key": "database",
-          "Type": "String",
-          "Value": Provider
-              .of<QuarryNotifier>(context, listen: false)
-              .DataBaseName
-        }
-      ]
+      "Fields": parameters.map((e) => e.toJson()).toList()
     };
 
     try {
@@ -224,18 +132,13 @@ class CustomerNotifier extends ChangeNotifier {
         else{
           customerGridList = t!.map((e) => CustomerDetails.fromJson(e)).toList();
         }
-
-
-
-
         updatecustomerLoader(false);
         notifyListeners();
       });
     }
     catch (e) {
       updatecustomerLoader(false);
-      CustomAlert().commonErrorAlert(
-          context, "${Sp.getCompanyDetail}", e.toString());
+      CustomAlert().commonErrorAlert(context, "${Sp.getCompanyDetail}", e.toString());
     }
   }
 

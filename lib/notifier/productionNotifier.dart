@@ -400,7 +400,8 @@ class ProductionNotifier extends ChangeNotifier{
               ));
             });
 
-          } else if(filterUsersPlantList.length!=Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.length){
+          }
+          else if(filterUsersPlantList.length!=Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.length){
             filterUsersPlantList.clear();
 
             Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.forEach((element) {
