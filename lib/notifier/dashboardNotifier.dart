@@ -187,6 +187,12 @@ class DashboardNotifier extends ChangeNotifier{
             customerInvPartiallyPaidPer=(customerInvPartiallyPaid/totalCustomerInv)*100;
             customerInvUnPaidPer=(customerInvUnPaid/totalCustomerInv)*100;
 
+            var t3=parsed['Table3'] as List;
+            customerInvListT2.forEach((element) {
+              element['bills']=[];
+              element['bills']=t3.where((ele) => ele['CustomerId']==element['CustomerId']).toList();
+            });
+
             updateisLoad(false);
             getCustomerInvoice();
           }

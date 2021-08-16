@@ -18,3 +18,8 @@ Color headerText=Color(0xFF3B3B3D);
 Color actionText=Color(0xFF979797);
 Color selectedDay=Color(0xFFFFC010);
 Color? dayColor=Colors.grey[700];
+
+
+Color invPaidText=Color(0xFF78AD97);
+Color invUnPaidText=Color(0xFFC27573);
+Color invPartiallyPaidText=Color(0xFFF1AC42);

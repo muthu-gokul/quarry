@@ -22,6 +22,8 @@ import 'package:quarry/widgets/navigationBarIcon.dart';
 import 'package:quarry/widgets/reportpdf.dart';
 import 'package:quarry/widgets/staticColumnScroll/customDataTable.dart';
 
+import 'invoiceCustomerBillDetails.dart';
+
 
 
 class InvoiceDetails extends StatefulWidget {
@@ -41,7 +43,7 @@ class _InvoiceDetailsState extends State<InvoiceDetails> {
 
   @override
   Widget build(BuildContext context) {
-    width=MediaQuery.of(context).size.width-90;
+    width=MediaQuery.of(context).size.width-70;
     return Scaffold(
       body: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.light.copyWith(
@@ -153,109 +155,137 @@ class _InvoiceDetailsState extends State<InvoiceDetails> {
                     child: ListView.builder(
                       itemCount: widget.list.length,
                       itemBuilder: (ctx,i){
-                        return Container(
-                          height: 80,
-                          margin: EdgeInsets.only(left: 20,right: 20),
-                          decoration: BoxDecoration(
-                            border: Border(bottom: BorderSide(color: Colors.grey[300]!))
-                          ),
-                          child: Row(
-                            children: [
-                              Container(
-                                height: 35,
-                                width: 35,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                  color: Colors.white
+                        return GestureDetector(
+                          onTap: (){
+                            Navigator.push(context, MaterialPageRoute(builder: (ctx)=>InvoiceCustomerBillDetails(
+                              title: "${widget.list[i]['CustomerName']??"UnKnown"}",
+                              list: widget.list[i]['bills'],
+                              filterList: widget.list[i]['bills'],
+                              textColor: Color(0xFFF1AC42),
+                              statusColor: Color(0xFFF6D148).withOpacity(0.5),
+                              counter: {
+                                "Total Invoice":widget.list[i]['bills'].length,
+                                "Paid Invoice":widget.list[i]['bills'].where((ele)=>ele['Status']=='Paid').toList().length,
+                                "Unpaid Invoice":widget.list[i]['bills'].where((ele)=>ele['Status']=='Unpaid').toList().length,
+                                "Partially Paid Invoice":widget.list[i]['bills'].where((ele)=>ele['Status']=='Partially Paid').toList().length,
+
+                              },
+                            )
+                            )
+                            );
+                          },
+                          child: Container(
+                            height: 80,
+                            margin: EdgeInsets.only(left: 10,right: 10),
+                            decoration: BoxDecoration(
+                              border: Border(bottom: BorderSide(color: Colors.grey[300]!)),
+                              color: Colors.transparent
+                            ),
+                            child: Row(
+                              children: [
+                                Container(
+                                  height: 35,
+                                  width: 35,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: Colors.white
+                                  ),
+                                  clipBehavior: Clip.antiAlias,
+                                  child: Center(
+                                    child: SvgPicture.asset("assets/svg/Planticon.svg",fit: BoxFit.cover,),
+                                  ),
                                 ),
-                              ),
-                              SizedBox(width: 15,),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    width: width*0.45,
-                                    height: 20,
-                                   // color: Colors.green,
-                                    child: Text("${widget.list[i]['CustomerName']??""}",style: TextStyle(fontFamily: 'RM',fontSize: 14,color: Color(0xFF6B727D)),overflow: TextOverflow.ellipsis,),
-                                  ),
-                                  Container(
-                                    width: width*0.45,
-                                    height: 18,
-                                    child: Row(
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        Icon(Icons.calendar_today_outlined,size: 10,color: Color(0xFFB4B4CD)),
-                                        FittedText(
-                                          text: " ${widget.date}",
-                                          textStyle: TextStyle(color: Color(0xFFB4B4CD),fontFamily: 'RR',fontSize: 10),
-                                          alignment: Alignment.centerLeft,
-                                          width: (width*0.45)-10,
-                                          height: 14,
-                                        )
-                                      ],
-                                    )
-                                  )
-                                ],
-                              ),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    width: width*0.18,
-                                    height: 18,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(3),
-                                      color: widget.statusColor,
+                                SizedBox(width: 10,),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      width: width*0.45,
+                                      height: 20,
+                                     // color: Colors.green,
+                                      child: Text("${widget.list[i]['CustomerName']??"UnKnown"}",style: TextStyle(fontFamily: 'RM',fontSize: 14,color: Color(0xFF6B727D)),overflow: TextOverflow.ellipsis,),
                                     ),
-                                    alignment: Alignment.center,
-                                    child: Text("${widget.list[i]['Bill']} Bills",
-                                      style: TextStyle(fontFamily: 'RB',fontSize: 10,color: widget.textColor),
+                                    Container(
+                                      width: width*0.45,
+                                      height: 18,
+                                      child: Row(
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          Icon(Icons.calendar_today_outlined,size: 10,color: Color(0xFFB4B4CD)),
+                                          FittedText(
+                                            text: " ${widget.date}",
+                                            textStyle: TextStyle(color: Color(0xFFB4B4CD),fontFamily: 'RR',fontSize: 10),
+                                            alignment: Alignment.centerLeft,
+                                            width: (width*0.45)-10,
+                                            height: 14,
+                                          )
+                                        ],
+                                      )
+                                    )
+                                  ],
+                                ),
+                                SizedBox(width: 5,),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+
+                                  children: [
+                                    Container(
+                                      width: width*0.18,
+                                      height: 18,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(3),
+                                        color: widget.statusColor,
                                       ),
-                                  ),
-                                  SizedBox(height: 5,),
-                                  FittedText(
-                                    text: "${formatCurrency.format(widget.list[i]['GrandTotalAmount'])}",
-                                    textStyle: TextStyle(color: Color(0xFFB4B4CD),fontFamily: 'RM',fontSize: 11),
-                                    alignment: Alignment.centerLeft,
-                                    width: (width*0.28),
-                                    height: 16,
-                                  )
-                                ],
-                              ),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    width: width*0.22,
-                                    height: 20,
-                                    child: FittedText(
-                                      text: "Payment Status",
-                                      textStyle: TextStyle(fontFamily: 'RM',fontSize: 10,color: Color(0xFF6B727D)),
+                                      alignment: Alignment.center,
+                                      child: Text("${widget.list[i]['Bill']} Bills",
+                                        style: TextStyle(fontFamily: 'RB',fontSize: 10,color: widget.textColor),
+                                        ),
+                                    ),
+                                    SizedBox(height: 5,),
+                                    FittedText(
+                                      text: "${formatCurrency.format(widget.list[i]['GrandTotalAmount'])}",
+                                      textStyle: TextStyle(color: Color(0xFFB4B4CD),fontFamily: 'RM',fontSize: 11),
                                       alignment: Alignment.centerLeft,
                                       width: (width*0.28),
                                       height: 16,
                                     )
-                                  ),
-
-                                  Container(
+                                  ],
+                                ),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Container(
                                       width: width*0.22,
-                                      height: 18,
+                                      height: 20,
                                       child: FittedText(
-                                        text: "${widget.list[i]['Status']}",
-                                        textStyle: TextStyle(fontFamily: 'RM',fontSize: 10,color:  widget.textColor),
-                                        alignment: Alignment.center,
+                                        text: "Payment Status",
+                                        textStyle: TextStyle(fontFamily: 'RM',fontSize: 11,color: Color(0xFF6B727D)),
+                                        alignment: Alignment.centerLeft,
                                         width: (width*0.28),
                                         height: 16,
                                       )
-                                  ),
+                                    ),
 
-                                ],
-                              ),
-                              Spacer(),
-                              Icon(Icons.arrow_forward_ios_rounded,size: 10,color: Colors.grey[500]!,)
-                            ],
+                                    Container(
+                                        width: width*0.22,
+                                        height: 18,
+                                        child: FittedText(
+                                          text: "${widget.list[i]['Status']}",
+                                          textStyle: TextStyle(fontFamily: 'RM',fontSize: 10,color:  widget.textColor),
+                                          alignment: Alignment.center,
+                                          width: (width*0.28),
+                                          height: 16,
+                                        )
+                                    ),
+
+
+                                  ],
+                                ),
+                                Spacer(),
+                                Icon(Icons.arrow_forward_ios_rounded,size: 10,color: Colors.grey[500]!,)
+                              ],
+                            ),
                           ),
                         );
                       },
@@ -291,48 +321,4 @@ class _InvoiceDetailsState extends State<InvoiceDetails> {
 
 }
 
-class SaleReportHeader extends StatelessWidget {
-  String? title;
-  double? value;
-  double? qty;
-  String? unit;
 
-  SaleReportHeader({this.title,this.value,this.qty,this.unit});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 80,
-      width: SizeConfig.screenWidth!*0.40,
-      margin: EdgeInsets.only(right: SizeConfig.width10!),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(5),
-          color: AppTheme.bgColor
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(" $title",style: TextStyle(fontFamily: 'RR',fontSize: 16,color: Colors.white,letterSpacing: 0.1),),
-          FittedBox(
-              fit: BoxFit.contain,
-              child: Text(" ₹ ${formatCurrency.format(value)}",style:TextStyle(fontFamily: 'RR',fontSize: 16,color: AppTheme.yellowColor),)),
-          Align(
-            alignment: Alignment.bottomRight,
-            child:Text(" ${formatCurrency.format(qty)} ${unit??""} ",style:TextStyle(fontFamily: 'RR',fontSize: 14,color: AppTheme.addNewTextFieldBorder),),
-
-          )
-        ],
-      ),
-    );
-  }
-}
-
-class SaleReportHeaderModel{
-  String? title;
-  double? value;
-  double? qty;
-  String? unit;
-
-  SaleReportHeaderModel({this.title,this.value,this.qty,this.unit});
-}
