@@ -174,7 +174,8 @@ class GoodsInGateFormState extends State<GoodsInGateForm> with TickerProviderSta
                                     });
                                   }
                                 }
-                              } as bool Function(ScrollNotification)?,
+                                return true;
+                              } ,
                               child: ListView(
                                 controller: listViewController,
                                 children: [

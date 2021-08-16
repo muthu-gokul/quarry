@@ -43,13 +43,15 @@ class _SalesMaterialState extends State<SalesMaterial> {
   double silverBodyTopMargin=0;
 
   int selIndex=1;
+  //Sales
   late  Future userFuture;
   List<dynamic> saleData=[];
   getData(){
     saleData=Provider.of<DashboardNotifier>(context,listen: false).saleData;
     return Future.value(saleData);
   }
-
+  //Materials
+  late  Future materialFuture;
   List<dynamic> saleMaterialData=[];
   getMaterialData(){
     if(selIndex==1){
@@ -70,7 +72,7 @@ class _SalesMaterialState extends State<SalesMaterial> {
   @override
   void initState() {
     userFuture = getData();
-    getMaterialData();
+    materialFuture=getMaterialData();
   /*  Provider.of<DashboardNotifier>(context,listen: false).getSaleMaterialDetail(
         widget.weekList!.map((e) => e['TotalSale']).toList(),
         json.encode(widget.weekList!.map((e) => e['WeekDay'].toString().substring(0,3)).toList()),
@@ -319,72 +321,6 @@ class _SalesMaterialState extends State<SalesMaterial> {
                               ),
                             ),
                           ),
-                          /*Row(
-                            children: [
-                              InkWell(
-                                onTap:(){
-                                  setState(() {
-                                    position=5;
-                                  });
-                                  db.getSaleMaterialDetail(
-                                    widget.weekList.map((e) => e['TotalSale']).toList(),
-                                    json.encode(widget.weekList.map((e) => e['WeekDay'].toString().substring(0,3)).toList()),
-                                    context
-                                  );
-                                },
-                                child: Container(
-                                  width: tabWidth*0.33,
-                                  height: 50,
-                                  color: Colors.red,
-                                  child: Center(
-                                      child: Text("Week",style: TextStyle(fontFamily: 'RR',fontSize: 14,color:position==5?AppTheme.bgColor: Colors.grey),)
-
-                                  ),
-                                ),
-                              ),
-                              InkWell(
-                                onTap:(){
-                                  setState(() {
-                                    position=tabWidth*0.33;
-                                  });
-                                  db.getSaleMaterialDetail(
-                                    widget.monthList.map((e) => e['TotalSale']).toList(),
-                                    json.encode(widget.monthList.map((e) => e['MName']).toList()),
-                                    context
-                                  );
-                                },
-                                child: Container(
-                                  width: tabWidth*0.33,
-                                  height: 50,
-                                  color: Colors.yellow,
-                                  child: Center(
-                                      child: Text("Month",style: TextStyle(fontFamily: 'RR',fontSize: 14,color:position==tabWidth*0.33?AppTheme.bgColor:  Colors.grey),)
-                                  ),
-                                ),
-                              ),
-                              InkWell(
-                                onTap:(){
-                                  setState(() {
-                                    position=tabWidth*0.66;
-                                  });
-                                  db.getSaleMaterialDetail(
-                                    widget.yearList.map((e) => e['TotalSale']).toList(),
-                                    json.encode(widget.yearList.map((e) => e['Year']).toList()),
-                                    context
-                                  );
-                                },
-                                child: Container(
-                                  width: tabWidth*0.33,
-                                  height: 50,
-                                  color: Colors.green,
-                                  child: Center(
-                                      child: Text("Year",style: TextStyle(fontFamily: 'RR',fontSize: 14,color:position==tabWidth*0.66?AppTheme.bgColor: Colors.grey),)
-                                  ),
-                                ),
-                              ),
-
-                            ],
-                          ),*/
                           Row(
                             children: [
                               GestureDetector(
@@ -394,12 +330,8 @@ class _SalesMaterialState extends State<SalesMaterial> {
                                     position=5;
                                     selIndex=1;
                                   });
-                                  getMaterialData();
-                                  /*db.getSaleMaterialDetail(
-                                    widget.weekList!.map((e) => e['TotalSale']).toList(),
-                                    json.encode(widget.weekList!.map((e) => e['WeekDay'].toString().substring(0,3)).toList()),
-                                    context
-                                  );*/
+                                  materialFuture=getMaterialData();
+
                                 },
                                 child: Container(
                                   width: tabWidth*0.33,
@@ -418,12 +350,8 @@ class _SalesMaterialState extends State<SalesMaterial> {
                                     position=tabWidth*0.33;
                                     selIndex=2;
                                   });
-                                   getMaterialData();
-                                 /* db.getSaleMaterialDetail(
-                                    widget.monthList!.map((e) => e['TotalSale']).toList(),
-                                    json.encode(widget.monthList!.map((e) => e['MName']).toList()),
-                                    context
-                                  );*/
+                                  materialFuture=getMaterialData();
+
                                 },
                                 child: Container(
                                   width: tabWidth*0.33,
@@ -441,12 +369,8 @@ class _SalesMaterialState extends State<SalesMaterial> {
                                     position=tabWidth*0.66;
                                     selIndex=3;
                                   });
-                                  getMaterialData();
-                                /*  db.getSaleMaterialDetail(
-                                    widget.yearList!.map((e) => e['TotalSale']).toList(),
-                                    json.encode(widget.yearList!.map((e) => e['Year']).toList()),
-                                    context
-                                  );*/
+                                  materialFuture=getMaterialData();
+
                                 },
                                 child: Container(
                                   width: tabWidth*0.33,
@@ -532,7 +456,7 @@ class _SalesMaterialState extends State<SalesMaterial> {
 
 
                       child: FutureBuilder<dynamic>(
-                        future: getMaterialData(),
+                        future: materialFuture,
                         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                           if( snapshot.connectionState == ConnectionState.waiting){
                             return Container();

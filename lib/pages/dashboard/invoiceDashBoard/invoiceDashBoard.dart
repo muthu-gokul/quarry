@@ -36,11 +36,11 @@ class _InvoiceDashBoardState extends State<InvoiceDashBoard> {
   int selIndex=-1;
   @override
   void initState() {
-   /* Provider.of<DashboardNotifier>(context,listen: false).DashBoardDbHit(context,
-        "Attendance",
+    Provider.of<DashboardNotifier>(context,listen: false).DashBoardDbHit(context,
+        "Invoice",
         DateFormat("yyyy-MM-dd").format(DateTime.now().subtract(Duration(days: 6))).toString(),
         DateFormat("yyyy-MM-dd").format(DateTime.now()).toString()
-    );*/
+    );
 
     WidgetsBinding.instance!.addPostFrameCallback((_){
       silverController=new ScrollController();
@@ -114,7 +114,7 @@ class _InvoiceDashBoardState extends State<InvoiceDashBoard> {
         type: 'pie',
         name: 'Income',
         data: [
-            ['Partilly', 10],
+            ['Partially', 10],
             ['Paid', 65],
             ['UnPaid', 25]
         ]
@@ -204,7 +204,7 @@ class _InvoiceDashBoardState extends State<InvoiceDashBoard> {
                                       picked=picked1;
                                     });
                                     db.DashBoardDbHit(context,
-                                        "Attendance",
+                                        "Invoice",
                                         DateFormat("yyyy-MM-dd").format(picked[0]!).toString(),
                                         DateFormat("yyyy-MM-dd").format(picked[1]!).toString()
                                     );
@@ -214,7 +214,7 @@ class _InvoiceDashBoardState extends State<InvoiceDashBoard> {
                                       picked=picked1;
                                     });
                                     db.DashBoardDbHit(context,
-                                        "Attendance",
+                                        "Invoice",
                                         DateFormat("yyyy-MM-dd").format(picked[0]!).toString(),
                                         DateFormat("yyyy-MM-dd").format(picked[0]!).toString()
                                     );

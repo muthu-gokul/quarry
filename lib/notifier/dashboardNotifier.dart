@@ -91,7 +91,7 @@ class DashboardNotifier extends ChangeNotifier{
 
         if(value!='F'){
           var parsed=json.decode(value);
-        //  log("$value");
+          log("$value");
           if(typeName=='Sale'){
             saleT=parsed['Table'][0];
             saleData=parsed['Table1'] as List;
@@ -172,6 +172,21 @@ class DashboardNotifier extends ChangeNotifier{
             int diff =  (d2-d1)+1;
             sl(voidCallback!,diff);
           }
+          else if(typeName=='Invoice'){
+            customerInvPaid=0;customerInvPartiallyPaid=0;customerInvUnPaid=0;
+            invT=parsed['Table'] as List;
+            customerInvPaid=invT[0]['InvoiceCount'];
+            customerInvPartiallyPaid=invT[1]['InvoiceCount'];
+            customerInvUnPaid=invT[2]['InvoiceCount'];
+            totalCustomerInv=customerInvPaid+customerInvPartiallyPaid+customerInvUnPaid;
+            print(customerInvPaid/totalCustomerInv);
+            print(customerInvPartiallyPaid/totalCustomerInv);
+            print(customerInvUnPaid/totalCustomerInv);
+            print(invT[0]['InvoiceCount']);
+            print(invT[1]['InvoiceCount']);
+            print(invT[2]['InvoiceCount']);
+            updateisLoad(false);
+          }
           else{
             updateisLoad(false);
           }
@@ -184,7 +199,7 @@ class DashboardNotifier extends ChangeNotifier{
     }
     catch(e,t){
       updateisLoad(false);
-      CustomAlert().commonErrorAlert(context, "DashBoard Hit $typeName" , t.toString());
+      CustomAlert().commonErrorAlert(context, "DashBoard Hit $typeName" , "${e.toString()}\nDescription\n${t.toString()}");
     }
   }
 
@@ -252,6 +267,11 @@ Map totalDiesel={};
   int totalEmployee=1;
   int  totalPresent=0,totalAbsent=0;
   List<dynamic>? todayAttendanceListT2=[];
+
+
+//Invoice Dashboard
+int customerInvPaid=0,customerInvPartiallyPaid=0,customerInvUnPaid=0,totalCustomerInv=0;
+List<dynamic> invT=[];
 
 
  bool isLoad=false;
