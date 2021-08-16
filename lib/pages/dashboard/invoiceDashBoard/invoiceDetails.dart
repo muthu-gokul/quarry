@@ -27,7 +27,10 @@ import 'package:quarry/widgets/staticColumnScroll/customDataTable.dart';
 class InvoiceDetails extends StatefulWidget {
   String title;
   List<dynamic> list;
-  InvoiceDetails({required this.title,required this.list});
+  String date;
+  Color textColor;
+  Color statusColor;
+  InvoiceDetails({required this.title,required this.list,required this.date,required this.textColor,required this.statusColor});
   @override
   _InvoiceDetailsState createState() => _InvoiceDetailsState();
 }
@@ -123,22 +126,14 @@ class _InvoiceDetailsState extends State<InvoiceDetails> {
                                             ),
                                             SizedBox(height: 5,),
                                             Text("$value",style: TextStyle(fontFamily: 'RB',fontSize: 20,color: Color(0xFFE8D24C),letterSpacing: 0.1),),
-                                            /*FittedBox(
-                                                fit: BoxFit.contain,
-                                                child: Text(" ₹ ${formatCurrency.format(value)}",
-                                                  style:TextStyle(fontFamily: 'RR',fontSize: 16,color: AppTheme.yellowColor),)
-                                            ),*/
-
                                           ],
                                         ),
                                       )
-                                  )
+                                    )
                                   ).values.toList()
-
                               ),
                             )
                         )
-
                       ],
                     )
                 ),
@@ -183,9 +178,83 @@ class _InvoiceDetailsState extends State<InvoiceDetails> {
                                     height: 20,
                                    // color: Colors.green,
                                     child: Text("${widget.list[i]['CustomerName']??""}",style: TextStyle(fontFamily: 'RM',fontSize: 14,color: Color(0xFF6B727D)),overflow: TextOverflow.ellipsis,),
+                                  ),
+                                  Container(
+                                    width: width*0.45,
+                                    height: 18,
+                                    child: Row(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        Icon(Icons.calendar_today_outlined,size: 10,color: Color(0xFFB4B4CD)),
+                                        FittedText(
+                                          text: " ${widget.date}",
+                                          textStyle: TextStyle(color: Color(0xFFB4B4CD),fontFamily: 'RR',fontSize: 10),
+                                          alignment: Alignment.centerLeft,
+                                          width: (width*0.45)-10,
+                                          height: 14,
+                                        )
+                                      ],
+                                    )
                                   )
                                 ],
-                              )
+                              ),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    width: width*0.18,
+                                    height: 18,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(3),
+                                      color: widget.statusColor,
+                                    ),
+                                    alignment: Alignment.center,
+                                    child: Text("${widget.list[i]['Bill']} Bills",
+                                      style: TextStyle(fontFamily: 'RB',fontSize: 10,color: widget.textColor),
+                                      ),
+                                  ),
+                                  SizedBox(height: 5,),
+                                  FittedText(
+                                    text: "${formatCurrency.format(widget.list[i]['GrandTotalAmount'])}",
+                                    textStyle: TextStyle(color: Color(0xFFB4B4CD),fontFamily: 'RM',fontSize: 11),
+                                    alignment: Alignment.centerLeft,
+                                    width: (width*0.28),
+                                    height: 16,
+                                  )
+                                ],
+                              ),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    width: width*0.22,
+                                    height: 20,
+                                    child: FittedText(
+                                      text: "Payment Status",
+                                      textStyle: TextStyle(fontFamily: 'RM',fontSize: 10,color: Color(0xFF6B727D)),
+                                      alignment: Alignment.centerLeft,
+                                      width: (width*0.28),
+                                      height: 16,
+                                    )
+                                  ),
+
+                                  Container(
+                                      width: width*0.22,
+                                      height: 18,
+                                      child: FittedText(
+                                        text: "${widget.list[i]['Status']}",
+                                        textStyle: TextStyle(fontFamily: 'RM',fontSize: 10,color:  widget.textColor),
+                                        alignment: Alignment.center,
+                                        width: (width*0.28),
+                                        height: 16,
+                                      )
+                                  ),
+
+                                ],
+                              ),
+                              Spacer(),
+                              Icon(Icons.arrow_forward_ios_rounded,size: 10,color: Colors.grey[500]!,)
                             ],
                           ),
                         );
