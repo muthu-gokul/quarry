@@ -176,7 +176,8 @@ class DashboardNotifier extends ChangeNotifier{
             customerInvPaid=0;customerInvPartiallyPaid=0;customerInvUnPaid=0;
             invT=parsed['Table'] as List;
             customerInvListT2=parsed['Table2'] as List;
-
+            var t1=parsed['Table1'] as List;
+            customerInvCounterT1=t1[0];
             customerInvPaid=invT[0]['InvoiceCount'];
             customerInvPartiallyPaid=invT[1]['InvoiceCount'];
             customerInvUnPaid=invT[2]['InvoiceCount'];
@@ -275,6 +276,7 @@ Map totalDiesel={};
 int customerInvPaid=0,customerInvPartiallyPaid=0,customerInvUnPaid=0,totalCustomerInv=0;
 double customerInvPaidPer=0.0,customerInvPartiallyPaidPer=0.0,customerInvUnPaidPer=0.0,totalCustomerInvPer=0.0;
 List<dynamic> invT=[];
+Map customerInvCounterT1={};
 List<dynamic> customerInvListT2=[];
 
 

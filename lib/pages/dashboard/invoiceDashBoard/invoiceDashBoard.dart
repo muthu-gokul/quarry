@@ -39,7 +39,7 @@ class _InvoiceDashBoardState extends State<InvoiceDashBoard> {
   void initState() {
     Provider.of<DashboardNotifier>(context,listen: false).DashBoardDbHit(context,
         "Invoice",
-        DateFormat("yyyy-MM-dd").format(DateTime.now().subtract(Duration(days: 6))).toString(),
+        DateFormat("yyyy-MM-dd").format(DateTime.now()).toString(),
         DateFormat("yyyy-MM-dd").format(DateTime.now()).toString()
     );
 
@@ -77,203 +77,210 @@ class _InvoiceDashBoardState extends State<InvoiceDashBoard> {
   @override
   Widget build(BuildContext context) {
     tabWidth=SizeConfig.screenWidth!-40;
-    return Scaffold(
-      backgroundColor: AppTheme.yellowColor,
-      bottomNavigationBar: Container(
-        width: SizeConfig.screenWidth,
-        height: 65,
-        decoration: BoxDecoration(
-            color: AppTheme.gridbodyBgColor,
-            boxShadow: [
-              BoxShadow(
+    return Stack(
+      children: [
+        Scaffold(
+          backgroundColor: AppTheme.yellowColor,
+          bottomNavigationBar: Container(
+            width: SizeConfig.screenWidth,
+            height: 65,
+            decoration: BoxDecoration(
                 color: AppTheme.gridbodyBgColor,
-                spreadRadius: 2,
-                blurRadius: 15,
-                offset: Offset(0, -10), // changes position of shadow
-              )
-            ]
-        ),
-        child: Stack(
-
-          children: [
-            Container(
-              margin:EdgeInsets.only(top: 0),
-              child: CustomPaint(
-                size: Size( SizeConfig.screenWidth!, 65),
-                painter: RPSCustomPainter3(),
-              ),
+                boxShadow: [
+                  BoxShadow(
+                    color: AppTheme.gridbodyBgColor,
+                    spreadRadius: 2,
+                    blurRadius: 15,
+                    offset: Offset(0, -10), // changes position of shadow
+                  )
+                ]
             ),
-            Container(
-              width:  SizeConfig.screenWidth,
-              height: 65,
-              child: Row(
-                children: [
+            child: Stack(
 
-                ],
-              ),
+              children: [
+                Container(
+                  margin:EdgeInsets.only(top: 0),
+                  child: CustomPaint(
+                    size: Size( SizeConfig.screenWidth!, 65),
+                    painter: RPSCustomPainter3(),
+                  ),
+                ),
+                Container(
+                  width:  SizeConfig.screenWidth,
+                  height: 65,
+                  child: Row(
+                    children: [
+
+                    ],
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
-      ),
-      body: Consumer<DashboardNotifier>(
-        builder:(ctx,db,c)=> Stack(
-          children: [
-            NestedScrollView(
-              controller: silverController,
-              headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-                return <Widget>[
-                  SliverAppBar(
-                    elevation: 0,
-                    toolbarHeight: 50,
-                    backgroundColor: AppTheme.yellowColor,
+          ),
+          body: Consumer<DashboardNotifier>(
+            builder:(ctx,db,c)=> Stack(
+              children: [
+                NestedScrollView(
+                  controller: silverController,
+                  headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+                    return <Widget>[
+                      SliverAppBar(
+                        elevation: 0,
+                        toolbarHeight: 50,
+                        backgroundColor: AppTheme.yellowColor,
 
-                    leading: Container(),
-                    actions: [
-                      Container(
-                        height: 50,
-                        width:SizeConfig.screenWidth,
-                        child: Row(
-                          children: [
-                            CancelButton(
-                              ontap: (){
-                                Navigator.pop(context);
-                              },
+                        leading: Container(),
+                        actions: [
+                          Container(
+                            height: 50,
+                            width:SizeConfig.screenWidth,
+                            child: Row(
+                              children: [
+                                CancelButton(
+                                  ontap: (){
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                                Text("Invoice",style: TextStyle(fontFamily: 'RM',color: AppTheme.bgColor,fontSize: 16,letterSpacing: 0.2)),
+                                Spacer(),
+                                GestureDetector(
+                                    onTap: () async{
+
+                                      final List<DateTime?>?  picked1 = await DateRagePicker.showDatePicker(
+                                          context: context,
+                                          initialFirstDate: new DateTime.now(),
+                                          initialLastDate: (new DateTime.now()),
+                                          firstDate: db.dateTime,
+                                          lastDate: (new DateTime.now())
+                                      );
+                                      if (picked1 != null && picked1.length == 2) {
+                                        setState(() {
+                                          picked=picked1;
+                                        });
+                                        db.DashBoardDbHit(context,
+                                            "Invoice",
+                                            DateFormat("yyyy-MM-dd").format(picked[0]!).toString(),
+                                            DateFormat("yyyy-MM-dd").format(picked[1]!).toString()
+                                        );
+                                      }
+                                      else if(picked1!=null && picked1.length ==1){
+                                        setState(() {
+                                          picked=picked1;
+                                        });
+                                        db.DashBoardDbHit(context,
+                                            "Invoice",
+                                            DateFormat("yyyy-MM-dd").format(picked[0]!).toString(),
+                                            DateFormat("yyyy-MM-dd").format(picked[0]!).toString()
+                                        );
+                                      }
+
+                                    },
+                                    child: SvgPicture.asset("assets/svg/calender.svg",width: 27,height: 27,color: AppTheme.bgColor,)),
+                                SizedBox(width: 20,)
+                              ],
                             ),
-                            Text("Invoice",style: TextStyle(fontFamily: 'RM',color: AppTheme.bgColor,fontSize: 16,letterSpacing: 0.2)),
-                            Spacer(),
-                            GestureDetector(
-                                onTap: () async{
-
-                                  final List<DateTime?>?  picked1 = await DateRagePicker.showDatePicker(
-                                      context: context,
-                                      initialFirstDate: new DateTime.now(),
-                                      initialLastDate: (new DateTime.now()),
-                                      firstDate: db.dateTime,
-                                      lastDate: (new DateTime.now())
-                                  );
-                                  if (picked1 != null && picked1.length == 2) {
-                                    setState(() {
-                                      picked=picked1;
-                                    });
-                                    db.DashBoardDbHit(context,
-                                        "Invoice",
-                                        DateFormat("yyyy-MM-dd").format(picked[0]!).toString(),
-                                        DateFormat("yyyy-MM-dd").format(picked[1]!).toString()
-                                    );
-                                  }
-                                  else if(picked1!=null && picked1.length ==1){
-                                    setState(() {
-                                      picked=picked1;
-                                    });
-                                    db.DashBoardDbHit(context,
-                                        "Invoice",
-                                        DateFormat("yyyy-MM-dd").format(picked[0]!).toString(),
-                                        DateFormat("yyyy-MM-dd").format(picked[0]!).toString()
-                                    );
-                                  }
-
-                                },
-                                child: SvgPicture.asset("assets/svg/calender.svg",width: 27,height: 27,color: AppTheme.bgColor,)),
-                            SizedBox(width: 20,)
-                          ],
+                          ),
+                        ],
+                        expandedHeight: 200.0,
+                        floating: false,
+                        pinned: true,
+                        flexibleSpace: FlexibleSpaceBar(
+                            background: Container(
+                              color: Color(0XFF353535),
+                              width: SizeConfig.screenWidth,
+                              // margin:EdgeInsets.only(top: 55),
+                              child:Image.asset("assets/images/saleFormheader.jpg",fit: BoxFit.cover,),
+                            )
                         ),
                       ),
-                    ],
-                    expandedHeight: 200.0,
-                    floating: false,
-                    pinned: true,
-                    flexibleSpace: FlexibleSpaceBar(
-                        background: Container(
-                          color: Color(0XFF353535),
+                    ];
+                  },
+                  body: Container(
+                    width: SizeConfig.screenWidth,
+                    height: SizeConfig.screenHeight,
+                    clipBehavior: Clip.antiAlias,
+                    margin: EdgeInsets.only(top: silverBodyTopMargin),
+                    // padding: EdgeInsets.only(top: 30,bottom: 30),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10)),
+                      color: Color(0xFFF6F7F9),
+                    ),
+                    child: PageView(
+                      children: [
+                          Container(
+                            width: SizeConfig.screenWidth,
+                            height: SizeConfig.screenHeight,
+                            color: Colors.transparent,
+                            child: SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  SizedBox(height: 20,),
+                                  Text("${db.totalCustomerInv}",style: TextStyle(fontFamily: 'RM',fontSize: 28,color: Color(0xFF525D73)),),
+                                  Container(
+                                    height: 40,
+                                    width: 200,
+                                    margin: EdgeInsets.only(top: 10),
+                                    decoration:BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(50),
+                                        border: Border.all(color: Color(0xFFd7d7d7))
+                                    ),
+                                    alignment: Alignment.center,
+                                    padding: EdgeInsets.only(left: 10,right: 10),
+                                    child: Text(picked.length==1?"${DateFormat("dd/MM/yyyy").format(picked[0]!)}":
+                                    picked.length==2?"${DateFormat("dd/MM/yyyy").format(picked[0]!)} - ${DateFormat("dd/MM/yyyy").format(picked[1]!)}":"Today",
+                                      style: TextStyle(color:AppTheme.yellowColor,fontFamily: 'RM',fontSize: 14),
+                                    ),
+                                  ),
+                                  Container(
+                                    height: 300,
+                                    color: Colors.transparent,
+                                    child: HighCharts(
+                                      data: db.highPiedonut,
+                                      isHighChart: true,
+                                      isHighChartExtraParam: true,
+                                      isLoad: db.isCustomerInvLoad,
+                                    ),
+                                  ),
+
+                                  InvoiceList(value: db.customerInvPaidPer, totalInvoice: db.customerInvPaid, title: "Paid",ontap: (){
+                                    Navigator.push(context, MaterialPageRoute(builder: (ctx)=>InvoiceDetails(title: "Customer Paid Invoice",
+                                    list: db.customerInvListT2.where((element) => element['Status']=='Paid').toList(),
+                                    )));
+                                  },),
+                                  InvoiceList(value: db.customerInvUnPaidPer, totalInvoice: db.customerInvUnPaid, title: "Unpaid",ontap: (){
+
+                                  },),
+                                  InvoiceList(value: db.customerInvPartiallyPaidPer, totalInvoice: db.customerInvPartiallyPaid, title: "Partially",ontap: (){
+
+                                  },),
+                                ],
+                              ),
+                            ),
+                          ),
+
+                        Container(
                           width: SizeConfig.screenWidth,
-                          // margin:EdgeInsets.only(top: 55),
-                          child:Image.asset("assets/images/saleFormheader.jpg",fit: BoxFit.cover,),
-                        )
+                          height: SizeConfig.screenHeight,
+                          color: Colors.blue,
+                        ),
+                      ],
                     ),
                   ),
-                ];
-              },
-              body: Container(
-                width: SizeConfig.screenWidth,
-                height: SizeConfig.screenHeight,
-                clipBehavior: Clip.antiAlias,
-                margin: EdgeInsets.only(top: silverBodyTopMargin),
-                // padding: EdgeInsets.only(top: 30,bottom: 30),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10)),
-                  color: Color(0xFFF6F7F9),
                 ),
-                child: PageView(
-                  children: [
-                      Container(
-                        width: SizeConfig.screenWidth,
-                        height: SizeConfig.screenHeight,
-                        color: Colors.transparent,
-                        child: SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              SizedBox(height: 20,),
-                              Text("${db.totalCustomerInv}",style: TextStyle(fontFamily: 'RM',fontSize: 28,color: Color(0xFF525D73)),),
-                              Container(
-                                height: 40,
-                                width: 200,
-                                margin: EdgeInsets.only(top: 10),
-                                decoration:BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(50),
-                                    border: Border.all(color: Color(0xFFd7d7d7))
-                                ),
-                                alignment: Alignment.center,
-                                padding: EdgeInsets.only(left: 10,right: 10),
-                                child: Text(picked.length==1?"${DateFormat("dd/MM/yyyy").format(picked[0]!)}":
-                                picked.length==2?"${DateFormat("dd/MM/yyyy").format(picked[0]!)} - ${DateFormat("dd/MM/yyyy").format(picked[1]!)}":"Today",
-                                  style: TextStyle(color:AppTheme.yellowColor,fontFamily: 'RM',fontSize: 14),
-                                ),
-                              ),
-                              Container(
-                                height: 300,
-                                color: Colors.transparent,
-                                child: HighCharts(
-                                  data: db.highPiedonut,
-                                  isHighChart: true,
-                                  isHighChartExtraParam: true,
-                                  isLoad: db.isCustomerInvLoad,
-                                ),
-                              ),
 
-                              InvoiceList(value: db.customerInvPaidPer, totalInvoice: db.customerInvPaid, title: "Paid",ontap: (){
-                                Navigator.push(context, MaterialPageRoute(builder: (ctx)=>InvoiceDetails(title: "Customer Paid Invoice",
-                                list: db.customerInvListT2.where((element) => element['Status']=='Paid').toList(),
-                                )));
-                              },),
-                              InvoiceList(value: db.customerInvUnPaidPer, totalInvoice: db.customerInvUnPaid, title: "Unpaid",ontap: (){
 
-                              },),
-                              InvoiceList(value: db.customerInvPartiallyPaidPer, totalInvoice: db.customerInvPartiallyPaid, title: "Partially",ontap: (){
 
-                              },),
-                            ],
-                          ),
-                        ),
-                      ),
-
-                    Container(
-                      width: SizeConfig.screenWidth,
-                      height: SizeConfig.screenHeight,
-                      color: Colors.blue,
-                    ),
-                  ],
-                ),
-              ),
+              ],
             ),
-
-
-            Loader(
-              isLoad: db.isLoad,
-            )
-          ],
+          ),
         ),
-      ),
+        Consumer<DashboardNotifier>(
+          builder:(ctx,db,i)=> Loader(
+            isLoad: db.isLoad,
+          ),
+        )
+      ],
     );
   }
 

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:ffi';
 
 import 'package:flutter/cupertino.dart';
@@ -420,6 +421,7 @@ double? totalAmount=0.0;
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
         if(value!=null){
+          log(value);
           if(filterUsersPlantList.isEmpty){
 
             Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.forEach((element) {

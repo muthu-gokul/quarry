@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/model/manageUsersModel/manageUsersPlantModel.dart';
+import 'package:quarry/notifier/dashboardNotifier.dart';
 import 'package:quarry/notifier/profileNotifier.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/pages/sale/salePlantList.dart';
@@ -16,6 +17,7 @@ import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/bottomBarAddButton.dart';
 import 'package:quarry/widgets/dateRangePicker.dart' as DateRagePicker;
+import 'package:quarry/widgets/fittedText.dart';
 import 'package:quarry/widgets/navigationBarIcon.dart';
 import 'package:quarry/widgets/reportpdf.dart';
 import 'package:quarry/widgets/staticColumnScroll/customDataTable.dart';
@@ -43,7 +45,7 @@ class _InvoiceDetailsState extends State<InvoiceDetails> {
             statusBarColor: Colors.black
         ),
         child: SafeArea(
-          child: Consumer<QuarryNotifier>(
+          child: Consumer<DashboardNotifier>(
             builder: (context,qn,child)=>  Stack(
               children: [
                 Opacity(
@@ -95,14 +97,42 @@ class _InvoiceDetailsState extends State<InvoiceDetails> {
                               child: Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: qn.saleCounterList.asMap().
-                                  map((key, value) => MapEntry(key,  SaleReportHeader(
-                                    title: value.title,
-                                    value: value.value,
-                                    qty: value.qty,
-                                    unit: value.unit,
+                                  children: qn.customerInvCounterT1.
+                                  map((key, value) => MapEntry(key,
+                                      Container(
+                                        height: 80,
+                                        width: SizeConfig.screenWidth!*0.33,
+                                        margin: EdgeInsets.only(right: SizeConfig.width10!),
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(15),
+                                            color: AppTheme.bgColor
+                                        ),
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                            Padding(
+                                              padding: EdgeInsets.only(left: 5,right: 5),
+                                              child: FittedText(
+                                                text: key,
+                                                height: 16,
+                                                width: SizeConfig.screenWidth!*0.33,
+                                                alignment: Alignment.center,
+                                                textStyle: TextStyle(fontFamily: 'RR',fontSize: 16,color: Colors.white,letterSpacing: 0.1),
+                                              ),
+                                            ),
+                                            SizedBox(height: 5,),
+                                            Text("$value",style: TextStyle(fontFamily: 'RB',fontSize: 20,color: Color(0xFFE8D24C),letterSpacing: 0.1),),
+                                            /*FittedBox(
+                                                fit: BoxFit.contain,
+                                                child: Text(" ₹ ${formatCurrency.format(value)}",
+                                                  style:TextStyle(fontFamily: 'RR',fontSize: 16,color: AppTheme.yellowColor),)
+                                            ),*/
 
-                                  ),)
+                                          ],
+                                        ),
+                                      )
+                                  )
                                   ).values.toList()
 
                               ),
@@ -132,7 +162,7 @@ class _InvoiceDetailsState extends State<InvoiceDetails> {
                           height: 80,
                           margin: EdgeInsets.only(left: 20,right: 20),
                           decoration: BoxDecoration(
-                            border: Border(bottom: BorderSide(color: Colors.grey))
+                            border: Border(bottom: BorderSide(color: Colors.grey[300]!))
                           ),
                           child: Row(
                             children: [
@@ -164,7 +194,22 @@ class _InvoiceDetailsState extends State<InvoiceDetails> {
                 ),
 
 
+                widget.list.isEmpty?Container(
+                  width: SizeConfig.screenWidth,
+                  margin: EdgeInsets.only(top: 150),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                    //  SizedBox(height: 70,),
 
+                      SvgPicture.asset("assets/nodata.svg",height: 350,),
+                      SizedBox(height: 20,),
+                      Text("No Data Found",style: TextStyle(fontSize: 18,fontFamily:'RMI',color: AppTheme.addNewTextFieldText),),
+
+                    ],
+                  ),
+                ):Container()
 
               ],
             ),
