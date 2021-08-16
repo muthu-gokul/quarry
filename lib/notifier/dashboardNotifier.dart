@@ -175,17 +175,19 @@ class DashboardNotifier extends ChangeNotifier{
           else if(typeName=='Invoice'){
             customerInvPaid=0;customerInvPartiallyPaid=0;customerInvUnPaid=0;
             invT=parsed['Table'] as List;
+            customerInvListT2=parsed['Table2'] as List;
+
             customerInvPaid=invT[0]['InvoiceCount'];
             customerInvPartiallyPaid=invT[1]['InvoiceCount'];
             customerInvUnPaid=invT[2]['InvoiceCount'];
             totalCustomerInv=customerInvPaid+customerInvPartiallyPaid+customerInvUnPaid;
-            print(customerInvPaid/totalCustomerInv);
-            print(customerInvPartiallyPaid/totalCustomerInv);
-            print(customerInvUnPaid/totalCustomerInv);
-            print(invT[0]['InvoiceCount']);
-            print(invT[1]['InvoiceCount']);
-            print(invT[2]['InvoiceCount']);
+
+            customerInvPaidPer=(customerInvPaid/totalCustomerInv)*100;
+            customerInvPartiallyPaidPer=(customerInvPartiallyPaid/totalCustomerInv)*100;
+            customerInvUnPaidPer=(customerInvUnPaid/totalCustomerInv)*100;
+
             updateisLoad(false);
+            getCustomerInvoice();
           }
           else{
             updateisLoad(false);
@@ -271,7 +273,74 @@ Map totalDiesel={};
 
 //Invoice Dashboard
 int customerInvPaid=0,customerInvPartiallyPaid=0,customerInvUnPaid=0,totalCustomerInv=0;
+double customerInvPaidPer=0.0,customerInvPartiallyPaidPer=0.0,customerInvUnPaidPer=0.0,totalCustomerInvPer=0.0;
 List<dynamic> invT=[];
+List<dynamic> customerInvListT2=[];
+
+
+  String highPiedonut="";
+  getCustomerInvoice(){
+    highPiedonut='''
+      Highcharts.setOptions({
+     colors: ['#FDD002', '#88E0B0', '#FF5872',]
+    });
+    Highcharts.chart('chart', {
+        chart: {
+        height:300,
+        type: 'pie',
+        options3d: {
+            enabled: true,
+            alpha: 55,
+            beta: 0
+        },
+        backgroundColor:'#F6F7F9',
+    },
+    title: {
+        text: ''
+    },
+    accessibility: {
+        point: {
+            valueSuffix: '%'
+        }
+    },
+    tooltip: {
+        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+    },
+    plotOptions: {
+        pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            depth: 35,
+            dataLabels: {
+                enabled: true,
+                format: '{point.name}'
+            }
+        }
+    },
+    series: [{
+        type: 'pie',
+        name: 'Income',
+        data: [
+            ['Partially', $customerInvPartiallyPaidPer],
+            ['Paid', $customerInvPaidPer],
+            ['UnPaid', $customerInvUnPaidPer]
+        ]
+    }]
+});
+  ''';
+    updateisCustomerInvLoad(true);
+    Timer(Duration(milliseconds: 500), (){
+      updateisCustomerInvLoad(false);
+    });
+  }
+
+  bool isCustomerInvLoad=false;
+  updateisCustomerInvLoad(bool value){
+    isCustomerInvLoad=value;
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+      notifyListeners();
+    });
+  }
 
 
  bool isLoad=false;
@@ -280,7 +349,6 @@ List<dynamic> invT=[];
    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
      notifyListeners();
    });
-
  }
  bool isChartLoad=false;
  updateisChartLoad(bool value){

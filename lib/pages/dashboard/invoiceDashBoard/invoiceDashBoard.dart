@@ -7,6 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/notifier/dashboardNotifier.dart';
+import 'package:quarry/pages/dashboard/invoiceDashBoard/invoiceDetails.dart';
 import 'package:quarry/pages/dashboard/saleDashBoard/salesDashBoard.dart';
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
@@ -71,56 +72,7 @@ class _InvoiceDashBoardState extends State<InvoiceDashBoard> {
   double position=5;
 
 
-  static const highPiedonut='''
-      Highcharts.setOptions({
-     colors: ['#FDD002', '#88E0B0', '#FF5872',]
-    });
-    Highcharts.chart('chart', {
-        chart: {
-        
-        height:300,
-        
-        type: 'pie',
-        options3d: {
-            enabled: true,
-            alpha: 55,
-            beta: 0
-        },
-        backgroundColor:'#F6F7F9',
-    },
-    title: {
-        text: ''
-    },
-    accessibility: {
-        point: {
-            valueSuffix: '%'
-        }
-    },
-    tooltip: {
-        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-    },
-    plotOptions: {
-        pie: {
-            allowPointSelect: true,
-            cursor: 'pointer',
-            depth: 35,
-            dataLabels: {
-                enabled: true,
-                format: '{point.name}'
-            }
-        }
-    },
-    series: [{
-        type: 'pie',
-        name: 'Income',
-        data: [
-            ['Partially', 10],
-            ['Paid', 65],
-            ['UnPaid', 25]
-        ]
-    }]
-});
-  ''';
+
 
   @override
   Widget build(BuildContext context) {
@@ -257,101 +209,51 @@ class _InvoiceDashBoardState extends State<InvoiceDashBoard> {
                         width: SizeConfig.screenWidth,
                         height: SizeConfig.screenHeight,
                         color: Colors.transparent,
-                        child: Column(
-                          children: [
-                            SizedBox(height: 20,),
-                            Text(formatCurrency.format(3424),style: TextStyle(fontFamily: 'RM',fontSize: 28,color: Color(0xFF525D73)),),
-                            Container(
-                              height: 40,
-                              width: 200,
-                              margin: EdgeInsets.only(top: 10),
-                              decoration:BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(50),
-                                  border: Border.all(color: Color(0xFFd7d7d7))
-                              ),
-                              alignment: Alignment.center,
-                              padding: EdgeInsets.only(left: 10,right: 10),
-                              child: Text(picked.length==1?"${DateFormat("dd/MM/yyyy").format(picked[0]!)}":
-                              picked.length==2?"${DateFormat("dd/MM/yyyy").format(picked[0]!)} - ${DateFormat("dd/MM/yyyy").format(picked[1]!)}":"Today",
-                                style: TextStyle(color:AppTheme.yellowColor,fontFamily: 'RM',fontSize: 14),
-                              ),
-                            ),
-                            Container(
-                              height: 300,
-                              color: Colors.transparent,
-                              child: HighCharts(
-                                data: highPiedonut,
-                                isHighChart: true,
-                                isHighChartExtraParam: true,
-                                isLoad: false,
-                              ),
-                            ),
-                            Row(
-                              children: [
-                                SizedBox(width: 40,),
-                                Container(
-                                  height:60,
-                                  margin: EdgeInsets.only(bottom: 5),
-                                  clipBehavior: Clip.antiAlias,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Colors.transparent
-                                  ),
-                                  //  color: i==0?Colors.red:Colors.transparent,
-                                  child: CircleProgressBar(
-                                    extraStrokeWidth: -0.9,
-                                    backgroundColor: Color(0xFFd7d7d7),
-                                    foregroundColor: Color(0xFFAFAFAF),
-                                    value: 0.6,
-                                    center: Container(
-                                        height: 50,
-                                        width: 50,
-                                        margin: EdgeInsets.all(5),
-                                        alignment: Alignment.center,
-                                        decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            color: Colors.white,
-                                            boxShadow: [
-
-                                            ]
-                                        ),
-                                        child: Text("65%",textAlign: TextAlign.center,style: TextStyle(color: Color(0xFF7D7D7D),fontFamily: 'RB'),)),
-                                  ),
-                                ),
-                                SizedBox(width: 10,),
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                  Text("Paid Invoice",textAlign: TextAlign.center,style: TextStyle(color: Color(0xFF525D73),fontFamily: 'RB'),),
-                                  SizedBox(height: 3,),
-                                  Text("245 invoice",textAlign: TextAlign.center,style: TextStyle(color: Color(0xFF7D7D7D).withOpacity(0.8),fontFamily: 'RR',fontSize: 11),),
-                                  ],
-                                ),
-                                Spacer(),
-                                Container(
-                                  height: 25,
-                                  width: 80,
-                                  decoration: BoxDecoration(
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              SizedBox(height: 20,),
+                              Text("${db.totalCustomerInv}",style: TextStyle(fontFamily: 'RM',fontSize: 28,color: Color(0xFF525D73)),),
+                              Container(
+                                height: 40,
+                                width: 200,
+                                margin: EdgeInsets.only(top: 10),
+                                decoration:BoxDecoration(
+                                    color: Colors.white,
                                     borderRadius: BorderRadius.circular(50),
-                                    color: Color(0xFFAEAEAE),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Color(0xFFAEAEAE).withOpacity(0.4),
-                                        spreadRadius: 2,
-                                        blurRadius: 5,
-                                        offset: Offset(5, 5), // changes position of shadow
-                                      )
-                                    ]
-                                  ),
-                                  alignment: Alignment.center,
-                                  child: Text("View all",style: TextStyle(color: Colors.white,fontFamily: 'RM',fontSize: 10),),
+                                    border: Border.all(color: Color(0xFFd7d7d7))
                                 ),
-                                SizedBox(width: 20,)
-                              ],
-                            ),
-                          ],
+                                alignment: Alignment.center,
+                                padding: EdgeInsets.only(left: 10,right: 10),
+                                child: Text(picked.length==1?"${DateFormat("dd/MM/yyyy").format(picked[0]!)}":
+                                picked.length==2?"${DateFormat("dd/MM/yyyy").format(picked[0]!)} - ${DateFormat("dd/MM/yyyy").format(picked[1]!)}":"Today",
+                                  style: TextStyle(color:AppTheme.yellowColor,fontFamily: 'RM',fontSize: 14),
+                                ),
+                              ),
+                              Container(
+                                height: 300,
+                                color: Colors.transparent,
+                                child: HighCharts(
+                                  data: db.highPiedonut,
+                                  isHighChart: true,
+                                  isHighChartExtraParam: true,
+                                  isLoad: db.isCustomerInvLoad,
+                                ),
+                              ),
+
+                              InvoiceList(value: db.customerInvPaidPer, totalInvoice: db.customerInvPaid, title: "Paid",ontap: (){
+                                Navigator.push(context, MaterialPageRoute(builder: (ctx)=>InvoiceDetails(title: "Customer Paid Invoice",
+                                list: db.customerInvListT2.where((element) => element['Status']=='Paid').toList(),
+                                )));
+                              },),
+                              InvoiceList(value: db.customerInvUnPaidPer, totalInvoice: db.customerInvUnPaid, title: "Unpaid",ontap: (){
+
+                              },),
+                              InvoiceList(value: db.customerInvPartiallyPaidPer, totalInvoice: db.customerInvPartiallyPaid, title: "Partially",ontap: (){
+
+                              },),
+                            ],
+                          ),
                         ),
                       ),
 
@@ -415,3 +317,87 @@ class _InvoiceDashBoardState extends State<InvoiceDashBoard> {
   }
 
 }
+
+
+class InvoiceList extends StatelessWidget {
+  double value;
+  int totalInvoice;
+  String title;
+  VoidCallback ontap;
+  InvoiceList({required this.value,required this.totalInvoice,required this.title,required this.ontap});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 20),
+      child: Row(
+        children: [
+          SizedBox(width: 40,),
+          Container(
+            height:60,
+            margin: EdgeInsets.only(bottom: 5),
+            clipBehavior: Clip.antiAlias,
+            decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.transparent
+            ),
+            //  color: i==0?Colors.red:Colors.transparent,
+            child: CircleProgressBar(
+              extraStrokeWidth: -0.9,
+              backgroundColor: Color(0xFFd7d7d7),
+              foregroundColor: Color(0xFFAFAFAF),
+              value: value/100,
+              center: Container(
+                  height: 50,
+                  width: 50,
+                  margin: EdgeInsets.all(5),
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.white,
+                      boxShadow: [
+
+                      ]
+                  ),
+                  child: Text("${value.toStringAsFixed(1)}%",textAlign: TextAlign.center,style: TextStyle(color: Color(0xFF7D7D7D),fontFamily: 'RB'),)),
+            ),
+          ),
+          SizedBox(width: 10,),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text("$title Invoice",textAlign: TextAlign.center,style: TextStyle(color: Color(0xFF525D73),fontFamily: 'RB'),),
+              SizedBox(height: 3,),
+              Text("$totalInvoice invoice",textAlign: TextAlign.center,style: TextStyle(color: Color(0xFF7D7D7D).withOpacity(0.8),fontFamily: 'RR',fontSize: 11),),
+            ],
+          ),
+          Spacer(),
+          GestureDetector(
+            onTap: ontap,
+            child: Container(
+              height: 25,
+              width: 80,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(50),
+                  color: Color(0xFFAEAEAE),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Color(0xFFAEAEAE).withOpacity(0.4),
+                      spreadRadius: 2,
+                      blurRadius: 5,
+                      offset: Offset(5, 5), // changes position of shadow
+                    )
+                  ]
+              ),
+              alignment: Alignment.center,
+              child: Text("View all",style: TextStyle(color: Colors.white,fontFamily: 'RM',fontSize: 10),),
+            ),
+          ),
+          SizedBox(width: 20,)
+        ],
+      ),
+    );
+  }
+}
+
