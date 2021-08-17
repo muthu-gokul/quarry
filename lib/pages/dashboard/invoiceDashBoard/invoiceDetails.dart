@@ -32,7 +32,10 @@ class InvoiceDetails extends StatefulWidget {
   String date;
   Color textColor;
   Color statusColor;
-  InvoiceDetails({required this.title,required this.list,required this.date,required this.textColor,required this.statusColor});
+  Map counter;
+  String name;
+  InvoiceDetails({required this.title,required this.list,required this.date,required this.textColor,
+    required this.statusColor,required this.counter,required this.name});
   @override
   _InvoiceDetailsState createState() => _InvoiceDetailsState();
 }
@@ -102,7 +105,7 @@ class _InvoiceDetailsState extends State<InvoiceDetails> {
                               child: Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: qn.customerInvCounterT1.
+                                  children: widget.counter.
                                   map((key, value) => MapEntry(key,
                                       Container(
                                         height: 80,
@@ -158,7 +161,7 @@ class _InvoiceDetailsState extends State<InvoiceDetails> {
                         return GestureDetector(
                           onTap: (){
                             Navigator.push(context, MaterialPageRoute(builder: (ctx)=>InvoiceCustomerBillDetails(
-                              title: "${widget.list[i]['CustomerName']??"UnKnown"}",
+                              title: "${widget.list[i]['${widget.name}']??"UnKnown"}",
                               list: widget.list[i]['bills'],
                               filterList: widget.list[i]['bills'],
                               textColor: Color(0xFFF1AC42),
@@ -203,7 +206,9 @@ class _InvoiceDetailsState extends State<InvoiceDetails> {
                                       width: width*0.45,
                                       height: 20,
                                      // color: Colors.green,
-                                      child: Text("${widget.list[i]['CustomerName']??"UnKnown"}",style: TextStyle(fontFamily: 'RM',fontSize: 14,color: Color(0xFF6B727D)),overflow: TextOverflow.ellipsis,),
+                                      child: Text("${widget.list[i]['${widget.name}']??"UnKnown"}",
+                                        style: TextStyle(fontFamily: 'RM',fontSize: 14,color: Color(0xFF6B727D)
+                                        ),overflow: TextOverflow.ellipsis,),
                                     ),
                                     Container(
                                       width: width*0.45,

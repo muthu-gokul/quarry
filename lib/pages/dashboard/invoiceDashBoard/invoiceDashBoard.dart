@@ -71,7 +71,8 @@ class _InvoiceDashBoardState extends State<InvoiceDashBoard> {
   double? tabWidth;
   double position=5;
 
-
+  PageController pageController=new PageController(initialPage: 0);
+  int page=0;
 
 
   @override
@@ -109,8 +110,39 @@ class _InvoiceDashBoardState extends State<InvoiceDashBoard> {
                   width:  SizeConfig.screenWidth,
                   height: 65,
                   child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-
+                      GestureDetector(
+                        onTap:(){
+                          setState(() {
+                            page=0;
+                          });
+                          pageController.animateToPage(page, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+                        },
+                        child: Container(
+                          width: SizeConfig.screenWidth!*0.3,
+                          height: 60,
+                          alignment: Alignment.center,
+                          color: Colors.transparent,
+                          child: Text("Customer",style: TextStyle(fontFamily: 'RM',color: page==0?AppTheme.bgColor:AppTheme.bgColor.withOpacity(0.5),fontSize: 16),),
+                        ),
+                      ),
+                      Spacer(),
+                      GestureDetector(
+                        onTap:(){
+                          setState(() {
+                            page=1;
+                          });
+                          pageController.animateToPage(page, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+                        },
+                        child: Container(
+                          width: SizeConfig.screenWidth!*0.3,
+                          height: 60,
+                          alignment: Alignment.center,
+                          color: Colors.transparent,
+                          child: Text("Supplier",style: TextStyle(fontFamily: 'RM',color: page==1?AppTheme.bgColor:AppTheme.bgColor.withOpacity(0.5),fontSize: 16),),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -206,6 +238,12 @@ class _InvoiceDashBoardState extends State<InvoiceDashBoard> {
                       color: Color(0xFFF6F7F9),
                     ),
                     child: PageView(
+                      controller: pageController,
+                      onPageChanged: (i){
+                        setState(() {
+                          page=i;
+                        });
+                      },
                       children: [
                           Container(
                             width: SizeConfig.screenWidth,
@@ -250,6 +288,8 @@ class _InvoiceDashBoardState extends State<InvoiceDashBoard> {
                                         picked.length==2?"${DateFormat("dd/MM/yyyy").format(picked[0]!)} - ${DateFormat("dd/MM/yyyy").format(picked[1]!)}":"Today",
                                         textColor: Color(0xFF78AD97),
                                         statusColor: Color(0xFFC6E7DB),
+                                        counter: db.customerInvCounterT1,
+                                        name: 'CustomerName',
                                       )
                                      )
                                     );
@@ -261,6 +301,8 @@ class _InvoiceDashBoardState extends State<InvoiceDashBoard> {
                                       picked.length==2?"${DateFormat("dd/MM/yyyy").format(picked[0]!)} - ${DateFormat("dd/MM/yyyy").format(picked[1]!)}":"Today",
                                       textColor: Color(0xFFC27573),
                                       statusColor: Color(0xFFEFC2C3),
+                                      counter: db.customerInvCounterT1,
+                                      name: 'CustomerName',
                                     )
                                     )
                                     );
@@ -272,6 +314,8 @@ class _InvoiceDashBoardState extends State<InvoiceDashBoard> {
                                       picked.length==2?"${DateFormat("dd/MM/yyyy").format(picked[0]!)} - ${DateFormat("dd/MM/yyyy").format(picked[1]!)}":"Today",
                                       textColor: Color(0xFFF1AC42),
                                       statusColor: Color(0xFFF6D148).withOpacity(0.5),
+                                      counter: db.customerInvCounterT1,
+                                      name: 'CustomerName',
                                     )
                                     )
                                     );
@@ -281,10 +325,85 @@ class _InvoiceDashBoardState extends State<InvoiceDashBoard> {
                             ),
                           ),
 
-                        Container(
+                          //Supplier
+                          Container(
                           width: SizeConfig.screenWidth,
                           height: SizeConfig.screenHeight,
-                          color: Colors.blue,
+                          color: Colors.transparent,
+                          child: SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                SizedBox(height: 20,),
+                                Text("${db.totalSupplierInv}",style: TextStyle(fontFamily: 'RM',fontSize: 28,color: Color(0xFF525D73)),),
+                                Container(
+                                  height: 40,
+                                  width: 200,
+                                  margin: EdgeInsets.only(top: 10),
+                                  decoration:BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(50),
+                                      border: Border.all(color: Color(0xFFd7d7d7))
+                                  ),
+                                  alignment: Alignment.center,
+                                  padding: EdgeInsets.only(left: 10,right: 10),
+                                  child: Text(picked.length==1?"${DateFormat("dd/MM/yyyy").format(picked[0]!)}":
+                                  picked.length==2?"${DateFormat("dd/MM/yyyy").format(picked[0]!)} - ${DateFormat("dd/MM/yyyy").format(picked[1]!)}":"Today",
+                                    style: TextStyle(color:AppTheme.yellowColor,fontFamily: 'RM',fontSize: 14),
+                                  ),
+                                ),
+                                Container(
+                                  height: 300,
+                                  color: Colors.transparent,
+                                  child: HighCharts(
+                                    data: db.highPiedonut2,
+                                    isHighChart: true,
+                                    isHighChartExtraParam: true,
+                                    isLoad: db.issupplierInvLoad,
+                                  ),
+                                ),
+
+                                InvoiceList(value: db.supplierInvPaidPer, totalInvoice: db.supplierInvPaid, title: "Paid",ontap: (){
+                                  Navigator.push(context, MaterialPageRoute(builder: (ctx)=>InvoiceDetails(title: "Supplier Paid Invoice",
+                                    list: db.supplierInvListT6.where((element) => element['Status']=='Paid').toList(),
+                                    date: picked.length==1?"${DateFormat("dd/MM/yyyy").format(picked[0]!)}":
+                                    picked.length==2?"${DateFormat("dd/MM/yyyy").format(picked[0]!)} - ${DateFormat("dd/MM/yyyy").format(picked[1]!)}":"Today",
+                                    textColor: Color(0xFF78AD97),
+                                    statusColor: Color(0xFFC6E7DB),
+                                    counter: db.supplierInvCounterT5,
+                                    name: 'SupplierName',
+                                  )
+                                  )
+                                  );
+                                },),
+                                InvoiceList(value: db.supplierInvUnPaidPer, totalInvoice: db.supplierInvUnPaid, title: "Unpaid",ontap: (){
+                                  Navigator.push(context, MaterialPageRoute(builder: (ctx)=>InvoiceDetails(title: "Supplier Unpaid Invoice",
+                                    list: db.supplierInvListT6.where((element) => element['Status']=='Unpaid').toList(),
+                                    date: picked.length==1?"${DateFormat("dd/MM/yyyy").format(picked[0]!)}":
+                                    picked.length==2?"${DateFormat("dd/MM/yyyy").format(picked[0]!)} - ${DateFormat("dd/MM/yyyy").format(picked[1]!)}":"Today",
+                                    textColor: Color(0xFFC27573),
+                                    statusColor: Color(0xFFEFC2C3),
+                                    counter: db.supplierInvCounterT5,
+                                    name: 'SupplierName',
+                                  )
+                                  )
+                                  );
+                                },),
+                                InvoiceList(value: db.supplierInvPartiallyPaidPer, totalInvoice: db.supplierInvPartiallyPaid, title: "Partially",ontap: (){
+                                  Navigator.push(context, MaterialPageRoute(builder: (ctx)=>InvoiceDetails(title: "Supplier Partially Paid Invoice",
+                                    list: db.supplierInvListT6.where((element) => element['Status']=='Partially Paid').toList(),
+                                    date: picked.length==1?"${DateFormat("dd/MM/yyyy").format(picked[0]!)}":
+                                    picked.length==2?"${DateFormat("dd/MM/yyyy").format(picked[0]!)} - ${DateFormat("dd/MM/yyyy").format(picked[1]!)}":"Today",
+                                    textColor: Color(0xFFF1AC42),
+                                    statusColor: Color(0xFFF6D148).withOpacity(0.5),
+                                    counter: db.supplierInvCounterT5,
+                                    name: 'SupplierName',
+                                  )
+                                  )
+                                  );
+                                },),
+                              ],
+                            ),
+                          ),
                         ),
                       ],
                     ),

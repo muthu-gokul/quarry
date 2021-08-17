@@ -176,7 +176,7 @@ class _InvoiceCustomerBillDetailsState extends State<InvoiceCustomerBillDetails>
                     ),
                     child: RawScrollbar(
                       controller: scrollController,
-                      isAlwaysShown: true,
+                   //   isAlwaysShown: true,
                       radius: Radius.circular(5),
                       thickness: 5,
                       thumbColor: Colors.transparent,

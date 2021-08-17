@@ -183,9 +183,18 @@ class DashboardNotifier extends ChangeNotifier{
             customerInvUnPaid=invT[2]['InvoiceCount'];
             totalCustomerInv=customerInvPaid+customerInvPartiallyPaid+customerInvUnPaid;
 
-            customerInvPaidPer=(customerInvPaid/totalCustomerInv)*100;
-            customerInvPartiallyPaidPer=(customerInvPartiallyPaid/totalCustomerInv)*100;
-            customerInvUnPaidPer=(customerInvUnPaid/totalCustomerInv)*100;
+            if(totalCustomerInv==0){
+              customerInvPaidPer=0.0;
+              customerInvPartiallyPaidPer=0.0;
+              customerInvUnPaidPer=0.0;
+
+            }
+            else{
+              customerInvPaidPer=(customerInvPaid/totalCustomerInv)*100;
+              customerInvPartiallyPaidPer=(customerInvPartiallyPaid/totalCustomerInv)*100;
+              customerInvUnPaidPer=(customerInvUnPaid/totalCustomerInv)*100;
+            }
+
 
             var t3=parsed['Table3'] as List;
             customerInvListT2.forEach((element) {
@@ -193,8 +202,38 @@ class DashboardNotifier extends ChangeNotifier{
               element['bills']=t3.where((ele) => ele['CustomerId']==element['CustomerId']).toList();
             });
 
+            //Supplier
+            var t4=parsed['Table4'] as List;
+            supplierInvPaid=t4[0]['InvoiceCount'];
+            supplierInvPartiallyPaid=t4[1]['InvoiceCount'];
+            supplierInvUnPaid=t4[2]['InvoiceCount'];
+            totalSupplierInv=supplierInvPaid+supplierInvPartiallyPaid+supplierInvUnPaid;
+
+            if(totalSupplierInv==0){
+              supplierInvPaidPer=0.0;
+              supplierInvPartiallyPaidPer=0.0;
+              supplierInvUnPaidPer=0.0;
+            }
+            else{
+              supplierInvPaidPer=(supplierInvPaid/totalSupplierInv)*100;
+              supplierInvPartiallyPaidPer=(supplierInvPartiallyPaid/totalSupplierInv)*100;
+              supplierInvUnPaidPer=(supplierInvUnPaid/totalSupplierInv)*100;
+            }
+
+
+            var t5=parsed['Table5'] as List;
+            supplierInvCounterT5=t5[0];
+
+            supplierInvListT6=parsed['Table6'] as List;
+            var t7=parsed['Table7'] as List;
+            supplierInvListT6.forEach((element) {
+              element['bills']=[];
+              element['bills']=t7.where((ele) => ele['SupplierId']==element['SupplierId']).toList();
+            });
+
             updateisLoad(false);
             getCustomerInvoice();
+            getSupplierInvoice();
           }
           else{
             updateisLoad(false);
@@ -285,7 +324,6 @@ List<dynamic> invT=[];
 Map customerInvCounterT1={};
 List<dynamic> customerInvListT2=[];
 
-
   String highPiedonut="";
   getCustomerInvoice(){
     highPiedonut='''
@@ -339,6 +377,77 @@ List<dynamic> customerInvListT2=[];
     updateisCustomerInvLoad(true);
     Timer(Duration(milliseconds: 500), (){
       updateisCustomerInvLoad(false);
+    });
+  }
+
+//Supplier Invoice
+  int supplierInvPaid=0,supplierInvPartiallyPaid=0,supplierInvUnPaid=0,totalSupplierInv=0;
+  double supplierInvPaidPer=0.0,supplierInvPartiallyPaidPer=0.0,supplierInvUnPaidPer=0.0,totalSupplierInvPer=0.0;
+  Map supplierInvCounterT5={};
+  List<dynamic> supplierInvListT6=[];
+  String highPiedonut2="";
+  getSupplierInvoice(){
+    highPiedonut2='''
+      Highcharts.setOptions({
+     colors: ['#FDD002', '#88E0B0', '#FF5872',]
+    });
+    Highcharts.chart('chart', {
+        chart: {
+        height:300,
+        type: 'pie',
+        options3d: {
+            enabled: true,
+            alpha: 55,
+            beta: 0
+        },
+        backgroundColor:'#F6F7F9',
+    },
+    title: {
+        text: ''
+    },
+    accessibility: {
+        point: {
+            valueSuffix: '%'
+        }
+    },
+    tooltip: {
+        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+    },
+    plotOptions: {
+        pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            depth: 35,
+            dataLabels: {
+                enabled: true,
+                format: '{point.name}'
+            }
+        }
+    },
+    series: [{
+        type: 'pie',
+        name: 'Income',
+        data: [
+            ['Partially', $supplierInvPartiallyPaidPer],
+            ['Paid', $supplierInvPaidPer],
+            ['UnPaid', $supplierInvUnPaidPer]
+        ]
+    }]
+});
+  ''';
+    updateissupplierInvLoad(true);
+    Timer(Duration(milliseconds: 500), (){
+      updateissupplierInvLoad(false);
+    });
+  }
+
+
+
+  bool issupplierInvLoad=false;
+  updateissupplierInvLoad(bool value){
+    issupplierInvLoad=value;
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+      notifyListeners();
     });
   }
 
