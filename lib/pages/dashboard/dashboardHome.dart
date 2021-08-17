@@ -23,6 +23,7 @@ import 'package:quarry/widgets/navigationBarIcon.dart';
 import 'package:quarry/widgets/dateRangePicker.dart' as DateRagePicker;
 import 'package:syncfusion_flutter_charts/charts.dart';
 
+import 'customerSupplier/cusSupDashBoard.dart';
 import 'dieselDashBoard/dieselDashBoard.dart';
 
 class DashBoardHome extends StatefulWidget {
@@ -441,7 +442,7 @@ class _DashBoardHomeState extends State<DashBoardHome> {
                           Navigator.push(context, MaterialPageRoute(builder: (context)=>CounterDashBoard()));
                         }
                         else if(i==5){
-                     //     Navigator.push(context, MaterialPageRoute(builder: (context)=>CounterDashBoard()));
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>CusSupDashBoard()));
                         }
                         else if(i==6){
                           Navigator.push(context, MaterialPageRoute(builder: (context)=>DieselDashBoard()));

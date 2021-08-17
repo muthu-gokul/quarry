@@ -151,7 +151,8 @@ class ManageUsersGridState extends State<ManageUsersGrid> with TickerProviderSta
                                           });
                                         }
                                       }
-                                     } as bool Function(ScrollNotification)?,
+                                      return true;
+                                     } ,
                             child: ListView(
                               controller: listViewController,
                               scrollDirection: Axis.vertical,
@@ -180,7 +181,6 @@ class ManageUsersGridState extends State<ManageUsersGrid> with TickerProviderSta
                                               mun.updateisEdit(true);
                                               Navigator.push(context, _createRoute());
                                               mun.UserDropDownValues(context);
-
 
                                             },
                                             child: Container(
