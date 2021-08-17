@@ -125,13 +125,15 @@ class _InvoiceCustomerBillDetailsState extends State<InvoiceCustomerBillDetails>
                                             }
                                           });
                                         },
-                                        child: Container(
+                                        child: AnimatedContainer(
+                                          duration: Duration(milliseconds: 300),
+                                          curve: Curves.easeIn,
                                           height: 80,
                                           width: SizeConfig.screenWidth!*0.33,
                                           margin: EdgeInsets.only(right: SizeConfig.width10!),
                                           decoration: BoxDecoration(
                                               borderRadius: BorderRadius.circular(15),
-                                              color:selKey==key? AppTheme.bgColor.withOpacity(0.8): AppTheme.bgColor
+                                              color:selKey==key? Color(0xFF121212): AppTheme.bgColor
                                           ),
                                           child: Column(
                                             mainAxisAlignment: MainAxisAlignment.center,

@@ -37,6 +37,7 @@ class _SalesDashBoardState extends State<SalesDashBoard> {
 
   int selIndex=-1;
   List<dynamic> saleData=[];
+  late Future saleFuture;
   getData(){
     saleData=Provider.of<DashboardNotifier>(context,listen: false).saleData;
     return Future.value(saleData);
@@ -44,11 +45,13 @@ class _SalesDashBoardState extends State<SalesDashBoard> {
 
   @override
   void initState() {
+    saleFuture=getData();
     Provider.of<DashboardNotifier>(context,listen: false).DashBoardDbHit(context,
         "Sale",
         DateFormat("yyyy-MM-dd").format(DateTime.now().subtract(Duration(days: 6))).toString(),
         DateFormat("yyyy-MM-dd").format(DateTime.now()).toString()
     ).then((value){
+      saleFuture=getData();
       /*Timer(Duration(milliseconds: 100),(){
         chartSeriesController?.animate();
       });*/
@@ -132,9 +135,7 @@ List<DateTime?> picked=[];
                                       DateFormat("yyyy-MM-dd").format(picked[0]!).toString(),
                                       DateFormat("yyyy-MM-dd").format(picked[1]!).toString()
                                   ).then((value){
-                                   /* Timer(Duration(milliseconds: 100),(){
-                                      chartSeriesController?.animate();
-                                    });*/
+                                      saleFuture=getData();
                                   });
                                 }
                                 else if(picked1!=null && picked1.length ==1){
@@ -148,9 +149,7 @@ List<DateTime?> picked=[];
                                       DateFormat("yyyy-MM-dd").format(picked[0]!).toString(),
                                       DateFormat("yyyy-MM-dd").format(picked[0]!).toString()
                                   ).then((value){
-                                  /*  Timer(Duration(milliseconds: 100),(){
-                                      chartSeriesController?.animate();
-                                    });*/
+                                    saleFuture=getData();
                                   });
                                 }
                              },
@@ -169,7 +168,7 @@ List<DateTime?> picked=[];
                           width: SizeConfig.screenWidth,
                           margin:EdgeInsets.only(top: 55),
                           child: FutureBuilder<dynamic>(
-                            future: getData(),
+                            future: saleFuture,
                             builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                               if( snapshot.connectionState == ConnectionState.waiting){
                                 return Container();
