@@ -12,6 +12,7 @@ import 'package:quarry/pages/dashboard/invoiceDashBoard/invoiceDashBoard.dart';
 import 'package:quarry/pages/dashboard/productionDashBoard/productionDashBoard.dart';
 import 'package:quarry/pages/dashboard/purchaseDashBoard/purchaseDashBoard.dart';
 import 'package:quarry/pages/dashboard/saleDashBoard/salesDashBoard.dart';
+import 'package:quarry/pages/dashboard/stockDashBoard/stockDashBoard.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/constants.dart';
 import 'package:quarry/styles/size.dart';
@@ -22,8 +23,6 @@ import 'package:quarry/widgets/loader.dart';
 import 'package:quarry/widgets/navigationBarIcon.dart';
 import 'package:quarry/widgets/dateRangePicker.dart' as DateRagePicker;
 import 'package:syncfusion_flutter_charts/charts.dart';
-
-import 'customerSupplier/cusSupDashBoard.dart';
 import 'dieselDashBoard/dieselDashBoard.dart';
 
 class DashBoardHome extends StatefulWidget {
@@ -391,13 +390,13 @@ class _DashBoardHomeState extends State<DashBoardHome> {
                           Navigator.push(context, MaterialPageRoute(builder: (context)=>CounterDashBoard()));
                         }
                         else if(i==5){
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=>CusSupDashBoard()));
-                        }
-                        else if(i==6){
                           Navigator.push(context, MaterialPageRoute(builder: (context)=>DieselDashBoard()));
                         }
-                        else if(i==7){
+                        else if(i==6){
                           Navigator.push(context, MaterialPageRoute(builder: (context)=>InvoiceDashBoard()));
+                        }
+                        else if(i==7){
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>StockDashBoard()));
                         }
                       },
                       child: Container(

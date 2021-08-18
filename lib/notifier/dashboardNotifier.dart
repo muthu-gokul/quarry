@@ -24,7 +24,6 @@ class DashboardNotifier extends ChangeNotifier{
   MenuModel(title:"Production",image: "assets/svg/drawer/production.svg"),
   MenuModel(title:"Attendance",image: "assets/svg/drawer/employee/employeeAttendance.svg"),
   MenuModel(title:"Counters",image: "assets/svg/drawer/settings/customer.svg"),
-  MenuModel(title:"Customer & Supplier",image: "assets/svg/drawer/settings/supplier.svg"),
   MenuModel(title:"Diesel Management",image: "assets/svg/drawer/diesel-mangement.svg"),
   MenuModel(title:"Invoice",image: "assets/svg/drawer/invoice.svg"),
   MenuModel(title:"Stock",image: "assets/svg/drawer/sales-form.svg")
@@ -82,6 +81,7 @@ class DashboardNotifier extends ChangeNotifier{
     ParameterModel(Key: "TypeName", Type: "String", Value:typeName),
     ParameterModel(Key: "database", Type: "String", Value:Provider.of<QuarryNotifier>(context,listen: false).DataBaseName),
   ];
+  print(json.encode(parameters.map((e) => e.toJson()).toList()));
   var body={
     "Fields": parameters.map((e) => e.toJson()).toList()
   };
@@ -235,8 +235,9 @@ class DashboardNotifier extends ChangeNotifier{
             getCustomerInvoice();
             getSupplierInvoice();
           }
-          else if(typeName=='Customer&Supplier'){
-            totalAmountCS=parsed['Table'][0]['TotalAmount'];
+          else if(typeName=='Stock'){
+            stockT=parsed['Table'][0];
+            stockT1=parsed['Table1'] as List;
             updateisLoad(false);
           }
           else{
@@ -447,9 +448,9 @@ List<dynamic> customerInvListT2=[];
 
 
 
-//Customer & Supplier (CS)
-double totalAmountCS=0.0;
-
+//Stock
+Map stockT={};
+List<dynamic> stockT1=[];
 
 
   bool issupplierInvLoad=false;

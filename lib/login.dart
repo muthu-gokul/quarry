@@ -193,7 +193,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
             body: json.encode(body)
         ).then((value) async {
           var parsed = json.decode(value.body);
-          print(parsed);
+          print(value.body);
 
 
           if (parsed["Table"] != null) {

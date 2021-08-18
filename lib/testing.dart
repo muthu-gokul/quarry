@@ -56,6 +56,8 @@ class _MyHomePageState extends State<MyHomePage>
 
 
 import 'dart:async';
+import 'dart:convert';
+import 'dart:developer';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -78,7 +80,7 @@ class _SpState extends State<Sp> {
     print("GDFGDFG");
     super.didUpdateWidget(oldWidget);
   }
-
+var map={};
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -172,14 +174,62 @@ class _SpState extends State<Sp> {
               setState(() {
                 load=true;
               });
-              final  response = await http.post(
-                  Uri.parse("https://quarrydemoapi.herokuapp.com/api/users/login"),
-                  body: {"username":"raja@gmail.com","password":"Login@123"}
-              );
-              setState(() {
-                load=false;
-              });
-              print(response.body);
+              try{
+                var body = {
+                  "Fields": [
+                    {
+                      "Key": "SpName",
+                      "Type": "String",
+                      "Value": "USP_UserSignInDetail"
+                    },
+                    {
+                      "Key": "UserName",
+                      "Type": "String",
+                      "Value": "rhynosand@gmail.com"
+                    },
+                    {
+                      "Key": "Password",
+                      "Type": "String",
+                      "Value": "QMS@123"
+                    },
+                    {
+                      "Key": "database",
+                      "Type": "String",
+                      "Value": "TetroPOS_TestQMS" //live
+                      // "Value": "TetroPos_QMSLocal"
+                      // "Value": "TetroPos_QMSTest1"
+                    },
+
+                  ]
+                };
+              /*  var body = {
+                  "Fields":  [
+                    {"Key":"SpName","Type":"String","Value":"USP_DSB_GetTabDashBoard"},
+                    {"Key":"LoginUserId","Type":"int","Value":1},
+                    {"Key":"FromDate","Type":"String","Value":"2021-08-12"},
+                    {"Key":"ToDate","Type":"String","Value":"2021-08-18"},
+                    {"Key":"TypeName","Type":"String","Value":"Sale"},
+                    {"Key":"database","Type":"String","Value":"TetroPOS_TestQMS"}
+                    ]
+                };*/
+           //     print(json.encode(body));
+                final  response = await http.post(
+                    Uri.parse("http://10.0.2.2:8080/api/users/login"),
+                    headers: {"Content-Type": "application/json"},
+                    body: json.encode(body)
+                   // body: {"userna":"raja@gmail.com","password":"Login@123"}
+                );
+                log(response.body);
+                setState(() {
+                  load=false;
+                });
+              }catch(e){
+                setState(() {
+                  load=false;
+                });
+              }
+
+
             //  Navigator.push(context, MaterialPageRoute(builder: (context)=>Page2()));
             }),
           ],
