@@ -97,6 +97,7 @@ static BoxShadow yellowShadow=  BoxShadow(
   static const Color dashCalendar=Color(0xFFCDCDCD);
   static const Color attendanceDashText1=Color(0xFF949494);
   static const Color spikeColor=Color(0xFFD1E7E7);
+  static const Color yAxisText=Color(0xFFB38C1E);
 
   static TextStyle saleChartTotal=TextStyle(fontFamily: 'RM',fontSize: 12,color: Color(0xffadadad),letterSpacing: 0.1);
   static TextStyle saleChartQty=TextStyle(fontFamily: 'RM',fontSize: 12,color: Color(0xFF6a6a6a),letterSpacing: 0.1);

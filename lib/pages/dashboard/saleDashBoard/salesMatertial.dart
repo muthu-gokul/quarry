@@ -213,7 +213,7 @@ class _SalesMaterialState extends State<SalesMaterial> {
                                             interval: 1,
                                             majorGridLines: const MajorGridLines(width: 0),
                                             axisLine:const AxisLine(width: 1),
-                                            edgeLabelPlacement: EdgeLabelPlacement.shift,
+                                            edgeLabelPlacement: EdgeLabelPlacement.none,
                                             labelPlacement:saleData.length==1?LabelPlacement.betweenTicks: LabelPlacement.onTicks
                                         ),
                                         primaryYAxis: NumericAxis(
@@ -222,7 +222,7 @@ class _SalesMaterialState extends State<SalesMaterial> {
                                           axisLine: const AxisLine(width: 0),
                                           majorTickLines: const MajorTickLines(size: 0),
                                           majorGridLines: const MajorGridLines(width: 0),
-                                          //    minorGridLines: const MinorGridLines(width: 1,color: Colors.white),
+                                          labelStyle: TextStyle(color: AppTheme.yAxisText)
                                         ),
                                         series:[
                                           SplineAreaSeries<dynamic, String>(

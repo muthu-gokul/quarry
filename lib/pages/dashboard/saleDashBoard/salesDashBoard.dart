@@ -211,7 +211,7 @@ List<DateTime?> picked=[];
                                             majorGridLines: const MajorGridLines(width: 0),
                                             //  minorGridLines: const MinorGridLines(width: 1,color: Colors.white),
                                             axisLine:const AxisLine(width: 1),
-                                            edgeLabelPlacement: EdgeLabelPlacement.shift,
+                                            edgeLabelPlacement: EdgeLabelPlacement.none,
                                             labelPlacement:saleData.length==1?LabelPlacement.betweenTicks: LabelPlacement.onTicks
                                         ),
                                         primaryYAxis: NumericAxis(
@@ -219,7 +219,7 @@ List<DateTime?> picked=[];
                                           axisLine: const AxisLine(width: 0),
                                           majorTickLines: const MajorTickLines(size: 0),
                                           majorGridLines: const MajorGridLines(width: 0),
-                                          //    minorGridLines: const MinorGridLines(width: 1,color: Colors.white),
+                                          labelStyle: TextStyle(color: AppTheme.yAxisText)
                                         ),
                                         series:[
                                           SplineAreaSeries<dynamic, String>(
@@ -328,7 +328,15 @@ List<DateTime?> picked=[];
                                 width: 40,
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
-                                  color: AppTheme.yellowColor
+                                  color: AppTheme.yellowColor,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: AppTheme.yellowColor.withOpacity(0.4),
+                                      spreadRadius: 1,
+                                      blurRadius: 5,
+                                      offset: Offset(0, 6), // changes position of shadow
+                                    )
+                                  ]
                                 ),
                                 alignment: Alignment.center,
                                 child: Image.asset("assets/bottomIcons/add-material.png",height: 25,),

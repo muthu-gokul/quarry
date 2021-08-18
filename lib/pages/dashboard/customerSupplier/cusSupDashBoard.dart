@@ -39,7 +39,7 @@ class _CusSupDashBoardState extends State<CusSupDashBoard> {
   @override
   void initState() {
     Provider.of<DashboardNotifier>(context,listen: false).DashBoardDbHit(context,
-        "Invoice",
+        "Customer&Supplier",
         DateFormat("yyyy-MM-dd").format(DateTime.now()).toString(),
         DateFormat("yyyy-MM-dd").format(DateTime.now()).toString()
     );
@@ -174,7 +174,9 @@ class _CusSupDashBoardState extends State<CusSupDashBoard> {
                                     Navigator.pop(context);
                                   },
                                 ),
-                                Text("Invoice",style: TextStyle(fontFamily: 'RM',color: AppTheme.bgColor,fontSize: 16,letterSpacing: 0.2)),
+                                Text(page==0?"Customer Sales":"Supplier Sales",
+                                    style: TextStyle(fontFamily: 'RM',color: AppTheme.bgColor,fontSize: 16,letterSpacing: 0.2)
+                                ),
                                 Spacer(),
                                 GestureDetector(
                                     onTap: () async{
@@ -191,7 +193,7 @@ class _CusSupDashBoardState extends State<CusSupDashBoard> {
                                           picked=picked1;
                                         });
                                         db.DashBoardDbHit(context,
-                                            "Invoice",
+                                            "Customer&Supplier",
                                             DateFormat("yyyy-MM-dd").format(picked[0]!).toString(),
                                             DateFormat("yyyy-MM-dd").format(picked[1]!).toString()
                                         );
@@ -201,7 +203,7 @@ class _CusSupDashBoardState extends State<CusSupDashBoard> {
                                           picked=picked1;
                                         });
                                         db.DashBoardDbHit(context,
-                                            "Invoice",
+                                            "Customer&Supplier",
                                             DateFormat("yyyy-MM-dd").format(picked[0]!).toString(),
                                             DateFormat("yyyy-MM-dd").format(picked[0]!).toString()
                                         );
@@ -254,7 +256,7 @@ class _CusSupDashBoardState extends State<CusSupDashBoard> {
                             child: Column(
                               children: [
                                 SizedBox(height: 20,),
-                                Text("${db.totalCustomerInv}",style: TextStyle(fontFamily: 'RM',fontSize: 28,color: Color(0xFF525D73)),),
+                                Text("${db.totalAmountCS}",style: TextStyle(fontFamily: 'RM',fontSize: 28,color: Color(0xFF525D73)),),
                                 Container(
                                   height: 40,
                                   width: 200,
@@ -273,13 +275,8 @@ class _CusSupDashBoardState extends State<CusSupDashBoard> {
                                 ),
                                 Container(
                                   height: 300,
-                                  color: Colors.transparent,
-                                  child: HighCharts(
-                                    data: db.highPiedonut,
-                                    isHighChart: true,
-                                    isHighChartExtraParam: true,
-                                    isLoad: db.isCustomerInvLoad,
-                                  ),
+                                  color: Colors.white,
+
                                 ),
 
                                 InvoiceList(value: db.customerInvPaidPer, totalInvoice: db.customerInvPaid, title: "Paid",ontap: (){

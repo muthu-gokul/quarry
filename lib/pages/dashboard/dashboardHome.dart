@@ -303,14 +303,16 @@ class _DashBoardHomeState extends State<DashBoardHome> {
                                             majorGridLines: const MajorGridLines(width: 0),
                                             //  minorGridLines: const MinorGridLines(width: 1,color: Colors.white),
                                             axisLine:const AxisLine(width: 1),
-                                            edgeLabelPlacement: EdgeLabelPlacement.shift,
-                                            labelPlacement:snapshot.data==1?LabelPlacement.betweenTicks: LabelPlacement.onTicks
+                                            edgeLabelPlacement: EdgeLabelPlacement.none,
+                                            labelPlacement:snapshot.data==1?LabelPlacement.betweenTicks: LabelPlacement.onTicks,
+
                                         ),
                                         primaryYAxis: NumericAxis(
                                           numberFormat: NumberFormat.currency(locale: 'HI',name: "",decimalDigits: 1),
                                           axisLine: const AxisLine(width: 0),
                                           majorTickLines: const MajorTickLines(size: 0),
                                           majorGridLines: const MajorGridLines(width: 0),
+                                          labelStyle: TextStyle(color: AppTheme.yAxisText)
                                           //    minorGridLines: const MinorGridLines(width: 1,color: Colors.white),
                                         ),
                                         series:[
@@ -344,59 +346,6 @@ class _DashBoardHomeState extends State<DashBoardHome> {
                               }
                             },
                           ),
-
-                          /*child: SfCartesianChart(
-                            legend: Legend(isVisible: false, opacity: 0.7),
-                            title: ChartTitle(text: ''),
-                            plotAreaBorderWidth: 0,
-                            primaryXAxis: CategoryAxis(
-                                interval: 1,
-                                majorGridLines: const MajorGridLines(width: 0),
-                              //  minorGridLines: const MinorGridLines(width: 1,color: Colors.white),
-                                axisLine:const AxisLine(width: 1),
-                                edgeLabelPlacement: EdgeLabelPlacement.shift
-                            ),
-                            primaryYAxis: NumericAxis(
-                              labelFormat: '{value}',
-                              axisLine: const AxisLine(width: 0),
-                              majorTickLines: const MajorTickLines(size: 0),
-                              majorGridLines: const MajorGridLines(width: 0),
-                          //    minorGridLines: const MinorGridLines(width: 1,color: Colors.white),
-                            ),
-                            series:[
-                              SplineAreaSeries<dynamic, String>(
-                                animationDuration:2000,
-                                onRendererCreated: (ChartSeriesController c){
-                                  chartSeriesController=c;
-                                },
-                                dataSource: currentSaleData,
-                                borderColor: Color(0xFFFEBF10),
-                                borderWidth: 3,
-                                gradient: LinearGradient(
-                                  colors: [Color(0xFF343434),Color(0xFFFEBF10).withOpacity(0.5)],
-                                  begin: Alignment.bottomCenter,
-                                  end: Alignment.topCenter,
-                                //  stops: [0,30]
-                                ),
-                                name: 'Sales',
-                                xValueMapper: (dynamic sales, _) =>DateFormat("MMMd").format(DateTime.parse(sales['Date'])),
-                                yValueMapper: (dynamic sales, _) => sales['TotalSale'],
-                              ),
-                            ],
-                            tooltipBehavior: TooltipBehavior(
-                                enable: true,
-                                duration: 10000,
-                                format: "point.x : point.y",
-
-                            ),
-                          ),*/
-
-
-                        /*  child: HighCharts(
-                            data: db.currentSalesApex,
-                            isHighChart: false,
-                            isLoad: db.isChartLoad,
-                          ),*/
                         )
                     ),
                   ),

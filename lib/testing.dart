@@ -56,7 +56,7 @@ class _MyHomePageState extends State<MyHomePage>
 
 
 import 'dart:async';
-
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -71,6 +71,7 @@ class Sp extends StatefulWidget {
 class _SpState extends State<Sp> {
   List<dynamic> currentSaleData=[];
   ChartSeriesController? chartSeriesController;
+  bool load=false;
 
   @override
   void didUpdateWidget(covariant Sp oldWidget) {
@@ -92,6 +93,7 @@ class _SpState extends State<Sp> {
                 title: ChartTitle(text: ''),
                 plotAreaBorderWidth: 0,
                 primaryXAxis: CategoryAxis(
+
                     interval: 1,
                     majorGridLines: const MajorGridLines(width: 0),
                     axisLine:const AxisLine(width: 1),
@@ -110,29 +112,36 @@ class _SpState extends State<Sp> {
                     onRendererCreated: (ChartSeriesController c){
                       chartSeriesController=c;
                     },
-                    gradient: LinearGradient(
+                    color: Color(0xFFEFC24A),
+                    width: 0.06,
+                    spacing: 0.4,
+                    borderRadius: BorderRadius.only(topLeft: Radius.circular(15),topRight: Radius.circular(15)),
+                      dataSource: currentSaleData,
+                    name: 'Stock',
+                    xValueMapper: (dynamic sales, _) =>DateFormat("MMMd").format(DateTime.parse(sales['Date'])),
+                    yValueMapper: (dynamic sales, _) => sales['TotalSale']-5,
+                  ),
+                  ColumnSeries<dynamic, String>(
+                    animationDuration:2000,
+                    onRendererCreated: (ChartSeriesController c){
+                      chartSeriesController=c;
+                    },
+                    color: Color(0xFF949393),
+                    width: 0.06,
+                    spacing: 0.4,
+                    borderRadius: BorderRadius.only(topLeft: Radius.circular(15),topRight: Radius.circular(15)),
+                   /* gradient: LinearGradient(
                       colors: [Color(0xFFD7D7D7),Color(0xFFFAFAFA)],
                       begin: Alignment.bottomCenter,
                       end: Alignment.topCenter,
                       stops: [0.25,0.75]
-                    ),
+                    ),*/
                       dataSource: currentSaleData,
                     name: 'Sales',
                     xValueMapper: (dynamic sales, _) =>DateFormat("MMMd").format(DateTime.parse(sales['Date'])),
                     yValueMapper: (dynamic sales, _) => sales['TotalSale'],
                   ),
-                  SplineSeries<dynamic, String>(
-                    animationDuration:2000,
-                    onRendererCreated: (ChartSeriesController c){
-                      chartSeriesController=c;
-                    },
-                    color:  Color(0xFFFEBF10),
 
-                    dataSource: currentSaleData,
-                    name: 'Sales',
-                    xValueMapper: (dynamic sales, _) =>DateFormat("MMMd").format(DateTime.parse(sales['Date'])),
-                    yValueMapper: (dynamic sales, _) => sales['TotalSale'],
-                  ),
                 ],
                 tooltipBehavior: TooltipBehavior(
                   enable: true,
@@ -159,8 +168,19 @@ class _SpState extends State<Sp> {
                 currentSaleData.clear();
               });
             }),
-            RaisedButton(onPressed: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>Page2()));
+            load?CircularProgressIndicator():RaisedButton(onPressed: () async {
+              setState(() {
+                load=true;
+              });
+              final  response = await http.post(
+                  Uri.parse("https://quarrydemoapi.herokuapp.com/api/users/login"),
+                  body: {"username":"raja@gmail.com","password":"Login@123"}
+              );
+              setState(() {
+                load=false;
+              });
+              print(response.body);
+            //  Navigator.push(context, MaterialPageRoute(builder: (context)=>Page2()));
             }),
           ],
         ),

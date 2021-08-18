@@ -235,6 +235,10 @@ class DashboardNotifier extends ChangeNotifier{
             getCustomerInvoice();
             getSupplierInvoice();
           }
+          else if(typeName=='Customer&Supplier'){
+            totalAmountCS=parsed['Table'][0]['TotalAmount'];
+            updateisLoad(false);
+          }
           else{
             updateisLoad(false);
           }
@@ -440,6 +444,11 @@ List<dynamic> customerInvListT2=[];
       updateissupplierInvLoad(false);
     });
   }
+
+
+
+//Customer & Supplier (CS)
+double totalAmountCS=0.0;
 
 
 
