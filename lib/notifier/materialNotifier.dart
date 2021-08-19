@@ -114,70 +114,6 @@ class MaterialNotifier extends ChangeNotifier{
     var body = {
       "Fields": parameters.map((e) => e.toJson()).toList()
     };
-   /* var body={
-      "Fields": [
-        {
-          "Key": "SpName",
-          "Type": "String",
-          "Value": isMaterialEdit?"${Sp.updateMaterialDetail}":"${Sp.insertMaterialDetail}"
-        },
-        {
-          "Key": "LoginUserId",
-          "Type": "int",
-          "Value": Provider.of<QuarryNotifier>(context,listen: false).UserId
-        },
-        {
-          "Key": "MaterialName",
-          "Type": "String",
-          "Value": materialName.text
-        },
-        {
-          "Key": "materialId",
-          "Type": "int",
-          "Value": materialIdEdit
-        },
-        {
-          "Key": "MaterialCategoryId",
-          "Type": "int",
-          "Value": selectedMatCategoryId
-        },
-        {
-          "Key": "MaterialUnitId",
-          "Type": "int",
-          "Value": selectedUnitId
-        },
-        {
-          "Key": "MaterialDescription",
-          "Type": "String",
-          "Value": materialDescription.text
-        },
-        {
-          "Key": "MaterialCode",
-          "Type": "String",
-          "Value": materialCode.text
-        },
-        {
-          "Key": "MaterialUnitPrice",
-          "Type": "String",
-          "Value": materialPrice.text
-        },
-        {
-          "Key": "MaterialHSNCode",
-          "Type": "String",
-          "Value": materialHSNcode.text
-        },
-        {
-          "Key": "TaxValue",
-          "Type": "String",
-          "Value": materialGst.text
-        },
-        {
-          "Key": "database",
-          "Type": "String",
-          "Value": Provider.of<QuarryNotifier>(context,listen: false).DataBaseName
-        }
-      ]
-    };*/
 
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
@@ -188,8 +124,11 @@ class MaterialNotifier extends ChangeNotifier{
           clearForm();
           GetMaterialDbHit(context, null);
         }
+        else{
+          updatematerialLoader(false);
+        }
 
-        updatematerialLoader(false);
+
       });
     }catch(e){
       updatematerialLoader(false);
@@ -206,7 +145,7 @@ class MaterialNotifier extends ChangeNotifier{
 
 
   GetMaterialDbHit(BuildContext context,int? materialId)  async{
-    print(materialId);
+
     updatematerialLoader(true);
 
     parameters=[

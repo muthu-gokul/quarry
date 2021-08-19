@@ -146,6 +146,7 @@ class VehicleDetailAddNewState extends State<VehicleDetailAddNew> with TickerPro
                                   onEditComplete: (){
                                     node.unfocus();
                                   },
+                                  onChange: (v){},
                                   ontap: (){
                                     scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                   },
@@ -158,6 +159,7 @@ class VehicleDetailAddNewState extends State<VehicleDetailAddNew> with TickerPro
                                   onEditComplete: (){
                                     node.unfocus();
                                   },
+                                  onChange: (v){},
                                   ontap: (){
                                     scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                   },
@@ -193,6 +195,7 @@ class VehicleDetailAddNewState extends State<VehicleDetailAddNew> with TickerPro
                                   ontap: (){
                                     scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                   },
+                                  onChange: (v){},
                                   onEditComplete: (){
                                     node.unfocus();
                                   },
@@ -207,6 +210,7 @@ class VehicleDetailAddNewState extends State<VehicleDetailAddNew> with TickerPro
                                   ontap: (){
                                     scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                   },
+                                  onChange: (v){},
                                   onEditComplete: (){
                                     node.unfocus();
                                   },

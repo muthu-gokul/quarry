@@ -5,7 +5,9 @@ import 'package:provider/provider.dart';
 import 'package:quarry/api/ApiManager.dart';
 import 'package:quarry/api/sp.dart';
 import 'package:quarry/model/machineDetailsModel/machineGridModel.dart';
+import 'package:quarry/model/parameterMode.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
+import 'package:quarry/styles/constants.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 
 class MachineNotifier extends ChangeNotifier{
@@ -28,78 +30,40 @@ class MachineNotifier extends ChangeNotifier{
 
   InsertVehicleDbHit(BuildContext context)  async{
     updatemachineLoader(true);
-    var body={
-      "Fields": [
-        {
-          "Key": "SpName",
-          "Type": "String",
-          "Value": isMachineEdit?"${Sp.updateMachineDetail}" :"${Sp.insertMachineDetail}"
-        },
-        {
-          "Key": "LoginUserId",
-          "Type": "int",
-          "Value": Provider.of<QuarryNotifier>(context,listen: false).UserId
-        },
-
-        {
-          "Key": "MachineId",
-          "Type": "int",
-          "Value": editMachineId
-        },
-
-        {
-          "Key": "MachineName",
-          "Type": "String",
-          "Value": MachineName.text
-        },
-        {
-          "Key": "MachineType",
-          "Type": "int",
-          "Value": MachineType.text
-        },
-        {
-          "Key": "MachineModel",
-          "Type": "String",
-          "Value": MachineModel.text
-        },
-
-        {
-          "Key": "Capacity",
-          "Type": "String",
-          "Value":Capacity.text
-        },
-        {
-          "Key": "MotorPower",
-          "Type": "String",
-          "Value": MoterPower.text
-        },
-        {
-          "Key": "MachineSpecification",
-          "Type": "String",
-          "Value": MachineSpecification.text
-        },
-
-        {
-          "Key": "database",
-          "Type": "String",
-          "Value": Provider.of<QuarryNotifier>(context,listen: false).DataBaseName
-        }
-      ]
+    parameters=[
+      ParameterModel(Key: "SpName", Type: "String", Value: isMachineEdit?"${Sp.updateMachineDetail}" :"${Sp.insertMachineDetail}"),
+      ParameterModel(Key: "LoginUserId", Type: "int", Value: Provider.of<QuarryNotifier>(context,listen: false).UserId),
+      ParameterModel(Key: "MachineName", Type: "String", Value: MachineName.text),
+      ParameterModel(Key: "MachineType", Type: "String", Value: MachineType.text),
+      ParameterModel(Key: "MachineModel", Type: "String", Value: MachineModel.text),
+      ParameterModel(Key: "Capacity", Type: "String", Value: Capacity.text),
+      ParameterModel(Key: "MotorPower", Type: "String", Value: MoterPower.text),
+      ParameterModel(Key: "MachineSpecification", Type: "String", Value: MachineSpecification.text),
+      ParameterModel(Key: "database", Type: "String", Value:Provider.of<QuarryNotifier>(context,listen: false).DataBaseName),
+    ];
+    if(isMachineEdit){
+      parameters.insert(2, ParameterModel(Key: "MachineId", Type: "int", Value: editMachineId));
+    }
+    var body = {
+      "Fields": parameters.map((e) => e.toJson()).toList()
     };
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
 
-        if(value!=null){
+        if(value!="null"){
           var parsed=json.decode(value);
           print(parsed);
           clearMachineDetailForm();
           Navigator.pop(context);
           GetMachineDbHit(context,null);
         }
+        else{
+          updatemachineLoader(false);
+        }
 
 
 
-        updatemachineLoader(false);
+
       });
     }catch(e){
       updatemachineLoader(false);
@@ -112,37 +76,21 @@ class MachineNotifier extends ChangeNotifier{
   GetMachineDbHit(BuildContext context,int? machineId)  async{
 
     updatemachineLoader(true);
-
-    var body={
-      "Fields": [
-        {
-          "Key": "SpName",
-          "Type": "String",
-          "Value": "${Sp.getMachineDetail}"
-
-        },
-        {
-          "Key": "LoginUserId",
-          "Type": "int",
-          "Value": Provider.of<QuarryNotifier>(context,listen: false).UserId
-        },
-        {
-          "Key": "MachineId",
-          "Type": "int",
-          "Value": machineId
-        },
-        {
-          "Key": "database",
-          "Type": "String",
-          "Value": Provider.of<QuarryNotifier>(context,listen: false).DataBaseName
-        }
-      ]
+    parameters=[
+      ParameterModel(Key: "SpName", Type: "String", Value: "${Sp.getMachineDetail}"),
+      ParameterModel(Key: "LoginUserId", Type: "int", Value: Provider.of<QuarryNotifier>(context,listen: false).UserId),
+      ParameterModel(Key: "MachineId", Type: "int", Value: machineId),
+      ParameterModel(Key: "database", Type: "String", Value:Provider.of<QuarryNotifier>(context,listen: false).DataBaseName),
+    ];
+    var body = {
+      "Fields": parameters.map((e) => e.toJson()).toList()
     };
+
 
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
 
-        if(value!=null){
+        if(value!="null"){
           var parsed=json.decode(value);
           var t=parsed['Table'] as List?;
           print(parsed);

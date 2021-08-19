@@ -84,9 +84,12 @@ class CustomerNotifier extends ChangeNotifier {
           Navigator.pop(context);
           GetCustomerDetailDbhit(context, null);
         }
+        else{
+          updatecustomerLoader(false);
+        }
 
 
-        updatecustomerLoader(false);
+
       });
     } catch (e) {
       updatecustomerLoader(false);

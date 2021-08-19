@@ -174,6 +174,7 @@ class _MachineDetailAddNewState extends State<MachineDetailAddNew> with TickerPr
                                  onEditComplete: (){
                                    node.unfocus();
                                  },
+                                 onChange: (v){},
                                  ontap: (){
                                    scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                  },
@@ -186,6 +187,7 @@ class _MachineDetailAddNewState extends State<MachineDetailAddNew> with TickerPr
                                  ontap: (){
                                    scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                  },
+                                 onChange: (v){},
                                  onEditComplete: (){
                                    node.unfocus();
                                  },
@@ -197,6 +199,7 @@ class _MachineDetailAddNewState extends State<MachineDetailAddNew> with TickerPr
                                  ontap: (){
                                    scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                  },
+                                 onChange: (v){},
                                  onEditComplete: (){
                                    node.unfocus();
                                  },
@@ -211,6 +214,7 @@ class _MachineDetailAddNewState extends State<MachineDetailAddNew> with TickerPr
                                  ontap: (){
                                    scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                  },
+                                 onChange: (v){},
                                  onEditComplete: (){
                                    node.unfocus();
                                  },
@@ -226,6 +230,7 @@ class _MachineDetailAddNewState extends State<MachineDetailAddNew> with TickerPr
                                      _keyboardVisible=true;
                                    });
                                  },
+                                 onChange: (v){},
                                  onEditComplete: (){
                                    node.unfocus();
                                    setState(() {
@@ -244,6 +249,7 @@ class _MachineDetailAddNewState extends State<MachineDetailAddNew> with TickerPr
                                      _keyboardVisible=true;
                                    });
                                  },
+                                 onChange: (v){},
                                  onEditComplete: (){
                                    node.unfocus();
                                    setState(() {
