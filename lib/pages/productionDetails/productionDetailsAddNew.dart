@@ -970,11 +970,12 @@ class ProductionDetailAddNewState extends State<ProductionDetailAddNew> with Tic
                   selectedId: qn.selectInputTypeId,
                   itemOnTap: (index){
                     setState(() {
+                      print(qn.inputMaterialList![index][qn.plantId.toString()]);
                       qn.selectInputTypeId=qn.inputMaterialList![index]['MaterialId'];
                       qn.selectInputTypeName=qn.inputMaterialList![index]['MaterialName'];
                       qn.selectInputUnitId=qn.inputMaterialList![index]['MaterialUnitId'];
                       qn.selectInputUnitName=qn.inputMaterialList![index]['UnitName'];
-                      qn.stock=qn.inputMaterialList![index][qn.plantId.toString()];
+                      qn.stock=double.parse(qn.inputMaterialList![index][qn.plantId.toString()].toString());
                       inputMaterialOpen=false;
                       print(qn.stock);
 

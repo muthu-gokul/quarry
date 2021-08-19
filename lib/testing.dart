@@ -185,7 +185,7 @@ var map={};
                     {
                       "Key": "UserName",
                       "Type": "String",
-                      "Value": "rhynosand@gmail.com"
+                      "Value": "vivekmurugan@gmail.com"
                     },
                     {
                       "Key": "Password",
@@ -195,9 +195,9 @@ var map={};
                     {
                       "Key": "database",
                       "Type": "String",
-                      "Value": "TetroPOS_TestQMS" //live
+                      //"Value": "TetroPOS_TestQMS" //live
                       // "Value": "TetroPos_QMSLocal"
-                      // "Value": "TetroPos_QMSTest1"
+                       "Value": "TetroPos_QMSTest1"
                     },
 
                   ]

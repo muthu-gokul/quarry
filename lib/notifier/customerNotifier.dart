@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -44,7 +45,7 @@ class CustomerNotifier extends ChangeNotifier {
     parameters=[
       ParameterModel(Key: "SpName", Type: "String", Value: fromSale?"${Sp.insertCustomerDetail}": isCustomerEdit ? "${Sp.updateCustomerDetail}" : "${Sp.insertCustomerDetail}"),
       ParameterModel(Key: "LoginUserId", Type: "int", Value: Provider.of<QuarryNotifier>(context,listen: false).UserId),
-      ParameterModel(Key: "CustomerId", Type: "int", Value: editCustomerId),
+     // ParameterModel(Key: "CustomerId", Type: "int", Value: editCustomerId),
       ParameterModel(Key: "CustomerName", Type: "String", Value:customerName.text),
       ParameterModel(Key: "CustomerContactNumber", Type: "String", Value:customerContactNumber.text),
       ParameterModel(Key: "CustomerEmail", Type: "String", Value:customerEmail.text),
@@ -60,12 +61,16 @@ class CustomerNotifier extends ChangeNotifier {
       ParameterModel(Key: "CustomerLogoFolderName", Type: "String", Value:null),
       ParameterModel(Key: "database", Type: "String", Value:Provider.of<QuarryNotifier>(context,listen: false).DataBaseName),
     ];
+    if(isCustomerEdit){
+      parameters.insert(2,ParameterModel(Key: "CustomerId", Type: "int", Value: editCustomerId));
+    }
+
     var body = {
       "Fields": parameters.map((e) => e.toJson()).toList()
     };
     try {
       await call.ApiCallGetInvoke(body, context).then((value) {
-        if (value != null) {
+        if (value != "null") {
           var parsed = json.decode(value);
        ///   print(parsed);
 
@@ -85,14 +90,12 @@ class CustomerNotifier extends ChangeNotifier {
       });
     } catch (e) {
       updatecustomerLoader(false);
-      CustomAlert().commonErrorAlert(
-          context, "${Sp.insertCustomerDetail}", e.toString());
+      CustomAlert().commonErrorAlert(context, "${Sp.insertCustomerDetail}", e.toString());
     }
   }
 
 
   GetCustomerDetailDbhit(BuildContext context, int? customerId) async {
-    print(customerId);
     updatecustomerLoader(true);
     parameters=[
       ParameterModel(Key: "SpName", Type: "String", Value: "${Sp.getCustomerDetail}"),
@@ -107,33 +110,34 @@ class CustomerNotifier extends ChangeNotifier {
     try {
       await call.ApiCallGetInvoke(body, context).then((value) {
 
-        var parsed = json.decode(value);
-        var t = parsed['Table'] as List?;
-        print(t);
-        if(customerId!=null){
-          editCustomerId=t![0]['CustomerId'];
-          customerName.text=t[0]['CustomerName'];
-          customerAddress.text=t[0]['CustomerAddress'];
-          customerCity.text=t[0]['CustomerCity'];
-          customerState.text=t[0]['CustomerState'];
-          customerCountry.text=t[0]['CustomerCountry'];
-          customerZipcode.text=t[0]['CustomerZipCode'];
-          customerGstNumber.text=t[0]['CustomerGSTNumber'];
-          customerContactNumber.text=t[0]['CustomerContactNumber'];
-          customerEmail.text=t[0]['CustomerEmail'];
-          customerCreditLimit.text=t[0]['CustomerCreditLimit'].toString();
-          isCreditCustomer=t[0]['IsCreditCustomer']==0?false:true;
-          if(isCreditCustomer!){
-            usedAmount=t[0]['UsedAmount'];
-            balanceAmount=t[0]['BalanceAmount'];
-          }
+        if(value!="null"){
+          log(value);
+          var parsed = json.decode(value);
+          var t = parsed['Table'] as List?;
+          if(customerId!=null){
+            editCustomerId=t![0]['CustomerId'];
+            customerName.text=t[0]['CustomerName'];
+            customerAddress.text=t[0]['CustomerAddress'];
+            customerCity.text=t[0]['CustomerCity'];
+            customerState.text=t[0]['CustomerState'];
+            customerCountry.text=t[0]['CustomerCountry'];
+            customerZipcode.text=t[0]['CustomerZipCode'];
+            customerGstNumber.text=t[0]['CustomerGSTNumber'];
+            customerContactNumber.text=t[0]['CustomerContactNumber'];
+            customerEmail.text=t[0]['CustomerEmail'];
+            customerCreditLimit.text=t[0]['CustomerCreditLimit'].toString();
+            isCreditCustomer=t[0]['IsCreditCustomer']==0?false:true;
+            if(isCreditCustomer!){
+              usedAmount=t[0]['UsedAmount'].toDouble();
+              balanceAmount=t[0]['BalanceAmount'].toDouble();
+            }
 
-        }
-        else{
-          customerGridList = t!.map((e) => CustomerDetails.fromJson(e)).toList();
+          }
+          else{
+            customerGridList = t!.map((e) => CustomerDetails.fromJson(e)).toList();
+          }
         }
         updatecustomerLoader(false);
-        notifyListeners();
       });
     }
     catch (e) {

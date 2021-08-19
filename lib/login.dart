@@ -156,7 +156,9 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
         setState(() {
           isLoading=true;
         });
-            var itemsUrl="http://183.82.32.76/restroApi///api/Mobile/GetInvoke";
+          //  var itemsUrl="http://183.82.32.76/restroApi///api/Mobile/GetInvoke";
+            var itemsUrl="https://quarrydemoapi.herokuapp.com/api/users/login";
+          //  var itemsUrl="http://10.0.2.2:8080/api/users/login";
         //var itemsUrl="http://117.247.181.35/restroApi///api/Mobile/GetInvoke";
        // var loginurl = 'http://183.82.32.76/restroApi///api/Mobile/GetInvokeforlogin';
         //var loginurl="http://117.247.181.35/restroApi///api/Mobile/GetInvokeforlogin";
@@ -180,13 +182,15 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
             {
               "Key": "database",
               "Type": "String",
-              "Value": "TetroPOS_TestQMS" //live
-             // "Value": "TetroPos_QMSLocal"
+          //    "Value": "TetroPOS_TestQMS" //live
+         //     "Value": "TetroPos_QMSLocal"
             // "Value": "TetroPos_QMSTest1"
+             "Value": "QMS1"
             },
 
           ]
         };
+        print(json.encode(body));
 
         final dynamic response = await http.post(
             Uri.parse(itemsUrl), headers: {"Content-Type": "application/json"},
@@ -194,12 +198,14 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
         ).then((value) async {
           var parsed = json.decode(value.body);
           print(value.body);
+          print(parsed);
 
 
           if (parsed["Table"] != null) {
             loginNotifier.fetchUserDetails(parsed);
+            print(loginNotifier.userDetail.loginTblOutput![0].Status);
 
-            if (loginNotifier.userDetail.loginTblOutput![0].Status == 'True') {
+            if (loginNotifier.userDetail.loginTblOutput![0].Status) {
               if(prefEmail!.isEmpty && prefPassword!.isEmpty){
                 _setCredentials(username.text, password.text);
               }else if(prefEmail!=username.text){
@@ -238,14 +244,16 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                 node.unfocus();
                 isLoading=false;
               });
-            } else {
+            }
+            else {
               setState(() {
                 isLoading=false;
                 loginvalidation = true;
                 shakecontroller.forward(from: 0.0);
               });
             }
-          } else {
+          }
+          else {
 
             setState(() {
               isLoading=false;

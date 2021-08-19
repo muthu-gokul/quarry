@@ -34,6 +34,15 @@ class _CustomerMasterState extends State<CustomerMaster> {
   List<String> gridDataRowList=["CustomerName","Location","CustomerContactNumber","CustomerEmail","CustomerCreditLimit"];
 
   @override
+  void initState() {
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+      Provider.of<CustomerNotifier>(context,listen: false).GetCustomerDetailDbhit(context,null);
+    });
+
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: AnnotatedRegion<SystemUiOverlayStyle>(
@@ -42,7 +51,7 @@ class _CustomerMasterState extends State<CustomerMaster> {
         ),
         child: SafeArea(
           child: Consumer<CustomerNotifier>(
-            builder: (context,qn,child)=>  Stack(
+            builder: (ctx,qn,child)=>  Stack(
               children: [
                 Container(
                   height: 70,
@@ -231,6 +240,7 @@ class _CustomerMasterState extends State<CustomerMaster> {
                   alignment: Alignment.bottomCenter,
                   child: AddButton(
                     ontap: (){
+                    //  Provider.of<CustomerNotifier>(context,listen: false).GetCustomerDetailDbhit(context,null);
                       qn.updateCustomerEdit(false);
                       Navigator.of(context).push(_createRoute());
                     },

@@ -13,7 +13,8 @@ class ProductionGridHeaderModel {
   int? PlantId;
   String? materialName;
   String? unitName;
-  double? totalQuantity;
+ // double? totalQuantity;
+  dynamic totalQuantity;
 
   factory ProductionGridHeaderModel.fromJson(Map<String, dynamic> json) => ProductionGridHeaderModel(
     materialId: json["MaterialId"],

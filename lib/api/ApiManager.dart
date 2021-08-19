@@ -11,7 +11,9 @@ class ApiManager{
 
   Future<String> ApiCallGetInvoke(var body,BuildContext context) async {
     try{
-      var itemsUrl="http://183.82.32.76/restroApi///api/Mobile/GetInvoke";
+      //var itemsUrl="http://183.82.32.76/restroApi///api/Mobile/GetInvoke";
+      var itemsUrl="https://quarrydemoapi.herokuapp.com/api/users/login";
+    //  var itemsUrl="http://10.0.2.2:8080/api/users/login";
     //  var itemsUrl="http://117.247.181.35/restroApi///api/Mobile/GetInvoke";
       final response = await http.post(Uri.parse(itemsUrl),
           headers: {"Content-Type": "application/json"},
@@ -27,15 +29,16 @@ class ApiManager{
       else{
         var msg;
         // print(msg);
-        // print(response.body);
+         print(response.body);
         msg=json.decode(response.body);
-         CustomAlert().commonErrorAlert2(context, "${msg['Message']}", "");
-        return "F";
+        print(msg["Message"]['originalError']['info']['message']);
+         CustomAlert().commonErrorAlert2(context, "${msg["Message"]['originalError']['info']['message']}", "");
+        return "null";
         // return response.statusCode.toString();
       }
     }
     catch(e){
-      return "F";
+      return "null";
       print("NETWORK ISSUE--$e");
       // CustomAlert().commonErrorAlert(context, "Network Issue", "Your Internet Connectivity or Server is Slow..");
     }

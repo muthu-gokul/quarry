@@ -195,6 +195,7 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                             _keyboardVisible=false;
                                           });
                                         },
+                                        onChange: (v){},
                                         ontap: (){
                                           scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                           setState(() {
@@ -215,6 +216,7 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                             _keyboardVisible=false;
                                           });
                                         },
+                                        onChange: (v){},
                                         ontap: (){
                                           scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                           setState(() {
@@ -233,6 +235,7 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                             _keyboardVisible=false;
                                           });
                                         },
+                                        onChange: (v){},
                                         ontap: (){
                                           scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                           setState(() {
@@ -251,6 +254,7 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                             _keyboardVisible=false;
                                           });
                                         },
+                                        onChange: (v){},
                                         ontap: (){
                                           scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                           setState(() {
@@ -271,6 +275,7 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                             _keyboardVisible=false;
                                           });
                                         },
+                                        onChange: (v){},
                                         ontap: (){
                                           scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                           setState(() {
@@ -292,6 +297,7 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                             _keyboardVisible=false;
                                           });
                                         },
+                                        onChange: (v){},
                                         ontap: (){
                                           scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                           setState(() {
@@ -313,6 +319,7 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                             _keyboardVisible=false;
                                           });
                                         },
+                                        onChange: (v){},
                                         ontap: (){
                                           scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                           setState(() {
@@ -333,6 +340,7 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                             _keyboardVisible=false;
                                           });
                                         },
+                                        onChange: (v){},
                                         ontap: (){
                                           scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                           setState(() {
@@ -352,6 +360,7 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                             _keyboardVisible=false;
                                           });
                                         },
+                                        onChange: (v){},
                                         ontap: (){
                                           scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                           setState(() {

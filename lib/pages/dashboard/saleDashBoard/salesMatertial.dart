@@ -27,8 +27,8 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 class SalesMaterial extends StatefulWidget {
 
   String? materialName;
-  double? materialPrice;
-  double? materialQty;
+  dynamic materialPrice;
+  dynamic materialQty;
   String? materialUnit;
   List<dynamic>? weekList;
   List<dynamic>? monthList;

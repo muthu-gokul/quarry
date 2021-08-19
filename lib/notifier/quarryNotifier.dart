@@ -99,7 +99,7 @@ class QuarryNotifier extends ChangeNotifier{
 
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
-        if(value!=null){
+        if(value!="null"){
           var parsed=json.decode(value);
           var t=parsed['Table'] as List;
           var t1=parsed['Table1'] as List?;
@@ -179,7 +179,7 @@ class QuarryNotifier extends ChangeNotifier{
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
 
-        if(value!=null){
+        if(value!="null"){
           var parsed=json.decode(value);
 
           print(parsed);
@@ -522,7 +522,8 @@ class QuarryNotifier extends ChangeNotifier{
               ));
             });
 
-        }  else if(filterUsersPlantList.length!=Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.length){
+        }
+        else if(filterUsersPlantList.length!=Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.length){
           filterUsersPlantList.clear();
 
           Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.forEach((element) {
@@ -636,7 +637,7 @@ class QuarryNotifier extends ChangeNotifier{
     };
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
-        if(value!=null){
+        if(value!="null"){
           var parsed=json.decode(value);
 
           var t=parsed['Table'] as List?;
@@ -842,7 +843,7 @@ class QuarryNotifier extends ChangeNotifier{
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
 
-        if(value!=null){
+        if(value!="null"){
           var parsed=json.decode(value);
 
 
@@ -2191,25 +2192,25 @@ class QuarryNotifier extends ChangeNotifier{
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
 
-        if(value!=null){
+        if(value!="null"){
           var parsed=json.decode(value);
 
 
           var t1=parsed['Table'] as List;
           print("t1$t1");
 
-          CD_quarryname.text= t1[0]['CompanyName'];
-          CD_contactNo.text= t1[0]['CompanyContactNumber'];
-          CD_address.text= t1[0]['CompanyAddress'];
-          CD_city.text= t1[0]['CompanyCity'];
-          CD_state.text= t1[0]['CompanyState'];
-          CD_country.text= t1[0]['CompanyCountry'];
-          CD_zipcode.text= t1[0]['CompanyZipCode'];
-          CD_gstno.text= t1[0]['CompanyGSTNumber'];
-          CD_Panno.text= t1[0]['CompanyPANNumber'];
-          CD_Cinno.text= t1[0]['CompanyCINNumber'];
-          CD_email.text= t1[0]['CompanyEmail'];
-          CD_website.text= t1[0]['CompanyWebsite'];
+          CD_quarryname.text= t1[0]['CompanyName']??"";
+          CD_contactNo.text= t1[0]['CompanyContactNumber']??"";
+          CD_address.text= t1[0]['CompanyAddress']??"";
+          CD_city.text= t1[0]['CompanyCity']??"";
+          CD_state.text= t1[0]['CompanyState']??"";
+          CD_country.text= t1[0]['CompanyCountry']??"";
+          CD_zipcode.text= t1[0]['CompanyZipCode']??"";
+          CD_gstno.text= t1[0]['CompanyGSTNumber']??"";
+          CD_Panno.text= t1[0]['CompanyPANNumber']??"";
+          CD_Cinno.text= t1[0]['CompanyCINNumber']??"";
+          CD_email.text= t1[0]['CompanyEmail']??"";
+          CD_website.text= t1[0]['CompanyWebsite']??"";
           CompanyLogo= t1[0]['CompanyLogo'];
           CompanyLogoFolder= t1[0]['CompanyLogoFolderName']??"";
         }
@@ -2320,7 +2321,7 @@ class QuarryNotifier extends ChangeNotifier{
 
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
-        if(value!=null){
+        if(value!="null"){
           var parsed=json.decode(value);
           updateInsertCompanyLoader(false);
         }
@@ -2370,7 +2371,7 @@ class QuarryNotifier extends ChangeNotifier{
     };
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
-       if(value!=null){
+       if(value!="null"){
          var parsed=json.decode(value);
          var t=parsed['Table'] as List;
          plantTypeList=t.map((e) => PlantTypeModel.fromJson(e)).toList();
@@ -2417,7 +2418,7 @@ class QuarryNotifier extends ChangeNotifier{
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
 
-        if(value!=null){
+        if(value!="null"){
           var parsed=json.decode(value);
           print(parsed);
           var t=parsed['Table'] as List?;
@@ -2429,18 +2430,18 @@ class QuarryNotifier extends ChangeNotifier{
             PD_plantTypeName=t[0]['PlantTypeName'];
             editPlantId=t[0]['PlantId'];
 
-            PD_quarryname.text=t[0]['PlantName'];
-            PD_contactNo.text=t[0]['PlantContactNumber'];
-            PD_address.text=t[0]['PlantAddress'];
-            PD_city.text=t[0]['PlantCity'];
-            PD_state.text=t[0]['PlantState'];
-            PD_country.text=t[0]['PlantCountry'];
-            PD_zipcode.text=t[0]['PlantZipCode'];
+            PD_quarryname.text=t[0]['PlantName']??"";
+            PD_contactNo.text=t[0]['PlantContactNumber']??"";
+            PD_address.text=t[0]['PlantAddress']??"";
+            PD_city.text=t[0]['PlantCity']??"";
+            PD_state.text=t[0]['PlantState']??"";
+            PD_country.text=t[0]['PlantCountry']??"";
+            PD_zipcode.text=t[0]['PlantZipCode']??"";
 
-            PD_email.text=t[0]['PlantEmail'];
-            PD_website.text=t[0]['PlantWebsite'];
-            PD_ContactPersonName.text=t[0]['PlantContactPersonName'];
-            PD_Designation.text=t[0]['PlantContactPersonDesignation'];
+            PD_email.text=t[0]['PlantEmail']??"";
+            PD_website.text=t[0]['PlantWebsite']??"";
+            PD_ContactPersonName.text=t[0]['PlantContactPersonName']??"";
+            PD_Designation.text=t[0]['PlantContactPersonDesignation']??"";
 
             PO_PlantLicenseList=t1.map((e) => PlantLicenseModel.fromJson(e,tickerProviderStateMixin)).toList();
             updatePlantDetailEdit(true);
@@ -2588,7 +2589,7 @@ class QuarryNotifier extends ChangeNotifier{
 
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
-        if(value!=null){
+        if(value!="null"){
           var parsed=json.decode(value);
           print(parsed);
 

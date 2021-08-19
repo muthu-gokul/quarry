@@ -25,17 +25,16 @@ class LoginTable {
 
 class LoginTblOutPut {
 
-  String? Status;
+  bool Status;
   String? Message;
 
 
-  LoginTblOutPut(
-      {this.Status,this.Message});
+  LoginTblOutPut({required this.Status,this.Message});
 
   factory LoginTblOutPut.fromJson(Map<String, dynamic> json) {
     return new LoginTblOutPut(
-      Status: json['@Status'],
-      Message: json['@Message'],
+      Status: json['Status']??true,
+      Message: json['Message'],
 
     );
   }

@@ -35,7 +35,7 @@ class CustomerDetails{
       CustomerGSTNumber: json['CustomerGSTNumber'],
       CustomerLogoFileName : json['CustomerLogoFileName'],
       CustomerLogoFolderName : json['CustomerLogoFolderName'],
-      CustomerCreditLimit : json['CustomerCreditLimit'],
+      CustomerCreditLimit : double.parse(json['CustomerCreditLimit'].toString()),
       Location : json['Location'],
     );
   }

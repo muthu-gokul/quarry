@@ -593,8 +593,8 @@ class ManageUsersAddNewState extends State<ManageUsersAddNew> {
                       else{setState(() {userGroup=false;});}
 
 
-                      if(mun.plantMappingList.isEmpty){setState(() {plantAccess=true;});}
-                      else{setState(() {plantAccess=false;});}
+                     /* if(mun.plantMappingList.isEmpty){setState(() {plantAccess=true;});}
+                      else{setState(() {plantAccess=false;});}*/
 
                       if(emailValid && !firstName && !password && !userGroup && !plantAccess){
                         node.unfocus();

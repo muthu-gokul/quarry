@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -117,7 +118,7 @@ class ProductionNotifier extends ChangeNotifier{
   double? wastageQty=0.0;
   double totalOutputQty=0.0;
 
-  double? stock=0.0;
+  double stock=0.0;
 
   List<ProductionMachineListModel> machineCategoryList=[];
   List<dynamic>? inputMaterialList=[];
@@ -389,7 +390,8 @@ class ProductionNotifier extends ChangeNotifier{
     updateProductionLoader(false);
 
     await call.ApiCallGetInvoke(body,context).then((value) {
-        if(value!=null){
+      log(value);
+        if(value!="null"){
           if(filterUsersPlantList.isEmpty){
 
             Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.forEach((element) {
