@@ -50,7 +50,7 @@ class ProductionMaterialMappingListModel{
       ProductionOutputMaterialMappingId: json["ProductionOutputMaterialMappingId"],
       ProductionId: json["ProductionId"],
       UnitId: json["UnitId"],
-      OutputMaterialQuantity: json["OutputMaterialQuantity"],
+      OutputMaterialQuantity: json["OutputMaterialQuantity"].toDouble(),
       IsActive: 1,
       MaterialName: json["OutputMaterialName"],
       MaterialUnit: json["UnitName"],

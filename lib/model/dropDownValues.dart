@@ -125,9 +125,9 @@ class CustomerModel {
     customerId: json["CustomerId"],
     customerName: json["CustomerName"],
       isCreditCustomer: json["IsCreditCustomer"],
-      customerCreditLimit: json["CustomerCreditLimit"],
-      usedAmount: json["UsedAmount"],
-      balanceAmount: json["BalanceAmount"],
+      customerCreditLimit: json["CustomerCreditLimit"].toDouble(),
+      usedAmount: json["UsedAmount"].toDouble(),
+      balanceAmount: json["BalanceAmount"].toDouble(),
     isActive: true
   );
 
@@ -241,18 +241,18 @@ class SaleDetails{
       MaterialName: json['MaterialName'],
       MaterialHSNCode: json['MaterialHSNCode'],
       UnitName: json['UnitName'],
-      MaterialUnitPrice: json['MaterialUnitPrice'],
+      MaterialUnitPrice: json['MaterialUnitPrice'].toDouble(),
       RequiredMaterialQty: json['RequiredMaterialQty'],
-      Amount: json['RequiredQtyAmount'],
+      Amount: json['RequiredQtyAmount'].toDouble(),
 
 
       isDiscount: json['IsDiscount'],
       isPercentage: json['IsPercentage'],
       isAmount: json['IsAmount'],
-      discountValue: json['DiscountValue'],
-      discountAmount: json['DiscountAmount'],
-      DiscountedOutputQtyAmount: json['DiscountedOutputQtyAmount'],
-      DiscountedRequiredQtyAmount: json['DiscountedRequiredQtyAmount'],
+      discountValue: json['DiscountValue'].toDouble(),
+      discountAmount: json['DiscountAmount'].toDouble(),
+      DiscountedOutputQtyAmount: json['DiscountedOutputQtyAmount'].toDouble(),
+      DiscountedRequiredQtyAmount: json['DiscountedRequiredQtyAmount'].toDouble(),
 
 
 
@@ -266,14 +266,14 @@ class SaleDetails{
       SaleDate: json['SaleDate'],
 
       OutputMaterialQty: json['OutputMaterialQty'],
-      OutputQtyAmount: json['OutputQtyAmount'],
+      OutputQtyAmount: json['OutputQtyAmount']!=null?json['OutputQtyAmount'].toDouble():json['OutputQtyAmount'],
 
-      TaxPercentage: json['TaxValue'],
-      TaxAmount: json['TaxAmount'],
-      TotalAmount: json['TotalAmount'],
+      TaxPercentage: json['TaxValue'].toDouble(),
+      TaxAmount: json['TaxAmount'].toDouble(),
+      TotalAmount: json['TotalAmount'].toDouble(),
       RoundedTotalAmount: json['TotalAmount'].round(),
       AmountInWords: json['AmountInWords'],
-      RoundOffAmount: json['RoundOffAmount'],
+      RoundOffAmount: json['RoundOffAmount'].toDouble(),
       customerId: json["CustomerId"],
       customerName: json["CustomerName"],
       customerAddress: json["CustomerAddress"],

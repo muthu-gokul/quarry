@@ -345,7 +345,8 @@ class ProductionGridState extends State<ProductionGrid> with TickerProviderState
                                 showEdit: showEdit,
                                 editTap: (){
                                   pn.clearForm();
-                                  pn.ProductionDropDownValues(context);pn.PlantUserDropDownValues(context).then((value) {
+                                  pn.ProductionDropDownValues(context);
+                                  pn.PlantUserDropDownValues(context).then((value) {
 
 
                                     pn.GetProductionDbHit(context, pn.productionGridValues[selectedIndex!].productionId, ProductionDetailAddNewState());

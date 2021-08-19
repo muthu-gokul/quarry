@@ -539,6 +539,7 @@ class QuarryNotifier extends ChangeNotifier{
 
         }
 
+        print(t);
         filterSaleDetailsGrid=t.map((e) => SaleDetails.fromJson(e)).toList();
 
         saleCounterList.add(SaleReportHeaderModel(title: "Sales",value: 0.0,qty: 0.0,unit: "Ton"));

@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:quarry/api/ApiManager.dart';
 import 'package:quarry/api/sp.dart';
 import 'package:quarry/model/manageUsersModel/manageUsersPlantModel.dart';
+import 'package:quarry/model/parameterMode.dart';
 import 'package:quarry/model/plantModel/plantUserModel.dart';
 import 'package:quarry/model/productionDetailsModel/productionDetailGridModel.dart';
 import 'package:quarry/model/productionDetailsModel/productionGridHeaderModel.dart';
@@ -15,6 +16,7 @@ import 'package:quarry/model/productionDetailsModel/productionMachineListModel.d
 import 'package:quarry/model/productionDetailsModel/productionMaterialListModel.dart';
 import 'package:quarry/model/productionDetailsModel/productionMaterialMappingListModel.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
+import 'package:quarry/styles/constants.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/calculation.dart';
 
@@ -228,8 +230,28 @@ class ProductionNotifier extends ChangeNotifier{
     List js=[];
     js=productionMaterialMappingList.map((e) => e.toJson()).toList();
     print(js);
+    parameters=[
+      ParameterModel(Key: "SpName", Type: "String", Value: isProductionEdit?"${Sp.updateProductionDetail}":"${Sp.insertProductionDetail}"),
+      ParameterModel(Key: "LoginUserId", Type: "int", Value: Provider.of<QuarryNotifier>(context,listen: false).UserId),
+      ParameterModel(Key: "PlantId", Type: "int", Value: plantId),
+      ParameterModel(Key: "MachineId", Type: "int", Value: selectMachineId),
+      ParameterModel(Key: "UnitId", Type: "int", Value: selectInputUnitId),
+      ParameterModel(Key: "InputMaterialId", Type: "int", Value: selectInputTypeId),
+      ParameterModel(Key: "IsDustWastage", Type: "int", Value: isWastage?1:0),
 
-    var body={
+      ParameterModel(Key: "InputMaterialQuantity", Type: "String", Value: double.parse(materialQuantity.text)),
+      ParameterModel(Key: "DustQuantity", Type: "String", Value: dustQty),
+      ParameterModel(Key: "WastageQuantity", Type: "String", Value: wastageQty),
+      ParameterModel(Key: "ProductionOutputMaterialMappingList", Type: "datatable", Value: js),
+      ParameterModel(Key: "database", Type: "String", Value:Provider.of<QuarryNotifier>(context,listen: false).DataBaseName),
+    ];
+    if(isProductionEdit){
+      parameters.insert(2,ParameterModel(Key: "ProductionId", Type: "int", Value: productionIdEdit) );
+    }
+    var body = {
+      "Fields": parameters.map((e) => e.toJson()).toList()
+    };
+ /*   var body={
       "Fields": [
         {
           "Key": "SpName",
@@ -241,7 +263,6 @@ class ProductionNotifier extends ChangeNotifier{
           "Type": "int",
           "Value": Provider.of<QuarryNotifier>(context,listen: false).UserId
         },
-
         {
           "Key": "ProductionId",
           "Type": "int",
@@ -288,7 +309,6 @@ class ProductionNotifier extends ChangeNotifier{
           "Value": wastageQty
         },
 
-
         {
           "Key": "ProductionOutputMaterialMappingList",
           "Type": "datatable",
@@ -300,20 +320,23 @@ class ProductionNotifier extends ChangeNotifier{
           "Value": Provider.of<QuarryNotifier>(context,listen: false).DataBaseName
         }
       ]
-    };
+    };*/
 
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
 
-        if(value!=null){
+        if(value!="null"){
           var parsed=json.decode(value);
           print(parsed);
           Navigator.pop(context);
           clearForm();
           GetProductionDbHit(context, null,tickerProviderStateMixin);
         }
+        else{
+          updateProductionLoader(false);
+        }
 
-        updateProductionLoader(false);
+
       });
     }catch(e){
       updateProductionLoader(false);
@@ -333,8 +356,6 @@ class ProductionNotifier extends ChangeNotifier{
 
   GetProductionDbHit(BuildContext context,int? productionId,TickerProviderStateMixin tickerProviderStateMixin)  async{
 
-    print(tickerProviderStateMixin);
-    print(productionId);
     updateProductionLoader(true);
     String? fromDate,toDate;
 
@@ -392,35 +413,36 @@ class ProductionNotifier extends ChangeNotifier{
     await call.ApiCallGetInvoke(body,context).then((value) {
       log(value);
         if(value!="null"){
-          if(filterUsersPlantList.isEmpty){
 
-            Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.forEach((element) {
-              filterUsersPlantList.add(ManageUserPlantModel(
-                plantId: element.plantId,
-                plantName: element.plantName,
-                isActive: element.isActive,
-              ));
-            });
-
-          }
-          else if(filterUsersPlantList.length!=Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.length){
-            filterUsersPlantList.clear();
-
-            Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.forEach((element) {
-              filterUsersPlantList.add(ManageUserPlantModel(
-                plantId: element.plantId,
-                plantName: element.plantName,
-                isActive: element.isActive,
-
-              ));
-            });
-          }
 
           var parsed=json.decode(value);
           var t=parsed['Table'] as List?;
 
           print(t);
           if(productionId!=null){
+            if(filterUsersPlantList.isEmpty){
+
+              Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.forEach((element) {
+                filterUsersPlantList.add(ManageUserPlantModel(
+                  plantId: element.plantId,
+                  plantName: element.plantName,
+                  isActive: element.isActive,
+                ));
+              });
+
+            }
+            else if(filterUsersPlantList.length!=Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.length){
+              filterUsersPlantList.clear();
+
+              Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.forEach((element) {
+                filterUsersPlantList.add(ManageUserPlantModel(
+                  plantId: element.plantId,
+                  plantName: element.plantName,
+                  isActive: element.isActive,
+
+                ));
+              });
+            }
             var t1=parsed['Table1'] as List;
             print(t1);
 
@@ -436,8 +458,8 @@ class ProductionNotifier extends ChangeNotifier{
             selectInputUnitId=t[0]['UnitId'];
             selectInputUnitName=t[0]['UnitName'];
             isWastage=t[0]['IsDustWastage']==0?false:t[0]['IsDustWastage']==1?true:false;
-            dustQty=t[0]['DustQuantity'];
-            wastageQty=t[0]['WastageQuantity'];
+            dustQty=t[0]['DustQuantity'].toDouble();
+            wastageQty=t[0]['WastageQuantity'].toDouble();
 
             print(t[0]['IsDustWastage']);
             print(isWastage);
