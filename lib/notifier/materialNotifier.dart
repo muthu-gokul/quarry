@@ -6,8 +6,10 @@ import 'package:quarry/api/ApiManager.dart';
 import 'package:quarry/api/sp.dart';
 import 'package:quarry/model/materialCategoryModel.dart';
 import 'package:quarry/model/materialDetailsModel/materialGridModel.dart';
+import 'package:quarry/model/parameterMode.dart';
 import 'package:quarry/model/unitDetailModel.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
+import 'package:quarry/styles/constants.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 
 class MaterialNotifier extends ChangeNotifier{
@@ -92,7 +94,27 @@ class MaterialNotifier extends ChangeNotifier{
 
   InsertMaterialDbHit(BuildContext context)  async{
     updatematerialLoader(true);
-    var body={
+    parameters=[
+      ParameterModel(Key: "SpName", Type: "String", Value: isMaterialEdit?"${Sp.updateMaterialDetail}":"${Sp.insertMaterialDetail}"),
+      ParameterModel(Key: "LoginUserId", Type: "int", Value: Provider.of<QuarryNotifier>(context,listen: false).UserId),
+      ParameterModel(Key: "MaterialName", Type: "String", Value: materialName.text),
+      ParameterModel(Key: "MaterialDescription", Type: "String", Value: materialDescription.text),
+      ParameterModel(Key: "MaterialCode", Type: "String", Value: materialCode.text),
+      ParameterModel(Key: "MaterialUnitPrice", Type: "String", Value: materialPrice.text),
+      ParameterModel(Key: "MaterialHSNCode", Type: "String", Value: materialHSNcode.text),
+      ParameterModel(Key: "TaxValue", Type: "String", Value: materialGst.text),
+
+      ParameterModel(Key: "MaterialCategoryId", Type: "int", Value: selectedMatCategoryId),
+      ParameterModel(Key: "MaterialUnitId", Type: "int", Value: selectedUnitId),
+      ParameterModel(Key: "database", Type: "String", Value:Provider.of<QuarryNotifier>(context,listen: false).DataBaseName),
+    ];
+    if(isMaterialEdit){
+      parameters.insert(2, ParameterModel(Key: "materialId", Type: "int", Value: materialIdEdit));
+    }
+    var body = {
+      "Fields": parameters.map((e) => e.toJson()).toList()
+    };
+   /* var body={
       "Fields": [
         {
           "Key": "SpName",
@@ -155,12 +177,12 @@ class MaterialNotifier extends ChangeNotifier{
           "Value": Provider.of<QuarryNotifier>(context,listen: false).DataBaseName
         }
       ]
-    };
+    };*/
 
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
 
-        if(value!=null){
+        if(value!="null"){
           var parsed=json.decode(value);
           Navigator.pop(context);
           clearForm();
@@ -187,30 +209,16 @@ class MaterialNotifier extends ChangeNotifier{
     print(materialId);
     updatematerialLoader(true);
 
-    var body={
-      "Fields": [
-        {
-          "Key": "SpName",
-          "Type": "String",
-          "Value": "${Sp.getMaterialDetail}"
-        },
-        {
-          "Key": "LoginUserId",
-          "Type": "int",
-          "Value": Provider.of<QuarryNotifier>(context,listen: false).UserId
-        },
-        {
-          "Key": "MaterialId",
-          "Type": "int",
-          "Value": materialId
-        },
-        {
-          "Key": "database",
-          "Type": "String",
-          "Value": Provider.of<QuarryNotifier>(context,listen: false).DataBaseName
-        }
-      ]
+    parameters=[
+      ParameterModel(Key: "SpName", Type: "String", Value: "${Sp.getMaterialDetail}"),
+      ParameterModel(Key: "LoginUserId", Type: "int", Value: Provider.of<QuarryNotifier>(context,listen: false).UserId),
+      ParameterModel(Key: "MaterialId", Type: "int", Value: materialId),
+      ParameterModel(Key: "database", Type: "String", Value:Provider.of<QuarryNotifier>(context,listen: false).DataBaseName),
+    ];
+    var body = {
+      "Fields": parameters.map((e) => e.toJson()).toList()
     };
+
 
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {

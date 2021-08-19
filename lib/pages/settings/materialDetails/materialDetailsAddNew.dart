@@ -172,6 +172,7 @@ class MaterialDetailAddNewState extends State<MaterialDetailAddNew> with TickerP
                                     onEditComplete: (){
                                       node.unfocus();
                                     },
+                                    onChange: (v){},
                                     ontap: (){
                                       scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                     },
@@ -202,6 +203,7 @@ class MaterialDetailAddNewState extends State<MaterialDetailAddNew> with TickerP
                                     ontap: (){
                                       scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                     },
+                                    onChange: (v){},
                                     onEditComplete: (){
                                       node.unfocus();
                                     },
@@ -213,6 +215,7 @@ class MaterialDetailAddNewState extends State<MaterialDetailAddNew> with TickerP
                                     ontap: (){
                                       scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                     },
+                                    onChange: (v){},
                                     onEditComplete: (){
                                       node.unfocus();
                                     },
@@ -225,6 +228,7 @@ class MaterialDetailAddNewState extends State<MaterialDetailAddNew> with TickerP
                                     ontap: (){
                                       scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                     },
+                                    onChange: (v){},
                                     onEditComplete: (){
                                       node.unfocus();
                                     },
@@ -253,6 +257,7 @@ class MaterialDetailAddNewState extends State<MaterialDetailAddNew> with TickerP
                                     onEditComplete: (){
                                       node.unfocus();
                                     },
+                                    onChange: (v){},
                                     ontap: (){
                                       scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                     },
@@ -279,6 +284,7 @@ class MaterialDetailAddNewState extends State<MaterialDetailAddNew> with TickerP
                                     onEditComplete: (){
                                       node.unfocus();
                                     },
+                                    onChange: (v){},
                                     ontap: (){
                                       scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                     },

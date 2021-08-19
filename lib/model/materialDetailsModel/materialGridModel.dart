@@ -34,10 +34,10 @@ class MaterialGridModel {
     materialCategoryName: json["MaterialCategoryName"],
     materialUnitId: json["MaterialUnitId"],
     unitName: json["UnitName"],
-    materialUnitPrice: json["MaterialUnitPrice"],
+    materialUnitPrice: json["MaterialUnitPrice"].toDouble(),
     materialDescription: json["MaterialDescription"],
     materialHsnCode: json["MaterialHSNCode"],
-    taxValue: json["TaxValue"],
+    taxValue: json["TaxValue"].toDouble(),
   );
 
   Map<String, dynamic> toJson() => {
