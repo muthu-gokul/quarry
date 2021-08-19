@@ -18,7 +18,7 @@ String?  OtherChargesName;
  factory PurchaseOrderOtherChargesMappingList.fromJson(Map<String, dynamic> json) => PurchaseOrderOtherChargesMappingList(
    PurchaseOrderId: json["PurchaseOrderId"],
    OtherChargesName: json["OtherChargesName"],
-   OtherChargesAmount: json["OtherChargesAmount"],
+   OtherChargesAmount: json["OtherChargesAmount"].toDouble(),
  );
 
 

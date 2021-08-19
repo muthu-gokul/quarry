@@ -42,12 +42,13 @@ class PurchaseOrderGridModel {
     materialId: json["MaterialId"],
     materialName: json["MaterialName"],
     supplierName: json["SupplierName"],
-    taxAmount: json["TaxAmount"],
-    purchaseQuantity: json["PurchaseQuantity"],
-    netAmount: json["NetAmount"],
+    taxAmount: json["TaxAmount"].toDouble(),
+   // purchaseQuantity: json["PurchaseQuantity"].toDouble(),
+    purchaseQuantity: json["TotalQuantity"].toDouble(),
+    netAmount: json["NetAmount"].toDouble(),
     NoOfMaterial: json["NoOfMaterial"],
-    TotalQuantity: json["TotalQuantity"],
-    Subtotal: json["Subtotal"],
+    TotalQuantity: json["TotalQuantity"].toDouble(),
+    Subtotal: json["Subtotal"].toDouble(),
     status: json["Status"],
   );
 

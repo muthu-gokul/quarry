@@ -2519,7 +2519,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                     setState(() {
                       qn.SS_selectedMaterialTypeId=qn.sale_materialList![index]['MaterialId'];
                       qn.SS_selectedMaterialTypeName=qn.sale_materialList![index]['MaterialName'];
-                      qn.SS_selectedMaterialStock=qn.sale_materialList![index][qn.PlantId.toString()];
+                      qn.SS_selectedMaterialStock=qn.sale_materialList![index][qn.PlantId.toString()].toDouble();
                       isMaterialTypeOpen=false;
                       if(qn.SS_customerNeedWeight.text.isNotEmpty){
                         qn.weightToAmount();

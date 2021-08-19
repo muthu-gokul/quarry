@@ -28,8 +28,8 @@ class PurchaseMaterialsListModel {
     materialName: json["MaterialName"],
     materialUnitId: json["MaterialUnitId"],
     unitName: json["UnitName"],
-    materialPrice: json["MaterialPrice"],
-    taxValue: json["TaxValue"],
+    materialPrice: json["MaterialPrice"].toDouble(),
+    taxValue: json["TaxValue"].toDouble(),
     SupplierType: json["SupplierType"],
   );
 

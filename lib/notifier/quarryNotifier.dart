@@ -221,7 +221,7 @@ class QuarryNotifier extends ChangeNotifier{
   TextEditingController SS_emptyVehicleWeight= new TextEditingController();
   int? SS_selectedMaterialTypeId=null;
   String? SS_selectedMaterialTypeName=null;
-  double? SS_selectedMaterialStock;
+  double SS_selectedMaterialStock=0.0;
   TextEditingController SS_customerNeedWeight= new TextEditingController(text: "0");
   TextEditingController SS_amount= new TextEditingController(text: '0.00');
   int? SS_selectedPaymentTypeId=null;

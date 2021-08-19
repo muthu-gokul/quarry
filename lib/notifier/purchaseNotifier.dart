@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:quarry/api/ApiManager.dart';
 import 'package:quarry/api/sp.dart';
 import 'package:quarry/model/manageUsersModel/manageUsersPlantModel.dart';
+import 'package:quarry/model/parameterMode.dart';
 import 'package:quarry/model/plantModel/plantUserModel.dart';
 import 'package:quarry/model/purchaseDetailsModel/PurchaseOrderOtherChargesMappingListModel.dart';
 import 'package:quarry/model/purchaseDetailsModel/purchaseDetailGridModel.dart';
@@ -15,6 +16,7 @@ import 'package:quarry/model/purchaseDetailsModel/purchaseSupplierListModel.dart
 import 'package:quarry/model/purchaseDetailsModel/purchaseSupplierTypeModel.dart';
 import 'package:quarry/notifier/profileNotifier.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
+import 'package:quarry/styles/constants.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/calculation.dart';
 import '../widgets/decimal.dart';
@@ -82,7 +84,7 @@ class PurchaseNotifier extends ChangeNotifier{
     };
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
-        if(value!=null){
+        if(value!="null"){
           var parsed=json.decode(value);
 
           var t=parsed['Table'] as List?;
@@ -158,7 +160,7 @@ class PurchaseNotifier extends ChangeNotifier{
 
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
-        if(value!=null){
+        if(value!="null"){
           var parsed=json.decode(value);
           var t=parsed['Table'] as List?;
           var t1=parsed['Table1'] as List;
@@ -166,6 +168,7 @@ class PurchaseNotifier extends ChangeNotifier{
           var t3=parsed['Table3'] as List;
           var t4=parsed['Table4'] as List?;
 
+          print(t1);
 
           materialsList=t1.map((e) => PurchaseMaterialsListModel.fromJson(e)).toList();
           filterMaterialsList=materialsList;
@@ -388,7 +391,33 @@ class PurchaseNotifier extends ChangeNotifier{
     oa=purchaseOrdersOtherChargesMappingList.map((e) => e.toJson()).toList();
     print(oa);
 
-    var body={
+    parameters=[
+      ParameterModel(Key: "SpName", Type: "String", Value: isPurchaseEdit?"${Sp.updatePurchaseDetail}":"${Sp.insertPurchaseDetail}"),
+      ParameterModel(Key: "LoginUserId", Type: "int", Value: Provider.of<QuarryNotifier>(context,listen: false).UserId),
+      ParameterModel(Key: "PlantId", Type: "int", Value: isPurchaseEdit?EditPlantId: PlantId),
+      ParameterModel(Key: "ExpectedDate", Type: "String", Value: ExpectedPurchaseDate!=null? DateFormat("yyyy-MM-dd").format(ExpectedPurchaseDate!).toString():null),
+      ParameterModel(Key: "SupplierType", Type: "String", Value: supplierType),
+      ParameterModel(Key: "Subtotal", Type: "String", Value: subtotal),
+      ParameterModel(Key: "DiscountAmount", Type: "String", Value: discountAmount),
+      ParameterModel(Key: "DiscountedSubtotal", Type: "String", Value: discountedSubtotal),
+      ParameterModel(Key: "TaxAmount", Type: "String", Value: taxAmount),
+      ParameterModel(Key: "GrandTotalAmount", Type: "String", Value: grandTotal),
+
+      ParameterModel(Key: "Supplier", Type: "int", Value: supplierId),
+      ParameterModel(Key: "IsTax", Type: "int", Value: isTax!?1:0),
+
+      ParameterModel(Key: "PurchaseOrderMaterialMappingList", Type: "datatable", Value: js),
+      ParameterModel(Key: "PurchaseOrderOtherChargesMappingList", Type: "datatable", Value: oa),
+      ParameterModel(Key: "database", Type: "String", Value:Provider.of<QuarryNotifier>(context,listen: false).DataBaseName),
+    ];
+    if(isPurchaseEdit){
+      parameters.insert(2, ParameterModel(Key: "PurchaseOrderId", Type: "int", Value: PurchaseEditId),);
+    }
+    var body = {
+      "Fields": parameters.map((e) => e.toJson()).toList()
+    };
+
+  /*  var body={
       "Fields": [
         {
           "Key": "SpName",
@@ -400,7 +429,6 @@ class PurchaseNotifier extends ChangeNotifier{
           "Type": "int",
           "Value": Provider.of<QuarryNotifier>(context,listen: false).UserId
         },
-
         {
           "Key": "PurchaseOrderId",
           "Type": "int",
@@ -473,19 +501,22 @@ class PurchaseNotifier extends ChangeNotifier{
           "Value": Provider.of<QuarryNotifier>(context,listen: false).DataBaseName
         }
       ]
-    };
+    };*/
 
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
 
-        if(value!=null){
+        if(value!="null"){
           var parsed=json.decode(value);
           Navigator.pop(context);
           clearForm();
           GetPurchaseDbHit(context, null,);
         }
+        else{
+          updatePurchaseLoader(false);
+        }
 
-        updatePurchaseLoader(false);
+
       });
     }catch(e){
       updatePurchaseLoader(false);
@@ -566,33 +597,34 @@ class PurchaseNotifier extends ChangeNotifier{
 
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
-        if(value!=null){
-          if(filterUsersPlantList.isEmpty){
+        if(value!="null"){
 
-            Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.forEach((element) {
-              filterUsersPlantList.add(ManageUserPlantModel(
-                plantId: element.plantId,
-                plantName: element.plantName,
-                isActive: element.isActive,
-              ));
-            });
-
-          } else if(filterUsersPlantList.length!=Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.length){
-            filterUsersPlantList.clear();
-
-            Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.forEach((element) {
-                filterUsersPlantList.add(ManageUserPlantModel(
-                  plantId: element.plantId,
-                  plantName: element.plantName,
-                  isActive: element.isActive,
-
-                ));
-              });
-          }
 
           var parsed=json.decode(value);
           var t=parsed['Table'] as List?;
           if(PurchaseOrderId!=null){
+            if(filterUsersPlantList.isEmpty){
+
+              Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.forEach((element) {
+                filterUsersPlantList.add(ManageUserPlantModel(
+                  plantId: element.plantId,
+                  plantName: element.plantName,
+                  isActive: element.isActive,
+                ));
+              });
+
+            }
+            else if(filterUsersPlantList.length!=Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.length){
+              filterUsersPlantList.clear();
+
+              Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.forEach((element) {
+                filterUsersPlantList.add(ManageUserPlantModel(
+                  plantId: element.plantId,
+                  plantName: element.plantName,
+                  isActive: element.isActive,
+                ));
+              });
+            }
             print("t_$t");
             var t1=parsed['Table1'] as List;
             print(t1);
@@ -624,10 +656,10 @@ class PurchaseNotifier extends ChangeNotifier{
 
             ExpectedPurchaseDate=t[0]['ExpectedDate']!=null?DateTime.parse(t[0]['ExpectedDate']):DateTime.now();
 
-            subtotal=t[0]['Subtotal'];
-            taxAmount=t[0]['GST'];
-            grandTotal=t[0]['Total'];
-            discountAmount=t[0]['Discount']??0.0;
+            subtotal=t[0]['Subtotal'].toDouble();
+            taxAmount=t[0]['GST'].toDouble();
+            grandTotal=t[0]['Total'].toDouble();
+            discountAmount=t[0]['Discount'].toDouble()??0.0;
             isTax=t[0]['IsTax'];
 
             purchaseOrdersMappingList=t1.map((e) => PurchaseOrderMaterialMappingListModel.fromJson(e)).toList();
@@ -655,9 +687,10 @@ class PurchaseNotifier extends ChangeNotifier{
 
         updatePurchaseLoader(false);
       });
-    }catch(e){
+    }catch(e,t){
       updatePurchaseLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.getPurchaseDetail}" , e.toString());
+      print(t);
+      CustomAlert().commonErrorAlert(context, "${Sp.getPurchaseDetail}" , t.toString());
     }
   }
 
