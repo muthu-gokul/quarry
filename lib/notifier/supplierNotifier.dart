@@ -6,12 +6,14 @@ import 'package:quarry/api/ApiManager.dart';
 import 'package:quarry/api/sp.dart';
 import 'package:quarry/model/materialCategoryModel.dart';
 import 'package:quarry/model/materialDetailsModel/materialGridModel.dart';
+import 'package:quarry/model/parameterMode.dart';
 import 'package:quarry/model/supplierDetailModel/SupplierMaterialMappingListModel.dart';
 import 'package:quarry/model/supplierDetailModel/supplierCategoryModel.dart';
 import 'package:quarry/model/supplierDetailModel/supplierGridModel.dart';
 import 'package:quarry/model/supplierDetailModel/supplierMaterialModel.dart';
 import 'package:quarry/model/unitDetailModel.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
+import 'package:quarry/styles/constants.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 
 class SupplierNotifier extends ChangeNotifier{
@@ -82,7 +84,7 @@ class SupplierNotifier extends ChangeNotifier{
 
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
-        if(value!=null){
+        if(value!="null"){
           var parsed=json.decode(value);
           var t=parsed['Table'] as List;
           var t1=parsed['Table1'] as List;
@@ -122,98 +124,47 @@ class SupplierNotifier extends ChangeNotifier{
     js=supplierMaterialMappingList.map((e) => e.toJson()).toList();
     print(js);
 
-    var body={
-      "Fields": [
-        {
-          "Key": "SpName",
-          "Type": "String",
-          "Value": isSupplierEdit?"${Sp.updateSupplierDetail}":"${Sp.insertSupplierDetail}"
-        },
-        {
-          "Key": "LoginUserId",
-          "Type": "int",
-          "Value": Provider.of<QuarryNotifier>(context,listen: false).UserId
-        },
+    parameters=[
+      ParameterModel(Key: "SpName", Type: "String", Value: isSupplierEdit?"${Sp.updateSupplierDetail}":"${Sp.insertSupplierDetail}"),
+      ParameterModel(Key: "LoginUserId", Type: "int", Value: Provider.of<QuarryNotifier>(context,listen: false).UserId),
+      ParameterModel(Key: "SupplierName", Type: "String", Value: supplierName.text),
+      ParameterModel(Key: "SupplierAddress", Type: "String", Value: supplierAddress.text),
+      ParameterModel(Key: "SupplierState", Type: "String", Value: supplierState.text),
+      ParameterModel(Key: "SupplierCity", Type: "String", Value: supplierCity.text),
+      ParameterModel(Key: "SupplierCountry", Type: "String", Value: supplierCountry.text),
+      ParameterModel(Key: "SupplierZipCode", Type: "String", Value: supplierZipcode.text),
+      ParameterModel(Key: "SupplierContactNumber", Type: "String", Value: supplierContactNumber.text),
+      ParameterModel(Key: "SupplierEmail", Type: "String", Value: supplierEmail.text),
+      ParameterModel(Key: "SupplierGSTNumber", Type: "String", Value: supplierGstNo.text),
+      ParameterModel(Key: "SupplierMaterialMappingList", Type: "datatable", Value: js),
 
-        {
-          "Key": "SupplierId",
-          "Type": "int",
-          "Value": supplierEditId
-        },
-        {
-          "Key": "SupplierName",
-          "Type": "String",
-          "Value": supplierName.text
-        },
-        {
-          "Key": "SupplierCategoryId",
-          "Type": "int",
-          "Value": supplierCategoryId
-        },
-        {
-          "Key": "SupplierAddress",
-          "Type": "String",
-          "Value": supplierAddress.text
-        },
-        {
-          "Key": "SupplierState",
-          "Type": "String",
-          "Value": supplierState.text
-        },
-        {
-          "Key": "SupplierCity",
-          "Type": "String",
-          "Value": supplierCity.text
-        },
-        {
-          "Key": "SupplierCountry",
-          "Type": "String",
-          "Value": supplierCountry.text
-        },
-        {
-          "Key": "SupplierZipCode",
-          "Type": "String",
-          "Value": supplierZipcode.text
-        },
-        {
-          "Key": "SupplierContactNumber",
-          "Type": "String",
-          "Value": supplierContactNumber.text
-        },
-        {
-          "Key": "SupplierEmail",
-          "Type": "String",
-          "Value": supplierEmail.text
-        },
-        {
-          "Key": "SupplierGSTNumber",
-          "Type": "String",
-          "Value": supplierGstNo.text
-        },
-        {
-          "Key": "SupplierMaterialMappingList",
-          "Type": "datatable",
-          "Value": js
-        },
-        {
-          "Key": "database",
-          "Type": "String",
-          "Value": Provider.of<QuarryNotifier>(context,listen: false).DataBaseName
-        }
-      ]
+      ParameterModel(Key: "SupplierCategoryId", Type: "int", Value: supplierCategoryId),
+      ParameterModel(Key: "database", Type: "String", Value:Provider.of<QuarryNotifier>(context,listen: false).DataBaseName),
+    ];
+
+    if(isSupplierEdit){
+      parameters.insert(2,ParameterModel(Key: "SupplierId", Type: "int", Value: supplierEditId));
+    }
+
+    var body = {
+      "Fields": parameters.map((e) => e.toJson()).toList()
     };
+
 
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
 
-        if(value!=null){
+        if(value!="null"){
           var parsed=json.decode(value);
           Navigator.pop(context);
           clearForm();
           GetSupplierDbHit(context, null,tickerProviderStateMixin);
         }
+        else{
+          updateSupplierLoader(false);
+        }
 
-        updateSupplierLoader(false);
+
       });
     }catch(e){
       updateSupplierLoader(false);
@@ -231,63 +182,42 @@ class SupplierNotifier extends ChangeNotifier{
 
   GetSupplierDbHit(BuildContext context,int? supplierId,TickerProviderStateMixin tickerProviderStateMixin)  async{
 
-    print(tickerProviderStateMixin);
-    print(supplierId);
     updateSupplierLoader(true);
-
-    var body={
-      "Fields": [
-        {
-          "Key": "SpName",
-          "Type": "String",
-          "Value": "${Sp.getSupplierDetail}"
-        },
-        {
-          "Key": "LoginUserId",
-          "Type": "int",
-          "Value": Provider.of<QuarryNotifier>(context,listen: false).UserId
-        },
-        {
-          "Key": "SupplierId",
-          "Type": "int",
-          "Value": supplierId
-        },
-        {
-          "Key": "database",
-          "Type": "String",
-          "Value": Provider.of<QuarryNotifier>(context,listen: false).DataBaseName
-        }
-      ]
+    parameters=[
+      ParameterModel(Key: "SpName", Type: "String", Value: "${Sp.getSupplierDetail}"),
+      ParameterModel(Key: "LoginUserId", Type: "int", Value: Provider.of<QuarryNotifier>(context,listen: false).UserId),
+      ParameterModel(Key: "SupplierId", Type: "int", Value: supplierId),
+      ParameterModel(Key: "database", Type: "String", Value:Provider.of<QuarryNotifier>(context,listen: false).DataBaseName),
+    ];
+    var body = {
+      "Fields": parameters.map((e) => e.toJson()).toList()
     };
+
 
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
-        if(value!=null){
+        if(value!="null"){
           var parsed=json.decode(value);
           var t=parsed['Table'] as List?;
 
-          print("t_$t");
           if(supplierId!=null){
             var t1=parsed['Table1'] as List;
-            print(t1);
+
 
             supplierCategoryName=t![0]['SupplierCategoryName'];
             supplierCategoryId=t[0]['SupplierCategoryId'];
             supplierEditId=t[0]['SupplierId'];
             supplierMaterialId=null;
             supplierMaterialName=null;
-            supplierName.text=t[0]['SupplierName'];
-            supplierAddress.text=t[0]['SupplierAddress'];
-            supplierCity.text=t[0]['SupplierCity'];
-            supplierState.text=t[0]['SupplierState'];
-            supplierCountry.text=t[0]['SupplierCountry'];
-            supplierZipcode.text=t[0]['SupplierZipCode'];
-            supplierContactNumber.text=t[0]['SupplierContactNumber'];
-            supplierEmail.text=t[0]['SupplierEmail'];
-            supplierGstNo.text=t[0]['SupplierGSTNumber'];
-
-            print(supplierName.text);
-
+            supplierName.text=t[0]['SupplierName']??"";
+            supplierAddress.text=t[0]['SupplierAddress']??"";
+            supplierCity.text=t[0]['SupplierCity']??"";
+            supplierState.text=t[0]['SupplierState']??"";
+            supplierCountry.text=t[0]['SupplierCountry']??"";
+            supplierZipcode.text=t[0]['SupplierZipCode']??"";
+            supplierContactNumber.text=t[0]['SupplierContactNumber']??"";
+            supplierEmail.text=t[0]['SupplierEmail']??"";
+            supplierGstNo.text=t[0]['SupplierGSTNumber']??"";
 
             supplierMaterialMappingList=t1.map((e) => SupplierMaterialMappingListModel.fromJson(e,tickerProviderStateMixin)).toList();
 

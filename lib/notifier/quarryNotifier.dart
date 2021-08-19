@@ -8,6 +8,7 @@ import 'package:quarry/api/sp.dart';
 import 'package:quarry/model/customerDetailsModel.dart';
 import 'package:quarry/model/dropDownValues.dart';
 import 'package:quarry/model/manageUsersModel/manageUsersPlantModel.dart';
+import 'package:quarry/model/parameterMode.dart';
 import 'package:quarry/model/plantDetailsModel/plantGridModel.dart';
 import 'package:quarry/model/plantDetailsModel/plantLicenseModel.dart';
 import 'package:quarry/model/plantDetailsModel/plantTypeModel.dart';
@@ -15,6 +16,7 @@ import 'package:quarry/model/plantModel/plantUserModel.dart';
 import 'package:quarry/model/salesVehiclesModel.dart';
 import 'package:quarry/notifier/profileNotifier.dart';
 import 'package:quarry/pages/sale/saleGrid.dart';
+import 'package:quarry/styles/constants.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/calculation.dart';
 import 'package:quarry/widgets/decimal.dart';
@@ -2496,96 +2498,32 @@ class QuarryNotifier extends ChangeNotifier{
     List js=[];
     js=PO_PlantLicenseList.map((e) => e.toJson()).toList();
     print(js);
-    var body={
-      "Fields": [
-        {
-          "Key": "SpName",
-          "Type": "String",
-          "Value": isPlantDetailsEdit?"${Sp.updatePlantDetail}":"${Sp.insertPlantDetail}"
-        },
-        {
-          "Key": "LoginUserId",
-          "Type": "int",
-          "Value": UserId
-        },
-        {
-          "Key": "PlantId",
-          "Type": "int",
-          "Value": editPlantId
-        },
-        {
-          "Key": "PlantName",
-          "Type": "String",
-          "Value": PD_quarryname.text
-        },
-        {
-          "Key": "PlantAddress",
-          "Type": "String",
-          "Value": PD_address.text
-        },
-        {
-          "Key": "PlantCity",
-          "Type": "String",
-          "Value": PD_city.text
-        },
-        {
-          "Key": "PlantState",
-          "Type": "String",
-          "Value": PD_state.text
-        },
-        {
-          "Key": "PlantCountry",
-          "Type": "String",
-          "Value": PD_country.text
-        },
-        {
-          "Key": "PlantZipCode",
-          "Type": "String",
-          "Value": PD_zipcode.text
-        },
-        {
-          "Key": "PlantContactNumber",
-          "Type": "String",
-          "Value": PD_contactNo.text
-        },
-        {
-          "Key": "PlantEmail",
-          "Type": "String",
-          "Value": PD_email.text
-        },
-        {
-          "Key": "PlantWebsite",
-          "Type": "String",
-          "Value": PD_website.text
-        },
-        {
-          "Key": "PlantTypeId",
-          "Type": "int",
-          "Value": PD_plantTypeId
-        },
-        {
-          "Key": "PlantContactPersonName",
-          "Type": "String",
-          "Value": PD_ContactPersonName.text
-        },
-        {
-          "Key": "PlantContactPersonDesignation",
-          "Type": "String",
-          "Value": PD_Designation.text
-        },
-        {
-          "Key": "PlantLicenseList",
-          "Type": "datatable",
-          "Value": js
-        },
-
-        {
-          "Key": "database",
-          "Type": "String",
-          "Value": DataBaseName
-        }
-      ]
+    parameters=[
+      ParameterModel(Key: "SpName", Type: "String", Value:  isPlantDetailsEdit?"${Sp.updatePlantDetail}":"${Sp.insertPlantDetail}"),
+      ParameterModel(Key: "LoginUserId", Type: "int", Value: UserId),
+      ParameterModel(Key: "PlantName", Type: "String", Value: PD_quarryname.text),
+      ParameterModel(Key: "PlantAddress", Type: "String", Value: PD_address.text),
+      ParameterModel(Key: "PlantCity", Type: "String", Value: PD_city.text),
+      ParameterModel(Key: "PlantState", Type: "String", Value: PD_state.text),
+      ParameterModel(Key: "PlantCountry", Type: "String", Value: PD_country.text),
+      ParameterModel(Key: "PlantZipCode", Type: "String", Value: PD_zipcode.text),
+      ParameterModel(Key: "PlantContactNumber", Type: "String", Value: PD_contactNo.text),
+      ParameterModel(Key: "PlantEmail", Type: "String", Value: PD_email.text),
+      ParameterModel(Key: "PlantWebsite", Type: "String", Value: PD_website.text),
+      ParameterModel(Key: "PlantContactPersonName", Type: "String", Value: PD_ContactPersonName.text),
+      ParameterModel(Key: "PlantContactPersonDesignation", Type: "String", Value: PD_Designation.text),
+      ParameterModel(Key: "PlantTypeId", Type: "int", Value: PD_plantTypeId),
+      ParameterModel(Key: "PlantLicenseList", Type: "datatable", Value: js),
+      ParameterModel(Key: "database", Type: "String", Value:DataBaseName),
+    ];
+    if(isPlantDetailsEdit){
+      parameters.insert(2, ParameterModel(Key: "PlantId", Type: "int", Value: editPlantId));
+    }
+    var body = {
+      "Fields": parameters.map((e) => e.toJson()).toList()
     };
+
+
 
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
@@ -2597,8 +2535,11 @@ class QuarryNotifier extends ChangeNotifier{
           Navigator.pop(context);
           GetplantDetailDbhit(context, null,tickerProviderStateMixin);
         }
+        else{
+          updateInsertCompanyLoader(false);
+        }
 
-        updateInsertCompanyLoader(false);
+
 
       });
     }

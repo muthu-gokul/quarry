@@ -40,7 +40,7 @@ class SupplierMaterialMappingListModel{
     SupplierMaterialMappingId: json["SupplierMaterialMappingId"],
     SupplierId: json["SupplierId"],
     MaterialId: json["MaterialId"],
-    MaterialPrice: json["MaterialPrice"],
+    MaterialPrice: json["MaterialPrice"].toDouble(),
     IsActive: json["IsActive"],
     MaterialName: json["MaterialName"],
     UnitName: json["UnitName"],
