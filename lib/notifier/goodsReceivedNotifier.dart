@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:ffi';
 
 import 'package:flutter/cupertino.dart';
@@ -63,7 +64,7 @@ class GoodsReceivedNotifier extends ChangeNotifier{
     };
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
-        if(value!=null){
+        if(value!="null"){
           var parsed=json.decode(value);
 
           var t=parsed['Table'] as List?;
@@ -253,7 +254,7 @@ class GoodsReceivedNotifier extends ChangeNotifier{
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
 
-        if(value!=null){
+        if(value!="null"){
           var parsed=json.decode(value);
           print("INSERT SP_$parsed");
           var t=parsed['Table'] as List;
@@ -265,8 +266,11 @@ class GoodsReceivedNotifier extends ChangeNotifier{
           print(GoodsMaterialsListState().mounted);
         //
         }
+        else{
+          updateGoodsLoader(false);
+        }
 
-        updateGoodsLoader(false);
+
       });
     }catch(e){
       updateGoodsLoader(false);
@@ -426,7 +430,7 @@ class GoodsReceivedNotifier extends ChangeNotifier{
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
 
-        if(value!=null){
+        if(value!="null"){
           var parsed=json.decode(value);
           GetGoodsDbHit(context, null,null,false,tickerProviderStateMixin);
           Navigator.pop(context);
@@ -435,8 +439,11 @@ class GoodsReceivedNotifier extends ChangeNotifier{
 
 
         }
+        else{
+          updateGoodsLoader(false);
+        }
 
-        updateGoodsLoader(false);
+
       });
     }catch(e){
       updateGoodsLoader(false);
@@ -730,33 +737,35 @@ class GoodsReceivedNotifier extends ChangeNotifier{
     try{
 
       await call.ApiCallGetInvoke(body,context).then((value) {
-        if(value!=null){
+        if(value!="null"){
 
-          if(filterUsersPlantList.isEmpty){
-
-            Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.forEach((element) {
-              filterUsersPlantList.add(ManageUserPlantModel(
-                plantId: element.plantId,
-                plantName: element.plantName,
-                isActive: element.isActive,
-              ));
-            });
-
-          } else if(filterUsersPlantList.length!=Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.length){
-            filterUsersPlantList.clear();
-
-            Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.forEach((element) {
-              filterUsersPlantList.add(ManageUserPlantModel(
-                plantId: element.plantId,
-                plantName: element.plantName,
-                isActive: element.isActive,
-
-              ));
-            });
-          }
+         // log(value);
           var parsed=json.decode(value);
           var t=parsed['Table'] as List?;
           if(goodsReceivedId!=null || purchaseOrderId!=null){
+            if(filterUsersPlantList.isEmpty){
+
+              Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.forEach((element) {
+                filterUsersPlantList.add(ManageUserPlantModel(
+                  plantId: element.plantId,
+                  plantName: element.plantName,
+                  isActive: element.isActive,
+                ));
+              });
+
+            }
+            else if(filterUsersPlantList.length!=Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.length){
+              filterUsersPlantList.clear();
+
+              Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.forEach((element) {
+                filterUsersPlantList.add(ManageUserPlantModel(
+                  plantId: element.plantId,
+                  plantName: element.plantName,
+                  isActive: element.isActive,
+
+                ));
+              });
+            }
 
             if(ToInvoice){
               GINV_PorderNo=t![0]['PurchaseOrderNumber'];
@@ -793,8 +802,6 @@ class GoodsReceivedNotifier extends ChangeNotifier{
             else{
               print("GOODSt_$t");
 
-
-
               ML_PorderNo=t![0]['PurchaseOrderNumber'];
               ML_PorderId=t[0]['PurchaseOrderId'];
               ML_GoodsorderId=t[0]['GoodsReceivedId'];
@@ -808,8 +815,9 @@ class GoodsReceivedNotifier extends ChangeNotifier{
               ML_Materials=t1.map((e) => GoodsReceivedMaterialListModel.fromJson(e)).toList();
 
               var t2=parsed['Table2'] as List;
-              materialTripList=t2.map((e) => GoodsMaterialTripDetailsModel.fromJson(e)).toList();
               print("t2_$t2");
+              materialTripList=t2.map((e) => GoodsMaterialTripDetailsModel.fromJson(e)).toList();
+
               var t3=parsed['Table3'] as List;
               GoodsMaterialExtraTripModelDetails =t3.map((e) => GoodsMaterialExtraTripModel.fromJson(e)).toList();
               print("t3_$t3");
@@ -819,8 +827,6 @@ class GoodsReceivedNotifier extends ChangeNotifier{
 
 
             }
-
-
 
             notifyListeners();
           }
@@ -837,9 +843,9 @@ class GoodsReceivedNotifier extends ChangeNotifier{
 
         updateGoodsLoader(false);
       });
-    }catch(e){
+    }catch(e,t){
       updateGoodsLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.getGoodsReceivedDetail}" , e.toString());
+      CustomAlert().commonErrorAlert(context, "${Sp.getGoodsReceivedDetail}" , t.toString());
     }
   }
 
