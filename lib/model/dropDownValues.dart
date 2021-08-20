@@ -266,7 +266,7 @@ class SaleDetails{
       SaleDate: json['SaleDate'],
 
       OutputMaterialQty: json['OutputMaterialQty'],
-      OutputQtyAmount: json['OutputQtyAmount']!=null?json['OutputQtyAmount'].toDouble():json['OutputQtyAmount'],
+      OutputQtyAmount: json['OutputQtyAmount']!=null?json['OutputQtyAmount'].toDouble():0.0,
 
       TaxPercentage: json['TaxValue'].toDouble(),
       TaxAmount: json['TaxAmount'].toDouble(),

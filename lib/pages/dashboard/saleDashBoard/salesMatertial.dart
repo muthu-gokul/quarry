@@ -552,7 +552,7 @@ class _SalesMaterialState extends State<SalesMaterial> {
                             onTap: (){
                               Navigator.push(context, fadeRoute(SalesCustomer(
                                 paymentType: db.salePaymentCategoryT6![i]['PaymentCategoryName']??"Other",
-                                totalAmount: db.salePaymentCategoryT6![i]['GrandTotalAmount'],
+                                totalAmount: db.salePaymentCategoryT6![i]['GrandTotalAmount'].toDouble(),
                                 customerList: db.salePaymentCustomerT7!.where((element) => element['PaymentCategoryId']==db.salePaymentCategoryT6![i]['PaymentCategoryId']).toList(),
                                 color:db.salePaymentCategoryT6![i]['PaymentCategoryName']=='Cash'?Color(0xFFF4C246):
                                 db.salePaymentCategoryT6![i]['PaymentCategoryName']=='Cheque'?Color(0xFF69CA9D):

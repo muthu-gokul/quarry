@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -101,6 +102,7 @@ class QuarryNotifier extends ChangeNotifier{
 
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
+      //  log(value);
         if(value!="null"){
           var parsed=json.decode(value);
           var t=parsed['Table'] as List;
@@ -1829,10 +1831,8 @@ class QuarryNotifier extends ChangeNotifier{
 
       if(OG_isDiscount==1){
         if(OG_isPercentage==0){
-
           SS_DifferWeight=(Decimal.parse(SS_TotalWeight!)-Decimal.parse((SS_DifferWeightController.text))).toString();
           msg="Material Low ${SS_DifferWeight}. So You need to Return";
-
           SS_UpdatecustomerNeedWeight=(Decimal.parse(SS_RequiredMaterialQty!)-Decimal.parse(SS_DifferWeight!)).toString();
           SS_UpdateAmount=Calculation().mul(SS_UpdatecustomerNeedWeight, SS_MaterialUnitPrice).toString();
           UpdateDiscountAmount=SS_DiscountAmount;
@@ -1844,21 +1844,12 @@ class QuarryNotifier extends ChangeNotifier{
           else{
             UpdateTaxAmount=0.0;
           }
-
           UpdateGrandTotalAmount=Calculation().add(UpdateDiscountedOutputQtyAmount, UpdateTaxAmount);
           UpdateRoundOffAmount=Calculation().sub(UpdateGrandTotalAmount!.round(), UpdateGrandTotalAmount);
-
         }
         else if(OG_isPercentage==1){
-
-
-
-
-
-
           SS_DifferWeight=(Decimal.parse(SS_TotalWeight!)-Decimal.parse((SS_DifferWeightController.text))).toString();
           msg="Material Low ${SS_DifferWeight}. So You need to Return";
-
           SS_UpdatecustomerNeedWeight=(Decimal.parse(SS_RequiredMaterialQty!)-Decimal.parse(SS_DifferWeight!)).toString();
           SS_UpdateAmount=Calculation().mul(SS_UpdatecustomerNeedWeight, SS_MaterialUnitPrice).toString();
           UpdateDiscountAmount=Calculation().discountAmount(discountValue:OG_discountValue,amount: SS_UpdateAmount );
@@ -1870,17 +1861,13 @@ class QuarryNotifier extends ChangeNotifier{
           else{
             UpdateTaxAmount=0.0;
           }
-
           UpdateGrandTotalAmount=Calculation().add(UpdateDiscountedOutputQtyAmount, UpdateTaxAmount);
           UpdateRoundOffAmount=Calculation().sub(UpdateGrandTotalAmount!.round(), UpdateGrandTotalAmount);
-
         }
       }
       else{
         OG_DiscountAmount=0.0;
         OG_DiscountedSubTotal=0.0;
-
-
         SS_UpdatecustomerNeedWeight=(Decimal.parse(SS_RequiredMaterialQty!)-Decimal.parse(SS_DifferWeight!)).toString();
         SS_UpdateAmount=Calculation().mul(SS_UpdatecustomerNeedWeight, SS_MaterialUnitPrice.toString()).toString();
         UpdateDiscountAmount=0.0;
@@ -1894,12 +1881,7 @@ class QuarryNotifier extends ChangeNotifier{
         }
         UpdateGrandTotalAmount=Calculation().add(UpdateOutputQtyAmount, UpdateTaxAmount);
         UpdateRoundOffAmount=Calculation().sub(UpdateGrandTotalAmount!.round(), UpdateGrandTotalAmount);
-
-
       }
-
-
-
       notifyListeners();
     }
     else if(double.parse(SS_TotalWeight!)<double.parse(SS_DifferWeightController.text.toString())){
