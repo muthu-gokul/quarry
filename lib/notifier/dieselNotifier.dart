@@ -156,7 +156,7 @@ class DieselNotifier extends ChangeNotifier{
     };
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
-        if(value!=null){
+        if(value!="null"){
           var parsed=json.decode(value);
 
 
@@ -332,7 +332,7 @@ double? totalAmount=0.0;
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
 
-        if(value!=null){
+        if(value!="null"){
           var parsed=json.decode(value);
 
           Navigator.pop(context);
@@ -341,8 +341,11 @@ double? totalAmount=0.0;
 
           //
         }
+        else{
+          updateDieselLoader(false);
+        }
 
-        updateDieselLoader(false);
+
       });
     }catch(e){
       updateDieselLoader(false);
@@ -420,7 +423,7 @@ double? totalAmount=0.0;
 
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
-        if(value!=null){
+        if(value!="null"){
           log(value);
           if(filterUsersPlantList.isEmpty){
 

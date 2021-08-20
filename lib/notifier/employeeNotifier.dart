@@ -262,15 +262,15 @@ class EmployeeNotifier extends ChangeNotifier{
 
   InsertEmployeeDbHit(BuildContext context)  async{
     updateEmployeeLoader(true);
+    print(isEmployeeEdit);
     parameters=[
       ParameterModel(Key: "SpName", Type: "String", Value: isEmployeeEdit?"${Sp.updateEmployeeDetail}": "${Sp.insertEmployeeDetail}"),
       ParameterModel(Key: "LoginUserId", Type: "int", Value: Provider.of<QuarryNotifier>(context,listen: false).UserId),
-      ParameterModel(Key: "EmployeeId", Type: "int", Value:editEmployeeId),
       ParameterModel(Key: "EmployeeCode", Type: "String", Value:EmployeeCode),
       ParameterModel(Key: "EmployeeSalutation", Type: "String", Value:selectedSalutation),
       ParameterModel(Key: "EmployeeFirstName", Type: "String", Value:employeeFirstName.text),
       ParameterModel(Key: "EmployeeLastName", Type: "String", Value:employeeLastName.text),
-      ParameterModel(Key: "EmployeePassword", Type: "String", Value:""),
+   //   ParameterModel(Key: "EmployeePassword", Type: "String", Value:""),
       ParameterModel(Key: "EmployeeDesignationId", Type: "int", Value:selectEmployeeDesignationId),
       ParameterModel(Key: "EmployeeTypeId", Type: "int", Value:selectEmployeeTypeId),
       ParameterModel(Key: "EmployeeShiftId", Type: "int", Value:selectShiftId),
@@ -302,6 +302,10 @@ class EmployeeNotifier extends ChangeNotifier{
       ParameterModel(Key: "database", Type: "String", Value:Provider.of<QuarryNotifier>(context,listen: false).DataBaseName),
     ];
 
+    if(isEmployeeEdit){
+      parameters.insert(2, ParameterModel(Key: "EmployeeId", Type: "int", Value:editEmployeeId));
+    }
+
     var body={
       "Fields": parameters.map((e) => e.toJson()).toList()
     };
@@ -309,7 +313,7 @@ class EmployeeNotifier extends ChangeNotifier{
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
 
-        if(value!=null){
+        if(value!="null"){
           var parsed=json.decode(value);
 
 
@@ -319,8 +323,11 @@ class EmployeeNotifier extends ChangeNotifier{
 
           //
         }
+        else{
+          updateEmployeeLoader(false);
+        }
 
-        updateEmployeeLoader(false);
+
       });
     }catch(e){
       updateEmployeeLoader(false);
@@ -348,7 +355,7 @@ class EmployeeNotifier extends ChangeNotifier{
 
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
-        if(value!=null){
+        if(value!="null"){
           var parsed=json.decode(value);
           var t=parsed['Table'] as List?;
           print("t$t");
