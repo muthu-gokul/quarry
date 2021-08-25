@@ -327,10 +327,11 @@ class ProductionNotifier extends ChangeNotifier{
 
         if(value!="null"){
           var parsed=json.decode(value);
-          print(parsed);
+     //     print(parsed);
+          GetProductionDbHit(context, null,tickerProviderStateMixin);
           Navigator.pop(context);
           clearForm();
-          GetProductionDbHit(context, null,tickerProviderStateMixin);
+
         }
         else{
           updateProductionLoader(false);

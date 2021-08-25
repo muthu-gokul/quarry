@@ -139,7 +139,7 @@ class PaymentNotifier extends ChangeNotifier{
 
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
-        if(value!=null){
+        if(value!="null"){
           var parsed=json.decode(value);
           var t=parsed['Table'] as List;
           var t1=parsed['Table1'] as List;
@@ -272,12 +272,12 @@ class PaymentNotifier extends ChangeNotifier{
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
 
-        if(value!=null){
+        if(value!="null"){
           var parsed=json.decode(value);
+          GetPaymentDbHit(context, null,tickerProviderStateMixin);
           Navigator.pop(context);
           clearEditForm();
           clearInsertForm();
-          GetPaymentDbHit(context, null,tickerProviderStateMixin);
         }
 
         updatePaymentLoader(false);
@@ -386,7 +386,7 @@ class PaymentNotifier extends ChangeNotifier{
             EditInvoiceType=t[0]['InvoiceType'];
             EditPartyId=t[0]['PartyId'];
             EditPartyName=t[0]['PartyName'];
-            EditGrandTotalAmount=t[0]['GrandTotalAmount'];
+            EditGrandTotalAmount=t[0]['GrandTotalAmount'].toDouble();
 
             paymentMappingList=t1.map((e) => PaymentMappingModel.fromJson(e, tickerProviderStateMixin)).toList();
             balanceCalc();
@@ -585,12 +585,12 @@ class PaymentNotifier extends ChangeNotifier{
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
 
-        if(value!=null){
-
+        if(value!="null"){
+          GetPaymentDbHit(context, null,tickerProviderStateMixin);
           Navigator.pop(context);
           clearEditForm();
           clearInsertForm();
-          GetPaymentDbHit(context, null,tickerProviderStateMixin);
+
         }
 
         updatePaymentLoader(false);

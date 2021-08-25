@@ -42,9 +42,9 @@ class PaymentGridModel {
     invoiceDate: DateTime.parse(json["InvoiceDate"]),
     partyId: json["PartyId"],
     partyName: json["PartyName"],
-    grandTotalAmount: json["GrandTotalAmount"],
-    paidAmount: json["PaidAmount"],
-    balanceAmount: json["BalanceAmount"],
+    grandTotalAmount: json["GrandTotalAmount"].toDouble(),
+    paidAmount: json["PaidAmount"].toDouble(),
+    balanceAmount: json["BalanceAmount"].toDouble(),
     status: json["Status"],
   );
 

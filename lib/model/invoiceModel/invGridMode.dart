@@ -33,7 +33,7 @@ class InvoiceGridModel {
     invoiceDate:json["InvoiceDate"]!=null? DateTime.parse(json["InvoiceDate"]):null,
     partyId: json["PartyId"],
     partyName: json["PartyName"],
-    grandTotalAmount: json["GrandTotalAmount"],
+    grandTotalAmount: json["GrandTotalAmount"].toDouble(),
     status: json["Status"],
   );
 

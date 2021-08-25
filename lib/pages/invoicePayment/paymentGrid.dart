@@ -359,7 +359,7 @@ class PaymentGridState extends State<PaymentGrid> with TickerProviderStateMixin{
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Container(
+                              pn.filterGridPaymentList.isEmpty?Container(): Container(
                                 height: 50,
                                 width: 150,
                                 color: AppTheme.bgColor,

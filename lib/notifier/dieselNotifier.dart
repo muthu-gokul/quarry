@@ -337,9 +337,9 @@ double? totalAmount=0.0;
         log(value);
         if(value!="null"){
           var parsed=json.decode(value);
-
-          Navigator.pop(context);
           GetDieselPurchaseDbHit(context, null);
+          Navigator.pop(context);
+
           clearDP_Form();
 
           //
@@ -577,9 +577,9 @@ double? totalAmount=0.0;
 
         if(value!=null){
           var parsed=json.decode(value);
-
-          Navigator.pop(context);
           GetDieselIssueDbHit(context, null);
+          Navigator.pop(context);
+
           clearDI_form();
 
           //

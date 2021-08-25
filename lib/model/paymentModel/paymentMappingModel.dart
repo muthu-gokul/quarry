@@ -51,7 +51,7 @@ class PaymentMappingModel{
       InvoiceId: json["InvoiceId"],
       PaymentCategoryId: json["PaymentCategoryId"],
       PaymentCategoryName: json["PaymentCategoryName"],
-      Amount: json["PaidAmount"],
+      Amount: json["PaidAmount"].toDouble(),
       PartyId:  json["PartyId"],
       Comment: json["Comment"],
       createdDate: DateTime.parse(json["CreatedDate"]),
