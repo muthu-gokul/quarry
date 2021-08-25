@@ -349,7 +349,7 @@ class PaymentNotifier extends ChangeNotifier{
     updatePaymentLoader(false);
   //  try{
       await call.ApiCallGetInvoke(body,context).then((value) {
-        if(value!=null){
+        if(value!="null"){
           if(filterUsersPlantList.isEmpty){
 
             Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.forEach((element) {
@@ -360,7 +360,8 @@ class PaymentNotifier extends ChangeNotifier{
               ));
             });
 
-          } else if(filterUsersPlantList.length!=Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.length){
+          }
+          else if(filterUsersPlantList.length!=Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.length){
             filterUsersPlantList.clear();
 
             Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.forEach((element) {

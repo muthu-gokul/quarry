@@ -598,11 +598,7 @@ class PurchaseNotifier extends ChangeNotifier{
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
         if(value!="null"){
-
-
-          var parsed=json.decode(value);
-          var t=parsed['Table'] as List?;
-          if(PurchaseOrderId!=null){
+        //  if(Provider.of<ProfileNotifier>(context,listen: false)!=null){
             if(filterUsersPlantList.isEmpty){
 
               Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.forEach((element) {
@@ -616,7 +612,6 @@ class PurchaseNotifier extends ChangeNotifier{
             }
             else if(filterUsersPlantList.length!=Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.length){
               filterUsersPlantList.clear();
-
               Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.forEach((element) {
                 filterUsersPlantList.add(ManageUserPlantModel(
                   plantId: element.plantId,
@@ -625,6 +620,13 @@ class PurchaseNotifier extends ChangeNotifier{
                 ));
               });
             }
+      //    }
+
+
+          var parsed=json.decode(value);
+          var t=parsed['Table'] as List?;
+          if(PurchaseOrderId!=null){
+
             print("t_$t");
             var t1=parsed['Table1'] as List;
             print(t1);

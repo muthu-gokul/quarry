@@ -169,7 +169,8 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
                                       });
                                     }
                                   }
-                                } as bool Function(ScrollNotification)?,
+                                  return true;
+                                } ,
                                 child: ListView(
                                   physics: isListScroll?AlwaysScrollableScrollPhysics():NeverScrollableScrollPhysics(),
                                   controller: listViewController,

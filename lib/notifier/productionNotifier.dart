@@ -417,34 +417,34 @@ class ProductionNotifier extends ChangeNotifier{
 
           var parsed=json.decode(value);
           var t=parsed['Table'] as List?;
+          if(filterUsersPlantList.isEmpty){
 
-          print(t);
+            Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.forEach((element) {
+              filterUsersPlantList.add(ManageUserPlantModel(
+                plantId: element.plantId,
+                plantName: element.plantName,
+                isActive: element.isActive,
+              ));
+            });
+
+          }
+          else if(filterUsersPlantList.length!=Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.length){
+            filterUsersPlantList.clear();
+
+            Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.forEach((element) {
+              filterUsersPlantList.add(ManageUserPlantModel(
+                plantId: element.plantId,
+                plantName: element.plantName,
+                isActive: element.isActive,
+
+              ));
+            });
+          }
+
           if(productionId!=null){
-            if(filterUsersPlantList.isEmpty){
 
-              Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.forEach((element) {
-                filterUsersPlantList.add(ManageUserPlantModel(
-                  plantId: element.plantId,
-                  plantName: element.plantName,
-                  isActive: element.isActive,
-                ));
-              });
-
-            }
-            else if(filterUsersPlantList.length!=Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.length){
-              filterUsersPlantList.clear();
-
-              Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.forEach((element) {
-                filterUsersPlantList.add(ManageUserPlantModel(
-                  plantId: element.plantId,
-                  plantName: element.plantName,
-                  isActive: element.isActive,
-
-                ));
-              });
-            }
             var t1=parsed['Table1'] as List;
-            print(t1);
+
 
 
             productionIdEdit=t![0]['ProductionId'];

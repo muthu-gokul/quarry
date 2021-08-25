@@ -321,17 +321,20 @@ double? totalAmount=0.0;
       ParameterModel(Key: "DieselQuantity", Type: "String", Value: DP_dieselQTY.text.isNotEmpty?double.parse(DP_dieselQTY.text):0.0),
       ParameterModel(Key: "DieselRate", Type: "String", Value: DP_dieselPrice.text.isNotEmpty?double.parse(DP_dieselPrice.text):0.0),
       ParameterModel(Key: "TotalAmount", Type: "String", Value: totalAmount),
-      ParameterModel(Key: "DieselPurchaseId", Type: "int", Value: EditDieselPurchaseId),
-      ParameterModel(Key: "UnitId", Type: "int", Value: null),
+     // ParameterModel(Key: "UnitId", Type: "int", Value: null),
       ParameterModel(Key: "database", Type: "String", Value:Provider.of<QuarryNotifier>(context,listen: false).DataBaseName),
     ];
+    if(isDieselEdit){
+      parameters.insert(2,   ParameterModel(Key: "DieselPurchaseId", Type: "int", Value: EditDieselPurchaseId));
+    }
+    log("${parameters.map((e) => e.toJson()).toList()}");
     var body={
       "Fields": parameters.map((e) => e.toJson()).toList()
     };
 
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
-
+        log(value);
         if(value!="null"){
           var parsed=json.decode(value);
 
@@ -435,7 +438,8 @@ double? totalAmount=0.0;
               ));
             });
 
-          } else if(filterUsersPlantList.length!=Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.length){
+          }
+          else if(filterUsersPlantList.length!=Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.length){
             filterUsersPlantList.clear();
 
             Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.forEach((element) {
@@ -450,6 +454,7 @@ double? totalAmount=0.0;
           var parsed=json.decode(value);
           var t=parsed['Table'] as List?;
           if(dieselPurchaseId!=null ){
+
             EditDieselPurchaseId=t![0]['DieselPurchaseId'];
             DP_PlantId=t[0]['PlantId'];
             DP_PlantName=t[0]['PlantName'];
@@ -470,7 +475,7 @@ double? totalAmount=0.0;
 
             DP_dieselQTY.text=t[0]['DieselQuantity'].toString();
             DP_dieselPrice.text=t[0]['DieselRate'].toString();
-            totalAmount=t[0]['TotalAmount'];
+            totalAmount=t[0]['TotalAmount'].toDouble();
           }
           else{
 

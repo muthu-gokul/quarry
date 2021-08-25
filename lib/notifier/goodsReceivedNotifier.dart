@@ -738,34 +738,34 @@ class GoodsReceivedNotifier extends ChangeNotifier{
 
       await call.ApiCallGetInvoke(body,context).then((value) {
         if(value!="null"){
+          if(filterUsersPlantList.isEmpty){
 
+            Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.forEach((element) {
+              filterUsersPlantList.add(ManageUserPlantModel(
+                plantId: element.plantId,
+                plantName: element.plantName,
+                isActive: element.isActive,
+              ));
+            });
+
+          }
+          else if(filterUsersPlantList.length!=Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.length){
+            filterUsersPlantList.clear();
+
+            Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.forEach((element) {
+              filterUsersPlantList.add(ManageUserPlantModel(
+                plantId: element.plantId,
+                plantName: element.plantName,
+                isActive: element.isActive,
+
+              ));
+            });
+          }
          // log(value);
           var parsed=json.decode(value);
           var t=parsed['Table'] as List?;
           if(goodsReceivedId!=null || purchaseOrderId!=null){
-            if(filterUsersPlantList.isEmpty){
 
-              Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.forEach((element) {
-                filterUsersPlantList.add(ManageUserPlantModel(
-                  plantId: element.plantId,
-                  plantName: element.plantName,
-                  isActive: element.isActive,
-                ));
-              });
-
-            }
-            else if(filterUsersPlantList.length!=Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.length){
-              filterUsersPlantList.clear();
-
-              Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.forEach((element) {
-                filterUsersPlantList.add(ManageUserPlantModel(
-                  plantId: element.plantId,
-                  plantName: element.plantName,
-                  isActive: element.isActive,
-
-                ));
-              });
-            }
 
             if(ToInvoice){
               GINV_PorderNo=t![0]['PurchaseOrderNumber'];

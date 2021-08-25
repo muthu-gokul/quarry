@@ -41,9 +41,9 @@ class DieselPurchaseGridModel {
     supplierName: json["SupplierName"],
     dieselBunkLocation: json["DieselBunkLocation"],
     dieselBunkContactNumber: json["DieselBunkContactNumber"],
-    dieselQuantity: json["DieselQuantity"],
-    dieselRate: json["DieselRate"],
-    totalAmount: json["TotalAmount"],
+    dieselQuantity: json["DieselQuantity"].toDouble(),
+    dieselRate: json["DieselRate"].toDouble(),
+    totalAmount: json["TotalAmount"].toDouble(),
     billDate:json["BillDate"]!=null? DateTime.parse(json["BillDate"]):null,
   );
 

@@ -199,8 +199,8 @@ class _EmployeeMasterViewState extends State<EmployeeMasterView> with TickerProv
                                         });
                                       }
                                     }
-
-                                  } as bool Function(ScrollNotification)?,
+                                    return true;
+                                  },
                                   child: ListView(
                                     controller: listViewController,
                                     scrollDirection: Axis.vertical,

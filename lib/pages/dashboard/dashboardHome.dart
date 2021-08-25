@@ -303,7 +303,8 @@ class _DashBoardHomeState extends State<DashBoardHome> {
                                             //  minorGridLines: const MinorGridLines(width: 1,color: Colors.white),
                                             axisLine:const AxisLine(width: 1),
                                             edgeLabelPlacement: EdgeLabelPlacement.none,
-                                            labelPlacement:snapshot.data==1?LabelPlacement.betweenTicks: LabelPlacement.onTicks,
+                                            labelPlacement:snapshot.data.length==1?LabelPlacement.betweenTicks: LabelPlacement.onTicks,
+
 
                                         ),
                                         primaryYAxis: NumericAxis(
@@ -328,6 +329,10 @@ class _DashBoardHomeState extends State<DashBoardHome> {
                                               begin: Alignment.bottomCenter,
                                               end: Alignment.topCenter,
                                               //  stops: [0,30]
+                                            ),
+                                            markerSettings: MarkerSettings(
+                                                isVisible:snapshot.data.length==1? true:false,
+                                                color: AppTheme.yellowColor
                                             ),
                                             name: 'Sales',
                                             xValueMapper: (dynamic sales, _) =>DateFormat("MMMd").format(DateTime.parse(sales['Date'])),

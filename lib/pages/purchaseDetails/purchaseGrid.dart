@@ -40,7 +40,7 @@ class PurchaseDetailsGridState extends State<PurchaseDetailsGrid> with TickerPro
   @override
   void initState() {
 
-    print(this.mounted);
+
     header.addListener(() {
       if(body.offset!=header.offset){
         body.jumpTo(header.offset);
@@ -78,10 +78,11 @@ class PurchaseDetailsGridState extends State<PurchaseDetailsGrid> with TickerPro
     });
     super.initState();
   }
-
+  GlobalKey <ScaffoldState> scaffoldkey=new GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldkey,
       body: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.light.copyWith(
             statusBarColor: Colors.black
