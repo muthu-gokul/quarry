@@ -23,7 +23,7 @@ class _AttendanceDashBoardState extends State<AttendanceDashBoard> {
   ScrollController? silverController;
   double silverBodyTopMargin=0;
   List<DateTime?> picked=[];
-  int selIndex=-1;
+  int selIndex=1;
 
   @override
   void initState() {
@@ -104,6 +104,8 @@ class _AttendanceDashBoardState extends State<AttendanceDashBoard> {
                                   if (picked1 != null && picked1.length == 2) {
                                     setState(() {
                                       picked=picked1;
+                                      position=5;
+                                      selIndex=1;
                                     });
                                     db.DashBoardDbHit(context,
                                         "Attendance",
@@ -114,6 +116,8 @@ class _AttendanceDashBoardState extends State<AttendanceDashBoard> {
                                   else if(picked1!=null && picked1.length ==1){
                                     setState(() {
                                       picked=picked1;
+                                      position=5;
+                                      selIndex=1;
                                     });
                                     db.DashBoardDbHit(context,
                                         "Attendance",
@@ -187,7 +191,20 @@ class _AttendanceDashBoardState extends State<AttendanceDashBoard> {
                               InkWell(
                                 onTap:(){
                                   setState(() {
+                                    db.totalAbsent=0;
+                                    db.totalPresent=0;
                                     position=5;
+                                    selIndex=1;
+                                    db.todayAttendanceCountT1.forEach((element) {
+                                      if(element['Status']==0){
+                                        db.totalAbsent=element['TotalCount'];
+                                      }
+                                      else if(element['Status']==1){
+                                        db.totalPresent=element['TotalCount'];
+                                      }
+                                    });
+                                    db.totalEmployee=db.totalAbsent+db.totalPresent;
+                                    db.attendanceList=db.todayAttendanceListT2;
                                   });
 
                                 },
@@ -196,7 +213,7 @@ class _AttendanceDashBoardState extends State<AttendanceDashBoard> {
                                   height: 50,
                                   color: Colors.transparent,
                                   child: Center(
-                                      child: Text("Week",style: TextStyle(fontFamily: 'RR',fontSize: 14,color:position==5?AppTheme.bgColor: Colors.grey),)
+                                      child: Text("Today",style: TextStyle(fontFamily: 'RR',fontSize: 14,color:position==5?AppTheme.bgColor: Colors.grey),)
 
                                   ),
                                 ),
@@ -204,7 +221,20 @@ class _AttendanceDashBoardState extends State<AttendanceDashBoard> {
                               InkWell(
                                 onTap:(){
                                   setState(() {
+                                    db.totalAbsent=0;
+                                    db.totalPresent=0;
                                     position=tabWidth*0.33;
+                                    selIndex=2;
+                                    db.weekAttendanceCountT6.forEach((element) {
+                                      if(element['Status']==0){
+                                        db.totalAbsent=element['TotalCount'];
+                                      }
+                                      else if(element['Status']==1){
+                                        db.totalPresent=element['TotalCount'];
+                                      }
+                                    });
+                                    db.totalEmployee=db.totalAbsent+db.totalPresent;
+                                    db.attendanceList=db.weekAttendanceListT7;
                                   });
 
                                 },
@@ -213,14 +243,27 @@ class _AttendanceDashBoardState extends State<AttendanceDashBoard> {
                                   height: 50,
                                   color: Colors.transparent,
                                   child: Center(
-                                      child: Text("Month",style: TextStyle(fontFamily: 'RR',fontSize: 14,color:position==tabWidth*0.33?AppTheme.bgColor:  Colors.grey),)
+                                      child: Text("Week",style: TextStyle(fontFamily: 'RR',fontSize: 14,color:position==tabWidth*0.33?AppTheme.bgColor:  Colors.grey),)
                                   ),
                                 ),
                               ),
                               InkWell(
                                 onTap:(){
                                   setState(() {
-                                    position=tabWidth*0.66;
+                                    db.totalAbsent=0;
+                                    db.totalPresent=0;
+                                    position=(tabWidth*0.66)-5;
+                                    selIndex=3;
+                                    db.monthAttendanceCountT9.forEach((element) {
+                                      if(element['Status']==0){
+                                        db.totalAbsent=element['TotalCount'];
+                                      }
+                                      else if(element['Status']==1){
+                                        db.totalPresent=element['TotalCount'];
+                                      }
+                                    });
+                                    db.totalEmployee=db.totalAbsent+db.totalPresent;
+                                    db.attendanceList=db.monthAttendanceListT10;
                                   });
 
                                 },
@@ -229,7 +272,7 @@ class _AttendanceDashBoardState extends State<AttendanceDashBoard> {
                                   height: 50,
                                   color: Colors.transparent,
                                   child: Center(
-                                      child: Text("Year",style: TextStyle(fontFamily: 'RR',fontSize: 14,color:position==tabWidth*0.66?AppTheme.bgColor: Colors.grey),)
+                                      child: Text("Month",style: TextStyle(fontFamily: 'RR',fontSize: 14,color:position==tabWidth*0.66?AppTheme.bgColor: Colors.grey),)
                                   ),
                                 ),
                               ),
@@ -289,7 +332,7 @@ class _AttendanceDashBoardState extends State<AttendanceDashBoard> {
                     //  width: double.maxFinite,
                       child: ListView.builder(
                         physics: NeverScrollableScrollPhysics(),
-                        itemCount: db.todayAttendanceListT2!.length,
+                        itemCount: db.attendanceList.length,
                         itemBuilder: (ctx,i){
                           return Container(
                            // height: 50,
@@ -317,7 +360,7 @@ class _AttendanceDashBoardState extends State<AttendanceDashBoard> {
                                   children: [
                                     Container(
                                         width:(SizeConfig.screenWidth!-40)*0.6,
-                                        child: Text("${db.todayAttendanceListT2![i]['Employee']}",
+                                        child: Text("${db.attendanceList[i]['Employee']}",
                                           style: TextStyle(fontSize: 12,color: AppTheme.attendanceDashText1,fontFamily: 'RM'),
                                         )
                                     ),
@@ -325,13 +368,18 @@ class _AttendanceDashBoardState extends State<AttendanceDashBoard> {
                                     Row(
                                       children: [
                                         SvgPicture.asset("assets/svg/drawer/reports/receivablePayment.svg",height: 15,),
-                                        Text("  ${db.todayAttendanceListT2![i]['PerdaySalary']}",
+                                        Text("  ${db.attendanceList[i]['PerdaySalary']}",
                                           style: TextStyle(fontSize: 12,color: AppTheme.attendanceDashText1,fontFamily: 'RR'),
                                         ),
                                       ],
                                     )
                                   ],
-                                )
+                                ),
+                                Spacer(),
+
+                                selIndex==1?Container():Text("Working Days: ${db.attendanceList[i]['WorkingDays']}",
+                                  style: TextStyle(fontSize: 11,color: AppTheme.attendanceDashText1,fontFamily: 'RR'),
+                                ),
                               ],
                             ),
                           );

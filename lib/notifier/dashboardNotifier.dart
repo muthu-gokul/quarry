@@ -138,7 +138,14 @@ class DashboardNotifier extends ChangeNotifier{
                 totalPresent=element['TotalCount'];
               }
               });
-            todayAttendanceListT2=parsed['Table2'] as List?;
+            todayAttendanceListT2=parsed['Table2'] as List;
+            weekAttendanceListT7=parsed['Table7'] as List;
+            monthAttendanceListT10=parsed['Table10'] as List;
+
+            todayAttendanceCountT1=parsed['Table1'] as List;
+            weekAttendanceCountT6=parsed['Table6'] as List;
+            monthAttendanceCountT9=parsed['Table9'] as List;
+            attendanceList=todayAttendanceListT2;
             updateisLoad(false);
           }
           else if(typeName=='Counter'){
@@ -319,7 +326,15 @@ Map totalDiesel={};
 //Attendance DashBoard
   int totalEmployee=1;
   int  totalPresent=0,totalAbsent=0;
-  List<dynamic>? todayAttendanceListT2=[];
+
+  List<dynamic> attendanceList=[];
+  List<dynamic> todayAttendanceListT2=[];
+  List<dynamic> weekAttendanceListT7=[];
+  List<dynamic> monthAttendanceListT10=[];
+
+  List<dynamic> todayAttendanceCountT1=[];
+  List<dynamic> weekAttendanceCountT6=[];
+  List<dynamic> monthAttendanceCountT9=[];
 
 
 //Invoice Dashboard
