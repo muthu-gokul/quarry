@@ -30,6 +30,7 @@ import 'package:quarry/pages/invoice/invoiceGrid.dart';
 import 'package:quarry/pages/invoicePayment/paymentGrid.dart';
 import 'package:quarry/pages/productionDetails/productionDetailsGrid.dart';
 import 'package:quarry/pages/purchaseDetails/purchaseGrid.dart';
+import 'package:quarry/pages/userAccess/userAccess.dart';
 import 'package:quarry/pages/users/profile.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
@@ -404,8 +405,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
               ),
             ),
           ),
-
-
           body: drawer.menuSelected==1?QuaryAddNew(drawerCallback: (){
             scaffoldkey.currentState!.openDrawer();
           },):
@@ -467,6 +466,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
             scaffoldkey.currentState!.openDrawer();
           },):
           drawer.menuSelected==22?DashBoardHome(drawerCallback: (){
+            scaffoldkey.currentState!.openDrawer();
+          },):
+          drawer.menuSelected==23?UserAccess(drawerCallback: (){
             scaffoldkey.currentState!.openDrawer();
           },):
           Container()
@@ -1378,6 +1380,21 @@ class SettingsPageState extends State<SettingsPage> with TickerProviderStateMixi
                       Provider.of<DrawerNotifier>(context,listen: false).changeMenu(8);
 
                       Provider.of<SupplierNotifier>(context, listen: false).GetSupplierDbHit(context,null,this);
+                    },
+                  ),
+                  DrawerContent(
+                    delay: 4,
+                    height: 50,
+                    image: "assets/svg/drawer/settings/supplier.svg",
+                    title: 'User Access',
+                    tag: 'User Access',
+                    titleColor: AppTheme.yellowColor,
+                    callback: (){
+                      Navigator.pop(context);
+                      widget.voidCallback!();
+                      Provider.of<DrawerNotifier>(context,listen: false).changeMenu(23);
+
+
                     },
                   ),
                 ],

@@ -26,6 +26,7 @@ import 'notifier/machineManagementNotifier.dart';
 import 'notifier/manageUsersNotifier.dart';
 import 'notifier/paymentNotifier.dart';
 import 'notifier/reportNotifier.dart';
+import 'notifier/userAccessNotifier.dart';
 import 'references/bottomNavi.dart';
 import 'testing.dart';
 
@@ -62,6 +63,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<EmployeeSalaryNotifier>(create:(_)=>EmployeeSalaryNotifier()),
         ChangeNotifierProvider<MachineManagementNotifier>(create:(_)=>MachineManagementNotifier()),
         ChangeNotifierProvider<DashboardNotifier>(create:(_)=>DashboardNotifier()),
+        ChangeNotifierProvider<UserAccessNotifier>(create:(_)=>UserAccessNotifier()),
       ],
       child: MaterialApp(
         title: 'Quarry Management',
