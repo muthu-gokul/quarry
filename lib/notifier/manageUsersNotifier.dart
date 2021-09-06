@@ -72,6 +72,7 @@ class ManageUsersNotifier extends ChangeNotifier{
           var t2=parsed['Table2'] as List;
 
           userGroupList=t;
+          print(t);
           plantList=t2.map((e) => ManageUserPlantModel.fromJson(e)).toList();
         }
         updateManageUsersLoader(false);
