@@ -13,6 +13,8 @@ class UserAccessNotifier extends ChangeNotifier{
   final call=ApiManager();
 
   List<dynamic> moduleList=[];
+  List<UserAccessModel> data=[];
+
 
   Future<dynamic> getUserAccess(BuildContext context) async {
     updateisLoad(true);
@@ -29,7 +31,19 @@ class UserAccessNotifier extends ChangeNotifier{
         if(value!='F'){
           var parsed=json.decode(value);
           log("$parsed");
+          data.clear();
           moduleList=parsed['Table']  as List;
+          moduleList.forEach((element) {
+        //    print(element);
+            int index=data.indexWhere((ele) => ele.parent['ModuleName']==element['ModuleName']).toInt();
+            if(index==-1){
+              data.add(UserAccessModel(parent: element, children: [],isOpen: false));
+            }
+            else{
+              data[index].children.add(element);
+            }
+          });
+          print(data.length);
           updateisLoad(false);
           notifyListeners();
         }
@@ -78,4 +92,11 @@ bool isLoad=false;
     notifyListeners();
   }
 
+}
+
+class UserAccessModel{
+  Map parent;
+  List<dynamic> children;
+  bool isOpen;
+  UserAccessModel({required this.parent,required this.children,required this.isOpen});
 }

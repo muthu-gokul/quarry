@@ -700,9 +700,6 @@ class InvoiceNotifier extends ChangeNotifier{
 
           }
         }
-
-
-
         updateInvoiceLoader(false);
       });
     }catch(e){

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -198,8 +199,8 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
             body: json.encode(body)
         ).then((value) async {
           var parsed = json.decode(value.body);
-          print(value.body);
-          print(parsed);
+         // print(value.body);
+          log("parsed ${value.body}");
 
 
           if (parsed["Table"] != null) {

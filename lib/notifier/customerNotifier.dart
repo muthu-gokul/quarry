@@ -27,10 +27,15 @@ class CustomerNotifier extends ChangeNotifier {
   TextEditingController customerGstNumber = new TextEditingController();
   TextEditingController customerType = new TextEditingController();
   TextEditingController customerCreditLimit = new TextEditingController();
+  TextEditingController customerAdvanceAmount = new TextEditingController();
   double? usedAmount=0.0;
   double? balanceAmount=0.0;
 
+  double? usedAdvanceAmount=0.0;
+  double? balanceAdvanceAmount=0.0;
+
   bool? isCreditCustomer = false;
+  bool? isAdvanceCustomer = false;
 
   String? customerLogoFileName;
   String? customerLogoFolderName;
@@ -57,6 +62,8 @@ class CustomerNotifier extends ChangeNotifier {
       ParameterModel(Key: "CustomerGSTNumber", Type: "String", Value:customerGstNumber.text),
       ParameterModel(Key: "IsCreditCustomer", Type: "int", Value:isCreditCustomer!?1:0),
       ParameterModel(Key: "CustomerCreditLimit", Type: "String", Value:customerCreditLimit.text.isNotEmpty?double.parse(customerCreditLimit.text):0.0),
+      ParameterModel(Key: "IsCustomerAdvance", Type: "int", Value:isAdvanceCustomer!?1:0),
+      ParameterModel(Key: "CustomerAdvanceAmount", Type: "String", Value:customerAdvanceAmount.text.isNotEmpty?double.parse(customerAdvanceAmount.text):0.0),
       ParameterModel(Key: "CustomerLogoFileName", Type: "String", Value:null),
       ParameterModel(Key: "CustomerLogoFolderName", Type: "String", Value:null),
       ParameterModel(Key: "database", Type: "String", Value:Provider.of<QuarryNotifier>(context,listen: false).DataBaseName),
@@ -134,6 +141,12 @@ class CustomerNotifier extends ChangeNotifier {
               usedAmount=t[0]['UsedAmount'].toDouble();
               balanceAmount=t[0]['BalanceAmount'].toDouble();
             }
+            isAdvanceCustomer=t[0]['IsCustomerAdvance']==0?false:true;
+            customerAdvanceAmount.text=t[0]['CustomerAdvanceAmount'].toString();
+            if(isAdvanceCustomer!){
+              usedAdvanceAmount=t[0]['UsedAdvanceAmount'].toDouble();
+              balanceAdvanceAmount=t[0]['BalanceAdvanceAmount'].toDouble();
+            }
 
           }
           else{
@@ -160,6 +173,7 @@ class CustomerNotifier extends ChangeNotifier {
     isCustomerEdit = value;
     if(!isCustomerEdit){
       isCreditCustomer=false;
+      isAdvanceCustomer=false;
     }
     notifyListeners();
   }
@@ -183,7 +197,10 @@ class CustomerNotifier extends ChangeNotifier {
     customerEmail.clear();
     customerGstNumber.clear();
     customerCreditLimit.clear();
+    customerAdvanceAmount.clear();
     usedAmount=0.0;
     balanceAmount=0.0;
+    usedAdvanceAmount=0.0;
+    balanceAdvanceAmount=0.0;
   }
 }

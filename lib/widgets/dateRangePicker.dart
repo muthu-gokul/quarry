@@ -86,9 +86,9 @@ class _DatePickerHeader extends StatelessWidget {
         break;
     }
     final TextStyle dayStyle =
-    headerTextTheme.display1!.copyWith(color: headerText,fontSize: 30);
+    headerTextTheme.headline4!.copyWith(color: headerText,fontSize: 30);
     final TextStyle yearStyle =
-    headerTextTheme.subhead!.copyWith(color: headerText.withOpacity(0.9),fontSize: 13 );
+    headerTextTheme.subtitle1!.copyWith(color: headerText.withOpacity(0.9),fontSize: 13 );
 
     Color? backgroundColor;
     switch (themeData.brightness) {
@@ -555,7 +555,7 @@ class DayPicker extends StatelessWidget {
               child: new ExcludeSemantics(
                 child: new Text(
                   localizations.formatMonthYear(displayedMonth),
-                  style: themeData.textTheme.subhead,
+                  style: themeData.textTheme.subtitle1,
                 ),
               ),
             ),
@@ -937,7 +937,7 @@ class _YearPickerState extends State<YearPicker> {
   Widget build(BuildContext context) {
     assert(debugCheckHasMaterial(context));
     final ThemeData themeData = Theme.of(context);
-    final TextStyle? style = themeData.textTheme.body1;
+    final TextStyle? style = themeData.textTheme.bodyText2;
     return new ListView.builder(
       controller: scrollController,
       itemExtent: _itemExtent,
@@ -948,7 +948,7 @@ class _YearPickerState extends State<YearPicker> {
             (widget.selectedLastDate != null &&
                 year == widget.selectedLastDate!.year);
         final TextStyle? itemStyle = isSelected
-            ? themeData.textTheme.headline!
+            ? themeData.textTheme.headline1!
             .copyWith(color: themeData.accentColor)
             : style;
         return new InkWell(

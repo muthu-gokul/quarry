@@ -114,7 +114,7 @@ class _UserAccessState extends State<UserAccess> {
                     ),
                   ),
                   //{ModuleId: 16, ModuleName: EmployeeAttendance, AccessUrl: api, ModuleAction: View, 1: 1, 2: 1, 3: 1, 4: 1}
-                  Container(
+                  /*Container(
                     height: SizeConfig.screenHeight!-100,
                     width: SizeConfig.screenWidth,
                    //  color: AppTheme.bgColor,
@@ -198,6 +198,205 @@ class _UserAccessState extends State<UserAccess> {
                                   ),
                           ),
                         ),
+
+                    ),
+
+                  ),*/
+                  Container(
+                    height: SizeConfig.screenHeight!-100,
+                    width: SizeConfig.screenWidth,
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      controller: body,
+                      child: Container(
+                        height: SizeConfig.screenHeight!-100,
+                        alignment: Alignment.topCenter,
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.vertical,
+                          child: Column(
+                            children: uan.data.asMap().map((key, value) => MapEntry(key,
+                                AnimatedContainer(
+                                  duration: Duration(milliseconds: 300),
+                                  curve: Curves.easeIn,
+                                  height:value.isOpen?((value.children.length)*50)+50: 50,
+                                  decoration: BoxDecoration(
+                                    color: Colors.transparent
+                                  ),
+                                  clipBehavior: Clip.antiAlias,
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        height: 50,
+                                        decoration: BoxDecoration(
+                                          border: AppTheme.gridBottomborder
+                                        ),
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              width: 180,
+                                              height: 50,
+                                             // alignment: Alignment.centerLeft,
+                                              child: Row(
+                                                crossAxisAlignment: CrossAxisAlignment.center,
+                                                children: [
+                                                  value.children.isEmpty?Container(
+
+                                                    margin: EdgeInsets.only(left: 5,right: 5),
+                                                  ):
+                                                  GestureDetector(
+                                                    onTap:(){
+                                                      setState(() {
+                                                        value.isOpen=!value.isOpen;
+                                                      });
+                                                    },
+                                                    child: Container(
+                                                      height: 30,
+                                                      width: 30,
+                                                      margin: EdgeInsets.only(left: 5,right: 5),
+                                                      decoration: BoxDecoration(
+                                                        color: AppTheme.bgColor,
+                                                        shape: BoxShape.circle
+                                                      ),
+                                                      child: Center(
+                                                        child: Icon( value.isOpen?Icons.remove:Icons.add,color: Colors.white,size: 16,),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    width: 130,
+                                                      height: 50,
+                                                      alignment: Alignment.centerLeft,
+                                                      child: Text("${value.parent['ModuleName']}",
+                                                        style: AppTheme.gridTextColorTS,
+                                                      )
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Container(
+                                              width: 70,
+                                              height: 50,
+                                              alignment: Alignment.centerLeft,
+                                              child: Text("${value.parent['ModuleAction']}",style: AppTheme.gridTextColorTS),
+                                            ),
+                                            GestureDetector(
+                                              onTap: (){
+                                                uan.updateUserAccess(context, value.parent['ModuleId'], 1, value.parent['1']);
+                                              },
+                                              child: Container(
+                                                  width: 90,
+                                                  height: 50,
+                                                  alignment: Alignment.center,
+                                                  child: AccessIcon(value: value.parent['1'])
+                                              ),
+                                            ),
+                                            GestureDetector(
+                                              onTap: (){
+                                                uan.updateUserAccess(context, value.parent['ModuleId'], 2, value.parent['2']);
+                                              },
+                                              child: Container(
+                                                  width: 70,
+                                                  height: 50,
+                                                  alignment: Alignment.center,
+                                                  child: AccessIcon(value: value.parent['2'])
+                                              ),
+                                            ),
+                                            GestureDetector(
+                                              onTap: (){
+                                                uan.updateUserAccess(context, value.parent['ModuleId'], 3, value.parent['3']);
+                                              },
+                                              child: Container(
+                                                  width: 100,
+                                                  height: 50,
+                                                  alignment: Alignment.center,
+                                                  child: AccessIcon(value: value.parent['3'])
+                                              ),
+                                            ),
+                                            GestureDetector(
+                                              onTap: (){
+                                                uan.updateUserAccess(context, value.parent['ModuleId'], 4, value.parent['4']);
+                                              },
+                                              child: Container(
+                                                  width: 150,
+                                                  height: 50,
+                                                  alignment: Alignment.center,
+                                                  child: AccessIcon(value: value.parent['4'])
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      for(int i=0;i<value.children.length;i++)
+                                        Container(
+                                          height: 50,
+                                          decoration: BoxDecoration(
+                                              border: AppTheme.gridBottomborder
+                                          ),
+                                          child: Row(
+                                            children: [
+                                              Container(
+                                                width: 180,
+                                                height: 50,
+                                              ),
+                                              Container(
+                                                width: 70,
+                                                height: 50,
+                                                alignment: Alignment.centerLeft,
+                                                child: Text("${value.children[i]['ModuleAction']}",style: AppTheme.gridTextColorTS),
+                                              ),
+                                              GestureDetector(
+                                                onTap: (){
+                                                  uan.updateUserAccess(context, value.children[i]['ModuleId'], 1, value.children[i]['1']);
+                                                },
+                                                child: Container(
+                                                    width: 90,
+                                                    height: 50,
+                                                    alignment: Alignment.center,
+                                                    child: AccessIcon(value: value.children[i]['1'])
+                                                ),
+                                              ),
+                                              GestureDetector(
+                                                onTap: (){
+                                                  uan.updateUserAccess(context, value.children[i]['ModuleId'], 2, value.children[i]['2']);
+                                                },
+                                                child: Container(
+                                                    width: 70,
+                                                    height: 50,
+                                                    alignment: Alignment.center,
+                                                    child: AccessIcon(value: value.children[i]['2'])
+                                                ),
+                                              ),
+                                              GestureDetector(
+                                                onTap: (){
+                                                  uan.updateUserAccess(context, value.children[i]['ModuleId'], 3, value.children[i]['3']);
+                                                },
+                                                child: Container(
+                                                    width: 100,
+                                                    height: 50,
+                                                    alignment: Alignment.center,
+                                                    child: AccessIcon(value: value.children[i]['3'])
+                                                ),
+                                              ),
+                                              GestureDetector(
+                                                onTap: (){
+                                                  uan.updateUserAccess(context, value.children[i]['ModuleId'], 4, value.children[i]['4']);
+                                                },
+                                                child: Container(
+                                                    width: 150,
+                                                    height: 50,
+                                                    alignment: Alignment.center,
+                                                    child: AccessIcon(value: value.children[i]['4'])
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                    ],
+                                  ),
+                                ))).values.toList(),
+                          ),
+                        ),
+                      ),
 
                     ),
 

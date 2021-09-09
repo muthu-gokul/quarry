@@ -1378,7 +1378,6 @@ class SettingsPageState extends State<SettingsPage> with TickerProviderStateMixi
                       Navigator.pop(context);
                       widget.voidCallback!();
                       Provider.of<DrawerNotifier>(context,listen: false).changeMenu(8);
-
                       Provider.of<SupplierNotifier>(context, listen: false).GetSupplierDbHit(context,null,this);
                     },
                   ),

@@ -273,7 +273,8 @@ class ProductionDetailAddNewState extends State<ProductionDetailAddNew> with Tic
                                     },
                                     onChange: (v){
                                       if(v.isNotEmpty){
-                                        if(double.parse(v)<=qn.stock!){
+                                        if(double.parse(v)<=qn.stock!
+                                        ){
                                           qn.wastageCalc();
                                         }
                                         else{

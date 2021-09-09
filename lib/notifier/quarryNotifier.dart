@@ -102,7 +102,7 @@ class QuarryNotifier extends ChangeNotifier{
 
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
-      //  log(value);
+       // log("DROP DOWN $value");
         if(value!="null"){
           var parsed=json.decode(value);
           var t=parsed['Table'] as List;

@@ -106,9 +106,6 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                       ),
                     ),
 
-
-
-
                     //FORM
                     Container(
                       height: SizeConfig.screenHeight,
@@ -370,6 +367,9 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                         },
                                       ),
                                       SizedBox(height: SizeConfig.height20,),
+
+
+                                      //Credit Customer
                                       Container(
                                         height: SizeConfig.height30,
                                         width: SizeConfig.screenWidth,
@@ -382,6 +382,7 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                                 onChanged: (v){
                                                   setState(() {
                                                     qn.isCreditCustomer=v;
+                                                    qn.isAdvanceCustomer=false;
                                                     _keyboardVisible=false;
                                                   });
 
@@ -393,12 +394,10 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                                     _keyboardVisible=false;
                                                   });
                                                 },
-                                                child: Text("IsCredit Customer", style:  TextStyle(fontFamily: 'RR',fontSize: 16,color:AppTheme.addNewTextFieldText,letterSpacing: 0.2),))
+                                                child: Text("Is Credit Customer", style:  TextStyle(fontFamily: 'RR',fontSize: 16,color:AppTheme.addNewTextFieldText,letterSpacing: 0.2),))
                                           ],
                                         ),
                                       ),
-
-
                                       AnimatedContainer(
                                         duration: Duration(milliseconds: 300),
                                         curve: Curves.easeIn,
@@ -517,6 +516,155 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                         ),
                                       ),
 
+
+                                      //Advance Customer
+                                      Container(
+                                        height: SizeConfig.height30,
+                                        width: SizeConfig.screenWidth,
+                                        padding: EdgeInsets.only(left: SizeConfig.width10!),
+                                        child: Row(
+                                          children: [
+                                            Checkbox(
+                                                fillColor: MaterialStateColor.resolveWith((states) => AppTheme.yellowColor),
+                                                value: qn.isAdvanceCustomer,
+                                                onChanged: (v){
+                                                  setState(() {
+                                                    qn.isAdvanceCustomer=v;
+                                                    qn.isCreditCustomer=false;
+                                                    _keyboardVisible=false;
+                                                  });
+
+                                                }),
+                                            InkWell(
+                                                onTap: (){
+                                                  setState(() {
+                                                    qn.isAdvanceCustomer=!qn.isAdvanceCustomer!;
+                                                    _keyboardVisible=false;
+                                                  });
+                                                },
+                                                child: Text("Is Advance Customer", style:  TextStyle(fontFamily: 'RR',fontSize: 16,color:AppTheme.addNewTextFieldText,letterSpacing: 0.2),))
+                                          ],
+                                        ),
+                                      ),
+                                      AnimatedContainer(
+                                        duration: Duration(milliseconds: 300),
+                                        curve: Curves.easeIn,
+                                        height: qn.isAdvanceCustomer!?160:0,
+                                        width: SizeConfig.screenWidth,
+
+
+
+                                        child:Column(
+                                          children: [
+                                            AddNewLabelTextField(
+                                              textEditingController: qn.customerAdvanceAmount,
+                                              labelText: "Advance Amount",
+                                              textInputType: TextInputType.number,
+                                              regExp: decimalReg,
+                                              scrollPadding: 400,
+                                              ontap: (){
+                                                scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                                                setState(() {
+                                                  isListScroll=true;
+                                                  _keyboardVisible=true;
+                                                });
+                                              },
+                                              onChange: (v){},
+                                              onEditComplete: (){
+                                                node.unfocus();
+                                                setState(() {
+                                                  _keyboardVisible=false;
+                                                });
+                                              },
+                                            ),
+
+                                            Container(
+                                              margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!,top: 10),
+                                              height:40,
+                                              width: SizeConfig.screenWidthM40,
+                                              decoration: BoxDecoration(
+                                                  color: tableColor,
+                                                  borderRadius: BorderRadius.only(topLeft: Radius.circular(3),topRight: Radius.circular(3)),
+                                                  border: Border.all(color: AppTheme.addNewTextFieldBorder)
+
+                                              ),
+                                              child:Row(
+                                                children: [
+                                                  Container(
+                                                      padding: EdgeInsets.only(left: SizeConfig.width10!),
+                                                      width: (SizeConfig.screenWidthM40!*0.5)-2,
+                                                      child: Text("Used Amount",style: tableTextStyle,)
+                                                  ),
+
+                                                  Container(
+                                                      height: 50,
+                                                      width: 1,
+                                                      color: AppTheme.addNewTextFieldBorder
+                                                  ),
+
+                                                  Container(
+                                                    padding: EdgeInsets.only(left: SizeConfig.width10!),
+                                                    height: 16,
+                                                    alignment: Alignment.centerLeft,
+                                                    width: (SizeConfig.screenWidthM40!*0.5)-1,
+                                                    child: FittedBox(child: Text("${qn.usedAdvanceAmount}",
+
+                                                      style:tableTextStyle2,
+                                                    ),
+
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Container(
+                                              margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!,),
+                                              height:40,
+                                              width: SizeConfig.screenWidthM40,
+                                              decoration: BoxDecoration(
+                                                  color: tableColor,
+                                                  border: Border(left: BorderSide(color: AppTheme.addNewTextFieldBorder),
+                                                    right: BorderSide(color: AppTheme.addNewTextFieldBorder),bottom: BorderSide(color: AppTheme.addNewTextFieldBorder),
+
+                                                  )
+
+
+                                              ),
+                                              child:Row(
+                                                children: [
+                                                  Container(
+                                                      padding: EdgeInsets.only(left: SizeConfig.width10!),
+                                                        width: (SizeConfig.screenWidthM40!*0.5)-2,
+                                                      child: Text("Balance Amount",style: tableTextStyle,)
+                                                  ),
+
+                                                  Container(
+                                                      height: 50,
+                                                      width: 1,
+                                                      color: AppTheme.addNewTextFieldBorder
+                                                  ),
+
+                                                  Container(
+                                                    padding: EdgeInsets.only(left: SizeConfig.width10!),
+                                                    height: 16,
+                                                    alignment: Alignment.centerLeft,
+                                                    width: (SizeConfig.screenWidthM40!*0.5)-1,
+                                                    child: FittedBox(child: Text("${qn.balanceAdvanceAmount}",
+
+                                                      style:tableTextStyle2,
+                                                    ),
+
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+
+                                          ],
+                                        ),
+                                      ),
+
+
                                       SizedBox(height: 20,),
                                       Container(
                                         height: SizeConfig.height70,
@@ -572,9 +720,6 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                       ),
                     ),
 
-
-
-
                     //HEADER
                     Container(
                       height: SizeConfig.height60,
@@ -603,7 +748,6 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                         ],
                       ),
                     ),
-
 
                     //bottomNav
                     Positioned(
