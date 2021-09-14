@@ -12,7 +12,9 @@ import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:permission_handler/permission_handler.dart';
+import 'package:quarry/model/userAccessModel.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
+import 'package:quarry/styles/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'api/sp.dart';
@@ -204,6 +206,10 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
 
 
           if (parsed["Table"] != null) {
+            var t1=parsed['Table1'] as List;
+            setState(() {
+              userAccessList=t1.map((e) => UserAccessModel.fromJson(e)).toList();
+            });
             loginNotifier.fetchUserDetails(parsed);
             print(loginNotifier.userDetail.loginTblOutput![0].Status);
 

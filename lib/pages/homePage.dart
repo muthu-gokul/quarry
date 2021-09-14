@@ -33,6 +33,7 @@ import 'package:quarry/pages/purchaseDetails/purchaseGrid.dart';
 import 'package:quarry/pages/userAccess/userAccess.dart';
 import 'package:quarry/pages/users/profile.dart';
 import 'package:quarry/styles/app_theme.dart';
+import 'package:quarry/styles/constants.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/animation/fadeanimation.dart';
 import '../styles/size.dart';
@@ -70,7 +71,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
   @override
   void initState() {
     SystemChrome.setEnabledSystemUIOverlays([]);
-
+    if( userAccessList[4].isHasAccess){
+      Provider.of<DrawerNotifier>(context,listen: false).changeMenu(22);
+    }
+    else{
+      Provider.of<DrawerNotifier>(context,listen: false).changeMenu(10);
+    }
 
     super.initState();
   }
@@ -180,7 +186,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                             child: ListView(
                               children: [
                                 SizedBox(height: 20,),
-                                DrawerContent(
+                                userAccessList[4].isHasAccess?DrawerContent(
                                   delay: 0.1,
                                   height: 50,
                                   image: "assets/svg/drawer/dashboard.svg",
@@ -193,7 +199,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                       scaffoldkey.currentState!.openEndDrawer();
                                     });
                                   },
-                                ),
+                                ):Container(),
                                 DrawerContent(
                                   delay:1,
                                   height: 50,
@@ -557,6 +563,7 @@ class DrawerContent extends StatelessWidget {
 
 
 class DrawerNotifier extends ChangeNotifier{
+
   int menuSelected=22;
   Future<dynamic> changeMenu(int index) async{
     menuSelected=index;

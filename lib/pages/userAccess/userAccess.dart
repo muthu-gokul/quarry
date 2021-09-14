@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/notifier/userAccessNotifier.dart';
 import 'package:quarry/styles/app_theme.dart';
+import 'package:quarry/styles/constants.dart';
 import 'package:quarry/styles/size.dart';
+import 'package:quarry/widgets/alertDialog.dart';
+import 'package:quarry/widgets/bottomBarAddButton.dart';
 import 'package:quarry/widgets/loader.dart';
 import 'package:quarry/widgets/navigationBarIcon.dart';
 class UserAccess extends StatefulWidget {
@@ -56,10 +59,17 @@ class _UserAccessState extends State<UserAccess> {
                     color: Colors.white,
                     child: Row(
                       children: [
-                        GestureDetector(
+                        CancelButton(
+                          ontap: (){
+                            Navigator.pop(context);
+                          },
+                          bgColor: AppTheme.bgColor,
+                          iconColor: Colors.white,
+                        ),
+                        /*GestureDetector(
                           onTap:widget.drawerCallback,
                           child: NavBarIcon(),
-                        ),
+                        ),*/
                         Text("User Access"),
                       ],
                     ),
@@ -281,7 +291,13 @@ class _UserAccessState extends State<UserAccess> {
                                             ),
                                             GestureDetector(
                                               onTap: (){
-                                                uan.updateUserAccess(context, value.parent['ModuleId'], 1, value.parent['1']);
+                                                if(userAccessList[3].isHasAccess){
+                                                  uan.updateUserAccess(context, value.parent['ModuleId'], 1, value.parent['1']);
+                                                }
+                                                else{
+                                                  CustomAlert().accessDenied(context,);
+                                                }
+
                                               },
                                               child: Container(
                                                   width: 90,
@@ -292,7 +308,12 @@ class _UserAccessState extends State<UserAccess> {
                                             ),
                                             GestureDetector(
                                               onTap: (){
-                                                uan.updateUserAccess(context, value.parent['ModuleId'], 2, value.parent['2']);
+                                                if(userAccessList[3].isHasAccess){
+                                                  uan.updateUserAccess(context, value.parent['ModuleId'], 2, value.parent['2']);
+                                                }
+                                                else{
+                                                  CustomAlert().accessDenied(context);
+                                                }
                                               },
                                               child: Container(
                                                   width: 70,
@@ -303,7 +324,13 @@ class _UserAccessState extends State<UserAccess> {
                                             ),
                                             GestureDetector(
                                               onTap: (){
-                                                uan.updateUserAccess(context, value.parent['ModuleId'], 3, value.parent['3']);
+                                                if(userAccessList[3].isHasAccess){
+                                                  uan.updateUserAccess(context, value.parent['ModuleId'], 3, value.parent['3']);
+                                                }
+                                                else{
+                                                  CustomAlert().accessDenied(context);
+                                                }
+
                                               },
                                               child: Container(
                                                   width: 100,
@@ -314,7 +341,12 @@ class _UserAccessState extends State<UserAccess> {
                                             ),
                                             GestureDetector(
                                               onTap: (){
-                                                uan.updateUserAccess(context, value.parent['ModuleId'], 4, value.parent['4']);
+                                                if(userAccessList[3].isHasAccess){
+                                                  uan.updateUserAccess(context, value.parent['ModuleId'], 4, value.parent['4']);
+                                                }
+                                                else{
+                                                  CustomAlert().accessDenied(context);
+                                                }
                                               },
                                               child: Container(
                                                   width: 150,
@@ -346,7 +378,12 @@ class _UserAccessState extends State<UserAccess> {
                                               ),
                                               GestureDetector(
                                                 onTap: (){
-                                                  uan.updateUserAccess(context, value.children[i]['ModuleId'], 1, value.children[i]['1']);
+                                                  if(userAccessList[3].isHasAccess){
+                                                    uan.updateUserAccess(context, value.children[i]['ModuleId'], 1, value.children[i]['1']);
+                                                  }
+                                                  else{
+                                                    CustomAlert().accessDenied(context);
+                                                  }
                                                 },
                                                 child: Container(
                                                     width: 90,
@@ -357,7 +394,12 @@ class _UserAccessState extends State<UserAccess> {
                                               ),
                                               GestureDetector(
                                                 onTap: (){
-                                                  uan.updateUserAccess(context, value.children[i]['ModuleId'], 2, value.children[i]['2']);
+                                                  if(userAccessList[3].isHasAccess){
+                                                    uan.updateUserAccess(context, value.children[i]['ModuleId'], 2, value.children[i]['2']);
+                                                  }
+                                                  else{
+                                                    CustomAlert().accessDenied(context);
+                                                  }
                                                 },
                                                 child: Container(
                                                     width: 70,
@@ -368,7 +410,12 @@ class _UserAccessState extends State<UserAccess> {
                                               ),
                                               GestureDetector(
                                                 onTap: (){
-                                                  uan.updateUserAccess(context, value.children[i]['ModuleId'], 3, value.children[i]['3']);
+                                                  if(userAccessList[3].isHasAccess){
+                                                    uan.updateUserAccess(context, value.children[i]['ModuleId'], 3, value.children[i]['3']);
+                                                  }
+                                                  else{
+                                                    CustomAlert().accessDenied(context);
+                                                  }
                                                 },
                                                 child: Container(
                                                     width: 100,
@@ -379,7 +426,12 @@ class _UserAccessState extends State<UserAccess> {
                                               ),
                                               GestureDetector(
                                                 onTap: (){
-                                                  uan.updateUserAccess(context, value.children[i]['ModuleId'], 4, value.children[i]['4']);
+                                                  if(userAccessList[3].isHasAccess){
+                                                    uan.updateUserAccess(context, value.children[i]['ModuleId'], 4, value.children[i]['4']);
+                                                  }
+                                                  else{
+                                                    CustomAlert().accessDenied(context);
+                                                  }
                                                 },
                                                 child: Container(
                                                     width: 150,

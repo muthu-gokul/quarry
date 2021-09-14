@@ -295,10 +295,7 @@ class DieselPurchaseFormState extends State<DieselPurchaseForm> with TickerProvi
                                   !date?Container():ValidationErrorText(title: "* Select Bill Date"),
                                   GestureDetector(
                                     onTap: (){
-
-
                                       node.unfocus();
-
                                       Timer(Duration(milliseconds: 50), (){
                                         setState(() {
                                           _keyboardVisible=false;
@@ -307,9 +304,6 @@ class DieselPurchaseFormState extends State<DieselPurchaseForm> with TickerProvi
                                       setState(() {
                                         isPurchaserOpen=true;
                                       });
-
-
-
                                     },
                                     child: SidePopUpParent(
                                       text: dn.DP_purchaserName==null? "Select Purchaser":dn.DP_purchaserName,

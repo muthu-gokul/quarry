@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -10,12 +11,15 @@ import 'package:quarry/notifier/machineNotifier.dart';
 import 'package:quarry/notifier/manageUsersNotifier.dart';
 import 'package:quarry/notifier/profileNotifier.dart';
 import 'package:quarry/pages/manageUsers/manageUsersGrid.dart';
+import 'package:quarry/pages/userAccess/userAccess.dart';
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
+import 'package:quarry/styles/constants.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/bottomBarAddButton.dart';
 import 'package:quarry/widgets/customTextField.dart';
+import 'package:quarry/widgets/expectedDateContainer.dart';
 import 'package:quarry/widgets/navigationBarIcon.dart';
 import 'package:quarry/widgets/validationErrorText.dart';
 
@@ -437,8 +441,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       !password?Container():ValidationErrorText(title: "* Enter Password",),
                                       SizedBox(height: SizeConfig.height20,),
                                       Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                        mainAxisAlignment: MainAxisAlignment.center,
                                         children: [
+                                          userAccessList[0].isHasAccess?
                                           GestureDetector(
                                             onTap: (){
                                               Navigator.push(context, _createRoute());
@@ -447,6 +452,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             child: Container(
                                               width:SizeConfig.screenWidth!*0.4,
                                               height:50,
+                                              margin: EdgeInsets.only(right:SizeConfig.screenWidth!*0.1,),
                                               decoration: BoxDecoration(
                                                 borderRadius: BorderRadius.circular(25.0),
                                                 color: AppTheme.yellowColor,
@@ -464,27 +470,35 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                   )
                                               ),
                                             ),
-                                          ),
-                                          Container(
-                                            width:SizeConfig.screenWidth!*0.4,
-                                            height:50,
-                                            decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(25.0),
-                                              color: AppTheme.yellowColor,
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  color: AppTheme.yellowColor.withOpacity(0.4),
-                                                  spreadRadius: 1,
-                                                  blurRadius: 5,
-                                                  offset: Offset(1, 8), // changes position of shadow
-                                                ),
-                                              ],
+                                          )
+                                              :EmptyContainer(),
+                                          userAccessList[2].isHasAccess? GestureDetector(
+                                            onTap: (){
+                                              Navigator.push(context, MaterialPageRoute(builder: (ctx)=>UserAccess(
+                                                drawerCallback: (){},
+                                              )));
+                                            },
+                                            child: Container(
+                                              width:SizeConfig.screenWidth!*0.4,
+                                              height:50,
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(25.0),
+                                                color: AppTheme.yellowColor,
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: AppTheme.yellowColor.withOpacity(0.4),
+                                                    spreadRadius: 1,
+                                                    blurRadius: 5,
+                                                    offset: Offset(1, 8), // changes position of shadow
+                                                  ),
+                                                ],
+                                              ),
+                                              child: Center(
+                                                  child: Text("User Access",style: AppTheme.bgColorTS,
+                                                  )
+                                              ),
                                             ),
-                                            child: Center(
-                                                child: Text("User Access",style: AppTheme.bgColorTS,
-                                                )
-                                            ),
-                                          ),
+                                          ) :EmptyContainer(),
                                         ],
                                       ),
 

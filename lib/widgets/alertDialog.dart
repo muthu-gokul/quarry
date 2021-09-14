@@ -111,6 +111,36 @@ class CustomAlert{
 
     );
   }
+  void accessDenied(BuildContext context){
+    showDialog(
+        context: context,
+        builder: (ctx) => Dialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+          child: Container(
+              height:250,
+              width:400,
+              decoration:BoxDecoration(
+                color:Colors.white,
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+
+              child:Column(
+                  children:[
+                    SizedBox(height:10),
+                    SvgPicture.asset('assets/svg/error-icon.svg'),
+                    SizedBox(height:30),
+                    Text("Access Denied",
+                        style:TextStyle(fontFamily:'RM',fontSize:22,color:AppTheme.red),textAlign: TextAlign.center,
+                    ),
+                    SizedBox(height:10),
+
+                  ]
+              )
+          ),
+        )
+
+    );
+  }
   void commonErrorAlert2(BuildContext context,String title,String des){
     showDialog(
         context: context,

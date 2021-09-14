@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:quarry/notifier/manageUsersNotifier.dart';
 
 import 'package:quarry/styles/app_theme.dart';
+import 'package:quarry/styles/constants.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/bottomBarAddButton.dart';
@@ -176,12 +177,15 @@ class ManageUsersGridState extends State<ManageUsersGrid> with TickerProviderSta
                                         child: Center(
                                           child: GestureDetector(
                                             onTap: (){
-
-                                              mun.updateisManageUsersEdit(false);
-                                              mun.updateisEdit(true);
-                                              Navigator.push(context, _createRoute());
-                                              mun.UserDropDownValues(context);
-
+                                              if(userAccessList[1].isHasAccess){
+                                                mun.updateisManageUsersEdit(false);
+                                                mun.updateisEdit(true);
+                                                Navigator.push(context, _createRoute());
+                                                mun.UserDropDownValues(context);
+                                              }
+                                              else{
+                                                 CustomAlert().accessDenied(context);
+                                              }
                                             },
                                             child: Container(
                                               height: 80,
@@ -207,11 +211,18 @@ class ManageUsersGridState extends State<ManageUsersGrid> with TickerProviderSta
                                       ),
                                       mun.usersList.isNotEmpty? GestureDetector(
                                         onTap: (){
-                                          mun.updateisManageUsersEdit(true);
-                                          mun.updateisEdit(false);
-                                          Navigator.push(context, _createRoute());
-                                          mun.UserDropDownValues(context);
-                                          mun.GetUserDetailDbHit(context,mun.usersList[0].userId);
+                                          if(userAccessList[1].isHasAccess){
+                                            mun.updateisManageUsersEdit(true);
+                                            mun.updateisEdit(false);
+                                            Navigator.push(context, _createRoute());
+                                            mun.UserDropDownValues(context);
+                                            mun.GetUserDetailDbHit(context,mun.usersList[0].userId);
+                                          }
+                                          else{
+                                            CustomAlert().accessDenied(context);
+                                          }
+
+
 
 
                                         },
@@ -290,11 +301,17 @@ class ManageUsersGridState extends State<ManageUsersGrid> with TickerProviderSta
                                               SizedBox(height: 50,),
                                               GestureDetector(
                                                 onTap: (){
-                                                  mun.updateisManageUsersEdit(true);
-                                                  mun.updateisEdit(false);
-                                                  Navigator.push(context, _createRoute());
-                                                  mun.UserDropDownValues(context);
-                                                  mun.GetUserDetailDbHit(context,mun.usersList[i].userId);
+                                                  if(userAccessList[1].isHasAccess){
+                                                    mun.updateisManageUsersEdit(true);
+                                                    mun.updateisEdit(false);
+                                                    Navigator.push(context, _createRoute());
+                                                    mun.UserDropDownValues(context);
+                                                    mun.GetUserDetailDbHit(context,mun.usersList[i].userId);
+                                                  }
+                                                  else{
+                                                    CustomAlert().accessDenied(context);
+                                                  }
+
                                                 },
                                                 onLongPress: (){
                                                   CustomAlert(

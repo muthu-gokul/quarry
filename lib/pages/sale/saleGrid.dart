@@ -116,13 +116,10 @@ class _SaleGridState extends State<SaleGrid> {
                     ),
                   ),
                 ),
-
                 Container(
                   height: 160,
                   width: SizeConfig.screenWidth,
                   // color: AppTheme.yellowColor,
-
-
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
@@ -161,14 +158,12 @@ class _SaleGridState extends State<SaleGrid> {
                                     // rn.reportDbHit(widget.UserId.toString(), widget.OutletId, DateFormat("dd-MM-yyyy").format( picked[0]).toString(), DateFormat("dd-MM-yyyy").format( picked[0]).toString(),"Itemwise Report", context);
                                   });
                                 }
-
                               },
                               child: SvgPicture.asset("assets/svg/calender.svg",width: 27,height: 27,color: AppTheme.bgColor,
                                 //    color: qn.selectedIndex==-1? AppTheme.bgColor.withOpacity(0.5):isOpen?AppTheme.bgColor:AppTheme.bgColor.withOpacity(0.5),
                               ),
                             ),
-                            SizedBox(width: 20,)
-
+                            SizedBox(width: 20,),
                           ],
                         ),
                       ),
@@ -186,21 +181,15 @@ class _SaleGridState extends State<SaleGrid> {
                                 value: value.value,
                                 qty: value.qty,
                                 unit: value.unit,
-
-                              ),)
-                              ).values.toList()
-
-                            ),
-                          )
+                              ),
+                            )
+                          ).values.toList()
+                         ),
+                        )
                       )
-
                     ],
                   )
                 ),
-
-
-
-
                 Container(
                     height: SizeConfig.screenHeight!-140,
                     width: SizeConfig.screenWidth,
@@ -462,10 +451,6 @@ class _SaleGridState extends State<SaleGrid> {
                       ],
                     )
                 ),
-
-
-
-
                 //bottomNav
                 Positioned(
                   bottom: 0,
@@ -634,10 +619,6 @@ class _SaleGridState extends State<SaleGrid> {
                       ),
                     )
                 ),
-
-
-
-
                 AnimatedPositioned(
                     bottom:showEdit? 0:-80,
                     child: Container(
@@ -724,8 +705,6 @@ class _SaleGridState extends State<SaleGrid> {
 
 
                     duration: Duration(milliseconds:300)),
-
-
 ////////////////////////////////////// LOADER //////////////////////////
                 Container(
                   height: qn.insertSaleLoader? SizeConfig.screenHeight:0,
