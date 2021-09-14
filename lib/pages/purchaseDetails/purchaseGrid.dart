@@ -6,6 +6,8 @@ import 'package:provider/provider.dart';
 import 'package:quarry/model/manageUsersModel/manageUsersPlantModel.dart';
 import 'package:quarry/notifier/profileNotifier.dart';
 import 'package:quarry/notifier/purchaseNotifier.dart';
+import 'package:quarry/styles/constants.dart';
+import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/dateRangePicker.dart' as DateRagePicker;
 import 'package:quarry/pages/purchaseDetails/purchaseAddNew.dart';
 import 'package:quarry/pages/purchaseDetails/purchasePlantList.dart';
@@ -519,16 +521,25 @@ class PurchaseDetailsGridState extends State<PurchaseDetailsGrid> with TickerPro
                               EditDelete(
                                 showEdit: showEdit,
                                 editTap: (){
-                                  pn.insertForm();
-                                  Navigator.of(context).push(_createRoute());
-                                  pn.updatePurchaseEdit(true);
-                                  pn.PurchaseDropDownValues(context).then((value) {
-                                    pn.GetPurchaseDbHit(context, pn.purchaseGridList[selectedIndex!].purchaseOrderId);
-                                    setState(() {
-                                      showEdit=false;
-                                      selectedIndex=-1;
+
+                                  if(userAccessList[8].isHasAccess){
+                                    pn.insertForm();
+                                    Navigator.of(context).push(_createRoute());
+                                    pn.updatePurchaseEdit(true);
+                                    pn.PurchaseDropDownValues(context).then((value) {
+                                      pn.GetPurchaseDbHit(context, pn.purchaseGridList[selectedIndex!].purchaseOrderId);
+                                      setState(() {
+                                        showEdit=false;
+                                        selectedIndex=-1;
+                                      });
                                     });
-                                  });
+                                  }
+                                  else{
+                                    CustomAlert().accessDenied(context);
+                                  }
+
+
+
 
                                 },
                               ),
@@ -603,17 +614,23 @@ class PurchaseDetailsGridState extends State<PurchaseDetailsGrid> with TickerPro
                   alignment: Alignment.bottomCenter,
                   child: AddButton(
                     ontap: (){
-                      pn.updatePurchaseView(false);
-                      pn.updatePurchaseEdit(false);
-                      pn.PlantUserDropDownValues(context);
-                      pn.PurchaseDropDownValues(context);
-                      pn.insertForm();
-                      if(selectedIndex!=-1){
-                        setState(() {
-                          selectedIndex=-1;
-                        });
+                      if(userAccessList[8].isHasAccess){
+                        pn.updatePurchaseView(false);
+                        pn.updatePurchaseEdit(false);
+                        pn.PlantUserDropDownValues(context);
+                        pn.PurchaseDropDownValues(context);
+                        pn.insertForm();
+                        if(selectedIndex!=-1){
+                          setState(() {
+                            selectedIndex=-1;
+                          });
+                        }
+                        Navigator.of(context).push(_createRoute());
                       }
-                      Navigator.of(context).push(_createRoute());
+                      else{
+                        CustomAlert().accessDenied(context);
+                      }
+
                     },
                     image: "assets/svg/plusIcon.svg",
                   ),

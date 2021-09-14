@@ -1388,21 +1388,6 @@ class SettingsPageState extends State<SettingsPage> with TickerProviderStateMixi
                       Provider.of<SupplierNotifier>(context, listen: false).GetSupplierDbHit(context,null,this);
                     },
                   ),
-                  DrawerContent(
-                    delay: 4,
-                    height: 50,
-                    image: "assets/svg/drawer/settings/supplier.svg",
-                    title: 'User Access',
-                    tag: 'User Access',
-                    titleColor: AppTheme.yellowColor,
-                    callback: (){
-                      Navigator.pop(context);
-                      widget.voidCallback!();
-                      Provider.of<DrawerNotifier>(context,listen: false).changeMenu(23);
-
-
-                    },
-                  ),
                 ],
               ),
             ),
