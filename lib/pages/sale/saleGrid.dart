@@ -172,7 +172,7 @@ class _SaleGridState extends State<SaleGrid> {
                           alignment: Alignment.centerLeft,
                           child:SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
-                            child: Row(
+                            child:userAccessList[5].isHasAccess? Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: qn.saleCounterList.asMap().
@@ -184,7 +184,7 @@ class _SaleGridState extends State<SaleGrid> {
                               ),
                             )
                           ).values.toList()
-                         ),
+                         ):Container(),
                         )
                       )
                     ],
@@ -532,14 +532,16 @@ class _SaleGridState extends State<SaleGrid> {
                                   onTap: (){
 
                                     if(qn.selectedIndex!=-1 && isOpen){
-                                      print("EDit");
-                                      Navigator.of(context).push(_createRoute());
-                                      qn.editLoader();
-                                      Timer(Duration(milliseconds: 300), (){
-                                        qn.tabController!.animateTo(1,duration: Duration(milliseconds: 300),curve: Curves.easeIn);
-                                      });
-
-
+                                      if(userAccessList[6].isHasAccess){
+                                        Navigator.of(context).push(_createRoute());
+                                        qn.editLoader();
+                                        Timer(Duration(milliseconds: 300), (){
+                                          qn.tabController!.animateTo(1,duration: Duration(milliseconds: 300),curve: Curves.easeIn);
+                                        });
+                                      }
+                                      else{
+                                        CustomAlert().accessDenied(context);
+                                      }
                                     }
 
 
@@ -594,12 +596,20 @@ class _SaleGridState extends State<SaleGrid> {
                   alignment: Alignment.bottomCenter,
                   child: AddButton(
                     ontap: (){
-                      qn.clearIsOpen();
-                      qn.clearEmptyForm();
-                      qn.PlantUserDropDownValues(context);
-                      qn.SalesDropDownValues(context).then((value) {
-                        Navigator.of(context).push(_createRouteFalse());
-                      });
+
+                      if(userAccessList[6].isHasAccess){
+                        qn.clearIsOpen();
+                        qn.clearEmptyForm();
+                        qn.PlantUserDropDownValues(context);
+                        qn.SalesDropDownValues(context).then((value) {
+                          Navigator.of(context).push(_createRouteFalse());
+                        });
+                      }
+                      else{
+                        CustomAlert().accessDenied(context);
+                      }
+
+
 
                     },
                     image: "assets/svg/plusIcon.svg",
