@@ -175,7 +175,6 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                       "assets/images/saleFormheader.jpg",),
                                                     fit: BoxFit.cover
                                                 )
-
                                             ),
                                           )
                                         ],

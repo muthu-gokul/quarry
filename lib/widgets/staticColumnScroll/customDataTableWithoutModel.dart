@@ -89,11 +89,6 @@ class _CustomDataTable3State extends State<CustomDataTable3> {
 
   @override
   Widget build(BuildContext context) {
-    // print("CustomTable");
-    // print(widget.gridData);
-    // print(gridDataRowList);
-    // print(gridCol);
-    // print(widget.selectedIndex);
     return Container(
         height: SizeConfig.screenHeight!-widget.topMargin!,
         width: SizeConfig.screenWidth,
@@ -268,7 +263,6 @@ class _CustomDataTable3State extends State<CustomDataTable3> {
                                 decoration: BoxDecoration(
                                   border: AppTheme.gridBottomborder,
                                   color: widget.selectedIndex==i?AppTheme.yellowColor:AppTheme.gridbodyBgColor,
-
                                 ),
                                 height: 50,
                                 width: 150,
