@@ -382,29 +382,29 @@ class _DashBoardHomeState extends State<DashBoardHome> {
                         if(i==0){
                           Navigator.push(context, MaterialPageRoute(builder: (context)=>SalesDashBoard()));
                         }
+                        // else if(i==1){
+                        //   Navigator.push(context, MaterialPageRoute(builder: (context)=>PurchaseDashBoard()));
+                        // }
                         else if(i==1){
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=>PurchaseDashBoard()));
-                        }
-                        else if(i==2){
                           Navigator.push(context, MaterialPageRoute(builder: (context)=>ProductionDashBoard()));
                         }
-                        else if(i==3){
+                        else if(i==2){
                           Navigator.push(context, MaterialPageRoute(builder: (context)=>AttendanceDashBoard()));
                         }
-                        else if(i==4){
+                        else if(i==3){
                           Navigator.push(context, MaterialPageRoute(builder: (context)=>CounterDashBoard()));
                         }
-                        else if(i==5){
+                        else if(i==4){
                           Navigator.push(context, MaterialPageRoute(builder: (context)=>DieselDashBoard()));
                         }
-                        else if(i==6){
+                        else if(i==5){
                           Navigator.push(context, MaterialPageRoute(builder: (context)=>InvoiceDashBoard()));
                         }
-                        else if(i==7){
+                        else if(i==6){
                           Navigator.push(context, MaterialPageRoute(builder: (context)=>StockDashBoard()));
                         }
                       },
-                      child: Container(
+                      child:Container(
                         height: SizeConfig.screenWidth!*0.27,
                         width: SizeConfig.screenWidth!*0.27,
                         padding: EdgeInsets.only(left: 10,right: 10),

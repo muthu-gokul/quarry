@@ -183,10 +183,11 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
             {
               "Key": "database",
               "Type": "String",
-              "Value": "TetroPOS_TestQMS" //live
+            //  "Value": "TetroPOS_TestQMS" //live
             // "Value": "TetroPos_QMSLocal"
            // "Value": "TetroPos_QMSTest1"
             // "Value": "QMS1"
+             "Value": "TetroPOS_TrranStone_QMS"
             },
 
           ]

@@ -20,7 +20,7 @@ class DashboardNotifier extends ChangeNotifier{
 
   List<MenuModel> menu=[
   MenuModel(title:"Sale",image: "assets/svg/drawer/sales-form.svg"),
-  MenuModel(title:"Purchase & Received",image: "assets/svg/drawer/purchase.svg"),
+ // MenuModel(title:"Purchase & Received",image: "assets/svg/drawer/purchase.svg"),
   MenuModel(title:"Production",image: "assets/svg/drawer/production.svg"),
   MenuModel(title:"Attendance",image: "assets/svg/drawer/employee/employeeAttendance.svg"),
   MenuModel(title:"Counters",image: "assets/svg/drawer/settings/customer.svg"),
