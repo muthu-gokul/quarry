@@ -29,6 +29,7 @@ class UserAccessNotifier extends ChangeNotifier{
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
         if(value!='F'){
+          log("$value");
           var parsed=json.decode(value);
           log("$parsed");
           data.clear();
