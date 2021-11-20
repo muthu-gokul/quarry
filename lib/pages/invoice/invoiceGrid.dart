@@ -145,7 +145,7 @@ class InvoiceGridState extends State<InvoiceGrid> with TickerProviderStateMixin{
 
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(5),
-                                    color: AppTheme.yellowColor
+                                    color: AppTheme.counterBgColor
                                 ),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,

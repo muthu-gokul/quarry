@@ -13,10 +13,10 @@ String addressReg='[A-Za-z0-9,-_@ ]';
 List<ParameterModel> parameters=[];
 
 //Multi Date Selector Color
-Color headerBg=Color(0xFF1990e6);
+Color headerBg=Color(0xFF01b262);
 Color headerText=Color(0xFFffffff);
 Color actionText=Color(0xFF979797);
-Color selectedDay=Color(0xFF1990e6);
+Color selectedDay=Color(0xFF01b262);
 Color? dayColor=Colors.grey[700];
 
 

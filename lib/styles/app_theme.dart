@@ -8,7 +8,7 @@ class AppTheme {
 
 
  // static const Color yellowColor=Color(0xFFFFC010);
-  static const Color yellowColor=Color(0xFF1990e6);
+  static const Color yellowColor=Color(0xFF01b262);
   static const Color bgColor=Color(0xFF3B3B3D);
   static const Color textColor=Color(0xFFffffff);
   static const Color drawerIconColor=Color(0xFFffffff);
