@@ -338,7 +338,7 @@ class _SalesMaterialState extends State<SalesMaterial> {
                                   height: 50,
                                   color: Colors.transparent,
                                   child: Center(
-                                      child: Text("Week",style: TextStyle(fontFamily: 'RR',fontSize: 14,color:selIndex==1?AppTheme.bgColor: Colors.grey),)
+                                      child: Text("Week",style: TextStyle(fontFamily: 'RR',fontSize: 14,color:selIndex==1?AppTheme.textColor: Colors.grey),)
 
                                   ),
                                 ),
@@ -358,7 +358,7 @@ class _SalesMaterialState extends State<SalesMaterial> {
                                   height: 50,
                                   color: Colors.transparent,
                                   child: Center(
-                                      child: Text("Month",style: TextStyle(fontFamily: 'RR',fontSize: 14,color:selIndex==2?AppTheme.bgColor:  Colors.grey),)
+                                      child: Text("Month",style: TextStyle(fontFamily: 'RR',fontSize: 14,color:selIndex==2?AppTheme.textColor:  Colors.grey),)
                                   ),
                                 ),
                               ),
@@ -377,7 +377,7 @@ class _SalesMaterialState extends State<SalesMaterial> {
                                   height: 50,
                                   color: Colors.transparent,
                                   child: Center(
-                                      child: Text("Year",style: TextStyle(fontFamily: 'RR',fontSize: 14,color:selIndex==3?AppTheme.bgColor: Colors.grey),)
+                                      child: Text("Year",style: TextStyle(fontFamily: 'RR',fontSize: 14,color:selIndex==3?AppTheme.textColor: Colors.grey),)
                                   ),
                                 ),
                               ),
@@ -515,7 +515,7 @@ class _SalesMaterialState extends State<SalesMaterial> {
                                         color: AppTheme.yellowColor
                                     ),
                                     dataSource: saleMaterialData,
-                                    color: Color(0xFFFEBF10),
+                                    color:AppTheme.yellowColor,
 
                                     name: 'Sales',
                                     // xValueMapper: (dynamic sales, _) =>DateFormat("MMMd").format(DateTime.parse(sales['Date'])),

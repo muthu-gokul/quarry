@@ -213,7 +213,7 @@ class _AttendanceDashBoardState extends State<AttendanceDashBoard> {
                                   height: 50,
                                   color: Colors.transparent,
                                   child: Center(
-                                      child: Text("Today",style: TextStyle(fontFamily: 'RR',fontSize: 14,color:position==5?AppTheme.bgColor: Colors.grey),)
+                                      child: Text("Today",style: TextStyle(fontFamily: 'RR',fontSize: 14,color:position==5?AppTheme.textColor: Colors.grey),)
 
                                   ),
                                 ),
@@ -243,7 +243,7 @@ class _AttendanceDashBoardState extends State<AttendanceDashBoard> {
                                   height: 50,
                                   color: Colors.transparent,
                                   child: Center(
-                                      child: Text("Week",style: TextStyle(fontFamily: 'RR',fontSize: 14,color:position==tabWidth*0.33?AppTheme.bgColor:  Colors.grey),)
+                                      child: Text("Week",style: TextStyle(fontFamily: 'RR',fontSize: 14,color:position==tabWidth*0.33?AppTheme.textColor:  Colors.grey),)
                                   ),
                                 ),
                               ),
@@ -272,7 +272,7 @@ class _AttendanceDashBoardState extends State<AttendanceDashBoard> {
                                   height: 50,
                                   color: Colors.transparent,
                                   child: Center(
-                                      child: Text("Month",style: TextStyle(fontFamily: 'RR',fontSize: 14,color:position==tabWidth*0.66?AppTheme.bgColor: Colors.grey),)
+                                      child: Text("Month",style: TextStyle(fontFamily: 'RR',fontSize: 14,color:position==tabWidth*0.66?AppTheme.textColor: Colors.grey),)
                                   ),
                                 ),
                               ),

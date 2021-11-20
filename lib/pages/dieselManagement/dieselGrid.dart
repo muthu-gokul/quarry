@@ -142,11 +142,11 @@ class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
                             height:  200,
 
                             decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    image: AssetImage("assets/svg/gridHeader/reportsHeader.jpg",),
-                                    fit: BoxFit.cover
-                                )
-
+                                // image: DecorationImage(
+                                //     image: AssetImage("assets/svg/gridHeader/reportsHeader.jpg",),
+                                //     fit: BoxFit.cover
+                                // )
+                              color: AppTheme.yellowColor
                             ),
                           ),
                         ),
@@ -163,7 +163,7 @@ class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
                               ),
                               /*SizedBox(width: SizeConfig.width10,),*/
                               Text("Diesel Management",
-                                style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize:16),
+                                style:AppTheme.appBarTS,
                               ),
                               Spacer(),
                               Container(
@@ -277,11 +277,11 @@ class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
                             height:  160,
 
                             decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    image: AssetImage("assets/svg/gridHeader/reportsHeader.jpg",),
-                                    fit: BoxFit.cover
-                                )
-
+                                // image: DecorationImage(
+                                //     image: AssetImage("assets/svg/gridHeader/reportsHeader.jpg",),
+                                //     fit: BoxFit.cover
+                                // )
+                              color: AppTheme.yellowColor
                             ),
                           ),
                         ),
@@ -297,7 +297,7 @@ class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
                                 child: NavBarIcon(),
                               ),
                               Text("Diesel Management",
-                                style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize:16),
+                                style: AppTheme.appBarTS,
                               ),
                               Spacer(),
                               Container(

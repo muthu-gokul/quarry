@@ -83,12 +83,12 @@ class ReportGridState extends State<ReportGrid> with TickerProviderStateMixin{
 
 
                           decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  image: AssetImage(
-                                    "assets/svg/gridHeader/reportsHeader.jpg",),
-                                  fit: BoxFit.cover
-                              ),
-
+                              // image: DecorationImage(
+                              //     image: AssetImage(
+                              //       "assets/svg/gridHeader/reportsHeader.jpg",),
+                              //     fit: BoxFit.cover
+                              // ),
+                            color: AppTheme.yellowColor
                           ),
                         ),
                       )
@@ -111,7 +111,7 @@ class ReportGridState extends State<ReportGrid> with TickerProviderStateMixin{
                         width: SizeConfig.screenWidth!*0.38,
                         child: FittedBox(
                           child: Text("${rn.reportHeader}",
-                            style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize:16),
+                            style:AppTheme.appBarTS,
                           ),
                         ),
                       ),
@@ -129,10 +129,10 @@ class ReportGridState extends State<ReportGrid> with TickerProviderStateMixin{
                         ),
                         child: Row(
                           children: [
-                            Icon(Icons.calendar_today_rounded,color: AppTheme.bgColor,size: 14,),
+                            Icon(Icons.calendar_today_rounded,color: AppTheme.textColor,size: 14,),
                             SizedBox(width: 5,),
                             rn.picked.isNotEmpty?Text("${DateFormat('dd-MM-yyyy').format(rn.picked[0]!)} - ${DateFormat('dd-MM-yyyy').format(rn.picked[1]!)}",
-                              style: TextStyle(fontFamily: 'RR',fontSize: 12,color: AppTheme.bgColor),
+                              style: TextStyle(fontFamily: 'RR',fontSize: 12,color: AppTheme.textColor),
                             ):Container(),
                           ],
                         ),
@@ -165,7 +165,7 @@ class ReportGridState extends State<ReportGrid> with TickerProviderStateMixin{
                           margin: EdgeInsets.only(right: 10,),
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(5),
-                              color: AppTheme.bgColor
+                              color: AppTheme.counterBgColor
                           ),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -175,7 +175,7 @@ class ReportGridState extends State<ReportGrid> with TickerProviderStateMixin{
                               SizedBox(height: 5,),
                               FittedBox(
                                   fit: BoxFit.contain,
-                                  child: Text("${value.value??" "}",style:TextStyle(fontFamily: 'RM',fontSize: 18,color: Colors.yellow),)),
+                                  child: Text("${value.value??" "}",style:TextStyle(fontFamily: 'RM',fontSize: 18,color: AppTheme.yellowColor),)),
 
                             ],
                           ),
@@ -690,7 +690,7 @@ class ReportGridState extends State<ReportGrid> with TickerProviderStateMixin{
                         ],
                       ):
                       Center(
-                        child: Icon(Icons.search,size: 30,color: AppTheme.bgColor,),
+                        child: Icon(Icons.search,size: 30,color: AppTheme.drawerIconColor,),
                       ),
                     ),
                   ),

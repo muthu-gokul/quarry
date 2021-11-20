@@ -75,7 +75,7 @@ class GoodsPlantListState extends State<GoodsPlantList> with TickerProviderState
 
                       decoration: BoxDecoration(
                           image: DecorationImage(
-                              image: AssetImage("assets/images/saleFormheader.jpg",),
+                              image: AssetImage("assets/svg/gridHeader/commonHeader.jpg",),
                               fit: BoxFit.cover
                           )
 
@@ -321,7 +321,7 @@ class GoodsPlantListState extends State<GoodsPlantList> with TickerProviderState
                       },
                     ),
                     Text("Plant List",
-                      style: TextStyle(fontFamily: 'RR',color:AppTheme.bgColor,fontSize: 16),
+                      style: AppTheme.appBarTS,
                     ),
 
                   ],

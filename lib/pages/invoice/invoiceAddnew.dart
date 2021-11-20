@@ -459,7 +459,7 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
                                               ],
                                             ),
                                             child: Center(
-                                                child: Text("+ Add Material",style: TextStyle(color:AppTheme.bgColor,fontSize:16,fontFamily: 'RM'),
+                                                child: Text("+ Add Material",style: TextStyle(color:AppTheme.textColor,fontSize:16,fontFamily: 'RM'),
                                                 )
                                             ),
                                           ),
@@ -1223,10 +1223,10 @@ class InvoiceOrdersAddNewState extends State<InvoiceOrdersAddNew> with TickerPro
                       ),
 
                       Text(pn.isInvoiceReceivable?"Receivable Invoice":"Payable Invoice",
-                        style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: 16),
+                        style:AppTheme.appBarTS,
                       ),
                       Text(pn.isInvoiceEdit?" / Edit":" / Add New",
-                        style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize:16),
+                        style: AppTheme.appBarTS,
                       ),
                       Spacer(),
                       pn.isInvoiceEdit && pn.InvoiceEditNumber!=null?Container(

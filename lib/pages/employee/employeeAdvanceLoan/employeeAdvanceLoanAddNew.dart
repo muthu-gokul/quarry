@@ -78,7 +78,7 @@ class _EmployeeAdvanceAddNewState extends State<EmployeeAdvanceAddNew> {
                         decoration: BoxDecoration(
                             image: DecorationImage(
                                 image: AssetImage(
-                                  "assets/images/saleFormheader.jpg",),
+                                  "assets/svg/gridHeader/Employeemaster.jpg",),
                                 fit: BoxFit.cover
                             )
 
@@ -483,7 +483,7 @@ class _EmployeeAdvanceAddNewState extends State<EmployeeAdvanceAddNew> {
                       ),
 
                       Text("Add Advance Salary/Loan Entry",
-                        style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: 16),
+                        style: AppTheme.appBarTS,
                       ),
                     ],
                   ),

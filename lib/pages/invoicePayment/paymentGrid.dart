@@ -108,12 +108,12 @@ class PaymentGridState extends State<PaymentGrid> with TickerProviderStateMixin{
 
 
                           decoration: BoxDecoration(
-                            image: DecorationImage(
-                                image: AssetImage(
-                                  "assets/svg/gridHeader/reportsHeader.jpg",),
-                                fit: BoxFit.cover
-                            ),
-
+                            // image: DecorationImage(
+                            //     image: AssetImage(
+                            //       "assets/svg/gridHeader/reportsHeader.jpg",),
+                            //     fit: BoxFit.cover
+                            // ),
+                            color: AppTheme.yellowColor
                           ),
                         ),
                       )
@@ -130,7 +130,7 @@ class PaymentGridState extends State<PaymentGrid> with TickerProviderStateMixin{
                           onTap: widget.drawerCallback,
                           child: NavBarIcon()),
                       Text(pn.isPaymentReceivable?"Receivable Payment":"Payable Payment",
-                        style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize:16),
+                        style: AppTheme.appBarTS
                       ),
 
 
@@ -160,7 +160,7 @@ class PaymentGridState extends State<PaymentGrid> with TickerProviderStateMixin{
 
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(5),
-                                    color: AppTheme.bgColor
+                                    color: AppTheme.counterBgColor
                                 ),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -771,8 +771,8 @@ class PaymentGridState extends State<PaymentGrid> with TickerProviderStateMixin{
                         ],
                       ),
                       child: Center(
-                        child:filterOpen?Icon(Icons.clear,size: 30,color: AppTheme.bgColor,):
-                        SvgPicture.asset("assets/bottomIcons/payReceive.svg",height: 35,width: 35,color: AppTheme.bgColor,),
+                        child:filterOpen?Icon(Icons.clear,size: 30,color: AppTheme.textColor,):
+                        SvgPicture.asset("assets/bottomIcons/payReceive.svg",height: 35,width: 35,color: AppTheme.textColor,),
                       ),
                     ),
                   ),

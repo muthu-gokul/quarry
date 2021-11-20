@@ -66,7 +66,7 @@ class _CustomerMasterState extends State<CustomerMaster> {
                       ),
 
                       Text("Customer Master",
-                        style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize:16),
+                        style: AppTheme.appBarTS,
                       ),
                       Spacer(),
 

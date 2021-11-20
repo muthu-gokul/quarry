@@ -206,11 +206,11 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                     children: [
                       Container(
                         width: double.maxFinite,
-                        height: SizeConfig.height200,
+                        height: 170,
 
                         decoration: BoxDecoration(
                             image: DecorationImage(
-                                image: AssetImage("assets/images/saleFormheader.jpg",),
+                                image: AssetImage("assets/svg/gridHeader/commonHeader.jpg",),
                                 fit: BoxFit.cover
                             )
 
@@ -318,7 +318,7 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                                           color: AppTheme.disableColor
                                       ),
                                       child:  Text("${DateFormat.yMMMd().format(pn.PurchaseDate)} / ${DateFormat().add_jm().format(pn.PurchaseDate)}",
-                                      style: AppTheme.bgColorTS,
+                                      style: AppTheme.gridTextColorTS,
                                       )
 
                                     ),
@@ -444,8 +444,8 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                                             return Theme(
                                               data: Theme.of(context).copyWith(
                                                 colorScheme: ColorScheme.light(
-                                                  primary: AppTheme.yellowColor, // header background color
-                                                  onPrimary: AppTheme.bgColor, // header text color
+                                                  primary: headerBg, // header background color
+                                                  onPrimary: headerText, // header text color
                                                   onSurface: AppTheme.addNewTextFieldText, // body text color
                                                 ),
 
@@ -548,7 +548,7 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                                               ],
                                             ),
                                             child: Center(
-                                                child: Text("+ Add Material",style: TextStyle(color:AppTheme.bgColor,fontSize:16,fontFamily: 'RM'),
+                                                child: Text("+ Add Material",style: TextStyle(color:AppTheme.textColor,fontSize:16,fontFamily: 'RM'),
                                                 )
                                             ),
                                           ),
@@ -1740,12 +1740,12 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                       ),
 
                       Text("Purchase Orders",
-                        style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: 16),
+                        style: AppTheme.appBarTS,
                       ),
                       pn.isPurchaseView? Text(" / View",
-                        style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: 16),
+                        style: AppTheme.appBarTS,
                       ):Text(pn.isPurchaseEdit?" / Edit":" / Add New",
-                        style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: 16),
+                        style: AppTheme.appBarTS,
                       ),
                     ],
                   ),
@@ -2729,7 +2729,7 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                                       color: AppTheme.yellowColor
                                   ),
                                   child: Center(
-                                    child: Text("Done",style:TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 20),),
+                                    child: Text("Done",style:TextStyle(fontFamily: 'RR',color: AppTheme.textColor,fontSize: 20),),
                                   ),
                                 ),
                               ),

@@ -77,7 +77,7 @@ class ReportSettingsState extends State<ReportSettings> with TickerProviderState
                         decoration: BoxDecoration(
                             image: DecorationImage(
                                 image: AssetImage(
-                                  "assets/images/saleFormheader.jpg",),
+                                  "assets/svg/gridHeader/commonHeader.jpg",),
                                 fit: BoxFit.cover
                             )
 
@@ -225,7 +225,7 @@ class ReportSettingsState extends State<ReportSettings> with TickerProviderState
                       }),
                       SizedBox(width: SizeConfig.width5,),
                       Text("${rn.reportHeader} Settings",
-                        style: TextStyle(fontFamily: 'RR', color: Colors.black, fontSize: 16),
+                        style: AppTheme.appBarTS,
                       ),
 
                     ],
@@ -450,7 +450,7 @@ class _ReportSettingsHeaderState extends State<ReportSettingsHeader> with Ticker
             ),
             child: Row(
               children: [
-                Text(widget.title!,style:TextStyle(fontFamily: 'RM',color: AppTheme.bgColor,fontSize: 16)),
+                Text(widget.title!,style:TextStyle(fontFamily: 'RM',color: AppTheme.textColor,fontSize: 16)),
                 Spacer(),
                 Container(
                   height: 30,
@@ -522,7 +522,7 @@ class _ReportSettingsHeaderState extends State<ReportSettingsHeader> with Ticker
                             color:widget.all![widget.index!]==1?AppTheme.yellowColor: AppTheme.disableColor
                         ),
                         child: Center(
-                         child: Icon(Icons.done,color:widget.all![widget.index!]==1?AppTheme.bgColor: AppTheme.addNewTextFieldBorder.withOpacity(0.8),size: 15,),
+                         child: Icon(Icons.done,color:widget.all![widget.index!]==1?AppTheme.textColor: AppTheme.addNewTextFieldBorder.withOpacity(0.8),size: 15,),
                         ),
 
                       ),
@@ -590,7 +590,7 @@ class _ReportSettingsHeaderState extends State<ReportSettingsHeader> with Ticker
                                   color:widget.list![index]['IsActive']==1?AppTheme.yellowColor: AppTheme.disableColor
                               ),
                               child: Center(
-                                child: Icon(Icons.done,color:widget.list![index]['IsActive']==1?AppTheme.bgColor: AppTheme.addNewTextFieldBorder.withOpacity(0.8),size: 15,),
+                                child: Icon(Icons.done,color:widget.list![index]['IsActive']==1?AppTheme.textColor: AppTheme.addNewTextFieldBorder.withOpacity(0.8),size: 15,),
                               ),
 
                             ),
@@ -667,7 +667,7 @@ class _ReportSettingsColumnFilterState extends State<ReportSettingsColumnFilter>
             ),
             child: Row(
               children: [
-                Text(widget.title!,style:TextStyle(fontFamily: 'RM',color: AppTheme.bgColor,fontSize: 16)),
+                Text(widget.title!,style:TextStyle(fontFamily: 'RM',color: AppTheme.textColor,fontSize: 16)),
                 Spacer(),
                 Container(
                   height: 30,
@@ -732,7 +732,7 @@ class _ReportSettingsColumnFilterState extends State<ReportSettingsColumnFilter>
                         color:widget.all![0]?AppTheme.yellowColor: AppTheme.disableColor
                       ),
                       child: Center(
-                        child: Icon(Icons.done,color:widget.all![0]?AppTheme.bgColor: AppTheme.addNewTextFieldBorder.withOpacity(0.8),size: 15,),
+                        child: Icon(Icons.done,color:widget.all![0]?AppTheme.textColor: AppTheme.addNewTextFieldBorder.withOpacity(0.8),size: 15,),
                       ),
 
                     ),
@@ -788,7 +788,7 @@ class _ReportSettingsColumnFilterState extends State<ReportSettingsColumnFilter>
                                   color:widget.list![index].isActive?AppTheme.yellowColor: AppTheme.disableColor
                               ),
                               child: Center(
-                                child: Icon(Icons.done,color:widget.list![index].isActive?AppTheme.bgColor: AppTheme.addNewTextFieldBorder.withOpacity(0.8),size: 15,),
+                                child: Icon(Icons.done,color:widget.list![index].isActive?AppTheme.textColor: AppTheme.addNewTextFieldBorder.withOpacity(0.8),size: 15,),
                               ),
 
                             ),

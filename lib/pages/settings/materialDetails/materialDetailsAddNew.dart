@@ -330,10 +330,10 @@ class MaterialDetailAddNewState extends State<MaterialDetailAddNew> with TickerP
 
 
                       Text("Material Detail",
-                        style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: 16),
+                        style: AppTheme.appBarTS,
                       ),
                       Text(qn.isMaterialEdit?" / Edit":" / Add New",
-                        style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: 16),
+                        style: AppTheme.appBarTS,
                       ),
                       Spacer(),
 

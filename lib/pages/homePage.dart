@@ -147,7 +147,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                   color: AppTheme.yellowColor
                               ),
                               child: Text("${pn.UserGroupName}",
-                                style: TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 12),
+                                style: TextStyle(fontFamily: 'RR',color: AppTheme.textColor,fontSize: 12),
                               ),
                             ),
                             /*  Container(
@@ -523,7 +523,7 @@ class DrawerContent extends StatelessWidget {
                       shape: BoxShape.circle,
                       color: AppTheme.yellowColor
                     ),
-                      child: SvgPicture.asset(image!,width: 30,)
+                      child: SvgPicture.asset(image!,width: 30,color: AppTheme.drawerIconColor,)
                   )
               ),
               SizedBox(width: 10,),
@@ -535,10 +535,10 @@ class DrawerContent extends StatelessWidget {
                   children: [
                     FittedBox(
                         fit: BoxFit.contain,
-                        child: Text(title!, style: TextStyle(fontSize: 16,color:titleColor, fontFamily:'RR'),)
+                        child: Text(title!, style: TextStyle(fontSize: 16,color:AppTheme.textColor, fontFamily:'RR'),)
                     ),
                     SizedBox(width: isRightArrow? 5:0,),
-                    isRightArrow?Icon(Icons.arrow_forward_ios_rounded,color: AppTheme.yellowColor,size: 15,):Container()
+                    isRightArrow?Icon(Icons.arrow_forward_ios_rounded,color: AppTheme.drawerIconColor,size: 15,):Container()
                   ],
                 ),
               ),
@@ -605,7 +605,7 @@ class EmployeeDetailsState extends State<EmployeeDetails> with TickerProviderSta
                   Hero(
                     transitionOnUserGestures: true,
                     tag: "EmployeeDetails",
-                    child:SvgPicture.asset("assets/svg/drawer/employee/employeeDetail.svg",width: 100,height: 100,),
+                    child:SvgPicture.asset("assets/svg/drawer/employee/employeeDetail.svg",width: 100,height: 100,color: AppTheme.drawerIconColor,),
                   ),
 
                   SizedBox(height: 20,),
@@ -753,7 +753,7 @@ class AccountsPageState extends State<AccountsPage> with TickerProviderStateMixi
                   Hero(
                     transitionOnUserGestures: true,
                     tag: "Accounts",
-                    child:SvgPicture.asset("assets/svg/drawer/accounts.svg",width: 100,height: 100,),
+                    child:SvgPicture.asset("assets/svg/drawer/accounts.svg",width: 100,height: 100,color: AppTheme.drawerIconColor),
                   ),
 
                   SizedBox(height: 20,),
@@ -868,7 +868,7 @@ class ReportsPageState extends State<ReportsPage> with TickerProviderStateMixin{
                     Hero(
                       transitionOnUserGestures: true,
                       tag: "Reports",
-                      child:SvgPicture.asset("assets/svg/drawer/reports.svg",width: 100,height: 100,),
+                      child:SvgPicture.asset("assets/svg/drawer/reports.svg",width: 100,height: 100,color: AppTheme.drawerIconColor),
                     ),
 
                     SizedBox(height: 20,),
@@ -1282,7 +1282,7 @@ class SettingsPageState extends State<SettingsPage> with TickerProviderStateMixi
                   Hero(
                     transitionOnUserGestures: true,
                     tag: "Settings",
-                    child:SvgPicture.asset("assets/svg/drawer/settings-icon.svg",width: 100,height: 100,),
+                    child:SvgPicture.asset("assets/svg/drawer/settings-icon.svg",width: 100,height: 100,color: AppTheme.drawerIconColor),
                   ),
                   SizedBox(height: 20,),
                   DrawerContent(

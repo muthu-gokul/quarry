@@ -55,7 +55,7 @@ class MachineDetailsGridState extends State<MachineDetailsGrid> {
                         child: NavBarIcon(),
                       ),
                       Text("Machine Details",
-                        style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: SizeConfig.width16),
+                        style: AppTheme.appBarTS,
                       ),
                       Spacer(),
 

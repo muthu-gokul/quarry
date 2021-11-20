@@ -716,7 +716,7 @@ class _EmployeeMasterViewState extends State<EmployeeMasterView> with TickerProv
                       },
                     ),
                     Text("Employee Details",
-                      style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: 16),
+                      style: AppTheme.appBarTS,
                     ),
 
                     Spacer(),

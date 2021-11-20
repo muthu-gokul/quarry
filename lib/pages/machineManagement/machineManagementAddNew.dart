@@ -488,10 +488,10 @@ class _MachineManagementAddNewState extends State<MachineManagementAddNew> {
                       ),
 
                       Text("Machine Management",
-                        style: TextStyle(fontFamily: 'RR',color:AppTheme.bgColor,fontSize: 16),
+                        style: AppTheme.appBarTS,
                       ),
                       Text(mmn.machineManagementEdit?" / Edit":" / Add New",
-                        style: TextStyle(fontFamily: 'RR',color:AppTheme.bgColor,fontSize: 16),
+                        style: AppTheme.appBarTS
                       ),
                     ],
                   ),

@@ -66,7 +66,7 @@ class VehicleDetailsGridState extends State<VehicleDetailsGrid> {
                       ),
                       SizedBox(width: SizeConfig.width20,),
                       Text("Vehicle Details",
-                        style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: SizeConfig.width16),
+                        style: AppTheme.appBarTS
                       ),
                       Spacer(),
 

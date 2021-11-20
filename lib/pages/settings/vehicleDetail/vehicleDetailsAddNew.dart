@@ -253,10 +253,10 @@ class VehicleDetailAddNewState extends State<VehicleDetailAddNew> with TickerPro
                       ),
 
                       Text("Vehicle Master ",
-                        style: TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize:16),
+                        style: AppTheme.appBarTS
                       ),
                       Text(qn.isVehicleEdit?" / Edit":"/ Add New",
-                        style: TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 16),
+                        style: AppTheme.appBarTS
                       ),
                       Spacer(),
 

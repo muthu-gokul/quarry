@@ -99,7 +99,7 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                  )*/
 
                             ),
-                            child: SvgPicture.asset("assets/svg/gridHeader/customerHeader.svg"),
+                            child: Image.asset("assets/svg/gridHeader/customerHeader.jpg"),
 
                           ),
                         ],
@@ -554,7 +554,7 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                           ],
                                         ),
                                         child: Center(
-                                            child: Text("Choose File",style: TextStyle(color:AppTheme.bgColor,fontSize:16,fontFamily: 'RM'),
+                                            child: Text("Choose File",style: TextStyle(color:AppTheme.textColor,fontSize:16,fontFamily: 'RM'),
                                             )
                                         ),
 
@@ -589,14 +589,10 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                           ),
 
                           Text("Customer Detail",
-                            style: TextStyle(fontFamily: 'RR',
-                                color: Colors.black,
-                                fontSize: 16),
+                            style: AppTheme.appBarTS,
                           ),
                           Text(qn.isCustomerEdit ? " / Edit" : " / Add New",
-                            style: TextStyle(fontFamily: 'RR',
-                                color: Colors.black,
-                                fontSize: 16),
+                            style: AppTheme.appBarTS,
                           ),
                           Spacer(),
 

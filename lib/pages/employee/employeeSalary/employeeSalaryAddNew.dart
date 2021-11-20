@@ -374,7 +374,7 @@ class _EmployeeSalaryAddNewState extends State<EmployeeSalaryAddNew> {
                       ),
 
                       Text("Add Employee Salary",
-                        style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: 16),
+                        style: AppTheme.appBarTS,
                       ),
                     ],
                   ),

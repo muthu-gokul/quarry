@@ -96,11 +96,11 @@ class InvoiceGridState extends State<InvoiceGrid> with TickerProviderStateMixin{
                     height:  160,
 
                     decoration: BoxDecoration(
-                        image: DecorationImage(
-                            image: AssetImage("assets/svg/gridHeader/reportsHeader.jpg",),
-                            fit: BoxFit.cover
-                        )
-
+                        // image: DecorationImage(
+                        //     image: AssetImage("assets/svg/gridHeader/reportsHeader.jpg",),
+                        //     fit: BoxFit.cover
+                        // )
+                      color: AppTheme.yellowColor
                     ),
                   ),
                 ),
@@ -115,7 +115,7 @@ class InvoiceGridState extends State<InvoiceGrid> with TickerProviderStateMixin{
                           child: NavBarIcon()),
 
                       Text(inv.isInvoiceReceivable?"Receivable Invoice":"Payable Invoice",
-                        style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize:16),
+                        style: AppTheme.appBarTS,
                       ),
 
 
@@ -145,7 +145,7 @@ class InvoiceGridState extends State<InvoiceGrid> with TickerProviderStateMixin{
 
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(5),
-                                    color: AppTheme.bgColor
+                                    color: AppTheme.yellowColor
                                 ),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -760,8 +760,8 @@ class InvoiceGridState extends State<InvoiceGrid> with TickerProviderStateMixin{
                         ],
                       ),
                       child: Center(
-                        child:filterOpen?Icon(Icons.clear,size: 30,color: AppTheme.bgColor,):
-                        SvgPicture.asset("assets/bottomIcons/payReceive.svg",height: 35,width: 35,color: AppTheme.bgColor,),
+                        child:filterOpen?Icon(Icons.clear,size: 30,color: AppTheme.drawerIconColor,):
+                        SvgPicture.asset("assets/bottomIcons/payReceive.svg",height: 35,width: 35,color: AppTheme.drawerIconColor,),
                       ),
                     ),
                   ),

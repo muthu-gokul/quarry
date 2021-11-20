@@ -132,53 +132,7 @@ class _DashBoardHomeState extends State<DashBoardHome> {
                           children: [
                             GestureDetector(
                               onTap: widget.drawerCallback,
-                              child: Container(
-                                height: 25,
-                                width: 22,
-                                color: Colors.transparent,
-                                margin: EdgeInsets.only(left: 20,right: 10),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SizedBox(height: 6,),
-                                    Container(
-                                      height: 2.2,
-                                      width: 25,
-                                      decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(50),
-                                          color: Colors.white
-                                      ),
-                                    ),
-                                    SizedBox(height: 2,),
-                                    Container(
-                                      height: 2.2,
-                                      width: 17,
-                                      decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(50),
-                                          color: AppTheme.grey
-                                      ),
-                                    ),
-                                    SizedBox(height: 2,),
-                                    Container(
-                                      height: 2.2,
-                                      width: 25,
-                                      decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(50),
-                                          color: Colors.white
-                                      ),
-                                    ),
-                                    SizedBox(height: 2,),
-                                    Container(
-                                      height: 2.2,
-                                      width: 17,
-                                      decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(50),
-                                          color: AppTheme.grey
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                              child: NavBarIcon(),
                             ),
                             Container(
                               height: 40,
@@ -205,9 +159,9 @@ class _DashBoardHomeState extends State<DashBoardHome> {
                                     mainAxisAlignment:MainAxisAlignment.center,
                                     crossAxisAlignment:CrossAxisAlignment.start,
                                     children: [
-                                      Text("    LAST 7 DAYS",style: TextStyle(fontFamily: 'RR',fontSize: 8,color: AppTheme.bgColor),),
+                                      Text("    LAST 7 DAYS",style: TextStyle(fontFamily: 'RR',fontSize: 8,color: AppTheme.textColor),),
                                       SizedBox(height: 2,),
-                                      Text("    All Product Sale",style: TextStyle(fontFamily: 'RR',fontSize: 10,color: AppTheme.bgColor),),
+                                      Text("    All Product Sale",style: TextStyle(fontFamily: 'RR',fontSize: 10,color: AppTheme.textColor),),
                                     ],
                                   ),
                                   Spacer(),
@@ -220,11 +174,11 @@ class _DashBoardHomeState extends State<DashBoardHome> {
                                         width: SizeConfig.screenWidth!*0.23,
                                         alignment: Alignment.centerRight,
                                         text: "${formatCurrency.format(db.currentSaleT!['TotalSale']??0.0)}",
-                                        textStyle: TextStyle(fontFamily: 'RM',fontSize: 14,color: AppTheme.bgColor),
+                                        textStyle: TextStyle(fontFamily: 'RM',fontSize: 14,color: AppTheme.textColor),
                                       ),
                                      // Text("${db.currentSaleT['TotalSale']}",style: TextStyle(fontFamily: 'RM',fontSize: 14,color: AppTheme.bgColor),),
                                       SizedBox(height: 2,),
-                                      Text("${db.currentSaleT!['TotalQuantity']} ${db.currentSaleT!['UnitName']}",style: TextStyle(fontFamily: 'RM',fontSize: 9,color: AppTheme.bgColor),),
+                                      Text("${db.currentSaleT!['TotalQuantity']} ${db.currentSaleT!['UnitName']}",style: TextStyle(fontFamily: 'RM',fontSize: 9,color: AppTheme.textColor),),
                                     ],
                                   ),
                                 ],
@@ -322,10 +276,10 @@ class _DashBoardHomeState extends State<DashBoardHome> {
                                               chartSeriesController=c;
                                             },
                                             dataSource: snapshot.data,
-                                            borderColor: Color(0xFFFEBF10),
+                                            borderColor: AppTheme.yellowColor,
                                             borderWidth: 3,
                                             gradient: LinearGradient(
-                                              colors: [Color(0xFF343434),Color(0xFFFEBF10).withOpacity(0.5)],
+                                              colors: [Color(0xFF343434),AppTheme.yellowColor.withOpacity(0.5)],
                                               begin: Alignment.bottomCenter,
                                               end: Alignment.topCenter,
                                               //  stops: [0,30]
@@ -426,7 +380,7 @@ class _DashBoardHomeState extends State<DashBoardHome> {
                                   shape: BoxShape.circle,
                                   color: AppTheme.yellowColor
                                 ),
-                                child: SvgPicture.asset(value.image,height: 45,)
+                                child: SvgPicture.asset(value.image,height: 45,color: AppTheme.drawerIconColor,)
                             ),
                             SizedBox(height: 10,),
                             Text("${value.title}",style:selIndex==i? AppTheme.bgColorTS14:TextStyle(fontFamily: 'RR',color: AppTheme.gridTextColor,fontSize: 13),textAlign: TextAlign.center,)

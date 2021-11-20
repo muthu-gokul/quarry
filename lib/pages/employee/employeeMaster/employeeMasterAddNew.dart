@@ -315,7 +315,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                                               en.selectedSalutation="Mr";
                                                             });
                                                           },
-                                                          child: Text("Mr",style: TextStyle(fontFamily: 'RR',fontSize: 16,color: AppTheme.bgColor),)
+                                                          child: Text("Mr",style: AppTheme.appBarTS,)
                                                       ),
                                                       InkWell(
                                                           onTap: (){
@@ -324,7 +324,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                                               en.selectedSalutation="Mrs";
                                                             });
                                                           },
-                                                          child: Text("Mrs",style: TextStyle(fontFamily: 'RR',fontSize: 16,color: AppTheme.bgColor),)
+                                                          child: Text("Mrs",style: AppTheme.appBarTS,)
                                                       ),
                                                       InkWell(
                                                           onTap: (){
@@ -333,7 +333,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                                               en.selectedSalutation="Ms";
                                                             });
                                                           },
-                                                          child: Text("Ms",style: TextStyle(fontFamily: 'RR',fontSize: 16,color: AppTheme.bgColor),)
+                                                          child: Text("Ms",style: AppTheme.appBarTS,)
                                                       ),
                                                       InkWell(
                                                           onTap: (){
@@ -342,7 +342,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                                               en.selectedSalutation="Mx";
                                                             });
                                                           },
-                                                          child: Text("Mx",style: TextStyle(fontFamily: 'RR',fontSize: 16,color: AppTheme.bgColor),)
+                                                          child: Text("Mx",style: AppTheme.appBarTS,)
                                                       ),
 
                                                     ],
@@ -355,7 +355,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                                           });
 
                                                         },
-                                                    child: Text("${en.selectedSalutation}",style: TextStyle(fontFamily: 'RR',fontSize: 16,color: AppTheme.bgColor),)
+                                                    child: Text("${en.selectedSalutation}",style:AppTheme.appBarTS,)
                                                     ),
                                                   ),
                                                 ),
@@ -537,7 +537,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                                                   salaryTypeOpen=false;
                                                                 });
                                                               },
-                                                              child: Text("${value.employeeSalaryTypeName}",style: TextStyle(fontFamily: 'RR',fontSize: 16,color: AppTheme.bgColor),)
+                                                              child: Text("${value.employeeSalaryTypeName}",style: AppTheme.appBarTS,)
                                                           ),
                                                         )
 
@@ -563,7 +563,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                                           });
 
                                                         },
-                                                        child: Text("${en.selectSalaryTypeName??""}",style: TextStyle(fontFamily: 'RR',fontSize: 16,color: AppTheme.bgColor),)
+                                                        child: Text("${en.selectSalaryTypeName??""}",style: AppTheme.appBarTS,)
                                                     ),
                                                   ),
                                                 ),
@@ -655,7 +655,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                               ),
                                               child: Row(
                                                 children: [
-                                                  Text("Contact Details",style:TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 14)),
+                                                  Text("Contact Details",style:TextStyle(fontFamily: 'RR',color: AppTheme.textColor,fontSize: 14)),
                                                   Spacer(),
                                                   Container(
                                                     height: 25,
@@ -879,7 +879,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                               ),
                                               child: Row(
                                                 children: [
-                                                  Text("Other Details",style:TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 14)),
+                                                  Text("Other Details",style:TextStyle(fontFamily: 'RR',color: AppTheme.textColor,fontSize: 14)),
                                                   Spacer(),
                                                   Container(
                                                     height: 25,
@@ -1337,10 +1337,10 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                       ),
 
                       Text("Employee",
-                        style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: 16),
+                        style: AppTheme.appBarTS,
                       ),
                       Text(!en.isEmployeeEdit?" / Add New":" / Edit",
-                        style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: 16),
+                        style:AppTheme.appBarTS,
                       ),
                       Spacer(),
 

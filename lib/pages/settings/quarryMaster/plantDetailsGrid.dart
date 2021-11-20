@@ -207,7 +207,7 @@ class PlantDetailsGridState extends State<PlantDetailsGrid> with TickerProviderS
                                                 ]
                                               ),
                                               child: Center(
-                                                child: SvgPicture.asset("assets/svg/plusIcon.svg",height: 35,width: 35,color: AppTheme.addNewTextFieldFocusBorder,),
+                                                child: SvgPicture.asset("assets/svg/plusIcon.svg",height: 35,width: 35,color: AppTheme.drawerIconColor,),
                                               ),
                                             ),
                                           ),

@@ -51,7 +51,7 @@ class _EmployeeMasterGridState extends State<EmployeeMasterGrid> {
                     ),
                     /*SizedBox(width: SizeConfig.width10,),*/
                     Text("Employee Detail",
-                      style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize:16),
+                      style: AppTheme.appBarTS,
                     ),
                   ],
                 ),

@@ -103,10 +103,8 @@ class PurchaseDetailsGridState extends State<PurchaseDetailsGrid> with TickerPro
                         child: NavBarIcon(),
                       ),
                       Text("Purchase Details",
-                        style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize:16),
+                        style: AppTheme.appBarTS,
                       ),
-
-
                     ],
                   ),
                 ),
@@ -225,7 +223,6 @@ class PurchaseDetailsGridState extends State<PurchaseDetailsGrid> with TickerPro
                                                       style:selectedIndex==i?AppTheme.bgColorTS14:AppTheme.gridTextColor14,
                                                     ),
                                                   ),
-
                                                   Container(
                                                     width: 150,
                                                     alignment: Alignment.center,

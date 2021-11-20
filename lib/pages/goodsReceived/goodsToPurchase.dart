@@ -136,7 +136,7 @@ class GoodsToPurchaseState extends State<GoodsToPurchase> with TickerProviderSta
 
                       decoration: BoxDecoration(
                           image: DecorationImage(
-                              image: AssetImage("assets/images/saleFormheader.jpg",),
+                              image: AssetImage("assets/svg/gridHeader/commonHeader.jpg",),
                               fit: BoxFit.cover
                           )
 
@@ -596,7 +596,7 @@ class GoodsToPurchaseState extends State<GoodsToPurchase> with TickerProviderSta
                       },
                     ),
                     Text("Goods to Purchase",
-                      style: TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 16),
+                      style: AppTheme.appBarTS,
                     ),
 
 

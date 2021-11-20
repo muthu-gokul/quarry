@@ -205,7 +205,7 @@ class _ProductionDashBoardState extends State<ProductionDashBoard> {
                               extraStrokeWidth: 4,
                               innerStrokeWidth: 4,
                               backgroundColor: Color(0xFFd7d7d7),
-                              foregroundColor: Color(0xFFF1B240),
+                              foregroundColor: AppTheme.yellowColor,
                               value:  db.productionInputMaterialsT![selIndex]['InputMaterialQuantity']/db.totalProductionQty,
                               center: Container(),
                             ),
@@ -263,7 +263,7 @@ class _ProductionDashBoardState extends State<ProductionDashBoard> {
                                         child: CircleProgressBar(
                                           extraStrokeWidth: -0.9,
                                           backgroundColor: Color(0xFFd7d7d7),
-                                          foregroundColor: Color(0xFFF1B240),
+                                          foregroundColor:  AppTheme.yellowColor,
                                           value: (( db.outputMaterials[i]['OutputMaterialPercentage'])/100),
                                           center: Container(),
                                         ),

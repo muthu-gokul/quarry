@@ -7,15 +7,21 @@ class AppTheme {
 
 
 
-  static const Color yellowColor=Color(0xFFFFC010);
+ // static const Color yellowColor=Color(0xFFFFC010);
+  static const Color yellowColor=Color(0xFF1990e6);
   static const Color bgColor=Color(0xFF3B3B3D);
+  static const Color textColor=Color(0xFFffffff);
+  static const Color drawerIconColor=Color(0xFFffffff);
+  static const Color counterBgColor=Color(0xff001c2f);
+ // static const Color bgColor=Color(0xFFffffff);
   static const Color red=Color(0xFFE34343);
   static const Color addNewTextFieldBorder=Color(0xFFCDCDCD);
   static const Color addNewTextFieldFocusBorder=Color(0xFF6B6B6B);
 
   static  Color addNewTextFieldText=Color(0xFF787878);
 
-  static  Color indicatorColor=Color(0xFF1C1C1C);
+  //static  Color indicatorColor=Color(0xFF1C1C1C);
+  static  Color indicatorColor=Color(0xFFffffff);
 
   static  Color grey=Color(0xFF787878);
   static  Color gridTextColor=Color(0xFF787878);
@@ -48,8 +54,8 @@ class AppTheme {
 
 
 
-  static TextStyle bgColorTS=TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 16);
-  static TextStyle bgColorTS14=TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 14);
+  static TextStyle bgColorTS=TextStyle(fontFamily: 'RR',color: AppTheme.textColor,fontSize: 16);
+  static TextStyle bgColorTS14=TextStyle(fontFamily: 'RR',color: AppTheme.textColor,fontSize: 14);
   static TextStyle gridTextColorTS=TextStyle(fontFamily: 'RR',color: AppTheme.gridTextColor,fontSize: 16);
   static TextStyle gridTextColor14=TextStyle(fontFamily: 'RR',color: AppTheme.gridTextColor,fontSize: 14);
   static TextStyle gridTextGreenColor14=TextStyle(fontFamily: 'RR',color: Colors.green,fontSize: 14);
@@ -85,7 +91,7 @@ static BoxShadow yellowShadow=  BoxShadow(
 
 
  //Appbar TextStyle
- static TextStyle appBarTS=TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 16);
+ static TextStyle appBarTS=TextStyle(fontFamily: 'RR',color: AppTheme.textColor,fontSize: 16);
 
  //rawScrollBar Properties
   static const Color srollBarColor=Colors.grey;
@@ -96,8 +102,8 @@ static BoxShadow yellowShadow=  BoxShadow(
   //DashBoard
   static const Color dashCalendar=Color(0xFFCDCDCD);
   static const Color attendanceDashText1=Color(0xFF949494);
-  static const Color spikeColor=Color(0xFFD1E7E7);
-  static const Color yAxisText=Color(0xFFB38C1E);
+  static const Color spikeColor=yellowColor;
+  static const Color yAxisText=yellowColor;
 
   static TextStyle saleChartTotal=TextStyle(fontFamily: 'RM',fontSize: 12,color: Color(0xffadadad),letterSpacing: 0.1);
   static TextStyle saleChartQty=TextStyle(fontFamily: 'RM',fontSize: 12,color: Color(0xFF6a6a6a),letterSpacing: 0.1);

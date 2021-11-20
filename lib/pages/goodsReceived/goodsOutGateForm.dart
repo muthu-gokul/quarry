@@ -96,7 +96,7 @@ class GoodsOutGateFormState extends State<GoodsOutGateForm> with TickerProviderS
 
                       decoration: BoxDecoration(
                           image: DecorationImage(
-                              image: AssetImage("assets/images/saleFormheader.jpg",),
+                              image: AssetImage("assets/svg/gridHeader/commonHeader.jpg",),
                               fit: BoxFit.cover
                           )
 
@@ -464,7 +464,7 @@ class GoodsOutGateFormState extends State<GoodsOutGateForm> with TickerProviderS
                     ),
 //${gr.OGF_index!=null && gr.OGF_index!=-1? gr.outGateFormList[gr.OGF_index].purchaseOrderNumber:""}
                     Text("OutGate Form",
-                      style: TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 16),
+                      style: AppTheme.appBarTS,
                     ),
 
                   ],

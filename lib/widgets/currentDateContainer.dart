@@ -22,7 +22,7 @@ class CurrentDate extends StatelessWidget {
             color: AppTheme.editDisableColor
         ),
         child:  Text("${DateFormat.yMMMd().format(date)} / ${DateFormat().add_jm().format(date)}",
-          style: AppTheme.bgColorTS,
+          style: AppTheme.gridTextColorTS,
         )
 
     );

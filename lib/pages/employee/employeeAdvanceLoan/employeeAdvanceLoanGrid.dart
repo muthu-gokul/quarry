@@ -94,7 +94,7 @@ class _EmployeeAdvanceLoanGridState extends State<EmployeeAdvanceLoanGrid> {
                     ),
                     /*SizedBox(width: SizeConfig.width10,),*/
                     Text("Employee Advance/Loan Detail",
-                      style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize:16),
+                      style: AppTheme.appBarTS,
                     ),
                   ],
                 ),

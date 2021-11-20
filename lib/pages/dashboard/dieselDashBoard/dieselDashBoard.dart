@@ -219,7 +219,7 @@ class _DieselDashBoardState extends State<DieselDashBoard> {
                                     child: LiquidCircularProgressIndicator(
                                       value:db.low,
                                       backgroundColor: Colors.transparent,
-                                      valueColor: AlwaysStoppedAnimation(Color(0xFFF3C253)),
+                                      valueColor: AlwaysStoppedAnimation(AppTheme.yellowColor),
                                       borderColor: Colors.transparent,
                                       borderWidth: 0.0,
                                       center: Column(
@@ -409,7 +409,7 @@ class _DieselDashBoardState extends State<DieselDashBoard> {
                                             series: <CircularSeries>[
                                               DoughnutSeries<ChartData, String>(
                                                   dataSource: [
-                                                    ChartData('Low',db.issueDiesel.isEmpty?0: (db.issueDiesel['IssuePercentage']??0.0),Color(0xFFF1AC3D)),
+                                                    ChartData('Low',db.issueDiesel.isEmpty?0: (db.issueDiesel['IssuePercentage']??0.0),AppTheme.yellowColor),
                                                     ChartData('high',db.issueDiesel.isEmpty?0:  (100.0-(db.issueDiesel['IssuePercentage']??0)),Color(0xFFDFE8E8)),
                                                   ],
                                                   xValueMapper: (ChartData data, _) => data.x,

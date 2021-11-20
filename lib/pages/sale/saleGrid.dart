@@ -108,11 +108,12 @@ class _SaleGridState extends State<SaleGrid> {
                     height: 160,
                     width: SizeConfig.screenWidth,
                     decoration: BoxDecoration(
-                      image: DecorationImage(
+                      color: AppTheme.yellowColor
+                      /*image: DecorationImage(
                           image: AssetImage(
                             "assets/svg/gridHeader/reportsHeader.jpg",),
                           fit: BoxFit.cover
-                      ),
+                      ),*/
                     ),
                   ),
                 ),
@@ -797,7 +798,7 @@ class SaleReportHeader extends StatelessWidget {
       margin: EdgeInsets.only(right: SizeConfig.width10!),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
-          color: AppTheme.bgColor
+          color: AppTheme.counterBgColor
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,

@@ -499,7 +499,7 @@ class DieselIssueFormState extends State<DieselIssueForm> with TickerProviderSta
                     },),
 
                     Text("Diesel Issue",
-                      style: TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 16),
+                      style: AppTheme.appBarTS,
                     ),
 
                     Spacer(),

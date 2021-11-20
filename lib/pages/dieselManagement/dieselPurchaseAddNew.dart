@@ -655,7 +655,7 @@ class DieselPurchaseFormState extends State<DieselPurchaseForm> with TickerProvi
                     ),
 
                     Text("Diesel Purchase",
-                      style: TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 16),
+                      style: AppTheme.appBarTS,
                     ),
 
                     Spacer(),

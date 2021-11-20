@@ -172,7 +172,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                             decoration: BoxDecoration(
                                                 image: DecorationImage(
                                                     image: AssetImage(
-                                                      "assets/images/saleFormheader.jpg",),
+                                                      "assets/svg/gridHeader/unlodedvehicle.jpg",),
                                                     fit: BoxFit.cover
                                                 )
 
@@ -1276,7 +1276,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                               ),
                                                               child: Row(
                                                                 children: [
-                                                                  Text("Driver Details",style:TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 14)),
+                                                                  Text("Driver Details",style:TextStyle(fontFamily: 'RR',color: AppTheme.textColor,fontSize: 14)),
                                                                   Spacer(),
                                                                   Container(
                                                                     height: 25,
@@ -1412,10 +1412,10 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                           },),
 
                                           Text("Sales",
-                                            style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: 16),
+                                            style: AppTheme.appBarTS,
                                           ),
                                           Text(qn.tabController!.index==0?" / In Gate":" / Out Gate",
-                                            style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: 16),
+                                            style: AppTheme.appBarTS,
                                           ),
                                         ],
                                       ),
@@ -1445,7 +1445,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                             decoration: BoxDecoration(
                                                 image: DecorationImage(
                                                     image: AssetImage(
-                                                      "assets/images/saleFormheader.jpg",),
+                                                      "assets/svg/gridHeader/lodedvehicle.jpg",),
                                                     fit: BoxFit.cover
                                                 )
 
@@ -2041,10 +2041,10 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                           },),
 
                                           Text("Sales",
-                                            style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: 16),
+                                            style: AppTheme.appBarTS,
                                           ),
                                           Text(qn.tabController!.index==0?" / In Gate":" / Out Gate",
-                                            style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: 16),
+                                            style: AppTheme.appBarTS,
                                           ),
                                         ],
                                       ),
@@ -2156,7 +2156,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                     ],
                                   ),
                                   child: Center(
-                                    child: Icon(Icons.done,size: SizeConfig.height30,color: AppTheme.bgColor,),
+                                    child: Icon(Icons.done,size: SizeConfig.height30,color: AppTheme.indicatorColor,),
                                   ),
                                 ),
                               ),

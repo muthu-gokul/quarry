@@ -376,7 +376,7 @@ List<DateTime?> picked=[];
                                    padding: EdgeInsets.only(left: 0),
                                    // progressColor: AppTheme.yellowColor,
                                     backgroundColor: Color(0xFFEAEAEA),
-                                    linearGradient: LinearGradient(colors: [Color(0xFFF9E6AA),AppTheme.yellowColor,],),
+                                    linearGradient: LinearGradient(colors: [AppTheme.yellowColor.withOpacity(0.1),AppTheme.yellowColor,],),
                                     leading: Container(),
                                     trailing: Container(),
                                   ),

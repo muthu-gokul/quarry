@@ -142,7 +142,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
 
 
                              ),
-                           child: SvgPicture.asset("assets/svg/gridHeader/companyDetailsHeader.svg"),
+                           child: Image.asset("assets/svg/gridHeader/companyDetailsHeader.jpg"),
 
                            ),
                          ],
@@ -560,7 +560,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                              ],
                                            ),
                                            child: Center(
-                                               child: Text("Choose File",style: TextStyle(color:AppTheme.bgColor,fontSize:16,fontFamily: 'RM'),
+                                               child: Text("Choose File",style: TextStyle(color:AppTheme.textColor,fontSize:16,fontFamily: 'RM'),
                                                )
                                            ),
                                          ),
@@ -615,7 +615,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                            ),
                                            child: Center(
                                                child: Text(qn.plantGridList.isEmpty?"+ Add Plant":"Plants",
-                                                 style: TextStyle(color:AppTheme.bgColor,fontSize:16,fontFamily: 'RM'),
+                                                 style: TextStyle(color:AppTheme.textColor,fontSize:16,fontFamily: 'RM'),
                                                )
                                            ),
 
@@ -813,7 +813,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                              ],
                            ),
                            child: Center(
-                             child:_keyboardVisible?Container(): SvgPicture.asset("assets/svg/edit.svg",color: AppTheme.bgColor,height: 30,width: 30,),
+                             child:_keyboardVisible?Container(): SvgPicture.asset("assets/svg/edit.svg",color: AppTheme.drawerIconColor,height: 30,width: 30,),
                            ),
                          ),
                        ),

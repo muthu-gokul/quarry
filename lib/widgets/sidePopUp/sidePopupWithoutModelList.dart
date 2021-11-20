@@ -139,7 +139,7 @@ class _PopUpStatic2State extends State<PopUpStatic2> {
                         ]
                     ),
                     child: Center(
-                      child: Text(widget.title!,style: TextStyle(fontFamily: 'RM',fontSize: 16,color: AppTheme.bgColor),),
+                      child: Text(widget.title!,style: TextStyle(fontFamily: 'RM',fontSize: 16,color: AppTheme.textColor),),
                     ),
                   ),
 

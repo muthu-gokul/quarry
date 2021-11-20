@@ -346,7 +346,7 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
                                                                       ]
                                                                   ),
                                                                   child: Center(
-                                                                    child: Text("View",style:TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 16),),
+                                                                    child: Text("View",style:TextStyle(fontFamily: 'RR',color: AppTheme.textColor,fontSize: 16),),
                                                                   ),
                                                                 ),
                                                               ),
@@ -847,7 +847,7 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
                       child: NavBarIcon(),
                     ),
                     Text("Goods Received",
-                      style: TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 16),
+                      style: AppTheme.appBarTS,
                     ),
                     Spacer(),
                     GestureDetector(

@@ -287,10 +287,10 @@ class _MachineDetailAddNewState extends State<MachineDetailAddNew> with TickerPr
                    ),
 
                    Text("Machine Detail",
-                     style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: SizeConfig.width16),
+                     style: AppTheme.appBarTS
                    ),
                    Text(qn.isMachineEdit?" / Edit":" / Add New",
-                     style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: SizeConfig.width16),
+                     style: AppTheme.appBarTS
                    ),
                    Spacer(),
 

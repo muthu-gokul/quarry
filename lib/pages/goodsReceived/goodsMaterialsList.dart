@@ -128,11 +128,11 @@ class GoodsMaterialsListState extends State<GoodsMaterialsList> with TickerProvi
                   children: [
                     Container(
                       width: double.maxFinite,
-                      height:200,
+                      height:170,
 
                       decoration: BoxDecoration(
                           image: DecorationImage(
-                              image: AssetImage("assets/images/saleFormheader.jpg",),
+                              image: AssetImage("assets/svg/gridHeader/commonHeader.jpg",),
                               fit: BoxFit.cover
                           )
 
@@ -772,7 +772,7 @@ class GoodsMaterialsListState extends State<GoodsMaterialsList> with TickerProvi
                     ),
                     SizedBox(width: SizeConfig.width5,),
                     Text("Goods Materials List",
-                      style: TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 16),
+                      style: AppTheme.appBarTS,
                     ),
 
                     Spacer(),

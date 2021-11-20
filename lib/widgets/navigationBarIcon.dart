@@ -20,7 +20,7 @@ class NavBarIcon extends StatelessWidget {
             width: 25,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(50),
-                color: AppTheme.bgColor
+                color: Colors.white
             ),
           ),
           SizedBox(height: 2,),
@@ -29,7 +29,7 @@ class NavBarIcon extends StatelessWidget {
             width: 17,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(50),
-                color: AppTheme.grey
+                color: Colors.white.withOpacity(0.7)
             ),
           ),
           SizedBox(height: 2,),
@@ -38,7 +38,7 @@ class NavBarIcon extends StatelessWidget {
             width: 25,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(50),
-                color: AppTheme.bgColor
+                color: Colors.white
             ),
           ),
           SizedBox(height: 2,),
@@ -47,7 +47,7 @@ class NavBarIcon extends StatelessWidget {
             width: 17,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(50),
-                color: AppTheme.grey
+                color: Colors.white.withOpacity(0.7)
             ),
           ),
         ],

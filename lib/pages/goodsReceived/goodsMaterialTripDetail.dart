@@ -147,7 +147,7 @@ class GoodsMaterialTripListState extends State<GoodsMaterialTripList> with Ticke
 
                       decoration: BoxDecoration(
                           image: DecorationImage(
-                              image: AssetImage("assets/images/saleFormheader.jpg",),
+                              image: AssetImage("assets/svg/gridHeader/commonHeader.jpg",),
                               fit: BoxFit.cover
                           )
 
@@ -537,7 +537,7 @@ class GoodsMaterialTripListState extends State<GoodsMaterialTripList> with Ticke
                     ),
 
                     Text("${gr.ML_PorderNo}",
-                      style: TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 16),
+                      style:AppTheme.appBarTS,
                     ),
 
                     Spacer(),
@@ -548,7 +548,7 @@ class GoodsMaterialTripListState extends State<GoodsMaterialTripList> with Ticke
                           borderRadius: BorderRadius.circular(50)
                       ),
                       child: Text("${gr.ML_Date}",
-                        style: TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 16),
+                        style:AppTheme.appBarTS,
                       ),
                     ),
                     SizedBox(width: SizeConfig.width10,),

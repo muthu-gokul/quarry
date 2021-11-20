@@ -292,8 +292,8 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                 child: Column(
                   children: [
 
-                    SizedBox(height: _height * 0.15,),
-                    SvgPicture.asset("assets/images/qms.svg",height: 100,),
+                    SizedBox(height: _height * 0.12,),
+                    Image.asset("assets/images/qms.png",height: 140,),
                     SizedBox(height: 20,),
                     Form(
                         key: _loginFormKey,

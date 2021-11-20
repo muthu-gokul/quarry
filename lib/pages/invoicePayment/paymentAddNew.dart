@@ -387,9 +387,7 @@ class PaymentAddNewFormState extends State<PaymentAddNewForm> with TickerProvide
                       ),
 
                       Text(qn.isPaymentReceivable?"Add New Receivable":"Add New Payable",
-                        style: TextStyle(fontFamily: 'RR',
-                            color: Colors.black,
-                            fontSize: 16),
+                        style: AppTheme.appBarTS,
                       ),
 
                     ],

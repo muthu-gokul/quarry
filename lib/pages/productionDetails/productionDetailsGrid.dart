@@ -105,11 +105,11 @@ class ProductionGridState extends State<ProductionGrid> with TickerProviderState
                     height:  160,
 
                     decoration: BoxDecoration(
-                        image: DecorationImage(
-                            image: AssetImage("assets/svg/gridHeader/reportsHeader.jpg",),
-                            fit: BoxFit.cover
-                        )
-
+                        // image: DecorationImage(
+                        //     image: AssetImage("assets/svg/gridHeader/productionHeader.jpg",),
+                        //     fit: BoxFit.cover
+                        // )
+                      color: AppTheme.yellowColor
                     ),
                   ),
                 ),
@@ -124,7 +124,7 @@ class ProductionGridState extends State<ProductionGrid> with TickerProviderState
                         child: NavBarIcon(),
                       ),
                       Text("Production",
-                        style: TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize:16),
+                        style: AppTheme.appBarTS,
                       ),
                     ],
                   ),
@@ -149,7 +149,7 @@ class ProductionGridState extends State<ProductionGrid> with TickerProviderState
                               margin: EdgeInsets.only(right: SizeConfig.width10!),
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(5),
-                                  color: AppTheme.bgColor
+                                  color: AppTheme.counterBgColor
                               ),
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,

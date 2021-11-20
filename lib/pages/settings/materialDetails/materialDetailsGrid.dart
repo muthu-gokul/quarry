@@ -62,7 +62,7 @@ class MaterialDetailsGridState extends State<MaterialDetailsGrid> {
                         child: NavBarIcon(),
                       ),
                       Text("Material Details",
-                        style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: SizeConfig.width16),
+                        style: AppTheme.appBarTS,
                       ),
                       Spacer(),
 
