@@ -69,11 +69,11 @@ class ManageUsersGridState extends State<ManageUsersGrid> with TickerProviderSta
                   children: [
                     Container(
                       width: double.maxFinite,
-                      height: SizeConfig.height200,
+                      height: 170,
 
                       decoration: BoxDecoration(
                           image: DecorationImage(
-                              image: AssetImage("assets/images/saleFormheader.jpg",),
+                              image: AssetImage("assets/svg/gridHeader/commonHeader.jpg",),
                               fit: BoxFit.cover
                           )
 
@@ -199,7 +199,7 @@ class ManageUsersGridState extends State<ManageUsersGrid> with TickerProviderSta
                                                   ]
                                               ),
                                               child: Center(
-                                                child: SvgPicture.asset("assets/svg/plusIcon.svg",height: 35,width: 35,color: AppTheme.addNewTextFieldFocusBorder,),
+                                                child: SvgPicture.asset("assets/svg/plusIcon.svg",height: 35,width: 35,color: AppTheme.drawerIconColor,),
                                               ),
                                             ),
                                           ),
@@ -359,7 +359,7 @@ class ManageUsersGridState extends State<ManageUsersGrid> with TickerProviderSta
                       },
                     ),
                     Text("Manage Users",
-                      style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: SizeConfig.width16),
+                      style:  AppTheme.appBarTS,
                     ),
 
                   ],

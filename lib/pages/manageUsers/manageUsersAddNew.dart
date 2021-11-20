@@ -98,10 +98,10 @@ class ManageUsersAddNewState extends State<ManageUsersAddNew> {
                     children: [
                       Container(
                         width: double.maxFinite,
-                        height: 200,
+                        height: 170,
                         decoration: BoxDecoration(
                             image: DecorationImage(
-                                image: AssetImage("assets/images/saleFormheader.jpg",),
+                                image: AssetImage("assets/svg/gridHeader/commonHeader.jpg",),
                                 fit: BoxFit.cover
                             )
 
@@ -269,7 +269,7 @@ class ManageUsersAddNewState extends State<ManageUsersAddNew> {
                                                             mun.selectedSalutation="Mr";
                                                           });
                                                         },
-                                                        child: Text("Mr",style: TextStyle(fontFamily: 'RR',fontSize: 16,color: AppTheme.bgColor),)
+                                                        child: Text("Mr",style:  AppTheme.appBarTS,)
                                                     ),
                                                     InkWell(
                                                         onTap: (){
@@ -278,7 +278,7 @@ class ManageUsersAddNewState extends State<ManageUsersAddNew> {
                                                             mun.selectedSalutation="Mrs";
                                                           });
                                                         },
-                                                        child: Text("Mrs",style: TextStyle(fontFamily: 'RR',fontSize: 16,color: AppTheme.bgColor),)
+                                                        child: Text("Mrs",style:  AppTheme.appBarTS,)
                                                     ),
                                                     InkWell(
                                                         onTap: (){
@@ -287,7 +287,7 @@ class ManageUsersAddNewState extends State<ManageUsersAddNew> {
                                                             mun.selectedSalutation="Ms";
                                                           });
                                                         },
-                                                        child: Text("Ms",style: TextStyle(fontFamily: 'RR',fontSize: 16,color: AppTheme.bgColor),)
+                                                        child: Text("Ms",style:  AppTheme.appBarTS,)
                                                     ),
                                                     InkWell(
                                                         onTap: (){
@@ -296,7 +296,7 @@ class ManageUsersAddNewState extends State<ManageUsersAddNew> {
                                                             mun.selectedSalutation="Mx";
                                                           });
                                                         },
-                                                        child: Text("Mx",style: TextStyle(fontFamily: 'RR',fontSize: 16,color: AppTheme.bgColor),)
+                                                        child: Text("Mx",style:  AppTheme.appBarTS,)
                                                     ),
 
                                                   ],
@@ -309,7 +309,7 @@ class ManageUsersAddNewState extends State<ManageUsersAddNew> {
                                                         });
 
                                                       },
-                                                      child: Text("${mun.selectedSalutation}",style: TextStyle(fontFamily: 'RR',fontSize: 16,color: AppTheme.bgColor),)
+                                                      child: Text("${mun.selectedSalutation}",style:  AppTheme.appBarTS,)
                                                   ),
                                                 ),
                                               ),
@@ -513,7 +513,7 @@ class ManageUsersAddNewState extends State<ManageUsersAddNew> {
                       ),
 
                       Text("Add New Users",
-                        style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: 16),
+                        style:  AppTheme.appBarTS,
                       ),
                       /* Text(qn.isMachineEdit?" / Edit":" / Add New",
                         style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize: 16),
