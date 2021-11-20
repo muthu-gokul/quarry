@@ -100,7 +100,7 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
                   children: [
                     Container(
                       width: SizeConfig.screenWidth,
-                      height: 190,
+                      height: 170,
                       decoration: BoxDecoration(
                         color: AppTheme.yellowColor,
                          image: DecorationImage(
