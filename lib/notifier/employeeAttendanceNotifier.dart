@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:date_format/date_format.dart';
 import 'package:flutter/cupertino.dart';
@@ -175,6 +176,7 @@ class EmployeeAttendanceNotifier extends ChangeNotifier{
     DateFormat("yyyy-MM-dd").format(reportDate!).toString()),
     ParameterModel(Key: "database", Type: "String", Value:Provider.of<QuarryNotifier>(context,listen: false).DataBaseName),
   ];
+  log("${parameters.map((e) => e.toJson()).toList()}");
     var body={
       "Fields": parameters.map((e) => e.toJson()).toList()
     };
@@ -184,6 +186,7 @@ class EmployeeAttendanceNotifier extends ChangeNotifier{
         if(value!=null){
           var parsed=json.decode(value);
           var t=parsed['Table'] as List?;
+          log("$parsed");
           if(EmployeeAttendanceId!=null ){
 
           }
@@ -195,6 +198,7 @@ class EmployeeAttendanceNotifier extends ChangeNotifier{
             EmployeeAttendanceGridList.forEach((element) {
               employeeCode.add("${element.employeeName}  -  ${element.employeePrefix!+element.employeeCode!}");
             });
+            print(employeeCode.length);
           }
         }
 
