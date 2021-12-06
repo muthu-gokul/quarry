@@ -18,7 +18,7 @@ class GoodsMaterialTripDetailsModel {
   String? status;
 
   factory GoodsMaterialTripDetailsModel.fromJson(Map<String, dynamic> json) => GoodsMaterialTripDetailsModel(
-    trip: int.parse(json["Trip"]),
+    trip: json["Trip"],
     vehicleNumber: json["VehicleNumber"],
     materialId: json["MaterialId"],
     unitName: json["UnitName"],
