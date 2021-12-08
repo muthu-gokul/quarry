@@ -822,6 +822,7 @@ List<dynamic>? vehicleTypeList=[];/* {
           else if(typeName=="EmployeeReport"){
            // var t=parsed["Table"] as List;
             employeeReportGridList=parsed["Table"] as List?;
+          //  print(employeeReportGridList);
             filterEmployeeReport();
           }
           else if(typeName=="AttendanceReport"){
@@ -1631,13 +1632,16 @@ List<dynamic>? vehicleTypeList=[];/* {
       }
     });
 
+    print(tempEmployeeReportDesignationFilter);
+
     employeeShift!.forEach((element) {
+      print(element);
       if(element['IsActive']==1){
-        filterEmployeeReportGridList=tempEmployeeReportDesignationFilter.where((ele) => ele['EmployeeShiftId']==element['EmployeeShiftId']).toList();
+        filterEmployeeReportGridList=filterEmployeeReportGridList+tempEmployeeReportDesignationFilter.where((ele) => ele['EmployeeShiftId']==element['EmployeeShiftId']).toList();
       }
     });
 
-
+print(filterEmployeeReportGridList);
     totalReport=filterEmployeeReportGridList.length;
 
     filterEmployeeReportGridList.forEach((element) {
@@ -1688,6 +1692,7 @@ List<dynamic>? vehicleTypeList=[];/* {
 
 
     employeeList!.forEach((element) {
+      print(element);
       if(element['IsActive']==1){
         tempAttendanceReportDesignationFilter=tempAttendanceReportDesignationFilter+attendanceReportGridList!.where((ele) => ele['EmployeeDesignationId']==element['EmployeeDesignationId']).toList();
       }
@@ -1700,6 +1705,8 @@ List<dynamic>? vehicleTypeList=[];/* {
         filterAttendanceReportGridList=filterAttendanceReportGridList+tempAttendanceReportDesignationFilter.where((ele) => ele['EmployeeShiftId']==element['EmployeeShiftId']).toList();
       }
     });
+
+    print(filterAttendanceReportGridList);
 
 
     totalReport=filterAttendanceReportGridList.length;

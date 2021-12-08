@@ -292,7 +292,7 @@ class _StockDashBoardState extends State<StockDashBoard> {
                                             ),
                                             name: 'Stock',
                                             xValueMapper: (dynamic sales, _) =>sales['MaterialName'],
-                                            yValueMapper: (dynamic sales, _) => sales['Stock'],
+                                            yValueMapper: (dynamic sales, _) => sales['OverAllStock'],
                                           ),
                                         ],
                                         tooltipBehavior: TooltipBehavior(

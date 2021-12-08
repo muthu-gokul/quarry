@@ -32,8 +32,8 @@ class ApiManager{
         // print(msg);
          print(response.body);
         msg=json.decode(response.body);
-        print(msg["Message"]['originalError']['info']['message']);
-         CustomAlert().commonErrorAlert2(context, "${msg["Message"]['originalError']['info']['message']}", "");
+     //   print(msg["Message"]['originalError']['info']['message']);
+         CustomAlert().commonErrorAlert2(context, "${msg["Message"]}", "");
         return "null";
         // return response.statusCode.toString();
       }
