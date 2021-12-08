@@ -117,14 +117,16 @@ class MaterialNotifier extends ChangeNotifier{
 
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
-
+        print(value);
         if(value!="null"){
+          print("if");
           var parsed=json.decode(value);
           Navigator.pop(context);
           clearForm();
           GetMaterialDbHit(context, null);
         }
         else{
+          print("else");
           updatematerialLoader(false);
         }
 
