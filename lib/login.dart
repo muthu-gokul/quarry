@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -12,6 +13,7 @@ import 'package:http/http.dart' as http;
 
 import 'package:permission_handler/permission_handler.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
+import 'package:quarry/styles/apiKeyConstants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'api/sp.dart';
@@ -156,7 +158,8 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
         setState(() {
           isLoading=true;
         });
-            var itemsUrl="http://183.82.32.76/restroApi///api/Mobile/GetInvoke";
+            var itemsUrl="http://192.168.1.102//Quarry_Dev/QuarryApi_Dev///api/Mobile/GetInvoke";
+           // var itemsUrl="http://183.82.32.76/restroApi///api/Mobile/GetInvoke";
           //  var itemsUrl="https://quarrydemoapi.herokuapp.com/api/users/login";
          //   var itemsUrl="https://spectacular-salty-meeting.glitch.me/api/users/login";
           //  var itemsUrl="http://10.0.2.2:8080/api/users/login";
@@ -183,7 +186,8 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
             {
               "Key": "database",
               "Type": "String",
-              "Value": "TetroPOS_TestQMS" //live
+              "Value": "QMS" //live
+            //  "Value": "TetroPOS_TestQMS" //live
             // "Value": "TetroPos_QMSLocal"
            // "Value": "TetroPos_QMSTest1"
             // "Value": "QMS1"
@@ -198,12 +202,13 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
             Uri.parse(itemsUrl), headers: {"Content-Type": "application/json"},
             body: json.encode(body)
         ).then((value) async {
+          log("LOGIN VALUE ${value.body}");
           var parsed = json.decode(value.body);
           print(value.body);
           print(parsed);
 
 
-          if (parsed["Table"] != null) {
+          if (parsed[TABLE] != null) {
             loginNotifier.fetchUserDetails(parsed);
             print(loginNotifier.userDetail.loginTblOutput![0].Status);
 

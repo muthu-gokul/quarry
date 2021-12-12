@@ -8,6 +8,7 @@ import 'package:quarry/api/sp.dart';
 import 'package:quarry/model/parameterMode.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/pages/dashboard/dieselDashBoard/dieselDashBoard.dart';
+import 'package:quarry/styles/apiKeyConstants.dart';
 import 'package:quarry/styles/constants.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/calculation.dart';
@@ -53,8 +54,8 @@ class DashboardNotifier extends ChangeNotifier{
         if(value!='F'){
           var parsed=json.decode(value);
           if(typeName=='Sale'){
-            currentSaleT=parsed['Table'][0];
-            currentSaleData=parsed['Table1'] as List;
+            currentSaleT=parsed[TABLE][0];
+            currentSaleData=parsed[TABLE1] as List;
             updateisLoad(false);
           }
 
@@ -93,14 +94,14 @@ class DashboardNotifier extends ChangeNotifier{
           var parsed=json.decode(value);
           log("$value");
           if(typeName=='Sale'){
-            saleT=parsed['Table'][0];
-            saleData=parsed['Table1'] as List;
-            saleT2=parsed['Table2'] as List?;
-            saleMaterialWeeklyT3=parsed['Table3'] as List?;
-            saleMaterialMonthlyT4=parsed['Table4'] as List?;
-            saleMaterialYearT5=parsed['Table5'] as List?;
-            salePaymentCategoryT6=parsed['Table6'] as List?;
-            salePaymentCustomerT7=parsed['Table7'] as List?;
+            saleT=parsed[TABLE][0];
+            saleData=parsed[TABLE1] as List;
+            saleT2=parsed[TABLE2] as List?;
+            saleMaterialWeeklyT3=parsed[TABLE3] as List?;
+            saleMaterialMonthlyT4=parsed[TABLE4] as List?;
+            saleMaterialYearT5=parsed[TABLE5] as List?;
+            salePaymentCategoryT6=parsed[TABLE6] as List?;
+            salePaymentCustomerT7=parsed[TABLE7] as List?;
             updateisLoad(false);
           }
           else if(typeName=='Purchase'){
@@ -108,8 +109,8 @@ class DashboardNotifier extends ChangeNotifier{
           }
           else if(typeName=='Production'){
             totalProductionQty=0.0;
-            productionInputMaterialsT=parsed['Table'] as List?;
-            productionOutPutMaterialsT1=parsed['Table1'] as List?;
+            productionInputMaterialsT=parsed[TABLE] as List?;
+            productionOutPutMaterialsT1=parsed[TABLE1] as List?;
             productionInputMaterialsT!.forEach((element) {
               totalProductionQty=Calculation().add(totalProductionQty, element['InputMaterialQuantity']);
             });
@@ -125,11 +126,11 @@ class DashboardNotifier extends ChangeNotifier{
             totalAbsent=0;
             totalPresent=0;
             totalEmployee=1;
-            totalEmployee=parsed['Table'][0]['TotalEmployee'];
+            totalEmployee=parsed[TABLE][0]['TotalEmployee'];
             if(totalEmployee<=0){
               totalEmployee=1;
             }
-            var t1=parsed['Table1'] as List;
+            var t1=parsed[TABLE1] as List;
             t1.forEach((element) {
               if(element['Status']==0){
                     totalAbsent=element['TotalCount'];
@@ -138,24 +139,24 @@ class DashboardNotifier extends ChangeNotifier{
                 totalPresent=element['TotalCount'];
               }
               });
-            todayAttendanceListT2=parsed['Table2'] as List;
-            weekAttendanceListT7=parsed['Table7'] as List;
+            todayAttendanceListT2=parsed[TABLE2] as List;
+            weekAttendanceListT7=parsed[TABLE7] as List;
             monthAttendanceListT10=parsed['Table10'] as List;
 
-            todayAttendanceCountT1=parsed['Table1'] as List;
-            weekAttendanceCountT6=parsed['Table6'] as List;
+            todayAttendanceCountT1=parsed[TABLE1] as List;
+            weekAttendanceCountT6=parsed[TABLE6] as List;
             monthAttendanceCountT9=parsed['Table9'] as List;
             attendanceList=todayAttendanceListT2;
             updateisLoad(false);
           }
           else if(typeName=='Counter'){
-            counterList=parsed['Table'] as List?;
+            counterList=parsed[TABLE] as List?;
             updateisLoad(false);
           }
           else if(typeName=='Diesel'){
-            var t3=parsed['Table3'] as List;
-            var t4=parsed['Table4'] as List;
-            var t5=parsed['Table5'] as List;
+            var t3=parsed[TABLE3] as List;
+            var t4=parsed[TABLE4] as List;
+            var t5=parsed[TABLE5] as List;
             if(t3.isNotEmpty){
               totalDiesel=t3[0];
             }else{
@@ -181,9 +182,9 @@ class DashboardNotifier extends ChangeNotifier{
           }
           else if(typeName=='Invoice'){
             customerInvPaid=0;customerInvPartiallyPaid=0;customerInvUnPaid=0;
-            invT=parsed['Table'] as List;
-            customerInvListT2=parsed['Table2'] as List;
-            var t1=parsed['Table1'] as List;
+            invT=parsed[TABLE] as List;
+            customerInvListT2=parsed[TABLE2] as List;
+            var t1=parsed[TABLE1] as List;
             customerInvCounterT1=t1[0];
             customerInvPaid=invT[0]['InvoiceCount'];
             customerInvPartiallyPaid=invT[1]['InvoiceCount'];
@@ -203,14 +204,14 @@ class DashboardNotifier extends ChangeNotifier{
             }
 
 
-            var t3=parsed['Table3'] as List;
+            var t3=parsed[TABLE3] as List;
             customerInvListT2.forEach((element) {
               element['bills']=[];
               element['bills']=t3.where((ele) => ele['CustomerId']==element['CustomerId']).toList();
             });
 
             //Supplier
-            var t4=parsed['Table4'] as List;
+            var t4=parsed[TABLE4] as List;
             supplierInvPaid=t4[0]['InvoiceCount'];
             supplierInvPartiallyPaid=t4[1]['InvoiceCount'];
             supplierInvUnPaid=t4[2]['InvoiceCount'];
@@ -228,11 +229,11 @@ class DashboardNotifier extends ChangeNotifier{
             }
 
 
-            var t5=parsed['Table5'] as List;
+            var t5=parsed[TABLE5] as List;
             supplierInvCounterT5=t5[0];
 
-            supplierInvListT6=parsed['Table6'] as List;
-            var t7=parsed['Table7'] as List;
+            supplierInvListT6=parsed[TABLE6] as List;
+            var t7=parsed[TABLE7] as List;
             supplierInvListT6.forEach((element) {
               element['bills']=[];
               element['bills']=t7.where((ele) => ele['SupplierId']==element['SupplierId']).toList();
@@ -243,8 +244,8 @@ class DashboardNotifier extends ChangeNotifier{
             getSupplierInvoice();
           }
           else if(typeName=='Stock'){
-            stockT=parsed['Table'][0];
-            stockT1=parsed['Table1'] as List;
+            stockT=parsed[TABLE][0];
+            stockT1=parsed[TABLE1] as List;
             updateisLoad(false);
           }
           else{

@@ -16,6 +16,7 @@ import 'package:quarry/model/productionDetailsModel/productionMachineListModel.d
 import 'package:quarry/model/productionDetailsModel/productionMaterialListModel.dart';
 import 'package:quarry/model/productionDetailsModel/productionMaterialMappingListModel.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
+import 'package:quarry/styles/apiKeyConstants.dart';
 import 'package:quarry/styles/constants.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/calculation.dart';
@@ -60,8 +61,8 @@ class ProductionNotifier extends ChangeNotifier{
         if(value!=null){
           var parsed=json.decode(value);
 
-          var t=parsed['Table'] as List?;
-          var t1=parsed['Table1'] as List;
+          var t=parsed[TABLE] as List?;
+          var t1=parsed[TABLE1] as List;
           plantList=t1.map((e) => PlantUserModel.fromJson(e)).toList();
           plantList.forEach((element) {
             if(element.userId==Provider.of<QuarryNotifier>(context,listen: false).UserId){
@@ -163,9 +164,9 @@ class ProductionNotifier extends ChangeNotifier{
         if(value!=null){
           var parsed=json.decode(value);
           print(parsed);
-          var t=parsed['Table'] as List;
-          var t1=parsed['Table1'] as List?;
-          var t2=parsed['Table2'] as List;
+          var t=parsed[TABLE] as List;
+          var t1=parsed[TABLE1] as List?;
+          var t2=parsed[TABLE2] as List;
           machineCategoryList=t.map((e) => ProductionMachineListModel.fromJson(e)).toList();
           inputMaterialList=t1;
           MaterialList=t2.map((e) => ProductionMaterialListModel.fromJson(e)).toList();
@@ -417,7 +418,7 @@ class ProductionNotifier extends ChangeNotifier{
 
 
           var parsed=json.decode(value);
-          var t=parsed['Table'] as List?;
+          var t=parsed[TABLE] as List?;
           if(filterUsersPlantList.isEmpty){
 
             Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.forEach((element) {
@@ -444,7 +445,7 @@ class ProductionNotifier extends ChangeNotifier{
 
           if(productionId!=null){
 
-            var t1=parsed['Table1'] as List;
+            var t1=parsed[TABLE1] as List;
 
 
 
@@ -471,7 +472,7 @@ class ProductionNotifier extends ChangeNotifier{
             /*   notifyListeners();*/
           }
           else{
-            var t1=parsed['Table1'] as List;
+            var t1=parsed[TABLE1] as List;
             print(t);
               gridOverAllHeader=t!.map((e) => ProductionGridHeaderModel.fromJson(e)).toList();
             filterProductionGridValues=t1.map((e) => ProductionDetailGridModel.fromJson(e)).toList();
