@@ -7,6 +7,7 @@ import 'package:quarry/api/sp.dart';
 import 'package:quarry/model/parameterMode.dart';
 import 'package:quarry/model/plantModel/plantUserModel.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
+import 'package:quarry/styles/apiKeyConstants.dart';
 import 'package:quarry/styles/constants.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/calculation.dart';
@@ -39,8 +40,8 @@ class EmployeeSalaryNotifier extends ChangeNotifier{
         if(value!=null){
           var parsed=json.decode(value);
 
-          var t=parsed['Table'] as List?;
-          var t1=parsed['Table1'] as List;
+          var t=parsed[TABLE] as List?;
+          var t1=parsed[TABLE1] as List;
           plantList=t1.map((e) => PlantUserModel.fromJson(e)).toList();
           plantList.forEach((element) {
             if(element.userId==Provider.of<QuarryNotifier>(context,listen: false).UserId){
@@ -228,8 +229,8 @@ clearInsertForm(){
       await call.ApiCallGetInvoke(body,context).then((value) {
         if(value!=null){
           var parsed=json.decode(value);
-          var t=parsed['Table'] as List?;
-          print(parsed['Table']);
+          var t=parsed[TABLE] as List?;
+          print(parsed[TABLE]);
 
           if(EmployeeId!=null ){
             showEmpId=t![0]['EmployeeId'];

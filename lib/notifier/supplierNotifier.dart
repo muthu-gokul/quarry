@@ -13,6 +13,7 @@ import 'package:quarry/model/supplierDetailModel/supplierGridModel.dart';
 import 'package:quarry/model/supplierDetailModel/supplierMaterialModel.dart';
 import 'package:quarry/model/unitDetailModel.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
+import 'package:quarry/styles/apiKeyConstants.dart';
 import 'package:quarry/styles/constants.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 
@@ -86,8 +87,8 @@ class SupplierNotifier extends ChangeNotifier{
       await call.ApiCallGetInvoke(body,context).then((value) {
         if(value!="null"){
           var parsed=json.decode(value);
-          var t=parsed['Table'] as List;
-          var t1=parsed['Table1'] as List;
+          var t=parsed[TABLE] as List;
+          var t1=parsed[TABLE1] as List;
           supplierCategoryList=t.map((e) => SupplierCategoryModel.fromJson(e)).toList();
           supplierMaterialList=t1.map((e) => SupplierMaterialModel.fromJson(e)).toList();
         }
@@ -198,10 +199,10 @@ class SupplierNotifier extends ChangeNotifier{
       await call.ApiCallGetInvoke(body,context).then((value) {
         if(value!="null"){
           var parsed=json.decode(value);
-          var t=parsed['Table'] as List?;
+          var t=parsed[TABLE] as List?;
 
           if(supplierId!=null){
-            var t1=parsed['Table1'] as List;
+            var t1=parsed[TABLE1] as List;
 
 
             supplierCategoryName=t![0]['SupplierCategoryName'];

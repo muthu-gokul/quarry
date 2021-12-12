@@ -9,6 +9,7 @@ import 'package:quarry/model/materialDetailsModel/materialGridModel.dart';
 import 'package:quarry/model/parameterMode.dart';
 import 'package:quarry/model/unitDetailModel.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
+import 'package:quarry/styles/apiKeyConstants.dart';
 import 'package:quarry/styles/constants.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 
@@ -71,8 +72,8 @@ class MaterialNotifier extends ChangeNotifier{
       await call.ApiCallGetInvoke(body,context).then((value) {
         var parsed=json.decode(value);
 
-        var t=parsed['Table'] as List;
-        var t1=parsed['Table1'] as List;
+        var t=parsed[TABLE] as List;
+        var t1=parsed[TABLE1] as List;
 
           materialUnits=t.map((e) => UnitDetailModel.fromJson(e)).toList();
           materialCategoryList=t1.map((e) => MaterialCategoryModel.fromJson(e)).toList();
@@ -164,7 +165,7 @@ class MaterialNotifier extends ChangeNotifier{
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
         var parsed=json.decode(value);
-        var t=parsed['Table'] as List?;
+        var t=parsed[TABLE] as List?;
 
 
         if(materialId!=null){

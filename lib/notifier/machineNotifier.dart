@@ -7,6 +7,7 @@ import 'package:quarry/api/sp.dart';
 import 'package:quarry/model/machineDetailsModel/machineGridModel.dart';
 import 'package:quarry/model/parameterMode.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
+import 'package:quarry/styles/apiKeyConstants.dart';
 import 'package:quarry/styles/constants.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 
@@ -92,7 +93,7 @@ class MachineNotifier extends ChangeNotifier{
 
         if(value!="null"){
           var parsed=json.decode(value);
-          var t=parsed['Table'] as List?;
+          var t=parsed[TABLE] as List?;
           print(parsed);
 
 

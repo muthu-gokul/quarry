@@ -15,6 +15,7 @@ import 'package:quarry/model/employeeModel/employeeShiftModel.dart';
 import 'package:quarry/model/employeeModel/employeeTypeModel.dart';
 import 'package:quarry/model/parameterMode.dart';
 import 'package:quarry/model/plantModel/plantUserModel.dart';
+import 'package:quarry/styles/apiKeyConstants.dart';
 import 'package:quarry/styles/constants.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 
@@ -46,8 +47,8 @@ class EmployeeNotifier extends ChangeNotifier{
         if(value!=null){
           var parsed=json.decode(value);
 
-          var t=parsed['Table'] as List?;
-          var t1=parsed['Table1'] as List;
+          var t=parsed[TABLE] as List?;
+          var t1=parsed[TABLE1] as List;
           plantList=t1.map((e) => PlantUserModel.fromJson(e)).toList();
           plantList.forEach((element) {
             if(element.userId==Provider.of<QuarryNotifier>(context,listen: false).UserId){
@@ -105,20 +106,20 @@ class EmployeeNotifier extends ChangeNotifier{
       await call.ApiCallGetInvoke(body, context).then((value) {
         var parsed = json.decode(value);
         print(parsed);
-        var t = parsed['Table'] as List;
+        var t = parsed[TABLE] as List;
 
-        var t1= parsed['Table1'] as List;
+        var t1= parsed[TABLE1] as List;
 
-        var t2= parsed['Table2'] as List;
+        var t2= parsed[TABLE2] as List;
 
-        var t3= parsed['Table3'] as List;
+        var t3= parsed[TABLE3] as List;
 
-        var t4= parsed['Table4'] as List;
+        var t4= parsed[TABLE4] as List;
 
-        var t5= parsed['Table5'] as List;
+        var t5= parsed[TABLE5] as List;
 
-        var t6= parsed['Table6'] as List;
-        var t7= parsed['Table7'] as List?;
+        var t6= parsed[TABLE6] as List;
+        var t7= parsed[TABLE7] as List?;
 
 
 
@@ -357,7 +358,7 @@ class EmployeeNotifier extends ChangeNotifier{
       await call.ApiCallGetInvoke(body,context).then((value) {
         if(value!="null"){
           var parsed=json.decode(value);
-          var t=parsed['Table'] as List?;
+          var t=parsed[TABLE] as List?;
           print("t$t");
           if(EmployeeId!=null ){
             editEmployeeId=t![0]['EmployeeId'];

@@ -16,6 +16,7 @@ import 'package:quarry/model/purchaseDetailsModel/purchaseSupplierListModel.dart
 import 'package:quarry/model/purchaseDetailsModel/purchaseSupplierTypeModel.dart';
 import 'package:quarry/notifier/profileNotifier.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
+import 'package:quarry/styles/apiKeyConstants.dart';
 import 'package:quarry/styles/constants.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/calculation.dart';
@@ -87,8 +88,8 @@ class PurchaseNotifier extends ChangeNotifier{
         if(value!="null"){
           var parsed=json.decode(value);
 
-          var t=parsed['Table'] as List?;
-          var t1=parsed['Table1'] as List;
+          var t=parsed[TABLE] as List?;
+          var t1=parsed[TABLE1] as List;
           plantList=t1.map((e) => PlantUserModel.fromJson(e)).toList();
           plantList.forEach((element) {
             if(element.userId==Provider.of<QuarryNotifier>(context,listen: false).UserId){
@@ -162,11 +163,11 @@ class PurchaseNotifier extends ChangeNotifier{
       await call.ApiCallGetInvoke(body,context).then((value) {
         if(value!="null"){
           var parsed=json.decode(value);
-          var t=parsed['Table'] as List?;
-          var t1=parsed['Table1'] as List;
-          var t2=parsed['Table2'] as List;
-          var t3=parsed['Table3'] as List;
-          var t4=parsed['Table4'] as List?;
+          var t=parsed[TABLE] as List?;
+          var t1=parsed[TABLE1] as List;
+          var t2=parsed[TABLE2] as List;
+          var t3=parsed[TABLE3] as List;
+          var t4=parsed[TABLE4] as List?;
 
           print(t1);
 
@@ -624,13 +625,13 @@ class PurchaseNotifier extends ChangeNotifier{
 
 
           var parsed=json.decode(value);
-          var t=parsed['Table'] as List?;
+          var t=parsed[TABLE] as List?;
           if(PurchaseOrderId!=null){
 
             print("t_$t");
-            var t1=parsed['Table1'] as List;
+            var t1=parsed[TABLE1] as List;
             print(t1);
-            var t2=parsed['Table2'] as List;
+            var t2=parsed[TABLE2] as List;
             print(t2);
 
             PurchaseEditId=t![0]['PurchaseOrderId'];

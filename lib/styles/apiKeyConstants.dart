@@ -1,0 +1,14 @@
+ String TABLE='table';
+ String TABLE1='table1';
+ String TABLE2='table2';
+ String TABLE3='table3';
+ String TABLE4='table4';
+ String TABLE5='table5';
+ String TABLE6='table6';
+ String TABLE7='table7';
+ String TABLE8='table8';
+ String TABLE9='table9';
+ String TABLE10='table10';
+ String TABLE11='table11';
+ String TABLE12='table12';
+ String TBLOUTPUT='tblOutPut';
