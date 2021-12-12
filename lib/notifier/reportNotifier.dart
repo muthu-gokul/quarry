@@ -9,6 +9,7 @@ import 'package:quarry/api/ApiManager.dart';
 import 'package:quarry/api/sp.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/pages/reports/reportGrid.dart';
+import 'package:quarry/styles/apiKeyConstants.dart';
 import 'package:quarry/styles/constants.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/calculation.dart';
@@ -409,9 +410,9 @@ List<dynamic>? vehicleTypeList=[];/* {
             columnFilterAll.clear();
             columnFilterAll.add(true);
 
-            var t=parsed["Table"] as List?;
-            var t1=parsed["Table1"] as List?;
-            var t2=parsed["Table2"] as List?;
+            var t=parsed[TABLE] as List?;
+            var t1=parsed[TABLE1] as List?;
+            var t2=parsed[TABLE2] as List?;
 
             plantList=t;
             materialList=t1;
@@ -429,9 +430,9 @@ List<dynamic>? vehicleTypeList=[];/* {
             columnFilterAll.clear();
             columnFilterAll.add(true);
 
-            var t=parsed["Table"] as List?;
-            var t1=parsed["Table1"] as List?;
-            var t2=parsed["Table2"] as List?;
+            var t=parsed[TABLE] as List?;
+            var t1=parsed[TABLE1] as List?;
+            var t2=parsed[TABLE2] as List?;
             plantList=t;
             materialList=t1;
             supplierList=t2;
@@ -445,11 +446,11 @@ List<dynamic>? vehicleTypeList=[];/* {
             columnFilterAll.clear();
             columnFilterAll.add(true);
 
-            var t=parsed["Table"] as List?;
-            var t1=parsed["Table1"] as List?;
-            var t2=parsed["Table2"] as List?;
-            var t3=parsed["Table3"] as List?;
-            var t4=parsed["Table4"] as List?;
+            var t=parsed[TABLE] as List?;
+            var t1=parsed[TABLE1] as List?;
+            var t2=parsed[TABLE2] as List?;
+            var t3=parsed[TABLE3] as List?;
+            var t4=parsed[TABLE4] as List?;
             plantList=t;
             customerList=t1;
             locationList=t2;
@@ -466,9 +467,9 @@ List<dynamic>? vehicleTypeList=[];/* {
           else if(typeName=="SupplierPurchaseReport"){
             columnFilterAll.clear();
             columnFilterAll.add(true);
-            var t=parsed["Table"] as List?;
-            var t1=parsed["Table1"] as List?;
-            var t2=parsed["Table2"] as List?;
+            var t=parsed[TABLE] as List?;
+            var t1=parsed[TABLE1] as List?;
+            var t2=parsed[TABLE2] as List?;
             plantList=t;
             materialList=t1;
             supplierList=t2;
@@ -480,10 +481,10 @@ List<dynamic>? vehicleTypeList=[];/* {
           else if(typeName=="ProductionReport"){
             columnFilterAll.clear();
             columnFilterAll.add(true);
-            var t=parsed["Table"] as List?;
-            var t1=parsed["Table1"] as List?;
-            var t2=parsed["Table2"] as List?;
-            var t3=parsed["Table3"] as List?;
+            var t=parsed[TABLE] as List?;
+            var t1=parsed[TABLE1] as List?;
+            var t2=parsed[TABLE2] as List?;
+            var t3=parsed[TABLE3] as List?;
 
             plantList=t;
             machineList=t1;
@@ -499,11 +500,11 @@ List<dynamic>? vehicleTypeList=[];/* {
           else if(typeName=="InvoiceReport"){
             columnFilterAll.clear();
             columnFilterAll.add(true);
-            var t=parsed["Table"] as List?;
-            var t1=parsed["Table1"] as List?;
-            var t2=parsed["Table2"] as List?;
-            var t3=parsed["Table3"] as List?;
-            var t4=parsed["Table4"] as List?;
+            var t=parsed[TABLE] as List?;
+            var t1=parsed[TABLE1] as List?;
+            var t2=parsed[TABLE2] as List?;
+            var t3=parsed[TABLE3] as List?;
+            var t4=parsed[TABLE4] as List?;
             plantList=t;
             invoiceTypeList=t1;
             partyNameList=t2;
@@ -519,10 +520,10 @@ List<dynamic>? vehicleTypeList=[];/* {
           else if(typeName=="ReceivablePaymentReport"){
             columnFilterAll.clear();
             columnFilterAll.add(true);
-            var t=parsed["Table"] as List?;
-            var t1=parsed["Table1"] as List?;
-            var t2=parsed["Table2"] as List?;
-            var t3=parsed["Table3"] as List?;
+            var t=parsed[TABLE] as List?;
+            var t1=parsed[TABLE1] as List?;
+            var t2=parsed[TABLE2] as List?;
+            var t3=parsed[TABLE3] as List?;
 
             plantList=t;
             partyNameList=t1;
@@ -537,10 +538,10 @@ List<dynamic>? vehicleTypeList=[];/* {
           else if(typeName=="PayablePaymentReport"){
             columnFilterAll.clear();
             columnFilterAll.add(true);
-            var t=parsed["Table"] as List?;
-            var t1=parsed["Table1"] as List?;
-            var t2=parsed["Table2"] as List?;
-            var t3=parsed["Table3"] as List?;
+            var t=parsed[TABLE] as List?;
+            var t1=parsed[TABLE1] as List?;
+            var t2=parsed[TABLE2] as List?;
+            var t3=parsed[TABLE3] as List?;
 
             plantList=t;
             partyNameList=t1;
@@ -555,8 +556,8 @@ List<dynamic>? vehicleTypeList=[];/* {
           else if(typeName=="EmployeeReport"){
             columnFilterAll.clear();
             columnFilterAll.add(true);
-            var t=parsed["Table"] as List?;
-            var t1=parsed["Table1"] as List?;
+            var t=parsed[TABLE] as List?;
+            var t1=parsed[TABLE1] as List?;
 
 
             employeeList=t;
@@ -569,8 +570,8 @@ List<dynamic>? vehicleTypeList=[];/* {
           else if(typeName=="AttendanceReport"){
             columnFilterAll.clear();
             columnFilterAll.add(true);
-            var t=parsed["Table"] as List?;
-            var t1=parsed["Table1"] as List?;
+            var t=parsed[TABLE] as List?;
+            var t1=parsed[TABLE1] as List?;
 
 
             employeeList=t;
@@ -583,10 +584,10 @@ List<dynamic>? vehicleTypeList=[];/* {
           else if(typeName=="DieselPurchaseReport"){
             columnFilterAll.clear();
             columnFilterAll.add(true);
-            var t=parsed["Table"] as List?;
-            var t1=parsed["Table1"] as List?;
-            var t2=parsed["Table2"] as List?;
-            var t3=parsed["Table3"] as List?;
+            var t=parsed[TABLE] as List?;
+            var t1=parsed[TABLE1] as List?;
+            var t2=parsed[TABLE2] as List?;
+            var t3=parsed[TABLE3] as List?;
 
 
             plantList=t;
@@ -603,9 +604,9 @@ List<dynamic>? vehicleTypeList=[];/* {
           else if(typeName=="DieselIssueReport"){
             columnFilterAll.clear();
             columnFilterAll.add(true);
-            var t=parsed["Table"] as List?;
-            var t1=parsed["Table1"] as List?;
-            var t2=parsed["Table2"] as List?;
+            var t=parsed[TABLE] as List?;
+            var t1=parsed[TABLE1] as List?;
+            var t2=parsed[TABLE2] as List?;
 
 
             plantList=t;
@@ -621,9 +622,9 @@ List<dynamic>? vehicleTypeList=[];/* {
           else if(typeName=="MachineManagementReport"){
             columnFilterAll.clear();
             columnFilterAll.add(true);
-            var t=parsed["Table"] as List?;
-            var t1=parsed["Table1"] as List?;
-            var t2=parsed["Table2"] as List?;
+            var t=parsed[TABLE] as List?;
+            var t1=parsed[TABLE1] as List?;
+            var t2=parsed[TABLE2] as List?;
 
 
             plantList=t;
@@ -639,8 +640,8 @@ List<dynamic>? vehicleTypeList=[];/* {
           else if(typeName=="SaleAuditReport"){
             columnFilterAll.clear();
             columnFilterAll.add(true);
-            var t=parsed["Table"] as List?;
-            var t1=parsed["Table1"] as List?;
+            var t=parsed[TABLE] as List?;
+            var t1=parsed[TABLE1] as List?;
 
 
             plantList=t;
@@ -655,8 +656,8 @@ List<dynamic>? vehicleTypeList=[];/* {
           else if(typeName=="PurchaseAuditReport"){
             columnFilterAll.clear();
             columnFilterAll.add(true);
-            var t=parsed["Table"] as List?;
-            var t1=parsed["Table1"] as List?;
+            var t=parsed[TABLE] as List?;
+            var t1=parsed[TABLE1] as List?;
 
             plantList=t;
             supplierList=t1;
@@ -668,9 +669,9 @@ List<dynamic>? vehicleTypeList=[];/* {
           else if(typeName=="VehicleMonitoringReport"){
             columnFilterAll.clear();
             columnFilterAll.add(true);
-            var t=parsed["Table"] as List?;
-            var t1=parsed["Table1"] as List?;
-            var t2=parsed["Table2"] as List?;
+            var t=parsed[TABLE] as List?;
+            var t1=parsed[TABLE1] as List?;
+            var t2=parsed[TABLE2] as List?;
 
             plantList=t;
             vehicleTypeList=t1;
@@ -684,9 +685,9 @@ List<dynamic>? vehicleTypeList=[];/* {
           else if(typeName=="StockReport"){
             columnFilterAll.clear();
             columnFilterAll.add(true);
-            var t=parsed["Table"] as List?;
-            var t1=parsed["Table1"] as List?;
-            var t2=parsed["Table2"] as List?;
+            var t=parsed[TABLE] as List?;
+            var t1=parsed[TABLE1] as List?;
+            var t2=parsed[TABLE2] as List?;
 
             plantList=t;
             materialList=t1;
@@ -774,104 +775,104 @@ List<dynamic>? vehicleTypeList=[];/* {
       await call.ApiCallGetInvoke(body,context).then((value) {
         if(value!=null){
           var parsed=json.decode(value);
-          print(parsed["Table"]);
-          var t=parsed["Table"] as List;
+          print(parsed[TABLE]);
+          var t=parsed[TABLE] as List;
           print("t.ltnht${t.length}");
           if(typeName=="SaleReport"){
             salesReportGridList!.clear();
-           // var t=parsed["Table"] as List;
-            salesReportGridList=parsed["Table"] as List?;
+           // var t=parsed[TABLE] as List;
+            salesReportGridList=parsed[TABLE] as List?;
             filterSales();
           }
           else if(typeName=="PurchaseReport"){
-        //    var t=parsed["Table"] as List;
-            purchaseReportGridList=parsed["Table"] as List?;
+        //    var t=parsed[TABLE] as List;
+            purchaseReportGridList=parsed[TABLE] as List?;
             filterPurchase();
           }
           else if(typeName=="CustomerSaleReport"){
-          //  var t=parsed["Table"] as List;
+          //  var t=parsed[TABLE] as List;
           //  print(t);
-            customerSaleReportGridList=parsed["Table"] as List?;
+            customerSaleReportGridList=parsed[TABLE] as List?;
             filterCustomerSale();
           }
           else if(typeName=="SupplierPurchaseReport"){
-         //   var t=parsed["Table"] as List;
-            supplierPurchaseReportGridList=parsed["Table"] as List?;
+         //   var t=parsed[TABLE] as List;
+            supplierPurchaseReportGridList=parsed[TABLE] as List?;
             filterSupplierPurchase();
           }
           else if(typeName=="ProductionReport"){
-         //   var t=parsed["Table"] as List;
-            productionReportGridList=parsed["Table"] as List?;
+         //   var t=parsed[TABLE] as List;
+            productionReportGridList=parsed[TABLE] as List?;
             filterProduction();
           }
           else if(typeName=="InvoiceReport"){
-         //   var t=parsed["Table"] as List;
-            invoiceReportGridList=parsed["Table"] as List?;
+         //   var t=parsed[TABLE] as List;
+            invoiceReportGridList=parsed[TABLE] as List?;
             filterInvoice();
           }
           else if(typeName=="ReceivablePaymentReport"){
-          //  var t=parsed["Table"] as List;
-            receivablePaymentReportReportGridList=parsed["Table"] as List?;
+          //  var t=parsed[TABLE] as List;
+            receivablePaymentReportReportGridList=parsed[TABLE] as List?;
             filterReceivablePaymentReport();
           }
           else if(typeName=="PayablePaymentReport"){
-            //var t=parsed["Table"] as List;
-            payablePaymentReportGridList=parsed["Table"] as List?;
+            //var t=parsed[TABLE] as List;
+            payablePaymentReportGridList=parsed[TABLE] as List?;
             filterPayablePaymentReport();
           }
           else if(typeName=="EmployeeReport"){
-           // var t=parsed["Table"] as List;
-            employeeReportGridList=parsed["Table"] as List?;
+           // var t=parsed[TABLE] as List;
+            employeeReportGridList=parsed[TABLE] as List?;
           //  print(employeeReportGridList);
             filterEmployeeReport();
           }
           else if(typeName=="AttendanceReport"){
             attendanceReportGridCol.clear();
-            var t=parsed["Table"] as List;
+            var t=parsed[TABLE] as List;
             for(int i=0;i<t.length;i++){
               attendanceReportGridCol.add(ReportGridStyleModel2(
                 columnName: t[i]['DayNum']
               ));
             }
-            var t1=parsed["Table1"] as List?;
+            var t1=parsed[TABLE1] as List?;
             attendanceReportGridList=t1;
             print(attendanceReportGridList);
             filterAttendanceReport();
           }
           else if(typeName=="DieselPurchaseReport"){
-          //  var t=parsed["Table"] as List;
+          //  var t=parsed[TABLE] as List;
 
-            dieselPurchaseReportGridList=parsed["Table"] as List?;
+            dieselPurchaseReportGridList=parsed[TABLE] as List?;
             filterDieselPurchaseReport();
           }
           else if(typeName=="DieselIssueReport"){
-           // var t=parsed["Table"] as List;
-            dieselIssueReportGridList=parsed["Table"] as List?;
+           // var t=parsed[TABLE] as List;
+            dieselIssueReportGridList=parsed[TABLE] as List?;
             filterDieselIssueReport(context);
           }
           else if(typeName=="MachineManagementReport"){
-         //   var t=parsed["Table"] as List;
-            machineManagementReportGridList=parsed["Table"] as List?;
+         //   var t=parsed[TABLE] as List;
+            machineManagementReportGridList=parsed[TABLE] as List?;
             filterMachineManagementReport();
           }
           else if(typeName=="SaleAuditReport"){
-          //  var t=parsed["Table"] as List;
-            saleAuditReportGridList=parsed["Table"] as List?;
+          //  var t=parsed[TABLE] as List;
+            saleAuditReportGridList=parsed[TABLE] as List?;
             filterSaleAuditReport();
           }
           else if(typeName=="PurchaseAuditReport"){
-          //  var t=parsed["Table"] as List;
-            purchaseAuditReportGridList=parsed["Table"] as List?;
+          //  var t=parsed[TABLE] as List;
+            purchaseAuditReportGridList=parsed[TABLE] as List?;
             filterPurchaseAuditReport();
           }
           else if(typeName=="VehicleMonitoringReport"){
-           // var t=parsed["Table"] as List;
-            vehicleMonitoringReportGridList=parsed["Table"] as List?;
+           // var t=parsed[TABLE] as List;
+            vehicleMonitoringReportGridList=parsed[TABLE] as List?;
             filterVehicleMonitoringReport();
           }
           else if(typeName=="StockReport"){
-            //var t=parsed["Table"] as List;
-            stockReportGridList=parsed["Table"] as List?;
+            //var t=parsed[TABLE] as List;
+            stockReportGridList=parsed[TABLE] as List?;
             filterStockReport();
           }
         }

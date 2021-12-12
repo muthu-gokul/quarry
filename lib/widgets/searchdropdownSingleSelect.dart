@@ -100,7 +100,7 @@ class DropDownField extends FormField<String> {
         this.strict: true})
       : super(
     key: key,
-    autovalidate: false,
+    autovalidateMode: AutovalidateMode.disabled,
     initialValue: controller != null ? controller.text : (value ?? ''),
     onSaved: setter,
     builder: (FormFieldState<String> field) {

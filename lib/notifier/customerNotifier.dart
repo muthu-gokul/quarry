@@ -8,6 +8,7 @@ import 'package:quarry/api/sp.dart';
 import 'package:quarry/model/customerDetailsModel.dart';
 import 'package:quarry/model/parameterMode.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
+import 'package:quarry/styles/apiKeyConstants.dart';
 import 'package:quarry/styles/constants.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 
@@ -75,7 +76,7 @@ class CustomerNotifier extends ChangeNotifier {
        ///   print(parsed);
 
           if(fromSale){
-            var t=parsed['Table'] as List;
+            var t=parsed[TABLE] as List;
             print(t);
             Provider.of<QuarryNotifier>(context, listen: false).updateSelectCustomerFromAddNew(t[0]['CustomerId'],t[0]['CustomerName'],t[0]['IsCreditCustomer'],
               t[0]['CustomerCreditLimit'],t[0]['UsedAmount'],t[0]['BalanceAmount'],);
@@ -116,7 +117,7 @@ class CustomerNotifier extends ChangeNotifier {
         if(value!="null"){
           log(value);
           var parsed = json.decode(value);
-          var t = parsed['Table'] as List?;
+          var t = parsed[TABLE] as List?;
           if(customerId!=null){
             editCustomerId=t![0]['CustomerId'];
             customerName.text=t[0]['CustomerName'];

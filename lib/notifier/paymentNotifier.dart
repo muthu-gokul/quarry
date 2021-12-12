@@ -12,6 +12,7 @@ import 'package:quarry/model/paymentModel/paymentPartyModel.dart';
 import 'package:quarry/model/paymentModel/paymentTypeModel.dart';
 import 'package:quarry/model/plantModel/plantUserModel.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
+import 'package:quarry/styles/apiKeyConstants.dart';
 import 'package:quarry/styles/constants.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/calculation.dart';
@@ -61,8 +62,8 @@ class PaymentNotifier extends ChangeNotifier{
       await call.ApiCallGetInvoke(body,context).then((value) {
         if(value!=null){
           var parsed=json.decode(value);
-          var t=parsed['Table'] as List?;
-          var t1=parsed['Table1'] as List;
+          var t=parsed[TABLE] as List?;
+          var t1=parsed[TABLE1] as List;
 
 
           plantList=t1.map((e) => PlantUserModel.fromJson(e)).toList();
@@ -141,8 +142,8 @@ class PaymentNotifier extends ChangeNotifier{
       await call.ApiCallGetInvoke(body,context).then((value) {
         if(value!="null"){
           var parsed=json.decode(value);
-          var t=parsed['Table'] as List;
-          var t1=parsed['Table1'] as List;
+          var t=parsed[TABLE] as List;
+          var t1=parsed[TABLE1] as List;
 
           paymentTypeList=t.map((e) => PaymentTypeModel.fromJson(e)).toList();
           paymentSupplierList=t1.map((e) => PaymentSupplierModel.fromJson(e)).toList();
@@ -374,9 +375,9 @@ class PaymentNotifier extends ChangeNotifier{
             });
           }
           var parsed=json.decode(value);
-          var t=parsed['Table'] as List?;
+          var t=parsed[TABLE] as List?;
           if(invoiceId!=null){
-            var t1=parsed['Table1'] as List;
+            var t1=parsed[TABLE1] as List;
 
             EditinvoiceId=t![0]['InvoiceId'];
             EditInvoiceNumber=t[0]['InvoiceNumber'];

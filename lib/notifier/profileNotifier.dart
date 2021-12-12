@@ -6,6 +6,7 @@ import 'package:quarry/api/ApiManager.dart';
 import 'package:quarry/api/sp.dart';
 import 'package:quarry/model/manageUsersModel/manageUsersPlantModel.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
+import 'package:quarry/styles/apiKeyConstants.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 
 class ProfileNotifier extends ChangeNotifier{
@@ -99,7 +100,7 @@ class ProfileNotifier extends ChangeNotifier{
       await call.ApiCallGetInvoke(body,context).then((value) {
         if(value!=null){
           var parsed=json.decode(value);
-          var t=parsed['Table'] as List?;
+          var t=parsed[TABLE] as List?;
           print(parsed);
         }
 
@@ -152,11 +153,11 @@ class ProfileNotifier extends ChangeNotifier{
       await call.ApiCallGetInvoke(body,context).then((value) {
         if(value!=null){
           var parsed=json.decode(value);
-          var t=parsed['Table'] as List?;
+          var t=parsed[TABLE] as List?;
 
 
           if(userId!=null){
-            var t1=parsed['Table1'] as List;
+            var t1=parsed[TABLE1] as List;
             print(t);
             print("t1${t1}");
             UserId=t![0]['UserId'];

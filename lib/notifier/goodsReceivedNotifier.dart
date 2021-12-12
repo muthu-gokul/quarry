@@ -16,6 +16,7 @@ import 'package:quarry/model/vehicelDetailsModel/vehicleTypeModel.dart';
 import 'package:quarry/notifier/profileNotifier.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/pages/goodsReceived/goodsMaterialsList.dart';
+import 'package:quarry/styles/apiKeyConstants.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/calculation.dart';
 import 'package:quarry/widgets/decimal.dart';
@@ -67,9 +68,9 @@ class GoodsReceivedNotifier extends ChangeNotifier{
         if(value!="null"){
           var parsed=json.decode(value);
 
-          var t=parsed['Table'] as List?;
-          var t1=parsed['Table1'] as List;
-          var t2=parsed['Table2'] as List?;
+          var t=parsed[TABLE] as List?;
+          var t1=parsed[TABLE1] as List;
+          var t2=parsed[TABLE2] as List?;
 
           print("Dt1_$t1");
 
@@ -257,7 +258,7 @@ class GoodsReceivedNotifier extends ChangeNotifier{
         if(value!="null"){
           var parsed=json.decode(value);
           print("INSERT SP_$parsed");
-          var t=parsed['Table'] as List;
+          var t=parsed[TABLE] as List;
           ML_GoodsorderId=t[0]['GoodsReceivedId'];
          // GetGoodsDbHit(context, ML_GoodsorderId,ML_PorderId);
          GetGoodsDbHit(context, null,null,false,tickerProviderStateMixin);
@@ -763,7 +764,7 @@ class GoodsReceivedNotifier extends ChangeNotifier{
           }
          // log(value);
           var parsed=json.decode(value);
-          var t=parsed['Table'] as List?;
+          var t=parsed[TABLE] as List?;
           if(goodsReceivedId!=null || purchaseOrderId!=null){
 
 
@@ -776,11 +777,11 @@ class GoodsReceivedNotifier extends ChangeNotifier{
               GINV_Date=t[0]['Date'];
               GINV_IsTax=t[0]['IsTax'];
               print("GINV_IsTax$GINV_IsTax");
-              var t1=parsed['Table1'] as List;
-              var t4=parsed['Table4'] as List;
+              var t1=parsed[TABLE1] as List;
+              var t4=parsed[TABLE4] as List;
               print(t1);
-              print(parsed['Table2'] as List?);
-              print(parsed['Table3'] as List?);
+              print(parsed[TABLE2] as List?);
+              print(parsed[TABLE3] as List?);
               print(t4);
 
               GINV_Materials=t1.map((e) => GoodsReceivedMaterialListModel.fromJson(e)).toList();
@@ -810,19 +811,19 @@ class GoodsReceivedNotifier extends ChangeNotifier{
               ML_IsVehicleOutPending=t[0]['IsVehicleOutPending'];
               ML_Status=t[0]['Status'];
               print("ML_PorderId $ML_PorderId");
-              var t1=parsed['Table1'] as List;
+              var t1=parsed[TABLE1] as List;
               print("t1_$t1");
               ML_Materials=t1.map((e) => GoodsReceivedMaterialListModel.fromJson(e)).toList();
 
-              var t2=parsed['Table2'] as List;
+              var t2=parsed[TABLE2] as List;
               print("t2_$t2 ${materialTripList}");
               materialTripList=t2.map((e) => GoodsMaterialTripDetailsModel.fromJson(e)).toList();
 
-              var t3=parsed['Table3'] as List;
+              var t3=parsed[TABLE3] as List;
               print("t3_$t3");
               GoodsMaterialExtraTripModelDetails =t3.map((e) => GoodsMaterialExtraTripModel.fromJson(e)).toList();
 
-              var t4=parsed['Table4'] as List;
+              var t4=parsed[TABLE4] as List;
               IGf_OtherChargesList =t4.map((e) => GoodsOtherChargesModel.fromJson(e,tickerProviderStateMixin)).toList();
               print("t4_$t4");
 
@@ -833,7 +834,7 @@ class GoodsReceivedNotifier extends ChangeNotifier{
           }
           else{
             print(t);
-            var t1=parsed['Table1'] as List;
+            var t1=parsed[TABLE1] as List;
             print("t1_$t1");
             filterGoodsGridList=t!.map((e) => GoodsReceivedGridModel.fromJson(e,tickerProviderStateMixin)).toList();
             filterGoodsAllGridList=t1.map((e) => GoodsReceivedGridModel.fromJson(e,tickerProviderStateMixin)).toList();

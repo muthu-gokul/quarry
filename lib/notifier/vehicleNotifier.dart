@@ -10,6 +10,7 @@ import 'package:quarry/model/vehicelDetailsModel/vehicleTypeModel.dart';
 
 
 import 'package:quarry/notifier/quarryNotifier.dart';
+import 'package:quarry/styles/apiKeyConstants.dart';
 import 'package:quarry/styles/constants.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 
@@ -67,7 +68,7 @@ class VehicleNotifier extends ChangeNotifier{
       await call.ApiCallGetInvoke(body,context).then((value) {
         var parsed=json.decode(value);
 
-        var t=parsed['Table'] as List;
+        var t=parsed[TABLE] as List;
 
         vehicleTypeList=t.map((e) => VehicleTypeModel.fromJson(e)).toList();
         filterVehicleTypeList=t.map((e) => VehicleTypeModel.fromJson(e)).toList();
@@ -121,7 +122,7 @@ class VehicleNotifier extends ChangeNotifier{
           var parsed=json.decode(value);
 
           print(parsed);
-          var t=parsed['Table'] as List;
+          var t=parsed[TABLE] as List;
           selectedVehicleTypeId=t[0]['VehicleTypeId'];
           selectedVehicleTypeName=t[0]['VehicleTypeName'];
           vehicleTypeList.add(VehicleTypeModel(
@@ -217,7 +218,7 @@ class VehicleNotifier extends ChangeNotifier{
 
         if(value!="null"){
           var parsed=json.decode(value);
-          var t=parsed['Table'] as List?;
+          var t=parsed[TABLE] as List?;
           print(parsed);
 
 

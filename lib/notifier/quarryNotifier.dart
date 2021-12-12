@@ -17,6 +17,7 @@ import 'package:quarry/model/plantModel/plantUserModel.dart';
 import 'package:quarry/model/salesVehiclesModel.dart';
 import 'package:quarry/notifier/profileNotifier.dart';
 import 'package:quarry/pages/sale/saleGrid.dart';
+import 'package:quarry/styles/apiKeyConstants.dart';
 import 'package:quarry/styles/constants.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/calculation.dart';
@@ -105,11 +106,11 @@ class QuarryNotifier extends ChangeNotifier{
         log(value);
         if(value!="null"){
           var parsed=json.decode(value);
-          var t=parsed['Table'] as List;
-          var t1=parsed['Table1'] as List?;
-          var t2=parsed['Table2'] as List;
-          var t3=parsed['Table3'] as List;
-          var t4=parsed['Table4'] as List;
+          var t=parsed[TABLE] as List;
+          var t1=parsed[TABLE1] as List?;
+          var t2=parsed[TABLE2] as List;
+          var t3=parsed[TABLE3] as List;
+          var t4=parsed[TABLE4] as List;
 
 
           vehicleList=t.map((e) => VehicleType.fromJson(e)).toList();
@@ -187,7 +188,7 @@ class QuarryNotifier extends ChangeNotifier{
           var parsed=json.decode(value);
 
           print(parsed);
-          var t=parsed['Table'] as List;
+          var t=parsed[TABLE] as List;
           SS_selectedVehicleTypeId=t[0]['VehicleTypeId'];
           SS_selectedVehicleTypeName=t[0]['VehicleTypeName'];
           vehicleList.add(VehicleType(
@@ -509,10 +510,10 @@ class QuarryNotifier extends ChangeNotifier{
         saleVehicleNumberList.clear();
         saleCounterList.clear();
         saleDetailsGrid.clear();
-        var t=parsed['Table'] as List;
-        var t1=parsed['Table1'] as List;
-        var t2=parsed['Table2'] as List;
-        var t3=parsed['Table3'] as List;
+        var t=parsed[TABLE] as List;
+        var t1=parsed[TABLE1] as List;
+        var t2=parsed[TABLE2] as List;
+        var t3=parsed[TABLE3] as List;
 
 
        // print(t);
@@ -645,8 +646,8 @@ class QuarryNotifier extends ChangeNotifier{
         if(value!="null"){
           var parsed=json.decode(value);
 
-          var t=parsed['Table'] as List?;
-          var t1=parsed['Table1'] as List;
+          var t=parsed[TABLE] as List?;
+          var t1=parsed[TABLE1] as List;
           plantList=t1.map((e) => PlantUserModel.fromJson(e)).toList();
           plantList.forEach((element) {
             if(element.userId==UserId){
@@ -852,10 +853,10 @@ class QuarryNotifier extends ChangeNotifier{
           var parsed=json.decode(value);
 
 
-          var t=parsed['Table'] as List;
-          var t1=parsed['Table1'] as List;
-          var t2=parsed['Table2'] as List?;
-          var t3=parsed['Table3'] as List;
+          var t=parsed[TABLE] as List;
+          var t1=parsed[TABLE1] as List;
+          var t2=parsed[TABLE2] as List?;
+          var t3=parsed[TABLE3] as List;
 
           clearEmptyForm();
 
@@ -1014,10 +1015,10 @@ class QuarryNotifier extends ChangeNotifier{
         var parsed=json.decode(value);
 
 
-        var t=parsed['Table'] as List;
-        var t1=parsed['Table1'] as List;
-        var t2=parsed['Table2'] as List?;
-        var t3=parsed['Table3'] as List;
+        var t=parsed[TABLE] as List;
+        var t1=parsed[TABLE1] as List;
+        var t2=parsed[TABLE2] as List?;
+        var t3=parsed[TABLE3] as List;
         //notifyListeners();
         updateInsertSaleLoader(false);
         printItemwise(context,t3,t,t2,t1,false);
@@ -2181,7 +2182,7 @@ class QuarryNotifier extends ChangeNotifier{
           var parsed=json.decode(value);
 
 
-          var t1=parsed['Table'] as List;
+          var t1=parsed[TABLE] as List;
           print("t1$t1");
 
           CD_quarryname.text= t1[0]['CompanyName']??"";
@@ -2358,7 +2359,7 @@ class QuarryNotifier extends ChangeNotifier{
       await call.ApiCallGetInvoke(body,context).then((value) {
        if(value!="null"){
          var parsed=json.decode(value);
-         var t=parsed['Table'] as List;
+         var t=parsed[TABLE] as List;
          plantTypeList=t.map((e) => PlantTypeModel.fromJson(e)).toList();
        }
 
@@ -2406,11 +2407,11 @@ class QuarryNotifier extends ChangeNotifier{
         if(value!="null"){
           var parsed=json.decode(value);
           print(parsed);
-          var t=parsed['Table'] as List?;
+          var t=parsed[TABLE] as List?;
 
 
           if(plantId!=null){
-            var t1=parsed['Table1'] as List;
+            var t1=parsed[TABLE1] as List;
             PD_plantTypeId=t![0]['PlantTypeId'];
             PD_plantTypeName=t[0]['PlantTypeName'];
             editPlantId=t[0]['PlantId'];

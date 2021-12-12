@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quarry/styles/apiKeyConstants.dart';
 
 
 
@@ -33,8 +34,8 @@ class LoginTblOutPut {
 
   factory LoginTblOutPut.fromJson(Map<String, dynamic> json) {
     return new LoginTblOutPut(
-      Status: json['Status']??true,
-      Message: json['Message'],
+      Status: json['@Status"']??true,
+      Message: json['@Message'],
 
     );
   }
@@ -60,9 +61,9 @@ class LoginModel{
   LoginModel({this.loginTable,this.loginTblOutput,this.allUsers});
 
   factory LoginModel.fromJson(Map<dynamic, dynamic> json) {
-   var loginTableJson=json['Table'] as List;
+   var loginTableJson=json[TABLE] as List;
 
-   var loginTblOutputJson=json['TblOutPut'] as List;
+   var loginTblOutputJson=json[TBLOUTPUT] as List;
    List<LoginTable> _loginTable=loginTableJson.map((e) => LoginTable.fromJson(e)).toList();
 
    List<LoginTblOutPut> _loginTblOutput=loginTblOutputJson.map((e) => LoginTblOutPut.fromJson(e)).toList();
