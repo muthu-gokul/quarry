@@ -11,8 +11,8 @@ class ApiManager{
 
   Future<String> ApiCallGetInvoke(var body,BuildContext context) async {
     try{
-     // var itemsUrl="http://183.82.32.76/restroApi///api/Mobile/GetInvoke";
-      var itemsUrl="http://192.168.1.102//Quarry_Dev/QuarryApi_Dev///api/Mobile/GetInvoke";
+      var itemsUrl="http://183.82.32.76/restroApi///api/Mobile/GetInvoke";
+    //  var itemsUrl="http://192.168.1.102//Quarry_Dev/QuarryApi_Dev///api/Mobile/GetInvoke";
      // var itemsUrl="https://quarrydemoapi.herokuapp.com/api/users/login";
     //  var itemsUrl="https://spectacular-salty-meeting.glitch.me/api/users/login";
     //  var itemsUrl="http://10.0.2.2:8080/api/users/login";
