@@ -1410,7 +1410,7 @@ class QuarryNotifier extends ChangeNotifier{
   }
 
 
-  Future<void> printClosedReport(BuildContext context) async {
+  Future<void> printClosedReport(BuildContext context,bool showPrice) async {
 
     const PaperSize paper = PaperSize.mm80;
     final profile = await CapabilityProfile.load();
@@ -1529,16 +1529,19 @@ class QuarryNotifier extends ChangeNotifier{
           ]);
           // }
 
-          printer.row([
-            PosColumn(text: 'Required Qty Amount: ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
-            PosColumn(text: '${saleDetailsGrid[selectedIndex].Amount??""}', width: 6, styles: PosStyles(align: PosAlign.right)),
-          ]);
+          if(showPrice){
+            printer.row([
+              PosColumn(text: 'Required Qty Amount: ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
+              PosColumn(text: '${saleDetailsGrid[selectedIndex].Amount??""}', width: 6, styles: PosStyles(align: PosAlign.right)),
+            ]);
 
-          // if(!isEnter){
-          printer.row([
-            PosColumn(text: 'Output Qty Amount: ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
-            PosColumn(text: '${saleDetailsGrid[selectedIndex].OutputQtyAmount??""}', width: 6, styles: PosStyles(align: PosAlign.right)),
-          ]);
+            // if(!isEnter){
+            printer.row([
+              PosColumn(text: 'Output Qty Amount: ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
+              PosColumn(text: '${saleDetailsGrid[selectedIndex].OutputQtyAmount??""}', width: 6, styles: PosStyles(align: PosAlign.right)),
+            ]);
+          }
+
           // printer.row([
           //   PosColumn(text:sales[0]['OutputQtyAmount']>sales[0]['RequiredQtyAmount'] ? 'Pay: ':'Balance: ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
           //   PosColumn(text:sales[0]['OutputQtyAmount']>sales[0]['RequiredQtyAmount'] ? '${sales[0]['OutputQtyAmount']-sales[0]['RequiredQtyAmount']}':'${sales[0]['RequiredQtyAmount']-sales[0]['OutputQtyAmount']}',
@@ -1570,7 +1573,7 @@ class QuarryNotifier extends ChangeNotifier{
 
 
 
-          if(double.parse(saleDetailsGrid[selectedIndex].OutputMaterialQty??"0")>0){
+          if(double.parse(saleDetailsGrid[selectedIndex].OutputMaterialQty??"0")>0 && showPrice){
 
 
           printer.hr(ch: "=");

@@ -20,6 +20,9 @@ import 'package:quarry/widgets/navigationBarIcon.dart';
 import 'package:quarry/widgets/reportpdf.dart';
 import 'package:quarry/widgets/staticColumnScroll/customDataTable.dart';
 
+import '../../widgets/sidePopUp/sidePopUpWithoutSearch.dart';
+import '../../widgets/sidePopUp/sidePopupWithoutModelList.dart';
+
 
 
 class SaleGrid extends StatefulWidget {
@@ -44,6 +47,7 @@ class _SaleGridState extends State<SaleGrid> {
 
   List<String> gridDataRowList=["SaleDate","SaleNumber","VehicleNumber","MaterialName","RoundedTotalAmount","CustomerName"];
 
+  bool printPopup=false;
 
   @override
   void didChangeDependencies() {
@@ -571,7 +575,10 @@ class _SaleGridState extends State<SaleGrid> {
                                   onTap: (){
                                     if(qn.selectedIndex!=-1 && !isOpen){
                                       print("pribt");
-                                      qn.printClosedReport(context);
+                                      setState(() {
+                                        printPopup=true;
+                                      });
+                                     // qn.printClosedReport(context);
                                     }
                                   },
                                   child: SvgPicture.asset("assets/svg/print.svg",width: 27,height: 27,
@@ -735,6 +742,42 @@ class _SaleGridState extends State<SaleGrid> {
                     child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(AppTheme.yellowColor),),
                   ),
                 ),
+                Container(
+
+                  height: printPopup? SizeConfig.screenHeight:0,
+                  width: printPopup? SizeConfig.screenWidth:0,
+                  color: Colors.black.withOpacity(0.5),
+
+                ),
+                PopUpStatic2(
+                  title: "Select Print Mode",
+                  isOpen: printPopup,
+                  dataList: [{"Mode":"Print Without Price"},{"Mode":"Print With Price"}],
+                  propertyKeyName:"Mode",
+                  propertyKeyId: "PlantId",
+                  selectedId: null,
+                  itemOnTap: (index){
+                    print(index);
+                    if(index==0){
+                      qn.printClosedReport(context,false);
+                    }
+                    else{
+                      qn.printClosedReport(context,true);
+                    }
+
+                    setState(() {
+                      printPopup=false;
+                    });
+                  },
+                  closeOnTap: (){
+                    setState(() {
+                      printPopup=false;
+                    });
+                  },
+                ),
+
+
+
               ],
             ),
           ),
