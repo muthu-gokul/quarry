@@ -2128,9 +2128,11 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                     }
                                     else if(qn.SS_DifferWeightController.text.isEmpty){
                                       CustomAlert().commonErrorAlert(context, "Enter Vehicle Weight", "");
-                                    }else if(double.parse(qn.SS_DifferWeightController.text.toString())<double.parse(qn.SS_EmptyWeightOfVehicle!)){
+                                    }
+                                    else if(double.parse(qn.SS_DifferWeightController.text.toString())<double.parse(qn.SS_EmptyWeightOfVehicle!)){
                                       CustomAlert().commonErrorAlert(context, "Outward Weight Should not be less than empty vehicle weight", "");
-                                    } else{
+                                    }
+                                    else{
                                       qn.UpdateSaleDetailDbhit(context,null,"");
                                     }
                                   }
