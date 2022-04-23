@@ -71,7 +71,8 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
   }
 
   _cropImage(File picked) async {
-    File? cropped = await ImageCropper.cropImage(
+
+    File? cropped = await ImageCropper().cropImage(
       androidUiSettings: AndroidUiSettings(
           statusBarColor: Colors.red,
           toolbarColor: Colors.red,

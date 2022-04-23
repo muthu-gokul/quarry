@@ -153,7 +153,8 @@ class GoodsPlantListState extends State<GoodsPlantList> with TickerProviderState
                                   });
                                 }
                               }
-                            } as bool Function(ScrollNotification)?,
+                              return true;
+                            } ,
                             child: ListView(
                               controller: listViewController,
                               scrollDirection: Axis.vertical,

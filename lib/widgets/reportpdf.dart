@@ -1,7 +1,4 @@
-import 'package:flutter/services.dart';
-import 'package:intl/intl.dart';
-import 'package:mailer/mailer.dart';
-import 'package:mailer/smtp_server/gmail.dart';
+
 import 'package:open_file/open_file.dart';
 import 'package:pdf/pdf.dart';
 import 'dart:io';

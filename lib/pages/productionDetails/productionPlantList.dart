@@ -151,7 +151,8 @@ class ProductionPlantListState extends State<ProductionPlantList> with TickerPro
                                   });
                                 }
                               }
-                            } as bool Function(ScrollNotification)?,
+                              return true;
+                            } ,
                             child: ListView(
                               controller: listViewController,
                               scrollDirection: Axis.vertical,

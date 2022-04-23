@@ -149,12 +149,12 @@ class SalePlantListState extends State<SalePlantList> with TickerProviderStateMi
                                           }
                                         });
                                       }
-
                                     }
                                   });
                                 }
                               }
-                            } as bool Function(ScrollNotification)?,
+                              return true;
+                            } ,
                             child: ListView(
                               controller: listViewController,
                               scrollDirection: Axis.vertical,

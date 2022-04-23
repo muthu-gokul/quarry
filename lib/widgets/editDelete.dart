@@ -29,14 +29,7 @@ class EditDelete extends StatelessWidget {
                   width: 130,
                   height: 50,
                   padding: EdgeInsets.only(left: 20),
-                  child:FittedBox(
-                    child: Container(
-                        height: 55,
-                        width: 130,
-                        alignment: Alignment.centerLeft,
-                        child: FittedBox(child: Image.asset("assets/bottomIcons/edit-text-icon.png"))
-                    ),
-                  ),
+                  child:FittedBox(child: Image.asset("assets/bottomIcons/edit-text-icon.png"))
                 ),
               ),
               Spacer(),
@@ -46,14 +39,7 @@ class EditDelete extends StatelessWidget {
                   width: 130,
                   height: 50,
                   padding: EdgeInsets.only(right: 20),
-                  child:FittedBox(
-                    child: Container(
-                        height: 47,
-                        width: 130,
-                        alignment: Alignment.centerRight,
-                        child: FittedBox(child: Image.asset("assets/bottomIcons/delete-text-icon.png"))
-                    ),
-                  ),
+                  child:FittedBox(child: Image.asset("assets/bottomIcons/delete-text-icon.png"))
                 ),
               ),
             ],

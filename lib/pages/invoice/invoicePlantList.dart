@@ -153,7 +153,8 @@ class InvoicePlantListState extends State<InvoicePlantList> with TickerProviderS
                                   });
                                 }
                               }
-                            } as bool Function(ScrollNotification)?,
+                              return true;
+                            },
                             child: ListView(
                               controller: listViewController,
                               scrollDirection: Axis.vertical,

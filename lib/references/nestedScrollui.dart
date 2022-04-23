@@ -492,7 +492,8 @@ class _EmployeeAdvanceAddNewState extends State<EmployeeAdvanceAddNew> {
                                       });
                                     }
                                   }
-                                } as bool Function(ScrollNotification)?,
+                                  return true;
+                                },
                                 child: ListView(
                                   controller: listViewController,
                                   scrollDirection: Axis.vertical,

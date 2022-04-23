@@ -154,7 +154,8 @@ class PaymentPlantListState extends State<PaymentPlantList> with TickerProviderS
                                   });
                                 }
                               }
-                            } as bool Function(ScrollNotification)?,
+                              return true;
+                            },
                             child: ListView(
                               controller: listViewController,
                               scrollDirection: Axis.vertical,

@@ -250,7 +250,9 @@ class GoodsInGateFormState extends State<GoodsInGateForm> with TickerProviderSta
                                           if (pickedFile != null) {
                                             _image = pickedFile;
                                             final inputImage = InputImage.fromFilePath(_image.path);
-                                            TextDetector textDetector = GoogleMlKit.vision.textDetector();
+                                            TextRecognizer textDetector= GoogleMlKit.vision.textRecognizer();
+
+                                            //TextDetector textDetector = GoogleMlKit.vision.textDetector();
                                             final recognisedText = await textDetector.processImage(inputImage);
                                            // final FirebaseVisionImage visionImage = FirebaseVisionImage.fromFile(File(_image.path));
                                            // final TextRecognizer textRecognizer = FirebaseVision.instance.textRecognizer();

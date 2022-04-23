@@ -159,13 +159,8 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
         setState(() {
           isLoading=true;
         });
-            var itemsUrl="http://183.82.32.76/restroApi///api/Mobile/GetInvoke";
-          //  var itemsUrl="https://quarrydemoapi.herokuapp.com/api/users/login";
-         //   var itemsUrl="https://spectacular-salty-meeting.glitch.me/api/users/login";
-          //  var itemsUrl="http://10.0.2.2:8080/api/users/login";
-        //var itemsUrl="http://117.247.181.35/restroApi///api/Mobile/GetInvoke";
-       // var loginurl = 'http://183.82.32.76/restroApi///api/Mobile/GetInvokeforlogin';
-        //var loginurl="http://117.247.181.35/restroApi///api/Mobile/GetInvokeforlogin";
+        //var itemsUrl="http://183.82.32.76/restroApi///api/Mobile/GetInvoke";
+        var itemsUrl="http://192.168.1.102/QMS_Dev///api/Mobile/GetInvoke";
         var body = {
           "Fields": [
             {
@@ -187,7 +182,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
               "Key": "database",
               "Type": "String",
              // "Value": "TetroPOS_TestQMS" //live
-            "Value": "TetroPos_QMSLocal"
+            "Value": "TetroPOS_TestQMS"
            // "Value": "TetroPos_QMSTest1"
             // "Value": "QMS1"
             },
