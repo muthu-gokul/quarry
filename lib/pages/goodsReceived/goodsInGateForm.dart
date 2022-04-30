@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_ml_kit/google_ml_kit.dart';
+
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/notifier/goodsReceivedNotifier.dart';
@@ -247,7 +247,8 @@ class GoodsInGateFormState extends State<GoodsInGateForm> with TickerProviderSta
                                         final pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
                                         gr.updateGoodsLoader(true);
                                         setState(() async {
-                                          if (pickedFile != null) {
+                                          //SCAN DISABLED
+                                        /*  if (pickedFile != null) {
                                             _image = pickedFile;
                                             final inputImage = InputImage.fromFilePath(_image.path);
                                             TextRecognizer textDetector= GoogleMlKit.vision.textRecognizer();
@@ -278,10 +279,11 @@ class GoodsInGateFormState extends State<GoodsInGateForm> with TickerProviderSta
 
                                             }
 
-                                          } else {
+                                          }
+                                          else {
                                             gr.updateGoodsLoader(false);
                                             print('No image selected');
-                                          }
+                                          }*/
                                         });
 
                                     },

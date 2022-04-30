@@ -1,3 +1,7 @@
+import 'dart:async';
+
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/login.dart';
@@ -29,10 +33,33 @@ import 'notifier/reportNotifier.dart';
 import 'notifier/userAccessNotifier.dart';
 import 'references/bottomNavi.dart';
 import 'testing.dart';
+/*
 
 void main() {
   runApp(MyApp());
 }
+*/
+Future<void> main() async {
+  // runZonedGuarded(() {
+  //   runApp(const MyApp());
+  // }, FirebaseCrashlytics.instance.recordError);
+
+  // runApp(const MyApp());
+
+  // WidgetsFlutterBinding.ensureInitialized();
+  runZonedGuarded(() {
+    runApp(MyApp());
+  }, (error, stackTrace) {
+    FirebaseCrashlytics.instance.recordError(error, stackTrace);
+    //GetUiNotifier().errorLog(error.toString(), stackTrace.toString());
+  });
+}
+
+Future<void> initializeFirebase() async {
+  await Firebase.initializeApp();
+  await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
+}
+
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.

@@ -18,6 +18,7 @@ import 'package:quarry/styles/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'api/sp.dart';
+import 'main.dart';
 import 'notifier/loginNotifier.dart';
 import 'notifier/profileNotifier.dart';
 import 'pages/homePage.dart';
@@ -122,6 +123,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
   }
   //
   allowAccess() async{
+    await initializeFirebase();
     var status = await Permission.storage.status;
     if (!status.isGranted) {
       await Permission.storage.request();

@@ -22,3 +22,6 @@ v-1.0.5
 1. User Access
 2. Scuti Server
 
+v-1.0.6
+
+

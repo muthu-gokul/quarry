@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_ml_kit/google_ml_kit.dart';
+// import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
@@ -400,7 +400,8 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                             final pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
                                                             qn.updateInsertSaleLoader(true);
                                                             setState(() async {
-                                                              if (pickedFile != null) {
+                                                              //SCAN DISABLEED
+                                                             /* if (pickedFile != null) {
                                                                 _image = pickedFile;
                                                                 final inputImage = InputImage.fromFilePath(_image.path);
                                                                 TextRecognizer textDetector= GoogleMlKit.vision.textRecognizer();
@@ -433,7 +434,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                               else {
                                                                 qn.updateInsertSaleLoader(false);
                                                                 print('No image selected');
-                                                              }
+                                                              }*/
                                                             });
                                                           },
                                                           child: Container(
@@ -1898,7 +1899,8 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                             final pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
                                                             qn.updateInsertSaleLoader(true);
                                                             setState(() async {
-                                                              if (pickedFile != null) {
+                                                              //SCAN DISABLED
+                                                              /*if (pickedFile != null) {
                                                                 _image = pickedFile;
                                                                 final inputImage = InputImage.fromFilePath(_image.path);
                                                                 TextRecognizer textDetector= GoogleMlKit.vision.textRecognizer();
@@ -1931,10 +1933,11 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                                   qn.differWeight(context);
                                                                 }
 
-                                                              } else {
+                                                              }
+                                                              else {
                                                                 qn.updateInsertSaleLoader(false);
                                                                 print('No image selected');
-                                                              }
+                                                              }*/
                                                             });
                                                           },
                                                           child: Container(
