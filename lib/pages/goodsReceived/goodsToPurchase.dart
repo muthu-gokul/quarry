@@ -546,7 +546,7 @@ class GoodsToPurchaseState extends State<GoodsToPurchase> with TickerProviderSta
                                         gr.GPO_clear();
                                         gr.GINV_clear();
                                         Navigator.pop(context);
-                                        gr.GetGoodsDbHit(context, null, null,false,GoodsReceivedGridState());
+                                        gr.GetGoodsDbHit(context, null, null,false,this);
                                       },
                                       child: Container(
                                         width: SizeConfig.screenWidth!*0.4,
@@ -576,7 +576,7 @@ class GoodsToPurchaseState extends State<GoodsToPurchase> with TickerProviderSta
                     gr.GINV_clear();
                     gr.GPO_clear();
                     Navigator.pop(context);
-                    gr.GetGoodsDbHit(context, null, null,false,GoodsReceivedGridState());
+                    gr.GetGoodsDbHit(context, null, null,false,this);
                   },
                   image: "assets/svg/drawer/back-icon.svg",
                 ),
@@ -651,7 +651,7 @@ class GoodsToPurchaseState extends State<GoodsToPurchase> with TickerProviderSta
                     gr.filterSupplierList=gr.supplierList;
                   });
                   searchController.clear();
-                  gr.InsertPurchaseDbHit(context, GoodsReceivedGridState()).then((value){
+                  gr.InsertPurchaseDbHit(context, this).then((value){
                     Navigator.pop(context);
                     gr.GINV_clear();
                     gr.GPO_clear();

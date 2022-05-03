@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/login.dart';
 import 'package:quarry/notifier/customerNotifier.dart';
@@ -40,13 +42,6 @@ void main() {
 }
 */
 Future<void> main() async {
-  // runZonedGuarded(() {
-  //   runApp(const MyApp());
-  // }, FirebaseCrashlytics.instance.recordError);
-
-  // runApp(const MyApp());
-
-  // WidgetsFlutterBinding.ensureInitialized();
   runZonedGuarded(() {
     runApp(MyApp());
   }, (error, stackTrace) {
@@ -92,21 +87,56 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<DashboardNotifier>(create:(_)=>DashboardNotifier()),
         ChangeNotifierProvider<UserAccessNotifier>(create:(_)=>UserAccessNotifier()),
       ],
-      child: MaterialApp(
+      child: GetMaterialApp(
         title: 'Quarry Management',
-      theme: ThemeData(
-          primarySwatch: Colors.blue,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-        ),
-
         debugShowCheckedModeBanner: false,
-        home: LoginScreen(),
+        home: SplashScreen(),
        // home: Sp(),
 
       ),
     );
   }
 }
+
+
+
+class SplashScreen extends StatefulWidget {
+
+
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  init() async{
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky, overlays: []);
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+    await initializeFirebase();
+    Get.off(LoginScreen());
+  }
+
+
+  @override
+  void initState() {
+    init();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: AppTheme.bgColor,
+        image: DecorationImage(
+          image: AssetImage('assets/images/bg.jpg',),
+          fit: BoxFit.cover
+        )
+      ),
+
+
+    );
+  }
+}
+
 
 
 

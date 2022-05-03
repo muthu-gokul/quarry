@@ -228,6 +228,10 @@ class MaterialNotifier extends ChangeNotifier{
     notifyListeners();
   }
 
+  clearAll(){
+    clearForm();
+    materialGridList.clear();
+  }
 
 
 }

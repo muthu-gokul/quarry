@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-
+import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
+import 'package:quarry/api/ApiManager.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/pages/settings/quarryMaster/plantDetailsGrid.dart';
 import 'package:quarry/references/bottomNavi.dart';
@@ -51,7 +52,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
   bool contactNo=false;
   bool gstNo=false;
 
-  File? sampleImage;
+
   String? imageurl;
   String? imagestring;
   Image? imagefrompreferences;
@@ -59,11 +60,15 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
   Future getImage() async
   {
 
-     PickedFile temp=await (ImagePicker().getImage(source: ImageSource.gallery) as FutureOr<PickedFile>);
+     PickedFile? temp=await (ImagePicker().getImage(source: ImageSource.gallery));
      print(temp);
-
+    if(temp==null)return;
     File tempImage = File(temp.path);
     if (tempImage != null) {
+/*      setState(() {
+        sampleImage = tempImage;
+      });
+      uploadImg();*/
       _cropImage(tempImage);
     }
 
@@ -92,12 +97,41 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
     );
     if (cropped != null) {
       setState(() {
-        sampleImage = cropped;
-
+        Provider.of<QuarryNotifier>(context,listen: false).sampleImage = cropped;
+        Provider.of<QuarryNotifier>(context,listen: false).companyLogoUrl="";
       });
+      // uploadImg();
     }
 
   }
+
+/*
+  uploadImg() async{
+    final postUri = Uri.parse("${ApiManager().baseUrl}api/Common/Upload?BaseFolder=Company");
+    print(postUri);
+
+    http.MultipartRequest request = http.MultipartRequest('POST', postUri);
+    List files=[sampleImage];
+    for(int i=0;i<1;i++){
+      File imageFile = files[i];
+      var stream = new http.ByteStream(imageFile.openRead());
+      var length = await imageFile.length();
+
+      var multipartFile = new http.MultipartFile("files_1", stream, length,
+          filename: imageFile.path.split('/').last);
+      // var multipartFile = new http.MultipartFile.fromString("image", imageFile.path);
+      request.files.add(multipartFile);
+    }
+
+    print(request.files[0].filename);
+    print(request.files[0].contentType);
+    var response = await request.send();
+    final res = await http.Response.fromStream(response);
+    print(res.body);
+
+    //image_picker1901717223796553713
+  }
+*/
 
   @override
   void initState() {
@@ -527,10 +561,11 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                              border: Border.all(color: AppTheme.uploadColor,width: 2)
                                          ),
                                          clipBehavior: Clip.antiAlias,
-                                         child: Center(
-                                          child: sampleImage!=null? Image.file(sampleImage!):
-                                          SvgPicture.asset("assets/svg/upload.svg",height: 30,width: 30,),
-                                        // child: SvgPicture.asset("assets/svg/upload.svg",height: 30,width: 30,),
+                                         child: qn.companyLogoUrl.isEmpty? Center(
+                                          child: qn.sampleImage!=null? Image.file(qn.sampleImage!):
+                                          SvgPicture.asset("assets/svg/upload.svg",height: 30,width: 30,)
+                                         ):Center(
+                                           child: Image.network(qn.companyLogoUrl,fit: BoxFit.cover,),
                                          ),
                                        ),
                                        SizedBox(height: 20,),

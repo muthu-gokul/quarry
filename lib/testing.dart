@@ -247,10 +247,21 @@ class Page2 extends StatefulWidget {
 }
 
 class _Page2State extends State<Page2> {
+  int? test;
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.red,
+      color: Colors.white,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          TextButton(onPressed: (){
+           if(test==null){
+             print("test ");
+           }
+          }, child: Text("Click Me"))
+        ],
+      ),
     );
   }
 }

@@ -243,7 +243,7 @@ class GoodsOutGateFormState extends State<GoodsOutGateForm> with TickerProviderS
                                     });
 
                                     final pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
-                                    gr.updateGoodsLoader(true);
+                                   //gr.updateGoodsLoader(true);
                                     setState(() async {
                                       //SCAN DISABLED
                                       /*if (pickedFile != null) {
@@ -445,7 +445,7 @@ class GoodsOutGateFormState extends State<GoodsOutGateForm> with TickerProviderS
                       CustomAlert().commonErrorAlert(context, "Enter Empty Weight of Vehicle", "");
                     }
                     else{
-                      gr.UpdateGoodsDbHit(context,null,GoodsReceivedGridState());
+                      gr.UpdateGoodsDbHit(context,null,this,isReload: true);
                     }
 
 

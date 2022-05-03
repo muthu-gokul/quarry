@@ -404,7 +404,9 @@ class _DashBoardHomeState extends State<DashBoardHome> {
                           Navigator.push(context, MaterialPageRoute(builder: (context)=>StockDashBoard()));
                         }
                       },
-                      child: Container(
+                      child:i==1?Container(
+                        width: 0,height: 0,
+                      ): Container(
                         height: SizeConfig.screenWidth!*0.27,
                         width: SizeConfig.screenWidth!*0.27,
                         padding: EdgeInsets.only(left: 10,right: 10),

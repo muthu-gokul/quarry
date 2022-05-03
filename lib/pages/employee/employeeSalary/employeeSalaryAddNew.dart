@@ -298,7 +298,7 @@ class _EmployeeSalaryAddNewState extends State<EmployeeSalaryAddNew> {
                                               child: FittedBox(
                                                 fit: BoxFit.contain,
                                                 child: Text("${i==0?esn.showEmpDesg??"":i==1?esn.showEmpShift:i==2?esn.showEmpMonthlySalary:i==3?esn.showEmpPresentDay:
-                                                              i==4?esn.showEmpEarnedSalary??"":i==5?esn.showEmpOvertime:i==6?esn.showEmpAdvanceAmount:esn.showEmpEMI}",
+                                                              i==4?esn.showEmpEarnedSalary:i==5?esn.showEmpOvertime:i==6?esn.showEmpAdvanceAmount:esn.showEmpEMI}",
                                                   style: tableTextStyle,
                                                 ),
 

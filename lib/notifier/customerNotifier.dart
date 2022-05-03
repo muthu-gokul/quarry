@@ -203,4 +203,11 @@ class CustomerNotifier extends ChangeNotifier {
     usedAdvanceAmount=0.0;
     balanceAdvanceAmount=0.0;
   }
+
+
+  clearAll(){
+    clearCustomerDetails();
+    customerGridList=[];
+  }
+
 }

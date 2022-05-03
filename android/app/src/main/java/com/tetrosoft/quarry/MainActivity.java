@@ -1,4 +1,4 @@
-package com.tetrosoft.quarry;
+package com.scutisoft.qms;
 
 import io.flutter.embedding.android.FlutterActivity;
 

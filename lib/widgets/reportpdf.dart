@@ -47,7 +47,7 @@ reportView(context,String mailid,int saleIndex) async {
 
 
                       child:
-                      pw.Text(" GST: ${qn.CD_gstno.text??""}"),
+                      pw.Text(" GST: ${qn.CD_gstno.text}"),
                       // pw.Spacer(),
 
                     ),
@@ -62,9 +62,9 @@ reportView(context,String mailid,int saleIndex) async {
                           crossAxisAlignment: pw.CrossAxisAlignment.center,
                           children: [
                             pw.Text("TAX INVOICE",style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 16),textAlign: pw.TextAlign.center),
-                            pw.Text("${qn.CD_quarryname.text??""}",style: pw.TextStyle(),textAlign: pw.TextAlign.center),
-                            pw.Text("${qn.CD_address.text??""}",textAlign: pw.TextAlign.center),
-                            pw.Text("${qn.CD_city.text??""},${qn.CD_state.text??""}",textAlign: pw.TextAlign.center),
+                            pw.Text("${qn.CD_quarryname.text}",style: pw.TextStyle(),textAlign: pw.TextAlign.center),
+                            pw.Text("${qn.CD_address.text}",textAlign: pw.TextAlign.center),
+                            pw.Text("${qn.CD_city.text},${qn.CD_state.text}",textAlign: pw.TextAlign.center),
                           ]
                         ),
 
@@ -78,7 +78,7 @@ reportView(context,String mailid,int saleIndex) async {
                           crossAxisAlignment: pw.CrossAxisAlignment.end,
                           mainAxisAlignment: pw.MainAxisAlignment.start,
                           children: [
-                            pw.Text("MOBILE: ${qn.CD_contactNo.text??""}")
+                            pw.Text("MOBILE: ${qn.CD_contactNo.text}")
                           ]
                         ),
 
@@ -150,7 +150,7 @@ reportView(context,String mailid,int saleIndex) async {
                         children: [
                           pw.Padding(
                             padding: pw.EdgeInsets.all(10),
-                            child: pw.Text("State   : ${qn.CD_state.text??""}"),
+                            child: pw.Text("State   : ${qn.CD_state.text}"),
                           ),
                           pw.Padding(
                             padding: pw.EdgeInsets.all(10),
@@ -633,7 +633,7 @@ reportView(context,String mailid,int saleIndex) async {
                             child:pw.Column(
                               crossAxisAlignment: pw.CrossAxisAlignment.center,
                               children: [
-                                pw.Text("For ${qn.CD_quarryname.text??""}"),
+                                pw.Text("For ${qn.CD_quarryname.text}"),
                                 pw.Spacer(),
                                 pw.Text("Signature"),
                               ]

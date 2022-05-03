@@ -634,5 +634,13 @@ class PaymentNotifier extends ChangeNotifier{
     PaymentLoader=value;
     notifyListeners();
   }
+
+
+  clearAll(){
+    clearInsertForm();
+    clearEditForm();
+    clearPaymentEntry();
+
+  }
   
 }

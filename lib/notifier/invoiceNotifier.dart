@@ -816,6 +816,19 @@ updateInvoiceLoader(bool value){
   notifyListeners();
 }
 
+clearAll(){
+  clearForm();
+  filterInvoiceGridList.clear();
+  filterInvoiceGridList2.clear();
+  invoiceMaterialMappingList.clear();
+  invoiceTypeList.clear();
+  invoiceSupplierList.clear();
+  filterInvoiceSupplierList.clear();
+  searchFilterMaterialList.clear();
+  filtermaterialList.clear();
+  materialList.clear();
+}
+
 }
 
 

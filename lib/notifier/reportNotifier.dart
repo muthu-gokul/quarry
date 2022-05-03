@@ -40,69 +40,22 @@ class ReportNotifier extends ChangeNotifier{
   List<dynamic> reportsGridDataList=[];
   List<ReportCounterModel> counterList=[];
 
-  List<dynamic>? plantList=[];/*  {
-            "PlantId": 1,
-            "PlantName": "MahalakshmiRynoSands"
-        }*/
-  List<dynamic>? materialList=[];/*{
-            "MaterialId": 2,
-            "MaterialName": "M Sand",
-            "IsActive": 1
-        }*/
-  List<dynamic>? customerList=[];/* {
-            "CustomerId": null,
-            "CustomerName": null,
-            "IsActive": 1
-        }*/
-  List<dynamic>? supplierList=[];/* {
-            "SupplierId": 11,
-            "SupplierName": "goks",
-            "SupplierType": "External",
-            "IsActive": 1
-        }*/
- List<dynamic>? locationList=[];/*{
-            "Location": null
-        }*/
- List<dynamic>? paymentTypeList=[];/*{
-            "PaymentCategoryId": 1,
-            "PaymentType": "Cash"
-        }*/
-  List<dynamic>? machineList=[];/* {
-            "MachineId": 9,
-            "MachineName": "dddd"
-        }*/
-  List<dynamic>? inputMaterialList=[];/*{
-            "InputMaterialId": 12,
-            "InputMaterialName": "12mm Stone"
-        }*/
-  List<dynamic>? outputMaterialList=[];/* {
-            "OutputMaterialId": 2,
-            "OutputMaterialName": "M Sand"
-        }*/
- List<dynamic>? invoiceTypeList=[];/*{
-            "InvoiceType": "Payable"
-        }*/
-  List<dynamic>? paymentStatusList=[];/*{
-            "PaymentStatus": "Completed"
-        }*/
-  List<dynamic>? partyNameList=[];/*{
-            "PartyName": "vivek"
-            PartyId
-        }*/
- List<dynamic>? employeeList=[];/* {
-            "EmployeeId": 2,
-            "EmployeeName": "Mr Raja R",
-            "IsActive": 1
-        }*/
+  List<dynamic>? plantList=[];
+  List<dynamic>? materialList=[];
+  List<dynamic>? customerList=[];
+  List<dynamic>? supplierList=[];
+ List<dynamic>? locationList=[];
+ List<dynamic>? paymentTypeList=[];
+  List<dynamic>? machineList=[];
+  List<dynamic>? inputMaterialList=[];
+  List<dynamic>? outputMaterialList=[];
+ List<dynamic>? invoiceTypeList=[];
+  List<dynamic>? paymentStatusList=[];
+  List<dynamic>? partyNameList=[];
+ List<dynamic>? employeeList=[];
   List<dynamic>? employeeShift=[];
- List<dynamic>?  dieselRateList=[];/*{
-            "DieselRate": 0.00
-        }*/
-List<dynamic>? vehicleTypeList=[];/* {
-            "VehicleTypeId": 1,
-            "VehicleTypeName": "Cargo",
-            "IsActive": 1
-        }*/
+ List<dynamic>?  dieselRateList=[];
+List<dynamic>? vehicleTypeList=[];
 
 
   List<int> filterAll=[];
@@ -886,9 +839,6 @@ List<dynamic>? vehicleTypeList=[];/* {
 
 
   /* SALES REPORT  */
-
-
-
 
   List<dynamic>? salesReportGridList=[];
   List<dynamic> filterSalesReportGridList=[];
@@ -2276,6 +2226,150 @@ List<dynamic>? vehicleTypeList=[];/* {
     ReportLoader=value;
     notifyListeners();
   }
+
+
+  clearAll(){
+    reportsGridColumnList=[];
+    reportsGridDataList=[];
+    counterList=[];
+    plantList=[];
+    materialList=[];
+    customerList=[];
+    supplierList=[];
+    locationList=[];
+    paymentTypeList=[];
+    machineList=[];
+    inputMaterialList=[];
+    outputMaterialList=[];
+    invoiceTypeList=[];
+    paymentStatusList=[];
+    partyNameList=[];
+    employeeList=[];
+    employeeShift=[];
+     dieselRateList=[];
+    vehicleTypeList=[];
+
+    salesReportGridList=[];
+    filterSalesReportGridList=[];
+
+    tempSalesPlantFilter=[];
+    tempSalesMaterialFilter=[];
+    tempSalesCustomerFilter=[];
+    purchaseReportGridList=[];
+    filterPurchaseReportGridList=[];
+
+    tempPurchasePlantFilter=[];
+    tempPurchaseMaterialFilter=[];
+    tempPurchaseSupplierFilter=[];
+
+    customerSaleReportGridList=[];
+    filterCustomerSaleReportGridList=[];
+
+    tempCustomerSalePlantFilter=[];
+    tempCustomerSaleMaterialFilter=[];
+    tempCustomerSaleCustomerFilter=[];
+    tempCustomerSaleLocationFilter=[];
+    tempCustomerSalePaymentTypeFilter=[];
+
+    supplierPurchaseReportGridList=[];
+    filterSupplierPurchaseReportGridList=[];
+
+    tempSupplierPurchasePlantFilter=[];
+    tempSupplierPurchaseMaterialFilter=[];
+    tempSupplierPurchaseSupplierFilter=[];
+
+    productionReportGridList=[];
+    filterProductionReportGridList=[];
+
+    tempProductionPlantFilter=[];
+    tempProductionMachineFilter=[];
+    tempProductionInputMaterialFilter=[];
+    tempProductionOutputMaterialFilter=[];
+
+    invoiceReportGridList=[];
+    filterInvoiceReportGridList=[];
+
+    tempInvoicePlantFilter=[];
+    tempInvoiceTypeFilter=[];
+    tempInvoicePartyNameFilter=[];
+    tempInvoicePaymentStatusFilter=[];
+    tempInvoicePaymentTypeFilter=[];
+
+    receivablePaymentReportReportGridList=[];
+    filterReceivablePaymentReportReportGridList=[];
+
+    tempReceivablePaymentReportPlantFilter=[];
+    tempReceivablePaymentReportPartyNameFilter=[];
+    tempReceivablePaymentReportPaymentStatusFilter=[];
+    tempReceivablePaymentReportPaymentTypeFilter=[];
+
+    payablePaymentReportGridList=[];
+    filterPayablePaymentReportGridList=[];
+
+    tempPayablePaymentReportPlantFilter=[];
+    tempPayablePaymentReportPartyNameFilter=[];
+    tempPayablePaymentReportPaymentStatusFilter=[];
+    tempPayablePaymentReportPaymentTypeFilter=[];
+    employeeReportGridList=[];
+    filterEmployeeReportGridList=[];
+
+    tempEmployeeReportDesignationFilter=[];
+    List<ReportGridStyleModel2> attendanceReportGridCol=[];
+
+
+
+    attendanceReportGridList=[];
+    filterAttendanceReportGridList=[];
+
+    tempAttendanceReportDesignationFilter=[];
+    dieselPurchaseReportGridList=[];
+    filterDieselPurchaseReportGridList=[];
+
+    tempDieselPurchaseReportPlantFilter=[];
+    tempDieselPurchaseReportPurchaserFilter=[];
+    tempDieselPurchaseReportLocationFilter=[];
+    tempDieselPurchaseReportDieselRateFilter=[];
+
+
+    dieselIssueReportGridList=[];
+    filterDieselIssueReportGridList=[];
+
+    tempDieselIssueReportPlantFilter=[];
+    tempDieselIssueReportMachineTypeFilter=[];
+
+
+    machineManagementReportGridList=[];
+    filterMachineManagementReportGridList=[];
+
+    tempMachineManagementReportPlantFilter=[];
+    tempMachineManagementReportMachineFilter=[];
+    tempMachineManagementReportEmployeeFilter=[];
+
+    saleAuditReportGridList=[];
+    filterSaleAuditReportGridList=[];
+
+    tempSaleAuditReportPlantFilter=[];
+
+    purchaseAuditReportGridList=[];
+    filterPurchaseAuditReportGridList=[];
+
+    tempPurchaseAuditReportPlantFilter=[];
+
+
+    vehicleMonitoringReportGridList=[];
+    filterVehicleMonitoringReportGridList=[];
+
+    tempVehicleMonitoringReportPlantFilter=[];
+    tempVehicleMonitoringReportVehicleTypeFilter=[];
+
+    stockReportGridList=[];
+    filterStockReportGridList=[];
+
+    tempStockReportPlantFilter=[];
+    tempStockReportMaterialFilter=[];
+
+  }
+
 }
 class FilterDetailsModel{
   String? title;

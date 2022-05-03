@@ -815,6 +815,33 @@ double? totalAmount=0.0;
     DieselLoader=value;
     notifyListeners();
   }
+
+
+  clearAll(){
+    clearDI_form();
+    clearDP_Form();
+     fuelSupplierList=[];
+     filterFuelSupplierList=[];
+
+     fuelPurchaserList=[];
+     filterFuelPurchaserList=[];
+
+     issuedByList=[];
+     filterIssuedByList=[];
+     machineTypeList=[];
+
+     vehicleList=[];
+     filterVehicleList=[];
+
+     machineList=[];
+     filterMachineList=[];
+
+     dieselPurchaseGridList=[];
+     filterDieselPurchaseGridList=[];
+     dieselIssueGridList=[];
+     filterDieselIssueGridList=[];
+  }
+
 }
 
 

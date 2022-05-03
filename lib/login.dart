@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -12,6 +13,7 @@ import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:permission_handler/permission_handler.dart';
+import 'package:quarry/api/ApiManager.dart';
 import 'package:quarry/model/userAccessModel.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/styles/constants.dart';
@@ -25,6 +27,7 @@ import 'pages/homePage.dart';
 import 'styles/app_theme.dart';
 import 'styles/size.dart';
 import 'styles/size.dart';
+import 'widgets/alertDialog.dart';
 
 
 
@@ -91,21 +94,11 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
 
   @override
   void initState() {
-    SystemChrome.setEnabledSystemUIOverlays([]);
-    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-
     passwordvisible = true;
     loginvalidation=false;
     shakecontroller = AnimationController(duration: const Duration(milliseconds: 500), vsync: this);
     username.clear();
     password.clear();
-    allowAccess();
-    SharedPreferences.getInstance()
-      ..then((prefs) {
-        setState(() => this._Loginprefs = prefs);
-
-        _loadCredentials();
-      });
     offsetAnimation = Tween(begin: 0.0, end: 28.0)
         .chain(CurveTween(curve: Curves.elasticIn))
         .animate(shakecontroller)
@@ -119,11 +112,25 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
         }
       });
 
+
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+
+      allowAccess();
+      SharedPreferences.getInstance()
+        ..then((prefs) {
+          setState(() => this._Loginprefs = prefs);
+
+          _loadCredentials();
+        });
+    });
+
+
+
     super.initState();
   }
   //
   allowAccess() async{
-    await initializeFirebase();
+
     var status = await Permission.storage.status;
     if (!status.isGranted) {
       await Permission.storage.request();
@@ -140,7 +147,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setEnabledSystemUIOverlays([]);
+
     double _width = MediaQuery.of(context).size.width;
     double _height = MediaQuery.of(context).size.height;
 
@@ -162,7 +169,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
           isLoading=true;
         });
         //var itemsUrl="http://183.82.32.76/restroApi///api/Mobile/GetInvoke";
-        var itemsUrl="http://192.168.1.102/QMS_Dev///api/Mobile/GetInvoke";
+     //   var itemsUrl="http://192.168.1.102/QMS_Dev///api/Mobile/GetInvoke";
         var body = {
           "Fields": [
             {
@@ -179,14 +186,15 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
               "Key": "Password",
               "Type": "String",
               "Value": "${password.text}"
-            },
+            }
+            ,
             {
               "Key": "database",
               "Type": "String",
              // "Value": "TetroPOS_TestQMS" //live
-            "Value": "TetroPOS_TestQMS"
-           // "Value": "TetroPos_QMSTest1"
-            // "Value": "QMS1"
+              "Value": "Geomine_QMS"
+             // "Value": "TetroPos_QMSTest1"
+              // "Value": "QMS1"
             },
 
           ]
@@ -194,19 +202,25 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
         print(json.encode(body));
 
         final dynamic response = await http.post(
-            Uri.parse(itemsUrl), headers: {"Content-Type": "application/json"},
+            Uri.parse(ApiManager().loginUrl), headers: {"Content-Type": "application/json"},
             body: json.encode(body)
         ).then((value) async {
           var parsed = json.decode(value.body);
          // print(value.body);
-          log("parsed ${value.body}");
+          log("login parsed ${value.body}");
 
 
           if (parsed["Table"] != null) {
-            var t1=parsed['Table1'] as List;
-            setState(() {
-              userAccessList=t1.map((e) => UserAccessModel.fromJson(e)).toList();
-            });
+            try{
+              var t1=parsed['Table1'] as List;
+              setState(() {
+                userAccessList=t1.map((e) => UserAccessModel.fromJson(e)).toList();
+              });
+            }catch(e){
+
+            }
+
+
             loginNotifier.fetchUserDetails(parsed);
             print(loginNotifier.userDetail.loginTblOutput![0].Status);
 
@@ -259,13 +273,17 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
             }
           }
           else {
-
             setState(() {
               isLoading=false;
               loginvalidation = true;
               shakecontroller.forward(from: 0.0);
             });
           }
+        }).timeout(Duration(seconds: 15),onTimeout: (){
+          setState(() {
+            isLoading=false;
+          });
+          CustomAlert().commonErrorAlert(context, "Internet OR Server Issue", "");
         });
 
         // }catch(e){
@@ -355,7 +373,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                                           Container(
                                             height: 50,
                                             width: SizeConfig.screenWidth,
-                                            margin: EdgeInsets.only(left: SizeConfig.width20!,right: SizeConfig.width20!,top: 10,bottom: 20),
+                                            margin: EdgeInsets.only(left: SizeConfig.width20!,right: SizeConfig.width20!,top: 10,bottom: 10),
                                             decoration: BoxDecoration(
                                                 borderRadius: BorderRadius.circular(50),
                                                 color: Colors.white,
@@ -423,9 +441,9 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                                           ),
 
                                           isEmailInvalid?Container(
-                                              margin: EdgeInsets.only(left:SizeConfig.width10!,right:SizeConfig.width10!,),
+                                              margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!,),
                                               alignment: Alignment.centerLeft,
-                                              child: Text("* Email format is Invalid",style: TextStyle(color: Colors.red,fontSize: 18,fontFamily: 'RR'),textAlign: TextAlign.left,)
+                                              child: Text("* Email format is Invalid",style: TextStyle(color: Colors.red,fontSize: 16,fontFamily: 'RR'),textAlign: TextAlign.left,)
                                           ):Container(height: 0,width: 0,),
 
                                           SizedBox(height: 10,),
@@ -439,7 +457,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                                           Container(
                                             height: 50,
                                             width: SizeConfig.screenWidth,
-                                            margin: EdgeInsets.only(left: SizeConfig.width20!,right: SizeConfig.width20!,top: 10,bottom: 20),
+                                            margin: EdgeInsets.only(left: SizeConfig.width20!,right: SizeConfig.width20!,top: 10,bottom: 10),
                                             decoration: BoxDecoration(
                                                 borderRadius: BorderRadius.circular(50),
                                                 border: Border.all(color:passwordGlow? AppTheme.yellowColor:Colors.transparent),
@@ -514,9 +532,9 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                                           ),
 
                                           ispasswordInvalid?Container(
-                                              margin: EdgeInsets.only(left:SizeConfig.width10!,right:SizeConfig.width10!,),
+                                              margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!,),
                                               alignment: Alignment.centerLeft,
-                                              child: Text("* Password is required",style: TextStyle(color: Colors.red,fontSize: 18,fontFamily: 'RR'),textAlign: TextAlign.left,)
+                                              child: Text("* Password is required",style: TextStyle(color: Colors.red,fontSize: 16,fontFamily: 'RR'),textAlign: TextAlign.left,)
                                           ):Container(height: 0,width: 0,),
                                           SizedBox(height: 20,),
 

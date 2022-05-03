@@ -455,7 +455,7 @@ class ProductionNotifier extends ChangeNotifier{
             selectMachineName=t[0]['MachineName'];
             selectInputTypeId=t[0]['InputMaterialId'];
             selectInputTypeName=t[0]['InputMaterialName'];
-            materialQuantity.text=t[0]['InputMaterialQuantity'].toString()??"";
+            materialQuantity.text=t[0]['InputMaterialQuantity'].toString();
             selectInputUnitId=t[0]['UnitId'];
             selectInputUnitName=t[0]['UnitName'];
             isWastage=t[0]['IsDustWastage']==0?false:t[0]['IsDustWastage']==1?true:false;
@@ -574,5 +574,13 @@ class ProductionNotifier extends ChangeNotifier{
     notifyListeners();
   }
 
+
+  clearAll(){
+    clearForm();
+    clearMappingList();
+    productionGridValues.clear();
+    plantList.clear();
+
+  }
 
 }

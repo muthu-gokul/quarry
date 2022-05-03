@@ -465,4 +465,13 @@ class MachineManagementNotifier extends ChangeNotifier{
     machineManagementLoader=value;
     notifyListeners();
   }
+
+  clearAll(){
+    gridData.clear();
+    clearInsertForm();
+    machineList=[];
+    reponsiblePersonList=[];
+  }
+
+
 }

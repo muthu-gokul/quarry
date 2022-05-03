@@ -17,7 +17,7 @@ class DashboardNotifier extends ChangeNotifier{
   String TypeName="";
   DateTime dateTime=DateTime.parse('2021-01-01');
   List<DateTime> picked=[];
-
+//
   List<MenuModel> menu=[
   MenuModel(title:"Sale",image: "assets/svg/drawer/sales-form.svg"),
   MenuModel(title:"Purchase & Received",image: "assets/svg/drawer/purchase.svg"),
@@ -508,6 +508,38 @@ List<dynamic> stockT1=[];
    });
  }
 
+
+ clearAll(){
+   currentSaleT={};
+    currentSaleData=[];
+    currentSalesApex='';
+
+    saleT={};
+    saleData=[];
+    saleT2=[];
+    saleMaterialWeeklyT3=[];
+    saleMaterialMonthlyT4=[];
+    saleMaterialYearT5=[];
+    salePaymentCategoryT6=[];
+    salePaymentCustomerT7=[];
+
+
+    productionInputMaterialsT=[];
+    productionOutPutMaterialsT1=[];
+    filterProductionOutPutMaterialsT=[];
+    totalProductionQty=0.0;
+
+    outputMaterials=[];
+
+   attendanceList=[];
+   todayAttendanceListT2=[];
+   weekAttendanceListT7=[];
+   monthAttendanceListT10=[];
+
+   todayAttendanceCountT1=[];
+   weekAttendanceCountT6=[];
+   monthAttendanceCountT9=[];
+ }
 
 
 }

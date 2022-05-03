@@ -381,9 +381,12 @@ class CustomAlert{
         barrierDismissible: true,
         context: context,
         builder: (ctx) {
-          Future.delayed(Duration(milliseconds: duration), () {
-            Navigator.of(ctx).pop(true);
-          });
+          if(duration>0){
+            Future.delayed(Duration(milliseconds: duration), () {
+              Navigator.of(ctx).pop(true);
+            });
+          }
+
           return Scaffold(
             backgroundColor: Colors.transparent,
             body: Center(

@@ -16,6 +16,7 @@ import 'package:quarry/model/vehicelDetailsModel/vehicleTypeModel.dart';
 import 'package:quarry/notifier/profileNotifier.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/pages/goodsReceived/goodsMaterialsList.dart';
+import 'package:quarry/pages/goodsReceived/goodsReceivedGrid.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/calculation.dart';
 import 'package:quarry/widgets/decimal.dart';
@@ -253,22 +254,19 @@ class GoodsReceivedNotifier extends ChangeNotifier{
 
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
-
+        updateGoodsLoader(false);
         if(value!="null"){
           var parsed=json.decode(value);
           print("INSERT SP_$parsed");
           var t=parsed['Table'] as List;
           ML_GoodsorderId=t[0]['GoodsReceivedId'];
          // GetGoodsDbHit(context, ML_GoodsorderId,ML_PorderId);
-         GetGoodsDbHit(context, null,null,false,tickerProviderStateMixin);
+          //GetGoodsDbHit(context, null,null,false,tickerProviderStateMixin);
           Navigator.pop(context);
           IGF_clear();
-          print(GoodsMaterialsListState().mounted);
         //
         }
-        else{
-          updateGoodsLoader(false);
-        }
+
 
 
       });
@@ -328,7 +326,7 @@ class GoodsReceivedNotifier extends ChangeNotifier{
      notifyListeners();
   }
 
-  UpdateGoodsDbHit(BuildContext context,List? insertMappingList,TickerProviderStateMixin tickerProviderStateMixin)  async{
+  UpdateGoodsDbHit(BuildContext context,List? insertMappingList,TickerProviderStateMixin tickerProviderStateMixin,{bool isReload=false})  async{
     updateGoodsLoader(true);
     List js=[];
     if(insertMappingList==null){
@@ -429,21 +427,18 @@ class GoodsReceivedNotifier extends ChangeNotifier{
 
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
-
+        updateGoodsLoader(false);
         if(value!="null"){
           var parsed=json.decode(value);
-          GetGoodsDbHit(context, null,null,false,tickerProviderStateMixin);
           Navigator.pop(context);
+          if(isReload){
+            GetGoodsDbHit(context, null,null,false,tickerProviderStateMixin);
+          }
+
+
           clearOGFform();
           IGF_clear();
-
-
         }
-        else{
-          updateGoodsLoader(false);
-        }
-
-
       });
     }catch(e){
       updateGoodsLoader(false);
@@ -1154,8 +1149,6 @@ class GoodsReceivedNotifier extends ChangeNotifier{
 
         if(value!=null){
           var parsed=json.decode(value);
-
-
           GetGoodsDbHit(context, null,null,false,tickerProviderStateMixin);
         }
 
@@ -1180,4 +1173,26 @@ class GoodsReceivedNotifier extends ChangeNotifier{
     GoodsLoader=value;
     notifyListeners();
   }
+
+  clearAll(){
+    clearOGFform();
+    goodsGridList.clear();
+    goodsAllGridList.clear();
+    GoodsMaterialExtraTripModelDetails.clear();
+
+
+    filterUsersPlantList=[];
+
+    vehicleTypeList=[];
+    filterVehicleTypeList=[];
+    outGateFormList=[];
+    outGateFormVehiclesList=[];
+
+    supplierList=[];
+    filterSupplierList=[];
+
+    materialTripList=[];
+
+  }
+
 }

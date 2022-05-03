@@ -274,4 +274,9 @@ clearInsertForm(){
     employeeSalaryLoader=value;
     notifyListeners();
   }
+
+  clearAll(){
+    clearInsertForm();
+    gridData=[];
+  }
 }

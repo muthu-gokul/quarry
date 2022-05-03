@@ -6,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/login.dart';
 import 'package:quarry/notifier/customerNotifier.dart';
+import 'package:quarry/notifier/dashboardNotifier.dart';
 import 'package:quarry/notifier/dieselNotifier.dart';
 import 'package:quarry/notifier/employeeAttendanceNotifier.dart';
 import 'package:quarry/notifier/employeeNotifier.dart';
@@ -15,6 +16,7 @@ import 'package:quarry/notifier/goodsReceivedNotifier.dart';
 import 'package:quarry/notifier/invoiceNotifier.dart';
 import 'package:quarry/notifier/machineManagementNotifier.dart';
 import 'package:quarry/notifier/machineNotifier.dart';
+import 'package:quarry/notifier/manageUsersNotifier.dart';
 import 'package:quarry/notifier/materialNotifier.dart';
 import 'package:quarry/notifier/paymentNotifier.dart';
 import 'package:quarry/notifier/productionNotifier.dart';
@@ -70,20 +72,40 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
 
   @override
   void initState() {
-    SystemChrome.setEnabledSystemUIOverlays([]);
-    if( userAccessList[4].isHasAccess){
-      Provider.of<DrawerNotifier>(context,listen: false).changeMenu(22);
-    }
-    else{
-      Provider.of<DrawerNotifier>(context,listen: false).changeMenu(10);
-    }
-
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+      if( userAccessList[4].isHasAccess){
+        Provider.of<DrawerNotifier>(context,listen: false).changeMenu(22);
+      }
+      else{
+        Provider.of<DrawerNotifier>(context,listen: false).changeMenu(10);
+      }
+    });
     super.initState();
+  }
+
+  clearDataByNotifier(){
+    Provider.of<CustomerNotifier>(context,listen: false).clearAll();
+    Provider.of<DashboardNotifier>(context,listen: false).clearAll();
+    Provider.of<DieselNotifier>(context,listen: false).clearAll();
+    Provider.of<EmployeeAttendanceNotifier>(context,listen: false).clearAll();
+    Provider.of<EmployeeNotifier>(context,listen: false).clearAll();
+    Provider.of<EmployeeSalaryNotifier>(context,listen: false).clearAll();
+    Provider.of<EmployeeAdvanceLoanNotifier>(context,listen: false).clearAll();
+    Provider.of<GoodsReceivedNotifier>(context,listen: false).clearAll();
+    Provider.of<InvoiceNotifier>(context,listen: false).clearAll();
+    Provider.of<MachineManagementNotifier>(context,listen: false).clearAll();
+    Provider.of<MachineNotifier>(context,listen: false).clearAll();
+    Provider.of<ManageUsersNotifier>(context,listen: false).clearAll();
+    Provider.of<MaterialNotifier>(context,listen: false).clearAll();
+    Provider.of<PaymentNotifier>(context,listen: false).clearAll();
+    Provider.of<ProductionNotifier>(context,listen: false).clearAll();
+    Provider.of<PurchaseNotifier>(context,listen: false).clearAll();
+    Provider.of<ReportNotifier>(context,listen: false).clearAll();
+    Provider.of<SupplierNotifier>(context,listen: false).clearAll();
   }
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setEnabledSystemUIOverlays([]);
     inn=Provider.of<QuarryNotifier>(context,listen: false);
     SizeConfig().init(context);
     return Consumer<DrawerNotifier>(

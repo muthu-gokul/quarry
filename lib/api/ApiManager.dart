@@ -9,6 +9,14 @@ import 'package:quarry/widgets/alertDialog.dart';
 //BuildContext context
 class ApiManager{
 
+  String baseUrl="http://192.168.1.102/QMS_Dev/";
+  String attachmentUrl="http://192.168.1.102/QMS_Dev/AppAttachments/";
+ String invokeUrl="http://192.168.1.102/QMS_Dev/api/Mobile/GetInvoke";
+ String loginUrl="http://192.168.1.102/QMS_Dev/api/Mobile/GetInvokeforlogin";
+//   String baseUrl="http://45.126.252.78/QMS_UAT/";
+//   String attachmentUrl="http://45.126.252.78/QMS_UAT/AppAttachments/";
+//   String invokeUrl="http://45.126.252.78/QMS_UAT/api/Mobile/GetInvoke";
+
   Future<String> ApiCallGetInvoke(var body,BuildContext context) async {
     try{
       //var itemsUrl="http://183.82.32.76/restroApi///api/Mobile/GetInvoke";
@@ -17,7 +25,7 @@ class ApiManager{
     //  var itemsUrl="https://spectacular-salty-meeting.glitch.me/api/users/login";
     //  var itemsUrl="http://10.0.2.2:8080/api/users/login";
     //  var itemsUrl="http://117.247.181.35/restroApi///api/Mobile/GetInvoke";
-      final response = await http.post(Uri.parse(itemsUrl),
+      final response = await http.post(Uri.parse(invokeUrl),
           headers: {"Content-Type": "application/json"},
           body: json.encode(body)
       );

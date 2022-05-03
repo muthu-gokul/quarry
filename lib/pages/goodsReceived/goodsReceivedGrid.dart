@@ -294,7 +294,7 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
                                                                         gr.GoodsDropDownValues(context);
                                                                         gr.GINV_clear();
                                                                         gr.GPO_clear();
-                                                                        gr.GetGoodsDbHit(context, value.goodsReceivedId, value.purchaseOrderId,true,GoodsReceivedGridState());
+                                                                        gr.GetGoodsDbHit(context, value.goodsReceivedId, value.purchaseOrderId,true,this);
                                                                         Navigator.push(context, _createRouteGoodsToInvoice());
 
                                                                         gr.goodsGridList.forEach((element) {
@@ -324,7 +324,7 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
                                                                   }
                                                                   else{
                                                                     gr.GoodsDropDownValues(context);
-                                                                    gr.GetGoodsDbHit(context, value.goodsReceivedId, value.purchaseOrderId,false,GoodsReceivedGridState());
+                                                                    gr.GetGoodsDbHit(context, value.goodsReceivedId, value.purchaseOrderId,false,this);
                                                                     Navigator.push(context, _createRoute());
                                                                   }
 
@@ -501,7 +501,7 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
 
 
                                                                     gr.GoodsDropDownValues(context);
-                                                                    gr.GetGoodsDbHit(context, value.goodsReceivedId, value.purchaseOrderId,false,GoodsReceivedGridState());
+                                                                    gr.GetGoodsDbHit(context, value.goodsReceivedId, value.purchaseOrderId,false,this);
                                                                     Navigator.push(context, _createRoute());
 
 

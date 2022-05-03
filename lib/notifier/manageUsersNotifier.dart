@@ -296,4 +296,9 @@ class ManageUsersNotifier extends ChangeNotifier{
     notifyListeners();
   }
 
+  clearAll(){
+    clearForm();
+    usersList.clear();
+  }
+
 }

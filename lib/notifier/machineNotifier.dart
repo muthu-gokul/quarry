@@ -145,4 +145,9 @@ class MachineNotifier extends ChangeNotifier{
 
   }
 
+  clearAll(){
+    clearMachineDetailForm();
+    machineGridList.clear();
+  }
+
 }

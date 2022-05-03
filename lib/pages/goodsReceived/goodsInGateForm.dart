@@ -214,6 +214,7 @@ class GoodsInGateFormState extends State<GoodsInGateForm> with TickerProviderSta
                                             });
                                           });
                                         },
+                                        onChange: (v){},
                                       ),
                                   GestureDetector(
                                     onTap: (){
@@ -245,7 +246,7 @@ class GoodsInGateFormState extends State<GoodsInGateForm> with TickerProviderSta
                                         });
 
                                         final pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
-                                        gr.updateGoodsLoader(true);
+                                        //gr.updateGoodsLoader(true);
                                         setState(() async {
                                           //SCAN DISABLED
                                         /*  if (pickedFile != null) {
@@ -325,6 +326,7 @@ class GoodsInGateFormState extends State<GoodsInGateForm> with TickerProviderSta
                                         });
                                       });
                                     },
+                                    onChange: (v){},
                                     textInputType: TextInputType.number,
                                   ),
                                 ],
@@ -403,7 +405,7 @@ class GoodsInGateFormState extends State<GoodsInGateForm> with TickerProviderSta
                             double.parse(gr.loadedWeight.text))
                         ).toList();
                         print("Update-$js");
-                        gr.UpdateGoodsDbHit(context,js,GoodsReceivedGridState());
+                        gr.UpdateGoodsDbHit(context,js,this,isReload: true);
                       }
                     }
 

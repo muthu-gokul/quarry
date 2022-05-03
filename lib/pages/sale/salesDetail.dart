@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -8,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 // import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:intl/intl.dart';
+import 'package:ml_kit_ocr/ml_kit_ocr.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/pages/sale/salesMaterialLoadConfirmation.dart';
@@ -73,6 +75,10 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
   bool isPlantOpen=false;
   bool plant=false;
   late PickedFile _image;
+
+
+
+
   @override
   void initState() {
     print("SALE -INIt");
@@ -308,12 +314,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                                     }
                                                                   ).yesOrNoDialog(context, "", "Do you want to clear Material ?");
                                                                 }
-
-
                                                               }
-
-
-
 
                                                           },
                                                           child: SidePopUpParent(
@@ -391,6 +392,21 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                                 : Colors.white,
                                                           ),
                                                         ),
+                                                        /*Container(
+                                                          height:900,
+                                                          width: 100,
+                                                          child: InputCameraView(
+                                                              canSwitchMode: false,
+                                                              mode: InputCameraMode.gallery,
+                                                              title: 'Text Recognition',
+                                                              onImage: (InputImage image) async {
+                                                                RecognizedText? result = await textRecognition.process(image);
+                                                                log("result $result");
+                                                              },
+                                                              overlay:Text("Hello")
+                                                          ),
+                                                        ),*/
+
                                                         GestureDetector(
                                                           onTap: () async{
                                                             setState(() {
@@ -398,29 +414,31 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                             });
 
                                                             final pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
-                                                            qn.updateInsertSaleLoader(true);
-                                                            setState(() async {
+                                                            //qn.updateInsertSaleLoader(true);
+
                                                               //SCAN DISABLEED
-                                                             /* if (pickedFile != null) {
+                                                              if (pickedFile != null) {
                                                                 _image = pickedFile;
-                                                                final inputImage = InputImage.fromFilePath(_image.path);
-                                                                TextRecognizer textDetector= GoogleMlKit.vision.textRecognizer();
+
                                                                // TextDetector textDetector = GoogleMlKit.vision.textDetector();
-                                                                final recognisedText = await textDetector.processImage(inputImage);
+
                                                              //   final FirebaseVisionImage visionImage = FirebaseVisionImage.fromFile(File(_image.path));
                                                              //   final TextRecognizer textRecognizer = FirebaseVision.instance.textRecognizer();
                                                               //  final VisionText visionText = await textRecognizer.processImage(visionImage);
+                                                                final ocr = MlKitOcr();
+                                                                String  recognitions = '';
+                                                                final result = await ocr.processImage(InputImage.fromFilePath(_image.path));
 
-                                                                for (TextBlock block in recognisedText.blocks) {
-                                                                  for (TextLine line in block.lines) {
-
-                                                                    if( RegExp(r'^\d+\.?\d').hasMatch(line.text)){
-                                                                      print(line.text);
-                                                                      qn.scanWeight += line.text;
-
+                                                                for (var blocks in result.blocks) {
+                                                                  for (var lines in blocks.lines) {
+                                                                    recognitions += '\n';
+                                                                    for (var words in lines.elements) {
+                                                                      recognitions += words.text + ' ';
                                                                     }
-
                                                                   }
+                                                                }
+                                                                if( RegExp(r'^\d+\.?\d').hasMatch(recognitions)){
+                                                                  qn.scanWeight = recognitions;
                                                                 }
                                                                 if(qn.scanWeight.isEmpty){
                                                                   qn.scanWeight="ReCapture Clearly";
@@ -434,8 +452,8 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                               else {
                                                                 qn.updateInsertSaleLoader(false);
                                                                 print('No image selected');
-                                                              }*/
-                                                            });
+                                                              }
+
                                                           },
                                                           child: Container(
                                                             height: 50,
@@ -629,7 +647,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                             },
                                                             onChange: (v){
                                                               if(qn.SS_customerNeedWeight.text.isNotEmpty){
-                                                                if(double.parse(qn.SS_customerNeedWeight.text)>qn.SS_selectedMaterialStock!){
+                                                                if(double.parse(qn.SS_customerNeedWeight.text)>qn.SS_selectedMaterialStock){
                                                                   CustomAlert().commonErrorAlert(context, "Out Of Stock", "Current Stock - ${qn.SS_selectedMaterialStock} Ton");
                                                                   qn.SS_customerNeedWeight.clear();
                                                                   qn.weightToAmount();
@@ -1897,8 +1915,10 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                             });
 
                                                             final pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
-                                                            qn.updateInsertSaleLoader(true);
+
+                                                            // qn.updateInsertSaleLoader(true);
                                                             setState(() async {
+
                                                               //SCAN DISABLED
                                                               /*if (pickedFile != null) {
                                                                 _image = pickedFile;

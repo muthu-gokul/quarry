@@ -664,7 +664,7 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                                       SupplierMaterialMappingListModel(
                                                           MaterialId: qn.supplierMaterialId,
                                                           MaterialName: qn.supplierMaterialName,
-                                                          MaterialPrice: double.parse(qn.materialPrice.text??"0.0") ,
+                                                          MaterialPrice: double.parse(qn.materialPrice.text.isEmpty?"0":qn.materialPrice.text) ,
                                                           UnitName: qn.supplierMaterialUnitName,
                                                           SupplierId: null,
                                                           SupplierMaterialMappingId: null,

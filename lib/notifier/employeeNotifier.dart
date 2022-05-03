@@ -436,4 +436,18 @@ class EmployeeNotifier extends ChangeNotifier{
     EmployeeLoader=value;
     notifyListeners();
   }
+
+
+  clearAll(){
+    clearInsertForm();
+    employeeGridList.clear();
+    employeeDesginationList.clear();
+    employeeTypeList.clear();
+    employeeShiftList.clear();
+    employeeSalaryTypeList.clear();
+    employeeBloodGroupList.clear();
+    employeeMartialStatusList.clear();
+    employeePaymentTypeList.clear();
+  }
+
 }

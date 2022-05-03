@@ -227,4 +227,11 @@ class EmployeeAttendanceNotifier extends ChangeNotifier{
     EmployeeAttendanceLoader=value;
     notifyListeners();
   }
+
+
+  clearAll(){
+    clearinsertForm();
+    EmployeeAttendanceGridList.clear();
+  }
+
 }

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -28,6 +29,7 @@ import 'package:quarry/widgets/printerService/printer/utils/src/enums.dart';
 import 'package:quarry/widgets/printerService/printer/utils/src/pos_column.dart';
 import 'package:quarry/widgets/printerService/printer/utils/src/pos_styles.dart';
 
+import '../utils/utils.dart';
 import '../widgets/decimal.dart';
 
 class QuarryNotifier extends ChangeNotifier{
@@ -381,7 +383,7 @@ class QuarryNotifier extends ChangeNotifier{
       }else{
         materialPrice=sale_materialList!.where((element) => element['MaterialId']==SS_selectedMaterialTypeId).toList()[0]['MaterialUnitPrice'].toString();
         SS_customerNeedWeight.text=(Decimal.parse(SS_amount.text)/Decimal.parse((materialPrice))).toString();
-        if(double.parse(SS_customerNeedWeight.text)>SS_selectedMaterialStock!){
+        if(double.parse(SS_customerNeedWeight.text)>SS_selectedMaterialStock){
           CustomAlert().commonErrorAlert(context, "Out Of Stock", "Current Stock - ${SS_selectedMaterialStock} Ton");
           SS_customerNeedWeight.clear();
           SS_amount.clear();
@@ -1173,7 +1175,7 @@ class QuarryNotifier extends ChangeNotifier{
         printer.emptyLines(1);
         printer.row([
           PosColumn(text: 'Vehicle Number: ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
-          PosColumn(text: '${sales[0]['VehicleNumber'].toString().toUpperCase()??""}', width: 6, styles: PosStyles(align: PosAlign.right)),
+          PosColumn(text: '${sales[0]['VehicleNumber'].toString().toUpperCase()}', width: 6, styles: PosStyles(align: PosAlign.right)),
         ]);
         printer.row([
           PosColumn(text: 'Vehicle Type: ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
@@ -1460,7 +1462,7 @@ class QuarryNotifier extends ChangeNotifier{
         try{
           printer.row([
             PosColumn(text: '', width: 1),
-            PosColumn(text: '${CD_quarryname.text??""}', width: 11,styles: PosStyles(align: PosAlign.center,bold: true)),
+            PosColumn(text: '${CD_quarryname.text}', width: 11,styles: PosStyles(align: PosAlign.center,bold: true)),
           ]);
           printer.emptyLines(1);
           values.forEach((key, value) {
@@ -1471,20 +1473,20 @@ class QuarryNotifier extends ChangeNotifier{
           });
           printer.row([
             PosColumn(text: '', width: 1),
-            PosColumn(text: '${CD_city.text??""}, ${CD_state.text??""}-${CD_zipcode.text??""}', width: 11,
+            PosColumn(text: '${CD_city.text}, ${CD_state.text}-${CD_zipcode.text}', width: 11,
                 styles: PosStyles(align: PosAlign.center,height: PosTextSize.size1,width: PosTextSize.size1)),
           ]);
           printer.row([
             PosColumn(text: '', width: 1),
-            PosColumn(text: 'Email: ${CD_email.text??""}', width: 11,styles: PosStyles(align: PosAlign.center)),
+            PosColumn(text: 'Email: ${CD_email.text}', width: 11,styles: PosStyles(align: PosAlign.center)),
           ]);
           printer.row([
             PosColumn(text: '', width: 1),
-            PosColumn(text: 'Ph No: ${CD_contactNo.text??""}', width: 11,styles: PosStyles(align: PosAlign.center)),
+            PosColumn(text: 'Ph No: ${CD_contactNo.text}', width: 11,styles: PosStyles(align: PosAlign.center)),
           ]);
           printer.row([
             PosColumn(text: '', width: 1),
-            PosColumn(text: 'GST: ${CD_gstno.text??""}', width: 11,styles: PosStyles(align: PosAlign.center)),
+            PosColumn(text: 'GST: ${CD_gstno.text}', width: 11,styles: PosStyles(align: PosAlign.center)),
           ]);
           printer.emptyLines(1);
 
@@ -1502,7 +1504,7 @@ class QuarryNotifier extends ChangeNotifier{
           printer.emptyLines(1);
           printer.row([
             PosColumn(text: 'Vehicle Number: ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
-            PosColumn(text: '${saleDetailsGrid[selectedIndex].VehicleNumber!.toUpperCase()??""}', width: 6, styles: PosStyles(align: PosAlign.right)),
+            PosColumn(text: '${saleDetailsGrid[selectedIndex].VehicleNumber!.toUpperCase()}', width: 6, styles: PosStyles(align: PosAlign.right)),
           ]);
           printer.row([
             PosColumn(text: 'Vehicle Type: ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
@@ -1644,7 +1646,7 @@ class QuarryNotifier extends ChangeNotifier{
             printer.row([
               PosColumn(text: '', width: 1),
               // PosColumn(text: 'Total: ', width: 6, styles: PosStyles(align: PosAlign.right,bold: true)),
-              PosColumn(text: 'Total: ${saleDetailsGrid[selectedIndex].TotalAmount!.round()??""}', width: 11,
+              PosColumn(text: 'Total: ${saleDetailsGrid[selectedIndex].TotalAmount!.round()}', width: 11,
                   styles: PosStyles(align: PosAlign.center,height: PosTextSize.size2,width: PosTextSize.size2)),
             ]);
             printer.emptyLines(1);
@@ -1821,7 +1823,7 @@ class QuarryNotifier extends ChangeNotifier{
     else if(double.parse(SS_TotalWeight!)>double.parse(SS_DifferWeightController.text.toString())){
       SS_DifferWeight=(Decimal.parse(SS_TotalWeight!)-Decimal.parse((SS_DifferWeightController.text))).toString();
       msg="Material Low ${SS_DifferWeight}. So You need to Return";
-      returnMoney=(Decimal.parse(SS_MaterialUnitPrice.toString()??"0")*Decimal.parse(SS_DifferWeight!)).toString();
+      returnMoney=(Decimal.parse(SS_MaterialUnitPrice.toString())*Decimal.parse(SS_DifferWeight!)).toString();
       SS_UpdatecustomerNeedWeight=(Decimal.parse(SS_RequiredMaterialQty!)-Decimal.parse(SS_DifferWeight!)).toString();
       SS_UpdateAmount=(Decimal.parse(SS_Amount.toString())-Decimal.parse(returnMoney)).toString();
       returnColor=Colors.red;
@@ -1887,7 +1889,7 @@ class QuarryNotifier extends ChangeNotifier{
     else if(double.parse(SS_TotalWeight!)<double.parse(SS_DifferWeightController.text.toString())){
       SS_DifferWeight=(Decimal.parse(SS_DifferWeightController.text)-Decimal.parse(SS_TotalWeight!)).toString();
       msg="Material High ${SS_DifferWeight}. So Customer Need To Pay";
-      returnMoney=(Decimal.parse(SS_MaterialUnitPrice.toString()??"0")*Decimal.parse(SS_DifferWeight!)).toString();
+      returnMoney=(Decimal.parse(SS_MaterialUnitPrice.toString())*Decimal.parse(SS_DifferWeight!)).toString();
       SS_UpdatecustomerNeedWeight=(Decimal.parse(SS_RequiredMaterialQty!)+Decimal.parse(SS_DifferWeight!)).toString();
       SS_UpdateAmount=(Decimal.parse(SS_Amount.toString())+Decimal.parse(returnMoney)).toString();
       returnColor=Colors.green;
@@ -2150,8 +2152,10 @@ class QuarryNotifier extends ChangeNotifier{
   TextEditingController CD_website= new TextEditingController();
 
   var CompanyLogo;
-  var CompanyLogoFolder;
+  var CompanyLogoFolder="Company";
 
+  String companyLogoUrl="";
+  File? sampleImage;
   GetQuarryDetailDbhit(BuildContext context) async {
   //  updateInsertCompanyLoader(true);
     var body={
@@ -2197,7 +2201,8 @@ class QuarryNotifier extends ChangeNotifier{
           CD_email.text= t1[0]['CompanyEmail']??"";
           CD_website.text= t1[0]['CompanyWebsite']??"";
           CompanyLogo= t1[0]['CompanyLogo'];
-          CompanyLogoFolder= t1[0]['CompanyLogoFolderName']??"";
+          companyLogoUrl=ApiManager().attachmentUrl+CompanyLogo;
+          //CompanyLogoFolder= t1[0]['CompanyLogoFolderName']??"";
         }
 
      //   updateInsertCompanyLoader(false);
@@ -2213,7 +2218,10 @@ class QuarryNotifier extends ChangeNotifier{
   UpdateQuarryDetailDbhit(BuildContext context) async {
 
     updateInsertCompanyLoader(true);
-
+    if(sampleImage!=null){
+      CompanyLogo=await uploadFile(CompanyLogoFolder,sampleImage!);
+    }
+    print("CompanyLogo ${CompanyLogo.toString().replaceAll('"', '')}");
     var body={
       "Fields": [
         {
@@ -2289,7 +2297,7 @@ class QuarryNotifier extends ChangeNotifier{
         {
           "Key": "CompanyLogoFileName",
           "Type": "String",
-          "Value": CompanyLogo
+          "Value": CompanyLogo.toString().replaceAll('"', '')
         },
         {
           "Key": "CompanyLogoFolderName",
@@ -2306,10 +2314,14 @@ class QuarryNotifier extends ChangeNotifier{
 
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
+        updateInsertCompanyLoader(false);
         if(value!="null"){
           var parsed=json.decode(value);
-          updateInsertCompanyLoader(false);
+
+          sampleImage=null;
+          GetQuarryDetailDbhit(context);
         }
+
 
 
 

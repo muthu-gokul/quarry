@@ -353,4 +353,15 @@ class EmployeeAdvanceLoanNotifier extends ChangeNotifier{
     EmployeeAttendanceLoader=value;
     notifyListeners();
   }
+
+
+  clearAll(){
+    clearinsertForm();
+    gridData=[];
+    empList=[];
+    searchEmpList=[];
+    empAmountType=[];
+    amountTypeList=[];
+  }
+
 }

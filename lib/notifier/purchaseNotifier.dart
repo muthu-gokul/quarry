@@ -527,13 +527,6 @@ class PurchaseNotifier extends ChangeNotifier{
   }
 
 
-
-
-
-
-
-
-
   List<DateTime?> picked=[];
   List<ManageUserPlantModel> filterUsersPlantList=[];
 
@@ -756,6 +749,23 @@ class PurchaseNotifier extends ChangeNotifier{
   updatePurchaseLoader(bool value){
     PurchaseLoader=value;
     notifyListeners();
+  }
+
+
+
+  clearAll(){
+    clearForm();
+    supplierTypeList=[];
+    suppliersList=[];
+    filterSuppliersList=[];
+    searchFilterSuppliersList=[];
+
+    materialsList=[];
+    filterMaterialsList=[];
+    searchFilterMaterialsList=[];
+    purchaseGridList.clear();
+    purchaseOrdersMappingList.clear();
+    purchaseOrdersOtherChargesMappingList.clear();
   }
 
 

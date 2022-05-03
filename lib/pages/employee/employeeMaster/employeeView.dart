@@ -413,7 +413,7 @@ class _EmployeeMasterViewState extends State<EmployeeMasterView> with TickerProv
                                               height: 16,
                                               alignment: Alignment.centerLeft,
                                               width: (SizeConfig.screenWidthM40!*0.5)-1,
-                                              child: FittedBox(child: Text("${en.employeePhoneNumber.text??""}",
+                                              child: FittedBox(child: Text("${en.employeePhoneNumber.text}",
 
                                                 style:tableTextStyle,
                                               ),
@@ -459,7 +459,7 @@ class _EmployeeMasterViewState extends State<EmployeeMasterView> with TickerProv
                                                 alignment: Alignment.centerLeft,
                                                 width: (SizeConfig.screenWidthM40!*0.5)-1,
                                                 child: FittedBox(
-                                                  child: Text("${i==0?en.employeeEmail.text??"":i==1?en.employeeAddress.text:i==2?en.employeeCity.text:en.employeeState.text}",
+                                                  child: Text("${i==0?en.employeeEmail.text:i==1?en.employeeAddress.text:i==2?en.employeeCity.text:en.employeeState.text}",
                                                     style: tableTextStyle,
                                                   ),
 
@@ -555,8 +555,8 @@ class _EmployeeMasterViewState extends State<EmployeeMasterView> with TickerProv
                                                 alignment: Alignment.centerLeft,
                                                 width: (SizeConfig.screenWidthM40!*0.5)-1,
                                                 child: FittedBox(
-                                                  child: Text("${i==0?en.selectBloodGroupName??"":i==1?en.selectMartialStatusName??"": i==2?en.employeeReferredBy.text??"":
-                                                  i==3?en.employeeRemarks.text??"":i==4?en.employeeAadhaarNo.text:i==5?en.employeePanNo.text:en.selectPaymentMethodName??""}",
+                                                  child: Text("${i==0?en.selectBloodGroupName??"":i==1?en.selectMartialStatusName??"": i==2?en.employeeReferredBy.text:
+                                                  i==3?en.employeeRemarks.text:i==4?en.employeeAadhaarNo.text:i==5?en.employeePanNo.text:en.selectPaymentMethodName??""}",
                                                     style: tableTextStyle,
                                                   ),
 
@@ -609,7 +609,7 @@ class _EmployeeMasterViewState extends State<EmployeeMasterView> with TickerProv
                                               height: 16,
                                               alignment: Alignment.centerLeft,
                                               width: (SizeConfig.screenWidthM40!*0.5)-1,
-                                              child: FittedBox(child: Text("${en.employeeHolderName.text??""}",
+                                              child: FittedBox(child: Text("${en.employeeHolderName.text}",
 
                                                 style:tableTextStyle,
                                               ),
@@ -655,7 +655,7 @@ class _EmployeeMasterViewState extends State<EmployeeMasterView> with TickerProv
                                                 alignment: Alignment.centerLeft,
                                                 width: (SizeConfig.screenWidthM40!*0.5)-1,
                                                 child: FittedBox(
-                                                  child: Text("${i==0?en.employeeBankName.text??"":i==1?en.employeeAccNo.text:i==2?en.employeeBranchName.text:en.employeeIFSC.text}",
+                                                  child: Text("${i==0?en.employeeBankName.text:i==1?en.employeeAccNo.text:i==2?en.employeeBranchName.text:en.employeeIFSC.text}",
                                                     style: tableTextStyle,
                                                   ),
 

@@ -100,23 +100,6 @@ class SupplierNotifier extends ChangeNotifier{
     }
   }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   InsertSupplierDbHit(BuildContext context,TickerProviderStateMixin tickerProviderStateMixin)  async{
     updateSupplierLoader(true);
     print(tickerProviderStateMixin);
@@ -283,6 +266,11 @@ class SupplierNotifier extends ChangeNotifier{
     notifyListeners();
   }
 
+
+  clearAll(){
+    clearForm();
+    supplierGridList.clear();
+  }
 
 
 }
