@@ -52,11 +52,6 @@ class QuarryNotifier extends ChangeNotifier{
     UserId=userid;
     Name=name;
     DataBaseName=dbname;
-    //DataBaseName="TetroPOS_QMS";
-    print(UserId);
-    print(Name);
-    print(DataBaseName);
-/*    initDropDownValues(context);*/
   }
 
   final call=ApiManager();
@@ -187,8 +182,6 @@ class QuarryNotifier extends ChangeNotifier{
 
         if(value!="null"){
           var parsed=json.decode(value);
-
-          print(parsed);
           var t=parsed['Table'] as List;
           SS_selectedVehicleTypeId=t[0]['VehicleTypeId'];
           SS_selectedVehicleTypeName=t[0]['VehicleTypeName'];
@@ -366,11 +359,6 @@ class QuarryNotifier extends ChangeNotifier{
 
       notifyListeners();
     }
-    print(SubTotal);
-    print(TaxValue);
-    print(TaxAmount);
-    print(GrandTotal);
-    print(RoundOffAmount);
   }
 
 
@@ -515,9 +503,6 @@ class QuarryNotifier extends ChangeNotifier{
         var t1=parsed['Table1'] as List;
         var t2=parsed['Table2'] as List;
         var t3=parsed['Table3'] as List;
-
-
-       // print(t);
         if(filterUsersPlantList.isEmpty){
 
           Provider.of<ProfileNotifier>(context, listen: false).usersPlantList.forEach((element) {
@@ -542,8 +527,6 @@ class QuarryNotifier extends ChangeNotifier{
             });
 
         }
-
-        print(t);
         filterSaleDetailsGrid=t.map((e) => SaleDetails.fromJson(e)).toList();
 
         saleCounterList.add(SaleReportHeaderModel(title: "Sales",value: 0.0,qty: 0.0,unit: "Ton"));
@@ -673,7 +656,6 @@ class QuarryNotifier extends ChangeNotifier{
 
 
         }
-        print("plantCount$plantCount");
         updateInsertSaleLoader(false);
       });
 
@@ -910,11 +892,6 @@ class QuarryNotifier extends ChangeNotifier{
 
 
   UpdateSaleDetailDbhit(BuildContext context,int? UpdateIsMaterialReceived,String UpdateReason) async {
-  /*  print("UpdateIsMaterialReceived$UpdateIsMaterialReceived");
-    print("UPDATE SALE-$SS_selectCustomerId");*/
-    print("UPDATE UpdateRoundOffAmount-$UpdateRoundOffAmount");
-    print("UPDATE UpdateGrandTotalAmount-$UpdateGrandTotalAmount");
-    print("UPDATE UpdateTaxAmount-$UpdateTaxAmount");
     updateInsertSaleLoader(true);
     var body={
       "Fields": [
@@ -1110,11 +1087,7 @@ class QuarryNotifier extends ChangeNotifier{
         };
       }
     }
-
-    print("sales--$sales");
-
     for(int i=0;i<printerList.length;i++){
-      print(sales);
       final PosPrintResult res = await printer.connect('${printerList[i]['PrinterIPAddress']}', port: 9100);
       // Print image
       // final ByteData data = await rootBundle.load('assets/logo.png');
@@ -1381,7 +1354,6 @@ class QuarryNotifier extends ChangeNotifier{
                   styles: PosStyles(align: PosAlign.center,)),
 
             ]);
-            print(customer[0]['CustomerGSTNumber']);
             printer.row([
               PosColumn(text: '', width: 1),
               PosColumn(
@@ -1441,7 +1413,6 @@ class QuarryNotifier extends ChangeNotifier{
 
 
     for(int i=0;i<saleDetailsGridPrintersList.length;i++){
-      print(saleDetailsGridPrintersList[i].PrinterIPAddress);
       final PosPrintResult res = await printer.connect('${saleDetailsGridPrintersList[i].PrinterIPAddress}', port: 9100);
       // Print image
       // final ByteData data = await rootBundle.load('assets/logo.png');
@@ -1792,13 +1763,7 @@ class QuarryNotifier extends ChangeNotifier{
   late String scanWeight;
 
   differWeight(BuildContext context){
-    print("SS_MaterialUnitPrice $SS_MaterialUnitPrice");
-    print("Fdf-$SS_MaterialUnitPrice");
-
-
-
     if(SS_DifferWeightController.text.isEmpty){
-      print("EMPTY");
       msg="";
       returnMoney="";
       SS_UpdatecustomerNeedWeight=SS_RequiredMaterialQty;
@@ -1827,10 +1792,6 @@ class QuarryNotifier extends ChangeNotifier{
       SS_UpdatecustomerNeedWeight=(Decimal.parse(SS_RequiredMaterialQty!)-Decimal.parse(SS_DifferWeight!)).toString();
       SS_UpdateAmount=(Decimal.parse(SS_Amount.toString())-Decimal.parse(returnMoney)).toString();
       returnColor=Colors.red;
-      print("__________${double.parse(returnMoney.toString()) > SS_Amount!}");
-
-
-
       if(OG_isDiscount==1){
         if(OG_isPercentage==0){
           SS_DifferWeight=(Decimal.parse(SS_TotalWeight!)-Decimal.parse((SS_DifferWeightController.text))).toString();
@@ -1985,21 +1946,7 @@ class QuarryNotifier extends ChangeNotifier{
       UpdateDiscountAmount=SS_DiscountAmount;
       UpdateDiscountedOutputQtyAmount=SS_DiscountedOutputQtyAmount;
       UpdateRoundOffAmount=SS_RoundOffAmount;
-    /*  print("SS_UpdatecustomerNeedWeightEQQUAL $SS_UpdatecustomerNeedWeight");
-      print(SS_UpdateAmount);
-      print(UpdateGrandTotalAmount);
-      print(UpdateTaxAmount);
-      print(UpdateDiscountAmount);
-      print(UpdateDiscountedOutputQtyAmount);
-      print(UpdateRoundOffAmount);*/
     }
-    print("SS_UpdatecustomerNeedWeightEQQUAL $SS_UpdatecustomerNeedWeight");
-    print(SS_UpdateAmount);
-    print(UpdateGrandTotalAmount);
-    print(UpdateTaxAmount);
-    print(UpdateDiscountAmount);
-    print(UpdateDiscountedOutputQtyAmount);
-    print(UpdateRoundOffAmount);
     notifyListeners();
   }
 
@@ -2124,7 +2071,6 @@ class QuarryNotifier extends ChangeNotifier{
     OG_isTax=saleDetails[selectedIndex].TaxAmount!>0?true:false;
     scanWeight="";
     notifyListeners();
-    print(SS_GrandTotalAmount);
   }
 
   int selectedIndex=-1;
@@ -2183,10 +2129,7 @@ class QuarryNotifier extends ChangeNotifier{
 
         if(value!="null"){
           var parsed=json.decode(value);
-
-
           var t1=parsed['Table'] as List;
-          print("t1$t1");
 
           CD_quarryname.text= t1[0]['CompanyName']??"";
           CD_contactNo.text= t1[0]['CompanyContactNumber']??"";
@@ -2221,7 +2164,6 @@ class QuarryNotifier extends ChangeNotifier{
     if(sampleImage!=null){
       CompanyLogo=await uploadFile(CompanyLogoFolder,sampleImage!);
     }
-    print("CompanyLogo ${CompanyLogo.toString().replaceAll('"', '')}");
     var body={
       "Fields": [
         {
@@ -2297,7 +2239,7 @@ class QuarryNotifier extends ChangeNotifier{
         {
           "Key": "CompanyLogoFileName",
           "Type": "String",
-          "Value": CompanyLogo.toString().replaceAll('"', '')
+          "Value": CompanyLogo
         },
         {
           "Key": "CompanyLogoFolderName",
@@ -2417,7 +2359,6 @@ class QuarryNotifier extends ChangeNotifier{
 
         if(value!="null"){
           var parsed=json.decode(value);
-          print(parsed);
           var t=parsed['Table'] as List?;
 
 
@@ -2492,7 +2433,6 @@ class QuarryNotifier extends ChangeNotifier{
     updateInsertCompanyLoader(true);
     List js=[];
     js=PO_PlantLicenseList.map((e) => e.toJson()).toList();
-    print(js);
     parameters=[
       ParameterModel(Key: "SpName", Type: "String", Value:  isPlantDetailsEdit?"${Sp.updatePlantDetail}":"${Sp.insertPlantDetail}"),
       ParameterModel(Key: "LoginUserId", Type: "int", Value: UserId),
@@ -2524,8 +2464,6 @@ class QuarryNotifier extends ChangeNotifier{
       await call.ApiCallGetInvoke(body,context).then((value) {
         if(value!="null"){
           var parsed=json.decode(value);
-          print(parsed);
-
           clearPlantForm();
           Navigator.pop(context);
           GetplantDetailDbhit(context, null,tickerProviderStateMixin);

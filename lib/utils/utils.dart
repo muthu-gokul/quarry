@@ -19,5 +19,13 @@ uploadFile(String folderName, File file) async{
   }
   var response = await request.send();
   final res = await http.Response.fromStream(response);
-  return res.body;
+  return res.body.replaceAll('"', '');
+}
+
+
+parseDouble(var value){
+  try{
+    return double.parse(value.toString());
+  }catch(e){}
+  return 0.0;
 }

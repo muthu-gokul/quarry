@@ -448,6 +448,7 @@ class ProductionNotifier extends ChangeNotifier{
 
 
 
+
             productionIdEdit=t![0]['ProductionId'];
             plantId=t[0]['PlantId'];
             plantName=t[0]['PlantName'];

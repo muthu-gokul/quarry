@@ -14,6 +14,7 @@ import 'package:quarry/styles/size.dart';
 
 import 'package:quarry/widgets/bottomBarAddButton.dart';
 import 'package:quarry/widgets/customTextField.dart';
+import 'package:quarry/widgets/logoPicker.dart';
 import 'package:quarry/widgets/validationErrorText.dart';
 
 
@@ -666,48 +667,20 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
 
 
                                       SizedBox(height: 20,),
-                                      Container(
-                                        height: SizeConfig.height70,
-                                        width: SizeConfig.height70,
-                                        decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            border: Border.all(color: AppTheme.uploadColor,width: 2)
-                                        ),
-                                        child: Center(
-                                          child: Icon(Icons.upload_rounded,color: AppTheme.yellowColor,),
-                                        ),
-                                      ),
-                                      SizedBox(height: 20,),
-                                      Align(
-                                        alignment: Alignment.center,
-                                        child: Text("Upload Customer Logo",
-                                          style: TextStyle(fontFamily: 'RR',fontSize: 14,color: AppTheme.gridTextColor),
-                                        ),
-                                      ),
-                                      SizedBox(height: 10,),
-                                      Container(
 
-                                        margin: EdgeInsets.only(left: SizeConfig.width90!,right:  SizeConfig.width90!,),
-                                        height:45,
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(25.0),
-                                          color: AppTheme.yellowColor,
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: AppTheme.yellowColor.withOpacity(0.4),
-                                              spreadRadius: 1,
-                                              blurRadius: 5,
-                                              offset: Offset(1, 8), // changes position of shadow
-                                            ),
-                                          ],
-                                        ),
-                                        child: Center(
-                                            child: Text("Choose File",style: TextStyle(color:AppTheme.bgColor,fontSize:16,fontFamily: 'RM'),
-                                            )
-                                        ),
+                                      LogoPicker(
+                                          imageUrl: qn.customerLogoUrl,
+                                          imageFile: qn.logoFile,
+                                          description: "Upload Customer Logo",
+                                          onCropped: (file){
+                                            setState(() {
+                                              qn.logoFile=file;
+                                              qn.customerLogoUrl="";
+                                            });
+                                          }
+                                      ),
 
 
-                                      ),
 
                                       SizedBox(height: _keyboardVisible? SizeConfig.screenHeight!*0.5:200,)
                                     ],

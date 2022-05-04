@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -10,6 +11,8 @@ import 'package:quarry/model/parameterMode.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/styles/constants.dart';
 import 'package:quarry/widgets/alertDialog.dart';
+
+import '../utils/utils.dart';
 
 class CustomerNotifier extends ChangeNotifier {
 
@@ -37,9 +40,10 @@ class CustomerNotifier extends ChangeNotifier {
   bool? isCreditCustomer = false;
   bool? isAdvanceCustomer = false;
 
-  String? customerLogoFileName;
-  String? customerLogoFolderName;
-
+  var customerLogoFileName;
+  var customerLogoFolderName="Customer";
+  String customerLogoUrl="";
+  File? logoFile;
 
   int? editCustomerId = null;
   final call = ApiManager();
@@ -47,6 +51,9 @@ class CustomerNotifier extends ChangeNotifier {
 
   Future<dynamic> InsertCustomerDbHit(BuildContext context,bool fromSale) async {
     updatecustomerLoader(true);
+    if(logoFile!=null){
+      customerLogoFileName=await uploadFile(customerLogoFolderName,logoFile!);
+    }
     parameters=[
       ParameterModel(Key: "SpName", Type: "String", Value: fromSale?"${Sp.insertCustomerDetail}": isCustomerEdit ? "${Sp.updateCustomerDetail}" : "${Sp.insertCustomerDetail}"),
       ParameterModel(Key: "LoginUserId", Type: "int", Value: Provider.of<QuarryNotifier>(context,listen: false).UserId),
@@ -61,11 +68,11 @@ class CustomerNotifier extends ChangeNotifier {
       ParameterModel(Key: "CustomerZipCode", Type: "String", Value:customerZipcode.text),
       ParameterModel(Key: "CustomerGSTNumber", Type: "String", Value:customerGstNumber.text),
       ParameterModel(Key: "IsCreditCustomer", Type: "int", Value:isCreditCustomer!?1:0),
-      ParameterModel(Key: "CustomerCreditLimit", Type: "String", Value:customerCreditLimit.text.isNotEmpty?double.parse(customerCreditLimit.text):0.0),
+      ParameterModel(Key: "CustomerCreditLimit", Type: "String", Value:parseDouble(customerCreditLimit.text)),
       ParameterModel(Key: "IsCustomerAdvance", Type: "int", Value:isAdvanceCustomer!?1:0),
-      ParameterModel(Key: "CustomerAdvanceAmount", Type: "String", Value:customerAdvanceAmount.text.isNotEmpty?double.parse(customerAdvanceAmount.text):0.0),
-      ParameterModel(Key: "CustomerLogoFileName", Type: "String", Value:null),
-      ParameterModel(Key: "CustomerLogoFolderName", Type: "String", Value:null),
+      ParameterModel(Key: "CustomerAdvanceAmount", Type: "String", Value:parseDouble(customerAdvanceAmount.text)),
+      ParameterModel(Key: "CustomerLogoFileName", Type: "String", Value:customerLogoFileName),
+      ParameterModel(Key: "CustomerLogoFolderName", Type: "String", Value:customerLogoFolderName),
       ParameterModel(Key: "database", Type: "String", Value:Provider.of<QuarryNotifier>(context,listen: false).DataBaseName),
     ];
     if(isCustomerEdit){
@@ -126,15 +133,15 @@ class CustomerNotifier extends ChangeNotifier {
           var t = parsed['Table'] as List?;
           if(customerId!=null){
             editCustomerId=t![0]['CustomerId'];
-            customerName.text=t[0]['CustomerName'];
-            customerAddress.text=t[0]['CustomerAddress'];
-            customerCity.text=t[0]['CustomerCity'];
-            customerState.text=t[0]['CustomerState'];
-            customerCountry.text=t[0]['CustomerCountry'];
-            customerZipcode.text=t[0]['CustomerZipCode'];
-            customerGstNumber.text=t[0]['CustomerGSTNumber'];
-            customerContactNumber.text=t[0]['CustomerContactNumber'];
-            customerEmail.text=t[0]['CustomerEmail'];
+            customerName.text=t[0]['CustomerName']??"";
+            customerAddress.text=t[0]['CustomerAddress']??"";
+            customerCity.text=t[0]['CustomerCity']??"";
+            customerState.text=t[0]['CustomerState']??"";
+            customerCountry.text=t[0]['CustomerCountry']??"";
+            customerZipcode.text=t[0]['CustomerZipCode']??"";
+            customerGstNumber.text=t[0]['CustomerGSTNumber']??"";
+            customerContactNumber.text=t[0]['CustomerContactNumber']??"";
+            customerEmail.text=t[0]['CustomerEmail']??"";
             customerCreditLimit.text=t[0]['CustomerCreditLimit'].toString();
             isCreditCustomer=t[0]['IsCreditCustomer']==0?false:true;
             if(isCreditCustomer!){
@@ -144,10 +151,11 @@ class CustomerNotifier extends ChangeNotifier {
             isAdvanceCustomer=t[0]['IsCustomerAdvance']==0?false:true;
             customerAdvanceAmount.text=t[0]['CustomerAdvanceAmount'].toString();
             if(isAdvanceCustomer!){
-              usedAdvanceAmount=t[0]['UsedAdvanceAmount'].toDouble();
-              balanceAdvanceAmount=t[0]['BalanceAdvanceAmount'].toDouble();
+              usedAdvanceAmount= parseDouble(t[0]['UsedAdvanceAmount']);
+              balanceAdvanceAmount= parseDouble(t[0]['BalanceAdvanceAmount']);
             }
-
+            customerLogoFileName= t[0]['CompanyLogo'];
+            customerLogoUrl=ApiManager().attachmentUrl+customerLogoFileName;
           }
           else{
             customerGridList = t!.map((e) => CustomerDetails.fromJson(e)).toList();
@@ -158,7 +166,7 @@ class CustomerNotifier extends ChangeNotifier {
     }
     catch (e) {
       updatecustomerLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.getCompanyDetail}", e.toString());
+      CustomAlert().commonErrorAlert(context, "${Sp.getCustomerDetail}", e.toString());
     }
   }
 

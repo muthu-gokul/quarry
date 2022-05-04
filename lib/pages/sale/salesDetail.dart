@@ -74,7 +74,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
 
   bool isPlantOpen=false;
   bool plant=false;
-  late PickedFile _image;
+  late XFile _image;
 
 
 
@@ -413,41 +413,36 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                               qn.scanWeight="";
                                                             });
 
-                                                            final pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
-                                                            //qn.updateInsertSaleLoader(true);
+                                                            final pickedFile = await ImagePicker().pickImage(source: ImageSource.camera);
+                                                            qn.updateInsertSaleLoader(true);
 
                                                               //SCAN DISABLEED
                                                               if (pickedFile != null) {
                                                                 _image = pickedFile;
-
-                                                               // TextDetector textDetector = GoogleMlKit.vision.textDetector();
-
-                                                             //   final FirebaseVisionImage visionImage = FirebaseVisionImage.fromFile(File(_image.path));
-                                                             //   final TextRecognizer textRecognizer = FirebaseVision.instance.textRecognizer();
-                                                              //  final VisionText visionText = await textRecognizer.processImage(visionImage);
                                                                 final ocr = MlKitOcr();
                                                                 String  recognitions = '';
                                                                 final result = await ocr.processImage(InputImage.fromFilePath(_image.path));
-
                                                                 for (var blocks in result.blocks) {
                                                                   for (var lines in blocks.lines) {
-                                                                    recognitions += '\n';
+                                                                    //recognitions += '\n';
                                                                     for (var words in lines.elements) {
                                                                       recognitions += words.text + ' ';
                                                                     }
                                                                   }
                                                                 }
+                                                                qn.updateInsertSaleLoader(false);
                                                                 if( RegExp(r'^\d+\.?\d').hasMatch(recognitions)){
                                                                   qn.scanWeight = recognitions;
                                                                 }
                                                                 if(qn.scanWeight.isEmpty){
                                                                   qn.scanWeight="ReCapture Clearly";
                                                                   qn.SS_emptyVehicleWeight.clear();
-                                                                }else{
-                                                               //   qn.SS_emptyVehicleWeight.text=qn.scanWeight;
-                                                                  qn.SS_emptyVehicleWeight.text=(double.parse(qn.scanWeight)/1000).toString();
                                                                 }
-                                                                qn.updateInsertSaleLoader(false);
+                                                                else{
+                                                                  try{
+                                                                    qn.SS_emptyVehicleWeight.text=(double.parse(qn.scanWeight)).toString();
+                                                                  }catch(e){}
+                                                                }
                                                               }
                                                               else {
                                                                 qn.updateInsertSaleLoader(false);
@@ -1914,51 +1909,52 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                               qn.scanWeight="";
                                                             });
 
-                                                            final pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
+                                                            final pickedFile = await ImagePicker().pickImage(source: ImageSource.camera);
 
-                                                            // qn.updateInsertSaleLoader(true);
-                                                            setState(() async {
+                                                            qn.updateInsertSaleLoader(true);
 
                                                               //SCAN DISABLED
-                                                              /*if (pickedFile != null) {
-                                                                _image = pickedFile;
-                                                                final inputImage = InputImage.fromFilePath(_image.path);
-                                                                TextRecognizer textDetector= GoogleMlKit.vision.textRecognizer();
-                                                                //TextDetector textDetector = GoogleMlKit.vision.textDetector();
-                                                                final recognisedText = await textDetector.processImage(inputImage);
-                                                             //   final FirebaseVisionImage visionImage = FirebaseVisionImage.fromFile(File(_image.path));
-                                                             //   final TextRecognizer textRecognizer = FirebaseVision.instance.textRecognizer();
-                                                             //   final VisionText visionText = await textRecognizer.processImage(visionImage);
-
-                                                                for (TextBlock block in recognisedText.blocks) {
-                                                                  for (TextLine line in block.lines) {
-
-                                                                    if( RegExp(r'^\d+\.?\d').hasMatch(line.text)){
-                                                                      print(line.text);
-                                                                      qn.scanWeight += line.text;
-
+                                                              if (pickedFile != null) {
+                                                                setState(() {
+                                                                  _image = pickedFile;
+                                                                });
+                                                                final ocr = MlKitOcr();
+                                                                String  recognitions = '';
+                                                                final result = await ocr.processImage(InputImage.fromFilePath(_image.path));
+                                                                for (var blocks in result.blocks) {
+                                                                  for (var lines in blocks.lines) {
+                                                                    for (var words in lines.elements) {
+                                                                      recognitions += words.text + ' ';
                                                                     }
-
                                                                   }
+                                                                }
+                                                                qn.updateInsertSaleLoader(false);
+                                                                if( RegExp(r'^\d+\.?\d').hasMatch(recognitions)){
+                                                                  qn.scanWeight = recognitions;
                                                                 }
                                                                 if(qn.scanWeight.isEmpty){
                                                                   qn.scanWeight="ReCapture Clearly";
                                                                   qn.SS_DifferWeightController.clear();
-                                                                  qn.updateInsertSaleLoader(false);
-                                                                }else{
-                                                                //  qn.SS_DifferWeightController.text=qn.scanWeight;
-                                                                  qn.SS_DifferWeightController.text=(double.parse(qn.scanWeight)/1000).toString();
-
-                                                                  qn.updateInsertSaleLoader(false);
-                                                                  qn.differWeight(context);
                                                                 }
-
+                                                                else{
+                                                                  try{
+                                                                    setState(() {
+                                                                      qn.SS_DifferWeightController.text=(double.parse(qn.scanWeight)).toString();
+                                                                    });
+                                                                    qn.differWeight(context);
+                                                                  }catch(e){
+                                                                    setState(() {
+                                                                      qn.SS_DifferWeightController.clear();
+                                                                    });
+                                                                    qn.differWeight(context);
+                                                                  }
+                                                                }
                                                               }
                                                               else {
                                                                 qn.updateInsertSaleLoader(false);
                                                                 print('No image selected');
-                                                              }*/
-                                                            });
+                                                              }
+
                                                           },
                                                           child: Container(
                                                             height: 50,
@@ -2009,10 +2005,7 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                               isListScroll=true;
                                                             });
                                                             scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
-
-                                                          },
-
-
+                                                          }
                                                         ),
                                                         SizedBox(height: SizeConfig.height20,),
                                                         Text(qn.msg,style: TextStyle(fontFamily: 'RR',fontSize: 16),textAlign: TextAlign.center,),

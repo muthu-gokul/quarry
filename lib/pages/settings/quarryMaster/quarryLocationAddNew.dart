@@ -18,6 +18,7 @@ import 'package:quarry/styles/size.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:quarry/widgets/customTextField.dart';
+import 'package:quarry/widgets/logoPicker.dart';
 import 'package:quarry/widgets/navigationBarIcon.dart';
 import 'package:quarry/widgets/validationErrorText.dart';
 import 'plantDetailsAddNew.dart';
@@ -59,24 +60,14 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
 
   Future getImage() async
   {
-
-     PickedFile? temp=await (ImagePicker().getImage(source: ImageSource.gallery));
+     XFile? temp=await (ImagePicker().pickImage(source: ImageSource.gallery));
      print(temp);
     if(temp==null)return;
     File tempImage = File(temp.path);
-    if (tempImage != null) {
-/*      setState(() {
-        sampleImage = tempImage;
-      });
-      uploadImg();*/
-      _cropImage(tempImage);
-    }
-
-
+     _cropImage(tempImage);
   }
 
   _cropImage(File picked) async {
-
     File? cropped = await ImageCropper().cropImage(
       androidUiSettings: AndroidUiSettings(
           statusBarColor: Colors.red,
@@ -88,12 +79,10 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
       ),
       sourcePath: picked.path,
       aspectRatioPresets: [
-
         CropAspectRatioPreset.square
       ],
       maxWidth: 400,
       cropStyle: CropStyle.circle,
-
     );
     if (cropped != null) {
       setState(() {
@@ -553,54 +542,17 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
 
                                        SizedBox(height: SizeConfig.height20,),
 
-                                       Container(
-                                         height: 70,
-                                         width: 70,
-                                         decoration: BoxDecoration(
-                                             shape: BoxShape.circle,
-                                             border: Border.all(color: AppTheme.uploadColor,width: 2)
-                                         ),
-                                         clipBehavior: Clip.antiAlias,
-                                         child: qn.companyLogoUrl.isEmpty? Center(
-                                          child: qn.sampleImage!=null? Image.file(qn.sampleImage!):
-                                          SvgPicture.asset("assets/svg/upload.svg",height: 30,width: 30,)
-                                         ):Center(
-                                           child: Image.network(qn.companyLogoUrl,fit: BoxFit.cover,),
-                                         ),
+                                       LogoPicker(
+                                           imageUrl: qn.companyLogoUrl,
+                                           imageFile: qn.sampleImage,
+                                           onCropped: (file){
+                                             setState(() {
+                                               qn.sampleImage=file;
+                                               qn.companyLogoUrl="";
+                                             });
+                                           }
                                        ),
-                                       SizedBox(height: 20,),
-                                       Align(
-                                         alignment: Alignment.center,
-                                         child: Text("Upload Your Company Logo",
-                                           style: TextStyle(fontFamily: 'RR',fontSize: 14,color: AppTheme.gridTextColor),
-                                         ),
-                                       ),
-                                       SizedBox(height: 10,),
-                                       GestureDetector(
-                                         onTap: (){
-                                           getImage();
-                                         },
-                                         child: Container(
-                                           margin: EdgeInsets.only(left: SizeConfig.width90!,right:  SizeConfig.width90!,),
-                                           height:45,
-                                           decoration: BoxDecoration(
-                                             borderRadius: BorderRadius.circular(25.0),
-                                             color: AppTheme.yellowColor,
-                                             boxShadow: [
-                                               BoxShadow(
-                                                 color: AppTheme.yellowColor.withOpacity(0.4),
-                                                 spreadRadius: 1,
-                                                 blurRadius: 5,
-                                                 offset: Offset(1, 8), // changes position of shadow
-                                               ),
-                                             ],
-                                           ),
-                                           child: Center(
-                                               child: Text("Choose File",style: TextStyle(color:AppTheme.bgColor,fontSize:16,fontFamily: 'RM'),
-                                               )
-                                           ),
-                                         ),
-                                       ),
+
 
                                        SizedBox(height: 70),
 
@@ -634,28 +586,31 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                              Navigator.push(context, _createRoute());
                                            }
                                          },
-                                         child: Container(
-                                           margin: EdgeInsets.only(left: SizeConfig.width90!,right:  SizeConfig.width90!,),
-                                           height:45,
-                                           decoration: BoxDecoration(
-                                             borderRadius: BorderRadius.circular(25.0),
-                                             color: AppTheme.yellowColor,
-                                             boxShadow: [
-                                               BoxShadow(
-                                                 color: AppTheme.yellowColor.withOpacity(0.4),
-                                                 spreadRadius: 1,
-                                                 blurRadius: 5,
-                                                 offset: Offset(1, 8), // changes position of shadow
-                                               ),
-                                             ],
-                                           ),
-                                           child: Center(
-                                               child: Text(qn.plantGridList.isEmpty?"+ Add Plant":"Plants",
-                                                 style: TextStyle(color:AppTheme.bgColor,fontSize:16,fontFamily: 'RM'),
-                                               )
-                                           ),
+                                         child: Align(
+                                           alignment: Alignment.center,
+                                           child: Container(
+                                             width: 150,
+                                             height:45,
+                                             decoration: BoxDecoration(
+                                               borderRadius: BorderRadius.circular(25.0),
+                                               color: AppTheme.yellowColor,
+                                               boxShadow: [
+                                                 BoxShadow(
+                                                   color: AppTheme.yellowColor.withOpacity(0.4),
+                                                   spreadRadius: 1,
+                                                   blurRadius: 5,
+                                                   offset: Offset(1, 8), // changes position of shadow
+                                                 ),
+                                               ],
+                                             ),
+                                             child: Center(
+                                                 child: Text(qn.plantGridList.isEmpty?"+ Add Plant":"Plants",
+                                                   style: TextStyle(color:AppTheme.bgColor,fontSize:16,fontFamily: 'RM'),
+                                                 )
+                                             ),
 
 
+                                           ),
                                          ),
                                        ),
 

@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:image_picker/image_picker.dart';
+import 'package:ml_kit_ocr/ml_kit_ocr.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/notifier/goodsReceivedNotifier.dart';
 
@@ -239,54 +240,48 @@ class GoodsInGateFormState extends State<GoodsInGateForm> with TickerProviderSta
                                   ),
                                   GestureDetector(
                                     onTap: () async{
-
-
                                         setState(() {
                                           gr.scanWeight="";
                                         });
 
                                         final pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
-                                        //gr.updateGoodsLoader(true);
+                                        gr.updateGoodsLoader(true);
                                         setState(() async {
                                           //SCAN DISABLED
-                                        /*  if (pickedFile != null) {
+                                          if (pickedFile != null) {
+
                                             _image = pickedFile;
-                                            final inputImage = InputImage.fromFilePath(_image.path);
-                                            TextRecognizer textDetector= GoogleMlKit.vision.textRecognizer();
-
-                                            //TextDetector textDetector = GoogleMlKit.vision.textDetector();
-                                            final recognisedText = await textDetector.processImage(inputImage);
-                                           // final FirebaseVisionImage visionImage = FirebaseVisionImage.fromFile(File(_image.path));
-                                           // final TextRecognizer textRecognizer = FirebaseVision.instance.textRecognizer();
-                                          //  final VisionText visionText = await textRecognizer.processImage(visionImage);
-
-                                            for (TextBlock block in recognisedText.blocks) {
-                                              for (TextLine line in block.lines) {
-                                                if( RegExp(r'^\d+\.?\d').hasMatch(line.text)){
-                                                  print(line.text);
-                                                  gr.scanWeight += line.text;
+                                            final ocr = MlKitOcr();
+                                            String  recognitions = '';
+                                            final result = await ocr.processImage(InputImage.fromFilePath(_image.path));
+                                            for (var blocks in result.blocks) {
+                                              for (var lines in blocks.lines) {
+                                                //recognitions += '\n';
+                                                for (var words in lines.elements) {
+                                                  recognitions += words.text + ' ';
                                                 }
                                               }
                                             }
+
+                                            if( RegExp(r'^\d+\.?\d').hasMatch(recognitions)){
+                                              gr.scanWeight=recognitions;
+                                            }
+                                            gr.updateGoodsLoader(false);
                                             if(gr.scanWeight.isEmpty){
                                               gr.scanWeight="ReCapture Clearly";
                                               gr.loadedWeight.clear();
-                                              gr.updateGoodsLoader(false);
-
-                                            }else{
-                                            //  gr.loadedWeight.text=gr.scanWeight;
-                                              gr.loadedWeight.text=(double.parse(gr.scanWeight)/1000).toString();
-                                              gr.updateGoodsLoader(false);
-
                                             }
-
+                                            else{
+                                              try{
+                                                gr.loadedWeight.text=(double.parse(gr.scanWeight)).toString();
+                                              }catch(e){}
+                                            }
                                           }
                                           else {
                                             gr.updateGoodsLoader(false);
                                             print('No image selected');
-                                          }*/
+                                          }
                                         });
-
                                     },
                                     child: Container(
                                       height: 50,
