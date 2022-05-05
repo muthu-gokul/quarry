@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
@@ -10,6 +11,8 @@ import 'package:quarry/model/manageUsersModel/manageUsersPlantModel.dart';
 import 'package:quarry/notifier/profileNotifier.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/widgets/alertDialog.dart';
+
+import '../utils/utils.dart';
 
 class ManageUsersNotifier extends ChangeNotifier{
   final call=ApiManager();
@@ -84,13 +87,19 @@ class ManageUsersNotifier extends ChangeNotifier{
     }
   }
 
+  var userLogoFileName;
+  var userLogoFolderName="User";
+  String userLogoUrl="";
+  File? logoFile;
 
 
   InsertUserDetailDbHit(BuildContext context)  async{
 
 
     updateManageUsersLoader(true);
-
+    if(logoFile!=null){
+      userLogoFileName = await uploadFile(userLogoFolderName,logoFile!);
+    }
      List js=[];
      js=plantMappingList.map((e) => e.toJson()).toList();
      print("JS$js");
@@ -150,12 +159,12 @@ class ManageUsersNotifier extends ChangeNotifier{
         {
           "Key": "UserImageFileName",
           "Type": "String",
-          "Value": ""
+          "Value": userLogoFileName
         },
         {
           "Key": "UserIMageFolderPath",
           "Type": "String",
-          "Value": ""
+          "Value": userLogoFolderName
         },
         {
           "Key": "UserPlantMappingList",
@@ -234,15 +243,17 @@ class ManageUsersNotifier extends ChangeNotifier{
           if(userId!=null){
             UserId=t![0]['UserId'];
             selectedSalutation=t[0]['UserSalutation'];
-            firstName.text=t[0]['UserFirstName'];
-            lastName.text=t[0]['UserLastName'];
-            contactNumber.text=t[0]['UserContactNumber'];
-            email.text=t[0]['UserEmail'];
-            password.text=t[0]['UserPassword'];
+            firstName.text=t[0]['UserFirstName']??"";
+            lastName.text=t[0]['UserLastName']??"";
+            contactNumber.text=t[0]['UserContactNumber']??"";
+            email.text=t[0]['UserEmail']??"";
+            password.text=t[0]['UserPassword']??"";
             userGroupId=t[0]['UserGroupId'];
             userGroupName=t[0]['UserGroupName'];
 
             plantMappingList=t1!.map((e) => ManageUserPlantModel.fromJson(e)).toList();
+            userLogoFileName= t[0]['UserImage'];
+            userLogoUrl=ApiManager().attachmentUrl+userLogoFileName;
           }
           else{
             usersList=t!.map((e) => ManageUsersGridModel.fromJson(e)).toList();

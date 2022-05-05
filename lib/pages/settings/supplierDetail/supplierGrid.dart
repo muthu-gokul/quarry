@@ -257,7 +257,7 @@ class SupplierDetailsGridState extends State<SupplierDetailsGrid> with TickerPro
                                   sn.updateSupplierEdit(true);
                                   sn.clearForm();
                                   sn.SupplierDropDownValues(context).then((value){
-                                    sn.GetSupplierDbHit(context, sn.supplierGridList[selectedIndex!].supplierId,SupplierDetailAddNewState());
+                                    sn.GetSupplierDbHit(context, sn.supplierGridList[selectedIndex!].supplierId, this);
                                     setState(() {
                                       showEdit=false;
                                       selectedIndex=-1;

@@ -20,6 +20,7 @@ import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/bottomBarAddButton.dart';
 import 'package:quarry/widgets/customTextField.dart';
 import 'package:quarry/widgets/expectedDateContainer.dart';
+import 'package:quarry/widgets/logoPicker.dart';
 import 'package:quarry/widgets/navigationBarIcon.dart';
 import 'package:quarry/widgets/validationErrorText.dart';
 
@@ -130,7 +131,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       children: [
                         Column(
                           children: [
-                            SizedBox(height: 160,),
+                            SizedBox(height: 170,),
                             Container(
                               height: SizeConfig.screenHeight!-60,
                               width: SizeConfig.screenWidth,
@@ -191,6 +192,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           width: SizeConfig.screenWidth,
                                           child: Column(
                                             children: [
+                                              SizedBox(height: 10,),
                                               Text("${pn.selectedSalutation}.${pn.firstName.text} ${pn.lastName.text}",
                                               style: AppTheme.userNameTS,
                                               ),
@@ -514,9 +516,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         Align(
                           alignment: Alignment.topCenter,
                           child: Container(
-                            height: 100,
-                            width: 100,
-                            margin: EdgeInsets.only(top: 110),
+                            height: 120,
+                            width: 120,
+                            margin: EdgeInsets.only(top: 100),
+
                             decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 color: AppTheme.yellowColor,
@@ -529,8 +532,65 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   ),
                                 ]
                             ),
-                            child: Center(
-                              child: Image.asset("assets/svg/drawer/avatar.png"),
+                            child: Stack(
+                              children: [
+                                pn.userLogoUrl.isEmpty? Center(
+                                    child: pn.logoFile!=null? Container(
+                                        height: 120,
+                                        width: 120,
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            border: Border.all(color: AppTheme.uploadColor,width: 2)
+                                        ),
+                                        clipBehavior: Clip.antiAlias,
+                                        child: Image.file(pn.logoFile!)
+                                    ):
+                                    SvgPicture.asset("assets/svg/drawer/avatar.png",height: 30,width: 30,)
+                                ):Center(
+                                  child: Container(
+                                    height: 120,
+                                    width: 120,
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle
+                                    ),
+                                    clipBehavior: Clip.antiAlias,
+                                    child: Image.network(pn.userLogoUrl,fit: BoxFit.cover,
+                                      errorBuilder: (a,b,c){
+                                        return Image.asset("assets/svg/drawer/avatar.png");
+                                      },
+                                    ),
+                                  ),
+                                ),
+
+                                Positioned(
+                                  right: 0,
+                                  bottom: 0,
+                                  child: GestureDetector(
+                                    onTap: (){
+                                      if(isEdit){
+                                        getImage(
+                                                (file){
+                                              setState(() {
+                                                pn.logoFile=file;
+                                                pn.userLogoUrl="";
+                                              });
+                                            }
+                                        );
+                                      }
+
+                                    },
+                                    child: Container(
+                                      height: 50,
+                                      width: 50,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: AppTheme.yellowColor,
+                                      ),
+                                      child: Icon(Icons.camera_alt),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ),

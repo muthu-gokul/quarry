@@ -15,42 +15,6 @@ class LogoPicker extends StatelessWidget {
   String btnTitle;
   LogoPicker({required this.imageUrl,this.imageFile,required this.onCropped,this.description="Upload Your Company Logo",this.btnTitle="Choose File"});
 
-  Future getImage() async
-  {
-    XFile? temp=await (ImagePicker().pickImage(source: ImageSource.gallery));
-    if(temp==null)return;
-    File tempImage = File(temp.path);
-    _cropImage(tempImage);
-  }
-
-  _cropImage(File picked) async {
-    File? cropped = await ImageCropper().cropImage(
-      androidUiSettings: AndroidUiSettings(
-          statusBarColor: Colors.red,
-          toolbarColor: Colors.red,
-          toolbarTitle: "Crop Image",
-          toolbarWidgetColor: Colors.white,
-          showCropGrid: false,
-          hideBottomControls: true
-      ),
-      sourcePath: picked.path,
-      aspectRatioPresets: [
-        CropAspectRatioPreset.square
-      ],
-      maxWidth: 400,
-      cropStyle: CropStyle.circle,
-    );
-    if (cropped != null) {
-      onCropped(cropped);
-      /*setState(() {
-        Provider.of<QuarryNotifier>(context,listen: false).sampleImage = cropped;
-        Provider.of<QuarryNotifier>(context,listen: false).companyLogoUrl="";
-      });*/
-      // uploadImg();
-    }
-
-  }
-
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +46,7 @@ class LogoPicker extends StatelessWidget {
         SizedBox(height: 10,),
         GestureDetector(
           onTap: (){
-            getImage();
+            getImage(onCropped);
           },
           child:  Align(
             alignment: Alignment.center,
@@ -110,5 +74,35 @@ class LogoPicker extends StatelessWidget {
         ),
       ],
     );
+  }
+}
+
+Future getImage( Function(File) onCropped) async
+{
+  XFile? temp=await (ImagePicker().pickImage(source: ImageSource.gallery));
+  if(temp==null)return;
+  File tempImage = File(temp.path);
+  _cropImage(tempImage,onCropped);
+}
+
+_cropImage(File picked,Function(File) onCropped) async {
+  File? cropped = await ImageCropper().cropImage(
+    androidUiSettings: AndroidUiSettings(
+        statusBarColor: Colors.red,
+        toolbarColor: Colors.red,
+        toolbarTitle: "Crop Image",
+        toolbarWidgetColor: Colors.white,
+        showCropGrid: false,
+        hideBottomControls: true
+    ),
+    sourcePath: picked.path,
+    aspectRatioPresets: [
+      CropAspectRatioPreset.square
+    ],
+    maxWidth: 400,
+    cropStyle: CropStyle.circle,
+  );
+  if (cropped != null) {
+    onCropped(cropped);
   }
 }

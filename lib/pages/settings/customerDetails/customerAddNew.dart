@@ -679,9 +679,6 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                             });
                                           }
                                       ),
-
-
-
                                       SizedBox(height: _keyboardVisible? SizeConfig.screenHeight!*0.5:200,)
                                     ],
                                   ),

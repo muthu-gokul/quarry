@@ -20,6 +20,8 @@ import 'package:quarry/widgets/customTextField.dart';
 import 'package:quarry/widgets/sidePopUp/sidePopupWithoutModelList.dart';
 import 'package:quarry/widgets/validationErrorText.dart';
 
+import '../../widgets/logoPicker.dart';
+
 class ManageUsersAddNew extends StatefulWidget {
   VoidCallback? drawerCallback;
   ManageUsersAddNew({this.drawerCallback});
@@ -122,7 +124,7 @@ class ManageUsersAddNewState extends State<ManageUsersAddNew> {
                       children: [
                         Column(
                           children: [
-                            SizedBox(height: 160,),
+                            SizedBox(height: 170,),
                             Container(
                               height: SizeConfig.screenHeight!-60,
                               width: SizeConfig.screenWidth,
@@ -472,12 +474,14 @@ class ManageUsersAddNewState extends State<ManageUsersAddNew> {
                             )
                           ],
                         ),
+
                         Align(
                           alignment: Alignment.topCenter,
                           child: Container(
-                            height: 100,
-                            width: 100,
-                            margin: EdgeInsets.only(top: 110),
+                            height: 120,
+                            width: 120,
+                            margin: EdgeInsets.only(top: 100),
+
                             decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 color: AppTheme.yellowColor,
@@ -490,8 +494,65 @@ class ManageUsersAddNewState extends State<ManageUsersAddNew> {
                                   ),
                                 ]
                             ),
-                            child: Center(
-                              child: Image.asset("assets/svg/drawer/avatar.png"),
+                            child: Stack(
+                              children: [
+                                mun.userLogoUrl.isEmpty? Center(
+                                    child: mun.logoFile!=null? Container(
+                                        height: 120,
+                                        width: 120,
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            border: Border.all(color: AppTheme.uploadColor,width: 2)
+                                        ),
+                                        clipBehavior: Clip.antiAlias,
+                                        child: Image.file(mun.logoFile!)
+                                    ):
+                                    SvgPicture.asset("assets/svg/drawer/avatar.png",height: 30,width: 30,)
+                                ):Center(
+                                  child: Container(
+                                    height: 120,
+                                    width: 120,
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle
+                                    ),
+                                    clipBehavior: Clip.antiAlias,
+                                    child: Image.network(mun.userLogoUrl,fit: BoxFit.cover,
+                                      errorBuilder: (a,b,c){
+                                        return Image.asset("assets/svg/drawer/avatar.png");
+                                      },
+                                    ),
+                                  ),
+                                ),
+
+                                Positioned(
+                                  right: 0,
+                                  bottom: 0,
+                                  child: GestureDetector(
+                                    onTap: (){
+                                      if(mun.isEdit){
+                                        getImage(
+                                                (file){
+                                              setState(() {
+                                                mun.logoFile=file;
+                                                mun.userLogoUrl="";
+                                              });
+                                            }
+                                        );
+                                      }
+
+                                    },
+                                    child: Container(
+                                      height: 50,
+                                      width: 50,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: AppTheme.yellowColor,
+                                      ),
+                                      child: Icon(Icons.camera_alt),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ),

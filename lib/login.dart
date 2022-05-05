@@ -227,7 +227,8 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
             if (loginNotifier.userDetail.loginTblOutput![0].Status) {
               if(prefEmail!.isEmpty && prefPassword!.isEmpty){
                 _setCredentials(username.text, password.text);
-              }else if(prefEmail!=username.text){
+              }
+              else if(prefEmail!=username.text || prefPassword!=password.text){
                 _setCredentials(username.text, password.text);
               }
               quarryNotifier.initUserDetail(loginNotifier.userDetail.loginTable![0].UserId,

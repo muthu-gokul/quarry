@@ -80,23 +80,27 @@ class CustomAlert{
         builder: (ctx) => Dialog(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
           child: Container(
-              height:des.length>50?400:280,
-              width:400,
+              // height:des.length>50?400:280,
+              // width:400,
               decoration:BoxDecoration(
                 color:Colors.white,
                 borderRadius: BorderRadius.circular(10.0),
               ),
-
+              padding: EdgeInsets.all(15),
+              constraints: BoxConstraints(
+                minHeight: 100,
+                maxHeight: 400
+              ),
               child:Column(
+                mainAxisSize: MainAxisSize.min,
                   children:[
-                    SizedBox(height:10),
                     SvgPicture.asset('assets/svg/error-icon.svg'),
                     SizedBox(height:30),
                     Text(title,
                         style:TextStyle(fontFamily:'RM',fontSize:22,color:AppTheme.red),textAlign: TextAlign.center,
                     ),
                     SizedBox(height:10),
-                    Expanded(
+                    Flexible(
                       child: SingleChildScrollView(
                         scrollDirection: Axis.vertical,
                         child: Text(des,
@@ -133,7 +137,6 @@ class CustomAlert{
                         style:TextStyle(fontFamily:'RM',fontSize:22,color:AppTheme.red),textAlign: TextAlign.center,
                     ),
                     SizedBox(height:10),
-
                   ]
               )
           ),

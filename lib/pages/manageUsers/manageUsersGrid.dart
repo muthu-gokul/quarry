@@ -11,6 +11,7 @@ import 'package:quarry/notifier/manageUsersNotifier.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/constants.dart';
 import 'package:quarry/styles/size.dart';
+import 'package:quarry/utils/utils.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/bottomBarAddButton.dart';
 
@@ -255,7 +256,11 @@ class ManageUsersGridState extends State<ManageUsersGrid> with TickerProviderSta
                                                     border: Border.all(color: AppTheme.uploadColor,width: 2)
                                                 ),
                                                 child: Center(
-                                                  child: Image.asset("assets/svg/drawer/avatar.png"),
+                                                  child:Image.network(getAttachmentUrl(mun.usersList[0].userImage),fit: BoxFit.cover,
+                                                    errorBuilder: (a,b,c){
+                                                      return Image.asset("assets/svg/drawer/avatar.png");
+                                                    },
+                                                  ),
                                                 ),
                                               ),
 
@@ -330,8 +335,13 @@ class ManageUsersGridState extends State<ManageUsersGrid> with TickerProviderSta
                                                       shape: BoxShape.circle,
                                                       border: Border.all(color: AppTheme.uploadColor,width: 2)
                                                   ),
+                                                  clipBehavior: Clip.antiAlias,
                                                   child: Center(
-                                                    child: Image.asset("assets/svg/drawer/avatar.png"),
+                                                    child:Image.network(getAttachmentUrl(mun.usersList[i].userImage),fit: BoxFit.cover,
+                                                      errorBuilder: (a,b,c){
+                                                        return Image.asset("assets/svg/drawer/avatar.png");
+                                                      },
+                                                    ),
                                                   ),
                                                 ),
 

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
@@ -7,6 +8,8 @@ import 'package:quarry/api/sp.dart';
 import 'package:quarry/model/manageUsersModel/manageUsersPlantModel.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/widgets/alertDialog.dart';
+
+import '../utils/utils.dart';
 
 class ProfileNotifier extends ChangeNotifier{
 
@@ -22,14 +25,19 @@ class ProfileNotifier extends ChangeNotifier{
   TextEditingController password=new TextEditingController();
 
 
-
+  var userLogoFileName;
+  var userLogoFolderName="User";
+  String userLogoUrl="";
+  File? logoFile;
 
 
   UpdateUserProfileDetailDbHit(BuildContext context)  async{
 
 
     updateProfileLoader(true);
-
+    if(logoFile!=null){
+      userLogoFileName = await uploadFile(userLogoFolderName,logoFile!);
+    }
     var body={
       "Fields": [
         {
@@ -80,12 +88,12 @@ class ProfileNotifier extends ChangeNotifier{
         {
           "Key": "UserImageFileName",
           "Type": "String",
-          "Value": ""
+          "Value": userLogoFileName
         },
         {
           "Key": "UserIMageFolderPath",
           "Type": "String",
-          "Value": ""
+          "Value": userLogoFolderName
         },
         {
           "Key": "database",
@@ -100,7 +108,7 @@ class ProfileNotifier extends ChangeNotifier{
         if(value!=null){
           var parsed=json.decode(value);
           var t=parsed['Table'] as List?;
-          print(parsed);
+          GetUserDetailDbHit(context, Provider.of<QuarryNotifier>(context,listen: false).UserId);
         }
 
 
@@ -116,6 +124,8 @@ class ProfileNotifier extends ChangeNotifier{
   }
 
   List<ManageUserPlantModel> usersPlantList=[];
+
+
 
 
   GetUserDetailDbHit(BuildContext context,int? userId)  async{
@@ -157,8 +167,7 @@ class ProfileNotifier extends ChangeNotifier{
 
           if(userId!=null){
             var t1=parsed['Table1'] as List;
-            print(t);
-            print("t1${t1}");
+            print("GetUserDetailDbHit ${value}");
             UserId=t![0]['UserId'];
             selectedSalutation=t[0]['UserSalutation'];
             UserGroupName=t[0]['UserGroupName'];
@@ -169,6 +178,10 @@ class ProfileNotifier extends ChangeNotifier{
             password.text=t[0]['UserPassword'];
 
             usersPlantList=t1.map((e) => ManageUserPlantModel.fromJson(e)).toList();
+
+            userLogoFileName= t[0]['UserImage'];
+            userLogoUrl=ApiManager().attachmentUrl+userLogoFileName;
+
           }
           else{
 

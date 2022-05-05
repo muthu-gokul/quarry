@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
@@ -15,6 +17,8 @@ import 'package:quarry/model/unitDetailModel.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/styles/constants.dart';
 import 'package:quarry/widgets/alertDialog.dart';
+
+import '../utils/utils.dart';
 
 class SupplierNotifier extends ChangeNotifier{
 
@@ -46,6 +50,10 @@ class SupplierNotifier extends ChangeNotifier{
   List<SupplierMaterialModel> supplierMaterialList=[];
   List<SupplierMaterialMappingListModel> supplierMaterialMappingList=[];
 
+  var supplierLogoFileName;
+  var supplierLogoFolderName="Supplier";
+  String supplierLogoUrl="";
+  File? logoFile;
 
 
   int? supplierEditId=null;
@@ -102,11 +110,13 @@ class SupplierNotifier extends ChangeNotifier{
 
   InsertSupplierDbHit(BuildContext context,TickerProviderStateMixin tickerProviderStateMixin)  async{
     updateSupplierLoader(true);
-    print(tickerProviderStateMixin);
+
     List js=[];
     js=supplierMaterialMappingList.map((e) => e.toJson()).toList();
-    print(js);
 
+    if(logoFile!=null){
+      supplierLogoFileName=await uploadFile(supplierLogoFolderName,logoFile!);
+    }
     parameters=[
       ParameterModel(Key: "SpName", Type: "String", Value: isSupplierEdit?"${Sp.updateSupplierDetail}":"${Sp.insertSupplierDetail}"),
       ParameterModel(Key: "LoginUserId", Type: "int", Value: Provider.of<QuarryNotifier>(context,listen: false).UserId),
@@ -119,8 +129,8 @@ class SupplierNotifier extends ChangeNotifier{
       ParameterModel(Key: "SupplierContactNumber", Type: "String", Value: supplierContactNumber.text),
       ParameterModel(Key: "SupplierEmail", Type: "String", Value: supplierEmail.text),
       ParameterModel(Key: "SupplierGSTNumber", Type: "String", Value: supplierGstNo.text),
+      ParameterModel(Key: "SupplierLogoFileName", Type: "String", Value: supplierLogoFileName),
       ParameterModel(Key: "SupplierMaterialMappingList", Type: "datatable", Value: js),
-
       ParameterModel(Key: "SupplierCategoryId", Type: "int", Value: supplierCategoryId),
       ParameterModel(Key: "database", Type: "String", Value:Provider.of<QuarryNotifier>(context,listen: false).DataBaseName),
     ];
@@ -179,6 +189,7 @@ class SupplierNotifier extends ChangeNotifier{
 
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
+        log("suppplier $value");
         if(value!="null"){
           var parsed=json.decode(value);
           var t=parsed['Table'] as List?;
@@ -203,7 +214,8 @@ class SupplierNotifier extends ChangeNotifier{
             supplierGstNo.text=t[0]['SupplierGSTNumber']??"";
 
             supplierMaterialMappingList=t1.map((e) => SupplierMaterialMappingListModel.fromJson(e,tickerProviderStateMixin)).toList();
-
+            supplierLogoFileName= t[0]['SupplierLogo'];
+            supplierLogoUrl=ApiManager().attachmentUrl+supplierLogoFileName;
 
          /*   notifyListeners();*/
           }
@@ -216,9 +228,9 @@ class SupplierNotifier extends ChangeNotifier{
 
         updateSupplierLoader(false);
       });
-    }catch(e){
+    }catch(e,t){
       updateSupplierLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.getSupplierDetail}" , e.toString());
+      CustomAlert().commonErrorAlert(context, "${Sp.getSupplierDetail}" , "$e $t");
     }
 
 

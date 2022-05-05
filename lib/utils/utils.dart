@@ -29,3 +29,7 @@ parseDouble(var value){
   }catch(e){}
   return 0.0;
 }
+
+getAttachmentUrl(String path){
+  return ApiManager().attachmentUrl+path;
+}

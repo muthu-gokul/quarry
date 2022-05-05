@@ -158,8 +158,13 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                   color: AppTheme.yellowColor,
 
                                 ),
+                                clipBehavior: Clip.antiAlias,
                                 child: Center(
-                                  child: Image.asset("assets/svg/drawer/avatar.png"),
+                                  child: Image.network(pn.userLogoUrl,
+                                    errorBuilder: (a,b,c){
+                                        return Image.asset("assets/svg/drawer/avatar.png");
+                                    },
+                                  ),
                                 ),
 
                               ),
