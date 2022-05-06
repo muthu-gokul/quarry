@@ -532,7 +532,7 @@ class _SaleGridState extends State<SaleGrid> {
                                   onTap: (){
 
                                     if(qn.selectedIndex!=-1 && isOpen){
-                                      if(userAccessList[6].isHasAccess){
+                                      if(userAccessMap[18]??false){
                                         Navigator.of(context).push(_createRoute());
                                         qn.editLoader();
                                         Timer(Duration(milliseconds: 300), (){
@@ -613,6 +613,7 @@ class _SaleGridState extends State<SaleGrid> {
 
                     },
                     image: "assets/svg/plusIcon.svg",
+                    hasAccess: userAccessMap[17]??false,
                   ),
                 ),
                 Positioned(

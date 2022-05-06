@@ -38,13 +38,12 @@ class UserAccessNotifier extends ChangeNotifier{
         //    print(element);
             int index=data.indexWhere((ele) => ele.parent['ModuleName']==element['ModuleName']).toInt();
             if(index==-1){
-              data.add(UserAccessModel(parent: element, children: [],isOpen: false));
+              data.add(UserAccessModel(parent: element, children: [],isOpen: true));
             }
             else{
               data[index].children.add(element);
             }
           });
-          print(data.length);
           updateisLoad(false);
           notifyListeners();
         }

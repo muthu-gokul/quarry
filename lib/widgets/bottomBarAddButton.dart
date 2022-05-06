@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:quarry/styles/app_theme.dart';
+import 'package:quarry/widgets/alertDialog.dart';
 
 class AddButton extends StatelessWidget {
   VoidCallback? ontap;
   String image;
-  AddButton({this.ontap,this.image="assets/svg/tick.svg"});
+  bool hasAccess;
+  AddButton({this.ontap,this.image="assets/svg/tick.svg",this.hasAccess=true});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
-      onTap: ontap,
+      onTap: hasAccess? ontap:(){
+        CustomAlert().accessDenied2();
+      },
       child: Container(
 
         height: 65,

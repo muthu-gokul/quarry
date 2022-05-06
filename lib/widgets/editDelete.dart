@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
+import 'package:quarry/widgets/alertDialog.dart';
 
 class EditDelete extends StatelessWidget {
 
   bool? showEdit;
   VoidCallback? editTap;
   VoidCallback? deleteTap;
-  EditDelete({this.showEdit,this.editTap,this.deleteTap});
+  bool hasEditAccess;
+  bool hasDeleteAccess;
+  EditDelete({this.showEdit,this.editTap,this.deleteTap,this.hasEditAccess=false,this.hasDeleteAccess=false});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +27,9 @@ class EditDelete extends StatelessWidget {
             children: [
 
               GestureDetector(
-                onTap: editTap,
+                onTap: hasEditAccess? editTap:(){
+                  CustomAlert().accessDenied2();
+                },
                 child:Container(
                   width: 130,
                   height: 50,
@@ -34,7 +39,9 @@ class EditDelete extends StatelessWidget {
               ),
               Spacer(),
               GestureDetector(
-                onTap: deleteTap,
+                onTap: hasDeleteAccess? deleteTap:(){
+                  CustomAlert().accessDenied2();
+                },
                 child: Container(
                   width: 130,
                   height: 50,

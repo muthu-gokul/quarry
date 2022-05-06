@@ -15,6 +15,7 @@ import 'package:quarry/widgets/editDelete.dart';
 import 'package:quarry/widgets/navigationBarIcon.dart';
 import 'package:quarry/widgets/staticColumnScroll/customDataTable.dart';
 
+import '../../../styles/constants.dart';
 import 'machineDetailsAddNew.dart';
 
 
@@ -212,6 +213,23 @@ class MachineDetailsGridState extends State<MachineDetailsGrid> {
                                   Navigator.of(context).push(_createRoute());
 
                                 },
+                                deleteTap: (){
+                                  CustomAlert(
+                                      callback: (){
+                                        Navigator.pop(context);
+                                        qn.deleteById(qn.machineGridList[selectedIndex].machineId!);
+                                        setState(() {
+                                          showEdit=false;
+                                          selectedIndex=-1;
+                                        });
+                                      },
+                                      Cancelcallback: (){
+                                        Navigator.pop(context);
+                                      }
+                                  ).yesOrNoDialog(context, "", "Are you sure want to delete this Machine ?");
+                                },
+                                hasEditAccess: userAccessMap[14]??false,
+                                hasDeleteAccess: userAccessMap[15]??false,
                               ),
 
 
@@ -233,6 +251,7 @@ class MachineDetailsGridState extends State<MachineDetailsGrid> {
                       Navigator.of(context).push(_createRoute());
                     },
                     image: "assets/svg/plusIcon.svg",
+                    hasAccess: userAccessMap[13]??false,
                   ),
                 ),
 

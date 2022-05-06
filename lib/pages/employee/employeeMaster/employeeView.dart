@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:quarry/pages/sale/salesDetail.dart';
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
+import 'package:quarry/styles/constants.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/notifier/employeeNotifier.dart';
 import 'package:quarry/widgets/bottomBarAddButton.dart';
@@ -16,6 +17,7 @@ import 'package:quarry/widgets/customTextField.dart';
 import 'package:quarry/widgets/sidePopUp/sidePopUpWithoutSearch.dart';
 import 'package:quarry/widgets/validationErrorText.dart';
 
+import '../../../widgets/alertDialog.dart';
 import 'employeeMasterAddNew.dart';
 
 class EmployeeMasterView extends StatefulWidget {
@@ -214,8 +216,14 @@ class _EmployeeMasterViewState extends State<EmployeeMasterView> with TickerProv
                                         alignment:Alignment.centerRight,
                                         child: GestureDetector(
                                           onTap: (){
-                                            Navigator.pop(context);
-                                            Navigator.push(context, _createRoute());
+                                            if(userAccessMap[32]){
+                                              Navigator.pop(context);
+                                              Navigator.push(context, _createRoute());
+                                            }
+                                            else{
+                                              CustomAlert().accessDenied2();
+                                            }
+
                                           },
                                           child: Container(
                                             margin: EdgeInsets.only(right: SizeConfig.width20!,top: 10,bottom: 10),

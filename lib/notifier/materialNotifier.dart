@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/api/ApiManager.dart';
 import 'package:quarry/api/sp.dart';
@@ -196,7 +197,28 @@ class MaterialNotifier extends ChangeNotifier{
 
   }
 
-
+  Future<dynamic> deleteById(int customerId) async {
+    parameters=[
+      ParameterModel(Key: "SpName", Type: "String", Value:  "${Sp.deleteMaterialDetail}"),
+      ParameterModel(Key: "LoginUserId", Type: "int", Value: Provider.of<QuarryNotifier>(Get.context!,listen: false).UserId),
+      ParameterModel(Key: "MaterialId", Type: "String", Value: customerId),
+      ParameterModel(Key: "database", Type: "String", Value:Provider.of<QuarryNotifier>(Get.context!,listen: false).DataBaseName),
+    ];
+    var body = {
+      "Fields": parameters.map((e) => e.toJson()).toList()
+    };
+    try {
+      await call.ApiCallGetInvoke(body, Get.context!).then((value) {
+        if (value != "null") {
+          //var parsed = json.decode(value);
+          CustomAlert().deletePopUp();
+          GetMaterialDbHit(Get.context!, null);
+        }
+      });
+    } catch (e) {
+      CustomAlert().commonErrorAlert(Get.context!, "${Sp.deleteMaterialDetail}", e.toString());
+    }
+  }
 
   updateEdit(int index){
 

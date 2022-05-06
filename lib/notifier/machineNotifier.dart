@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/api/ApiManager.dart';
 import 'package:quarry/api/sp.dart';
@@ -122,6 +123,30 @@ class MachineNotifier extends ChangeNotifier{
 
 
 
+  }
+
+  Future<dynamic> deleteById(int id) async {
+    parameters=[
+      ParameterModel(Key: "SpName", Type: "String", Value:  "${Sp.deleteMachineDetail}"),
+      ParameterModel(Key: "LoginUserId", Type: "int", Value: Provider.of<QuarryNotifier>(Get.context!,listen: false).UserId),
+      ParameterModel(Key: "MachineId", Type: "String", Value: id),
+      ParameterModel(Key: "database", Type: "String", Value:Provider.of<QuarryNotifier>(Get.context!,listen: false).DataBaseName),
+    ];
+    var body = {
+      "Fields": parameters.map((e) => e.toJson()).toList()
+    };
+    try {
+      await call.ApiCallGetInvoke(body, Get.context!).then((value) {
+        if (value != "null") {
+          //var parsed = json.decode(value);
+          CustomAlert().deletePopUp();
+          GetMachineDbHit(Get.context!, null);
+        }
+      });
+    } catch (e) {
+
+      CustomAlert().commonErrorAlert(Get.context!, "${Sp.deleteMachineDetail}", e.toString());
+    }
   }
 
   bool isMachineEdit=false;

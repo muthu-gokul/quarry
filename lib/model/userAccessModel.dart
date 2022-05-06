@@ -12,6 +12,7 @@ class UserAccessModel {
     moduleName = json['ModuleName'];
     moduleAction = json['ModuleAction'];
     isHasAccess = json['IsHasAccess']==1?true:false;
+    //isHasAccess = json['IsHasAccess'];
   }
 
   Map<String, dynamic> toJson() {

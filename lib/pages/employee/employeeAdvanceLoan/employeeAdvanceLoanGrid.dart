@@ -6,7 +6,9 @@ import 'package:quarry/pages/employee/employeeAdvanceLoan/employeeAdvanceLoanAdd
 import 'package:quarry/pages/employee/employeeMaster/employeeView.dart';
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
+import 'package:quarry/styles/constants.dart';
 import 'package:quarry/styles/size.dart';
+import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/bottomBarAddButton.dart';
 import 'package:quarry/widgets/navigationBarIcon.dart';
 
@@ -576,15 +578,21 @@ class _EmployeeAdvanceLoanGridState extends State<EmployeeAdvanceLoanGrid> {
 
                                       GestureDetector(
                                         onTap: (){
-                                          eal.updateisEdit(true);
-                                          eal.EmployeeAdvanceDropDownValues(context).then((value) {
-                                            eal.GetEmployeeAttendanceLoanDbHit(context, eal.gridData![selectedIndex!]['EmployeeId']);
-                                            Navigator.push(context, _createRoute());
-                                            setState(() {
-                                              showEdit=false;
-                                              selectedIndex=-1;
+                                          if(userAccessMap[38]){
+                                            eal.updateisEdit(true);
+                                            eal.EmployeeAdvanceDropDownValues(context).then((value) {
+                                              eal.GetEmployeeAttendanceLoanDbHit(context, eal.gridData![selectedIndex!]['EmployeeId']);
+                                              Navigator.push(context, _createRoute());
+                                              setState(() {
+                                                showEdit=false;
+                                                selectedIndex=-1;
+                                              });
                                             });
-                                          });
+                                          }
+                                          else{
+                                            CustomAlert().accessDenied2();
+                                          }
+
 
                                         },
                                         child:Container(
@@ -640,6 +648,7 @@ class _EmployeeAdvanceLoanGridState extends State<EmployeeAdvanceLoanGrid> {
                     Navigator.push(context, _createRoute());
                   },
                   image: "assets/svg/plusIcon.svg",
+                  hasAccess: userAccessMap[37],
                 ),
               ),
 

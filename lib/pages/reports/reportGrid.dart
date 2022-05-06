@@ -13,6 +13,7 @@ import 'package:quarry/notifier/reportNotifier.dart';
 import 'package:quarry/pages/reports/salesReport/checkPDF.dart';
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
+import 'package:quarry/styles/constants.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/dateRangePicker.dart' as DateRagePicker;
@@ -403,9 +404,15 @@ class ReportGridState extends State<ReportGrid> with TickerProviderStateMixin{
                                   padding: EdgeInsets.only(top: 10),
                                   child: GestureDetector(
                                     onTap: (){
-                                      setState(() {
-                                        exportOpen=!exportOpen;
-                                      });
+                                      if(userAccessMap[11]??false){
+                                        setState(() {
+                                          exportOpen=!exportOpen;
+                                        });
+                                      }
+                                      else{
+                                        CustomAlert().accessDenied2();
+                                      }
+
                                     },
                                     child: SvgPicture.asset("assets/bottomIcons/export-icon.svg",height: 30,width: 30,color: AppTheme.bgColor,),
                                   ),

@@ -23,6 +23,7 @@ import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/dateRangePicker.dart' as DateRagePicker;
 import 'package:quarry/widgets/navigationBarIcon.dart';
 
+import '../../styles/constants.dart';
 import '../../styles/size.dart';
 
 
@@ -652,9 +653,15 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
                             SizedBox(width: SizeConfig.screenWidth!*0.25,),
                             GestureDetector(
                                 onTap: (){
-                                  gr.clearOGFform();
-                                  gr.GoodsDropDownValues(context);
-                                  Navigator.push(context, _createRouteOutGateForm());
+                                  if(userAccessMap[25]??false){
+                                    gr.clearOGFform();
+                                    gr.GoodsDropDownValues(context);
+                                    Navigator.push(context, _createRouteOutGateForm());
+                                  }
+                                  else{
+                                    CustomAlert().accessDenied2();
+                                  }
+
 
                                 },
                                 child: SvgPicture.asset("assets/bottomIcons/out-gate.svg",height: 42,width: 40,color: AppTheme.bgColor)

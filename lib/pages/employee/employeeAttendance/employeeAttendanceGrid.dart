@@ -5,6 +5,7 @@ import 'package:quarry/notifier/employeeAttendanceNotifier.dart';
 import 'package:quarry/pages/reports/reportGrid.dart';
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
+import 'package:quarry/styles/constants.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/bottomBarAddButton.dart';
 import 'package:quarry/widgets/navigationBarIcon.dart';
@@ -331,6 +332,7 @@ class _EmployeeAttendanceGridState extends State<EmployeeAttendanceGrid> {
                      Navigator.push(context, _createRoute());
                    },
                    image: "assets/svg/plusIcon.svg",
+                   hasAccess: userAccessMap[35],
                  ),
                ),
 

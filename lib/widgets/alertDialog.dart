@@ -1,6 +1,7 @@
 
 import 'dart:io';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
@@ -115,7 +116,7 @@ class CustomAlert{
 
     );
   }
-  void accessDenied(BuildContext context){
+  void accessDenied(BuildContext context,{String title="Access Denied"}){
     showDialog(
         context: context,
         builder: (ctx) => Dialog(
@@ -133,7 +134,36 @@ class CustomAlert{
                     SizedBox(height:10),
                     SvgPicture.asset('assets/svg/error-icon.svg'),
                     SizedBox(height:30),
-                    Text("Access Denied",
+                    Text(title,
+                        style:TextStyle(fontFamily:'RM',fontSize:22,color:AppTheme.red),textAlign: TextAlign.center,
+                    ),
+                    SizedBox(height:10),
+                  ]
+              )
+          ),
+        )
+
+    );
+  }
+  void accessDenied2({String title="Access Denied"}){
+    showDialog(
+        context: Get.context!,
+        builder: (ctx) => Dialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+          child: Container(
+              height:250,
+              width:400,
+              decoration:BoxDecoration(
+                color:Colors.white,
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+
+              child:Column(
+                  children:[
+                    SizedBox(height:10),
+                    SvgPicture.asset('assets/svg/error-icon.svg'),
+                    SizedBox(height:30),
+                    Text(title,
                         style:TextStyle(fontFamily:'RM',fontSize:22,color:AppTheme.red),textAlign: TextAlign.center,
                     ),
                     SizedBox(height:10),
@@ -461,6 +491,58 @@ class CustomAlert{
     );
   }
 
+
+  void deletePopUp(){
+    showDialog(
+        barrierDismissible: true,
+        context: Get.context!,
+        builder: (ctx)
+        {
+          /*Future.delayed(Duration(seconds: 3), () {
+            Navigator.of(context).pop(true);
+          });*/
+          return Dialog(
+            child: Container(
+                // height: 420,
+                width: 300,
+                padding: EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SizedBox(height: 10),
+                      // SvgPicture.asset(img),
+                      Image.asset("assets/images/sucess.gif"),
+                      // SizedBox(height: 30),
+                      Text("Deleted Successfully",
+                        style: TextStyle(fontFamily: 'RM',
+                            fontSize: 22,
+                            color: Color(0xFF0C9A6A)), textAlign: TextAlign.center,
+                      ),
+                      // SizedBox(height: 10),
+                      // Text(des,
+                      //   style: TextStyle(fontFamily: 'RL',
+                      //       fontSize: 20,
+                      //       color: Color(0xFF787878)), textAlign: TextAlign.center,
+                      // ), SizedBox(height: 10),
+                      // Text(amt,
+                      //   style: TextStyle(fontFamily: 'RB',
+                      //       fontSize: 22,
+                      //       color: Color(0xFF787878)), textAlign: TextAlign.center,
+                      // ),
+                    ]
+                )
+            ),
+          );
+        }
+
+
+    );
+  }
 }
 
 

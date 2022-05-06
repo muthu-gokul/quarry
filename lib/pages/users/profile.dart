@@ -165,25 +165,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     scrollDirection: Axis.vertical,
 
                                     children: [
-                                      Align(
-                                         alignment:Alignment.centerRight,
-                                        child: GestureDetector(
-                                          onTap: (){
-                                            setState(() {
-                                              isEdit=!isEdit;
-                                            });
-                                          },
-                                          child: Container(
-                                            margin: EdgeInsets.only(right: SizeConfig.width20!,top: 10,bottom: 10),
-                                            height: 40,
-                                            width: 40,
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: AppTheme.yellowColor
-                                            ),
-                                            child: Center(
-                                              child:  isEdit?Icon(Icons.clear,color: AppTheme.bgColor,):
-                                              SvgPicture.asset("assets/svg/edit.svg",width: 20,height: 20,),
+                                      Visibility(
+                                          visible:!userAccessMap[2],
+                                          child: SizedBox(height: 60,)
+                                      ),
+                                      Visibility(
+                                        visible:userAccessMap[2]??false,
+                                        child: Align(
+                                          alignment:Alignment.centerRight,
+                                          child: GestureDetector(
+                                            onTap: (){
+                                              setState(() {
+                                                isEdit=!isEdit;
+                                              });
+                                            },
+                                            child: Container(
+                                              margin: EdgeInsets.only(right: SizeConfig.width20!,top: 10,bottom: 10),
+                                              height: 40,
+                                              width: 40,
+                                              decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: AppTheme.yellowColor
+                                              ),
+                                              child: Center(
+                                                child:  isEdit?Icon(Icons.clear,color: AppTheme.bgColor,):
+                                                SvgPicture.asset("assets/svg/edit.svg",width: 20,height: 20,),
+                                              ),
                                             ),
                                           ),
                                         ),
@@ -445,62 +452,67 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       Row(
                                         mainAxisAlignment: MainAxisAlignment.center,
                                         children: [
-                                          userAccessList[0].isHasAccess?
-                                          GestureDetector(
-                                            onTap: (){
-                                              Navigator.push(context, _createRoute());
-                                              Provider.of<ManageUsersNotifier>(context,listen: false).GetUserDetailDbHit(context, null);
-                                            },
-                                            child: Container(
-                                              width:SizeConfig.screenWidth!*0.4,
-                                              height:50,
-                                              margin: EdgeInsets.only(right:SizeConfig.screenWidth!*0.1,),
-                                              decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.circular(25.0),
-                                                color: AppTheme.yellowColor,
-                                                boxShadow: [
-                                                  BoxShadow(
-                                                    color: AppTheme.yellowColor.withOpacity(0.4),
-                                                    spreadRadius: 1,
-                                                    blurRadius: 5,
-                                                    offset: Offset(1, 8), // changes position of shadow
-                                                  ),
-                                                ],
+
+                                          Visibility(
+                                            visible: userAccessMap[3]??false,
+                                            child: GestureDetector(
+                                              onTap: (){
+                                                Navigator.push(context, _createRoute());
+                                                Provider.of<ManageUsersNotifier>(context,listen: false).GetUserDetailDbHit(context, null);
+                                              },
+                                              child: Container(
+                                                width:SizeConfig.screenWidth!*0.4,
+                                                height:50,
+                                                margin: EdgeInsets.only(right:SizeConfig.screenWidth!*0.1,),
+                                                decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius.circular(25.0),
+                                                  color: AppTheme.yellowColor,
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                      color: AppTheme.yellowColor.withOpacity(0.4),
+                                                      spreadRadius: 1,
+                                                      blurRadius: 5,
+                                                      offset: Offset(1, 8), // changes position of shadow
+                                                    ),
+                                                  ],
+                                                ),
+                                                child: Center(
+                                                    child: Text("Manage Users",style: AppTheme.bgColorTS,
+                                                    )
+                                                ),
                                               ),
-                                              child: Center(
-                                                  child: Text("Manage Users",style: AppTheme.bgColorTS,
-                                                  )
+                                            ),
+                                          ),
+                                          Visibility(
+                                            visible: userAccessMap[7]??false,
+                                            child: GestureDetector(
+                                              onTap: (){
+                                                Navigator.push(context, MaterialPageRoute(builder: (ctx)=>UserAccess(
+                                                  drawerCallback: (){},
+                                                )));
+                                              },
+                                              child: Container(
+                                                width:SizeConfig.screenWidth!*0.4,
+                                                height:50,
+                                                decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius.circular(25.0),
+                                                  color: AppTheme.yellowColor,
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                      color: AppTheme.yellowColor.withOpacity(0.4),
+                                                      spreadRadius: 1,
+                                                      blurRadius: 5,
+                                                      offset: Offset(1, 8), // changes position of shadow
+                                                    ),
+                                                  ],
+                                                ),
+                                                child: Center(
+                                                    child: Text("User Access",style: AppTheme.bgColorTS,
+                                                    )
+                                                ),
                                               ),
                                             ),
                                           )
-                                              :EmptyContainer(),
-                                          userAccessList[2].isHasAccess? GestureDetector(
-                                            onTap: (){
-                                              Navigator.push(context, MaterialPageRoute(builder: (ctx)=>UserAccess(
-                                                drawerCallback: (){},
-                                              )));
-                                            },
-                                            child: Container(
-                                              width:SizeConfig.screenWidth!*0.4,
-                                              height:50,
-                                              decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.circular(25.0),
-                                                color: AppTheme.yellowColor,
-                                                boxShadow: [
-                                                  BoxShadow(
-                                                    color: AppTheme.yellowColor.withOpacity(0.4),
-                                                    spreadRadius: 1,
-                                                    blurRadius: 5,
-                                                    offset: Offset(1, 8), // changes position of shadow
-                                                  ),
-                                                ],
-                                              ),
-                                              child: Center(
-                                                  child: Text("User Access",style: AppTheme.bgColorTS,
-                                                  )
-                                              ),
-                                            ),
-                                          ) :EmptyContainer(),
                                         ],
                                       ),
 

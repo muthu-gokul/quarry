@@ -20,6 +20,8 @@ import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/editDelete.dart';
 import 'package:quarry/widgets/navigationBarIcon.dart';
 
+import '../../styles/constants.dart';
+
 
 
 class PaymentGrid extends StatefulWidget {
@@ -607,14 +609,20 @@ class PaymentGridState extends State<PaymentGrid> with TickerProviderStateMixin{
                                       ),
                                       GestureDetector(
                                         onTap: (){
-                                          setState(() {
-                                            pn.paymentDate=DateTime.now();
-                                          });
-                                          pn.updatePaymentEdit(false);
-                                          pn.PaymentDropDownValues(context);
-                                          pn.PlantUserDropDownValues(context).then((value){
-                                            Navigator.push(context, _createRoutePaymentAddnew());
-                                          });
+                                          if(userAccessMap[50]??false){
+                                            setState(() {
+                                              pn.paymentDate=DateTime.now();
+                                            });
+                                            pn.updatePaymentEdit(false);
+                                            pn.PaymentDropDownValues(context);
+                                            pn.PlantUserDropDownValues(context).then((value){
+                                              Navigator.push(context, _createRoutePaymentAddnew());
+                                            });
+                                          }
+                                          else{
+                                            CustomAlert().accessDenied2();
+                                          }
+
                                         },
                                         child: Container(
                                           height: 40,
@@ -634,22 +642,27 @@ class PaymentGridState extends State<PaymentGrid> with TickerProviderStateMixin{
                               EditDelete(
                                 showEdit: showEdit,
                                 editTap: (){
-                                  if(pn.filterGridPaymentList[selectedIndex!].DBInvoiceNumber!=0){
-                                    pn.updatePaymentEdit(true);
-                                    pn.PaymentDropDownValues(context);
-                                    pn.GetPaymentDbHit(context, pn.filterGridPaymentList[selectedIndex!].invoiceId,PaymentEditFormState());
-                                    Navigator.push(context, _createRoute());
-                                    setState(() {
-                                      selectedIndex=-1;
-                                      showEdit=false;
-                                    });
+                                  if(userAccessMap[51]??false){
+                                    if(pn.filterGridPaymentList[selectedIndex!].DBInvoiceNumber!=0){
+                                      pn.updatePaymentEdit(true);
+                                      pn.PaymentDropDownValues(context);
+                                      pn.GetPaymentDbHit(context, pn.filterGridPaymentList[selectedIndex!].invoiceId,PaymentEditFormState());
+                                      Navigator.push(context, _createRoute());
+                                      setState(() {
+                                        selectedIndex=-1;
+                                        showEdit=false;
+                                      });
+                                    }
+                                    else{
+                                      CustomAlert().commonErrorAlert(context, "Its Directly Paid.You cant edit", "");
+                                      setState(() {
+                                        selectedIndex=-1;
+                                        showEdit=false;
+                                      });
+                                    }
                                   }
                                   else{
-                                    CustomAlert().commonErrorAlert(context, "Its Directly Paid.You cant edit", "");
-                                    setState(() {
-                                      selectedIndex=-1;
-                                      showEdit=false;
-                                    });
+                                    CustomAlert().accessDenied2();
                                   }
 
 

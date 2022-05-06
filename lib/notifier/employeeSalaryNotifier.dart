@@ -229,8 +229,6 @@ clearInsertForm(){
         if(value!=null){
           var parsed=json.decode(value);
           var t=parsed['Table'] as List?;
-          print(parsed['Table']);
-
           if(EmployeeId!=null ){
             showEmpId=t![0]['EmployeeId'];
             showEmpName=t[0]['Name'];

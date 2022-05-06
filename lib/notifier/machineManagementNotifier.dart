@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/api/ApiManager.dart';
@@ -13,6 +14,8 @@ import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/calculation.dart';
 import 'package:quarry/widgets/staticColumnScroll/customDataTableWithoutModel.dart';
 
+import '../model/parameterMode.dart';
+import '../styles/constants.dart';
 import 'profileNotifier.dart';
 
 class MachineManagementNotifier extends ChangeNotifier{
@@ -436,6 +439,29 @@ class MachineManagementNotifier extends ChangeNotifier{
     }
   }
 
+  Future<dynamic> deleteById(int id) async {
+    parameters=[
+      ParameterModel(Key: "SpName", Type: "String", Value:  "${Sp.deleteMachineManagementDetail}"),
+      ParameterModel(Key: "LoginUserId", Type: "int", Value: Provider.of<QuarryNotifier>(Get.context!,listen: false).UserId),
+      ParameterModel(Key: "CustomerId", Type: "String", Value: id),
+      ParameterModel(Key: "database", Type: "String", Value:Provider.of<QuarryNotifier>(Get.context!,listen: false).DataBaseName),
+    ];
+    var body = {
+      "Fields": parameters.map((e) => e.toJson()).toList()
+    };
+    try {
+      await call.ApiCallGetInvoke(body, Get.context!).then((value) {
+        if (value != "null") {
+          //var parsed = json.decode(value);
+          CustomAlert().deletePopUp();
+          GetMachineManagementDbHit(Get.context!, null,null);
+        }
+      });
+    } catch (e) {
+
+      CustomAlert().commonErrorAlert(Get.context!, "${Sp.deleteMachineDetail}", e.toString());
+    }
+  }
   filterMachineGrid(){
     gridData.clear();
 

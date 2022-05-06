@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/api/ApiManager.dart';
 import 'package:quarry/api/sp.dart';
@@ -236,7 +237,29 @@ class SupplierNotifier extends ChangeNotifier{
 
   }
 
+  Future<dynamic> deleteById(int id,TickerProviderStateMixin tickerProviderStateMixin) async {
+    parameters=[
+      ParameterModel(Key: "SpName", Type: "String", Value:  "${Sp.deleteSupplierDetail}"),
+      ParameterModel(Key: "LoginUserId", Type: "int", Value: Provider.of<QuarryNotifier>(Get.context!,listen: false).UserId),
+      ParameterModel(Key: "SupplierId", Type: "String", Value: id),
+      ParameterModel(Key: "database", Type: "String", Value:Provider.of<QuarryNotifier>(Get.context!,listen: false).DataBaseName),
+    ];
+    var body = {
+      "Fields": parameters.map((e) => e.toJson()).toList()
+    };
+    try {
+      await call.ApiCallGetInvoke(body, Get.context!).then((value) {
+        if (value != "null") {
+          //var parsed = json.decode(value);
+          CustomAlert().deletePopUp();
+          GetSupplierDbHit(Get.context!, null,tickerProviderStateMixin);
+        }
+      });
+    } catch (e) {
 
+      CustomAlert().commonErrorAlert(Get.context!, "${Sp.deleteSupplierDetail}", e.toString());
+    }
+  }
 
   updateEdit(int index){
 

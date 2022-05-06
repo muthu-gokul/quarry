@@ -211,10 +211,18 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
 
 
           if (parsed["Table"] != null) {
+            setState(() {
+              userGroupName=parsed['Table'][0]['UserGroupName'];
+              userGroupId=parsed['Table'][0]['UserGroupId'];
+            });
             try{
               var t1=parsed['Table1'] as List;
               setState(() {
                 userAccessList=t1.map((e) => UserAccessModel.fromJson(e)).toList();
+                userAccessMap.clear();
+                userAccessList.forEach((element) {
+                  userAccessMap[element.actionId]=element.isHasAccess;
+                });
               });
             }catch(e){
 

@@ -7,6 +7,7 @@ import 'package:quarry/pages/employee/employeeSalary/employeeSalaryAddNew.dart';
 import 'package:quarry/pages/reports/reportGrid.dart';
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
+import 'package:quarry/styles/constants.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/bottomBarAddButton.dart';
 import 'package:quarry/widgets/navigationBarIcon.dart';
@@ -323,6 +324,7 @@ class _EmployeeSalaryGridState extends State<EmployeeSalaryGrid> {
                           Navigator.push(context, _createRoute());
                         },
                         image: "assets/svg/plusIcon.svg",
+                        hasAccess: userAccessMap[41]??false,
                       ),
                     ),
 

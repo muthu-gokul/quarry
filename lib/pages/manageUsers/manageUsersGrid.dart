@@ -178,7 +178,7 @@ class ManageUsersGridState extends State<ManageUsersGrid> with TickerProviderSta
                                         child: Center(
                                           child: GestureDetector(
                                             onTap: (){
-                                              if(userAccessList[1].isHasAccess){
+                                              if(userAccessMap[4]??false){
                                                 mun.updateisManageUsersEdit(false);
                                                 mun.updateisEdit(true);
                                                 Navigator.push(context, _createRoute());
@@ -212,7 +212,7 @@ class ManageUsersGridState extends State<ManageUsersGrid> with TickerProviderSta
                                       ),
                                       mun.usersList.isNotEmpty? GestureDetector(
                                         onTap: (){
-                                          if(userAccessList[1].isHasAccess){
+                                          if(userAccessMap[5]??false){
                                             mun.updateisManageUsersEdit(true);
                                             mun.updateisEdit(false);
                                             Navigator.push(context, _createRoute());
@@ -222,20 +222,22 @@ class ManageUsersGridState extends State<ManageUsersGrid> with TickerProviderSta
                                           else{
                                             CustomAlert().accessDenied(context);
                                           }
-
-
-
-
                                         },
                                         onLongPress: (){
-                                          CustomAlert(
-                                            callback: (){
+                                          if(userAccessMap[6]??false){
+                                            CustomAlert(
+                                                callback: (){
 
-                                            },
-                                            Cancelcallback: (){
-                                              Navigator.pop(context);
-                                            }
-                                          ).yesOrNoDialog(context, "", "Are you sure want to delete this user ?");
+                                                },
+                                                Cancelcallback: (){
+                                                  Navigator.pop(context);
+                                                }
+                                            ).yesOrNoDialog(context, "", "Are you sure want to delete this user ?");
+                                          }
+                                          else{
+                                            CustomAlert().accessDenied2();
+                                          }
+
                                         },
                                         child: Container(
                                           height: 200,

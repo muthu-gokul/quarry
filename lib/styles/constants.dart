@@ -13,6 +13,12 @@ String addressReg='[A-Za-z0-9,-_@ ]';
 
 List<ParameterModel> parameters=[];
 List<UserAccessModel> userAccessList=[];
+Map userAccessMap={
+  "1":true
+};
+
+int? userGroupId;
+String? userGroupName;
 
 //Multi Date Selector Color
 Color headerBg=Color(0xFFFFC010);

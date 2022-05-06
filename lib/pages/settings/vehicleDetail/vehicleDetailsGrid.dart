@@ -16,6 +16,7 @@ import 'package:quarry/widgets/editDelete.dart';
 import 'package:quarry/widgets/navigationBarIcon.dart';
 import 'package:quarry/widgets/staticColumnScroll/customDataTable.dart';
 
+import '../../../styles/constants.dart';
 import 'vehicleDetailsAddNew.dart';
 
 
@@ -227,6 +228,23 @@ class VehicleDetailsGridState extends State<VehicleDetailsGrid> {
                                   Navigator.of(context).push(_createRoute());
 
                                 },
+                                deleteTap: (){
+                                  CustomAlert(
+                                      callback: (){
+                                        Navigator.pop(context);
+                                        mn.deleteById(mn.vehicleGridList[selectedIndex!].VehicleId!);
+                                        setState(() {
+                                          showEdit=false;
+                                          selectedIndex=-1;
+                                        });
+                                      },
+                                      Cancelcallback: (){
+                                        Navigator.pop(context);
+                                      }
+                                  ).yesOrNoDialog(context, "", "Are you sure want to delete this Vehicle ?");
+                                },
+                                hasEditAccess: userAccessMap[14]??false,
+                                hasDeleteAccess: userAccessMap[15]??false,
                               ),
 
 
@@ -249,6 +267,7 @@ class VehicleDetailsGridState extends State<VehicleDetailsGrid> {
                       Navigator.of(context).push(_createRoute());
                     },
                     image: "assets/svg/plusIcon.svg",
+                    hasAccess: userAccessMap[13]??false,
                   ),
                 ),
 

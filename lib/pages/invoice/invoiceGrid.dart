@@ -13,9 +13,12 @@ import 'package:quarry/pages/invoice/invoicePlantList.dart';
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
+import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/editDelete.dart';
 import 'package:quarry/widgets/navigationBarIcon.dart';
 import 'package:quarry/widgets/dateRangePicker.dart' as DateRagePicker;
+
+import '../../styles/constants.dart';
 
 
 class InvoiceGrid extends StatefulWidget {
@@ -562,13 +565,19 @@ class InvoiceGridState extends State<InvoiceGrid> with TickerProviderStateMixin{
                                       ),
                                       GestureDetector(
                                         onTap: (){
-                                          inv.insertForm();
-                                          inv.clearForm();
-                                          Navigator.of(context).push(_createRoute());
-                                          inv.updateInvoiceEdit(false);
-                                          inv.PlantUserDropDownValues(context).then((value){
-                                            inv.InvoiceDropDownValues(context);
-                                          });
+                                          if(userAccessMap[47]??false){
+                                            inv.insertForm();
+                                            inv.clearForm();
+                                            Navigator.of(context).push(_createRoute());
+                                            inv.updateInvoiceEdit(false);
+                                            inv.PlantUserDropDownValues(context).then((value){
+                                              inv.InvoiceDropDownValues(context);
+                                            });
+                                          }
+                                          else{
+                                            CustomAlert().accessDenied2();
+                                          }
+
                                         },
                                         child: Container(
                                           height: 40,
@@ -589,20 +598,26 @@ class InvoiceGridState extends State<InvoiceGrid> with TickerProviderStateMixin{
                               EditDeletePdf(
                                 showEdit: showEdit,
                                 editTap: (){
-                                  inv.insertForm();
-                                  inv.updateInvoiceEdit(true);
-                                  inv.InvoiceDropDownValues(context);
-                                  inv.PlantUserDropDownValues(context).then((value) {
-                                    inv.GetInvoiceDbHit(context, inv.filterInvoiceGridList[selectedIndex!].invoiceId);
-                                    Navigator.push(context, _createRoute());
-                                    setState(() {
-                                      selectedIndex=-1;
-                                      showEdit=false;
+                                  if(userAccessMap[48]??false){
+                                    inv.insertForm();
+                                    inv.updateInvoiceEdit(true);
+                                    inv.InvoiceDropDownValues(context);
+                                    inv.PlantUserDropDownValues(context).then((value) {
+                                      inv.GetInvoiceDbHit(context, inv.filterInvoiceGridList[selectedIndex!].invoiceId);
+                                      Navigator.push(context, _createRoute());
+                                      setState(() {
+                                        selectedIndex=-1;
+                                        showEdit=false;
+                                      });
                                     });
-
-                                  });
+                                  }
+                                  else{
+                                    CustomAlert().accessDenied2();
+                                  }
                                 },
-                                deleteTap: (){},
+                                deleteTap: (){
+                                  CustomAlert().accessDenied2();
+                                },
                                 viewTap: (){
                                   inv.GetInvoiceDbHit(context, inv.filterInvoiceGridList[selectedIndex!].invoiceId).then((value) {
                                     invoicePdf(context,true);

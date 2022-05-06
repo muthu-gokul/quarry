@@ -9,15 +9,15 @@ import 'package:quarry/widgets/alertDialog.dart';
 //BuildContext context
 class ApiManager{
 
-  String baseUrl="http://192.168.1.102/QMS_Dev/";
-  String attachmentUrl="http://192.168.1.102/QMS_Dev/AppAttachments/";
- String invokeUrl="http://192.168.1.102/QMS_Dev/api/Mobile/GetInvoke";
- String loginUrl="http://192.168.1.102/QMS_Dev/api/Mobile/GetInvokeforlogin";
+ //  String baseUrl="http://192.168.1.102/QMS_Dev/";
+ //  String attachmentUrl="http://192.168.1.102/QMS_Dev/AppAttachments/";
+ // String invokeUrl="http://192.168.1.102/QMS_Dev/api/Mobile/GetInvoke";
+ // String loginUrl="http://192.168.1.102/QMS_Dev/api/Mobile/GetInvokeforlogin";
 
-  // String baseUrl="http://45.126.252.78/QMS_UAT/";
-  // String attachmentUrl="http://45.126.252.78/QMS_UAT/AppAttachments/";
-  // String invokeUrl="http://45.126.252.78/QMS_UAT/api/Mobile/GetInvoke";
-  // String loginUrl="http://45.126.252.78/QMS_UAT/api/Mobile/GetInvokeforlogin";
+  String baseUrl="http://45.126.252.78/QMS_UAT/";
+  String attachmentUrl="http://45.126.252.78/QMS_UAT/AppAttachments/";
+  String invokeUrl="http://45.126.252.78/QMS_UAT/api/Mobile/GetInvoke";
+  String loginUrl="http://45.126.252.78/QMS_UAT/api/Mobile/GetInvokeforlogin";
 
   Future<String> ApiCallGetInvoke(var body,BuildContext context) async {
     try{

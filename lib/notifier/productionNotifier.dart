@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/api/ApiManager.dart';
@@ -490,7 +491,29 @@ class ProductionNotifier extends ChangeNotifier{
     }*/
   }
 
+  Future<dynamic> deleteById(int id,TickerProviderStateMixin tickerProviderStateMixin) async {
+    parameters=[
+      ParameterModel(Key: "SpName", Type: "String", Value:  "${Sp.deleteProductionDetail}"),
+      ParameterModel(Key: "LoginUserId", Type: "int", Value: Provider.of<QuarryNotifier>(Get.context!,listen: false).UserId),
+      ParameterModel(Key: "ProductionId", Type: "String", Value: id),
+      ParameterModel(Key: "database", Type: "String", Value:Provider.of<QuarryNotifier>(Get.context!,listen: false).DataBaseName),
+    ];
+    var body = {
+      "Fields": parameters.map((e) => e.toJson()).toList()
+    };
+    try {
+      await call.ApiCallGetInvoke(body, Get.context!).then((value) {
+        if (value != "null") {
+          //var parsed = json.decode(value);
+          CustomAlert().deletePopUp();
+          GetProductionDbHit(Get.context!, null,tickerProviderStateMixin);
+        }
+      });
+    } catch (e) {
 
+      CustomAlert().commonErrorAlert(Get.context!, "${Sp.deleteProductionDetail}", e.toString());
+    }
+  }
   Map<String?,ProductionGridHeaderModel> gridCounter={};
 
   filterProductionGrid(){

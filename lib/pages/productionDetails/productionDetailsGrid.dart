@@ -19,6 +19,9 @@ import 'package:quarry/widgets/editDelete.dart';
 import 'package:quarry/widgets/navigationBarIcon.dart';
 import 'package:quarry/widgets/staticColumnScroll/customDataTable.dart';
 
+import '../../styles/constants.dart';
+import '../../widgets/alertDialog.dart';
+
 
 
 class ProductionGrid extends StatefulWidget {
@@ -359,6 +362,23 @@ class ProductionGridState extends State<ProductionGrid> with TickerProviderState
                                   });
 
                                 },
+                                deleteTap: (){
+                                  CustomAlert(
+                                      callback: (){
+                                        Navigator.pop(context);
+                                        pn.deleteById(pn.productionGridValues[selectedIndex!].productionId!,this);
+                                        setState(() {
+                                          showEdit=false;
+                                          selectedIndex=-1;
+                                        });
+                                      },
+                                      Cancelcallback: (){
+                                        Navigator.pop(context);
+                                      }
+                                  ).yesOrNoDialog(context, "", "Are you sure want to delete this Production ?");
+                                },
+                                hasEditAccess: userAccessMap[28]??false,
+                                hasDeleteAccess: userAccessMap[29]??false,
                               ),
 
 
@@ -383,6 +403,7 @@ class ProductionGridState extends State<ProductionGrid> with TickerProviderState
                       Navigator.of(context).push(_createRoute());
                     },
                     image: "assets/svg/plusIcon.svg",
+                    hasAccess: userAccessMap[27]??false,
                   ),
                 ),
 

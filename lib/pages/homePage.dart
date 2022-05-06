@@ -37,6 +37,7 @@ import 'package:quarry/pages/users/profile.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/constants.dart';
 import 'package:quarry/styles/size.dart';
+import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/animation/fadeanimation.dart';
 import '../styles/size.dart';
 import 'dashboard/dashboardHome.dart';
@@ -73,7 +74,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
   @override
   void initState() {
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
-      if( userAccessList[4].isHasAccess){
+      if( userAccessMap[9]??false){
         Provider.of<DrawerNotifier>(context,listen: false).changeMenu(22);
       }
       else{
@@ -144,11 +145,18 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                             ),
                             GestureDetector(
                               onTap: (){
-                                setState(() {
-                                  drawer.menuSelected=10;
-                                  scaffoldkey.currentState!.openEndDrawer();
-                                });
-                                Provider.of<ProfileNotifier>(context, listen: false).GetUserDetailDbHit(context,Provider.of<QuarryNotifier>(context,listen: false).UserId);
+
+                                if(userAccessMap[1]??false){
+                                  setState(() {
+                                    drawer.menuSelected=10;
+                                    scaffoldkey.currentState!.openEndDrawer();
+                                  });
+                                  Provider.of<ProfileNotifier>(context, listen: false).GetUserDetailDbHit(context,Provider.of<QuarryNotifier>(context,listen: false).UserId);
+                                }
+                                else{
+                                  CustomAlert().accessDenied2();
+                                }
+
                               },
                               child: Container(
                                 height: 100,
@@ -234,6 +242,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                   title: 'Sales',
                                   tag: 'SaleDetail',
                                   titleColor: AppTheme.yellowColor,
+                                  hasAccess: userAccessMap[16]??false,
                                   callback: (){
                                     Navigator.pop(context);
                                     setState(() {
@@ -255,6 +264,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                   title: 'Purchase',
                                   tag: 'PurchaseDetail',
                                   titleColor: AppTheme.yellowColor,
+                                  hasAccess: userAccessMap[20]??false,
                                   callback: (){
                                     setState(() {
                                       drawer.menuSelected=9;
@@ -272,6 +282,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                   title: 'Goods Received',
                                   tag: 'GoodsReceived',
                                   titleColor: AppTheme.yellowColor,
+                                  hasAccess: userAccessMap[24]??false,
                                   callback: (){
                                     setState(() {
                                       drawer.menuSelected=11;
@@ -288,6 +299,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                   title: 'Production',
                                   tag: 'ProductionDetail',
                                   titleColor: AppTheme.yellowColor,
+                                  hasAccess: userAccessMap[26]??false,
                                   callback: (){
                                     setState(() {
                                       drawer.menuSelected=12;
@@ -336,6 +348,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                   title: 'Machine Management',
                                   tag: "MachineManagement",
                                   titleColor: AppTheme.yellowColor,
+                                  hasAccess: userAccessMap[42]??false,
                                   callback: (){
                                     setState(() {
                                       drawer.menuSelected=21;
@@ -367,13 +380,13 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                   tag: "Reports",
                                   isRightArrow: true,
                                   titleColor: AppTheme.yellowColor,
+                                  hasAccess: userAccessMap[10]??false,
                                   callback: (){
                                     Navigator.push(context, MaterialPageRoute(builder: (context)=>ReportsPage(voidCallback: (){
                                       scaffoldkey.currentState!.openEndDrawer();
                                     },)));
                                   },
                                 ),
-
                                 DrawerContent(
                                   delay: 4.5,
                                   height: 50,
@@ -382,6 +395,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                   tag: "Settings",
                                   isRightArrow: true,
                                   titleColor: AppTheme.yellowColor,
+                                  hasAccess: userAccessMap[12]??false,
                                   callback: (){
                                     Navigator.push(context, MaterialPageRoute(builder: (context)=>SettingsPage(voidCallback: (){
                                       scaffoldkey.currentState!.openEndDrawer();
@@ -532,58 +546,61 @@ class DrawerContent extends StatelessWidget {
   Color? titleColor;
   double? delay;
   bool isRightArrow;
-
-  DrawerContent({this.callback,this.title,this.image,this.height,this.titleColor,this.delay,this.tag,this.isRightArrow=false});
+  bool hasAccess;
+  DrawerContent({this.callback,this.title,this.image,this.height,this.titleColor,this.delay,this.tag,this.isRightArrow=false,this.hasAccess=true});
 
   @override
   Widget build(BuildContext context) {
-    return FadeAnimation(
-      delay, GestureDetector(
-      onTap: callback,
-      child: Container(
-        height: height,
-        width: SizeConfig.screenWidth,
-        alignment: Alignment.center,
+    return Visibility(
+      visible: hasAccess,
+      child: FadeAnimation(
+        delay, GestureDetector(
+        onTap: callback,
         child: Container(
-          margin: EdgeInsets.only(left: 20),
-          width: 230,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Hero(
+          height: height,
+          width: SizeConfig.screenWidth,
+          alignment: Alignment.center,
+          child: Container(
+            margin: EdgeInsets.only(left: 20),
+            width: 230,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Hero(
 
-                  tag: tag!,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: AppTheme.yellowColor
-                    ),
-                      child: SvgPicture.asset(image!,width: 30,)
-                  )
-              ),
-              SizedBox(width: 10,),
-              Container(
-                height: 20,
-                width: 190,
-                alignment: Alignment.centerLeft,
-                child: Row(
-                  children: [
-                    FittedBox(
-                        fit: BoxFit.contain,
-                        child: Text(title!, style: TextStyle(fontSize: 16,color:titleColor, fontFamily:'RR'),)
-                    ),
-                    SizedBox(width: isRightArrow? 5:0,),
-                    isRightArrow?Icon(Icons.arrow_forward_ios_rounded,color: AppTheme.yellowColor,size: 15,):Container()
-                  ],
+                    tag: tag!,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: AppTheme.yellowColor
+                      ),
+                        child: SvgPicture.asset(image!,width: 30,)
+                    )
                 ),
-              ),
+                SizedBox(width: 10,),
+                Container(
+                  height: 20,
+                  width: 190,
+                  alignment: Alignment.centerLeft,
+                  child: Row(
+                    children: [
+                      FittedBox(
+                          fit: BoxFit.contain,
+                          child: Text(title!, style: TextStyle(fontSize: 16,color:titleColor, fontFamily:'RR'),)
+                      ),
+                      SizedBox(width: isRightArrow? 5:0,),
+                      isRightArrow?Icon(Icons.arrow_forward_ios_rounded,color: AppTheme.yellowColor,size: 15,):Container()
+                    ],
+                  ),
+                ),
 
 
-            ],
+              ],
+            ),
           ),
         ),
+        ),
       ),
-    ),
     );
   }
 }
@@ -653,6 +670,7 @@ class EmployeeDetailsState extends State<EmployeeDetails> with TickerProviderSta
                     title: 'Employee Master',
                     tag: 'EmployeeMaster',
                     titleColor: AppTheme.yellowColor,
+                    hasAccess: userAccessMap[30]??false,
                     callback: (){
                       Navigator.pop(context);
                       widget.voidCallback!();
@@ -668,6 +686,7 @@ class EmployeeDetailsState extends State<EmployeeDetails> with TickerProviderSta
                     title: 'Employee Attendance',
                     tag: 'EmployeeAttendance',
                     titleColor: AppTheme.yellowColor,
+                    hasAccess: userAccessMap[34]??false,
                     callback: (){
                       Navigator.pop(context);
                       widget.voidCallback!();
@@ -686,6 +705,7 @@ class EmployeeDetailsState extends State<EmployeeDetails> with TickerProviderSta
                     title: 'Employee Advance',
                     tag: 'EmployeeAdvance',
                     titleColor: AppTheme.yellowColor,
+                    hasAccess: userAccessMap[36]??false,
                     callback: (){
 
                       Navigator.pop(context);
@@ -703,6 +723,7 @@ class EmployeeDetailsState extends State<EmployeeDetails> with TickerProviderSta
                     title: 'Employee Salary',
                     tag: 'EmployeeSalary',
                     titleColor: AppTheme.yellowColor,
+                    hasAccess: userAccessMap[40]??false,
                     callback: (){
                       Navigator.pop(context);
                       widget.voidCallback!();
@@ -800,6 +821,7 @@ class AccountsPageState extends State<AccountsPage> with TickerProviderStateMixi
                     title: 'Invoice',
                     tag: 'Invoice',
                     titleColor: AppTheme.yellowColor,
+                    hasAccess: userAccessMap[46]??false,
                     callback: (){
 
                       Navigator.pop(context);
@@ -816,6 +838,7 @@ class AccountsPageState extends State<AccountsPage> with TickerProviderStateMixi
                     title: 'Payment',
                     tag: 'Payment',
                     titleColor: AppTheme.yellowColor,
+                    hasAccess: userAccessMap[49]??false,
                     callback: (){
                       Navigator.pop(context);
                       widget.voidCallback!();

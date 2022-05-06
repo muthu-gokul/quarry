@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:quarry/notifier/customerNotifier.dart';
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
+import 'package:quarry/styles/constants.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/bottomBarAddButton.dart';
@@ -221,8 +222,24 @@ class _CustomerMasterState extends State<CustomerMaster> {
                                     showEdit=false;
                                     selectedIndex=-1;
                                   });
-
                                 },
+                                deleteTap: (){
+                                  CustomAlert(
+                                      callback: (){
+                                        Navigator.pop(context);
+                                        qn.deleteById(qn.customerGridList[selectedIndex].CustomerId!);
+                                        setState(() {
+                                          showEdit=false;
+                                          selectedIndex=-1;
+                                        });
+                                      },
+                                      Cancelcallback: (){
+                                        Navigator.pop(context);
+                                      }
+                                  ).yesOrNoDialog(context, "", "Are you sure want to delete this Customer ?");
+                                },
+                                hasEditAccess: userAccessMap[14]??false,
+                                hasDeleteAccess: userAccessMap[15]??false,
                               ),
 
 
@@ -245,6 +262,7 @@ class _CustomerMasterState extends State<CustomerMaster> {
                       Navigator.of(context).push(_createRoute());
                     },
                     image: "assets/svg/plusIcon.svg",
+                    hasAccess: userAccessMap[13]??false,
                   ),
                 ),
 

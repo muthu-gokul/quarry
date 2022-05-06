@@ -522,26 +522,36 @@ class PurchaseDetailsGridState extends State<PurchaseDetailsGrid> with TickerPro
                                 showEdit: showEdit,
                                 editTap: (){
 
-                                  if(userAccessList[8].isHasAccess){
-                                    pn.insertForm();
-                                    Navigator.of(context).push(_createRoute());
-                                    pn.updatePurchaseEdit(true);
-                                    pn.PurchaseDropDownValues(context).then((value) {
-                                      pn.GetPurchaseDbHit(context, pn.purchaseGridList[selectedIndex!].purchaseOrderId);
-                                      setState(() {
-                                        showEdit=false;
-                                        selectedIndex=-1;
-                                      });
+                                  pn.insertForm();
+                                  Navigator.of(context).push(_createRoute());
+                                  pn.updatePurchaseEdit(true);
+                                  pn.PurchaseDropDownValues(context).then((value) {
+                                    pn.GetPurchaseDbHit(context, pn.purchaseGridList[selectedIndex!].purchaseOrderId);
+                                    setState(() {
+                                      showEdit=false;
+                                      selectedIndex=-1;
                                     });
-                                  }
-                                  else{
-                                    CustomAlert().accessDenied(context);
-                                  }
-
-
+                                  });
 
 
                                 },
+                                deleteTap: (){
+                                  CustomAlert(
+                                      callback: (){
+                                        Navigator.pop(context);
+                                        pn.deleteById(pn.purchaseGridList[selectedIndex!].purchaseOrderId!);
+                                        setState(() {
+                                          showEdit=false;
+                                          selectedIndex=-1;
+                                        });
+                                      },
+                                      Cancelcallback: (){
+                                        Navigator.pop(context);
+                                      }
+                                  ).yesOrNoDialog(context, "", "Are you sure want to delete this Purchase ?");
+                                },
+                                hasEditAccess: userAccessMap[22]??false,
+                                hasDeleteAccess: userAccessMap[23]??false,
                               ),
 
                               /*AnimatedPositioned(
@@ -614,25 +624,20 @@ class PurchaseDetailsGridState extends State<PurchaseDetailsGrid> with TickerPro
                   alignment: Alignment.bottomCenter,
                   child: AddButton(
                     ontap: (){
-                      if(userAccessList[8].isHasAccess){
-                        pn.updatePurchaseView(false);
-                        pn.updatePurchaseEdit(false);
-                        pn.PlantUserDropDownValues(context);
-                        pn.PurchaseDropDownValues(context);
-                        pn.insertForm();
-                        if(selectedIndex!=-1){
-                          setState(() {
-                            selectedIndex=-1;
-                          });
-                        }
-                        Navigator.of(context).push(_createRoute());
+                      pn.updatePurchaseView(false);
+                      pn.updatePurchaseEdit(false);
+                      pn.PlantUserDropDownValues(context);
+                      pn.PurchaseDropDownValues(context);
+                      pn.insertForm();
+                      if(selectedIndex!=-1){
+                        setState(() {
+                          selectedIndex=-1;
+                        });
                       }
-                      else{
-                        CustomAlert().accessDenied(context);
-                      }
-
+                      Navigator.of(context).push(_createRoute());
                     },
                     image: "assets/svg/plusIcon.svg",
+                    hasAccess: userAccessMap[21]??false,
                   ),
                 ),
 
