@@ -29,7 +29,4 @@ class Calculation {
   totalAmount({dynamic amount, dynamic taxAmount, dynamic discountAmount}){
    return double.parse((Decimal.parse(amount.toString())+Decimal.parse(taxAmount.toString())-Decimal.parse(discountAmount.toString())).toString());
   }
-
-
-
 }

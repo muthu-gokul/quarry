@@ -98,12 +98,12 @@ class _UserAccessState extends State<UserAccess> {
                           alignment: Alignment.centerLeft,
                           child: Text("Actions",style: AppTheme.TSWhiteML),
                         ),
-                        Container(
+                       /* Container(
                           width: 90,
                           height: 50,
                           alignment: Alignment.center,
                           child: Text("Super Admin",style: AppTheme.TSWhiteML),
-                        ),
+                        ),*/
                         Container(
                           width: 70,
                           height: 50,
@@ -292,16 +292,16 @@ class _UserAccessState extends State<UserAccess> {
                                               alignment: Alignment.centerLeft,
                                               child: Text("${value.parent['ModuleAction']}",style: AppTheme.gridTextColorTS),
                                             ),
-                                            GestureDetector(
+                                           /* GestureDetector(
                                               onTap: (){
                                                 CustomAlert().accessDenied(context,title: "Can't disable any privilege of SuperAdmin..");
-                                                /*if(userAccessMap[8]??false){
+                                                *//*if(userAccessMap[8]??false){
                                                   uan.updateUserAccess(context, value.parent['ModuleId'], 1, value.parent['1']);
                                                 }
                                                 else{
                                                   CustomAlert().accessDenied(context,);
                                                 }
-*/
+*//*
                                               },
                                               child: Container(
                                                   width: 90,
@@ -309,7 +309,7 @@ class _UserAccessState extends State<UserAccess> {
                                                   alignment: Alignment.center,
                                                   child: AccessIcon(value: value.parent['1'])
                                               ),
-                                            ),
+                                            ),*/
                                             GestureDetector(
                                               onTap: (){
                                                 if(userAccessMap[8]??false){
@@ -380,15 +380,15 @@ class _UserAccessState extends State<UserAccess> {
                                                 alignment: Alignment.centerLeft,
                                                 child: Text("${value.children[i]['ModuleAction']}",style: AppTheme.gridTextColorTS),
                                               ),
-                                              GestureDetector(
+                                           /*   GestureDetector(
                                                 onTap: (){
                                                   CustomAlert().accessDenied(context,title: "Can't disable any privilege of SuperAdmin..");
-                                                  /*if(userAccessMap[8]??false){
+                                                  *//*if(userAccessMap[8]??false){
                                                     uan.updateUserAccess(context, value.children[i]['ModuleId'], 1, value.children[i]['1']);
                                                   }
                                                   else{
                                                     CustomAlert().accessDenied(context);
-                                                  }*/
+                                                  }*//*
                                                 },
                                                 child: Container(
                                                     width: 90,
@@ -396,7 +396,7 @@ class _UserAccessState extends State<UserAccess> {
                                                     alignment: Alignment.center,
                                                     child: AccessIcon(value: value.children[i]['1'])
                                                 ),
-                                              ),
+                                              ),*/
                                               GestureDetector(
                                                 onTap: (){
                                                   if(userAccessMap[8]??false){

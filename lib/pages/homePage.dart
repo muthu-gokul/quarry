@@ -178,7 +178,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                               ),
                             ),
                             SizedBox(height: 10,),
-                            Text("${pn.selectedSalutation}.${pn.firstName.text}${pn.lastName.text}",
+                            Text(pn.selectedSalutation==null?"${pn.firstName.text} ${pn.lastName.text}":
+                            "${pn.selectedSalutation}.${pn.firstName.text} ${pn.lastName.text}",
                               style: AppTheme.TSWhite16,
                             ),
                             SizedBox(height: 6,),
@@ -318,6 +319,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                   title: 'Diesel Management',
                                   tag: 'DieselManagement',
                                   titleColor: AppTheme.yellowColor,
+                                  hasAccess: userAccessMap[55]??false,
                                   callback: (){
                                     setState(() {
                                       drawer.menuSelected=13;

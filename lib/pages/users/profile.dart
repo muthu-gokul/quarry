@@ -200,7 +200,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           child: Column(
                                             children: [
                                               SizedBox(height: 10,),
-                                              Text("${pn.selectedSalutation}.${pn.firstName.text} ${pn.lastName.text}",
+                                              Text(pn.selectedSalutation==null?"${pn.firstName.text} ${pn.lastName.text}":
+                                              "${pn.selectedSalutation}.${pn.firstName.text} ${pn.lastName.text}",
                                               style: AppTheme.userNameTS,
                                               ),
                                               SizedBox(height: 3,),

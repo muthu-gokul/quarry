@@ -658,7 +658,10 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                           child: GestureDetector(
                                             onTap: () async {
                                               node.unfocus();
-
+                                              if(qn.supplierMaterialMappingList.any((element) => element.MaterialId==qn.supplierMaterialId)){
+                                                CustomAlert().commonErrorAlert(context, "Material Already Exists", "");
+                                                return;
+                                              }
                                                 setState(() {
                                                   _keyboardVisible=false;
                                                   qn.supplierMaterialMappingList.add(
@@ -677,9 +680,9 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                                   );
                                                 });
                                                 qn.clearMappingList();
-                                              qn.supplierMaterialMappingList[qn.supplierMaterialMappingList.length-1].scaleController!.forward().then((value){
+                                                qn.supplierMaterialMappingList[qn.supplierMaterialMappingList.length-1].scaleController!.forward().then((value){
 
-                                              });
+                                                });
                                                /* listViewController.animateTo(listViewController.position.maxScrollExtent, duration: Duration(milliseconds: 200), curve: Curves.easeIn).then((value) {
 
                                                 });*/

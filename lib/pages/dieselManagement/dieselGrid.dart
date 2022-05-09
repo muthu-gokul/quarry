@@ -16,6 +16,7 @@ import 'package:quarry/pages/dieselManagement/dieselPlantList.dart';
 import 'package:quarry/pages/productionDetails/productionDetailsAddNew.dart';
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
+import 'package:quarry/styles/constants.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/bottomBarAddButton.dart';
 import 'package:quarry/widgets/editDelete.dart';
@@ -618,8 +619,10 @@ class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
                                     });
                                   }*/
                                 },
-
+                                hasEditAccess: userAccessMap[57],
+                                hasDeleteAccess: userAccessMap[58],
                               ),
+
                               /*  if(pageIndex==1){
                                               dn.DeleteDieselIssueDbHit(context, dn.dieselIssueGridList[selectedIndex].dieselIssueId);
                                               setState(() {
@@ -660,6 +663,7 @@ class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
                       }
                     },
                     image: "assets/svg/plusIcon.svg",
+                    hasAccess: userAccessMap[56],
                   ),
                 ),
 

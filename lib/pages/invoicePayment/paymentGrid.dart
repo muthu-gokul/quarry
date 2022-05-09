@@ -609,6 +609,7 @@ class PaymentGridState extends State<PaymentGrid> with TickerProviderStateMixin{
                                       ),
                                       GestureDetector(
                                         onTap: (){
+
                                           if(userAccessMap[50]??false){
                                             setState(() {
                                               pn.paymentDate=DateTime.now();
@@ -664,9 +665,8 @@ class PaymentGridState extends State<PaymentGrid> with TickerProviderStateMixin{
                                   else{
                                     CustomAlert().accessDenied2();
                                   }
-
-
                                 },
+                                hasEditAccess: userAccessMap[51],
                               ),
 
 
