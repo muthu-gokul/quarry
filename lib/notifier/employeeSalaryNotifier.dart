@@ -229,6 +229,7 @@ clearInsertForm(){
         if(value!=null){
           var parsed=json.decode(value);
           var t=parsed['Table'] as List?;
+          print(t);
           if(EmployeeId!=null ){
             showEmpId=t![0]['EmployeeId'];
             showEmpName=t[0]['Name'];
@@ -257,9 +258,9 @@ clearInsertForm(){
 
         updateEmployeeSalaryLoader(false);
       });
-    }catch(e){
+    }catch(e,t){
       updateEmployeeSalaryLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.getEmployeeSalaryLoanDetail}" , e.toString());
+      CustomAlert().commonErrorAlert(context, "${Sp.getEmployeeSalaryLoanDetail}" , t.toString());
     }
 
 

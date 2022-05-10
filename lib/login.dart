@@ -586,10 +586,14 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
 
                       children: [
                         Text(
+                          "v - 1.0.9",
+                          style: TextStyle(fontFamily: 'RR',  color: AppTheme.grey,fontSize: 12 ),
+                        ),
+                        Text(
                           "@${DateFormat('yyyy').format(DateTime.now())}. All Rights Reserved. Designed by Scutisoft Pvt.Ltd",
                           style: TextStyle(fontFamily: 'RR',  color: AppTheme.grey,fontSize: 12 ),
-
                         ),
+                        SizedBox(height: 5,)
 
                       ],
                     ),

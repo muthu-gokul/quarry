@@ -142,11 +142,7 @@ class _EmployeeSalaryGridState extends State<EmployeeSalaryGrid> {
                       gridData: esn.gridData,
                       gridDataRowList: esn.gridDataRowList,
                       func: (index){
-
-
-
-
-                     /*   if(selectedIndex==index){
+                         /*   if(selectedIndex==index){
                 setState(() {
                   selectedIndex=-1;
                   showEdit=false;
@@ -161,7 +157,6 @@ class _EmployeeSalaryGridState extends State<EmployeeSalaryGrid> {
               }*/
                       },
                     ),
-
 
 
                     //bottomNav
@@ -327,12 +322,9 @@ class _EmployeeSalaryGridState extends State<EmployeeSalaryGrid> {
                         hasAccess: userAccessMap[41]??false,
                       ),
                     ),
-
-
                   ],
                 ),
               )
-
       ),
     );
   }

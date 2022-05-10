@@ -20,11 +20,13 @@ class ApiManager{
   String loginUrl="http://45.126.252.78/QMS_UAT/api/Mobile/GetInvokeforlogin";
 
   Future<String> ApiCallGetInvoke(var body,BuildContext context) async {
+
     try{
       final response = await http.post(Uri.parse(invokeUrl),
           headers: {"Content-Type": "application/json"},
           body: json.encode(body)
       );
+      print("apimanager $response");
       if(response.statusCode==200){
         return response.body;
       }
@@ -45,7 +47,8 @@ class ApiManager{
         // return response.statusCode.toString();
       }
     }
-    catch(e){
+    catch(e,t){
+      print(t);
       return "null";
       print("NETWORK ISSUE--$e");
       // CustomAlert().commonErrorAlert(context, "Network Issue", "Your Internet Connectivity or Server is Slow..");

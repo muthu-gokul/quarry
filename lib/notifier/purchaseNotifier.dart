@@ -120,8 +120,6 @@ class PurchaseNotifier extends ChangeNotifier{
         print("plantCount$plantCount");
         updatePurchaseLoader(false);
       });
-
-
     }
     catch(e){
       updatePurchaseLoader(false);

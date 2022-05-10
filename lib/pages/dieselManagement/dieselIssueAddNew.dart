@@ -361,7 +361,12 @@ class DieselIssueFormState extends State<DieselIssueForm> with TickerProviderSta
                                     regExp: decimalReg,
                                     textInputType: TextInputType.number,
                                     onChange: (v){
-
+                                      if(v.isNotEmpty){
+                                        if(double.parse(v)>dn.stock){
+                                          CustomAlert().commonErrorAlert(context, "Out of Stock. Current Stock is ${dn.stock} Ltr", "");
+                                          dn.DI_dieselQty.clear();
+                                        }
+                                      }
                                     },
                                     scrollPadding: 400,
                                     ontap: (){
@@ -692,8 +697,11 @@ class DieselIssueFormState extends State<DieselIssueForm> with TickerProviderSta
                   setState(() {
                     dn.DI_plantID=dn.plantList[index].plantId;
                     dn.DI_plantName=dn.plantList[index].plantName;
+                    dn.DI_dieselQty.clear();
                     isPlantOpen=false;
                   });
+                  dn.getStock(dn.DI_plantID??0);
+
                 },
                 closeOnTap: (){
                   setState(() {

@@ -7,6 +7,7 @@ class Sp{
 
 
   static String MasterdropDown="USP_GetMasterDetail";
+  static String mobileMasterdropDown="USP_GetMobileMasterDetail";
 
   static String getCompanyDetail="USP_GetCompanyDetail";
   static String updateCompanyDetail="USP_UpdateCompanyDetail";

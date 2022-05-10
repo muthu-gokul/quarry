@@ -409,6 +409,73 @@ class CustomAlert{
 
     );
   }
+
+  void confirmDialog(String title,){
+    showDialog(
+      barrierDismissible: false,
+        context: Get.context!,
+        builder: (ctx) => Dialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0),),
+          child: Container(
+              // height:400,
+              // width:400,
+              padding: EdgeInsets.only(top: 20,bottom: 20),
+              decoration:BoxDecoration(
+                color:Colors.white,
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              child:Column(
+                mainAxisSize: MainAxisSize.min,
+                  children:[
+                    SizedBox(height:25),
+                    // SvgPicture.asset(img),
+                    Image.asset("assets/bottomIcons/exclamation-mark.png",height: 80,),
+
+                    SizedBox(height:20),
+                    Text(title, style:TextStyle(fontFamily:'RR',fontSize:20,color:Color(0xFF787878)),textAlign: TextAlign.center,),
+
+                    SizedBox(height:10),
+                    GestureDetector(
+                      onTap: callback,
+                      child: Container(
+                        height: 50.0,
+                        width: SizeConfig.width120,
+                        margin: EdgeInsets.only(bottom: 20,top:20),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: AppTheme.red,
+                        ),
+                        child: Center(
+                          child: Text("Confirm",
+                            style: TextStyle(fontFamily:'RR',color: Colors.white,fontSize: 20),
+                          ),
+                        ),
+                      ),
+                    ),
+
+
+                    GestureDetector(
+                      onTap: Cancelcallback,
+                      child: Container(
+                        height: 30.0,
+                        width: SizeConfig.width100,
+                        child: Center(
+                          child: Text("Cancel",
+                            style: TextStyle(fontFamily:'RR',color: Color(0xFF8d8d8d),fontSize: 20),
+                          ),
+                        ),
+                      ),
+                    ),
+
+
+
+                  ]
+              )
+          ),
+        )
+
+    );
+  }
   void networkIssue(BuildContext context,String text,int duration){
     showDialog(
         barrierDismissible: true,
@@ -445,8 +512,6 @@ class CustomAlert{
         }
     );
   }
-
-
   void getPremiumAlert(BuildContext context){
     showDialog(
         context: context,

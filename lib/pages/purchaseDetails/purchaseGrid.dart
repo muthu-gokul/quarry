@@ -107,8 +107,6 @@ class PurchaseDetailsGridState extends State<PurchaseDetailsGrid> with TickerPro
                       Text("Purchase Details",
                         style: TextStyle(fontFamily: 'RR',color: Colors.black,fontSize:16),
                       ),
-
-
                     ],
                   ),
                 ),

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -24,6 +25,7 @@ import 'package:quarry/notifier/supplierNotifier.dart';
 import 'package:quarry/notifier/vehicleNotifier.dart';
 import 'package:quarry/pages/homePage.dart';
 import 'package:quarry/styles/app_theme.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 import 'notifier/employeeSalaryNotifier.dart';
 import 'notifier/enployeeAdvanceLoanNotifier.dart';
@@ -119,6 +121,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     init();
+    if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
   }
 
   @override

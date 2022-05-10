@@ -218,48 +218,63 @@ class _EmployeeSalaryAddNewState extends State<EmployeeSalaryAddNew> {
 
 
                                     SizedBox(height: 20,),
-                                    Container(
-                                      margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!,),
-                                      height:40,
-                                      width: SizeConfig.screenWidthM40,
-                                      decoration: BoxDecoration(
-                                          color: tableColor,
-                                          borderRadius: BorderRadius.only(topLeft: Radius.circular(3),topRight: Radius.circular(3)),
-                                          border: Border.all(color: AppTheme.addNewTextFieldBorder)
 
-                                      ),
-                                      child:Row(
-                                        children: [
-                                          Container(
-                                              padding: EdgeInsets.only(left: SizeConfig.width10!),
-                                              width: (SizeConfig.screenWidthM40!*0.5)-2,
-                                              child: Text("Employee Name",style: tableTextStyle,)
-                                          ),
 
-                                          Container(
-                                              height: 50,
-                                              width: 1,
-                                              color: AppTheme.addNewTextFieldBorder
-                                          ),
 
-                                          Container(
-                                            padding: EdgeInsets.only(left: SizeConfig.width10!),
-                                            height: 16,
-                                            alignment: Alignment.centerLeft,
-                                            width: (SizeConfig.screenWidthM40!*0.5)-1,
-
-                                            child: FittedBox(child: Text("${esn.showEmpName??""}",
-
-                                              style:tableTextStyle,textAlign: TextAlign.left,
-                                            ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-
-                                    for(int i=0;i<8;i++)
                                       Container(
+                                        margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!,),
+                                        color: tableColor,
+                                        child: Table(
+
+                                         // defaultColumnWidth: FixedColumnWidth(120.0),
+                                          border: TableBorder.all(
+                                              color: AppTheme.addNewTextFieldBorder,
+                                              style: BorderStyle.solid,
+                                              width: 1,
+                                            borderRadius: BorderRadius.circular(3)
+                                          ),
+                                          children: [
+                                            TableRow(
+                                                children: [
+                                                  Padding(
+                                                      padding: const EdgeInsets.all(10.0),
+                                                      child: Text("Employee Name",
+                                                        style: tableTextStyle,
+                                                      )
+                                                  ),
+
+                                                  Padding(
+                                                    padding: const EdgeInsets.all(10.0),
+                                                    child: Text("${esn.showEmpName}",
+                                                      style: tableTextStyle,
+                                                    ),
+                                                  ),
+                                                ]
+                                            ),
+                                            for(int i=0;i<8;i++)
+                                              TableRow(
+                                               children: [
+                                                 Padding(
+                                                   padding: const EdgeInsets.all(10.0),
+                                                   child: Text(i==0?"Designation":i==1?"Shift":i==2?"Monthly Salary":i==3?"Present Day":
+                                                   i==4?"Earned Salary":i==5?"Over Time":i==6?"Advance Amount":"Loan EMI/Month",
+                                                     style: tableTextStyle,
+                                                   )
+                                                 ),
+
+                                                 Padding(
+                                                   padding: const EdgeInsets.all(10.0),
+                                                  child: Text("${i==0?esn.showEmpDesg??"":i==1?esn.showEmpShift:i==2?esn.showEmpMonthlySalary:i==3?esn.showEmpPresentDay:
+                                                  i==4?esn.showEmpEarnedSalary:i==5?esn.showEmpOvertime:i==6?esn.showEmpAdvanceAmount:esn.showEmpEMI}",
+                                                    style: tableTextStyle,
+                                                  ),
+                                                ),
+                                              ]
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      /*Container(
                                         margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!,),
                                         height:40,
                                         width: SizeConfig.screenWidthM40,
@@ -289,24 +304,23 @@ class _EmployeeSalaryAddNewState extends State<EmployeeSalaryAddNew> {
                                                 color: AppTheme.addNewTextFieldBorder
                                             ),
 
-                                            Container(
-                                              padding: EdgeInsets.only(left: SizeConfig.width10!),
-                                              height: 16,
-                                              alignment: Alignment.centerLeft,
-                                            // width:200,
-                                             width: (SizeConfig.screenWidthM40!*0.5)-1,
-                                              child: FittedBox(
-                                                fit: BoxFit.contain,
-                                                child: Text("${i==0?esn.showEmpDesg??"":i==1?esn.showEmpShift:i==2?esn.showEmpMonthlySalary:i==3?esn.showEmpPresentDay:
+                                            FittedBox(
+                                              fit: BoxFit.contain,
+                                              child: Container(
+                                                padding: EdgeInsets.only(left: SizeConfig.width10!),
+                                                height: 16,
+                                                alignment: Alignment.centerLeft,
+                                              // width:200,
+                                               width: (SizeConfig.screenWidthM40!*0.5)-1,
+                                                child: Text("999999999999999${i==0?esn.showEmpDesg??"":i==1?esn.showEmpShift:i==2?esn.showEmpMonthlySalary:i==3?esn.showEmpPresentDay:
                                                               i==4?esn.showEmpEarnedSalary:i==5?esn.showEmpOvertime:i==6?esn.showEmpAdvanceAmount:esn.showEmpEMI}",
                                                   style: tableTextStyle,
                                                 ),
-
                                               ),
                                             ),
                                           ],
                                         ),
-                                      ),
+                                      ),*/
 
 
                                     Container(

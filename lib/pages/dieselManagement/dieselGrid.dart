@@ -611,13 +611,13 @@ class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
 
                                 },
                                 deleteTap: (){
-                                 /* if(pageIndex==1){
-                                    dn.DeleteDieselIssueDbHit(context, dn.dieselIssueGridList[selectedIndex].dieselIssueId);
+                                  if(pageIndex==1){
+                                    dn.DeleteDieselIssueDbHit(context, dn.dieselIssueGridList[selectedIndex!].dieselIssueId!);
                                     setState(() {
                                       showEdit=false;
                                       selectedIndex=-1;
                                     });
-                                  }*/
+                                  }
                                 },
                                 hasEditAccess: userAccessMap[57],
                                 hasDeleteAccess: userAccessMap[58],

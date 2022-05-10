@@ -131,8 +131,9 @@ class EmployeeNotifier extends ChangeNotifier{
         employeePaymentTypeList=t6.map((e) => EmployeePaymentTypeModel.fromJson(e)).toList();
 
         if(!isEmployeeEdit){
-          selectSalaryTypeId=employeeSalaryTypeList[2].employeeSalaryTypeId;
-          selectSalaryTypeName=employeeSalaryTypeList[2].employeeSalaryTypeName;
+
+          selectSalaryTypeId=employeeSalaryTypeList[0].employeeSalaryTypeId;
+          selectSalaryTypeName=employeeSalaryTypeList[0].employeeSalaryTypeName;
           EmployeePrefix=t7![0]['EmployeePrefix'];
           EmployeeCode=t7[0]['EmployeeCode'];
           print("EmployeeCode$EmployeeCode");

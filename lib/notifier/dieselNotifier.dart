@@ -19,6 +19,7 @@ import 'package:quarry/model/plantModel/plantUserModel.dart';
 import 'package:quarry/notifier/profileNotifier.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/styles/constants.dart';
+import 'package:quarry/utils/utils.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/calculation.dart';
 import 'package:quarry/widgets/decimal.dart';
@@ -127,6 +128,8 @@ class DieselNotifier extends ChangeNotifier{
 
   List<dynamic>? machineList=[];
   List<dynamic>? filterMachineList=[];
+  
+  double stock=0.0;
 
   DieselDropDownValues(BuildContext context) async {
     updateDieselLoader(true);
@@ -198,6 +201,18 @@ class DieselNotifier extends ChangeNotifier{
     }
   }
 
+  getStock(int plantId) async{
+    stock=0.0;
+    var response=await getMasterDrp("DieselManagement", "Stock", plantId, null);
+    if(response != "null" && response!=''){
+      var parsed=jsonDecode(response);
+      var table=parsed['Table'] as List;
+      if(table.length>0){
+        stock=table[0]['Stock'];
+        notifyListeners();
+      }
+    }
+  }
 
   searchVehicle(String value){
     if(value.isEmpty){
@@ -476,6 +491,9 @@ double? totalAmount=0.0;
             DP_dieselQTY.text=t[0]['DieselQuantity'].toString();
             DP_dieselPrice.text=t[0]['DieselRate'].toString();
             totalAmount=t[0]['TotalAmount'].toDouble();
+
+
+
           }
           else{
 
@@ -679,7 +697,7 @@ double? totalAmount=0.0;
               DI_machineName=t[0]['VehicleNumber'];
             }
 
-
+            getStock(DI_plantID??0);
           }
           else{
             if(parsed['Table1']!=null){

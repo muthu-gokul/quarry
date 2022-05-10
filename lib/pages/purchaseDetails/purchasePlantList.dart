@@ -80,7 +80,6 @@ class PurchasePlantListState extends State<PurchasePlantList> with TickerProvide
                               image: AssetImage("assets/images/saleFormheader.jpg",),
                               fit: BoxFit.cover
                           )
-
                       ),
                     ),
                   ],

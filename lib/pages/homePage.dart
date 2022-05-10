@@ -30,6 +30,7 @@ import 'package:quarry/pages/employee/employeeAttendance/employeeAttendanceGrid.
 import 'package:quarry/pages/goodsReceived/goodsReceivedGrid.dart';
 import 'package:quarry/pages/invoice/invoiceGrid.dart';
 import 'package:quarry/pages/invoicePayment/paymentGrid.dart';
+import 'package:quarry/pages/plan/planDetail.dart';
 import 'package:quarry/pages/productionDetails/productionDetailsGrid.dart';
 import 'package:quarry/pages/purchaseDetails/purchaseGrid.dart';
 import 'package:quarry/pages/userAccess/userAccess.dart';
@@ -337,6 +338,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                   tag: "EmployeeDetails",
                                   titleColor: AppTheme.yellowColor,
                                   isRightArrow: true,
+                                  hasAccess: userAccessMap[61]??false,
                                   callback: (){
                                     Navigator.push(context, MaterialPageRoute(builder: (context)=>EmployeeDetails(voidCallback: (){
                                       scaffoldkey.currentState!.openEndDrawer();
@@ -368,6 +370,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                   tag: "Accounts",
                                   isRightArrow: true,
                                   titleColor: AppTheme.yellowColor,
+                                  hasAccess: userAccessMap[60]??false,
                                   callback: (){
                                     Navigator.push(context, MaterialPageRoute(builder: (context)=>AccountsPage(voidCallback: (){
                                       scaffoldkey.currentState!.openEndDrawer();
@@ -406,7 +409,22 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
 
                                 ),
 
+                                DrawerContent(
+                                  delay: 4.5,
+                                  height: 50,
+                                  image: "assets/svg/drawer/settings-icon.svg",
+                                  title: 'Plan',
+                                  tag: 'Plan',
+                                  titleColor: AppTheme.yellowColor,
+                                  hasAccess: true,
+                                  callback: (){
+                                    setState(() {
+                                      drawer.menuSelected=24;
+                                      scaffoldkey.currentState!.openEndDrawer();
+                                    });
+                                  },
 
+                                ),
 
                               ],
                             ),
@@ -518,6 +536,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
             scaffoldkey.currentState!.openDrawer();
           },):
           drawer.menuSelected==23?UserAccess(drawerCallback: (){
+            scaffoldkey.currentState!.openDrawer();
+          },):
+          drawer.menuSelected==24?PlanDetail(drawerCallback: (){
             scaffoldkey.currentState!.openDrawer();
           },):
           Container()
