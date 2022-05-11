@@ -13,7 +13,9 @@ class UserAccessNotifier extends ChangeNotifier{
   final call=ApiManager();
 
   List<dynamic> moduleList=[];
+  List<dynamic> headerList=[];
   List<UserAccessModel> data=[];
+  int restrictedUserGroupId=2;
 
 
   Future<dynamic> getUserAccess(BuildContext context) async {
@@ -34,8 +36,10 @@ class UserAccessNotifier extends ChangeNotifier{
           log("$parsed");
           data.clear();
           moduleList=parsed['Table']  as List;
+          headerList=parsed['Table1']  as List;
+          var table2=parsed['Table2']  as List;
+          restrictedUserGroupId=table2[0]['RestrictedUserGroupId'];
           moduleList.forEach((element) {
-        //    print(element);
             int index=data.indexWhere((ele) => ele.parent['ModuleName']==element['ModuleName']).toInt();
             if(index==-1){
               data.add(UserAccessModel(parent: element, children: [],isOpen: true));
@@ -57,6 +61,8 @@ class UserAccessNotifier extends ChangeNotifier{
       CustomAlert().commonErrorAlert(context, "Uer Access40" , t.toString());
     }
   }
+
+
   Future<dynamic> updateUserAccess(BuildContext context,int moduleId,int userGroupId,int isAccess) async {
     updateisLoad(true);
     parameters=[

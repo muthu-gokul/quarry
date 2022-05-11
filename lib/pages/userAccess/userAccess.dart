@@ -42,7 +42,7 @@ class _UserAccessState extends State<UserAccess> {
     super.initState();
   }
 
-
+  double width1=110.0;
 
 
   @override
@@ -69,10 +69,6 @@ class _UserAccessState extends State<UserAccess> {
                           bgColor: AppTheme.bgColor,
                           iconColor: Colors.white,
                         ),
-                        /*GestureDetector(
-                          onTap:widget.drawerCallback,
-                          child: NavBarIcon(),
-                        ),*/
                         Text("User Access"),
                       ],
                     ),
@@ -98,29 +94,12 @@ class _UserAccessState extends State<UserAccess> {
                           alignment: Alignment.centerLeft,
                           child: Text("Actions",style: AppTheme.TSWhiteML),
                         ),
-                       /* Container(
-                          width: 90,
+                        for(int i=0;i<uan.headerList.length;i++)
+                          Container(
+                          width: width1,
                           height: 50,
                           alignment: Alignment.center,
-                          child: Text("Super Admin",style: AppTheme.TSWhiteML),
-                        ),*/
-                        Container(
-                          width: 70,
-                          height: 50,
-                          alignment: Alignment.center,
-                          child: Text("Admin",style: AppTheme.TSWhiteML),
-                        ),
-                        Container(
-                          width: 100,
-                          height: 50,
-                          alignment: Alignment.center,
-                          child: Text("Accounts User",style: AppTheme.TSWhiteML),
-                        ),
-                        Container(
-                          width: 150,
-                          height: 50,
-                          alignment: Alignment.center,
-                          child: Text("Weigh Bridge User",style: AppTheme.TSWhiteML),
+                          child: Text("${uan.headerList[i]['UserGroupName']}",style: AppTheme.TSWhiteML),
                         ),
                       ],
                       )
@@ -204,72 +183,26 @@ class _UserAccessState extends State<UserAccess> {
                                               alignment: Alignment.centerLeft,
                                               child: Text("${value.parent['ModuleAction']}",style: AppTheme.gridTextColorTS),
                                             ),
-                                           /* GestureDetector(
+                                            for(int z=0;z<uan.headerList.length;z++)
+                                              GestureDetector(
                                               onTap: (){
-                                                CustomAlert().accessDenied(context,title: "Can't disable any privilege of SuperAdmin..");
-                                                *//*if(userAccessMap[8]??false){
-                                                  uan.updateUserAccess(context, value.parent['ModuleId'], 1, value.parent['1']);
+                                                if(uan.headerList[z]['UserGroupId']==uan.restrictedUserGroupId){
+                                                  CustomAlert().accessDenied(context,title: "Can't disable any privilege of ${uan.headerList[z]['UserGroupName']}..");
                                                 }
                                                 else{
-                                                  CustomAlert().accessDenied(context,);
-                                                }
-*//*
-                                              },
-                                              child: Container(
-                                                  width: 90,
-                                                  height: 50,
-                                                  alignment: Alignment.center,
-                                                  child: AccessIcon(value: value.parent['1'])
-                                              ),
-                                            ),*/
-                                            GestureDetector(
-                                              onTap: (){
-                                                CustomAlert().accessDenied(context,title: "Can't disable any privilege of Admin..");
-                                               /* if(userAccessMap[8]??false){
-                                                  uan.updateUserAccess(context, value.parent['ModuleId'], 2, value.parent['2']);
-                                                }
-                                                else{
-                                                  CustomAlert().accessDenied(context);
-                                                }*/
-                                              },
-                                              child: Container(
-                                                  width: 70,
-                                                  height: 50,
-                                                  alignment: Alignment.center,
-                                                  child: AccessIcon(value: value.parent['2'])
-                                              ),
-                                            ),
-                                            GestureDetector(
-                                              onTap: (){
-                                                if(userAccessMap[8]??false){
-                                                  uan.updateUserAccess(context, value.parent['ModuleId'], 3, value.parent['3']);
-                                                }
-                                                else{
-                                                  CustomAlert().accessDenied(context);
-                                                }
-
-                                              },
-                                              child: Container(
-                                                  width: 100,
-                                                  height: 50,
-                                                  alignment: Alignment.center,
-                                                  child: AccessIcon(value: value.parent['3'])
-                                              ),
-                                            ),
-                                            GestureDetector(
-                                              onTap: (){
-                                                if(userAccessMap[8]??false){
-                                                  uan.updateUserAccess(context, value.parent['ModuleId'], 4, value.parent['4']);
-                                                }
-                                                else{
-                                                  CustomAlert().accessDenied(context);
+                                                  if(userAccessMap[8]??false){
+                                                    uan.updateUserAccess(context, value.parent['ModuleId'], uan.headerList[z]['UserGroupId'], value.parent[uan.headerList[z]['UserGroupId'].toString()]);
+                                                  }
+                                                  else{
+                                                    CustomAlert().accessDenied(context);
+                                                  }
                                                 }
                                               },
                                               child: Container(
-                                                  width: 150,
+                                                  width: width1,
                                                   height: 50,
                                                   alignment: Alignment.center,
-                                                  child: AccessIcon(value: value.parent['4'])
+                                                  child: AccessIcon(value: value.parent[uan.headerList[z]['UserGroupId'].toString()])
                                               ),
                                             ),
                                           ],
@@ -293,64 +226,26 @@ class _UserAccessState extends State<UserAccess> {
                                                 alignment: Alignment.centerLeft,
                                                 child: Text("${value.children[i]['ModuleAction']}",style: AppTheme.gridTextColorTS),
                                               ),
-                                           /*   GestureDetector(
-                                                onTap: (){
-                                                  CustomAlert().accessDenied(context,title: "Can't disable any privilege of SuperAdmin..");
-                                                  *//*if(userAccessMap[8]??false){
-                                                    uan.updateUserAccess(context, value.children[i]['ModuleId'], 1, value.children[i]['1']);
-                                                  }
-                                                  else{
-                                                    CustomAlert().accessDenied(context);
-                                                  }*//*
-                                                },
-                                                child: Container(
-                                                    width: 90,
-                                                    height: 50,
-                                                    alignment: Alignment.center,
-                                                    child: AccessIcon(value: value.children[i]['1'])
-                                                ),
-                                              ),*/
+                                              for(int y=0;y<uan.headerList.length;y++)
                                               GestureDetector(
                                                 onTap: (){
-                                                  CustomAlert().accessDenied(context,title: "Can't disable any privilege of Admin..");
-                                                },
-                                                child: Container(
-                                                    width: 70,
-                                                    height: 50,
-                                                    alignment: Alignment.center,
-                                                    child: AccessIcon(value: value.children[i]['2'])
-                                                ),
-                                              ),
-                                              GestureDetector(
-                                                onTap: (){
-                                                  if(userAccessMap[8]??false){
-                                                    uan.updateUserAccess(context, value.children[i]['ModuleId'], 3, value.children[i]['3']);
+                                                  if(uan.headerList[y]['UserGroupId']==uan.restrictedUserGroupId){
+                                                    CustomAlert().accessDenied(context,title: "Can't disable any privilege of ${uan.headerList[y]['UserGroupName']}..");
                                                   }
                                                   else{
-                                                    CustomAlert().accessDenied(context);
+                                                    if(userAccessMap[8]??false){
+                                                      uan.updateUserAccess(context, value.children[i]['ModuleId'], uan.headerList[y]['UserGroupId'], value.children[i][uan.headerList[y]['UserGroupId'].toString()]);
+                                                    }
+                                                    else{
+                                                      CustomAlert().accessDenied(context);
+                                                    }
                                                   }
                                                 },
                                                 child: Container(
-                                                    width: 100,
+                                                    width: width1,
                                                     height: 50,
                                                     alignment: Alignment.center,
-                                                    child: AccessIcon(value: value.children[i]['3'])
-                                                ),
-                                              ),
-                                              GestureDetector(
-                                                onTap: (){
-                                                  if(userAccessMap[8]??false){
-                                                    uan.updateUserAccess(context, value.children[i]['ModuleId'], 4, value.children[i]['4']);
-                                                  }
-                                                  else{
-                                                    CustomAlert().accessDenied(context);
-                                                  }
-                                                },
-                                                child: Container(
-                                                    width: 150,
-                                                    height: 50,
-                                                    alignment: Alignment.center,
-                                                    child: AccessIcon(value: value.children[i]['4'])
+                                                    child: AccessIcon(value: value.children[i][uan.headerList[y]['UserGroupId'].toString()])
                                                 ),
                                               ),
                                             ],
@@ -362,9 +257,7 @@ class _UserAccessState extends State<UserAccess> {
                           ),
                         ),
                       ),
-
                     ),
-
                   ),
                 ],
               ),
