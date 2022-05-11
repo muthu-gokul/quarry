@@ -110,7 +110,6 @@ class _PlanPlantListState extends State<PlanPlantList> {
                         background: Container(
                           height: 200,
                           width: SizeConfig.screenWidth,
-
                           decoration: BoxDecoration(
                               image: DecorationImage(
                                   image: AssetImage("assets/images/saleFormheader.jpg",),

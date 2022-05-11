@@ -52,6 +52,7 @@ class CustomerNotifier extends ChangeNotifier {
 
   Future<dynamic> InsertCustomerDbHit(BuildContext context,bool fromSale) async {
     updatecustomerLoader(true);
+    customerLogoFileName="";
     if(logoFile!=null){
       customerLogoFileName=await uploadFile(customerLogoFolderName,logoFile!);
     }
@@ -157,6 +158,7 @@ class CustomerNotifier extends ChangeNotifier {
             }
             customerLogoFileName= t[0]['CompanyLogo'];
             customerLogoUrl=ApiManager().attachmentUrl+customerLogoFileName;
+            logoFile=null;
           }
           else{
             customerGridList = t!.map((e) => CustomerDetails.fromJson(e)).toList();
@@ -234,6 +236,8 @@ class CustomerNotifier extends ChangeNotifier {
     balanceAmount=0.0;
     usedAdvanceAmount=0.0;
     balanceAdvanceAmount=0.0;
+    customerLogoUrl="";
+    logoFile=null;
   }
 
 

@@ -711,7 +711,7 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
 
                                   //Logo
                                   SizedBox(height: 50,),
-
+                                 // FlatButton(onPressed: (){print(qn.supplierLogoUrl);print(qn.logoFile==null);}, child: Container(height: 50,width: 100,color: Colors.red,)),
                                   LogoPicker(
                                       imageUrl: qn.supplierLogoUrl,
                                       imageFile: qn.logoFile,

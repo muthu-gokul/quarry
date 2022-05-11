@@ -24,4 +24,9 @@ v-1.0.5
 
 v-1.0.6
 
+v-1.0.9
+1. Plan detail Completed
+2. User Access Dynamic
+
+
 

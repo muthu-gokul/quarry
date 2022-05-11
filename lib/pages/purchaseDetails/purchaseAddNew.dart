@@ -93,25 +93,6 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
 /*         print("scrollController-${scrollController.offset}");*/
       });
 
-/*      listViewController.addListener(() {
-        if(listViewController.position.userScrollDirection == ScrollDirection.forward){
-          print("Down");
-        } else
-        if(listViewController.position.userScrollDirection == ScrollDirection.reverse){
-          print("Up");
-          scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
-        }
-        print("LISt-${listViewController.offset}");
-        if(listViewController.offset>20){
-
-          scrollController.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
-
-
-        }
-        else if(listViewController.offset==0){
-          scrollController.animateTo(0, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
-        }
-      });*/
 
       header.addListener(() {
 

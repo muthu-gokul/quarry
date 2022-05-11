@@ -97,6 +97,7 @@ class ManageUsersNotifier extends ChangeNotifier{
 
 
     updateManageUsersLoader(true);
+    userLogoFileName="";
     if(logoFile!=null){
       userLogoFileName = await uploadFile(userLogoFolderName,logoFile!);
     }
@@ -254,6 +255,7 @@ class ManageUsersNotifier extends ChangeNotifier{
             plantMappingList=t1!.map((e) => ManageUserPlantModel.fromJson(e)).toList();
             userLogoFileName= t[0]['UserImage'];
             userLogoUrl=ApiManager().attachmentUrl+userLogoFileName;
+            logoFile=null;
           }
           else{
             usersList=t!.map((e) => ManageUsersGridModel.fromJson(e)).toList();
@@ -284,6 +286,8 @@ class ManageUsersNotifier extends ChangeNotifier{
     userGroupId=null;
     userGroupName=null;
     plantMappingList.clear();
+    logoFile=null;
+    userLogoUrl="";
   }
 
 

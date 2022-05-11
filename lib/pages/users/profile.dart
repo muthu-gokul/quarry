@@ -24,6 +24,8 @@ import 'package:quarry/widgets/logoPicker.dart';
 import 'package:quarry/widgets/navigationBarIcon.dart';
 import 'package:quarry/widgets/validationErrorText.dart';
 
+import '../../utils/widgetUtils.dart';
+
 class ProfileScreen extends StatefulWidget {
   VoidCallback? drawerCallback;
   ProfileScreen({this.drawerCallback});
@@ -547,33 +549,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                             child: Stack(
                               children: [
-                                pn.userLogoUrl.isEmpty? Center(
-                                    child: pn.logoFile!=null? Container(
-                                        height: 120,
-                                        width: 120,
-                                        decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            border: Border.all(color: AppTheme.uploadColor,width: 2)
-                                        ),
-                                        clipBehavior: Clip.antiAlias,
-                                        child: Image.file(pn.logoFile!)
-                                    ):
-                                    SvgPicture.asset("assets/svg/drawer/avatar.png",height: 30,width: 30,)
-                                ):Center(
-                                  child: Container(
-                                    height: 120,
-                                    width: 120,
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.circle
-                                    ),
-                                    clipBehavior: Clip.antiAlias,
-                                    child: Image.network(pn.userLogoUrl,fit: BoxFit.cover,
-                                      errorBuilder: (a,b,c){
-                                        return Image.asset("assets/svg/drawer/avatar.png");
-                                      },
-                                    ),
-                                  ),
+                                ProfileAvatar(
+                                  imageUrl: pn.userLogoUrl,
+                                  imageFile: pn.logoFile,
                                 ),
+
 
                                 Positioned(
                                   right: 0,

@@ -23,6 +23,7 @@ class AppTheme {
   static  Color disableColor=Color(0xFFe8e8e8);
 
   static  Color uploadColor=Color(0xFFC7D0D8);
+  static  Color avatarBorderColor=Color(0xFFC7D0D8);
   static  Color hintColor=Color(0xFFC5C5C5);
 
   static const Color EFEFEF=Color(0xFFEFEFEF);

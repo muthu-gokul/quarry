@@ -11,6 +11,7 @@ import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/constants.dart';
 import 'package:quarry/styles/size.dart';
+import 'package:quarry/utils/widgetUtils.dart';
 
 import 'package:quarry/widgets/bottomBarAddButton.dart';
 import 'package:quarry/widgets/customTextField.dart';
@@ -667,7 +668,7 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
 
 
                                       SizedBox(height: 20,),
-
+                                      //FlatButton(onPressed: (){print(qn.customerLogoUrl);}, child: Container(height: 50,width: 100,color: Colors.red,)),
                                       LogoPicker(
                                           imageUrl: qn.customerLogoUrl,
                                           imageFile: qn.logoFile,

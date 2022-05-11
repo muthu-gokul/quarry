@@ -114,7 +114,7 @@ class SupplierNotifier extends ChangeNotifier{
 
     List js=[];
     js=supplierMaterialMappingList.map((e) => e.toJson()).toList();
-
+    supplierLogoFileName="";
     if(logoFile!=null){
       supplierLogoFileName=await uploadFile(supplierLogoFolderName,logoFile!);
     }
@@ -217,7 +217,7 @@ class SupplierNotifier extends ChangeNotifier{
             supplierMaterialMappingList=t1.map((e) => SupplierMaterialMappingListModel.fromJson(e,tickerProviderStateMixin)).toList();
             supplierLogoFileName= t[0]['SupplierLogo'];
             supplierLogoUrl=ApiManager().attachmentUrl+supplierLogoFileName;
-
+            logoFile=null;
          /*   notifyListeners();*/
           }
           else{
@@ -287,6 +287,8 @@ class SupplierNotifier extends ChangeNotifier{
      supplierEmail.clear();
      supplierGstNo.clear();
      supplierMaterialMappingList.clear();
+     supplierLogoUrl="";
+     logoFile=null;
   }
 
   bool isSupplierEdit=false;

@@ -15,6 +15,7 @@ import 'package:quarry/utils/utils.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/bottomBarAddButton.dart';
 
+import '../../utils/widgetUtils.dart';
 import 'manageUsersAddNew.dart';
 
 
@@ -237,7 +238,6 @@ class ManageUsersGridState extends State<ManageUsersGrid> with TickerProviderSta
                                           else{
                                             CustomAlert().accessDenied2();
                                           }
-
                                         },
                                         child: Container(
                                           height: 200,
@@ -250,23 +250,11 @@ class ManageUsersGridState extends State<ManageUsersGrid> with TickerProviderSta
                                             mainAxisAlignment: MainAxisAlignment.center,
                                             children: [
                                               SizedBox(height: 50,),
-                                              Container(
-                                                height: 80,
-                                                width: 80,
-                                                decoration: BoxDecoration(
-                                                    shape: BoxShape.circle,
-                                                    border: Border.all(color: AppTheme.uploadColor,width: 2)
-                                                ),
-                                                clipBehavior: Clip.antiAlias,
-                                                child: Center(
-                                                  child:Image.network(getAttachmentUrl(mun.usersList[0].userImage),fit: BoxFit.cover,
-                                                    errorBuilder: (a,b,c){
-                                                      return Image.asset("assets/svg/drawer/avatar.png");
-                                                    },
-                                                  ),
-                                                ),
+                                              ProfileAvatar(
+                                                imageUrl: getAttachmentUrl(mun.usersList[0].userImage),
+                                                imageFile: null,
+                                                radius: 80,
                                               ),
-
                                               SizedBox(height: 20,),
                                               Text("${mun.usersList[0].userName}  ",
                                                 style: TextStyle(color: AppTheme.bgColor,fontFamily: 'RM',fontSize: 14),
@@ -331,23 +319,11 @@ class ManageUsersGridState extends State<ManageUsersGrid> with TickerProviderSta
                                                       }
                                                   ).yesOrNoDialog(context, "", "Are you sure want to delete this user ?");
                                                 },
-                                                child: Container(
-                                                  height: 80,
-                                                  width: 80,
-                                                  decoration: BoxDecoration(
-                                                      shape: BoxShape.circle,
-                                                      border: Border.all(color: AppTheme.uploadColor,width: 2)
-                                                  ),
-                                                  clipBehavior: Clip.antiAlias,
-                                                  child: Center(
-                                                    child:Image.network(getAttachmentUrl(mun.usersList[i].userImage),fit: BoxFit.cover,
-                                                      errorBuilder: (a,b,c){
-                                                        return Image.asset("assets/svg/drawer/avatar.png");
-                                                      },
-                                                    ),
-                                                  ),
+                                                child:ProfileAvatar(
+                                                  imageUrl: getAttachmentUrl(mun.usersList[i].userImage),
+                                                  imageFile: null,
+                                                  radius: 80,
                                                 ),
-
                                               ),
 
                                               SizedBox(height: 20,),

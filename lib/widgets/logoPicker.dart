@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:quarry/utils/widgetUtils.dart';
 
 import '../styles/app_theme.dart';
 
@@ -21,21 +22,7 @@ class LogoPicker extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Container(
-          height: 70,
-          width: 70,
-          decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(color: AppTheme.uploadColor,width: 2)
-          ),
-          clipBehavior: Clip.antiAlias,
-          child: imageUrl.isEmpty? Center(
-              child: imageFile!=null? Image.file(imageFile!):
-              SvgPicture.asset("assets/svg/upload.svg",height: 30,width: 30,)
-          ):Center(
-            child: Image.network(imageUrl,fit: BoxFit.cover,),
-          ),
-        ),
+        ProfileAvatar(imageUrl: imageUrl, imageFile: imageFile,radius: 80,),
         SizedBox(height: 20,),
         Align(
           alignment: Alignment.center,
