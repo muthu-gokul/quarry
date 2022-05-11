@@ -59,7 +59,7 @@ class _UserAccessState extends State<UserAccess> {
                   Container(
                     height: 50,
                     width: SizeConfig.screenWidth,
-                    color: Colors.white,
+                    color: AppTheme.yellowColor,
                     child: Row(
                       children: [
                         CancelButton(
@@ -126,95 +126,7 @@ class _UserAccessState extends State<UserAccess> {
                       )
                     ),
                   ),
-                  //{ModuleId: 16, ModuleName: EmployeeAttendance, AccessUrl: api, ModuleAction: View, 1: 1, 2: 1, 3: 1, 4: 1}
-                  /*Container(
-                    height: SizeConfig.screenHeight!-100,
-                    width: SizeConfig.screenWidth,
-                   //  color: AppTheme.bgColor,
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      controller: body,
-                      child: Container(
-                          height: SizeConfig.screenHeight!-100,
-                       alignment: Alignment.topCenter,
-                       //   width: SizeConfig.screenWidth,
-                    //    color: AppTheme.bgColor,
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.vertical,
-                           // physics: NeverScrollableScrollPhysics(),
-                            child: Column(
-                                    children: uan.moduleList.asMap().map((key, value) => MapEntry(key,
-                                    Container(
-                                      height: 50,
-                                 //     width: SizeConfig.screenWidth,
-                                      child: Row(
-                                        children: [
-                                          Container(
-                                            width: 180,
-                                            height: 50,
-                                            alignment: Alignment.centerLeft,
-                                            child: Text("   ${value['ModuleName']}",style: AppTheme.gridTextColorTS,),
-                                          ),
-                                          Container(
-                                            width: 70,
-                                            height: 50,
-                                            alignment: Alignment.centerLeft,
-                                            child: Text("${value['ModuleAction']}",style: AppTheme.gridTextColorTS),
-                                          ),
-                                          GestureDetector(
-                                            onTap: (){
-                                              uan.updateUserAccess(context, value['ModuleId'], 1, value['1']);
-                                            },
-                                            child: Container(
-                                              width: 90,
-                                              height: 50,
-                                              alignment: Alignment.center,
-                                              child: AccessIcon(value: value['1'])
-                                            ),
-                                          ),
-                                          GestureDetector(
-                                            onTap: (){
-                                              uan.updateUserAccess(context, value['ModuleId'], 2, value['2']);
-                                            },
-                                            child: Container(
-                                              width: 70,
-                                              height: 50,
-                                              alignment: Alignment.center,
-                                              child: AccessIcon(value: value['2'])
-                                            ),
-                                          ),
-                                          GestureDetector(
-                                            onTap: (){
-                                              uan.updateUserAccess(context, value['ModuleId'], 3, value['3']);
-                                            },
-                                            child: Container(
-                                              width: 100,
-                                              height: 50,
-                                              alignment: Alignment.center,
-                                              child: AccessIcon(value: value['3'])
-                                            ),
-                                          ),
-                                          GestureDetector(
-                                            onTap: (){
-                                              uan.updateUserAccess(context, value['ModuleId'], 4, value['4']);
-                                            },
-                                            child: Container(
-                                              width: 150,
-                                              height: 50,
-                                              alignment: Alignment.center,
-                                              child: AccessIcon(value: value['4'])
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ))).values.toList(),
-                                  ),
-                          ),
-                        ),
 
-                    ),
-
-                  ),*/
                   Container(
                     height: SizeConfig.screenHeight!-100,
                     width: SizeConfig.screenWidth,
@@ -312,12 +224,13 @@ class _UserAccessState extends State<UserAccess> {
                                             ),*/
                                             GestureDetector(
                                               onTap: (){
-                                                if(userAccessMap[8]??false){
+                                                CustomAlert().accessDenied(context,title: "Can't disable any privilege of Admin..");
+                                               /* if(userAccessMap[8]??false){
                                                   uan.updateUserAccess(context, value.parent['ModuleId'], 2, value.parent['2']);
                                                 }
                                                 else{
                                                   CustomAlert().accessDenied(context);
-                                                }
+                                                }*/
                                               },
                                               child: Container(
                                                   width: 70,
@@ -399,12 +312,7 @@ class _UserAccessState extends State<UserAccess> {
                                               ),*/
                                               GestureDetector(
                                                 onTap: (){
-                                                  if(userAccessMap[8]??false){
-                                                    uan.updateUserAccess(context, value.children[i]['ModuleId'], 2, value.children[i]['2']);
-                                                  }
-                                                  else{
-                                                    CustomAlert().accessDenied(context);
-                                                  }
+                                                  CustomAlert().accessDenied(context,title: "Can't disable any privilege of Admin..");
                                                 },
                                                 child: Container(
                                                     width: 70,

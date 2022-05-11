@@ -179,14 +179,15 @@ class CustomAlert{
         context: context,
         builder: (ctx) => Dialog(
           child: Container(
-              height:title.length>100?450:280,
-              width:400,
+              // height:title.length>100?450:280,
+              // width:400,
               decoration:BoxDecoration(
                 color:Colors.white,
                 borderRadius: BorderRadius.circular(10.0),
               ),
-
+              padding: EdgeInsets.all(15),
               child:Column(
+                mainAxisSize: MainAxisSize.min,
                   children:[
                     SizedBox(height:10),
                     SvgPicture.asset('assets/svg/error-icon.svg'),

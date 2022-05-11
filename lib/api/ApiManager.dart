@@ -26,7 +26,6 @@ class ApiManager{
           headers: {"Content-Type": "application/json"},
           body: json.encode(body)
       );
-      print("apimanager $response");
       if(response.statusCode==200){
         return response.body;
       }

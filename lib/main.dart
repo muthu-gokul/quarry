@@ -48,6 +48,7 @@ Future<void> main() async {
     runApp(MyApp());
   }, (error, stackTrace) {
     FirebaseCrashlytics.instance.recordError(error, stackTrace);
+
     //GetUiNotifier().errorLog(error.toString(), stackTrace.toString());
   });
 }

@@ -496,6 +496,7 @@ class _EmployeeSalaryAddNewState extends State<EmployeeSalaryAddNew> {
       ),
     );
   }
-  TextStyle tableTextStyle=TextStyle(fontFamily: 'RR',color: AppTheme.bgColor);
-  Color tableColor=AppTheme.disableColor.withOpacity(0.5);
+
 }
+TextStyle tableTextStyle=TextStyle(fontFamily: 'RR',color: AppTheme.bgColor);
+Color tableColor=AppTheme.disableColor.withOpacity(0.5);

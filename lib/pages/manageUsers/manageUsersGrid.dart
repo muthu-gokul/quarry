@@ -257,6 +257,7 @@ class ManageUsersGridState extends State<ManageUsersGrid> with TickerProviderSta
                                                     shape: BoxShape.circle,
                                                     border: Border.all(color: AppTheme.uploadColor,width: 2)
                                                 ),
+                                                clipBehavior: Clip.antiAlias,
                                                 child: Center(
                                                   child:Image.network(getAttachmentUrl(mun.usersList[0].userImage),fit: BoxFit.cover,
                                                     errorBuilder: (a,b,c){

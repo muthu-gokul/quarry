@@ -142,7 +142,8 @@ class _PlanPlantListState extends State<PlanPlantList> {
                               planNotifier.selectPlantId.value=value['Id'].toString();
                               planNotifier.selectPlantName.value=value['Text'];
                             });
-
+                            planNotifier.getActivationDetail();
+                            Get.back();
                           },
                           child: Container(
                             height: 200,

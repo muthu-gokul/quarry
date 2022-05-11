@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/login.dart';
 import 'package:quarry/notifier/customerNotifier.dart';
@@ -19,6 +20,7 @@ import 'package:quarry/notifier/machineNotifier.dart';
 import 'package:quarry/notifier/manageUsersNotifier.dart';
 import 'package:quarry/notifier/materialNotifier.dart';
 import 'package:quarry/notifier/paymentNotifier.dart';
+import 'package:quarry/notifier/planNotifier.dart';
 import 'package:quarry/notifier/productionNotifier.dart';
 import 'package:quarry/notifier/profileNotifier.dart';
 import 'package:quarry/notifier/purchaseNotifier.dart';
@@ -104,6 +106,16 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
     Provider.of<PurchaseNotifier>(context,listen: false).clearAll();
     Provider.of<ReportNotifier>(context,listen: false).clearAll();
     Provider.of<SupplierNotifier>(context,listen: false).clearAll();
+    Get.delete<PlanNotifier>();
+   // PlanNotifier().clearAll();
+  }
+
+  closeDrawer(int index){
+    clearDataByNotifier();
+    setState(() {
+      Provider.of<DrawerNotifier>(context,listen: false).menuSelected=index;
+      scaffoldkey.currentState!.openEndDrawer();
+    });
   }
 
   @override
@@ -223,20 +235,18 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                             child: ListView(
                               children: [
                                 SizedBox(height: 20,),
-                                userAccessList[4].isHasAccess?DrawerContent(
+                                DrawerContent(
                                   delay: 0.1,
                                   height: 50,
                                   image: "assets/svg/drawer/dashboard.svg",
                                   title: 'Dashboard',
                                   tag: 'Dashboard',
                                   titleColor: AppTheme.yellowColor,
+                                  hasAccess: userAccessMap[9]??false,
                                   callback: (){
-                                    setState(() {
-                                      drawer.menuSelected=22;
-                                      scaffoldkey.currentState!.openEndDrawer();
-                                    });
+                                    closeDrawer(22);
                                   },
-                                ):Container(),
+                                ),
                                 DrawerContent(
                                   delay:1,
                                   height: 50,
@@ -246,15 +256,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                   titleColor: AppTheme.yellowColor,
                                   hasAccess: userAccessMap[16]??false,
                                   callback: (){
-                                    Navigator.pop(context);
-                                    setState(() {
-                                      drawer.menuSelected=4;
-                                      scaffoldkey.currentState!.openEndDrawer();
-                                    });
-
-
-                                    // Provider.of<QuarryNotifier>(context,listen: false).initDropDownValues(context);
-                                 //   Provider.of<QuarryNotifier>(context,listen: false).GetCustomerDetailDbhit(context);
+                                    closeDrawer(4);
                                     Provider.of<QuarryNotifier>(context,listen: false).GetSaleDetailDbhit(context);
                                     Provider.of<QuarryNotifier>(context,listen: false).SalesDropDownValues(context);
                                   },
@@ -268,10 +270,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                   titleColor: AppTheme.yellowColor,
                                   hasAccess: userAccessMap[20]??false,
                                   callback: (){
-                                    setState(() {
-                                      drawer.menuSelected=9;
-                                      scaffoldkey.currentState!.openEndDrawer();
-                                    });
+                                    closeDrawer(9);
 
                                     Provider.of<PurchaseNotifier>(context, listen: false).GetPurchaseDbHit(context,null);
 
@@ -286,10 +285,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                   titleColor: AppTheme.yellowColor,
                                   hasAccess: userAccessMap[24]??false,
                                   callback: (){
-                                    setState(() {
-                                      drawer.menuSelected=11;
-                                      scaffoldkey.currentState!.openEndDrawer();
-                                    });
+                                    closeDrawer(11);
                                     Provider.of<GoodsReceivedNotifier>(context, listen: false).GetGoodsDbHit(context,null,null,false,this);
 
                                   },
@@ -303,10 +299,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                   titleColor: AppTheme.yellowColor,
                                   hasAccess: userAccessMap[26]??false,
                                   callback: (){
-                                    setState(() {
-                                      drawer.menuSelected=12;
-                                      scaffoldkey.currentState!.openEndDrawer();
-                                    });
+                                    closeDrawer(12);
 
                                     Provider.of<ProductionNotifier>(context, listen: false).GetProductionDbHit(context,null,this);
                                   },
@@ -322,10 +315,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                   titleColor: AppTheme.yellowColor,
                                   hasAccess: userAccessMap[55]??false,
                                   callback: (){
-                                    setState(() {
-                                      drawer.menuSelected=13;
-                                      scaffoldkey.currentState!.openEndDrawer();
-                                    });
+                                    closeDrawer(13);
                                     Provider.of<DieselNotifier>(context, listen: false).GetDieselPurchaseDbHit(context,null);
 
                                   },
@@ -354,10 +344,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                   titleColor: AppTheme.yellowColor,
                                   hasAccess: userAccessMap[42]??false,
                                   callback: (){
-                                    setState(() {
-                                      drawer.menuSelected=21;
-                                      scaffoldkey.currentState!.openEndDrawer();
-                                    });
+                                    closeDrawer(21);
                                     Provider.of<MachineManagementNotifier>(context, listen: false).GetMachineManagementDbHit(context,null,null);
                                   },
                                 ),
@@ -412,18 +399,14 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                 DrawerContent(
                                   delay: 4.5,
                                   height: 50,
-                                  image: "assets/svg/drawer/settings-icon.svg",
-                                  title: 'Plan',
-                                  tag: 'Plan',
+                                  image: "assets/svg/drawer/reports.svg",
+                                  title: 'Plan Detail',
+                                  tag: 'Plan Detail',
                                   titleColor: AppTheme.yellowColor,
-                                  hasAccess: true,
+                                  hasAccess: userAccessMap[62]??false,
                                   callback: (){
-                                    setState(() {
-                                      drawer.menuSelected=24;
-                                      scaffoldkey.currentState!.openEndDrawer();
-                                    });
+                                    closeDrawer(24);
                                   },
-
                                 ),
 
                               ],
@@ -647,6 +630,28 @@ class EmployeeDetails extends StatefulWidget {
   EmployeeDetailsState createState() => EmployeeDetailsState();
 }
 class EmployeeDetailsState extends State<EmployeeDetails> with TickerProviderStateMixin{
+  clearDataByNotifier(){
+    Provider.of<CustomerNotifier>(context,listen: false).clearAll();
+    Provider.of<DashboardNotifier>(context,listen: false).clearAll();
+    Provider.of<DieselNotifier>(context,listen: false).clearAll();
+    Provider.of<EmployeeAttendanceNotifier>(context,listen: false).clearAll();
+    Provider.of<EmployeeNotifier>(context,listen: false).clearAll();
+    Provider.of<EmployeeSalaryNotifier>(context,listen: false).clearAll();
+    Provider.of<EmployeeAdvanceLoanNotifier>(context,listen: false).clearAll();
+    Provider.of<GoodsReceivedNotifier>(context,listen: false).clearAll();
+    Provider.of<InvoiceNotifier>(context,listen: false).clearAll();
+    Provider.of<MachineManagementNotifier>(context,listen: false).clearAll();
+    Provider.of<MachineNotifier>(context,listen: false).clearAll();
+    Provider.of<ManageUsersNotifier>(context,listen: false).clearAll();
+    Provider.of<MaterialNotifier>(context,listen: false).clearAll();
+    Provider.of<PaymentNotifier>(context,listen: false).clearAll();
+    Provider.of<ProductionNotifier>(context,listen: false).clearAll();
+    Provider.of<PurchaseNotifier>(context,listen: false).clearAll();
+    Provider.of<ReportNotifier>(context,listen: false).clearAll();
+    Provider.of<SupplierNotifier>(context,listen: false).clearAll();
+    Get.delete<PlanNotifier>();
+    // PlanNotifier().clearAll();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -695,8 +700,10 @@ class EmployeeDetailsState extends State<EmployeeDetails> with TickerProviderSta
                     titleColor: AppTheme.yellowColor,
                     hasAccess: userAccessMap[30]??false,
                     callback: (){
+                      clearDataByNotifier();
                       Navigator.pop(context);
                       widget.voidCallback!();
+
                       Provider.of<DrawerNotifier>(context,listen: false).changeMenu(17);
                       Provider.of<EmployeeNotifier>(context, listen: false).GetEmployeeIssueDbHit(context,null);
                     },
@@ -711,6 +718,7 @@ class EmployeeDetailsState extends State<EmployeeDetails> with TickerProviderSta
                     titleColor: AppTheme.yellowColor,
                     hasAccess: userAccessMap[34]??false,
                     callback: (){
+                      clearDataByNotifier();
                       Navigator.pop(context);
                       widget.voidCallback!();
 
@@ -730,7 +738,7 @@ class EmployeeDetailsState extends State<EmployeeDetails> with TickerProviderSta
                     titleColor: AppTheme.yellowColor,
                     hasAccess: userAccessMap[36]??false,
                     callback: (){
-
+                      clearDataByNotifier();
                       Navigator.pop(context);
                       widget.voidCallback!();
                       Provider.of<DrawerNotifier>(context,listen: false).changeMenu(19);
@@ -748,6 +756,7 @@ class EmployeeDetailsState extends State<EmployeeDetails> with TickerProviderSta
                     titleColor: AppTheme.yellowColor,
                     hasAccess: userAccessMap[40]??false,
                     callback: (){
+                      clearDataByNotifier();
                       Navigator.pop(context);
                       widget.voidCallback!();
 
@@ -800,6 +809,28 @@ class AccountsPage extends StatefulWidget {
   AccountsPageState createState() => AccountsPageState();
 }
 class AccountsPageState extends State<AccountsPage> with TickerProviderStateMixin{
+  clearDataByNotifier(){
+    Provider.of<CustomerNotifier>(context,listen: false).clearAll();
+    Provider.of<DashboardNotifier>(context,listen: false).clearAll();
+    Provider.of<DieselNotifier>(context,listen: false).clearAll();
+    Provider.of<EmployeeAttendanceNotifier>(context,listen: false).clearAll();
+    Provider.of<EmployeeNotifier>(context,listen: false).clearAll();
+    Provider.of<EmployeeSalaryNotifier>(context,listen: false).clearAll();
+    Provider.of<EmployeeAdvanceLoanNotifier>(context,listen: false).clearAll();
+    Provider.of<GoodsReceivedNotifier>(context,listen: false).clearAll();
+    Provider.of<InvoiceNotifier>(context,listen: false).clearAll();
+    Provider.of<MachineManagementNotifier>(context,listen: false).clearAll();
+    Provider.of<MachineNotifier>(context,listen: false).clearAll();
+    Provider.of<ManageUsersNotifier>(context,listen: false).clearAll();
+    Provider.of<MaterialNotifier>(context,listen: false).clearAll();
+    Provider.of<PaymentNotifier>(context,listen: false).clearAll();
+    Provider.of<ProductionNotifier>(context,listen: false).clearAll();
+    Provider.of<PurchaseNotifier>(context,listen: false).clearAll();
+    Provider.of<ReportNotifier>(context,listen: false).clearAll();
+    Provider.of<SupplierNotifier>(context,listen: false).clearAll();
+    Get.delete<PlanNotifier>();
+    // PlanNotifier().clearAll();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -846,7 +877,7 @@ class AccountsPageState extends State<AccountsPage> with TickerProviderStateMixi
                     titleColor: AppTheme.yellowColor,
                     hasAccess: userAccessMap[46]??false,
                     callback: (){
-
+                      clearDataByNotifier();
                       Navigator.pop(context);
                       widget.voidCallback!();
 
@@ -863,6 +894,7 @@ class AccountsPageState extends State<AccountsPage> with TickerProviderStateMixi
                     titleColor: AppTheme.yellowColor,
                     hasAccess: userAccessMap[49]??false,
                     callback: (){
+                      clearDataByNotifier();
                       Navigator.pop(context);
                       widget.voidCallback!();
 
@@ -915,6 +947,28 @@ class ReportsPage extends StatefulWidget {
   ReportsPageState createState() => ReportsPageState();
 }
 class ReportsPageState extends State<ReportsPage> with TickerProviderStateMixin{
+  clearDataByNotifier(){
+    Provider.of<CustomerNotifier>(context,listen: false).clearAll();
+    Provider.of<DashboardNotifier>(context,listen: false).clearAll();
+    Provider.of<DieselNotifier>(context,listen: false).clearAll();
+    Provider.of<EmployeeAttendanceNotifier>(context,listen: false).clearAll();
+    Provider.of<EmployeeNotifier>(context,listen: false).clearAll();
+    Provider.of<EmployeeSalaryNotifier>(context,listen: false).clearAll();
+    Provider.of<EmployeeAdvanceLoanNotifier>(context,listen: false).clearAll();
+    Provider.of<GoodsReceivedNotifier>(context,listen: false).clearAll();
+    Provider.of<InvoiceNotifier>(context,listen: false).clearAll();
+    Provider.of<MachineManagementNotifier>(context,listen: false).clearAll();
+    Provider.of<MachineNotifier>(context,listen: false).clearAll();
+    Provider.of<ManageUsersNotifier>(context,listen: false).clearAll();
+    Provider.of<MaterialNotifier>(context,listen: false).clearAll();
+    Provider.of<PaymentNotifier>(context,listen: false).clearAll();
+    Provider.of<ProductionNotifier>(context,listen: false).clearAll();
+    Provider.of<PurchaseNotifier>(context,listen: false).clearAll();
+    Provider.of<ReportNotifier>(context,listen: false).clearAll();
+    Provider.of<SupplierNotifier>(context,listen: false).clearAll();
+    Get.delete<PlanNotifier>();
+    // PlanNotifier().clearAll();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

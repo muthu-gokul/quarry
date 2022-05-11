@@ -637,6 +637,7 @@ class PaymentNotifier extends ChangeNotifier{
 
 
   clearAll(){
+
     clearInsertForm();
     clearEditForm();
     clearPaymentEntry();

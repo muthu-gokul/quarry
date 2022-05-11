@@ -3,14 +3,18 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/pages/plan/planPlantList.dart';
+import 'package:quarry/styles/constants.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/alertDialog.dart';
+import 'package:quarry/widgets/loader.dart';
 
 import '../../notifier/planNotifier.dart';
 import '../../notifier/profileNotifier.dart';
 import '../../references/bottomNavi.dart';
 import '../../styles/app_theme.dart';
 import '../../widgets/navigationBarIcon.dart';
+import '../../widgets/staticColumnScroll/customDataTable.dart';
+import '../employee/employeeSalary/employeeSalaryAddNew.dart';
 
 class PlanDetail extends StatefulWidget {
   VoidCallback? drawerCallback;
@@ -21,7 +25,7 @@ class PlanDetail extends StatefulWidget {
 }
 
 class _PlanDetailState extends State<PlanDetail> {
-  final PlanNotifier planNotifier = Get.put(PlanNotifier());
+  PlanNotifier planNotifier = Get.put(PlanNotifier());
   @override
   void initState() {
     planNotifier.init();
@@ -68,10 +72,89 @@ class _PlanDetailState extends State<PlanDetail> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Plant",style: ts18(AppTheme.bgColor,fontsize: 17),),
-                  SizedBox(height: 5,),
+                  Row(
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("Plant",style: ts18(AppTheme.bgColor,fontsize: 17),),
+                          SizedBox(height: 5,),
+                          Obx(
+                                ()=>Text("${planNotifier.selectPlantName}",style: ts15(AppTheme.gridTextColor),),
+                          ),
+                        ],
+                      ),
+                      Spacer(),
+                      GestureDetector(
+                        onTap: (){
+
+                          if(!userAccessMap[63]){
+                            CustomAlert().accessDenied2();
+                            return;
+                          }
+
+                          if(planNotifier.id_T.value==null){
+                            CustomAlert().commonErrorAlert(context, "No Plan", "");
+                            return;
+                          }
+                          planNotifier.insertPlan(planNotifier.id_T.value,
+                              planNotifier.planId_T.value,
+                              planNotifier.days_T.value,
+                              "Renewed Successfully");
+                        },
+                        child: Container(
+                          height: 45,
+                          width: 100,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(25),
+                            color: AppTheme.yellowColor
+                          ),
+                          alignment: Alignment.center,
+                          child: Text("Renew",style: ts18(AppTheme.bgColor),),
+                        ),
+                      )
+                    ],
+                  ),
+
+                  Container(
+                    margin: EdgeInsets.only(top: 20),
+                    color: tableColor,
+                    child: Obx(
+                        ()=>Table(
+                          border: TableBorder.all(
+                              color: AppTheme.addNewTextFieldBorder,
+                              style: BorderStyle.solid,
+                              width: 1,
+                              borderRadius: BorderRadius.circular(3)
+                          ),
+                          children: [
+                            tableRow("Plan Name: ${planNotifier.planName_T}", planNotifier.description_T),
+                            tableRow("Start Date", planNotifier.startDate_T),
+                            tableRow("End Date", planNotifier.endDate_T),
+                            tableRow("Status", planNotifier.status_T),
+                            tableRow("Payment Date", planNotifier.paymentDate_T),
+                            tableRow("Payment Status", planNotifier.paymentStatus_T),
+                          ],
+                        ),
+                    )
+                  ),
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    height: 50,
+                    child: Text("Plan Detail",style: ts18(AppTheme.bgColor,fontfamily: 'RM',fontsize: 20),),
+                  ),
                   Obx(
-                      ()=>Text("${planNotifier.selectPlantName}",style: ts15(AppTheme.gridTextColor),),
+                      ()=>CustomDataTable2(
+                        topMargin: 0,
+                        gridBodyReduceHeight: 500,
+                        selectedIndex: -1,
+                        gridCol: planNotifier.gridHeader,
+                        gridData: planNotifier.gridData.value,
+                        gridDataRowList: planNotifier.gridDataName,
+                        func: (index){
+
+                        },
+                      ),
                   )
                 ],
               ),
@@ -128,42 +211,13 @@ class _PlanDetailState extends State<PlanDetail> {
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
                                   Spacer(),
-                                  Consumer<ProfileNotifier>(
-                                      builder: (context,pro,child)=> GestureDetector(
+                                  Obx(
+                                    ()=> GestureDetector(
                                         onTap: (){
-                                         /* if(pro.usersPlantList.length>1){
-                                            if(pn.filterUsersPlantList.isEmpty){
-                                              setState(() {
-                                                pro.usersPlantList.forEach((element) {
-                                                  pn.filterUsersPlantList.add(ManageUserPlantModel(
-                                                    plantId: element.plantId,
-                                                    plantName: element.plantName,
-                                                    isActive: element.isActive,
-
-                                                  ));
-                                                });
-                                              });
-                                            }
-                                            else if(pn.filterUsersPlantList.length!=pro.usersPlantList.length){
-                                              pn.filterUsersPlantList.clear();
-                                              setState(() {
-                                                pro.usersPlantList.forEach((element) {
-                                                  pn.filterUsersPlantList.add(ManageUserPlantModel(
-                                                    plantId: element.plantId,
-                                                    plantName: element.plantName,
-                                                    isActive: element.isActive,
-
-                                                  ));
-                                                });
-                                              });
-                                            }
-
-
-                                          }*/
                                           Navigator.push(context, _plantRoute());
                                         },
                                         child: SvgPicture.asset("assets/bottomIcons/plant-slection.svg",height: 35,width: 35,
-                                          color: pro.usersPlantList.length<=1?AppTheme.bgColor.withOpacity(0.4):AppTheme.bgColor,),
+                                          color: planNotifier.plantList.length<=1?AppTheme.bgColor.withOpacity(0.4):AppTheme.bgColor,),
                                       )
                                   ),
                                   SizedBox(width: SizeConfig.screenWidth!*0.6,),
@@ -172,6 +226,10 @@ class _PlanDetailState extends State<PlanDetail> {
 
                                   GestureDetector(
                                     onTap: (){
+                                      if(!userAccessMap[63]){
+                                        CustomAlert().accessDenied2();
+                                        return;
+                                      }
                                       if(planNotifier.selectPlantId.isEmpty){
                                         CustomAlert().commonErrorAlert(context, "Select Plant", "");
                                         return;
@@ -198,6 +256,13 @@ class _PlanDetailState extends State<PlanDetail> {
                 ),
               ),
             ),
+
+
+            Obx(
+                ()=>Loader(
+                  isLoad: planNotifier.isLoad.value,
+                )
+            )
 
           ],
         ),
@@ -227,6 +292,26 @@ class _PlanDetailState extends State<PlanDetail> {
           child: child,
         );
       },
+    );
+  }
+
+  TableRow tableRow(var title, var value){
+    return  TableRow(
+        children: [
+          Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Text("$title",
+                style: TextStyle(fontFamily: 'RM',color: AppTheme.bgColor,fontSize: 13),
+              )
+          ),
+
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Text("$value",
+              style: tableTextStyle,
+            ),
+          ),
+        ]
     );
   }
 }
