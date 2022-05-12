@@ -35,6 +35,7 @@ class ProfileNotifier extends ChangeNotifier{
 
 
     updateProfileLoader(true);
+    userLogoFileName="";
     if(logoFile!=null){
       userLogoFileName = await uploadFile(userLogoFolderName,logoFile!);
     }

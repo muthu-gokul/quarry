@@ -586,7 +586,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
 
                       children: [
                         Text(
-                          "v - 1.0.9",
+                          "v - 1.0.10",
                           style: TextStyle(fontFamily: 'RR',  color: AppTheme.grey,fontSize: 12 ),
                         ),
                         Text(
