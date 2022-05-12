@@ -119,3 +119,8 @@ ts16(Color color,{String fontfamily='RR'}){
 ts18(Color color,{String fontfamily='RR',double fontsize=18, double ls=0.1}){
   return TextStyle(fontSize: fontsize,fontFamily: fontfamily,color: color,letterSpacing: ls);
 }
+
+// getPadding(double left, double top, double right,double bottom){
+//   return EdgeInsets.fromLTRB()
+// }
+EdgeInsets qtyDialogPadding=EdgeInsets.only(top: 20,bottom: 20);

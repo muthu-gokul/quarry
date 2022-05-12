@@ -495,7 +495,7 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                                                     Navigator.pop(context);
                                                                     Timer(Duration(milliseconds: 200), (){
                                                                       if (qn.supplierMaterialMappingList[index].isEdit!) {
-                                                                        qn.supplierMaterialMappingList[index].scaleController!.forward().whenComplete(() {
+                                                                        qn.supplierMaterialMappingList[index].scaleController!.reverse().whenComplete(() {
 
                                                                           if (this.mounted) {
                                                                             setState(() {

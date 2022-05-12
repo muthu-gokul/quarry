@@ -1,3 +1,5 @@
+import 'package:quarry/utils/utils.dart';
+
 class PaymentGridModel {
   PaymentGridModel({
     this.invoiceId,
@@ -42,9 +44,9 @@ class PaymentGridModel {
     invoiceDate: DateTime.parse(json["InvoiceDate"]),
     partyId: json["PartyId"],
     partyName: json["PartyName"],
-    grandTotalAmount: json["GrandTotalAmount"].toDouble(),
-    paidAmount: json["PaidAmount"].toDouble(),
-    balanceAmount: json["BalanceAmount"].toDouble(),
+    grandTotalAmount: parseDouble(json["GrandTotalAmount"]),
+    paidAmount: parseDouble(json["PaidAmount"]),
+    balanceAmount: parseDouble(json["BalanceAmount"]),
     status: json["Status"],
   );
 

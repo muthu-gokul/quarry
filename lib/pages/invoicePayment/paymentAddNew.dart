@@ -2,20 +2,16 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:quarry/model/paymentModel/paymentMappingModel.dart';
-import 'package:quarry/model/productionDetailsModel/productionMaterialMappingListModel.dart';
 import 'package:quarry/notifier/paymentNotifier.dart';
-import 'package:quarry/notifier/productionNotifier.dart';
 import 'package:quarry/pages/sale/salesDetail.dart';
 import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
-import 'package:quarry/widgets/alertDialog.dart';
+import 'package:quarry/utils/widgetUtils.dart';
 import 'package:quarry/widgets/bottomBarAddButton.dart';
-import 'package:quarry/widgets/currentDateContainer.dart';
 import 'package:quarry/widgets/customTextField.dart';
 import 'package:quarry/widgets/expectedDateContainer.dart';
 import 'package:quarry/widgets/sidePopUp/sidePopUpWithoutSearch.dart';
@@ -31,12 +27,7 @@ class PaymentAddNewFormState extends State<PaymentAddNewForm> with TickerProvide
 
   GlobalKey <ScaffoldState> scaffoldkey = new GlobalKey<ScaffoldState>();
 
-
-  ScrollController? scrollController;
-  ScrollController? listViewController;
-
-  bool _keyboardVisible = false;
-
+  var keyboardVisible=false.obs;
   bool isListScroll=false;
   bool paymentCategoryOpen=false;
   bool suppliersListOpen=false;
@@ -50,351 +41,191 @@ class PaymentAddNewFormState extends State<PaymentAddNewForm> with TickerProvide
   @override
   void initState() {
 
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
-      scrollController = new ScrollController();
-      listViewController = new ScrollController();
-      setState(() {
-
-      });
-    });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     final node = FocusScope.of(context);
-
+    keyboardVisible.value = MediaQuery.of(context).viewInsets.bottom != 0;
     SizeConfig().init(context);
 
     return Scaffold(
       key: scaffoldkey,
       resizeToAvoidBottomInset: false,
+      backgroundColor: AppTheme.yellowColor,
       body: Consumer<PaymentNotifier>(
         builder: (context, qn, child) =>
             Stack(
               children: [
 
+                AddNewLayout(
+                  child: ListView(
 
-                //IMAGE
-                Container(
-                  height: SizeConfig.screenHeight,
-                  width: SizeConfig.screenWidth,
-                  child: Column(
                     children: [
-                      Container(
-                        width: double.maxFinite,
-                        height: 180,
+                      GestureDetector(
+                        onTap: () async{
+                          final DateTime? picked = await showDatePicker2(
+                              context: context,
+                              initialDate:  qn.paymentDate==null?DateTime.now():qn.paymentDate!, // Refer step 1
+                              firstDate: DateTime(1900),
+                              lastDate: DateTime(2100),
+                              builder: (BuildContext context,Widget? child){
+                                return Theme(
+                                  data: Theme.of(context).copyWith(
+                                    colorScheme: ColorScheme.light(
+                                      primary: AppTheme.yellowColor, // header background color
+                                      onPrimary: AppTheme.bgColor, // header text color
+                                      onSurface: AppTheme.addNewTextFieldText, // body text color
+                                    ),
 
-                        decoration: BoxDecoration(
-                            image: DecorationImage(
-                                image: AssetImage(
-                                  "assets/svg/gridHeader/paymentHeader.jpg",),
-                                fit: BoxFit.cover
-                            )
+                                  ),
+                                  child: child!,
+                                );
+                              });
+                          if (picked != null)
+                            setState(() {
+                              qn.paymentDate = picked;
+                            });
+                        },
+                        child: ExpectedDateContainer(
+                          text: qn.paymentDate==null?"Date":"${DateFormat.yMMMd().format(qn.paymentDate!)}",
+                          textColor: qn.paymentDate==null? AppTheme.addNewTextFieldText.withOpacity(0.5):AppTheme.addNewTextFieldText,
+                        ),
+                      ),
+
+                      AddNewLabelTextField(
+                        labelText: 'Material Name',
+                        regExp: '[A-Za-z  ]',
+                        textEditingController: qn.materialName,
+                        ontap: (){
+
+
+                        },
+                        onEditComplete: (){
+                          node.unfocus();
+
+                        },
+                        onChange: (v){},
+                      ),
+                      !material?Container():ValidationErrorText(title: "* Enter Material",),
+
+                      GestureDetector(
+                        onTap: (){
+
+                          if(qn.plantCount!=1){
+                            node.unfocus();
+                            setState(() {
+                              isPlantOpen=true;
+                            });
+                          }
+
+
+                        },
+                        child: SidePopUpParent(
+                          text: qn.PlantName==null? "Select Plant":qn.PlantName,
+                          textColor: qn.PlantName==null? AppTheme.addNewTextFieldText.withOpacity(0.5):AppTheme.addNewTextFieldText,
+                          iconColor: qn.PlantName==null? AppTheme.addNewTextFieldText:AppTheme.yellowColor,
+                          bgColor: qn.PlantName==null? AppTheme.disableColor:Colors.white,
+
+                        ),
+                      ),
+                      !plant?Container():ValidationErrorText(title: "* Select Plant"),
+
+                      GestureDetector(
+                        onTap: (){
+                          node.unfocus();
+                          setState(() {
+                            suppliersListOpen=true;
+                          });
+                        },
+                        child: SidePopUpParent(
+                          text: qn.selectedPartyName==null? "Select Party Name":qn.selectedPartyName,
+                          textColor: qn.selectedPartyName==null? AppTheme.addNewTextFieldText.withOpacity(0.5):AppTheme.addNewTextFieldText,
+                          iconColor: qn.selectedPartyName==null? AppTheme.addNewTextFieldText:AppTheme.yellowColor,
+                          bgColor: qn.selectedPartyName==null? AppTheme.disableColor:Colors.white,
+
+                        ),
+                      ),
+                      !party?Container():ValidationErrorText(title: "* Select Party Name"),
+
+                      AddNewLabelTextField(
+                        labelText: 'Amount',
+                        regExp: '[0-9.]',
+                        scrollPadding: 350,
+                        textEditingController: qn.amount,
+                        textInputType: TextInputType.number,
+                        suffixIcon:  Container(
+                          margin: EdgeInsets.all(10),
+                          height: 15,
+                          width: 50,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              color: AppTheme.yellowColor
+                          ),
+                          child: Center(
+                            child: Text("Rs",style: AppTheme.TSWhite16,),
+                          ),
+                        ),
+                        ontap: (){},
+                        onChange: (v){},
+                        onEditComplete: (){
+                          node.unfocus();
+
+                        },
+
+                      ),
+                      !amount?Container():ValidationErrorText(title: "* Enter Amount",),
+
+                      GestureDetector(
+                        onTap: (){
+                          node.unfocus();
+                          setState(() {
+                            paymentCategoryOpen=true;
+                          });
+                        },
+                        child: SidePopUpParent(
+                          text: qn.paymentCategoryName==null? "Mode of Payment":qn.paymentCategoryName,
+                          textColor: qn.paymentCategoryName==null? AppTheme.addNewTextFieldText.withOpacity(0.5):AppTheme.addNewTextFieldText,
+                          iconColor: qn.paymentCategoryName==null? AppTheme.addNewTextFieldText:AppTheme.yellowColor,
+                          bgColor: qn.paymentCategoryName==null? AppTheme.disableColor:Colors.white,
 
                         ),
                       ),
 
-
+                      Obx(()=>SizedBox(height: keyboardVisible.value?350: 120,))
                     ],
                   ),
-                ),
-
-                //FORM
-                Container(
-                  height: SizeConfig.screenHeight,
-                  // color: Colors.transparent,
-                  child: SingleChildScrollView(
-                    physics: NeverScrollableScrollPhysics(),
-                    controller: scrollController,
-                    child: Column(
+                  actionWidget: Container(
+                    height: 50,
+                    width: SizeConfig.screenWidth,
+                    child: Row(
                       children: [
-                        SizedBox(height: 160,),
-                        Container(
-                          height: SizeConfig.screenHeight! - 60,
-                          width: SizeConfig.screenWidth,
-                          alignment: Alignment.topCenter,
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10))
-                          ),
-                          child: GestureDetector(
-                            onVerticalDragUpdate: (details){
+                        CancelButton(
+                          ontap: (){
+                            qn.clearInsertForm();
+                            Navigator.pop(context);
+                          },
+                        ),
 
-                              int sensitivity = 5;
+                        Text(qn.isPaymentReceivable?"Add New Receivable":"Add New Payable",
+                          style: TextStyle(fontFamily: 'RR',
+                              color: Colors.black,
+                              fontSize: 16),
+                        ),
 
-                              if (details.delta.dy > sensitivity) {
-                                scrollController!.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
-                                  if(isListScroll){
-
-                                    setState(() {
-                                      isListScroll=false;
-                                    });
-                                  }
-                                });
-
-                              } else if(details.delta.dy < -sensitivity){
-                                scrollController!.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
-
-                                  if(!isListScroll){
-
-                                    setState(() {
-                                      isListScroll=true;
-                                    });
-                                  }
-                                  /*Timer(Duration(milliseconds: 100), (){
-
-                               });*/
-
-                                });
-                              }
-                            },
-                            child: Container(
-                              height: SizeConfig.screenHeight! - 100,
-                              width: SizeConfig.screenWidth,
-
-                              decoration: BoxDecoration(
-                                  color: AppTheme.gridbodyBgColor,
-                                  borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(10),
-                                      topRight: Radius.circular(10))
-                              ),
-                              child: NotificationListener<ScrollNotification>(
-                                onNotification: (s){
-                                  if(s is ScrollStartNotification){
-                                    print(listViewController!.hasListeners);
-                                    print(listViewController!.position.userScrollDirection);
-                                    //    print(listViewController.position);
-                                    if(listViewController!.offset==0 && isListScroll && scrollController!.offset==100 && listViewController!.position.userScrollDirection==ScrollDirection.idle){
-
-                                      Timer(Duration(milliseconds: 100), (){
-                                        if(listViewController!.position.userScrollDirection!=ScrollDirection.reverse){
-                                          if(scrollController!.position.pixels == scrollController!.position.maxScrollExtent){
-                                            //scroll end
-                                            scrollController!.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value) {
-                                              if(isListScroll){
-                                                setState(() {
-                                                  isListScroll=false;
-                                                });
-                                              }
-                                            });
-                                          }
-
-                                        }
-                                      });
-
-
-                                    }
-                                  }
-                                  return true;
-                                } ,
-                                child: ListView(
-                                  physics: isListScroll?AlwaysScrollableScrollPhysics():NeverScrollableScrollPhysics(),
-                                  controller: listViewController,
-                                  scrollDirection: Axis.vertical,
-
-                                  children: [
-                                    GestureDetector(
-                                      onTap: () async{
-                                        final DateTime? picked = await showDatePicker2(
-                                            context: context,
-                                            initialDate:  qn.paymentDate==null?DateTime.now():qn.paymentDate!, // Refer step 1
-                                            firstDate: DateTime(1900),
-                                            lastDate: DateTime(2100),
-                                            builder: (BuildContext context,Widget? child){
-                                              return Theme(
-                                                data: Theme.of(context).copyWith(
-                                                  colorScheme: ColorScheme.light(
-                                                    primary: AppTheme.yellowColor, // header background color
-                                                    onPrimary: AppTheme.bgColor, // header text color
-                                                    onSurface: AppTheme.addNewTextFieldText, // body text color
-                                                  ),
-
-                                                ),
-                                                child: child!,
-                                              );
-                                            });
-                                        if (picked != null)
-                                          setState(() {
-                                            qn.paymentDate = picked;
-                                          });
-                                      },
-                                      child: ExpectedDateContainer(
-                                        text: qn.paymentDate==null?"Date":"${DateFormat.yMMMd().format(qn.paymentDate!)}",
-                                        textColor: qn.paymentDate==null? AppTheme.addNewTextFieldText.withOpacity(0.5):AppTheme.addNewTextFieldText,
-                                      ),
-                                    ),
-
-                                    AddNewLabelTextField(
-                                      labelText: 'Material Name',
-                                      regExp: '[A-Za-z  ]',
-                                      textEditingController: qn.materialName,
-                                      ontap: (){
-                                        setState(() {
-                                          _keyboardVisible=true;
-                                        });
-                                        scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
-
-                                      },
-                                      onEditComplete: (){
-                                        node.unfocus();
-                                        Timer(Duration(milliseconds: 100), (){
-                                          setState(() {
-                                            _keyboardVisible=false;
-                                          });
-                                        });
-                                      },
-                                    ),
-                                    !material?Container():ValidationErrorText(title: "* Enter Material",),
-
-                                    GestureDetector(
-                                      onTap: (){
-
-                                        if(qn.plantCount!=1){
-                                          node.unfocus();
-
-                                          Timer(Duration(milliseconds: 50), (){
-                                            setState(() {
-                                              _keyboardVisible=false;
-                                            });
-                                          });
-                                          setState(() {
-                                            isPlantOpen=true;
-                                          });
-                                        }
-
-
-                                      },
-                                      child: SidePopUpParent(
-                                        text: qn.PlantName==null? "Select Plant":qn.PlantName,
-                                        textColor: qn.PlantName==null? AppTheme.addNewTextFieldText.withOpacity(0.5):AppTheme.addNewTextFieldText,
-                                        iconColor: qn.PlantName==null? AppTheme.addNewTextFieldText:AppTheme.yellowColor,
-                                        bgColor: qn.PlantName==null? AppTheme.disableColor:Colors.white,
-
-                                      ),
-                                    ),
-                                   !plant?Container():ValidationErrorText(title: "* Select Plant"),
-
-                                    GestureDetector(
-                                      onTap: (){
-                                        node.unfocus();
-
-                                        setState(() {
-                                          suppliersListOpen=true;
-                                          _keyboardVisible=false;
-                                        });
-
-
-
-                                      },
-                                      child: SidePopUpParent(
-                                        text: qn.selectedPartyName==null? "Select Party Name":qn.selectedPartyName,
-                                        textColor: qn.selectedPartyName==null? AppTheme.addNewTextFieldText.withOpacity(0.5):AppTheme.addNewTextFieldText,
-                                        iconColor: qn.selectedPartyName==null? AppTheme.addNewTextFieldText:AppTheme.yellowColor,
-                                        bgColor: qn.selectedPartyName==null? AppTheme.disableColor:Colors.white,
-
-                                      ),
-                                    ),
-                                    !party?Container():ValidationErrorText(title: "* Select Party Name"),
-
-                                    AddNewLabelTextField(
-                                      labelText: 'Amount',
-                                      regExp: '[0-9.]',
-                                      scrollPadding: 100,
-                                      textEditingController: qn.amount,
-                                      textInputType: TextInputType.number,
-                                      suffixIcon:  Container(
-                                        margin: EdgeInsets.all(10),
-                              height: 15,
-                              width: 50,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(15),
-                                  color: AppTheme.yellowColor
-                              ),
-                              child: Center(
-                                child: Text("Rs",style: AppTheme.TSWhite16,),
-                              ),
-                            ),
-                                      ontap: (){
-                                        setState(() {
-                                          _keyboardVisible=true;
-                                        });
-                                        scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
-
-                                      },
-                                      onEditComplete: (){
-                                        node.unfocus();
-                                        Timer(Duration(milliseconds: 100), (){
-                                          setState(() {
-                                            _keyboardVisible=false;
-                                          });
-                                        });
-                                      },
-
-                                    ),
-                                    !amount?Container():ValidationErrorText(title: "* Enter Amount",),
-
-                                    GestureDetector(
-                                      onTap: (){
-                                        node.unfocus();
-
-
-                                        setState(() {
-                                          paymentCategoryOpen=true;
-                                          _keyboardVisible=false;
-                                        });
-
-
-
-                                      },
-                                      child: SidePopUpParent(
-                                        text: qn.paymentCategoryName==null? "Mode of Payment":qn.paymentCategoryName,
-                                        textColor: qn.paymentCategoryName==null? AppTheme.addNewTextFieldText.withOpacity(0.5):AppTheme.addNewTextFieldText,
-                                        iconColor: qn.paymentCategoryName==null? AppTheme.addNewTextFieldText:AppTheme.yellowColor,
-                                        bgColor: qn.paymentCategoryName==null? AppTheme.disableColor:Colors.white,
-
-                                      ),
-                                    ),
-
-
-
-
-
-
-
-                                    SizedBox(height:_keyboardVisible ? SizeConfig.screenHeight! * 0.5 :  SizeConfig.height50,)
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        )
                       ],
                     ),
                   ),
+                  image: "assets/svg/gridHeader/paymentHeader.jpg",
                 ),
 
-                Container(
-                  height: SizeConfig.height60,
-                  width: SizeConfig.screenWidth,
-                  child: Row(
-                    children: [
-                      CancelButton(
-                        ontap: (){
-                          qn.clearInsertForm();
-                          Navigator.pop(context);
-                        },
-                      ),
 
-                      Text(qn.isPaymentReceivable?"Add New Receivable":"Add New Payable",
-                        style: TextStyle(fontFamily: 'RR',
-                            color: Colors.black,
-                            fontSize: 16),
-                      ),
 
-                    ],
-                  ),
-                ),
+
+
+
+
 
 
                 //bottomNav

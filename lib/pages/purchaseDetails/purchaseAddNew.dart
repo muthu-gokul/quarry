@@ -33,7 +33,7 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
 
   GlobalKey <ScaffoldState> scaffoldkey=new GlobalKey<ScaffoldState>();
   bool _keyboardVisible = false;
-  bool isListScroll=false;
+
 
  // ScrollController? scrollController;
  // ScrollController? listViewController;
@@ -143,6 +143,7 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                    // physics: isListScroll?AlwaysScrollableScrollPhysics():NeverScrollableScrollPhysics(),
 
                     children: [
+                      SizedBox(height: 20,),
                       Container(
 
                           margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!,),
@@ -2367,7 +2368,7 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                               onTap: (){
                                 setState(() {
                                   materialsListOpen=false;
-                                  isListScroll=true;
+
                                 });
                               //  scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                // listViewController!.jumpTo(listViewController!.position.maxScrollExtent);

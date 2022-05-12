@@ -1,5 +1,6 @@
 import 'package:flutter/animation.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:quarry/utils/utils.dart';
 
 class ProductionMaterialMappingListModel{
 
@@ -50,7 +51,7 @@ class ProductionMaterialMappingListModel{
       ProductionOutputMaterialMappingId: json["ProductionOutputMaterialMappingId"],
       ProductionId: json["ProductionId"],
       UnitId: json["UnitId"],
-      OutputMaterialQuantity: json["OutputMaterialQuantity"].toDouble(),
+      OutputMaterialQuantity: parseDouble(json["OutputMaterialQuantity"]),
       IsActive: 1,
       MaterialName: json["OutputMaterialName"],
       MaterialUnit: json["UnitName"],

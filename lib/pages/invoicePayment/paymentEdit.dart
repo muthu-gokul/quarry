@@ -399,43 +399,34 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
                                                               Spacer(),
                                                               GestureDetector(
                                                                 onTap: () {
-                                                                  
-                                                                  
+
+
                                                                   CustomAlert(
                                                                     callback: (){
                                                                       Navigator.pop(context);
                                                                       Timer(Duration(milliseconds: 200), (){
+                                                                        print(qn.paymentMappingList[index].isEdit);
                                                                         if (qn.paymentMappingList[index].isEdit!) {
-                                                                          qn.paymentMappingList[index].scaleController!.forward().whenComplete(() {
-                                                                            print("EIT");
-                                                                            if (this.mounted) {
+                                                                          qn.paymentMappingList[index].scaleController!.reverse().whenComplete(() {
                                                                               setState(() {
                                                                                 qn.paymentMappingList.removeAt(index);
                                                                               });
                                                                               qn.balanceCalc();
-                                                                            }
                                                                           });
-
                                                                         }
                                                                         else {
                                                                           setState(() {
                                                                             qn.paymentMappingList[index].isDelete=true;
                                                                           });
-
-
-
                                                                           qn.paymentMappingList[index].scaleController!.reverse().whenComplete(() {
-                                                                            if (this.mounted) {
+
 
                                                                               setState(() {
                                                                                 qn.paymentMappingList.removeAt(index);
                                                                               });
                                                                               qn.balanceCalc();
-                                                                            }
+
                                                                           });
-
-
-
                                                                         }
                                                                       });
 
@@ -599,8 +590,6 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
                                                                       isDelete: false
                                                                   )
                                                               );
-
-
                                                             });
 
                                                             listViewController!.animateTo(listViewController!.position.maxScrollExtent, duration: Duration(milliseconds: 200), curve: Curves.easeIn).then((value) {

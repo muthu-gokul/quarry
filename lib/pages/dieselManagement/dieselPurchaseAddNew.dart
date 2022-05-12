@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/notifier/dieselNotifier.dart';
@@ -13,6 +14,7 @@ import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/constants.dart';
 import 'package:quarry/styles/size.dart';
+import 'package:quarry/utils/widgetUtils.dart';
 import 'package:quarry/widgets/bottomBarAddButton.dart';
 import 'package:quarry/widgets/currentDateContainer.dart';
 import 'package:quarry/widgets/customTextField.dart';
@@ -36,19 +38,13 @@ class DieselPurchaseFormState extends State<DieselPurchaseForm> with TickerProvi
 
   bool isEdit=false;
 
-
-  ScrollController? scrollController;
-  ScrollController? listViewController;
-
-
   bool isPlantOpen=false;
   bool isPurchaserOpen=false;
   bool isSupplierOpen=false;
   bool isVehicleOpen=false;
 
-  bool _keyboardVisible=false;
-  bool isListScroll=false;
 
+  var keyboardVisible=false.obs;
   bool plant=false;
   bool billNo=false;
   bool date=false;
@@ -66,15 +62,6 @@ class DieselPurchaseFormState extends State<DieselPurchaseForm> with TickerProvi
     isEdit=false;
     WidgetsBinding.instance!.addPostFrameCallback((_){
 
-
-      scrollController=new ScrollController();
-      listViewController=new ScrollController();
-      setState(() {
-
-      });
-
-
-
     });
     super.initState();
   }
@@ -83,450 +70,305 @@ class DieselPurchaseFormState extends State<DieselPurchaseForm> with TickerProvi
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     final node=FocusScope.of(context);
-
+    keyboardVisible.value = MediaQuery.of(context).viewInsets.bottom != 0;
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      backgroundColor: AppTheme.bgColor,
       body: Consumer<DieselNotifier>(
           builder: (context,dn,child)=> Stack(
             children: [
 
+              AddNewLayout(
+                  child: ListView(
+                    //controller: listViewController,
+                    scrollDirection: Axis.vertical,
+                   // physics: isListScroll?AlwaysScrollableScrollPhysics():NeverScrollableScrollPhysics(),
+
+                    children: [
+
+                      CurrentDate(DateTime.now()),
 
 
-              Container(
-                height: SizeConfig.screenHeight,
-                width: SizeConfig.screenWidth,
-                color: Colors.white,
-                child: Column(
-                  children: [
-                    Container(
-                      width: double.maxFinite,
-                      height:195,
+                      GestureDetector(
+                        onTap: (){
 
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image: AssetImage("assets/svg/gridHeader/DieselHeader.jpg",),
-                              fit: BoxFit.cover
-                          )
+                          if(dn.plantCount!=1){
+                            node.unfocus();
+                            setState(() {
+                              isPlantOpen=true;
+                            });
+                          }
+
+
+                        },
+                        child: SidePopUpParent(
+                          text: dn.DP_PlantName==null? "Select Plant":dn.DP_PlantName,
+                          textColor: dn.DP_PlantName==null? AppTheme.addNewTextFieldText.withOpacity(0.5):AppTheme.addNewTextFieldText,
+                          iconColor: dn.DP_PlantName==null? AppTheme.addNewTextFieldText:AppTheme.yellowColor,
+                          bgColor: dn.DP_PlantName==null? AppTheme.disableColor:Colors.white,
+
+                        ),
+                      ),
+                      !plant?Container():ValidationErrorText(title: "* Select Plant"),
+
+                      AddNewLabelTextField(
+                        textEditingController: dn.DP_billno,
+                        onChange: (v){},
+                        labelText: "Bill Number",
+                        regExp: '[A-Za-z0-9  ]',
+                        ontap: (){
+
+                        },
+                        onEditComplete: (){
+                          node.unfocus();
+                        },
 
                       ),
-                    ),
+                      !billNo?Container():ValidationErrorText(title: "* Enter Bill Number",),
+                      GestureDetector(
+                        onTap: () async{
+                          final DateTime? picked = await showDatePicker2(
+                              context: context,
+                              initialDate:  dn.DP_billDate==null?DateTime.now():dn.DP_billDate!, // Refer step 1
+                              firstDate: DateTime(2000),
+                              lastDate: DateTime.now(),
+                              builder: (BuildContext context,Widget? child){
+                                return Theme(
+                                  data: Theme.of(context).copyWith(
+                                    colorScheme: ColorScheme.light(
+                                      primary: AppTheme.yellowColor, // header background color
+                                      onPrimary: AppTheme.bgColor, // header text color
+                                      onSurface: AppTheme.addNewTextFieldText, // body text color
+                                    ),
+                                  ),
+                                  child: child!,
+                                );
+                              });
 
 
 
+                          if (picked != null)
+                            setState(() {
+                              dn.DP_billDate = picked;
 
-
-                  ],
-                ),
-              ),
-
-
-              Container(
-                height: SizeConfig.screenHeight,
-                // color: Colors.transparent,
-                child: SingleChildScrollView(
-                  physics: NeverScrollableScrollPhysics(),
-                  controller: scrollController,
-                  child: Column(
-                    children: [
-                      SizedBox(height: 160,),
-                      Container(
-                        height: SizeConfig.screenHeight,
-                        width: SizeConfig.screenWidth,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10))
+                            });
+                        },
+                        child: ExpectedDateContainer(
+                          //  text: DateFormat("yyyy-MM-dd").format(dn.DP_billDate)==DateFormat("yyyy-MM-dd").format(DateTime.now())?"Select Bill Date":"${DateFormat.yMMMd().format(dn.DP_billDate)}",
+                          text:dn.DP_billDate==null?"Select Bill Date": "${DateFormat.yMMMd().format(dn.DP_billDate!)}",
+                          textColor:AppTheme.addNewTextFieldText,
+                          // textColor:DateFormat("yyyy-MM-dd").format(dn.DP_billDate)==DateFormat("yyyy-MM-dd").format(DateTime.now())? AppTheme.addNewTextFieldText.withOpacity(0.5):AppTheme.addNewTextFieldText,
                         ),
-                        alignment: Alignment.topCenter,
-                        child: GestureDetector(
-                          onVerticalDragUpdate: (details){
+                      ),
+                      !date?Container():ValidationErrorText(title: "* Select Bill Date"),
+                      GestureDetector(
+                        onTap: (){
+                          node.unfocus();
+                          setState(() {
+                            isPurchaserOpen=true;
+                          });
+                        },
+                        child: SidePopUpParent(
+                          text: dn.DP_purchaserName==null? "Select Purchaser":dn.DP_purchaserName,
+                          textColor: dn.DP_purchaserName==null? AppTheme.addNewTextFieldText.withOpacity(0.5):AppTheme.addNewTextFieldText,
+                          iconColor: dn.DP_purchaserName==null? AppTheme.addNewTextFieldText:AppTheme.yellowColor,
+                          bgColor: dn.DP_purchaserName==null? AppTheme.disableColor:Colors.white,
 
-                            int sensitivity = 5;
-                            if (details.delta.dy > sensitivity) {
-                              scrollController!.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
-                                if(isListScroll){
-                                  setState(() {
-                                    isListScroll=false;
-                                  });
-                                }
-                              });
-
-                            } else if(details.delta.dy < -sensitivity){
-                              scrollController!.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value){
-
-                                if(!isListScroll){
-                                  setState(() {
-                                    isListScroll=true;
-                                  });
-                                }
-                              });
-                            }
-                          },
-                          child: Container(
-                          //  height:_keyboardVisible?SizeConfig.screenHeight*0.5 :SizeConfig.screenHeight-100,
-                            height:SizeConfig.screenHeight,
-                            width: SizeConfig.screenWidth,
-
-                            decoration: BoxDecoration(
-                                color: AppTheme.gridbodyBgColor,
-                                borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10))
-                            ),
-                            child: NotificationListener<ScrollNotification>(
-                              onNotification: (s){
-                                if(s is ScrollStartNotification){
-
-                                  if(listViewController!.offset==0 && isListScroll && scrollController!.offset==100 && listViewController!.position.userScrollDirection==ScrollDirection.idle){
-
-                                    Timer(Duration(milliseconds: 100), (){
-                                      if(listViewController!.position.userScrollDirection!=ScrollDirection.reverse){
-
-                                        //if(scrollController.position.pixels == scrollController.position.maxScrollExtent){
-                                        if(listViewController!.offset==0){
-
-                                          scrollController!.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn).then((value) {
-                                            if(isListScroll){
-                                              setState(() {
-                                                isListScroll=false;
-                                              });
-                                            }
-                                          });
-                                        }
-
-                                      }
-                                    });
-                                  }
-                                }
-                                return true;
-                              } ,
-                              child: ListView(
-                                controller: listViewController,
-                                scrollDirection: Axis.vertical,
-                                physics: isListScroll?AlwaysScrollableScrollPhysics():NeverScrollableScrollPhysics(),
-
-                                children: [
-
-                                  CurrentDate(DateTime.now()),
+                        ),
+                      ),
+                      !purchaser?Container():ValidationErrorText(title: "* Select Purchaser"),
+                      GestureDetector(
+                        onTap: (){
 
 
-                                  GestureDetector(
-                                    onTap: (){
-
-                                      if(dn.plantCount!=1){
-                                        node.unfocus();
-
-                                        Timer(Duration(milliseconds: 50), (){
-                                          setState(() {
-                                            _keyboardVisible=false;
-                                          });
-                                        });
-                                        setState(() {
-                                          isPlantOpen=true;
-                                        });
-                                      }
-
-
-                                    },
-                                    child: SidePopUpParent(
-                                      text: dn.DP_PlantName==null? "Select Plant":dn.DP_PlantName,
-                                      textColor: dn.DP_PlantName==null? AppTheme.addNewTextFieldText.withOpacity(0.5):AppTheme.addNewTextFieldText,
-                                      iconColor: dn.DP_PlantName==null? AppTheme.addNewTextFieldText:AppTheme.yellowColor,
-                                      bgColor: dn.DP_PlantName==null? AppTheme.disableColor:Colors.white,
-
-                                    ),
-                                  ),
-                                  !plant?Container():ValidationErrorText(title: "* Select Plant"),
-
-                                  AddNewLabelTextField(
-                                    textEditingController: dn.DP_billno,
-                                    onChange: (v){},
-                                    labelText: "Bill Number",
-                                    regExp: '[A-Za-z0-9  ]',
-                                    ontap: (){
-                                      scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
-                                      setState(() {
-                                        _keyboardVisible=true;
-                                      });
-                                    },
-                                    onEditComplete: (){
-                                      node.unfocus();
-                                      Timer(Duration(milliseconds: 300), (){
-                                        setState(() {
-                                          _keyboardVisible=false;
-                                        });
-                                      });
-                                    },
-
-                                  ),
-                                  !billNo?Container():ValidationErrorText(title: "* Enter Bill Number",),
-                                  GestureDetector(
-                                    onTap: () async{
-                                      final DateTime? picked = await showDatePicker2(
-                                        context: context,
-                                        initialDate:  dn.DP_billDate==null?DateTime.now():dn.DP_billDate!, // Refer step 1
-                                        firstDate: DateTime(2000),
-                                        lastDate: DateTime.now(),
-                                          builder: (BuildContext context,Widget? child){
-                                            return Theme(
-                                              data: Theme.of(context).copyWith(
-                                                colorScheme: ColorScheme.light(
-                                                  primary: AppTheme.yellowColor, // header background color
-                                                  onPrimary: AppTheme.bgColor, // header text color
-                                                  onSurface: AppTheme.addNewTextFieldText, // body text color
-                                                ),
-                                              ),
-                                              child: child!,
-                                            );
-                                          });
+                          node.unfocus();
+                          setState(() {
+                            isSupplierOpen=true;
+                          });
 
 
 
-                                      if (picked != null)
-                                        setState(() {
-                                          dn.DP_billDate = picked;
+                        },
+                        child: SidePopUpParent(
+                          text: dn.DP_supplierName==null? "Select Supplier":dn.DP_supplierName,
+                          textColor: dn.DP_supplierName==null? AppTheme.addNewTextFieldText.withOpacity(0.5):AppTheme.addNewTextFieldText,
+                          iconColor: dn.DP_supplierName==null? AppTheme.addNewTextFieldText:AppTheme.yellowColor,
+                          bgColor: dn.DP_supplierName==null? AppTheme.disableColor:Colors.white,
 
-                                        });
-                                    },
-                                    child: ExpectedDateContainer(
-                                    //  text: DateFormat("yyyy-MM-dd").format(dn.DP_billDate)==DateFormat("yyyy-MM-dd").format(DateTime.now())?"Select Bill Date":"${DateFormat.yMMMd().format(dn.DP_billDate)}",
-                                      text:dn.DP_billDate==null?"Select Bill Date": "${DateFormat.yMMMd().format(dn.DP_billDate!)}",
-                                      textColor:AppTheme.addNewTextFieldText,
-                                     // textColor:DateFormat("yyyy-MM-dd").format(dn.DP_billDate)==DateFormat("yyyy-MM-dd").format(DateTime.now())? AppTheme.addNewTextFieldText.withOpacity(0.5):AppTheme.addNewTextFieldText,
-                                    ),
-                                  ),
-                                  !date?Container():ValidationErrorText(title: "* Select Bill Date"),
-                                  GestureDetector(
-                                    onTap: (){
-                                      node.unfocus();
-                                      Timer(Duration(milliseconds: 50), (){
-                                        setState(() {
-                                          _keyboardVisible=false;
-                                        });
-                                      });
-                                      setState(() {
-                                        isPurchaserOpen=true;
-                                      });
-                                    },
-                                    child: SidePopUpParent(
-                                      text: dn.DP_purchaserName==null? "Select Purchaser":dn.DP_purchaserName,
-                                      textColor: dn.DP_purchaserName==null? AppTheme.addNewTextFieldText.withOpacity(0.5):AppTheme.addNewTextFieldText,
-                                      iconColor: dn.DP_purchaserName==null? AppTheme.addNewTextFieldText:AppTheme.yellowColor,
-                                      bgColor: dn.DP_purchaserName==null? AppTheme.disableColor:Colors.white,
+                        ),
+                      ),
+                      !supplier?Container():ValidationErrorText(title: "* Select Supplier"),
 
-                                    ),
-                                  ),
-                                  !purchaser?Container():ValidationErrorText(title: "* Select Purchaser"),
-                                  GestureDetector(
-                                    onTap: (){
+                      AddNewLabelTextField(
+                        textEditingController: dn.DP_location,
+                        labelText: "Location",
+                        scrollPadding: 350,
+                        onChange: (v){},
+                        ontap: (){
 
+                        },
+                        onEditComplete: (){
+                          node.unfocus();
+                        },
 
-                                      node.unfocus();
+                      ),
+                      AddNewLabelTextField(
+                        textEditingController: dn.DP_contactNo,
+                        onChange: (v){},
+                        labelText: "Contact Number",
+                        regExp: '[0-9]',
+                        textLength: phoneNoLength,
+                        textInputType: TextInputType.number,
+                        scrollPadding: 350,
+                        ontap: (){},
+                        onEditComplete: (){
+                          node.unfocus();
+                        },
 
-                                      Timer(Duration(milliseconds: 50), (){
-                                        setState(() {
-                                          _keyboardVisible=false;
-                                        });
-                                      });
-                                      setState(() {
-                                        isSupplierOpen=true;
-                                      });
+                      ),
 
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
 
+                          Checkbox(
 
-                                    },
-                                    child: SidePopUpParent(
-                                      text: dn.DP_supplierName==null? "Select Supplier":dn.DP_supplierName,
-                                      textColor: dn.DP_supplierName==null? AppTheme.addNewTextFieldText.withOpacity(0.5):AppTheme.addNewTextFieldText,
-                                      iconColor: dn.DP_supplierName==null? AppTheme.addNewTextFieldText:AppTheme.yellowColor,
-                                      bgColor: dn.DP_supplierName==null? AppTheme.disableColor:Colors.white,
+                              fillColor:MaterialStateColor.resolveWith((states) => AppTheme.yellowColor),
+                              checkColor: AppTheme.bgColor.withOpacity(0.5),
+                              value: dn.DP_isVehicle,
+                              onChanged: (v){
+                                setState(() {
+                                  dn.DP_isVehicle=!dn.DP_isVehicle;
+                                  dn.DP_vehicleId=null;
+                                  dn.DP_vehicleName=null;
+                                  vehicle=false;;
 
-                                    ),
-                                  ),
-                                  !supplier?Container():ValidationErrorText(title: "* Select Supplier"),
+                                });
+                              }),
+                          Text("Is Vehicle",style: TextStyle(fontFamily: 'RR',fontSize: 16,color: AppTheme.addNewTextFieldText),),
+                          SizedBox(width: SizeConfig.width20,),
+                        ],
+                      ),
 
-                                  AddNewLabelTextField(
-                                    textEditingController: dn.DP_location,
-                                    labelText: "Location",
-                                    scrollPadding: 450,
-                                    onChange: (v){},
-                                    ontap: (){
-                                      scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
-                                      setState(() {
-                                        _keyboardVisible=true;
-                                        isListScroll=true;
-                                      });
-                                    },
-                                    onEditComplete: (){
-                                      node.unfocus();
-                                      Timer(Duration(milliseconds: 300), (){
-                                        setState(() {
-                                          _keyboardVisible=false;
-                                        });
-                                      });
-                                    },
-
-                                  ),
-                                  AddNewLabelTextField(
-                                    textEditingController: dn.DP_contactNo,
-                                    onChange: (v){},
-                                    labelText: "Contact Number",
-                                    regExp: '[0-9]',
-                                    textLength: phoneNoLength,
-                                    textInputType: TextInputType.number,
-                                    scrollPadding: 500,
-                                    ontap: (){
-                                      scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
-                                      setState(() {
-                                        _keyboardVisible=true;
-                                        isListScroll=true;
-                                      });
-                                    },
-                                    onEditComplete: (){
-                                      node.unfocus();
-                                      Timer(Duration(milliseconds: 300), (){
-                                        setState(() {
-                                          _keyboardVisible=false;
-                                        });
-                                      });
-                                    },
-
-                                  ),
-
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-
-                                      Checkbox(
-
-                                          fillColor:MaterialStateColor.resolveWith((states) => AppTheme.yellowColor),
-                                          checkColor: AppTheme.bgColor.withOpacity(0.5),
-                                          value: dn.DP_isVehicle,
-                                          onChanged: (v){
-                                            setState(() {
-                                              dn.DP_isVehicle=!dn.DP_isVehicle;
-                                              dn.DP_vehicleId=null;
-                                              dn.DP_vehicleName=null;
-                                              vehicle=false;;
-
-                                            });
-                                          }),
-                                      Text("Is Vehicle",style: TextStyle(fontFamily: 'RR',fontSize: 16,color: AppTheme.addNewTextFieldText),),
-                                      SizedBox(width: SizeConfig.width20,),
-                                    ],
-                                  ),
-
-                                  GestureDetector(
-                                    onTap: (){
-                                      setState(() {
-                                        isVehicleOpen=true;
-                                      });
-                                    },
-                                    child: AnimatedContainer(
-                                      height: dn.DP_isVehicle?50:0,
-                                      duration: Duration(milliseconds: 300),
-                                      curve: Curves.easeIn,
-                                     //   margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20),
-                                     /* decoration: BoxDecoration(
+                      GestureDetector(
+                        onTap: (){
+                          setState(() {
+                            isVehicleOpen=true;
+                          });
+                        },
+                        child: AnimatedContainer(
+                            height: dn.DP_isVehicle?50:0,
+                            duration: Duration(milliseconds: 300),
+                            curve: Curves.easeIn,
+                            //   margin: EdgeInsets.only(left:SizeConfig.width20,right:SizeConfig.width20),
+                            /* decoration: BoxDecoration(
                                           borderRadius: BorderRadius.circular(3),
                                           border: Border.all(color:AppTheme.addNewTextFieldBorder),
                                           color: Colors.transparent
                                       ),*/
-                                      alignment: Alignment.topCenter,
-                                      child: SidePopUpParentWithoutTopMargin(
-                                        text: dn.DP_vehicleName==null? "Select Vehicle":dn.DP_vehicleName,
-                                        textColor: dn.DP_vehicleName==null? AppTheme.addNewTextFieldText.withOpacity(0.5):AppTheme.addNewTextFieldText,
-                                        iconColor: dn.DP_vehicleName==null? AppTheme.addNewTextFieldText:AppTheme.yellowColor,
-                                        bgColor: dn.DP_vehicleName==null? AppTheme.disableColor:Colors.white,
+                            alignment: Alignment.topCenter,
+                            child: SidePopUpParentWithoutTopMargin(
+                              text: dn.DP_vehicleName==null? "Select Vehicle":dn.DP_vehicleName,
+                              textColor: dn.DP_vehicleName==null? AppTheme.addNewTextFieldText.withOpacity(0.5):AppTheme.addNewTextFieldText,
+                              iconColor: dn.DP_vehicleName==null? AppTheme.addNewTextFieldText:AppTheme.yellowColor,
+                              bgColor: dn.DP_vehicleName==null? AppTheme.disableColor:Colors.white,
 
-                                      )
-                                    ),
-                                  ),
-                                  !vehicle?Container():ValidationErrorText(title: "* Select Vehicle",),
+                            )
+                        ),
+                      ),
+                      !vehicle?Container():ValidationErrorText(title: "* Select Vehicle",),
 
-                                  AddNewLabelTextField(
-                                    textEditingController: dn.DP_dieselQTY,
-                                    labelText: "Diesel Quantity",
-                                    regExp: decimalReg,
-                                    textInputType: TextInputType.number,
-                                    scrollPadding: 550,
-                                    ontap: (){
-                                      scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
-                                      setState(() {
-                                        _keyboardVisible=true;
-                                        isListScroll=true;
-                                      });
-                                    },
-                                    onEditComplete: (){
-                                      node.unfocus();
-                                      Timer(Duration(milliseconds: 300), (){
-                                        setState(() {
-                                          _keyboardVisible=false;
-                                        });
-                                      });
-                                    },
-                                    onChange: (v){
-                                      dn.dieselCalc();
-                                    },
-                                    suffixIcon: Container(
-                                      height: 30,
-                                      width: 45,
-                                      margin: EdgeInsets.all(12),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(20),
-                                        color: AppTheme.yellowColor
-                                      ),
-                                      child: Center(
-                                        child: Text("Ltr",style: AppTheme.TSWhite166,),
-                                      ),
-                                    ),
-                                  ),
-                                  !qty?Container():ValidationErrorText(title: "* Enter Quantity",),
-                                  AddNewLabelTextField(
-                                    textEditingController: dn.DP_dieselPrice,
-                                    labelText: "Diesel Price",
-                                    regExp: decimalReg,
-                                    textInputType: TextInputType.number,
-                                    scrollPadding: 550,
-                                    ontap: (){
-                                      scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
-                                      setState(() {
-                                        _keyboardVisible=true;
-                                        isListScroll=true;
-                                      });
-                                    },
-                                    onEditComplete: (){
-                                      node.unfocus();
-                                      Timer(Duration(milliseconds: 300), (){
-                                        setState(() {
-                                          _keyboardVisible=false;
-                                        });
-                                      });
-                                    },
-                                    onChange: (v){
-                                      dn.dieselCalc();
-                                    },
-
-                                  ),
-                                  !price?Container():ValidationErrorText(title: "* Enter Price",),
-
-                                  SizedBox(height: 20,),
-                                  Text("Total Amount",style: TextStyle(fontSize: 14,fontFamily: 'RR',color: AppTheme.hintColor),
-                                  textAlign: TextAlign.center,
-                                  ),
-                                  Text("${dn.totalAmount}",style: TextStyle(fontSize: 25,fontFamily: 'RB',color: AppTheme.addNewTextFieldText),
-                                    textAlign: TextAlign.center,
-                                  ),
-
-                                  SizedBox(height:_keyboardVisible?SizeConfig.screenHeight!*0.5: SizeConfig.height250,)
-                                ],
-                              ),
-                            ),
+                      AddNewLabelTextField(
+                        textEditingController: dn.DP_dieselQTY,
+                        labelText: "Diesel Quantity",
+                        regExp: decimalReg,
+                        textInputType: TextInputType.number,
+                        scrollPadding: 350,
+                        ontap: (){},
+                        onEditComplete: (){
+                          node.unfocus();
+                        },
+                        onChange: (v){
+                          dn.dieselCalc();
+                        },
+                        suffixIcon: Container(
+                          height: 30,
+                          width: 45,
+                          margin: EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: AppTheme.yellowColor
+                          ),
+                          child: Center(
+                            child: Text("Ltr",style: AppTheme.TSWhite166,),
                           ),
                         ),
-                      )
+                      ),
+                      !qty?Container():ValidationErrorText(title: "* Enter Quantity",),
+                      AddNewLabelTextField(
+                        textEditingController: dn.DP_dieselPrice,
+                        labelText: "Diesel Price",
+                        regExp: decimalReg,
+                        textInputType: TextInputType.number,
+                        scrollPadding: 350,
+                        ontap: (){},
+                        onEditComplete: (){
+                          node.unfocus();
+                        },
+                        onChange: (v){
+                          dn.dieselCalc();
+                        },
+
+                      ),
+                      !price?Container():ValidationErrorText(title: "* Enter Price",),
+
+                      SizedBox(height: 20,),
+                      Text("Total Amount",style: TextStyle(fontSize: 14,fontFamily: 'RR',color: AppTheme.hintColor),
+                        textAlign: TextAlign.center,
+                      ),
+                      Text("${dn.totalAmount}",style: TextStyle(fontSize: 25,fontFamily: 'RB',color: AppTheme.addNewTextFieldText),
+                        textAlign: TextAlign.center,
+                      ),
+
+                      Obx(()=>SizedBox(height: keyboardVisible.value?350: 120,))
+
+
                     ],
                   ),
-                ),
-              ),
+                  actionWidget: Container(
+                    height: 50,
+                    width: SizeConfig.screenWidth,
+                    child: Row(
+                      children: [
+                        CancelButton(
+                          ontap: (){
+                            Navigator.pop(context);
+                            dn.clearDP_Form();
+                          },
+                        ),
 
+                        Text("Diesel Purchase",
+                          style: TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 16),
+                        ),
+
+                        Spacer(),
+                        Container(
+                          height: 30,
+                          padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(50),
+                              color: Colors.white
+                          ),
+                          child: Center(
+                            child: Text("Diesel Purchase",style: TextStyle(fontFamily: 'RR',fontSize: 14,color: Colors.green),),
+                          ),
+                        ),
+                        SizedBox(width: SizeConfig.width10,),
+                      ],
+                    ),
+                  ),
+                image: "assets/svg/gridHeader/DieselHeader.jpg",
+              ),
 
               //bottomNav
               Positioned(
@@ -576,7 +418,7 @@ class DieselPurchaseFormState extends State<DieselPurchaseForm> with TickerProvi
                   ),
                 ),
               ),
-              //addButton
+
               //add button
               Align(
                 alignment: Alignment.bottomCenter,
@@ -629,46 +471,6 @@ class DieselPurchaseFormState extends State<DieselPurchaseForm> with TickerProvi
                   },
                 ),
               ),
-
-
-
-
-
-
-
-              Container(
-                height: SizeConfig.height60,
-                width: SizeConfig.screenWidth,
-                child: Row(
-                  children: [
-                    CancelButton(
-                      ontap: (){
-                        Navigator.pop(context);
-                        dn.clearDP_Form();
-                      },
-                    ),
-
-                    Text("Diesel Purchase",
-                      style: TextStyle(fontFamily: 'RR',color: AppTheme.bgColor,fontSize: 16),
-                    ),
-
-                    Spacer(),
-                    Container(
-                      height: 30,
-                      padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(50),
-                          color: Colors.white
-                      ),
-                      child: Center(
-                        child: Text("Diesel Purchase",style: TextStyle(fontFamily: 'RR',fontSize: 14,color: Colors.green),),
-                      ),
-                    ),
-                    SizedBox(width: SizeConfig.width10,),
-                  ],
-                ),
-              ),
-
 
               Container(
 

@@ -468,8 +468,8 @@ class ProductionDetailAddNewState extends State<ProductionDetailAddNew> with Tic
                                                                     Navigator.pop(context);
                                                                     Timer(Duration(milliseconds: 200), (){
                                                                       if (qn.productionMaterialMappingList[index].isEdit!) {
-                                                                        qn.productionMaterialMappingList[index].scaleController!.forward().whenComplete(() {
-                                                                          if (this.mounted) {
+                                                                        qn.productionMaterialMappingList[index].scaleController!.reverse().whenComplete(() {
+
                                                                             if(qn.productionMaterialMappingList[index].MaterialName!.toLowerCase()=='dust'){
                                                                               setState(() {
                                                                                 qn.dustQty=0.0;
@@ -480,7 +480,7 @@ class ProductionDetailAddNewState extends State<ProductionDetailAddNew> with Tic
                                                                               qn.productionMaterialMappingList.removeAt(index);
                                                                             });
                                                                             qn.wastageCalc();
-                                                                          }
+
                                                                         });
 
                                                                       }

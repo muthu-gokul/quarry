@@ -367,7 +367,7 @@ class PaymentGridState extends State<PaymentGrid> with TickerProviderStateMixin{
                                 color: AppTheme.bgColor,
                                 alignment: Alignment.centerLeft,
                                 padding: EdgeInsets.only(left: 5),
-                                child: Text("${pn.gridCol[0]}",style: AppTheme.TSWhite166,),
+                                child: Text(pn.gridCol.isEmpty?"":"${pn.gridCol[0]}",style: AppTheme.TSWhite166,),
 
                               ),
                               Container(
@@ -583,13 +583,13 @@ class PaymentGridState extends State<PaymentGrid> with TickerProviderStateMixin{
                                           if (picked1 != null && picked1.length == 2) {
                                             setState(() {
                                               pn.picked=picked1;
-                                              pn.GetPaymentDbHit(context,null,PaymentEditFormState());
+                                              pn.GetPaymentDbHit(context,null,this);
                                             });
                                           }
                                           else if(picked1!=null && picked1.length ==1){
                                             setState(() {
                                               pn.picked=picked1;
-                                              pn.GetPaymentDbHit(context,null,PaymentEditFormState());
+                                              pn.GetPaymentDbHit(context,null,this);
                                             });
                                           }
 
@@ -647,7 +647,7 @@ class PaymentGridState extends State<PaymentGrid> with TickerProviderStateMixin{
                                     if(pn.filterGridPaymentList[selectedIndex!].DBInvoiceNumber!=0){
                                       pn.updatePaymentEdit(true);
                                       pn.PaymentDropDownValues(context);
-                                      pn.GetPaymentDbHit(context, pn.filterGridPaymentList[selectedIndex!].invoiceId,PaymentEditFormState());
+                                      pn.GetPaymentDbHit(context, pn.filterGridPaymentList[selectedIndex!].invoiceId,this);
                                       Navigator.push(context, _createRoute());
                                       setState(() {
                                         selectedIndex=-1;

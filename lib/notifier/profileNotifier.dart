@@ -105,13 +105,11 @@ class ProfileNotifier extends ChangeNotifier{
 
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
-        if(value!=null){
+        if(value!="null"){
           var parsed=json.decode(value);
           var t=parsed['Table'] as List?;
           GetUserDetailDbHit(context, Provider.of<QuarryNotifier>(context,listen: false).UserId);
         }
-
-
 
         updateProfileLoader(false);
       });

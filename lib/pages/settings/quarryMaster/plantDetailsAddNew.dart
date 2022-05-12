@@ -557,7 +557,7 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
                                                                 Timer(Duration(milliseconds: 200), (){
                                                                   if(isEdit){
                                                                     if (qn.PO_PlantLicenseList[index].isEdit!) {
-                                                                      qn.PO_PlantLicenseList[index].scaleController!.forward().whenComplete(() {
+                                                                      qn.PO_PlantLicenseList[index].scaleController!.reverse().whenComplete(() {
                                                                         print("EIT");
                                                                         if (this.mounted) {
                                                                           setState(() {

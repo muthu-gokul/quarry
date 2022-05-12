@@ -320,13 +320,13 @@ class ProductionGridState extends State<ProductionGrid> with TickerProviderState
                                           if (picked1 != null && picked1.length == 2) {
                                             setState(() {
                                               pn.picked=picked1;
-                                              pn.GetProductionDbHit(context,null,ProductionDetailAddNewState());
+                                              pn.GetProductionDbHit(context,null,this);
                                             });
                                           }
                                           else if(picked1!=null && picked1.length ==1){
                                             setState(() {
                                               pn.picked=picked1;
-                                              pn.GetProductionDbHit(context,null,ProductionDetailAddNewState());
+                                              pn.GetProductionDbHit(context,null,this);
                                             });
                                           }
 
@@ -352,7 +352,7 @@ class ProductionGridState extends State<ProductionGrid> with TickerProviderState
                                   pn.PlantUserDropDownValues(context).then((value) {
 
 
-                                    pn.GetProductionDbHit(context, pn.productionGridValues[selectedIndex!].productionId, ProductionDetailAddNewState());
+                                    pn.GetProductionDbHit(context, pn.productionGridValues[selectedIndex!].productionId, this);
                                     pn.updateProductionEdit(true);
                                     Navigator.push(context, _createRoute());
                                     setState(() {

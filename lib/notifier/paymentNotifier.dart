@@ -347,7 +347,7 @@ class PaymentNotifier extends ChangeNotifier{
     };
 
     updatePaymentLoader(false);
-  //  try{
+    try{
       await call.ApiCallGetInvoke(body,context).then((value) {
         if(value!="null"){
           if(filterUsersPlantList.isEmpty){
@@ -408,10 +408,10 @@ class PaymentNotifier extends ChangeNotifier{
 
         updatePaymentLoader(false);
       });
- /*   }catch(e){
+   }catch(e){
       updatePaymentLoader(false);
       CustomAlert().commonErrorAlert(context, "${Sp.getPaymentDetail}" , e.toString());
-    }*/
+    }
 
 
   }

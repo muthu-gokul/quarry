@@ -48,7 +48,8 @@ class ProfileAvatar extends StatelessWidget {
 class AddNewLayout extends StatefulWidget {
   Widget child;
   Widget actionWidget;
-  AddNewLayout({required this.child,required this.actionWidget});
+  String image;
+  AddNewLayout({required this.child,required this.actionWidget,this.image="assets/images/saleFormheader.jpg"});
 
   @override
   State<AddNewLayout> createState() => _AddNewLayoutState();
@@ -100,21 +101,6 @@ class _AddNewLayoutState extends State<AddNewLayout> {
             leading: Container(),
             actions: [
               widget.actionWidget
-              /*Container(
-                height: 50,
-                width:SizeConfig.screenWidth,
-                child: Row(
-                  children: [
-                    CancelButton(
-                      ontap: (){
-                        Navigator.pop(context);
-                      },
-                    ),
-                    Text("Select Plant",style: TextStyle(fontFamily: 'RM',color: AppTheme.bgColor,fontSize: 16)),
-
-                  ],
-                ),
-              ),*/
             ],
             expandedHeight: 200.0,
             floating: false,
@@ -125,7 +111,7 @@ class _AddNewLayoutState extends State<AddNewLayout> {
                   width: SizeConfig.screenWidth,
                   decoration: BoxDecoration(
                       image: DecorationImage(
-                          image: AssetImage("assets/images/saleFormheader.jpg",),
+                          image: AssetImage(widget.image,),
                           fit: BoxFit.cover
                       )
                   ),
@@ -138,9 +124,9 @@ class _AddNewLayoutState extends State<AddNewLayout> {
         width: SizeConfig.screenWidth,
         clipBehavior: Clip.antiAlias,
         margin: EdgeInsets.only(top: silverBodyTopMargin),
-        padding: EdgeInsets.only(top: 30,bottom: 30),
+        padding: EdgeInsets.only(top: 0,bottom: 30),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10)),
+          borderRadius: BorderRadius.only(topLeft: Radius.circular(15),topRight: Radius.circular(15)),
           //color: Color(0xFFF6F7F9),
           color: Colors.white,
         ),
