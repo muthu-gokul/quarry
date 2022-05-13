@@ -204,13 +204,9 @@ class DieselNotifier extends ChangeNotifier{
   getStock(int plantId) async{
     stock=0.0;
     var response=await getMasterDrp("DieselManagement", "Stock", plantId, null);
-    if(response != "null" && response!=''){
-      var parsed=jsonDecode(response);
-      var table=parsed['Table'] as List;
-      if(table.length>0){
-        stock=table[0]['Stock'];
-        notifyListeners();
-      }
+    if(response.isNotEmpty){
+      stock=response[0]['Stock'];
+      notifyListeners();
     }
   }
 

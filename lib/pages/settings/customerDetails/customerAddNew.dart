@@ -353,6 +353,7 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                         labelText: 'GST No ',
                                         textEditingController: qn.customerGstNumber,
                                         scrollPadding: 400,
+                                        textLength: gstLength,
                                         onEditComplete: (){
                                           node.unfocus();
                                           setState(() {
@@ -385,6 +386,7 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                                   setState(() {
                                                     qn.isCreditCustomer=v;
                                                     qn.isAdvanceCustomer=false;
+                                                    qn.customerAdvanceAmount.clear();
                                                     _keyboardVisible=false;
                                                   });
 
@@ -393,6 +395,8 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                                 onTap: (){
                                                   setState(() {
                                                     qn.isCreditCustomer=!qn.isCreditCustomer!;
+                                                    qn.isAdvanceCustomer=false;
+                                                    qn.customerAdvanceAmount.clear();
                                                     _keyboardVisible=false;
                                                   });
                                                 },
@@ -533,6 +537,7 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                                   setState(() {
                                                     qn.isAdvanceCustomer=v;
                                                     qn.isCreditCustomer=false;
+                                                    qn.customerCreditLimit.clear();
                                                     _keyboardVisible=false;
                                                   });
 
@@ -541,6 +546,8 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
                                                 onTap: (){
                                                   setState(() {
                                                     qn.isAdvanceCustomer=!qn.isAdvanceCustomer!;
+                                                    qn.isCreditCustomer=false;
+                                                    qn.customerCreditLimit.clear();
                                                     _keyboardVisible=false;
                                                   });
                                                 },

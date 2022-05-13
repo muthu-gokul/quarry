@@ -1,5 +1,31 @@
 import 'package:flutter/cupertino.dart';
 
+class GetMasterDrp{
+  int? Id;
+  String? Text;
+
+  GetMasterDrp({this.Id,this.Text});
+
+
+  factory GetMasterDrp.fromJson(Map<dynamic, dynamic> json) {
+    return new GetMasterDrp(
+      Id: json['Id'],
+      Text: json['Text'],
+    );
+  }
+  Map<String, dynamic> toJson() => {
+    "Id": Id,
+    "Text": Text,
+  };
+  dynamic get(String propertyName) {
+    var _mapRep = toJson();
+    if (_mapRep.containsKey(propertyName)) {
+      return _mapRep[propertyName];
+    }
+    throw ArgumentError('property not found');
+  }
+}
+
 class VehicleType{
   int? VehicleTypeId;
   String? VehicleTypeName;

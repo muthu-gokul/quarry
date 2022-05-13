@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/api/ApiManager.dart';
@@ -2327,7 +2328,7 @@ class QuarryNotifier extends ChangeNotifier{
 
   List<PlantGridModel> plantGridList=[];
 
-  GetplantDetailDbhit(BuildContext context,int? plantId,TickerProviderStateMixin tickerProviderStateMixin) async {
+  GetplantDetailDbhit(BuildContext context,int? plantId,TickerProviderStateMixin? tickerProviderStateMixin) async {
     updateInsertCompanyLoader(true);
     var body={
       "Fields": [
@@ -2380,8 +2381,8 @@ class QuarryNotifier extends ChangeNotifier{
             PD_website.text=t[0]['PlantWebsite']??"";
             PD_ContactPersonName.text=t[0]['PlantContactPersonName']??"";
             PD_Designation.text=t[0]['PlantContactPersonDesignation']??"";
-
-            PO_PlantLicenseList=t1.map((e) => PlantLicenseModel.fromJson(e,tickerProviderStateMixin)).toList();
+            print(t1);
+            PO_PlantLicenseList=t1.map((e) => PlantLicenseModel.fromJson(e,tickerProviderStateMixin!)).toList();
             updatePlantDetailEdit(true);
           }
           else{
@@ -2420,7 +2421,9 @@ class QuarryNotifier extends ChangeNotifier{
   TextEditingController PD_LicenseDesc= new TextEditingController();
  DateTime? PD_fromDate;
  DateTime? PD_toDate;
-
+  File? licenseDoc;
+  var licenseLogo;
+  var licenseLogoFolder="LicenceDocument";
   int? PD_plantTypeId=null;
   String? PD_plantTypeName=null;
 
@@ -2433,6 +2436,7 @@ class QuarryNotifier extends ChangeNotifier{
     updateInsertCompanyLoader(true);
     List js=[];
     js=PO_PlantLicenseList.map((e) => e.toJson()).toList();
+    print(js);
     parameters=[
       ParameterModel(Key: "SpName", Type: "String", Value:  isPlantDetailsEdit?"${Sp.updatePlantDetail}":"${Sp.insertPlantDetail}"),
       ParameterModel(Key: "LoginUserId", Type: "int", Value: UserId),
@@ -2482,13 +2486,39 @@ class QuarryNotifier extends ChangeNotifier{
     }
   }
 
-
+  Future<dynamic> deleteById(int id) async {
+    updateInsertCompanyLoader(true);
+    parameters=[
+      ParameterModel(Key: "SpName", Type: "String", Value:  "${Sp.deletePlantDetail}"),
+      ParameterModel(Key: "LoginUserId", Type: "int", Value: Provider.of<QuarryNotifier>(Get.context!,listen: false).UserId),
+      ParameterModel(Key: "PlantId", Type: "String", Value: id),
+      ParameterModel(Key: "database", Type: "String", Value:Provider.of<QuarryNotifier>(Get.context!,listen: false).DataBaseName),
+    ];
+    var body = {
+      "Fields": parameters.map((e) => e.toJson()).toList()
+    };
+    try {
+      await call.ApiCallGetInvoke(body, Get.context!).then((value) {
+        updateInsertCompanyLoader(false);
+        if (value != "null") {
+          //var parsed = json.decode(value);
+          CustomAlert().deletePopUp();
+          GetplantDetailDbhit(Get.context!, null,null);
+        }
+      });
+    } catch (e) {
+      updateInsertCompanyLoader(false);
+      CustomAlert().commonErrorAlert(Get.context!, "${Sp.deleteUserDetail}", e.toString());
+    }
+  }
 
  clearPlantLicenseForm(){
    PD_fromDate=DateTime.now();
    PD_toDate=DateTime.now();
    PD_LicenseNo.clear();
    PD_LicenseDesc.clear();
+   licenseDoc=null;
+   licenseLogo="";
    notifyListeners();
  }
 

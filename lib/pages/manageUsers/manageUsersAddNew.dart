@@ -343,6 +343,7 @@ class ManageUsersAddNewState extends State<ManageUsersAddNew> {
                                             });
                                           });
                                         },
+                                        onChange: (v){},
                                       ),
                                       AddNewLabelTextField(
                                         labelText: 'Contact Number',
@@ -366,6 +367,7 @@ class ManageUsersAddNewState extends State<ManageUsersAddNew> {
                                           });
 
                                         },
+                                        onChange: (v){},
                                       ),
 
                                       AddNewLabelTextField(
@@ -389,6 +391,7 @@ class ManageUsersAddNewState extends State<ManageUsersAddNew> {
                                           });
 
                                         },
+                                        onChange: (v){},
                                       ),
                                       emailValid?Container():ValidationErrorText(title: "* Invalid Email Address",),
                                       AddNewLabelTextField(
@@ -398,6 +401,7 @@ class ManageUsersAddNewState extends State<ManageUsersAddNew> {
                                         scrollPadding: 400,
                                         isObscure: passwordvisible,
                                         maxlines: 1,
+                                        onChange: (v){},
                                         onEditComplete: (){
                                           node.unfocus();
                                           Timer(Duration(milliseconds: 50), (){

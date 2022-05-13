@@ -17,6 +17,7 @@ import 'package:quarry/widgets/customTextField.dart';
 import 'package:quarry/widgets/sidePopUp/sidePopUpWithoutSearch.dart';
 import 'package:quarry/widgets/validationErrorText.dart';
 
+import '../../../utils/widgetUtils.dart';
 import '../../../widgets/alertDialog.dart';
 import 'employeeMasterAddNew.dart';
 
@@ -682,27 +683,13 @@ class _EmployeeMasterViewState extends State<EmployeeMasterView> with TickerProv
                           )
                         ],
                       ),
+
                       Align(
                         alignment: Alignment.topCenter,
                         child: Container(
-                          height: 100,
-                          width: 100,
+
                           margin: EdgeInsets.only(top: 110),
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: AppTheme.yellowColor,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: AppTheme.yellowColor.withOpacity(0.4),
-                                  spreadRadius: 1,
-                                  blurRadius: 5,
-                                  offset: Offset(1, 8), // changes position of shadow
-                                ),
-                              ]
-                          ),
-                          child: Center(
-                            child: Image.asset("assets/svg/drawer/avatar.png"),
-                          ),
+                          child: ProfileAvatar(imageUrl: en.employeeLogoUrl, imageFile: null),
                         ),
                       ),
                     ],

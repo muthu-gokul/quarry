@@ -1,7 +1,11 @@
 
+import 'dart:isolate';
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
@@ -76,6 +80,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
 
   @override
   void initState() {
+    _bindBackgroundIsolate();
+    FlutterDownloader.registerCallback(downloadCallback);
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
       if( userAccessMap[9]??false){
         Provider.of<DrawerNotifier>(context,listen: false).changeMenu(22);
@@ -111,7 +117,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
   }
 
   closeDrawer(int index){
-    clearDataByNotifier();
+    if(index==24 && Provider.of<DrawerNotifier>(context,listen: false).menuSelected==24){
+
+    }
+    else{
+      clearDataByNotifier();
+    }
     setState(() {
       Provider.of<DrawerNotifier>(context,listen: false).menuSelected=index;
       scaffoldkey.currentState!.openEndDrawer();
@@ -540,6 +551,28 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
       },
     );
   }
+
+
+  //For Download Notification
+  ReceivePort _port = ReceivePort();
+  void _bindBackgroundIsolate() {
+    bool isSuccess = IsolateNameServer.registerPortWithName(_port.sendPort, 'downloader_send_port');
+    if (!isSuccess) {
+      _unbindBackgroundIsolate();
+      _bindBackgroundIsolate();
+      return;
+    }
+    _port.listen((dynamic data) {});
+  }
+
+  void _unbindBackgroundIsolate() {
+    IsolateNameServer.removePortNameMapping('downloader_send_port');
+  }
+
+  static void downloadCallback(String id, DownloadTaskStatus status, int progress) {
+    final SendPort send = IsolateNameServer.lookupPortByName('downloader_send_port')!;
+    send.send([id, status, progress]);
+  }
 }
 
 class DrawerContent extends StatelessWidget {
@@ -798,6 +831,9 @@ class EmployeeDetailsState extends State<EmployeeDetails> with TickerProviderSta
 
     );
   }
+
+
+
 }
 
 class AccountsPage extends StatefulWidget {

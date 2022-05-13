@@ -13,6 +13,9 @@ import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/bottomBarAddButton.dart';
 
+import '../../../styles/constants.dart';
+import '../../../widgets/alertDialog.dart';
+
 
 
 
@@ -185,10 +188,16 @@ class PlantDetailsGridState extends State<PlantDetailsGrid> with TickerProviderS
                                         child: Center(
                                           child: GestureDetector(
                                             onTap: (){
-                                              qn.PlantDropDownValues(context);
-                                              qn.clearPlantLicenseForm();
-                                              qn.updatePlantDetailEdit(false);
-                                              Navigator.push(context, _createRoute());
+                                              if(userAccessMap[13]??false){
+                                                qn.PlantDropDownValues(context);
+                                                qn.clearPlantLicenseForm();
+                                                qn.updatePlantDetailEdit(false);
+                                                Navigator.push(context, _createRoute());
+                                              }
+                                              else{
+                                                CustomAlert().accessDenied(context);
+                                              }
+
 
                                             },
                                             child: Container(
@@ -215,11 +224,34 @@ class PlantDetailsGridState extends State<PlantDetailsGrid> with TickerProviderS
                                       ),
                                       qn.plantGridList.isNotEmpty? GestureDetector(
                                         onTap: (){
-                                          qn.PlantDropDownValues(context);
-                                          qn.updatePlantDetailEdit(true);
-                                          Navigator.push(context, _createRoute());
-                                          qn.GetplantDetailDbhit(context, qn.plantGridList[0].plantId,PlantDetailsAddNewState());
 
+                                          if(userAccessMap[14]??false){
+                                            qn.PlantDropDownValues(context);
+                                            qn.updatePlantDetailEdit(true);
+                                            Navigator.push(context, _createRoute());
+                                            qn.GetplantDetailDbhit(context, qn.plantGridList[0].plantId,this);
+                                          }
+                                          else{
+                                            CustomAlert().accessDenied(context);
+                                          }
+
+                                        },
+                                        onLongPress: (){
+
+                                          if(userAccessMap[15]??false){
+                                            CustomAlert(
+                                                callback: (){
+                                                  qn.deleteById(qn.plantGridList[0].plantId!);
+                                                  Navigator.pop(context);
+                                                },
+                                                Cancelcallback: (){
+                                                  Navigator.pop(context);
+                                                }
+                                            ).yesOrNoDialog(context, "", "Are you sure want to delete this Plant ?");
+                                          }
+                                          else{
+                                            CustomAlert().accessDenied2();
+                                          }
                                         },
                                         child: Container(
                                           height: 200,
@@ -272,10 +304,7 @@ class PlantDetailsGridState extends State<PlantDetailsGrid> with TickerProviderS
                                           .map((i, value) => MapEntry(i,    i==0?Container():
                                       GestureDetector(
                                         onTap: (){
-                                          qn.PlantDropDownValues(context);
-                                          qn.updatePlantDetailEdit(true);
-                                          Navigator.push(context, _createRoute());
-                                          qn.GetplantDetailDbhit(context, qn.plantGridList[i].plantId,PlantDetailsAddNewState());
+
 
                                         },
                                         child: Container(
@@ -288,10 +317,33 @@ class PlantDetailsGridState extends State<PlantDetailsGrid> with TickerProviderS
                                               SizedBox(height: 50,),
                                               GestureDetector(
                                                 onTap: (){
-                                                  qn.PlantDropDownValues(context);
-                                                  qn.updatePlantDetailEdit(true);
-                                                  qn.GetplantDetailDbhit(context, qn.plantGridList[i].plantId,PlantDetailsAddNewState());
-                                                  Navigator.push(context, _createRoute());
+                                                  if(userAccessMap[14]??false){
+                                                    qn.PlantDropDownValues(context);
+                                                    qn.updatePlantDetailEdit(true);
+                                                    qn.GetplantDetailDbhit(context, qn.plantGridList[i].plantId,this);
+                                                    Navigator.push(context, _createRoute());
+                                                  }
+                                                  else{
+                                                    CustomAlert().accessDenied(context);
+                                                  }
+
+                                                },
+                                                onLongPress: (){
+
+                                                  if(userAccessMap[15]??false){
+                                                    CustomAlert(
+                                                        callback: (){
+                                                          qn.deleteById(qn.plantGridList[i].plantId!);
+                                                          Navigator.pop(context);
+                                                        },
+                                                        Cancelcallback: (){
+                                                          Navigator.pop(context);
+                                                        }
+                                                    ).yesOrNoDialog(context, "", "Are you sure want to delete this Plant ?");
+                                                  }
+                                                  else{
+                                                    CustomAlert().accessDenied2();
+                                                  }
                                                 },
                                                 child: Container(
                                                   height: 80,

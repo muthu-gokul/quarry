@@ -31,7 +31,7 @@ class MachineDetailsGridState extends State<MachineDetailsGrid> {
 
   bool showEdit=false;
   int selectedIndex=-1;
-  List<String> gridDataRowList=["MachineName","MachineType","MachineModel","MachineSpecification"];
+  List<String> gridDataRowList=["MachineName","MachineTypeName","MachineModel","MachineSpecification"];
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +78,6 @@ class MachineDetailsGridState extends State<MachineDetailsGrid> {
                         selectedIndex=-1;
                         showEdit=false;
                       });
-
                     }
                     else{
                       setState(() {

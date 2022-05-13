@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
@@ -18,6 +20,7 @@ import 'package:quarry/model/plantModel/plantUserModel.dart';
 import 'package:quarry/styles/constants.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 
+import '../utils/utils.dart';
 import 'quarryNotifier.dart';
 
 class EmployeeNotifier extends ChangeNotifier{
@@ -201,7 +204,10 @@ class EmployeeNotifier extends ChangeNotifier{
   TextEditingController employeeBranchName=new TextEditingController();
   TextEditingController employeeIFSC=new TextEditingController();
 
-
+  var employeeLogoFileName;
+  var employeeLogoFolderName="Employee";
+  String employeeLogoUrl="";
+  File? logoFile;
 
   DateTime? joiningDate;
   DateTime? dob;
@@ -259,11 +265,20 @@ class EmployeeNotifier extends ChangeNotifier{
 
      selectSalaryTypeId = null;
      selectSalaryTypeName = null;
+    employeeLogoUrl="";
+    employeeLogoFileName="";
+    logoFile=null;
   }
 
   InsertEmployeeDbHit(BuildContext context)  async{
     updateEmployeeLoader(true);
-    print(isEmployeeEdit);
+
+
+    employeeLogoFileName="";
+    if(logoFile!=null){
+      employeeLogoFileName = await uploadFile(employeeLogoFolderName,logoFile!);
+    }
+
     parameters=[
       ParameterModel(Key: "SpName", Type: "String", Value: isEmployeeEdit?"${Sp.updateEmployeeDetail}": "${Sp.insertEmployeeDetail}"),
       ParameterModel(Key: "LoginUserId", Type: "int", Value: Provider.of<QuarryNotifier>(context,listen: false).UserId),
@@ -298,8 +313,8 @@ class EmployeeNotifier extends ChangeNotifier{
       ParameterModel(Key: "BankAccountNumber", Type: "String", Value:employeeAccNo.text),
       ParameterModel(Key: "BankIFSCCode", Type: "String", Value:employeeIFSC.text),
       ParameterModel(Key: "BankBranchName", Type: "String", Value:employeeBranchName.text),
-      ParameterModel(Key: "EmployeeImageFileName", Type: "String", Value:""),
-      ParameterModel(Key: "EmployeeImageFolderName", Type: "String", Value:""),
+      ParameterModel(Key: "EmployeeImageFileName", Type: "String", Value:employeeLogoFileName),
+      ParameterModel(Key: "EmployeeImageFolderName", Type: "String", Value:employeeLogoFolderName),
       ParameterModel(Key: "database", Type: "String", Value:Provider.of<QuarryNotifier>(context,listen: false).DataBaseName),
     ];
 
@@ -313,7 +328,7 @@ class EmployeeNotifier extends ChangeNotifier{
 
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
-
+        updateEmployeeLoader(false);
         if(value!="null"){
           var parsed=json.decode(value);
 
@@ -359,7 +374,7 @@ class EmployeeNotifier extends ChangeNotifier{
         if(value!="null"){
           var parsed=json.decode(value);
           var t=parsed['Table'] as List?;
-          print("t$t");
+          log("employee $t");
           if(EmployeeId!=null ){
             editEmployeeId=t![0]['EmployeeId'];
             EmployeePrefix=t[0]['EmployeePrefix'];
@@ -401,7 +416,9 @@ class EmployeeNotifier extends ChangeNotifier{
             employeeBranchName.text=t[0]['BankBranchName'];
             employeeAccNo.text=t[0]['BankAccountNumber'];
             employeeIFSC.text=t[0]['BankIFSCCode'];
-
+            employeeLogoFileName= t[0]['EmployeeImageFileName'];
+            employeeLogoUrl=ApiManager().attachmentUrl+employeeLogoFileName;
+            logoFile=null;
           }
           else{
             employeeGridList=t!.map((e) => EmployeeGridModel.fromJson(e)).toList();

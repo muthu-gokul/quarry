@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/api/ApiManager.dart';
 import 'package:quarry/api/sp.dart';
@@ -12,6 +13,8 @@ import 'package:quarry/notifier/profileNotifier.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 
+import '../model/parameterMode.dart';
+import '../styles/constants.dart';
 import '../utils/utils.dart';
 
 class ManageUsersNotifier extends ChangeNotifier{
@@ -271,6 +274,32 @@ class ManageUsersNotifier extends ChangeNotifier{
 
   }
 
+
+  Future<dynamic> deleteById(int id) async {
+    updateManageUsersLoader(true);
+    parameters=[
+      ParameterModel(Key: "SpName", Type: "String", Value:  "${Sp.deleteUserDetail}"),
+      ParameterModel(Key: "LoginUserId", Type: "int", Value: Provider.of<QuarryNotifier>(Get.context!,listen: false).UserId),
+      ParameterModel(Key: "UserId", Type: "String", Value: id),
+      ParameterModel(Key: "database", Type: "String", Value:Provider.of<QuarryNotifier>(Get.context!,listen: false).DataBaseName),
+    ];
+    var body = {
+      "Fields": parameters.map((e) => e.toJson()).toList()
+    };
+    try {
+      await call.ApiCallGetInvoke(body, Get.context!).then((value) {
+        updateManageUsersLoader(false);
+        if (value != "null") {
+          //var parsed = json.decode(value);
+          CustomAlert().deletePopUp();
+          GetUserDetailDbHit(Get.context!, null);
+        }
+      });
+    } catch (e) {
+      updateManageUsersLoader(false);
+      CustomAlert().commonErrorAlert(Get.context!, "${Sp.deleteUserDetail}", e.toString());
+    }
+  }
 
 
   clearForm(){

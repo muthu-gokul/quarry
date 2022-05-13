@@ -1,7 +1,9 @@
 
 
+import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
@@ -27,6 +29,25 @@ uploadFile(String folderName, File file) async{
   final res = await http.Response.fromStream(response);
   return res.body.replaceAll('"', '');
 }
+
+Future<void> requestDownload(String _url, String _name) async {
+
+  String savePath = '/storage/emulated/0/Download/$_name';
+  if (await File(savePath).exists()) {
+    print("File exists");
+    await File(savePath).delete();
+  }
+
+  String? _taskid = await FlutterDownloader.enqueue(
+    url: _url,
+    fileName: _name,
+    savedDir: "/storage/emulated/0/Download",
+    showNotification: true,
+    openFileFromNotification: true,
+  );
+
+}
+
 
 
 parseDouble(var value){
@@ -62,7 +83,7 @@ getDatabase() async{
   return Provider.of<QuarryNotifier>(Get.context!,listen: false).DataBaseName;
 }
 
-Future<String> getMasterDrp(String page,String typeName, dynamic refId,  dynamic hiraricalId) async {
+Future<List> getMasterDrp(String page,String typeName, dynamic refId,  dynamic hiraricalId) async {
 
   List parameters= await getParameterEssential();
   parameters.add(ParameterModel(Key: "SpName", Type: "String", Value: "${Sp.mobileMasterdropDown}"));
@@ -75,10 +96,17 @@ Future<String> getMasterDrp(String page,String typeName, dynamic refId,  dynamic
   var body={
     "Fields": parameters.map((e) => e.toJson()).toList()
   };
-  var result="";
+  var result=[];
   try{
     await ApiManager().ApiCallGetInvoke(body,Get.context!).then((value) {
-      result=value;
+
+      if(value != "null" && value!=''){
+        var parsed=jsonDecode(value);
+        var table=parsed['Table'] as List;
+        if(table.length>0){
+          result=table;
+        }
+      }
     });
     return result;
   }

@@ -29,4 +29,8 @@ v-1.0.9
 2. User Access Dynamic
 
 
+v-1.0.11
 
+  var keyboardVisible=false.obs;
+    keyboardVisible.value = MediaQuery.of(context).viewInsets.bottom != 0;
+   Obx(()=>SizedBox(height: keyboardVisible.value?350: 120,))

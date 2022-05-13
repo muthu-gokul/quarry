@@ -7,6 +7,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/notifier/manageUsersNotifier.dart';
+import 'package:quarry/notifier/quarryNotifier.dart';
 
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/constants.dart';
@@ -225,15 +226,20 @@ class ManageUsersGridState extends State<ManageUsersGrid> with TickerProviderSta
                                           }
                                         },
                                         onLongPress: (){
+                                          if(mun.usersList[0].userId==  Provider.of<QuarryNotifier>(context,listen: false).UserId){
+                                            CustomAlert().commonErrorAlert(context, "You dont have permission  to delete your account", "");
+                                            return;
+                                          }
                                           if(userAccessMap[6]??false){
                                             CustomAlert(
                                                 callback: (){
-
+                                                  mun.deleteById(mun.usersList[0].userId!);
+                                                  Navigator.pop(context);
                                                 },
                                                 Cancelcallback: (){
                                                   Navigator.pop(context);
                                                 }
-                                            ).yesOrNoDialog(context, "", "Are you sure want to delete this user ?");
+                                            ).yesOrNoDialog(context, "", "Are you sure want to delete this User ?");
                                           }
                                           else{
                                             CustomAlert().accessDenied2();
@@ -297,7 +303,7 @@ class ManageUsersGridState extends State<ManageUsersGrid> with TickerProviderSta
                                               SizedBox(height: 50,),
                                               GestureDetector(
                                                 onTap: (){
-                                                  if(userAccessList[1].isHasAccess){
+                                                  if(userAccessMap[5]??false){
                                                     mun.updateisManageUsersEdit(true);
                                                     mun.updateisEdit(false);
                                                     Navigator.push(context, _createRoute());
@@ -310,14 +316,24 @@ class ManageUsersGridState extends State<ManageUsersGrid> with TickerProviderSta
 
                                                 },
                                                 onLongPress: (){
-                                                  CustomAlert(
-                                                      callback: (){
-
-                                                      },
-                                                      Cancelcallback: (){
-                                                        Navigator.pop(context);
-                                                      }
-                                                  ).yesOrNoDialog(context, "", "Are you sure want to delete this user ?");
+                                                  if(mun.usersList[i].userId==  Provider.of<QuarryNotifier>(context,listen: false).UserId){
+                                                    CustomAlert().commonErrorAlert(context, "You dont have permission  to delete your account", "");
+                                                    return;
+                                                  }
+                                                  if(userAccessMap[6]??false){
+                                                    CustomAlert(
+                                                        callback: (){
+                                                          mun.deleteById(mun.usersList[i].userId!);
+                                                          Navigator.pop(context);
+                                                        },
+                                                        Cancelcallback: (){
+                                                          Navigator.pop(context);
+                                                        }
+                                                    ).yesOrNoDialog(context, "", "Are you sure want to delete this User ?");
+                                                  }
+                                                  else{
+                                                    CustomAlert().accessDenied2();
+                                                  }
                                                 },
                                                 child:ProfileAvatar(
                                                   imageUrl: getAttachmentUrl(mun.usersList[i].userImage),

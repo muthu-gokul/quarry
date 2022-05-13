@@ -1,20 +1,25 @@
 import 'dart:convert';
 
+import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/api/ApiManager.dart';
 import 'package:quarry/api/sp.dart';
+import 'package:quarry/model/dropDownValues.dart';
 import 'package:quarry/model/machineDetailsModel/machineGridModel.dart';
 import 'package:quarry/model/parameterMode.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/styles/constants.dart';
+import 'package:quarry/utils/utils.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 
 class MachineNotifier extends ChangeNotifier{
 
   List<String>machineGridCol=["MachineName","Type","Model","Specification"];
   List< MachineGridModel> machineGridList=[];
+
+  String page="MachineMaster";
 
 
   TextEditingController MachineName=new TextEditingController();
@@ -29,13 +34,29 @@ class MachineNotifier extends ChangeNotifier{
 
   final call=ApiManager();
 
+  List<GetMasterDrp> machineTypeList=[];
+ int? selMacTypeId;
+ String? selMacType;
+
+  initDropDown() async{
+    var response=await getMasterDrp(page, "MachineTypeId", null, null);
+    if(response.isNotEmpty){
+      machineTypeList=response.map((e) => GetMasterDrp.fromJson(e)).toList();
+      notifyListeners();
+    }
+  }
+  
+ 
+
+
+
   InsertVehicleDbHit(BuildContext context)  async{
     updatemachineLoader(true);
     parameters=[
       ParameterModel(Key: "SpName", Type: "String", Value: isMachineEdit?"${Sp.updateMachineDetail}" :"${Sp.insertMachineDetail}"),
       ParameterModel(Key: "LoginUserId", Type: "int", Value: Provider.of<QuarryNotifier>(context,listen: false).UserId),
       ParameterModel(Key: "MachineName", Type: "String", Value: MachineName.text),
-      ParameterModel(Key: "MachineType", Type: "String", Value: MachineType.text),
+      ParameterModel(Key: "MachineType", Type: "String", Value: selMacTypeId),
       ParameterModel(Key: "MachineModel", Type: "String", Value: MachineModel.text),
       ParameterModel(Key: "Capacity", Type: "String", Value: Capacity.text),
       ParameterModel(Key: "MotorPower", Type: "String", Value: MoterPower.text),
@@ -99,9 +120,10 @@ class MachineNotifier extends ChangeNotifier{
 
           if(machineId!=null){
             editMachineId=t![0]['MachineId'];
-            MachineName.text=t[0]['MachineName'];
-            MachineType.text=t[0]['MachineType'];
-            MachineModel.text=t[0]['MachineModel'];
+            MachineName.text=t[0]['MachineName']??"";
+            selMacTypeId=t[0]['MachineType'];
+            selMacType=t[0]['MachineTypeName'];
+            MachineModel.text=t[0]['MachineModel']??"";
             Capacity.text=t[0]['Capacity'].toString();
             MoterPower.text=t[0]['MotorPower'].toString();
             MachineSpecification.text=t[0]['MachineSpecification'].toString();
@@ -120,9 +142,6 @@ class MachineNotifier extends ChangeNotifier{
       updatemachineLoader(false);
       CustomAlert().commonErrorAlert(context, "${Sp.getMachineDetail}" , e.toString());
     }
-
-
-
   }
 
   Future<dynamic> deleteById(int id) async {
@@ -167,7 +186,8 @@ class MachineNotifier extends ChangeNotifier{
     MachineSpecification.clear();
     Capacity.clear();
     MoterPower.clear();
-
+    selMacTypeId=null;
+    selMacType=null;
   }
 
   clearAll(){

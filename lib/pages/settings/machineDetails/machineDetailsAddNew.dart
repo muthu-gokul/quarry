@@ -10,6 +10,9 @@ import 'package:quarry/widgets/bottomBarAddButton.dart';
 import 'package:quarry/widgets/customTextField.dart';
 import 'package:quarry/widgets/validationErrorText.dart';
 
+import '../../../widgets/sidePopUp/sidePopUpWithoutSearch.dart';
+import '../../sale/salesDetail.dart';
+
 
 class MachineDetailAddNew extends StatefulWidget {
   @override
@@ -26,6 +29,7 @@ class _MachineDetailAddNewState extends State<MachineDetailAddNew> with TickerPr
   bool _keyboardVisible = false;
 
   bool machineName=false;
+  bool isTypeOpen=false;
 
   @override
   void initState() {
@@ -38,6 +42,8 @@ class _MachineDetailAddNewState extends State<MachineDetailAddNew> with TickerPr
       setState(() {
 
       });
+      Provider.of<MachineNotifier>(context,listen: false).initDropDown();
+
 
 
      /* scrollController.addListener(() {
@@ -180,18 +186,21 @@ class _MachineDetailAddNewState extends State<MachineDetailAddNew> with TickerPr
                                  },
                                ),
                                !machineName?Container():ValidationErrorText(title: "* Enter Machine Name",),
-                               AddNewLabelTextField(
-                                 labelText: 'Machine Type',
-                                 regExp: '[A-Za-z0-9  ]',
-                                 textEditingController: qn.MachineType,
-                                 ontap: (){
-                                   scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
-                                 },
-                                 onChange: (v){},
-                                 onEditComplete: (){
-                                   node.unfocus();
-                                 },
+                             GestureDetector(
+                               onTap: (){
+                                 node.unfocus();
+                                 setState(() {
+                                   isTypeOpen=true;
+                                 });
+                               },
+                               child: SidePopUpParent(
+                                 text: qn.selMacTypeId==null? "Select Machine Type":qn.selMacType,
+                                 textColor: qn.selMacTypeId==null? AppTheme.addNewTextFieldText.withOpacity(0.5):AppTheme.addNewTextFieldText,
+                                 iconColor: qn.selMacTypeId==null? AppTheme.addNewTextFieldText:AppTheme.yellowColor,
+                                 bgColor: qn.selMacTypeId==null? AppTheme.disableColor:Colors.white,
+
                                ),
+                             ),
                                AddNewLabelTextField(
                                  labelText: 'Machine Model',
                                  regExp: '[A-Za-z0-9  ]',
@@ -369,8 +378,8 @@ class _MachineDetailAddNewState extends State<MachineDetailAddNew> with TickerPr
 
              Container(
 
-               height: qn.machineLoader? SizeConfig.screenHeight:0,
-               width: qn.machineLoader? SizeConfig.screenWidth:0,
+               height: qn.machineLoader || isTypeOpen? SizeConfig.screenHeight:0,
+               width: qn.machineLoader || isTypeOpen? SizeConfig.screenWidth:0,
                color: Colors.black.withOpacity(0.5),
                child: Center(
                  child:CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(AppTheme.yellowColor),),
@@ -378,6 +387,32 @@ class _MachineDetailAddNewState extends State<MachineDetailAddNew> with TickerPr
 
                ),
              ),
+
+
+             ///////////////////////////////////////   Plant List    ////////////////////////////////
+             PopUpStatic(
+               title: "Select Machine Type",
+               isOpen: isTypeOpen,
+               dataList: qn.machineTypeList,
+               propertyKeyName:"Text",
+               propertyKeyId: "Id",
+               selectedId:qn.selMacTypeId,
+               itemOnTap: (index){
+                 setState(() {
+                   qn.selMacTypeId=qn.machineTypeList[index].Id;
+                   qn.selMacType=qn.machineTypeList[index].Text;
+                   isTypeOpen=false;
+                 });
+
+               },
+               closeOnTap: (){
+                 setState(() {
+                   isTypeOpen=false;
+                 });
+               },
+             ),
+
+
            ],
          )
      )

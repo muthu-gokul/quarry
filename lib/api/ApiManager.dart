@@ -25,7 +25,7 @@ class ApiManager{
       final response = await http.post(Uri.parse(invokeUrl),
           headers: {"Content-Type": "application/json"},
           body: json.encode(body)
-      );
+      ).timeout(Duration(seconds: 15),);
       if(response.statusCode==200){
         return response.body;
       }

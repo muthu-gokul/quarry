@@ -2,6 +2,7 @@ class MachineGridModel{
   int? machineId;
   String? machineName;
   String? machineType;
+  String? machineTypeName;
   String? machineModel;
   String? machineCapacity;
   String? machineMotorPower;
@@ -9,13 +10,15 @@ class MachineGridModel{
   int? companyId;
 
   MachineGridModel({this.machineName, this.machineType, this.machineModel,
-    this.machineCapacity, this.machineMotorPower, this.machineWeight,this.companyId,this.machineId});
+    this.machineCapacity, this.machineMotorPower, this.machineWeight,this.companyId,this.machineId,
+  this.machineTypeName});
 
   factory MachineGridModel.fromJson(Map<String, dynamic> json){
     return new MachineGridModel(
       machineId:json['MachineId'],
       machineName: json['MachineName'],
       machineType: json['MachineType'],
+      machineTypeName: json['MachineTypeName'],
       machineModel: json['MachineModel'],
       machineCapacity: json['Capacity'],
       machineMotorPower: json['MotorPower'],
@@ -28,6 +31,7 @@ class MachineGridModel{
     "MachineId": machineId,
     "MachineName": machineName,
     "MachineType": machineType,
+    "MachineTypeName": machineTypeName,
     "MachineModel": machineModel,
     "Capacity": machineCapacity,
     "MotorPower": machineMotorPower,

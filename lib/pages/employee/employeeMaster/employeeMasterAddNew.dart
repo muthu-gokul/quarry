@@ -17,6 +17,9 @@ import 'package:quarry/widgets/sidePopUp/sidePopUpWithoutSearch.dart';
 import 'package:quarry/widgets/singleDatePicker.dart';
 import 'package:quarry/widgets/validationErrorText.dart';
 
+import '../../../utils/widgetUtils.dart';
+import '../../../widgets/logoPicker.dart';
+
 class EmployeeMasterAddNew extends StatefulWidget {
   const EmployeeMasterAddNew({Key? key}) : super(key: key);
 
@@ -390,6 +393,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                               });
                                             });
                                           },
+                                          onChange: (v){},
                                         ),
 
                                         GestureDetector(
@@ -712,6 +716,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                                     });
                                                   });
                                                 },
+                                                onChange: (v){},
                                               ),
                                               phoneNo?ValidationErrorText(title:"* Enter Phone Number" ,):Container(),
                                               AddNewLabelTextField(
@@ -734,6 +739,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                                     });
                                                   });
                                                 },
+                                                onChange: (v){},
                                               ),
                                               emailValid?Container():ValidationErrorText(title: "* Invalid Email Address",),
                                               AddNewLabelTextField(
@@ -756,6 +762,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                                     });
                                                   });
                                                 },
+                                                onChange: (v){},
                                               ),
                                               address?ValidationErrorText(title:"* Enter Address" ,):Container(),
                                               AddNewLabelTextField(
@@ -778,6 +785,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                                     });
                                                   });
                                                 },
+                                                onChange: (v){},
                                               ),
                                               AddNewLabelTextField(
                                                 labelText: 'State',
@@ -791,7 +799,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                                   });
                                                   scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                                 },
-
+                                                onChange: (v){},
                                                 onEditComplete: () {
                                                   node.unfocus();
                                                   Timer(Duration(milliseconds: 100), (){
@@ -812,7 +820,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                                   });
                                                   scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                                 },
-
+                                                onChange: (v){},
                                                 onEditComplete: () {
                                                   node.unfocus();
                                                   Timer(Duration(milliseconds: 100), (){
@@ -835,7 +843,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                                   });
                                                   scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                                 },
-
+                                                onChange: (v){},
                                                 onEditComplete: () {
                                                   node.unfocus();
                                                   Timer(Duration(milliseconds: 100), (){
@@ -1009,7 +1017,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                                   });
                                                   scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                                 },
-
+                                                onChange: (v){},
                                                 onEditComplete: () {
                                                   node.unfocus();
                                                   Timer(Duration(milliseconds: 100), (){
@@ -1030,7 +1038,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                                   });
                                                   scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                                 },
-
+                                                onChange: (v){},
                                                 onEditComplete: () {
                                                   node.unfocus();
                                                   Timer(Duration(milliseconds: 100), (){
@@ -1053,7 +1061,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                                   });
                                                   scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                                 },
-
+                                                onChange: (v){},
                                                 onEditComplete: () {
                                                   node.unfocus();
                                                   Timer(Duration(milliseconds: 100), (){
@@ -1076,7 +1084,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                                   });
                                                   scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                                 },
-
+                                                onChange: (v){},
                                                 onEditComplete: () {
                                                   node.unfocus();
                                                   Timer(Duration(milliseconds: 100), (){
@@ -1185,7 +1193,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                                   });
                                                   scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                                 },
-
+                                                onChange: (v){},
                                                 onEditComplete: () {
                                                   node.unfocus();
                                                   Timer(Duration(milliseconds: 100), (){
@@ -1206,7 +1214,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                                   });
                                                   scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                                 },
-
+                                                onChange: (v){},
                                                 onEditComplete: () {
                                                   node.unfocus();
                                                   Timer(Duration(milliseconds: 100), (){
@@ -1228,7 +1236,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                                   });
                                                   scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                                 },
-
+                                                onChange: (v){},
                                                 onEditComplete: () {
                                                   node.unfocus();
                                                   Timer(Duration(milliseconds: 100), (){
@@ -1249,7 +1257,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                                   });
                                                   scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                                 },
-
+                                                onChange: (v){},
                                                 onEditComplete: () {
                                                   node.unfocus();
                                                   Timer(Duration(milliseconds: 100), (){
@@ -1270,7 +1278,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                                                   });
                                                   scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                                 },
-
+                                                onChange: (v){},
                                                 onEditComplete: () {
                                                   node.unfocus();
                                                   Timer(Duration(milliseconds: 100), (){
@@ -1294,7 +1302,67 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                             )
                           ],
                         ),
+
+
+
                         Align(
+                          alignment: Alignment.topCenter,
+                          child: Container(
+                            height: 120,
+                            width: 120,
+                            margin: EdgeInsets.only(top: 100),
+
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: AppTheme.yellowColor,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: AppTheme.yellowColor.withOpacity(0.4),
+                                    spreadRadius: 1,
+                                    blurRadius: 5,
+                                    offset: Offset(1, 8), // changes position of shadow
+                                  ),
+                                ]
+                            ),
+                            child: Stack(
+                              children: [
+                                ProfileAvatar(
+                                  imageUrl: en.employeeLogoUrl,
+                                  imageFile: en.logoFile,
+                                ),
+                                Positioned(
+                                  right: 0,
+                                  bottom: 0,
+                                  child: GestureDetector(
+                                    onTap: (){
+                                      getImage(
+                                              (file){
+                                            setState(() {
+                                              en.logoFile=file;
+                                              en.employeeLogoUrl="";
+                                            });
+                                          }
+                                      );
+
+                                    },
+                                    child: Container(
+                                      height: 50,
+                                      width: 50,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: AppTheme.yellowColor,
+                                      ),
+                                      child: Icon(Icons.camera_alt),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+
+
+                        /*Align(
                           alignment: Alignment.topCenter,
                           child: Container(
                             height: 100,
@@ -1316,7 +1384,7 @@ class _EmployeeMasterAddNewState extends State<EmployeeMasterAddNew> with Ticker
                               child: Image.asset("assets/svg/drawer/avatar.png"),
                             ),
                           ),
-                        ),
+                        ),*/
                       ],
                     ),
                   ),
