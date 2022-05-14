@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/api/ApiManager.dart';
 import 'package:quarry/api/sp.dart';
@@ -208,12 +210,12 @@ clearInsertForm(){
         {
           "Key": "FromDate",
           "Type": "String",
-          "Value": "2021-05-06"
+          "Value": DateFormat("yyyy-MM-dd").format(DateTime.now()).toString()
         },
         {
           "Key": "ToDate",
           "Type": "String",
-          "Value":"2021-05-06"
+          "Value": DateFormat("yyyy-MM-dd").format(DateTime.now()).toString()
         },
         {
           "Key": "database",
@@ -229,7 +231,7 @@ clearInsertForm(){
         if(value!=null){
           var parsed=json.decode(value);
           var t=parsed['Table'] as List?;
-          print(t);
+          log("$t");
           if(EmployeeId!=null ){
             showEmpId=t![0]['EmployeeId'];
             showEmpName=t[0]['Name'];

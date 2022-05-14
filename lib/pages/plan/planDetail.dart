@@ -121,12 +121,7 @@ class _PlanDetailState extends State<PlanDetail> {
                     color: tableColor,
                     child: Obx(
                         ()=>Table(
-                          border: TableBorder.all(
-                              color: AppTheme.addNewTextFieldBorder,
-                              style: BorderStyle.solid,
-                              width: 1,
-                              borderRadius: BorderRadius.circular(3)
-                          ),
+                          border: tableBorder,
                           children: [
                             tableRow("Plan Name: ${planNotifier.planName_T}", planNotifier.description_T),
                             tableRow("Start Date", planNotifier.startDate_T),

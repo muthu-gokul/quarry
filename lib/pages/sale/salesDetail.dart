@@ -1560,9 +1560,6 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
 
 
                                                         DropDownField(
-
-
-
                                                           add: (){
                                                           },
                                                           nodeFocus: (){
@@ -1629,6 +1626,8 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                               qn.SS_MaterialUnitPrice=qn.saleDetails[index].MaterialUnitPrice;
                                                               qn.OG_isTax=qn.saleDetails[index].TaxAmount!>0?true:false;
 
+                                                              qn.SS_DifferWeightController.clear();
+                                                              qn.differWeight(context);
 
                                                               print("qn.SS_DiscountedOutputQtyAmount${qn.SS_MaterialUnitPrice}");
                                                               print("qn.SS_DiscountedOutputQtyAmount${qn.SS_TaxAmount}");

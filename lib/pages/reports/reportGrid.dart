@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:month_picker_dialog/month_picker_dialog.dart';
 import 'package:provider/provider.dart';
@@ -459,14 +460,14 @@ class ReportGridState extends State<ReportGrid> with TickerProviderStateMixin{
                                       if (picked1 != null && picked1.length == 2) {
                                         setState(() {
                                           rn.picked=picked1;
-                                          rn.ReportsDbHit(context, rn.TypeName);
+                                          rn.ReportsDbHit(Get.context!, rn.TypeName);
                                         });
                                       }
                                       else if(picked1!=null && picked1.length ==1){
                                         setState(() {
                                           rn.picked=picked1;
                                           rn.picked.add(picked1[0]);
-                                          rn.ReportsDbHit(context, rn.TypeName);
+                                          rn.ReportsDbHit(Get.context!, rn.TypeName);
                                         });
                                       }
                                     }

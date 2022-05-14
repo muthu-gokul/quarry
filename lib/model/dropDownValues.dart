@@ -212,6 +212,7 @@ class SaleDetails{
   int? isDiscount;
   int? isPercentage;
   int? isAmount;
+  int? isTax;
   double? discountValue;
   double? discountAmount;
   double? DiscountedOutputQtyAmount;
@@ -249,7 +250,8 @@ class SaleDetails{
     this.driverName,
     this.driverContactNumber,
     this.RoundedTotalAmount,
-    this.MaterialHSNCode
+    this.MaterialHSNCode,
+    this.isTax
   });
 
 
@@ -275,6 +277,7 @@ class SaleDetails{
       isDiscount: json['IsDiscount'],
       isPercentage: json['IsPercentage'],
       isAmount: json['IsAmount'],
+      isTax: json['IsTax'],
       discountValue: json['DiscountValue'].toDouble(),
       discountAmount: json['DiscountAmount'].toDouble(),
       DiscountedOutputQtyAmount: json['DiscountedOutputQtyAmount'].toDouble(),

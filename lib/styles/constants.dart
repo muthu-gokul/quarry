@@ -3,6 +3,8 @@ import 'package:intl/intl.dart';
 import 'package:quarry/model/parameterMode.dart';
 import 'package:quarry/model/userAccessModel.dart';
 
+import 'app_theme.dart';
+
 int phoneNoLength=10;
 int zipcodeLength=6;
 int gstLength=15;
@@ -34,3 +36,10 @@ Color invUnPaidText=Color(0xFFC27573);
 Color invPartiallyPaidText=Color(0xFFF1AC42);
 
 Duration animeDuration = Duration(milliseconds: 300);
+
+TableBorder tableBorder=TableBorder.all(
+    color: AppTheme.addNewTextFieldBorder,
+    style: BorderStyle.solid,
+    width: 1,
+    borderRadius: BorderRadius.circular(3)
+);

@@ -20,6 +20,9 @@ import 'package:quarry/widgets/navigationBarIcon.dart';
 import 'package:quarry/widgets/reportpdf.dart';
 import 'package:quarry/widgets/staticColumnScroll/customDataTable.dart';
 
+import '../../widgets/sidePopUp/sidePopUpWithoutSearch.dart';
+import '../../widgets/sidePopUp/sidePopupWithoutModelList.dart';
+
 
 
 class SaleGrid extends StatefulWidget {
@@ -44,6 +47,7 @@ class _SaleGridState extends State<SaleGrid> {
 
   List<String> gridDataRowList=["SaleDate","SaleNumber","VehicleNumber","MaterialName","RoundedTotalAmount","CustomerName"];
 
+  bool printPopup=false;
 
   @override
   void didChangeDependencies() {
@@ -116,80 +120,91 @@ class _SaleGridState extends State<SaleGrid> {
                     ),
                   ),
                 ),
+
                 Container(
-                  height: 160,
-                  width: SizeConfig.screenWidth,
-                  // color: AppTheme.yellowColor,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Container(
-                        height: 50,
-                        child: Row(
-                          children: [
-                            GestureDetector(
-                              onTap: widget.drawerCallback,
-                              child: NavBarIcon(),
-                            ),
-                            Text("Sales Detail",
-                              style: AppTheme.appBarTS
-                            ),
-                            Spacer(),
-                            GestureDetector(
-                              onTap: () async{
-                                final List<DateTime?>?  picked1 = await DateRagePicker.showDatePicker(
-                                    context: context,
-                                    initialFirstDate: new DateTime.now(),
-                                    initialLastDate: (new DateTime.now()),
-                                    firstDate: dateTime,
-                                    lastDate: (new DateTime.now())
-                                );
-                                if (picked1 != null && picked1.length == 2) {
-                                  setState(() {
-                                    qn.picked=picked1;
-                                    qn.GetSaleDetailDbhit(context);
-                                    // rn.reportDbHit(widget.UserId.toString(), widget.OutletId, DateFormat("dd-MM-yyyy").format( picked[0]).toString(), DateFormat("dd-MM-yyyy").format( picked[1]).toString(),"Itemwise Report", context);
-                                  });
-                                }
-                                else if(picked1!=null && picked1.length ==1){
-                                  setState(() {
-                                    qn.picked=picked1;
-                                    qn.GetSaleDetailDbhit(context);
-                                    // rn.reportDbHit(widget.UserId.toString(), widget.OutletId, DateFormat("dd-MM-yyyy").format( picked[0]).toString(), DateFormat("dd-MM-yyyy").format( picked[0]).toString(),"Itemwise Report", context);
-                                  });
-                                }
-                              },
-                              child: SvgPicture.asset("assets/svg/calender.svg",width: 27,height: 27,color: AppTheme.bgColor,
-                                //    color: qn.selectedIndex==-1? AppTheme.bgColor.withOpacity(0.5):isOpen?AppTheme.bgColor:AppTheme.bgColor.withOpacity(0.5),
+                    height: 160,
+                    width: SizeConfig.screenWidth,
+                    // color: AppTheme.yellowColor,
+
+
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Container(
+                          height: 50,
+                          child: Row(
+                            children: [
+                              GestureDetector(
+                                onTap: widget.drawerCallback,
+                                child: NavBarIcon(),
                               ),
-                            ),
-                            SizedBox(width: 20,),
-                          ],
+                              Text("Sales Detail",
+                                  style: AppTheme.appBarTS
+                              ),
+                              Spacer(),
+                              GestureDetector(
+                                onTap: () async{
+                                  final List<DateTime?>?  picked1 = await DateRagePicker.showDatePicker(
+                                      context: context,
+                                      initialFirstDate: new DateTime.now(),
+                                      initialLastDate: (new DateTime.now()),
+                                      firstDate: dateTime,
+                                      lastDate: (new DateTime.now())
+                                  );
+                                  if (picked1 != null && picked1.length == 2) {
+                                    setState(() {
+                                      qn.picked=picked1;
+                                      qn.GetSaleDetailDbhit(context);
+                                      // rn.reportDbHit(widget.UserId.toString(), widget.OutletId, DateFormat("dd-MM-yyyy").format( picked[0]).toString(), DateFormat("dd-MM-yyyy").format( picked[1]).toString(),"Itemwise Report", context);
+                                    });
+                                  }
+                                  else if(picked1!=null && picked1.length ==1){
+                                    setState(() {
+                                      qn.picked=picked1;
+                                      qn.GetSaleDetailDbhit(context);
+                                      // rn.reportDbHit(widget.UserId.toString(), widget.OutletId, DateFormat("dd-MM-yyyy").format( picked[0]).toString(), DateFormat("dd-MM-yyyy").format( picked[0]).toString(),"Itemwise Report", context);
+                                    });
+                                  }
+
+                                },
+                                child: SvgPicture.asset("assets/svg/calender.svg",width: 27,height: 27,color: AppTheme.bgColor,
+                                  //    color: qn.selectedIndex==-1? AppTheme.bgColor.withOpacity(0.5):isOpen?AppTheme.bgColor:AppTheme.bgColor.withOpacity(0.5),
+                                ),
+                              ),
+                              SizedBox(width: 20,)
+
+                            ],
+                          ),
                         ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.only(left: 5,right: 5,),
-                          alignment: Alignment.centerLeft,
-                          child:SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child:userAccessList[5].isHasAccess? Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: qn.saleCounterList.asMap().
-                                map((key, value) => MapEntry(key,  SaleReportHeader(
-                                title: value.title,
-                                value: value.value,
-                                qty: value.qty,
-                                unit: value.unit,
+                        Container(
+                            padding: EdgeInsets.only(left: 5,right: 5,),
+                            alignment: Alignment.centerLeft,
+                            child:SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: qn.saleCounterList.asMap().
+                                  map((key, value) => MapEntry(key,  SaleReportHeader(
+                                    title: value.title,
+                                    value: value.value,
+                                    qty: value.qty,
+                                    unit: value.unit,
+
+                                  ),)
+                                  ).values.toList()
+
                               ),
                             )
-                          ).values.toList()
-                         ):Container(),
                         )
-                      )
-                    ],
-                  )
+
+                      ],
+                    )
                 ),
+
+
+
+
                 Container(
                     height: SizeConfig.screenHeight!-140,
                     width: SizeConfig.screenWidth,
@@ -451,6 +466,10 @@ class _SaleGridState extends State<SaleGrid> {
                       ],
                     )
                 ),
+
+
+
+
                 //bottomNav
                 Positioned(
                   bottom: 0,
@@ -532,16 +551,12 @@ class _SaleGridState extends State<SaleGrid> {
                                   onTap: (){
 
                                     if(qn.selectedIndex!=-1 && isOpen){
-                                      if(userAccessMap[18]??false){
-                                        Navigator.of(context).push(_createRoute());
-                                        qn.editLoader();
-                                        Timer(Duration(milliseconds: 300), (){
-                                          qn.tabController!.animateTo(1,duration: Duration(milliseconds: 300),curve: Curves.easeIn);
-                                        });
-                                      }
-                                      else{
-                                        CustomAlert().accessDenied(context);
-                                      }
+                                      print("EDit ${qn.selectedIndex} ${qn.saleDetailsGrid.length}");
+                                      Navigator.of(context).push(_createRoute());
+                                      qn.editLoader();
+                                      Timer(Duration(milliseconds: 300), (){
+                                        qn.tabController!.animateTo(1,duration: Duration(milliseconds: 300),curve: Curves.easeIn);
+                                      });
                                     }
 
 
@@ -558,7 +573,10 @@ class _SaleGridState extends State<SaleGrid> {
                                   onTap: (){
                                     if(qn.selectedIndex!=-1 && !isOpen){
                                       print("pribt");
-                                      qn.printClosedReport(context);
+                                      setState(() {
+                                        printPopup=true;
+                                      });
+                                      // qn.printClosedReport(context);
                                     }
                                   },
                                   child: SvgPicture.asset("assets/svg/print.svg",width: 27,height: 27,
@@ -575,8 +593,8 @@ class _SaleGridState extends State<SaleGrid> {
                                   },
                                   child: Opacity(
                                     opacity: qn.selectedIndex==-1? 0.3:1,
-                                      child: SvgPicture.asset("assets/svg/pdfView.svg",width: 30,height: 30,),
-                                   /* child: SvgPicture.asset( qn.selectedIndex==-1?"assets/bottomIcons/pdf-inactive.svg":
+                                    child: SvgPicture.asset("assets/svg/pdfView.svg",width: 30,height: 30,),
+                                    /* child: SvgPicture.asset( qn.selectedIndex==-1?"assets/bottomIcons/pdf-inactive.svg":
                                     "assets/bottomIcons/pdf-active.svg",width: 30,height: 30,
                                       //color: qn.selectedIndex==-1? AppTheme.bgColor.withOpacity(0.5):isOpen?AppTheme.bgColor.withOpacity(0.5):AppTheme.bgColor,
                                     ),*/
@@ -596,24 +614,15 @@ class _SaleGridState extends State<SaleGrid> {
                   alignment: Alignment.bottomCenter,
                   child: AddButton(
                     ontap: (){
-
-                      if(userAccessList[6].isHasAccess){
-                        qn.clearIsOpen();
-                        qn.clearEmptyForm();
-                        qn.PlantUserDropDownValues(context);
-                        qn.SalesDropDownValues(context).then((value) {
-                          Navigator.of(context).push(_createRouteFalse());
-                        });
-                      }
-                      else{
-                        CustomAlert().accessDenied(context);
-                      }
-
-
+                      qn.clearIsOpen();
+                      qn.clearEmptyForm();
+                      qn.PlantUserDropDownValues(context);
+                      qn.SalesDropDownValues(context).then((value) {
+                        Navigator.of(context).push(_createRouteFalse());
+                      });
 
                     },
                     image: "assets/svg/plusIcon.svg",
-                    hasAccess: userAccessMap[17]??false,
                   ),
                 ),
                 Positioned(
@@ -630,6 +639,10 @@ class _SaleGridState extends State<SaleGrid> {
                       ),
                     )
                 ),
+
+
+
+
                 AnimatedPositioned(
                     bottom:showEdit? 0:-80,
                     child: Container(
@@ -716,6 +729,8 @@ class _SaleGridState extends State<SaleGrid> {
 
 
                     duration: Duration(milliseconds:300)),
+
+
 ////////////////////////////////////// LOADER //////////////////////////
                 Container(
                   height: qn.insertSaleLoader? SizeConfig.screenHeight:0,
@@ -725,6 +740,42 @@ class _SaleGridState extends State<SaleGrid> {
                     child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(AppTheme.yellowColor),),
                   ),
                 ),
+                Container(
+
+                  height: printPopup? SizeConfig.screenHeight:0,
+                  width: printPopup? SizeConfig.screenWidth:0,
+                  color: Colors.black.withOpacity(0.5),
+
+                ),
+                PopUpStatic2(
+                  title: "Select Print Mode",
+                  isOpen: printPopup,
+                  dataList: [{"Mode":"Print Without Price"},{"Mode":"Print With Price"}],
+                  propertyKeyName:"Mode",
+                  propertyKeyId: "PlantId",
+                  selectedId: null,
+                  itemOnTap: (index){
+                    print(index);
+                    if(index==0){
+                      qn.printClosedReport(context,false);
+                    }
+                    else{
+                      qn.printClosedReport(context,true);
+                    }
+
+                    setState(() {
+                      printPopup=false;
+                    });
+                  },
+                  closeOnTap: (){
+                    setState(() {
+                      printPopup=false;
+                    });
+                  },
+                ),
+
+
+
               ],
             ),
           ),

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer' as dev;
 import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
@@ -74,7 +75,7 @@ List<dynamic>? vehicleTypeList=[];
       counterList.clear();
       List<ReportGridStyleModel2> salesReportGridCol=[ReportGridStyleModel2(columnName: "Sales Number"),
         ReportGridStyleModel2(columnName: "Date",isDate: true,width: 130),ReportGridStyleModel2(columnName: "Material"),ReportGridStyleModel2(columnName:"Qty"),
-        ReportGridStyleModel2(columnName: "Amount"),ReportGridStyleModel2(columnName: "Customer Name"),ReportGridStyleModel2(columnName: "Plant Name"),];
+        ReportGridStyleModel2(columnName: "TaxAmount"),ReportGridStyleModel2(columnName: "Amount"),ReportGridStyleModel2(columnName: "Customer Name"),ReportGridStyleModel2(columnName: "Plant Name"),];
       reportHeader="Sales Report";
       totalReportTitle="Total Sale";
       totalReportQtyTitle="Sale Quantity";
@@ -727,9 +728,9 @@ List<dynamic>? vehicleTypeList=[];
       await call.ApiCallGetInvoke(body,context).then((value) {
         if(value!=null){
           var parsed=json.decode(value);
-          print(parsed["Table"]);
+          dev.log("${parsed["Table"]}");
           var t=parsed["Table"] as List;
-          print("t.ltnht${t.length}");
+          print("report Length ${t.length}");
           if(typeName=="SaleReport"){
             salesReportGridList!.clear();
            // var t=parsed["Table"] as List;
@@ -861,6 +862,8 @@ List<dynamic>? vehicleTypeList=[];
     totalReport=0;
     totalReportQty=0.0;
     totalReportAmount=0.0;
+    double totalReportTaxAmount=0.0;
+    double totalReportDisCountAmount=0.0;
 
     plantList!.forEach((element) {
       if(element['IsActive']==1){
@@ -887,11 +890,18 @@ List<dynamic>? vehicleTypeList=[];
     filterSalesReportGridList.forEach((element) {
       totalReportAmount=Calculation().add(totalReportAmount, element['Amount']);
       totalReportQty=Calculation().add(totalReportQty, element['Qty']);
+      if(element['IsTax'].toString()=="true"){
+        totalReportTaxAmount=Calculation().add(totalReportTaxAmount, element['TaxAmount']);
+      }
+
+      totalReportDisCountAmount=Calculation().add(totalReportDisCountAmount, element['DiscountAmount']);
     });
 
 
     counterList[0].value=filterSalesReportGridList.length;
     counterList[1].value="${formatCurrency.format(totalReportQty)} Ton";
+    counterList[2].value="${formatCurrency.format(totalReportTaxAmount)}";
+    counterList[3].value="${formatCurrency.format(totalReportDisCountAmount)}";
     counterList[4].value=formatCurrency.format(totalReportAmount);
 
     filterSalesReportGridList.sort((a,b)=>a['SaleId'].compareTo(b['SaleId']));
@@ -976,7 +986,7 @@ List<dynamic>? vehicleTypeList=[];
     totalReport=inputQty.length;
 
 
-    counterList[0].value=inputQty.length;
+    counterList[0].value=filterPurchaseReportGridList.length;
     counterList[1].value="${formatCurrency.format(totalReportQty)} Ton";
     counterList[2].value=formatCurrency.format(totalReportAmount);
 
@@ -1031,7 +1041,8 @@ List<dynamic>? vehicleTypeList=[];
 
     customerList!.forEach((element) {
       if(element['IsActive']==1){
-        tempCustomerSaleCustomerFilter=tempCustomerSaleCustomerFilter+tempCustomerSalePlantFilter.where((ele) => ele['CustomerId']==element['CustomerId']).toList();
+
+        tempCustomerSaleCustomerFilter=tempCustomerSaleCustomerFilter+tempCustomerSalePlantFilter.where((ele) => ele['CustomerId'].toString().toLowerCase()==element['CustomerId'].toString().toLowerCase()).toList();
       }
     });
 

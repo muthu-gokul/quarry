@@ -95,6 +95,9 @@ class _EmployeeMasterViewState extends State<EmployeeMasterView> with TickerProv
           height: SizeConfig.screenHeight,
           child: Stack(
             children: [
+
+
+
               //IMAGE
               Container(
                 height: SizeConfig.screenHeight,
@@ -257,323 +260,76 @@ class _EmployeeMasterViewState extends State<EmployeeMasterView> with TickerProv
                                           )
                                       ),
 
+
                                       Container(
-                                        margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!,),
-                                        height:40,
-                                        width: SizeConfig.screenWidthM40,
-                                        decoration: BoxDecoration(
+                                          margin: EdgeInsets.only(top: 20,left: 20,right: 20),
                                           color: tableColor,
-                                            borderRadius: BorderRadius.only(topLeft: Radius.circular(3),topRight: Radius.circular(3)),
-                                            border: Border.all(color: AppTheme.addNewTextFieldBorder)
-
-                                        ),
-                                        child:Row(
-                                          children: [
-                                            Container(
-                                                padding: EdgeInsets.only(left: SizeConfig.width10!),
-                                                width: (SizeConfig.screenWidthM40!*0.5)-2,
-                                                child: Text("Employee Code",style: tableTextStyle,)
-                                            ),
-
-                                            Container(
-                                                height: 50,
-                                                width: 1,
-                                                color: AppTheme.addNewTextFieldBorder
-                                            ),
-
-                                            Container(
-                                                padding: EdgeInsets.only(left: SizeConfig.width10!),
-                                                height: 16,
-                                                alignment: Alignment.centerLeft,
-                                                width: (SizeConfig.screenWidthM40!*0.5)-1,
-                                                child: FittedBox(child: Text("${en.EmployeePrefix}${en.EmployeeCode}",
-
-                                                style:tableTextStyle,
+                                          child: Table(
+                                            border: tableBorder,
+                                            children: [
+                                              tableRow("Employee Code", "${en.EmployeePrefix}${en.EmployeeCode}"),
+                                              tableRow("Employee Type", "${en.selectEmployeeTypeName??""}"),
+                                              for(int i=0;i<3;i++)
+                                                tableRow(i==0?"Shift":i==1?"Salary":"Date of Join",
+                                                    "${i==0?en.selectShiftName??"":i==1?"${en.employeeSalary.text} / ${en.selectSalaryTypeName}":en.joiningDate!=null?DateFormat('dd-MM-yyyy').format(en.joiningDate!):""}"
                                                 ),
-
-                                                ),
-                                            ),
-                                          ],
-                                        ),
+                                            ],
+                                          )
                                       ),
-                                      Container(
-                                        margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!,),
-                                        height:40,
-                                        width: SizeConfig.screenWidthM40,
-                                        decoration: BoxDecoration(
-                                          color: tableColor,
-                                            border: Border(left: BorderSide(color: AppTheme.addNewTextFieldBorder),
-                                              right: BorderSide(color: AppTheme.addNewTextFieldBorder),bottom: BorderSide(color: AppTheme.addNewTextFieldBorder),
 
-                                            )
-
-
-                                        ),
-                                        child:Row(
-                                          children: [
-                                            Container(
-                                                padding: EdgeInsets.only(left: SizeConfig.width10!),
-                                                width: (SizeConfig.screenWidthM40!*0.5)-2,
-                                                child: Text("Employee Type",style: tableTextStyle,)
-                                            ),
-
-                                            Container(
-                                                height: 50,
-                                                width: 1,
-                                                color: AppTheme.addNewTextFieldBorder
-                                            ),
-
-                                            Container(
-                                                padding: EdgeInsets.only(left: SizeConfig.width10!),
-                                                height: 16,
-                                                alignment: Alignment.centerLeft,
-                                                width: (SizeConfig.screenWidthM40!*0.5)-1,
-                                                child: FittedBox(child: Text("${en.selectEmployeeTypeName??""}",
-
-                                                style:tableTextStyle,
-                                                ),
-
-                                                ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      for(int i=0;i<3;i++)
-                                      Container(
-                                        margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!,),
-                                        height:40,
-                                        width: SizeConfig.screenWidthM40,
-                                        decoration: BoxDecoration(
-                                            color: tableColor,
-                                         //   borderRadius: BorderRadius.circular(3),
-                                            border: Border(left: BorderSide(color: AppTheme.addNewTextFieldBorder),
-                                                right: BorderSide(color: AppTheme.addNewTextFieldBorder),bottom: BorderSide(color: AppTheme.addNewTextFieldBorder),
-
-                                            )
-
-                                        ),
-                                        child:Row(
-                                          children: [
-                                            Container(
-                                                padding: EdgeInsets.only(left: SizeConfig.width10!),
-                                                width: (SizeConfig.screenWidthM40!*0.5)-2,
-                                                child: Text(i==0?"Shift":i==1?"Salary":"Date of Join",
-                                                  style: tableTextStyle,
-                                                )
-                                            ),
-
-                                            Container(
-                                                height: 50,
-                                                width: 1,
-                                                color: AppTheme.addNewTextFieldBorder
-                                            ),
-
-                                            Container(
-                                                padding: EdgeInsets.only(left: SizeConfig.width10!),
-                                                height: 16,
-                                                alignment: Alignment.centerLeft,
-                                                width: (SizeConfig.screenWidthM40!*0.5)-1,
-                                                child: FittedBox(
-                                                  child: Text("${i==0?en.selectShiftName??"":i==1?"${en.employeeSalary.text} / ${en.selectSalaryTypeName}":en.joiningDate!=null?DateFormat('dd-MM-yyyy').format(en.joiningDate!):""}",
-                                                style: tableTextStyle,
-                                                ),
-
-                                                ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
                                       //Contact Details
                                       SizedBox(height: 20,),
                                       Align(
                                         alignment: Alignment.centerLeft,
                                         child: Padding(
-                                          padding: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!,),
+                                          padding: EdgeInsets.only(left:20,right:20,),
                                           child: Text("Contact Details",style: TextStyle(fontFamily: 'RR',fontSize: 14,color: AppTheme.bgColor),),
                                         ),
                                       ),
-                                      SizedBox(height: 5,),
+
                                       Container(
-                                        margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!,),
-                                        height:40,
-                                        width: SizeConfig.screenWidthM40,
-                                        decoration: BoxDecoration(
-                                            color: tableColor,
-                                            borderRadius: BorderRadius.only(topLeft: Radius.circular(3),topRight: Radius.circular(3)),
-                                            border: Border.all(color: AppTheme.addNewTextFieldBorder)
-
-                                        ),
-                                        child:Row(
-                                          children: [
-                                            Container(
-                                                padding: EdgeInsets.only(left: SizeConfig.width10!),
-                                                width: (SizeConfig.screenWidthM40!*0.5)-2,
-                                                child: Text("Phone",style: tableTextStyle,)
-                                            ),
-
-                                            Container(
-                                                height: 50,
-                                                width: 1,
-                                                color: AppTheme.addNewTextFieldBorder
-                                            ),
-
-                                            Container(
-                                              padding: EdgeInsets.only(left: SizeConfig.width10!),
-                                              height: 16,
-                                              alignment: Alignment.centerLeft,
-                                              width: (SizeConfig.screenWidthM40!*0.5)-1,
-                                              child: FittedBox(child: Text("${en.employeePhoneNumber.text}",
-
-                                                style:tableTextStyle,
-                                              ),
-
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      for(int i=0;i<4;i++)
-                                        Container(
-                                          margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!,),
-                                          height:40,
-                                          width: SizeConfig.screenWidthM40,
-                                          decoration: BoxDecoration(
-                                              color: tableColor,
-                                            //   borderRadius: BorderRadius.circular(3),
-                                              border: Border(left: BorderSide(color: AppTheme.addNewTextFieldBorder),
-                                                right: BorderSide(color: AppTheme.addNewTextFieldBorder),bottom: BorderSide(color: AppTheme.addNewTextFieldBorder),
-
-                                              )
-
-                                          ),
-                                          child:Row(
+                                          margin: EdgeInsets.only(top: 10,left: 20,right: 20),
+                                          color: tableColor,
+                                          child: Table(
+                                            border: tableBorder,
                                             children: [
-                                              Container(
-                                                  padding: EdgeInsets.only(left: SizeConfig.width10!),
-                                                  width: (SizeConfig.screenWidthM40!*0.5)-2,
-                                                  child: Text(i==0?"Email":i==1?"Address":i==2?"City":i==3?"State":"Zipcode",
-                                                    style: tableTextStyle,
-                                                  )
-                                              ),
+                                              tableRow("Phone", "${en.employeePhoneNumber.text}"),
 
-                                              Container(
-                                                  height: 50,
-                                                  width: 1,
-                                                  color: AppTheme.addNewTextFieldBorder
-                                              ),
-
-                                              Container(
-                                                padding: EdgeInsets.only(left: SizeConfig.width10!),
-                                                height: 16,
-                                                alignment: Alignment.centerLeft,
-                                                width: (SizeConfig.screenWidthM40!*0.5)-1,
-                                                child: FittedBox(
-                                                  child: Text("${i==0?en.employeeEmail.text:i==1?en.employeeAddress.text:i==2?en.employeeCity.text:en.employeeState.text}",
-                                                    style: tableTextStyle,
-                                                  ),
-
+                                              for(int i=0;i<4;i++)
+                                                tableRow(i==0?"Email":i==1?"Address":i==2?"City":i==3?"State":"Zipcode",
+                                                    "${i==0?en.employeeEmail.text:i==1?en.employeeAddress.text:i==2?en.employeeCity.text:en.employeeState.text}"
                                                 ),
-                                              ),
                                             ],
-                                          ),
-                                        ),
-
+                                          )
+                                      ),
 
                                       //Other Details
                                       SizedBox(height: 20,),
                                       Align(
                                         alignment: Alignment.centerLeft,
                                         child: Padding(
-                                          padding: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!,),
+                                          padding: EdgeInsets.only(left: 20,right: 20),
                                           child: Text("Other Details",style: TextStyle(fontFamily: 'RR',fontSize: 14,color: AppTheme.bgColor),),
                                         ),
                                       ),
-                                      SizedBox(height: 5,),
+
+
                                       Container(
-                                        margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!,),
-                                        height:40,
-                                        width: SizeConfig.screenWidthM40,
-                                        decoration: BoxDecoration(
-                                            color: tableColor,
-                                            borderRadius: BorderRadius.only(topLeft: Radius.circular(3),topRight: Radius.circular(3)),
-                                            border: Border.all(color: AppTheme.addNewTextFieldBorder)
-
-                                        ),
-                                        child:Row(
-                                          children: [
-                                            Container(
-                                                padding: EdgeInsets.only(left: SizeConfig.width10!),
-                                                width: (SizeConfig.screenWidthM40!*0.5)-2,
-                                                child: Text("Date of Birth",style: tableTextStyle,)
-                                            ),
-
-                                            Container(
-                                                height: 50,
-                                                width: 1,
-                                                color: AppTheme.addNewTextFieldBorder
-                                            ),
-
-                                            Container(
-                                              padding: EdgeInsets.only(left: SizeConfig.width10!),
-                                              height: 16,
-                                              alignment: Alignment.centerLeft,
-                                              width: (SizeConfig.screenWidthM40!*0.5)-1,
-                                              child: FittedBox(child: Text("${en.dob!=null?DateFormat('dd-MM-yyyy').format(en.dob!):""}",
-
-                                                style:tableTextStyle,
-                                              ),
-
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      for(int i=0;i<7;i++)
-                                        Container(
-                                          margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!,),
-                                          height:40,
-                                          width: SizeConfig.screenWidthM40,
-                                          decoration: BoxDecoration(
-                                              color: tableColor,
-                                              //   borderRadius: BorderRadius.circular(3),
-                                              border: Border(left: BorderSide(color: AppTheme.addNewTextFieldBorder),
-                                                right: BorderSide(color: AppTheme.addNewTextFieldBorder),bottom: BorderSide(color: AppTheme.addNewTextFieldBorder),
-
-                                              )
-
-                                          ),
-                                          child:Row(
+                                          margin: EdgeInsets.only(top: 10,left: 20,right: 20),
+                                          color: tableColor,
+                                          child: Table(
+                                            border: tableBorder,
                                             children: [
-                                              Container(
-                                                  padding: EdgeInsets.only(left: SizeConfig.width10!),
-                                                  width: (SizeConfig.screenWidthM40!*0.5)-2,
-                                                  child: Text(i==0?"Blood Group":i==1?"Marital Status":i==2?"Referred By":i==3?"Remarks":i==4?"Aadhaar Number":i==5?"Pan Number":"Payment Method",
-                                                    style: tableTextStyle,
-                                                  )
-                                              ),
-
-                                              Container(
-                                                  height: 50,
-                                                  width: 1,
-                                                  color: AppTheme.addNewTextFieldBorder
-                                              ),
-
-                                              Container(
-                                                padding: EdgeInsets.only(left: SizeConfig.width10!),
-                                                height: 16,
-                                                alignment: Alignment.centerLeft,
-                                                width: (SizeConfig.screenWidthM40!*0.5)-1,
-                                                child: FittedBox(
-                                                  child: Text("${i==0?en.selectBloodGroupName??"":i==1?en.selectMartialStatusName??"": i==2?en.employeeReferredBy.text:
-                                                  i==3?en.employeeRemarks.text:i==4?en.employeeAadhaarNo.text:i==5?en.employeePanNo.text:en.selectPaymentMethodName??""}",
-                                                    style: tableTextStyle,
-                                                  ),
-
+                                              tableRow("Date of Birth", "${en.dob!=null?DateFormat('dd-MM-yyyy').format(en.dob!):""}"),
+                                              for(int i=0;i<7;i++)
+                                                tableRow(i==0?"Blood Group":i==1?"Marital Status":i==2?"Referred By":i==3?"Remarks":i==4?"Aadhaar Number":i==5?"Pan Number":"Payment Method",
+                                                    "${i==0?en.selectBloodGroupName??"":i==1?en.selectMartialStatusName??"": i==2?en.employeeReferredBy.text:
+                                                    i==3?en.employeeRemarks.text:i==4?en.employeeAadhaarNo.text:i==5?en.employeePanNo.text:en.selectPaymentMethodName??""}"
                                                 ),
-                                              ),
                                             ],
-                                          ),
-                                        ),
+                                          )
+                                      ),
+
 
 
                                       //Bank Details
@@ -585,94 +341,23 @@ class _EmployeeMasterViewState extends State<EmployeeMasterView> with TickerProv
                                           child: Text("Bank Details",style: TextStyle(fontFamily: 'RR',fontSize: 14,color: AppTheme.bgColor),),
                                         ),
                                       ),
-                                      SizedBox(height: 5,),
+
                                       Container(
-                                        margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!,),
-                                        height:40,
-                                        width: SizeConfig.screenWidthM40,
-                                        decoration: BoxDecoration(
-                                            color: tableColor,
-                                            borderRadius: BorderRadius.only(topLeft: Radius.circular(3),topRight: Radius.circular(3)),
-                                            border: Border.all(color: AppTheme.addNewTextFieldBorder)
-
-                                        ),
-                                        child:Row(
-                                          children: [
-                                            Container(
-
-                                              height:16,
-                                                padding: EdgeInsets.only(left: SizeConfig.width10!),
-                                                width: (SizeConfig.screenWidthM40!*0.5)-2,
-                                                alignment: Alignment.centerLeft,
-                                                child: FittedBox(child: Text("Account Holder Name",style: tableTextStyle,))
-                                            ),
-
-                                            Container(
-                                                height: 50,
-                                                width: 1,
-                                                color: AppTheme.addNewTextFieldBorder
-                                            ),
-
-                                            Container(
-                                              padding: EdgeInsets.only(left: SizeConfig.width10!),
-                                              height: 16,
-                                              alignment: Alignment.centerLeft,
-                                              width: (SizeConfig.screenWidthM40!*0.5)-1,
-                                              child: FittedBox(child: Text("${en.employeeHolderName.text}",
-
-                                                style:tableTextStyle,
-                                              ),
-
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      for(int i=0;i<4;i++)
-                                        Container(
-                                          margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!,),
-                                          height:40,
-                                          width: SizeConfig.screenWidthM40,
-                                          decoration: BoxDecoration(
-                                              color: tableColor,
-                                              //   borderRadius: BorderRadius.circular(3),
-                                              border: Border(left: BorderSide(color: AppTheme.addNewTextFieldBorder),
-                                                right: BorderSide(color: AppTheme.addNewTextFieldBorder),bottom: BorderSide(color: AppTheme.addNewTextFieldBorder),
-
-                                              )
-
-                                          ),
-                                          child:Row(
+                                          margin: EdgeInsets.only(top: 10,left: 20,right: 20),
+                                          color: tableColor,
+                                          child: Table(
+                                            border: tableBorder,
                                             children: [
-                                              Container(
-                                                  padding: EdgeInsets.only(left: SizeConfig.width10!),
-                                                  width: (SizeConfig.screenWidthM40!*0.5)-2,
-                                                  child: Text(i==0?"Bank Name":i==1?"Account Number":i==2?"Branch":"IFSC Code",
-                                                    style: tableTextStyle,
-                                                  )
-                                              ),
-
-                                              Container(
-                                                  height: 50,
-                                                  width: 1,
-                                                  color: AppTheme.addNewTextFieldBorder
-                                              ),
-
-                                              Container(
-                                                padding: EdgeInsets.only(left: SizeConfig.width10!),
-                                                height: 16,
-                                                alignment: Alignment.centerLeft,
-                                                width: (SizeConfig.screenWidthM40!*0.5)-1,
-                                                child: FittedBox(
-                                                  child: Text("${i==0?en.employeeBankName.text:i==1?en.employeeAccNo.text:i==2?en.employeeBranchName.text:en.employeeIFSC.text}",
-                                                    style: tableTextStyle,
-                                                  ),
-
+                                              tableRow("Account Holder Name", "${en.employeeHolderName.text}"),
+                                              for(int i=0;i<4;i++)
+                                                tableRow(i==0?"Bank Name":i==1?"Account Number":i==2?"Branch":"IFSC Code",
+                                                  "${i==0?en.employeeBankName.text:i==1?en.employeeAccNo.text:i==2?en.employeeBranchName.text:en.employeeIFSC.text}",
                                                 ),
-                                              ),
                                             ],
-                                          ),
-                                        ),
+                                          )
+                                      ),
+
+
 
                                       SizedBox(height: _keyboardVisible? SizeConfig.screenHeight!*0.6:200,)
                                     ],
@@ -999,6 +684,27 @@ class _EmployeeMasterViewState extends State<EmployeeMasterView> with TickerProv
           child: child,
         );
       },
+    );
+  }
+
+
+  TableRow tableRow(var title, var value){
+    return  TableRow(
+        children: [
+          Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Text("$title",
+                style: tableTextStyle,
+              )
+          ),
+
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Text("$value",
+              style: tableTextStyle,
+            ),
+          ),
+        ]
     );
   }
 }
