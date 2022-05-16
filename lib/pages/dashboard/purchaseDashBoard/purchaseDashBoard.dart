@@ -39,7 +39,7 @@ class _PurchaseDashBoardState extends State<PurchaseDashBoard> {
         DateFormat("yyyy-MM-dd").format(DateTime.now().subtract(Duration(days: 90))).toString(),
         DateFormat("yyyy-MM-dd").format(DateTime.now()).toString()
     );
-    WidgetsBinding.instance!.addPostFrameCallback((_){
+    WidgetsBinding.instance.addPostFrameCallback((_){
       silverController=new ScrollController();
 
       setState(() {

@@ -69,7 +69,7 @@ class GoodsReceivedGridState extends State<GoodsReceivedGrid> with TickerProvide
     goodsDataController = AnimationController(duration: const Duration(milliseconds: 300), vsync: this,);
     goodsDataAnimation=Tween<double>(begin: 0.0,end: 1.0).animate(goodsDataController);
 
-    WidgetsBinding.instance!.addPostFrameCallback((_){
+    WidgetsBinding.instance.addPostFrameCallback((_){
 
       goodsDataController.forward();
 

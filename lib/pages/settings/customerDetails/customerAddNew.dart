@@ -46,7 +46,7 @@ class CustomerDetailAddNewState extends State<CustomerDetailAddNew> with TickerP
 
   @override
   void initState() {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       scrollController = new ScrollController();
       listViewController = new ScrollController();
       setState(() {

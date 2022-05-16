@@ -34,3 +34,7 @@ v-1.0.11
   var keyboardVisible=false.obs;
     keyboardVisible.value = MediaQuery.of(context).viewInsets.bottom != 0;
    Obx(()=>SizedBox(height: keyboardVisible.value?350: 120,))
+
+v-1.0.15
+
+1. flutter 3.0 

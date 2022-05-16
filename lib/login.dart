@@ -113,7 +113,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
       });
 
 
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
 
       allowAccess();
       SharedPreferences.getInstance()

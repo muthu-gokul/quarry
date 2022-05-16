@@ -41,7 +41,7 @@ class PlantDetailsGridState extends State<PlantDetailsGrid> with TickerProviderS
   @override
   void initState() {
     isEdit=false;
-    WidgetsBinding.instance!.addPostFrameCallback((_){
+    WidgetsBinding.instance.addPostFrameCallback((_){
 
 
       scrollController=new ScrollController();

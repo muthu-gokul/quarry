@@ -602,6 +602,7 @@ class InvoiceNotifier extends ChangeNotifier{
 
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
+        updateInvoiceLoader(false);
         if(value!="null"){
           var parsed=json.decode(value);
           var t=parsed['Table'] as List?;

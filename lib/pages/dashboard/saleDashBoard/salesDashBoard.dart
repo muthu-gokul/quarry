@@ -56,7 +56,7 @@ class _SalesDashBoardState extends State<SalesDashBoard> {
         chartSeriesController?.animate();
       });*/
     });
-    WidgetsBinding.instance!.addPostFrameCallback((_){
+    WidgetsBinding.instance.addPostFrameCallback((_){
       silverController=new ScrollController();
 
       setState(() {

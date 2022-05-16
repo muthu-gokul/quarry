@@ -2689,7 +2689,7 @@ class QuarryNotifier extends ChangeNotifier{
 
   bool insertCompanyLoader=false;
   void updateInsertCompanyLoader(bool value){
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       insertCompanyLoader=value;
       notifyListeners();
 

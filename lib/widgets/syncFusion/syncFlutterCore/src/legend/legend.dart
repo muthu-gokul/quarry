@@ -504,7 +504,7 @@ class _SfLegendState extends State<SfLegend> {
               childConstraints.biggest) {
             child = widget.child;
           } else {
-            SchedulerBinding.instance!.addPostFrameCallback(
+            SchedulerBinding.instance.addPostFrameCallback(
               (Duration timeStamp) {
                 setState(() {
                   _omitLegend = true;

@@ -81,7 +81,7 @@ class _SalesMaterialState extends State<SalesMaterial> {
     Timer(Duration(milliseconds: 400),(){
       chartSeriesController?.animate();
     });
-    WidgetsBinding.instance!.addPostFrameCallback((_){
+    WidgetsBinding.instance.addPostFrameCallback((_){
       silverController=new ScrollController();
 
       setState(() {

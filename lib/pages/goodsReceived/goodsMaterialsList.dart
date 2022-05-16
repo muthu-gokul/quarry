@@ -47,7 +47,7 @@ class GoodsMaterialsListState extends State<GoodsMaterialsList> with TickerProvi
   @override
   void initState() {
     isEdit=false;
-    WidgetsBinding.instance!.addPostFrameCallback((_){
+    WidgetsBinding.instance.addPostFrameCallback((_){
       scrollController=new ScrollController();
       listViewController=new ScrollController();
       setState(() {

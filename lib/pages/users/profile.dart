@@ -52,7 +52,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
 
-    WidgetsBinding.instance!.addPostFrameCallback((_){
+    WidgetsBinding.instance.addPostFrameCallback((_){
 
 
       scrollController=new ScrollController();

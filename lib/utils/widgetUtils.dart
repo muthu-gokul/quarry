@@ -62,7 +62,7 @@ class _AddNewLayoutState extends State<AddNewLayout> {
   @override
   void initState() {
 
-    WidgetsBinding.instance!.addPostFrameCallback((_){
+    WidgetsBinding.instance.addPostFrameCallback((_){
       silverController=new ScrollController();
 
       setState(() {

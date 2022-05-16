@@ -43,7 +43,7 @@ class _InvoiceDashBoardState extends State<InvoiceDashBoard> {
         DateFormat("yyyy-MM-dd").format(DateTime.now()).toString()
     );
 
-    WidgetsBinding.instance!.addPostFrameCallback((_){
+    WidgetsBinding.instance.addPostFrameCallback((_){
       silverController=new ScrollController();
 
       setState(() {

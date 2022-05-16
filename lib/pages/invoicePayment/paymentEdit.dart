@@ -42,7 +42,7 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
   @override
   void initState() {
     print("init");
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       scrollController = new ScrollController();
       listViewController = new ScrollController();
       setState(() {

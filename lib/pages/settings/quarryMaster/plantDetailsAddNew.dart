@@ -60,7 +60,7 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
   @override
   void initState() {
 
-    WidgetsBinding.instance!.addPostFrameCallback((_){
+    WidgetsBinding.instance.addPostFrameCallback((_){
 
       setState(() {
        if(Provider.of<QuarryNotifier>(context,listen: false).isPlantDetailsEdit){

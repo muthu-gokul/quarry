@@ -45,7 +45,7 @@ class GoodsOutGateFormState extends State<GoodsOutGateForm> with TickerProviderS
   @override
   void initState() {
     isEdit=false;
-    WidgetsBinding.instance!.addPostFrameCallback((_){
+    WidgetsBinding.instance.addPostFrameCallback((_){
 
 
       scrollController=new ScrollController();

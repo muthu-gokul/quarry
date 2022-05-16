@@ -50,7 +50,7 @@ class _DieselDashBoardState extends State<DieselDashBoard> {
         }
     );
     getData();
-    WidgetsBinding.instance!.addPostFrameCallback((_){
+    WidgetsBinding.instance.addPostFrameCallback((_){
       silverController=new ScrollController();
 
       setState(() {

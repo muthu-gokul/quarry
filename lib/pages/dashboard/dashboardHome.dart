@@ -58,7 +58,7 @@ class _DashBoardHomeState extends State<DashBoardHome> {
 
   @override
   void initState() {
-    WidgetsBinding.instance!.addPostFrameCallback((_){
+    WidgetsBinding.instance.addPostFrameCallback((_){
       silverController=new ScrollController();
 
       setState(() {

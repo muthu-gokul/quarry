@@ -60,7 +60,7 @@ class GoodsMaterialTripListState extends State<GoodsMaterialTripList> with Ticke
 
     materialTripList=Provider.of<GoodsReceivedNotifier>(context,listen: false).materialTripList.where((element) => element.materialId==widget.MaterialId).toList();
     GoodsMaterialExtraTripModelDetails=Provider.of<GoodsReceivedNotifier>(context,listen: false).GoodsMaterialExtraTripModelDetails.where((element) => element.materialId==widget.MaterialId).toList();
-    WidgetsBinding.instance!.addPostFrameCallback((_){
+    WidgetsBinding.instance.addPostFrameCallback((_){
 
 
 

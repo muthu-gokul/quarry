@@ -39,7 +39,7 @@ class MachineManagementPlantListState extends State<MachineManagementPlantList> 
   @override
   void initState() {
 
-    WidgetsBinding.instance!.addPostFrameCallback((_){
+    WidgetsBinding.instance.addPostFrameCallback((_){
 
 
       scrollController=new ScrollController();

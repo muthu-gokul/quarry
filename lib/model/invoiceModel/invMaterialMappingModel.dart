@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:quarry/utils/utils.dart';
 
 class InvoiceMaterialMappingListModel{
   int? InvoiceMaterialMappingId;
@@ -52,7 +53,7 @@ class InvoiceMaterialMappingListModel{
     InvoiceId: json["InvoiceId"],
     MaterialId: json["MaterialId"],
     materialName: json["MaterialName"],
-    MaterialPrice: json["MaterialPrice"],
+    MaterialPrice: parseDouble(json["MaterialPrice"]),
     materialUnitId: json["MaterialUnitId"],
     unitName: json["UnitName"],
    // PurchaseQuantity: json["PurchaseQuantity"],

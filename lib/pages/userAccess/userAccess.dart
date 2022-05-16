@@ -23,7 +23,7 @@ class _UserAccessState extends State<UserAccess> {
 
   @override
   void initState() {
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Provider.of<UserAccessNotifier>(context, listen: false).getUserAccess(context);
     });
 

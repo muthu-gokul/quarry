@@ -30,7 +30,7 @@ class _BottomNavBarV2State extends State<BottomNavBarV2> {
               height: 60,
               color: Colors.white,
               child: Stack(
-                overflow: Overflow.visible,
+
                 children: [
                   CustomPaint(
                     size: Size(size.width, 60),

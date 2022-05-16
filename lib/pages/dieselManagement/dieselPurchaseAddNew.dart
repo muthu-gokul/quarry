@@ -60,7 +60,7 @@ class DieselPurchaseFormState extends State<DieselPurchaseForm> with TickerProvi
   @override
   void initState() {
     isEdit=false;
-    WidgetsBinding.instance!.addPostFrameCallback((_){
+    WidgetsBinding.instance.addPostFrameCallback((_){
 
     });
     super.initState();

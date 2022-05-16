@@ -42,7 +42,7 @@ class MaterialDetailAddNewState extends State<MaterialDetailAddNew> with TickerP
   @override
   void initState() {
 
-    WidgetsBinding.instance!.addPostFrameCallback((_){
+    WidgetsBinding.instance.addPostFrameCallback((_){
 
 
       scrollController=new ScrollController();

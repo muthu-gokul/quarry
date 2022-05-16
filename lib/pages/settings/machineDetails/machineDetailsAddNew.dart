@@ -34,7 +34,7 @@ class _MachineDetailAddNewState extends State<MachineDetailAddNew> with TickerPr
   @override
   void initState() {
 
-    WidgetsBinding.instance!.addPostFrameCallback((_){
+    WidgetsBinding.instance.addPostFrameCallback((_){
 
 
       scrollController=new ScrollController();

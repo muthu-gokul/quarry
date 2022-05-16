@@ -38,7 +38,7 @@ class _SalesCustomerState extends State<SalesCustomer> {
   @override
   void initState() {
 
-    WidgetsBinding.instance!.addPostFrameCallback((_){
+    WidgetsBinding.instance.addPostFrameCallback((_){
       silverController=new ScrollController();
 
       setState(() {

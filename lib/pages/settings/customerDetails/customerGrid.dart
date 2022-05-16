@@ -36,7 +36,7 @@ class _CustomerMasterState extends State<CustomerMaster> {
 
   @override
   void initState() {
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Provider.of<CustomerNotifier>(context,listen: false).GetCustomerDetailDbhit(context,null);
     });
 

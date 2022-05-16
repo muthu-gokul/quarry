@@ -44,7 +44,7 @@ class DieselPlantListState extends State<DieselPlantList> with TickerProviderSta
   @override
   void initState() {
 
-    WidgetsBinding.instance!.addPostFrameCallback((_){
+    WidgetsBinding.instance.addPostFrameCallback((_){
 
 
       scrollController=new ScrollController();

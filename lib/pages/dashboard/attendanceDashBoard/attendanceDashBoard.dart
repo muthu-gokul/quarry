@@ -33,7 +33,7 @@ class _AttendanceDashBoardState extends State<AttendanceDashBoard> {
         DateFormat("yyyy-MM-dd").format(DateTime.now()).toString()
     );
 
-    WidgetsBinding.instance!.addPostFrameCallback((_){
+    WidgetsBinding.instance.addPostFrameCallback((_){
       silverController=new ScrollController();
 
       setState(() {

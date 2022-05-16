@@ -82,7 +82,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
   void initState() {
     _bindBackgroundIsolate();
     FlutterDownloader.registerCallback(downloadCallback);
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       if( userAccessMap[9]??false){
         Provider.of<DrawerNotifier>(context,listen: false).changeMenu(22);
       }

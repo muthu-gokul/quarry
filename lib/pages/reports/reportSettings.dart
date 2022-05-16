@@ -41,7 +41,7 @@ class ReportSettingsState extends State<ReportSettings> with TickerProviderState
   @override
   void initState() {
 
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       scrollController = new ScrollController();
       listViewController = new ScrollController();
 

@@ -434,8 +434,6 @@ class GoodsReceivedNotifier extends ChangeNotifier{
           if(isReload){
             GetGoodsDbHit(context, null,null,false,tickerProviderStateMixin);
           }
-
-
           clearOGFform();
           IGF_clear();
         }

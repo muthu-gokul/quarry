@@ -471,7 +471,7 @@ List<dynamic> stockT1=[];
   bool issupplierInvLoad=false;
   updateissupplierInvLoad(bool value){
     issupplierInvLoad=value;
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       notifyListeners();
     });
   }
@@ -479,7 +479,7 @@ List<dynamic> stockT1=[];
   bool isCustomerInvLoad=false;
   updateisCustomerInvLoad(bool value){
     isCustomerInvLoad=value;
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       notifyListeners();
     });
   }
@@ -488,14 +488,14 @@ List<dynamic> stockT1=[];
  bool isLoad=false;
  updateisLoad(bool value){
    isLoad=value;
-   WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+   WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
      notifyListeners();
    });
  }
  bool isChartLoad=false;
  updateisChartLoad(bool value){
    isChartLoad=value;
-   WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+   WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
      notifyListeners();
    });
  }
@@ -503,7 +503,7 @@ List<dynamic> stockT1=[];
  bool isSaleMaterialChartLoad=false;
  updateisSaleMaterialChartLoad(bool value){
    isSaleMaterialChartLoad=value;
-   WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+   WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
      notifyListeners();
    });
  }

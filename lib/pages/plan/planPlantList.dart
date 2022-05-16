@@ -44,7 +44,7 @@ class _PlanPlantListState extends State<PlanPlantList> {
   @override
   void initState() {
 
-    WidgetsBinding.instance!.addPostFrameCallback((_){
+    WidgetsBinding.instance.addPostFrameCallback((_){
       silverController=new ScrollController();
 
       setState(() {
@@ -217,7 +217,7 @@ class _PlanDrpListState extends State<PlanDrpList> {
   @override
   void initState() {
 
-    WidgetsBinding.instance!.addPostFrameCallback((_){
+    WidgetsBinding.instance.addPostFrameCallback((_){
       silverController=new ScrollController();
 
       setState(() {
