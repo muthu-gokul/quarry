@@ -534,7 +534,7 @@ class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
                                             ),
                                           ),
                                         ),
-                                        GestureDetector(
+                                       /* GestureDetector(
                                           onTap: () async{
                                             final List<DateTime?>?  picked1 = await DateRagePicker.showDatePicker(
                                                 context: context,
@@ -572,7 +572,7 @@ class DieselGridState extends State<DieselGrid> with TickerProviderStateMixin{
                                               //    color: qn.selectedIndex==-1? AppTheme.bgColor.withOpacity(0.5):isOpen?AppTheme.bgColor:AppTheme.bgColor.withOpacity(0.5),
                                             ),
                                           ),
-                                        ),
+                                        ),*/
                                         SizedBox(width:20,),
                                       ],
                                     )
