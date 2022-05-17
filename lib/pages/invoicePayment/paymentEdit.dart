@@ -714,7 +714,7 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
                                               child: Column(
                                                 crossAxisAlignment:CrossAxisAlignment.start,
                                                 children: [
-                                                  Text("Right Off Amount",style: ts14(AppTheme.addNewTextFieldText,fontfamily: 'RL'),),
+                                                  Text("Write Off Amount",style: ts14(AppTheme.addNewTextFieldText,fontfamily: 'RL'),),
                                                   SizedBox(height: 5,),
                                                   Text("${qn.rightOffAmount}",
                                                     style: TextStyle(fontFamily: 'RR', fontSize: 18,
@@ -744,7 +744,7 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
                                               onTap: (){
 
                                               },
-                                              child: Text("Is Right Off ?", style:  TextStyle(fontFamily: 'RR',fontSize: 16,color:AppTheme.addNewTextFieldText,letterSpacing: 0.2),)
+                                              child: Text("Is Write Off ?", style:  TextStyle(fontFamily: 'RR',fontSize: 16,color:AppTheme.addNewTextFieldText,letterSpacing: 0.2),)
                                           ),
                                         ],
                                       ),
@@ -847,14 +847,14 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
                           child: GestureDetector(
                             behavior: HitTestBehavior.translucent,
                             onTap: (){
-
-                              if(qn.paymentMappingList.isEmpty){
-                                CustomAlert().commonErrorAlert(context, "Add Payment", "");
-                              }
-
-                              else{
-                                qn.UpdatePaymentDbHit(context,this);
-                              }
+                              qn.UpdatePaymentDbHit(context,this);
+                              // if(qn.paymentMappingList.isEmpty){
+                              //   CustomAlert().commonErrorAlert(context, "Add Payment", "");
+                              // }
+                              //
+                              // else{
+                              //   qn.UpdatePaymentDbHit(context,this);
+                              // }
 
                             },
                             child: Container(

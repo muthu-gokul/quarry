@@ -1766,7 +1766,7 @@ class SfCartesianChartState extends State<SfCartesianChart>
         if (legendTemplates.isNotEmpty &&
             _renderingDetails.legendWidgetContext.isEmpty) {
           element = Container(child: Stack(children: legendTemplates));
-          SchedulerBinding.instance?.addPostFrameCallback((_) => _refresh());
+          SchedulerBinding.instance.addPostFrameCallback((_) => _refresh());
         } else {
           _initialize(constraints);
           _renderingDetails.chartLegend

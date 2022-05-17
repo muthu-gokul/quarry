@@ -68,15 +68,20 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
   }
 
   _cropImage(File picked) async {
-    File? cropped = await ImageCropper().cropImage(
-      androidUiSettings: AndroidUiSettings(
-          statusBarColor: Colors.red,
-          toolbarColor: Colors.red,
-          toolbarTitle: "Crop Image",
-          toolbarWidgetColor: Colors.white,
-          showCropGrid: false,
-          hideBottomControls: true
-      ),
+    CroppedFile? cropped = await ImageCropper().cropImage(
+      uiSettings: [
+        AndroidUiSettings(
+            toolbarTitle: 'Cropper',
+            toolbarColor: Colors.deepOrange,
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.original,
+            lockAspectRatio: false,
+
+        ),
+        IOSUiSettings(
+          title: 'Cropper',
+        ),
+      ],
       sourcePath: picked.path,
       aspectRatioPresets: [
         CropAspectRatioPreset.square
@@ -86,7 +91,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
     );
     if (cropped != null) {
       setState(() {
-        Provider.of<QuarryNotifier>(context,listen: false).sampleImage = cropped;
+        Provider.of<QuarryNotifier>(context,listen: false).sampleImage = File(cropped.path);
         Provider.of<QuarryNotifier>(context,listen: false).companyLogoUrl="";
       });
       // uploadImg();

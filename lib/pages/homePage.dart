@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/login.dart';
 import 'package:quarry/notifier/customerNotifier.dart';
@@ -256,6 +257,11 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                   hasAccess: userAccessMap[9]??false,
                                   callback: (){
                                     closeDrawer(22);
+                                    Provider.of<DashboardNotifier>(Get.context!,listen: false).currentSaleDbHit(Get.context!,
+                                        "Sale",
+                                        DateFormat("yyyy-MM-dd").format(DateTime.now().subtract(Duration(days: 6))).toString(),
+                                        DateFormat("yyyy-MM-dd").format(DateTime.now()).toString()
+                                    );
                                   },
                                 ),
                                 DrawerContent(
@@ -934,9 +940,9 @@ class AccountsPageState extends State<AccountsPage> with TickerProviderStateMixi
                       Navigator.pop(context);
                       widget.voidCallback!();
 
-                      Provider.of<DrawerNotifier>(context,listen: false).changeMenu(15);
-                      Provider.of<PaymentNotifier>(context, listen: false).updatePaymentReceivable(true);
-                      Provider.of<PaymentNotifier>(context, listen: false).GetPaymentDbHit(context,null,this);
+                      Provider.of<DrawerNotifier>(Get.context!,listen: false).changeMenu(15);
+                      Provider.of<PaymentNotifier>(Get.context!, listen: false).updatePaymentReceivable(true);
+                      Provider.of<PaymentNotifier>(Get.context!, listen: false).GetPaymentDbHit(Get.context!,null,this);
                     },
                   ),
 

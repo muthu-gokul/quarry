@@ -45,14 +45,7 @@ class _DashBoardHomeState extends State<DashBoardHome> {
         "Sale",
         DateFormat("yyyy-MM-dd").format(DateTime.now().subtract(Duration(days: 6))).toString(),
         DateFormat("yyyy-MM-dd").format(DateTime.now()).toString()
-    ).then((value){
-      /*setState(() {
-        currentSaleData=Provider.of<DashboardNotifier>(context,listen: false).currentSaleData;
-      });
-      Timer(Duration(milliseconds: 600),(){
-        chartSeriesController?.animate();
-      });*/
-    });
+    );
     super.didChangeDependencies();
   }
 

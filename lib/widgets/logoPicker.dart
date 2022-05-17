@@ -73,23 +73,48 @@ Future getImage( Function(File) onCropped) async
 }
 
 _cropImage(File picked,Function(File) onCropped) async {
-  File? cropped = await ImageCropper().cropImage(
-    androidUiSettings: AndroidUiSettings(
-        statusBarColor: Colors.red,
-        toolbarColor: Colors.red,
-        toolbarTitle: "Crop Image",
-        toolbarWidgetColor: Colors.white,
-        showCropGrid: false,
-        hideBottomControls: true
-    ),
+  CroppedFile? croppedFile = await ImageCropper().cropImage(
     sourcePath: picked.path,
     aspectRatioPresets: [
-      CropAspectRatioPreset.square
+      CropAspectRatioPreset.square,
+
     ],
-    maxWidth: 400,
+    uiSettings: [
+      AndroidUiSettings(
+          toolbarTitle: 'Crop Image',
+          toolbarColor: Colors.red,
+          toolbarWidgetColor: Colors.white,
+          initAspectRatio: CropAspectRatioPreset.original,
+          showCropGrid: false,
+        hideBottomControls: true
+      ),
+      IOSUiSettings(
+        title: 'Crop Image',
+      ),
+    ],
     cropStyle: CropStyle.circle,
+    maxWidth: 400
   );
-  if (cropped != null) {
-    onCropped(cropped);
+  if (croppedFile != null) {
+    onCropped(File(croppedFile.path));
   }
+  // CroppedFile? cropped = await ImageCropper().cropImage(
+  //   uiSettings: AndroidUiSettings(
+  //       statusBarColor: Colors.red,
+  //       toolbarColor: Colors.red,
+  //       toolbarTitle: "Crop Image",
+  //       toolbarWidgetColor: Colors.white,
+  //       showCropGrid: false,
+  //       hideBottomControls: true
+  //   ),
+  //   sourcePath: picked.path,
+  //   aspectRatioPresets: [
+  //     CropAspectRatioPreset.square
+  //   ],
+  //   maxWidth: 400,
+  //   cropStyle: CropStyle.circle,
+  // );
+  // if (cropped != null) {
+  //   onCropped(cropped);
+  // }
 }

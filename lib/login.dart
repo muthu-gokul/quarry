@@ -168,6 +168,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
         setState(() {
           isLoading=true;
         });
+        try{
         //var itemsUrl="http://183.82.32.76/restroApi///api/Mobile/GetInvoke";
      //   var itemsUrl="http://192.168.1.102/QMS_Dev///api/Mobile/GetInvoke";
         var body = {
@@ -224,8 +225,8 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                   userAccessMap[element.actionId]=element.isHasAccess;
                 });
               });
-            }catch(e){
-
+            }catch(e,t){
+              CustomAlert().commonErrorAlert(context, "Error_LOG_01", "$e _ $t");
             }
 
 
@@ -295,9 +296,12 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
           CustomAlert().commonErrorAlert(context, "Internet OR Server Issue", "");
         });
 
-        // }catch(e){
-        //   CustomAlert().showDialog2(context, e.toString(), "Internet OR Server Issue");
-        // }
+        }catch(e,t){
+          setState(() {
+            isLoading=false;
+          });
+          CustomAlert().commonErrorAlert(context, "Error_LOG_02", "$e _ $t");
+        }
       }
     }
 
@@ -586,7 +590,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
 
                       children: [
                         Text(
-                          "v - 1.0.13",
+                          "v - 1.0.15",
                           style: TextStyle(fontFamily: 'RR',  color: AppTheme.grey,fontSize: 12 ),
                         ),
                         Text(

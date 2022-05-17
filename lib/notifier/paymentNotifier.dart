@@ -16,6 +16,7 @@ import 'package:quarry/styles/constants.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/calculation.dart';
 
+import '../utils/utils.dart';
 import 'invoiceNotifier.dart';
 import 'profileNotifier.dart';
 
@@ -198,6 +199,8 @@ class PaymentNotifier extends ChangeNotifier{
      EditGrandTotalAmount=null;
      paymentMappingList.clear();
      balanceAmount=0.0;
+     rightOffAmount=0.0;
+     isRightOff=false;
   }
 
 
@@ -257,7 +260,16 @@ class PaymentNotifier extends ChangeNotifier{
           "Type": "int",
           "Value": EditPlantId
         },
-
+        {
+          "Key": "WriteOffAmount",
+          "Type": "string",
+          "Value": rightOffAmount
+        },
+        {
+          "Key": "IsWriteOff",
+          "Type": "int",
+          "Value": isRightOff?1:0
+        },
         {
           "Key": "InvoicePaymentMappingList",
           "Type": "datatable",
@@ -378,6 +390,7 @@ class PaymentNotifier extends ChangeNotifier{
           var parsed=json.decode(value);
           var t=parsed['Table'] as List?;
           if(invoiceId!=null){
+            print("payment $t");
             var t1=parsed['Table1'] as List;
 
             EditinvoiceId=t![0]['InvoiceId'];
@@ -388,8 +401,9 @@ class PaymentNotifier extends ChangeNotifier{
             EditInvoiceType=t[0]['InvoiceType'];
             EditPartyId=t[0]['PartyId'];
             EditPartyName=t[0]['PartyName'];
-            EditGrandTotalAmount=t[0]['GrandTotalAmount'].toDouble();
-
+            EditGrandTotalAmount=parseDouble(t[0]['GrandTotalAmount']);
+            rightOffAmount=parseDouble(t[0]['WriteOffAmount']);
+            isRightOff=t[0]['IsWriteOff'];
             paymentMappingList=t1.map((e) => PaymentMappingModel.fromJson(e, tickerProviderStateMixin)).toList();
             balanceCalc();
 
