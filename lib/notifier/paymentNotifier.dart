@@ -207,13 +207,15 @@ class PaymentNotifier extends ChangeNotifier{
   TextEditingController comment =new TextEditingController();
 
   double balanceAmount=0.0;
+  double rightOffAmount=0.0;
+  bool isRightOff=false;
   balanceCalc(){
     balanceAmount=0.0;
     double paidAmount=0.0;
     paymentMappingList.forEach((element) {
       paidAmount=paidAmount+element.Amount!;
     });
-    balanceAmount=EditGrandTotalAmount!-paidAmount;
+    balanceAmount=EditGrandTotalAmount!-paidAmount-rightOffAmount;
     notifyListeners();
   }
 

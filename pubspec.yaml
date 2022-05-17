@@ -52,6 +52,8 @@ dependencies:
   ml_kit_ocr: ^0.0.3+1
   file_picker:
   flutter_downloader:
+  screenshot: ^1.2.3
+  image:
 
   syncfusion_flutter_charts:
     path: ./syncfusion_flutter_charts

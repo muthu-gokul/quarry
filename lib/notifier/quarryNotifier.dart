@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image/image.dart' as img;
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/api/ApiManager.dart';
@@ -29,6 +30,7 @@ import 'package:quarry/widgets/printerService/printer/utils/src/capability_profi
 import 'package:quarry/widgets/printerService/printer/utils/src/enums.dart';
 import 'package:quarry/widgets/printerService/printer/utils/src/pos_column.dart';
 import 'package:quarry/widgets/printerService/printer/utils/src/pos_styles.dart';
+import 'package:screenshot/screenshot.dart';
 
 import '../utils/utils.dart';
 import '../widgets/decimal.dart';
@@ -1390,7 +1392,7 @@ class QuarryNotifier extends ChangeNotifier{
 
 
   Future<void> printClosedReport(BuildContext context,bool showPrice) async {
-
+   // ScreenshotController screenshotController = ScreenshotController();
     const PaperSize paper = PaperSize.mm80;
     final profile = await CapabilityProfile.load();
     final printer = NetworkPrinter(paper, profile);
@@ -1428,7 +1430,32 @@ class QuarryNotifier extends ChangeNotifier{
       // printer.image(image);
       if (res == PosPrintResult.success) {
 
+/*        screenshotController
+            .captureFromWidget(
+            Container(
+            padding: const EdgeInsets.all(30.0),
+            decoration: BoxDecoration(
+              border:Border.all(color: Colors.blueAccent, width: 5.0),
 
+            ),
+            child: Text("This is an invisible widget"))
+        )
+            .then((capturedImage) {
+
+          final img.Image? image = img.decodeImage(capturedImage);
+          if(image!=null)
+            printer.image(image);
+          printer.feed(1);
+
+          printer.cut();
+          printer.disconnect();
+          CustomAlert().billSuccessAlert(context,"","Outward Receipt Successfully Printed","","");
+          selectedIndex=-1;
+          return;
+          // Handle captured image
+        });
+
+        return;*/
         // printer.row([
         //   PosColumn(text: '', width: 1),
         //   PosColumn(text: 'Outlet name', width: 11,styles: PosStyles(align: PosAlign.center, height: bnn.filteruserOutlet[bnn.outletSelected].OutletName.length<15?PosTextSize.size2:PosTextSize.size2,

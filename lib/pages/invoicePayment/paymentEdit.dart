@@ -15,6 +15,7 @@ import 'package:quarry/references/bottomNavi.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/constants.dart';
 import 'package:quarry/styles/size.dart';
+import 'package:quarry/utils/utils.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/bottomBarAddButton.dart';
 import 'package:quarry/widgets/customTextField.dart';
@@ -570,6 +571,9 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
                                                         else if(qn.amount.text.isEmpty){
                                                           CustomAlert().commonErrorAlert(context, "Enter Amount", "");
                                                         }
+                                                        else if(parseDouble(qn.amount.text)>qn.balanceAmount){
+                                                          CustomAlert().commonErrorAlert(context, "Amount should be less than or Equal to Balance Amount", "");
+                                                        }
                                                         else{
                                                           Timer(Duration(milliseconds: 300), () {
                                                             setState(() {
@@ -591,7 +595,6 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
                                                                   )
                                                               );
                                                             });
-
                                                             listViewController!.animateTo(listViewController!.position.maxScrollExtent, duration: Duration(milliseconds: 200), curve: Curves.easeIn).then((value) {
                                                               qn.paymentMappingList[qn.paymentMappingList.length - 1].scaleController!.forward().then((value) {
                                                                 listViewController!.animateTo(listViewController!.position.maxScrollExtent, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
@@ -698,6 +701,54 @@ class PaymentEditFormState extends State<PaymentEditForm> with TickerProviderSta
                                       },
                                     ),
 
+
+                                    Container(
+                                      height: 50,
+                                      width: SizeConfig.screenWidth,
+                                      margin: EdgeInsets.only(top: 20),
+                                      padding: EdgeInsets.only(left: SizeConfig.width20!,right: SizeConfig.width20!),
+                                      child: Row(
+                                        children: [
+                                          Visibility(
+                                              visible:qn.isRightOff,
+                                              child: Column(
+                                                crossAxisAlignment:CrossAxisAlignment.start,
+                                                children: [
+                                                  Text("Right Off Amount",style: ts14(AppTheme.addNewTextFieldText,fontfamily: 'RL'),),
+                                                  SizedBox(height: 5,),
+                                                  Text("${qn.rightOffAmount}",
+                                                    style: TextStyle(fontFamily: 'RR', fontSize: 18,
+                                                        color: AppTheme.addNewTextFieldText, letterSpacing: 0.2),
+                                                  ),
+                                                ],
+                                              )
+                                          ),
+                                          Spacer(),
+                                          Checkbox(
+                                              fillColor: MaterialStateColor.resolveWith((states) => AppTheme.yellowColor),
+                                              value: qn.isRightOff,
+                                              onChanged: (v){
+                                                setState(() {
+                                                  qn.isRightOff=v!;
+                                                });
+                                                if(qn.isRightOff){
+                                                  qn.rightOffAmount=qn.balanceAmount;
+                                                }
+                                                else{
+                                                  qn.rightOffAmount=0.0;
+                                                }
+                                                qn.balanceCalc();
+                                              }
+                                          ),
+                                          InkWell(
+                                              onTap: (){
+
+                                              },
+                                              child: Text("Is Right Off ?", style:  TextStyle(fontFamily: 'RR',fontSize: 16,color:AppTheme.addNewTextFieldText,letterSpacing: 0.2),)
+                                          ),
+                                        ],
+                                      ),
+                                    ),
 
                                     Align(
                                         alignment: Alignment.center,
