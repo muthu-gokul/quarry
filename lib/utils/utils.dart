@@ -7,11 +7,13 @@ import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../api/ApiManager.dart';
 import '../api/sp.dart';
 import '../model/parameterMode.dart';
 import '../notifier/quarryNotifier.dart';
 import '../widgets/alertDialog.dart';
+import 'errorLog.dart';
 
 uploadFile(String folderName, File file) async{
   final postUri = Uri.parse("${ApiManager().baseUrl}api/Common/Upload?BaseFolder="+folderName);
@@ -71,6 +73,14 @@ getParameterEssential() async{
   ];
 }
 
+getDeviceInfoParam() async{
+  SharedPreferences sp=await SharedPreferences.getInstance();
+  return [
+    ParameterModel(Key: "DeviceId", Type: "String", Value: sp.getString("deviceId")),
+    ParameterModel(Key: "DeviceId", Type: "String", Value: sp.getString("deviceInfo")),
+  ];
+}
+
 getLoginId() async{
   //SharedPreferences sp=await SharedPreferences.getInstance();
  // return sp.getInt("LoginUserId");
@@ -110,7 +120,8 @@ Future<List> getMasterDrp(String page,String typeName, dynamic refId,  dynamic h
     });
     return result;
   }
-  catch(e){
+  catch(e,stackTrace){
+    errorLog("UTI01 ${e.toString()}", stackTrace,"Error UTI01",page,page, "${Sp.mobileMasterdropDown}");
     return result;
     //CustomAlert().commonErrorAlert(Get.context!, "Error G01", "Contact Administration");
   }
@@ -136,7 +147,8 @@ Future<String> getMasterDrpWeb(String page,String typeName, dynamic refId,  dyna
     });
     return result;
   }
-  catch(e){
+  catch(e,stackTrace){
+    errorLog("UTI02 ${e.toString()}", stackTrace,"Error UTI02",page,page, "USP_Web_GetMasterDetail");
     return result;
     //CustomAlert().commonErrorAlert(Get.context!, "Error G01", "Contact Administration");
   }

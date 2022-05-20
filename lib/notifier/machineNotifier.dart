@@ -14,6 +14,8 @@ import 'package:quarry/styles/constants.dart';
 import 'package:quarry/utils/utils.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 
+import '../utils/errorLog.dart';
+
 class MachineNotifier extends ChangeNotifier{
 
   List<String>machineGridCol=["MachineName","Type","Model","Specification"];
@@ -87,9 +89,9 @@ class MachineNotifier extends ChangeNotifier{
 
 
       });
-    }catch(e){
+    }catch(e,stackTrace){
       updatemachineLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.insertMachineDetail}" , e.toString());
+      errorLog("MAC01 ${e.toString()}", stackTrace,"Error MAC01",page,page, isMachineEdit?"${Sp.updateMachineDetail}" :"${Sp.insertMachineDetail}");
     }
 
 
@@ -138,9 +140,10 @@ class MachineNotifier extends ChangeNotifier{
         updatemachineLoader(false);
       });
     }
-    catch(e){
+    catch(e,stackTrace){
       updatemachineLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.getMachineDetail}" , e.toString());
+      errorLog("MAC02 ${e.toString()}", stackTrace,"Error MAC02",page,page, "${Sp.getMachineDetail}");
+
     }
   }
 

@@ -101,6 +101,9 @@ class Sp{
   static String getReport="USP_RPT_GetTabReportDetail";
   static String getDashboard="USP_DSB_GetTabDashBoard";
 
+  static String errorLog="USP_InsertErrorLogDetail";
+
+
   static String insertVehicleType="USP_InsertVehicleTypeDetail";
 
   static String insertEmployeeDetail="USP_InsertEmployeeDetail";

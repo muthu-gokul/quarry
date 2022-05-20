@@ -13,13 +13,14 @@ import 'package:quarry/model/plantModel/plantUserModel.dart';
 import 'package:quarry/styles/constants.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 
+import '../utils/errorLog.dart';
 import 'quarryNotifier.dart';
 
 class EmployeeAttendanceNotifier extends ChangeNotifier{
 
   final call=ApiManager();
 
-
+  String module="Emp Attendance";
 
   List<PlantUserModel> plantList=[];
   int plantCount=0;
@@ -68,9 +69,10 @@ class EmployeeAttendanceNotifier extends ChangeNotifier{
         updateEmployeeAttendanceLoader(false);
       });
     }
-    catch(e){
+    catch(e,stackTrace){
       updateEmployeeAttendanceLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.MasterdropDown}" , e.toString());
+      errorLog("EMP01 ${e.toString()}", stackTrace,"Error EMP01",module,module, "${Sp.MasterdropDown}_GetPlant");
+
     }
   }
 
@@ -145,9 +147,10 @@ class EmployeeAttendanceNotifier extends ChangeNotifier{
 
         updateEmployeeAttendanceLoader(false);
       });
-    }catch(e){
+    }catch(e,stackTrace){
       updateEmployeeAttendanceLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.insertEmployeeAttendanceDetail}" , e.toString());
+      errorLog("EMP02 ${e.toString()}", stackTrace,"Error EMP02",module,module, "${Sp.insertEmployeeAttendanceDetail}");
+
     }
 
 
@@ -200,9 +203,10 @@ class EmployeeAttendanceNotifier extends ChangeNotifier{
 
         updateEmployeeAttendanceLoader(false);
       });
-    }catch(e){
+    }catch(e,stackTrace){
       updateEmployeeAttendanceLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.getEmployeeAttendanceDetail}" , e.toString());
+      errorLog("EMP04 ${e.toString()}", stackTrace,"Error EMP04",module,module, "${Sp.getEmployeeAttendanceDetail}");
+
     }
 
 

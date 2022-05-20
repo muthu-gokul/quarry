@@ -97,14 +97,14 @@ class CustomAlert{
                   children:[
                     SvgPicture.asset('assets/svg/error-icon.svg'),
                     SizedBox(height:30),
-                    Text(title,
+                    Text("$title",
                         style:TextStyle(fontFamily:'RM',fontSize:22,color:AppTheme.red),textAlign: TextAlign.center,
                     ),
                     SizedBox(height:10),
                     Flexible(
                       child: SingleChildScrollView(
                         scrollDirection: Axis.vertical,
-                        child: Text(des,
+                        child: Text("$des",
                             style:TextStyle(fontFamily:'RL',fontSize:18,color:Color(0xFF787878)),textAlign: TextAlign.center,
                         ),
                       ),

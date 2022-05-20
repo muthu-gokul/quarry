@@ -891,8 +891,9 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                                       color: AppTheme.f737373,
                                       alignment: Alignment.center,
                                       child: Text("${gridcol[0]}",style: AppTheme.TSWhiteML,),
-
                                     ),
+
+
                                     Container(
                                       height: dataTableBodyheight,
                                       alignment: Alignment.topCenter,
@@ -1037,10 +1038,6 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
 
                                 ),
                               )
-
-
-
-
                             ],
                           )
 
@@ -2018,7 +2015,6 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
 
                                              showDialog(context: context,
                                                  barrierDismissible: false,
-
                                                  builder: (context){
                                                    return StatefulBuilder(
                                                      builder:(context,setState){

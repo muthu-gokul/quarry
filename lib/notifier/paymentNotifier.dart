@@ -16,6 +16,7 @@ import 'package:quarry/styles/constants.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/calculation.dart';
 
+import '../utils/errorLog.dart';
 import '../utils/utils.dart';
 import 'invoiceNotifier.dart';
 import 'profileNotifier.dart';
@@ -23,7 +24,7 @@ import 'profileNotifier.dart';
 class PaymentNotifier extends ChangeNotifier{
 
   final call=ApiManager();
-
+  String module="Payment";
 
   int? PlantId=null;
   String? PlantName=null;
@@ -100,9 +101,9 @@ class PaymentNotifier extends ChangeNotifier{
         updatePaymentLoader(false);
       });
     }
-    catch(e){
+    catch(e,stackTrace){
       updatePaymentLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.MasterdropDown}" , e.toString());
+      errorLog("PAY01 ${e.toString()}", stackTrace,"Error PAY01",module,module, "${Sp.MasterdropDown}_GetPlant");
     }
   }
 
@@ -160,9 +161,10 @@ class PaymentNotifier extends ChangeNotifier{
         updatePaymentLoader(false);
       });
     }
-    catch(e){
+    catch(e,stackTrace){
       updatePaymentLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.MasterdropDown}" , e.toString());
+      errorLog("PAY02 ${e.toString()}", stackTrace,"Error PAY02",module,module, "${Sp.MasterdropDown}");
+
     }
   }
 
@@ -296,9 +298,10 @@ class PaymentNotifier extends ChangeNotifier{
 
         updatePaymentLoader(false);
       });
-    }catch(e){
+    }catch(e,stackTrace){
       updatePaymentLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.updatePaymentDetail}" , e.toString());
+      errorLog("PAY03 ${e.toString()}", stackTrace,"Error PAY03",module,module, "${Sp.updatePaymentDetail}");
+
     }
 
 
@@ -424,9 +427,10 @@ class PaymentNotifier extends ChangeNotifier{
 
         updatePaymentLoader(false);
       });
-   }catch(e){
+   }catch(e,stackTrace){
       updatePaymentLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.getPaymentDetail}" , e.toString());
+      errorLog("PAY04 ${e.toString()}", stackTrace,"Error PAY04",module,module, "${Sp.getPaymentDetail}");
+
     }
 
 
@@ -611,9 +615,10 @@ class PaymentNotifier extends ChangeNotifier{
 
         updatePaymentLoader(false);
       });
-    }catch(e){
+    }catch(e,stackTrace){
       updatePaymentLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.insertPaymentDetail}" , e.toString());
+      errorLog("PAY05 ${e.toString()}", stackTrace,"Error PAY05",module,module, "${Sp.insertPaymentDetail}");
+
     }
 
 

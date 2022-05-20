@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/api/ApiManager.dart';
 import 'package:quarry/api/sp.dart';
@@ -66,7 +67,7 @@ class DashboardNotifier extends ChangeNotifier{
     }
     catch(e,t){
       updateisLoad(false);
-      CustomAlert().commonErrorAlert(context, "DashBoard Hit $typeName" , t.toString());
+      CustomAlert().commonErrorAlert(Get.context!, "DashBoard Hit $typeName" , "$e _ $t");
     }
   }
 
@@ -89,7 +90,7 @@ class DashboardNotifier extends ChangeNotifier{
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
 
-        if(value!='F'){
+        if(value!='null'){
           var parsed=json.decode(value);
           log("$value");
           if(typeName=='Sale'){
@@ -259,7 +260,7 @@ class DashboardNotifier extends ChangeNotifier{
     }
     catch(e,t){
       updateisLoad(false);
-      CustomAlert().commonErrorAlert(context, "DashBoard Hit $typeName" , "${e.toString()}\nDescription\n${t.toString()}");
+      CustomAlert().commonErrorAlert(Get.context!, "DashBoard Hit $typeName" , "${e.toString()}\nDescription\n${t.toString()}");
     }
   }
 

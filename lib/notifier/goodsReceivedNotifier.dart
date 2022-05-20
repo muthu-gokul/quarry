@@ -21,10 +21,13 @@ import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/calculation.dart';
 import 'package:quarry/widgets/decimal.dart';
 
+import '../utils/errorLog.dart';
+
 class GoodsReceivedNotifier extends ChangeNotifier{
 
   final call=ApiManager();
 
+  String module="Goods Received";
   List<ManageUserPlantModel> filterUsersPlantList=[];
 
   List<dynamic>? vehicleTypeList=[];
@@ -96,9 +99,10 @@ class GoodsReceivedNotifier extends ChangeNotifier{
         updateGoodsLoader(false);
       });
     }
-    catch(e){
+    catch(e,stackTrace){
       updateGoodsLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.MasterdropDown}" , e.toString());
+      errorLog("GRN01 ${e.toString()}", stackTrace,"Error GRN01",module,module, "${Sp.MasterdropDown}");
+
     }
   }
 
@@ -270,9 +274,10 @@ class GoodsReceivedNotifier extends ChangeNotifier{
 
 
       });
-    }catch(e){
+    }catch(e,stackTrace){
       updateGoodsLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.insertGoodsReceivedDetail}" , e.toString());
+      errorLog("GRN02 ${e.toString()}", stackTrace,"Error GRN02",module,module, "${Sp.insertGoodsReceivedDetail}");
+
     }
 
 
@@ -438,9 +443,9 @@ class GoodsReceivedNotifier extends ChangeNotifier{
           IGF_clear();
         }
       });
-    }catch(e){
+    }catch(e,stackTrace){
       updateGoodsLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.insertGoodsReceivedDetail}" , e.toString());
+      errorLog("GRN03 ${e.toString()}", stackTrace,"Error GRN03",module,module, "${Sp.updateGoodsReceivedDetail}");
     }
 
 
@@ -836,9 +841,9 @@ class GoodsReceivedNotifier extends ChangeNotifier{
 
         updateGoodsLoader(false);
       });
-    }catch(e,t){
+    }catch(e,stackTrace){
       updateGoodsLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.getGoodsReceivedDetail}" , t.toString());
+      errorLog("GRN04 ${e.toString()}", stackTrace,"Error GRN04",module,module, "${Sp.getGoodsReceivedDetail}");
     }
   }
 
@@ -1032,9 +1037,10 @@ class GoodsReceivedNotifier extends ChangeNotifier{
 
         updateGoodsLoader(false);
       });
-    }catch(e){
+    }catch(e,stackTrace){
       updateGoodsLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.insertInvoiceDetail}" , e.toString());
+      errorLog("GRN05 ${e.toString()}", stackTrace,"Error GRN05",module,module, "${Sp.insertInvoiceDetail}");
+
     }
 
 
@@ -1152,8 +1158,9 @@ class GoodsReceivedNotifier extends ChangeNotifier{
 
         updateGoodsLoader(false);
       });
-    }catch(e){
+    }catch(e,stackTrace){
       updateGoodsLoader(false);
+      errorLog("GRN06 ${e.toString()}", stackTrace,"Error GRN06",module,module, "${Sp.insertPurchaseDetail}");
       CustomAlert().commonErrorAlert(context, "${Sp.insertPurchaseDetail}" , e.toString());
     }
 

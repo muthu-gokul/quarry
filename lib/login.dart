@@ -17,6 +17,7 @@ import 'package:quarry/api/ApiManager.dart';
 import 'package:quarry/model/userAccessModel.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/styles/constants.dart';
+import 'package:quarry/utils/errorLog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'api/sp.dart';
@@ -144,6 +145,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
 
   }
 
+  String module="Login";
 
   @override
   Widget build(BuildContext context) {
@@ -164,144 +166,144 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
     print(SizeConfig.screenHeight);
     print(SizeConfig.screenWidth);
     func() async {
-      if(_loginFormKey.currentState!.validate() && !isEmailInvalid && !ispasswordInvalid){
-        setState(() {
-          isLoading=true;
-        });
-        try{
-        //var itemsUrl="http://183.82.32.76/restroApi///api/Mobile/GetInvoke";
-     //   var itemsUrl="http://192.168.1.102/QMS_Dev///api/Mobile/GetInvoke";
-        var body = {
-          "Fields": [
-            {
-              "Key": "SpName",
-              "Type": "String",
-              "Value": "${Sp.LoginSp}"
-            },
-            {
-              "Key": "UserName",
-              "Type": "String",
-              "Value": "${username.text}"
-            },
-            {
-              "Key": "Password",
-              "Type": "String",
-              "Value": "${password.text}"
-            }
-            ,
-            {
-              "Key": "database",
-              "Type": "String",
-             // "Value": "TetroPOS_TestQMS" //live
-              "Value": "Geomine_QMS"
-             // "Value": "TetroPos_QMSTest1"
-              // "Value": "QMS1"
-            },
+      node.unfocus();
+      try{
+        if(_loginFormKey.currentState!.validate() && !isEmailInvalid && !ispasswordInvalid){
+          setState(() {
+            isLoading=true;
+          });
+          var body = {
+            "Fields": [
+              {
+                "Key": "SpName",
+                "Type": "String",
+                "Value": "${Sp.LoginSp}"
+              },
+              {
+                "Key": "UserName",
+                "Type": "String",
+                "Value": "${username.text}"
+              },
+              {
+                "Key": "Password",
+                "Type": "String",
+                "Value": "${password.text}"
+              },
+              {
+                "Key": "database",
+                "Type": "String",
+                // "Value": "TetroPOS_TestQMS" //live
+                "Value": "Geomine_QMS"
+                // "Value": "TetroPos_QMSTest1"
+                // "Value": "QMS1"
+              },
 
-          ]
-        };
-        print(json.encode(body));
-
-        final dynamic response = await http.post(
-            Uri.parse(ApiManager().loginUrl), headers: {"Content-Type": "application/json"},
-            body: json.encode(body)
-        ).then((value) async {
-          var parsed = json.decode(value.body);
-         // print(value.body);
-          log("login parsed ${value.body}");
+            ]
+          };
+          print(json.encode(body));
 
 
-          if (parsed["Table"] != null) {
-            setState(() {
-              userGroupName=parsed['Table'][0]['UserGroupName'];
-              userGroupId=parsed['Table'][0]['UserGroupId'];
+          try {
+            await ApiManager().ApiCallGetInvokeFoLogin(body).then((value){
+              setState(() {
+                isLoading=false;
+              });
+
+              if(value!="null" && value!=''){
+                var parsed = json.decode(value);
+                if (parsed["Table"] != null) {
+                  setState(() {
+                    userGroupName=parsed['Table'][0]['UserGroupName'];
+                    userGroupId=parsed['Table'][0]['UserGroupId'];
+                  });
+                  try{
+                    var t1=parsed['Table1'] as List;
+                    setState(() {
+                      userAccessList=t1.map((e) => UserAccessModel.fromJson(e)).toList();
+                      userAccessMap.clear();
+                      userAccessList.forEach((element) {
+                        userAccessMap[element.actionId]=element.isHasAccess;
+                      });
+                    });
+                  }catch(e,stackTrace){
+                    errorLog("LOGIN03 ${e.toString()}", stackTrace,"Error LOGIN03",module,module, "Login");
+
+                  }
+
+
+                  loginNotifier.fetchUserDetails(parsed);
+                  print(loginNotifier.userDetail.loginTblOutput![0].Status);
+
+                  if (loginNotifier.userDetail.loginTblOutput![0].Status) {
+                    if(prefEmail!.isEmpty && prefPassword!.isEmpty){
+                      _setCredentials(username.text, password.text);
+                    }
+                    else if(prefEmail!=username.text || prefPassword!=password.text){
+                      _setCredentials(username.text, password.text);
+                    }
+                    quarryNotifier.initUserDetail(loginNotifier.userDetail.loginTable![0].UserId,
+                        loginNotifier.userDetail.loginTable![0].UserName,
+                        loginNotifier.userDetail.loginTable![0].DataBaseName,context);
+                    Provider.of<QuarryNotifier>(context,listen: false).GetQuarryDetailDbhit(context);
+                    Provider.of<QuarryNotifier>(context,listen: false).GetplantDetailDbhit(context,null,this);
+                    Provider.of<ProfileNotifier>(context, listen: false).GetUserDetailDbHit(context,loginNotifier.userDetail.loginTable![0].UserId);
+
+                    Navigator.of(context).pushReplacement(PageRouteBuilder(
+                      pageBuilder: (context, animation, secondaryAnimation) =>HomePage(),
+
+                      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                        var begin = Offset(0.0, -1.0);
+                        var end = Offset.zero;
+                        var curve = Curves.ease;
+                        animation = CurvedAnimation(curve: Curves.easeIn, parent: animation);
+
+                        return FadeTransition(
+                          opacity: animation,
+                          child: child,
+                        );
+                      },
+                    )
+                    );
+
+
+
+
+                    setState(() {
+                      loginvalidation = false;
+
+                      node.unfocus();
+                      isLoading=false;
+                    });
+                  }
+                  else {
+                    setState(() {
+                      isLoading=false;
+                      loginvalidation = true;
+                      shakecontroller.forward(from: 0.0);
+                    });
+                  }
+                }
+                else {
+                  setState(() {
+                    isLoading=false;
+                    loginvalidation = true;
+                    shakecontroller.forward(from: 0.0);
+                  });
+                }
+              }
             });
-            try{
-              var t1=parsed['Table1'] as List;
-              setState(() {
-                userAccessList=t1.map((e) => UserAccessModel.fromJson(e)).toList();
-                userAccessMap.clear();
-                userAccessList.forEach((element) {
-                  userAccessMap[element.actionId]=element.isHasAccess;
-                });
-              });
-            }catch(e,t){
-              CustomAlert().commonErrorAlert(context, "Error_LOG_01", "$e _ $t");
-            }
-
-
-            loginNotifier.fetchUserDetails(parsed);
-            print(loginNotifier.userDetail.loginTblOutput![0].Status);
-
-            if (loginNotifier.userDetail.loginTblOutput![0].Status) {
-              if(prefEmail!.isEmpty && prefPassword!.isEmpty){
-                _setCredentials(username.text, password.text);
-              }
-              else if(prefEmail!=username.text || prefPassword!=password.text){
-                _setCredentials(username.text, password.text);
-              }
-              quarryNotifier.initUserDetail(loginNotifier.userDetail.loginTable![0].UserId,
-                  loginNotifier.userDetail.loginTable![0].UserName,
-                  loginNotifier.userDetail.loginTable![0].DataBaseName,context);
-              Provider.of<QuarryNotifier>(context,listen: false).GetQuarryDetailDbhit(context);
-              Provider.of<QuarryNotifier>(context,listen: false).GetplantDetailDbhit(context,null,this);
-              Provider.of<ProfileNotifier>(context, listen: false).GetUserDetailDbHit(context,loginNotifier.userDetail.loginTable![0].UserId);
-
-              Navigator.of(context).pushReplacement(PageRouteBuilder(
-                pageBuilder: (context, animation, secondaryAnimation) =>HomePage(),
-
-                transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                  var begin = Offset(0.0, -1.0);
-                  var end = Offset.zero;
-                  var curve = Curves.ease;
-                  animation = CurvedAnimation(curve: Curves.easeIn, parent: animation);
-
-                  return FadeTransition(
-                    opacity: animation,
-                    child: child,
-                  );
-                },
-              )
-              );
-
-
-
-
-              setState(() {
-                loginvalidation = false;
-
-                node.unfocus();
-                isLoading=false;
-              });
-            }
-            else {
-              setState(() {
-                isLoading=false;
-                loginvalidation = true;
-                shakecontroller.forward(from: 0.0);
-              });
-            }
-          }
-          else {
+          }catch(e,stackTrace){
             setState(() {
               isLoading=false;
-              loginvalidation = true;
-              shakecontroller.forward(from: 0.0);
             });
-          }
-        }).timeout(Duration(seconds: 15),onTimeout: (){
-          setState(() {
-            isLoading=false;
-          });
-          CustomAlert().commonErrorAlert(context, "Internet OR Server Issue", "");
-        });
+            errorLog("LOGIN01 ${e.toString()}", stackTrace,"Error LOGIN01",module,module, "Login");
 
-        }catch(e,t){
-          setState(() {
-            isLoading=false;
-          });
-          CustomAlert().commonErrorAlert(context, "Error_LOG_02", "$e _ $t");
+          }
+
         }
+      }catch(e,stackTrace){
+        errorLog("LOGIN02 ${e.toString()}", stackTrace,"Error LOGIN02",module,module, "Login");
+
       }
     }
 
@@ -589,8 +591,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                       mainAxisAlignment: MainAxisAlignment.end,
 
                       children: [
-                        Text(
-                          "v - 1.0.15",
+                        Text(appVersion,
                           style: TextStyle(fontFamily: 'RR',  color: AppTheme.grey,fontSize: 12 ),
                         ),
                         Text(
@@ -633,7 +634,5 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
     RegExp regex = new RegExp(pattern as String);
     return (!regex.hasMatch(value)) ? false : true;
   }
-
-
 }
 

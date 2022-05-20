@@ -32,6 +32,7 @@ import 'package:quarry/widgets/printerService/printer/utils/src/pos_column.dart'
 import 'package:quarry/widgets/printerService/printer/utils/src/pos_styles.dart';
 import 'package:screenshot/screenshot.dart';
 
+import '../utils/errorLog.dart';
 import '../utils/utils.dart';
 import '../widgets/decimal.dart';
 
@@ -127,9 +128,10 @@ class QuarryNotifier extends ChangeNotifier{
         updateInsertSaleLoader(false);
       });
     }
-    catch(e){
+    catch(e,stackTrace){
       updateInsertSaleLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.MasterdropDown}" , e.toString());
+      errorLog("QN07 ${e.toString()}", stackTrace,"Error QN07",module,module, "${Sp.MasterdropDown}");
+
     }
   }
 
@@ -198,9 +200,10 @@ class QuarryNotifier extends ChangeNotifier{
 
       });
     }
-    catch(e){
+    catch(e,stackTrace){
       updateInsertSaleLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.insertVehicleType}" , e.toString());
+      errorLog("QN08 ${e.toString()}", stackTrace,"Error QN08",module,module, "${Sp.insertVehicleType}");
+
     }
   }
 
@@ -559,9 +562,10 @@ class QuarryNotifier extends ChangeNotifier{
 
       });
     }
-    catch(e){
+    catch(e,stackTrace){
       updateInsertSaleLoader(false);
-      CustomAlert().commonErrorAlert(context, "USP_GetSaleDetail" , e.toString());
+      errorLog("QN09 ${e.toString()}", stackTrace,"Error QN09",module,module, "USP_GetSaleDetail");
+
     }
   }
 
@@ -860,9 +864,10 @@ class QuarryNotifier extends ChangeNotifier{
         updateInsertSaleLoader(false);
       });
     }
-    catch(e){
+    catch(e,stackTrace){
       updateInsertSaleLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.insertSaleDetail}" , e.toString());
+      errorLog("QN10 ${e.toString()}", stackTrace,"Error QN10",module,module, "${Sp.insertSaleDetail}");
+
     }
   }
 
@@ -1017,9 +1022,10 @@ class QuarryNotifier extends ChangeNotifier{
 
       });
     }
-    catch(e){
+    catch(e,stackTrace){
       updateInsertSaleLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.insertSaleDetail}" , e.toString());
+      errorLog("QN11 ${e.toString()}", stackTrace,"Error QN11",module,module, "${Sp.updateSaleDetail}");
+
     }
   }
 
@@ -2172,6 +2178,7 @@ class QuarryNotifier extends ChangeNotifier{
   }
 
 
+  String module="QuarryNotifier";
 
   ///****************************************************      QUARRY DETAIL   / Company Detail    ****************************************************************/
 
@@ -2243,9 +2250,10 @@ class QuarryNotifier extends ChangeNotifier{
 
       });
     }
-    catch(e){
+    catch(e,stackTrace){
      // updateInsertCompanyLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.dropDownValues}" , e.toString());
+      errorLog("QN01 ${e.toString()}", stackTrace,"Error QN01",module,module, "${Sp.dropDownValues}");
+
     }
   }
 
@@ -2360,9 +2368,10 @@ class QuarryNotifier extends ChangeNotifier{
 
       });
     }
-    catch(e){
+    catch(e,stackTrace){
       updateInsertCompanyLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.updateCompanyDetail}" , e.toString());
+      errorLog("QN02 ${e.toString()}", stackTrace,"Error QN02",module,module, "${Sp.updateCompanyDetail}");
+
     }
   }
 
@@ -2410,9 +2419,9 @@ class QuarryNotifier extends ChangeNotifier{
         updateInsertCompanyLoader(false);
       });
     }
-    catch(e){
+    catch(e,stackTrace){
       updateInsertCompanyLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.MasterdropDown}" , e.toString());
+      errorLog("QN03 ${e.toString()}", stackTrace,"Error QN03",module,module, "${Sp.MasterdropDown}");
     }
   }
 
@@ -2485,9 +2494,10 @@ class QuarryNotifier extends ChangeNotifier{
 
       });
     }
-    catch(e){
+    catch(e,stackTrace){
       updateInsertCompanyLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.getPlantDetail}" , e.toString());
+      errorLog("QN04 ${e.toString()}", stackTrace,"Error QN04",module,module, "${Sp.getPlantDetail}");
+
     }
   }
 
@@ -2570,9 +2580,10 @@ class QuarryNotifier extends ChangeNotifier{
 
       });
     }
-    catch(e){
+    catch(e,stackTrace){
       updateInsertCompanyLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.updateCompanyDetail}" , e.toString());
+      errorLog("QN05 ${e.toString()}", stackTrace,"Error QN05",module,module, "${Sp.updateCompanyDetail}");
+
     }
   }
 
@@ -2596,9 +2607,10 @@ class QuarryNotifier extends ChangeNotifier{
           GetplantDetailDbhit(Get.context!, null,null);
         }
       });
-    } catch (e) {
+    } catch (e,stackTrace) {
       updateInsertCompanyLoader(false);
-      CustomAlert().commonErrorAlert(Get.context!, "${Sp.deleteUserDetail}", e.toString());
+      errorLog("QN06 ${e.toString()}", stackTrace,"Error QN06",module,module, "${Sp.deleteUserDetail}");
+
     }
   }
 

@@ -14,12 +14,14 @@ import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/calculation.dart';
 import 'package:quarry/widgets/staticColumnScroll/customDataTableWithoutModel.dart';
 
+import '../utils/errorLog.dart';
+
 class EmployeeSalaryNotifier extends ChangeNotifier{
 
 
   final call=ApiManager();
 
-
+  String module="Employee Salary";
 
   List<PlantUserModel> plantList=[];
   int plantCount=0;
@@ -69,9 +71,9 @@ class EmployeeSalaryNotifier extends ChangeNotifier{
         updateEmployeeSalaryLoader(false);
       });
     }
-    catch(e){
+    catch(e,stackTrace){
       updateEmployeeSalaryLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.MasterdropDown}" , e.toString());
+      errorLog("EMP08 ${e.toString()}", stackTrace,"Error EMP01",module,module, "${Sp.MasterdropDown}_GetPlant");
     }
   }
 
@@ -157,9 +159,9 @@ clearInsertForm(){
 
         updateEmployeeSalaryLoader(false);
       });
-    }catch(e){
+    }catch(e,stackTrace){
       updateEmployeeSalaryLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.insertEmployeeAttendanceDetail}" , e.toString());
+      errorLog("EMP09 ${e.toString()}", stackTrace,"Error EMP09",module,module, "USP_InsertEmployeeSalaryDetail");
     }
 
 
@@ -260,9 +262,9 @@ clearInsertForm(){
 
         updateEmployeeSalaryLoader(false);
       });
-    }catch(e,t){
+    }catch(e,stackTrace){
       updateEmployeeSalaryLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.getEmployeeSalaryLoanDetail}" , t.toString());
+      errorLog("EMP10 ${e.toString()}", stackTrace,"Error EMP10",module,module, "${Sp.getEmployeeSalaryLoanDetail}");
     }
 
 

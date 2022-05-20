@@ -43,4 +43,6 @@ v-1.0.15
 
 v-1.0.16
 1. added write off
-2. 
+
+v-1.0.17
+1. Error Log Added

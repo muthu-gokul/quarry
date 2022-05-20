@@ -21,12 +21,16 @@ import 'package:quarry/styles/constants.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/calculation.dart';
 
+import '../utils/errorLog.dart';
 import 'profileNotifier.dart';
 
 class ProductionNotifier extends ChangeNotifier{
 
   List<PlantUserModel> plantList=[];
   int plantCount=0;
+
+  String module="Production";
+
   Future<dynamic>  PlantUserDropDownValues(BuildContext context) async {
 
     print("USER ID ${Provider.of<QuarryNotifier>(context,listen: false).UserId}");
@@ -88,9 +92,10 @@ class ProductionNotifier extends ChangeNotifier{
         updateProductionLoader(false);
       });
     }
-    catch(e){
+    catch(e,stackTrace){
       updateProductionLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.MasterdropDown}" , e.toString());
+      errorLog("PRD01 ${e.toString()}", stackTrace,"Error PRD01",module,module, "${Sp.MasterdropDown}_GetPlant");
+
     }
   }
 
@@ -175,9 +180,9 @@ class ProductionNotifier extends ChangeNotifier{
         updateProductionLoader(false);
       });
     }
-    catch(e){
+    catch(e,stackTrace){
       updateProductionLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.MasterdropDown}" , e.toString());
+      errorLog("PRD02 ${e.toString()}", stackTrace,"Error PRD02",module,module, "${Sp.MasterdropDown}");
     }
   }
 
@@ -340,9 +345,9 @@ class ProductionNotifier extends ChangeNotifier{
 
 
       });
-    }catch(e){
+    }catch(e,stackTrace){
       updateProductionLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.insertProductionDetail}" , e.toString());
+      errorLog("PRD03 ${e.toString()}", stackTrace,"Error PRD03",module,module, "${Sp.insertProductionDetail}");
     }
 
 
@@ -409,7 +414,7 @@ class ProductionNotifier extends ChangeNotifier{
       ]
     };
 
-   // try{
+    try{
     updateProductionLoader(false);
 
     await call.ApiCallGetInvoke(body,context).then((value) {
@@ -485,10 +490,10 @@ class ProductionNotifier extends ChangeNotifier{
 
         updateProductionLoader(false);
       });
-  /*  }catch(e){
+    }catch(e,stackTrace){
       updateProductionLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.getProductionDetail}" , e.toString());
-    }*/
+      errorLog("PRD04 ${e.toString()}", stackTrace,"Error PRD04",module,module, "${Sp.getProductionDetail}");
+    }
   }
 
   Future<dynamic> deleteById(int id,TickerProviderStateMixin tickerProviderStateMixin) async {
@@ -509,9 +514,9 @@ class ProductionNotifier extends ChangeNotifier{
           GetProductionDbHit(Get.context!, null,tickerProviderStateMixin);
         }
       });
-    } catch (e) {
+    } catch (e,stackTrace) {
 
-      CustomAlert().commonErrorAlert(Get.context!, "${Sp.deleteProductionDetail}", e.toString());
+      errorLog("PRD05 ${e.toString()}", stackTrace,"Error PRD04",module,module, "${Sp.deleteProductionDetail}");
     }
   }
   Map<String?,ProductionGridHeaderModel> gridCounter={};

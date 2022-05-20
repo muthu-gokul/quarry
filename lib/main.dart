@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +27,7 @@ import 'package:quarry/notifier/supplierNotifier.dart';
 import 'package:quarry/notifier/vehicleNotifier.dart';
 import 'package:quarry/pages/homePage.dart';
 import 'package:quarry/styles/app_theme.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import 'notifier/employeeSalaryNotifier.dart';
@@ -124,10 +126,43 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
 
+  Future<AndroidDeviceInfo?> _getDeviceInfoAndroid() async {
+    var deviceInfo = DeviceInfoPlugin();
+    var androidDeviceInfo = await deviceInfo.androidInfo;
+    return androidDeviceInfo;
+  }
+  Future<IosDeviceInfo?> _getDeviceInfoIos() async {
+    var deviceInfo = DeviceInfoPlugin();
+    if (Platform.isIOS) { // import 'dart:io'
+      var iosDeviceInfo = await deviceInfo.iosInfo;
+      return iosDeviceInfo;
+    }
+  }
+
+  deviceDetail() async{
+
+    SharedPreferences sp=await SharedPreferences.getInstance();
+    String deviceId=sp.getString("deviceId")??"";
+    AndroidDeviceInfo? androidDeviceInfo;
+   // bool isLoggedIn=sp.getBool(ISLOGGEDINKEY)??false;
+    if(deviceId.isEmpty /*&& !isLoggedIn*/){
+      if (Platform.isIOS){
+
+      }
+      else{
+        androidDeviceInfo=await _getDeviceInfoAndroid();
+      }
+      deviceId = androidDeviceInfo!.androidId??"";
+      sp.setString("deviceId", deviceId);
+      sp.setString("deviceInfo", "${androidDeviceInfo.device}//${androidDeviceInfo.brand}//${androidDeviceInfo.id}//${androidDeviceInfo.version.toMap().toString()}");
+    }
+  }
+
   @override
   void initState() {
     init();
     if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
+    deviceDetail();
   }
 
   @override

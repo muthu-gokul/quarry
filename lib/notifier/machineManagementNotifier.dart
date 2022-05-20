@@ -16,13 +16,14 @@ import 'package:quarry/widgets/staticColumnScroll/customDataTableWithoutModel.da
 
 import '../model/parameterMode.dart';
 import '../styles/constants.dart';
+import '../utils/errorLog.dart';
 import 'profileNotifier.dart';
 
 class MachineManagementNotifier extends ChangeNotifier{
 
   final call=ApiManager();
 
-
+  String module="MachineManagement";
 
   List<PlantUserModel> plantList=[];
   int plantCount=0;
@@ -87,9 +88,9 @@ class MachineManagementNotifier extends ChangeNotifier{
         updateMachineManagementLoader(false);
       });
     }
-    catch(e){
+    catch(e,stackTrace){
       updateMachineManagementLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.MasterdropDown}" , e.toString());
+      errorLog("MMG01 ${e.toString()}", stackTrace,"Error MMG01",module,module, "${Sp.MasterdropDown}_GetPlant");
     }
   }
 
@@ -138,9 +139,9 @@ class MachineManagementNotifier extends ChangeNotifier{
         updateMachineManagementLoader(false);
       });
     }
-    catch (e) {
+    catch (e,stackTrace) {
       updateMachineManagementLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.MasterdropDown}", e.toString());
+      errorLog("MMG02 ${e.toString()}", stackTrace,"Error MMG02",module,module, "${Sp.MasterdropDown}");
     }
   }
   
@@ -283,9 +284,9 @@ class MachineManagementNotifier extends ChangeNotifier{
 
         updateMachineManagementLoader(false);
       });
-    }catch(e){
+    }catch(e,stackTrace){
       updateMachineManagementLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.insertEmployeeAttendanceDetail}" , e.toString());
+      errorLog("MMG03 ${e.toString()}", stackTrace,"Error MMG03",module,module, machineManagementEdit?"${Sp.updateMachineManagementDetail}":"${Sp.insertMachineManagementDetail}");
     }
 
 
@@ -433,9 +434,10 @@ class MachineManagementNotifier extends ChangeNotifier{
 
         updateMachineManagementLoader(false);
       });
-    }catch(e){
+    }catch(e,stackTrace){
       updateMachineManagementLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.getMachineManagementDetail}" , e.toString());
+      errorLog("MMG04 ${e.toString()}", stackTrace,"Error MMG04",module,module,"${Sp.getMachineManagementDetail}");
+
     }
   }
 

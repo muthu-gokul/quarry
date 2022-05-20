@@ -15,12 +15,13 @@ import 'package:quarry/widgets/alertDialog.dart';
 
 import '../model/parameterMode.dart';
 import '../styles/constants.dart';
+import '../utils/errorLog.dart';
 import '../utils/utils.dart';
 
 class ManageUsersNotifier extends ChangeNotifier{
   final call=ApiManager();
 
-
+  String module="ManageUsers";
 
   int? UserId=null;
   String? selectedSalutation="Mr";
@@ -84,9 +85,10 @@ class ManageUsersNotifier extends ChangeNotifier{
         updateManageUsersLoader(false);
       });
     }
-    catch(e){
+    catch(e,stackTrace){
       updateManageUsersLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.MasterdropDown}" , e.toString());
+      errorLog("MGU01 ${e.toString()}", stackTrace,"Error MGU01",module,module, "${Sp.MasterdropDown}_GetPlant");
+
     }
   }
 
@@ -198,9 +200,9 @@ class ManageUsersNotifier extends ChangeNotifier{
         }
         updateManageUsersLoader(false);
       });
-    }catch(e){
+    }catch(e,stackTrace){
       updateManageUsersLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.updateUserDetail}" , e.toString());
+      errorLog("MGU02 ${e.toString()}", stackTrace,"Error MGU02",module,module, isManageUsersEdit?"${Sp.updateUserDetail}":"${Sp.insertUserDetail}");
     }
 
 
@@ -266,9 +268,10 @@ class ManageUsersNotifier extends ChangeNotifier{
         }
         updateManageUsersLoader(false);
       });
-    }catch(e){
+    }catch(e,stackTrace){
       updateManageUsersLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.getUserDetail}" , e.toString());
+      errorLog("MGU03 ${e.toString()}", stackTrace,"Error MGU03",module,module,"${Sp.getUserDetail}");
+
     }
 
 

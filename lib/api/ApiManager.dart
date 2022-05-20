@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:provider/provider.dart';
@@ -25,24 +26,51 @@ class ApiManager{
       final response = await http.post(Uri.parse(invokeUrl),
           headers: {"Content-Type": "application/json"},
           body: json.encode(body)
-      ).timeout(Duration(seconds: 15),);
+      ).timeout(Duration(seconds: 15),onTimeout: (){
+        return http.Response('{"Message":"Connection Issue. Check Your Internet Connection"}',500);
+      }).onError((error, stackTrace){
+        return http.Response('{"Message":"$error"}',500);
+      });
       if(response.statusCode==200){
         return response.body;
       }
-      // else if(response.statusCode==500){
-      //    // return response.body;
-      //   print(response.body);
-      // }
       else{
-        print("ll");
         var msg;
-        // print(msg);
-         print(response.body);
         msg=json.decode(response.body);
         print("MSG $msg");
+         CustomAlert().commonErrorAlert2(Get.context!, "${msg["Message"]}", "");
+         return "null";
+        // return response.statusCode.toString();
+      }
+    }
+    catch(e,t){
+      print(t);
+      return "null";
+      print("NETWORK ISSUE--$e");
+      // CustomAlert().commonErrorAlert(context, "Network Issue", "Your Internet Connectivity or Server is Slow..");
+    }
+  }
 
-         CustomAlert().commonErrorAlert2(context, "${msg["Message"]}", "");
-        return "null";
+  Future<String> ApiCallGetInvokeFoLogin(var body) async {
+
+    try{
+      final response = await http.post(Uri.parse(loginUrl),
+          headers: {"Content-Type": "application/json"},
+          body: json.encode(body)
+      ).timeout(Duration(seconds: 15),onTimeout: (){
+        return http.Response('{"Message":"Connection Issue. Check Your Internet Connection"}',500);
+      }).onError((error, stackTrace){
+        return http.Response('{"Message":"$error"}',500);
+      });
+      if(response.statusCode==200){
+        return response.body;
+      }
+      else{
+        var msg;
+        msg=json.decode(response.body);
+        print("MSG $msg");
+         CustomAlert().commonErrorAlert2(Get.context!, "${msg["Message"]}", "");
+         return "null";
         // return response.statusCode.toString();
       }
     }

@@ -19,13 +19,14 @@ import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/styles/constants.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 
+import '../utils/errorLog.dart';
 import '../utils/utils.dart';
 
 class SupplierNotifier extends ChangeNotifier{
 
 
 
-
+  String module="SupplierMaster";
 
 
   TextEditingController supplierName=new TextEditingController();
@@ -103,9 +104,10 @@ class SupplierNotifier extends ChangeNotifier{
         updateSupplierLoader(false);
       });
     }
-    catch(e){
+    catch(e,stackTrace){
       updateSupplierLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.MasterdropDown}" , e.toString());
+      errorLog("SPM01 ${e.toString()}", stackTrace,"Error SPM01",module,module, "${Sp.MasterdropDown}");
+
     }
   }
 
@@ -160,9 +162,10 @@ class SupplierNotifier extends ChangeNotifier{
 
 
       });
-    }catch(e){
+    }catch(e,stackTrace){
       updateSupplierLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.insertSupplierDetail}" , e.toString());
+      errorLog("SPM02 ${e.toString()}", stackTrace,"Error SPM02",module,module, "${Sp.insertSupplierDetail}");
+
     }
 
 
@@ -229,9 +232,10 @@ class SupplierNotifier extends ChangeNotifier{
 
         updateSupplierLoader(false);
       });
-    }catch(e,t){
+    }catch(e,stackTrace){
       updateSupplierLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.getSupplierDetail}" , "$e $t");
+      errorLog("SPM03 ${e.toString()}", stackTrace,"Error SPM03",module,module, "${Sp.getSupplierDetail}");
+
     }
 
 

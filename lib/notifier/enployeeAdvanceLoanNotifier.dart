@@ -17,13 +17,14 @@ import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/calculation.dart';
 import 'package:quarry/widgets/staticColumnScroll/customDataTableWithoutModel.dart';
 
+import '../utils/errorLog.dart';
 import 'quarryNotifier.dart';
 
 class EmployeeAdvanceLoanNotifier extends ChangeNotifier{
 
   final call=ApiManager();
 
-
+  String module="Emp Advance";
 
   List<PlantUserModel> plantList=[];
   int plantCount=0;
@@ -73,9 +74,9 @@ class EmployeeAdvanceLoanNotifier extends ChangeNotifier{
         updateEmployeeAttendanceLoader(false);
       });
     }
-    catch(e){
+    catch(e,stackTrace){
       updateEmployeeAttendanceLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.MasterdropDown}" , e.toString());
+      errorLog("EMP11 ${e.toString()}", stackTrace,"Error EMP11",module,module, "${Sp.MasterdropDown}_GetPlant");
     }
   }
 
@@ -126,9 +127,9 @@ class EmployeeAdvanceLoanNotifier extends ChangeNotifier{
         updateEmployeeAttendanceLoader(false);
       });
     }
-    catch (e) {
+    catch (e,stackTrace) {
       updateEmployeeAttendanceLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.MasterdropDown}", e.toString());
+      errorLog("EMP12 ${e.toString()}", stackTrace,"Error EMP12",module,module, "${Sp.MasterdropDown}");
     }
   }
 
@@ -250,9 +251,9 @@ class EmployeeAdvanceLoanNotifier extends ChangeNotifier{
 
         updateEmployeeAttendanceLoader(false);
       });
-    }catch(e){
+    }catch(e,stackTrace){
       updateEmployeeAttendanceLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.insertEmployeeAttendanceDetail}" , e.toString());
+      errorLog("EMP13 ${e.toString()}", stackTrace,"Error EMP13",module,module, !isEdit?"${Sp.insertEmployeeAdvanceLoanDetail}": "${Sp.updateEmployeeAdvanceLoanDetail}");
     }
 
 
@@ -326,9 +327,9 @@ class EmployeeAdvanceLoanNotifier extends ChangeNotifier{
 
         updateEmployeeAttendanceLoader(false);
       });
-    }catch(e){
+    }catch(e,stackTrace){
       updateEmployeeAttendanceLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.getEmployeeAdvanceLoanDetail}" , e.toString());
+      errorLog("EMP14 ${e.toString()}", stackTrace,"Error EMP14",module,module, "${Sp.getEmployeeAdvanceLoanDetail}");
     }
 
 

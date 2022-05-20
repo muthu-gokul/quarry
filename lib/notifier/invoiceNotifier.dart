@@ -17,6 +17,7 @@ import 'package:quarry/notifier/quarryNotifier.dart';
 
 import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/calculation.dart';
+import '../utils/errorLog.dart';
 import '../widgets/decimal.dart';
 import 'profileNotifier.dart';
 
@@ -26,7 +27,7 @@ class InvoiceNotifier extends ChangeNotifier{
   final call=ApiManager();
 
 
-
+  String module="Invoice";
 
 
   late DateTime invoiceCurrentDate;
@@ -85,7 +86,7 @@ class InvoiceNotifier extends ChangeNotifier{
     };
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
-        if(value!=null){
+        if(value!="null"){
           var parsed=json.decode(value);
 
           var t=parsed['Table'] as List?;
@@ -124,9 +125,10 @@ class InvoiceNotifier extends ChangeNotifier{
 
 
     }
-    catch(e){
+    catch(e,stackTrace){
       updateInvoiceLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.MasterdropDown}" , e.toString());
+      errorLog("INV01 ${e.toString()}", stackTrace,"Error INV01",module,module, "${Sp.MasterdropDown}_GetPlant");
+
     }
   }
 
@@ -189,9 +191,9 @@ class InvoiceNotifier extends ChangeNotifier{
         updateInvoiceLoader(false);
       });
     }
-    catch(e){
+    catch(e,stackTrace){
       updateInvoiceLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.MasterdropDown}" , e.toString());
+      errorLog("INV02 ${e.toString()}", stackTrace,"Error INV02",module,module, "${Sp.MasterdropDown}");
     }
   }
 
@@ -511,9 +513,9 @@ class InvoiceNotifier extends ChangeNotifier{
 
         updateInvoiceLoader(false);
       });
-    }catch(e){
+    }catch(e,stackTrace){
       updateInvoiceLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.insertInvoiceDetail}" , e.toString());
+      errorLog("INV03 ${e.toString()}", stackTrace,"Error INV03",module,module, isInvoiceEdit?"${Sp.updateInvoiceDetail}":"${Sp.insertInvoiceDetail}");
     }
 
 
@@ -703,9 +705,9 @@ class InvoiceNotifier extends ChangeNotifier{
         }
         updateInvoiceLoader(false);
       });
-    }catch(e){
+    }catch(e,stackTrace){
       updateInvoiceLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.getInvoiceDetail}" , e.toString());
+      errorLog("INV04 ${e.toString()}", stackTrace,"Error INV04",module,module, "${Sp.getInvoiceDetail}");
     }
 
 

@@ -13,11 +13,13 @@ import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/styles/constants.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 
+import '../utils/errorLog.dart';
+
 class MaterialNotifier extends ChangeNotifier{
 
 
 
-
+  String module="MaterialMaster";
 
 
   TextEditingController materialName=new TextEditingController();
@@ -81,9 +83,10 @@ class MaterialNotifier extends ChangeNotifier{
         updatematerialLoader(false);
       });
     }
-    catch(e){
+    catch(e,stackTrace){
       updatematerialLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.MasterdropDown}" , e.toString());
+      errorLog("MM01 ${e.toString()}", stackTrace,"Error MM01",module,module, "${Sp.MasterdropDown}");
+      //CustomAlert().commonErrorAlert(context, "${Sp.MasterdropDown}" , e.toString());
     }
   }
 
@@ -131,9 +134,10 @@ class MaterialNotifier extends ChangeNotifier{
 
 
       });
-    }catch(e){
+    }catch(e,stackTrace){
       updatematerialLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.insertMaterialDetail}" , e.toString());
+      errorLog("MM02 ${e.toString()}", stackTrace,"Error MM02",module,module, isMaterialEdit?"${Sp.updateMaterialDetail}":"${Sp.insertMaterialDetail}");
+
     }
 
 
@@ -189,9 +193,10 @@ class MaterialNotifier extends ChangeNotifier{
 
         updatematerialLoader(false);
       });
-    }catch(e){
+    }catch(e,stackTrace){
       updatematerialLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.getMaterialDetail}" , e.toString());
+      errorLog("MM03 ${e.toString()}", stackTrace,"Error MM03",module,module,"${Sp.getMaterialDetail}");
+
     }
 
 
@@ -215,8 +220,8 @@ class MaterialNotifier extends ChangeNotifier{
           GetMaterialDbHit(Get.context!, null);
         }
       });
-    } catch (e) {
-      CustomAlert().commonErrorAlert(Get.context!, "${Sp.deleteMaterialDetail}", e.toString());
+    } catch (e,stackTrace) {
+      errorLog("MM04 ${e.toString()}", stackTrace,"Error MM04",module,module,"${Sp.deleteMaterialDetail}");
     }
   }
 

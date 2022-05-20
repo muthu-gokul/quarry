@@ -178,8 +178,6 @@ class PurchaseDetailsGridState extends State<PurchaseDetailsGrid> with TickerPro
                                                   selectedIndex=i;
                                                   showEdit=true;
                                                 }
-
-
                                               });
                                             },
                                             child: Container(

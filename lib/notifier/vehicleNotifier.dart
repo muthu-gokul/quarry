@@ -14,6 +14,8 @@ import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/styles/constants.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 
+import '../utils/errorLog.dart';
+
 
 class VehicleNotifier extends ChangeNotifier{
 
@@ -37,6 +39,8 @@ class VehicleNotifier extends ChangeNotifier{
   List<VehicleTypeModel> filterVehicleTypeList=[];
 
   final call=ApiManager();
+
+  String module="VehicleMaster";
 
   Future<dynamic> vehicleDropDownValues(BuildContext context) async {
     updatevehicleLoader(true);
@@ -76,8 +80,9 @@ class VehicleNotifier extends ChangeNotifier{
         updatevehicleLoader(false);
       });
     }
-    catch(e){
+    catch(e,stackTrace){
       updatevehicleLoader(false);
+      errorLog("VEM01 ${e.toString()}", stackTrace,"Error VEM01",module,module, "${Sp.MasterdropDown}");
       CustomAlert().commonErrorAlert(context, "${Sp.MasterdropDown}" , e.toString());
     }
   }
@@ -135,9 +140,10 @@ class VehicleNotifier extends ChangeNotifier{
 
       });
     }
-    catch(e){
+    catch(e,stackTrace){
       updatevehicleLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.insertVehicleType}" , e.toString());
+      errorLog("VEM02 ${e.toString()}", stackTrace,"Error VEM02",module,module, "${Sp.insertVehicleType}");
+
     }
   }
 
@@ -189,9 +195,10 @@ class VehicleNotifier extends ChangeNotifier{
 
 
       });
-    }catch(e){
+    }catch(e,stackTrace){
       updatevehicleLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.insertVehicleDetail}" , e.toString());
+      errorLog("VEM03 ${e.toString()}", stackTrace,"Error VEM03",module,module, "${Sp.insertVehicleDetail}");
+
     }
 
 
@@ -240,8 +247,9 @@ class VehicleNotifier extends ChangeNotifier{
         updatevehicleLoader(false);
       });
     }
-    catch(e){
-      updatevehicleLoader(false);
+    catch(e,stackTrace){
+      updatevehicleLoader(false,);
+      errorLog("VEM04 ${e.toString()}", stackTrace,"Error VEM04",module,module, "${Sp.getVehicleDetail}");
       CustomAlert().commonErrorAlert(context, "${Sp.getVehicleDetail}" , e.toString());
     }
 

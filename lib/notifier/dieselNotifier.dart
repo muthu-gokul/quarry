@@ -24,11 +24,13 @@ import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/calculation.dart';
 import 'package:quarry/widgets/decimal.dart';
 
+import '../utils/errorLog.dart';
+
 class DieselNotifier extends ChangeNotifier{
 
   final call=ApiManager();
 
-
+  String module="Diesel Management";
 
   List<PlantUserModel> plantList=[];
   int plantCount=0;
@@ -102,9 +104,9 @@ class DieselNotifier extends ChangeNotifier{
         updateDieselLoader(false);
       });
     }
-    catch(e){
+    catch(e,stackTrace){
       updateDieselLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.MasterdropDown}" , e.toString());
+      errorLog("DIS01 ${e.toString()}", stackTrace,"Error DIS01",module,module, "${Sp.MasterdropDown}_GetPlant");
     }
   }
 
@@ -195,9 +197,9 @@ class DieselNotifier extends ChangeNotifier{
         updateDieselLoader(false);
       });
     }
-    catch(e){
+    catch(e,stackTrace){
       updateDieselLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.MasterdropDown}" , e.toString());
+      errorLog("DIS02 ${e.toString()}", stackTrace,"Error DIS02",module,module, "${Sp.MasterdropDown}_GetDieselDrp");
     }
   }
 
@@ -346,6 +348,7 @@ double? totalAmount=0.0;
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
         log(value);
+        updateDieselLoader(false);
         if(value!="null"){
           var parsed=json.decode(value);
           GetDieselPurchaseDbHit(context, null);
@@ -355,15 +358,12 @@ double? totalAmount=0.0;
 
           //
         }
-        else{
-          updateDieselLoader(false);
-        }
 
 
       });
-    }catch(e){
+    }catch(e,stackTrace){
       updateDieselLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.insertDieselDetail}" , e.toString());
+      errorLog("DIS03 ${e.toString()}", stackTrace,"Error DIS03",module,module, isDieselEdit?"${Sp.updateDieselDetail}": "${Sp.insertDieselDetail}");
     }
 
 
@@ -504,8 +504,9 @@ double? totalAmount=0.0;
 
         updateDieselLoader(false);
       });
-    }catch(e){
+    }catch(e,stackTrace){
       updateDieselLoader(false);
+      errorLog("DIS04 ${e.toString()}", stackTrace,"Error DIS04",module,module, "${Sp.getDieselDetail}_Purchase");
       CustomAlert().commonErrorAlert(context, "${Sp.getDieselDetail}" , e.toString());
     }
   }
@@ -601,9 +602,9 @@ double? totalAmount=0.0;
 
         updateDieselLoader(false);
       });
-    }catch(e){
+    }catch(e,stackTrace){
       updateDieselLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.insertDieselIssueDetail}" , e.toString());
+      errorLog("DIS05 ${e.toString()}", stackTrace,"Error DIS05",module,module, isDieselIssueEdit?"${Sp.updateDieselIssueDetail}": "${Sp.insertDieselIssueDetail}");
     }
 
 
@@ -708,9 +709,10 @@ double? totalAmount=0.0;
 
         updateDieselLoader(false);
       });
-    }catch(e){
+    }catch(e,stackTrace){
       updateDieselLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.getDieselIssueDetail}" , e.toString());
+      errorLog("DIS06 ${e.toString()}", stackTrace,"Error DIS06",module,module, "${Sp.getDieselIssueDetail}");
+     // CustomAlert().commonErrorAlert(context, "${Sp.getDieselIssueDetail}" , e.toString());
     }
   }
   filterDieselIssueGrid(){

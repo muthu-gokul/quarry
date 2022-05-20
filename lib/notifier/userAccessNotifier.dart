@@ -9,6 +9,8 @@ import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/styles/constants.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 
+import '../utils/errorLog.dart';
+
 class UserAccessNotifier extends ChangeNotifier{
   final call=ApiManager();
 
@@ -16,6 +18,8 @@ class UserAccessNotifier extends ChangeNotifier{
   List<dynamic> headerList=[];
   List<UserAccessModel> data=[];
   int restrictedUserGroupId=2;
+
+  String module="UserAccess";
 
 
   Future<dynamic> getUserAccess(BuildContext context) async {
@@ -30,7 +34,7 @@ class UserAccessNotifier extends ChangeNotifier{
     };
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
-        if(value!='F'){
+        if(value!='null'){
           log("$value");
           var parsed=json.decode(value);
           log("$parsed");
@@ -56,9 +60,10 @@ class UserAccessNotifier extends ChangeNotifier{
         }
       });
     }
-    catch(e,t){
+    catch(e,stackTrace){
       updateisLoad(false);
-      CustomAlert().commonErrorAlert(context, "Uer Access40" , t.toString());
+      errorLog("UAC01 ${e.toString()}", stackTrace,"Error UAC01",module,module, "USP_GetUserAccess");
+
     }
   }
 
@@ -86,9 +91,10 @@ class UserAccessNotifier extends ChangeNotifier{
         }
       });
     }
-    catch(e,t){
+    catch(e,stackTrace){
       updateisLoad(false);
-      CustomAlert().commonErrorAlert(context, "Uer Access40" , t.toString());
+      errorLog("UAC02 ${e.toString()}", stackTrace,"Error UAC02",module,module, "USP_UpdateUserAccess");
+
     }
   }
 

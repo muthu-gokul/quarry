@@ -21,6 +21,7 @@ class PlanNotifier extends GetxController{
   var plantList=[].obs;
   var planList=[].obs;
   String page="ActivateRequest";
+  String module="PlanDetail";
   var selectPlantId="".obs;
   var selectPlantName="".obs;
   var planId="".obs;
@@ -45,8 +46,9 @@ class PlanNotifier extends GetxController{
           selectPlantName.value=plantList[0]['Text'];
           getActivationDetail();
         }
-      }catch(e){
-
+      }catch(e,stackTrace){
+        isLoad.value=false;
+        errorLog("PL02 ${e.toString()}", stackTrace,"Error PL02",module,page,"getMasterDrpWeb_PlantId");
       }
     }
   }
@@ -60,8 +62,9 @@ class PlanNotifier extends GetxController{
         var table=parsed['Table'] as List;
         planList.value=table;
 
-      }catch(e){
-
+      }catch(e,stackTrace){
+        isLoad.value=false;
+        errorLog("PL03 ${e.toString()}", stackTrace,"Error PL03",module,page,"getMasterDrpWeb_PlanId");
       }
     }
   }
@@ -89,8 +92,9 @@ class PlanNotifier extends GetxController{
         }
       });
     }
-    catch(e){
+    catch(e,stackTrace){
       isLoad.value=false;
+      errorLog("PL04 ${e.toString()}", stackTrace,"Error PL04",module,page,"USP_Web_InsertPlantActivationRequestDetail");
       //CustomAlert().commonErrorAlert(Get.context!, "Error G01", "Contact Administration");
     }
   }
@@ -157,10 +161,9 @@ class PlanNotifier extends GetxController{
           gridData.value=table1;
         }
       });
-
     }
-    catch(e,t){
-      errorLog("P01 ${e.toString()}", t,"Error P01");
+    catch(e,stackTrace){
+      errorLog("PL01 ${e.toString()}", stackTrace,"Error PL01",module,page,"USP_Web_GetPlantActivationDetail");
       isLoad.value=false;
     }
   }

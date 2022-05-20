@@ -9,6 +9,7 @@ import 'package:quarry/model/manageUsersModel/manageUsersPlantModel.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 
+import '../utils/errorLog.dart';
 import '../utils/utils.dart';
 
 class ProfileNotifier extends ChangeNotifier{
@@ -30,6 +31,7 @@ class ProfileNotifier extends ChangeNotifier{
   String userLogoUrl="";
   File? logoFile;
 
+  String module="Profile";
 
   UpdateUserProfileDetailDbHit(BuildContext context)  async{
 
@@ -114,9 +116,10 @@ class ProfileNotifier extends ChangeNotifier{
 
         updateProfileLoader(false);
       });
-    }catch(e){
+    }catch(e,stackTrace){
       updateProfileLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.updateUserProfileDetail}" , e.toString());
+      errorLog("PRF01 ${e.toString()}", stackTrace,"Error PRF01",module,module, "${Sp.updateUserProfileDetail}");
+
     }
 
 
@@ -191,9 +194,10 @@ class ProfileNotifier extends ChangeNotifier{
 
         updateProfileLoader(false);
       });
-    }catch(e){
+    }catch(e,stackTrace){
       updateProfileLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.getUserDetail}" , e.toString());
+      errorLog("PRF02 ${e.toString()}", stackTrace,"Error PRF02",module,module, "${Sp.getUserDetail}");
+
     }
 
 

@@ -274,8 +274,6 @@ class PurchaseNotifier extends ChangeNotifier{
         purchaseOrdersMappingList[index].purchaseQty!..text=purchaseqty;
         purchaseOrdersCalc(index,purchaseqty);
       }
-
-
     }
 
 

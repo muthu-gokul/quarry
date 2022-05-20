@@ -13,6 +13,7 @@ import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/styles/constants.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 
+import '../utils/errorLog.dart';
 import '../utils/utils.dart';
 
 class CustomerNotifier extends ChangeNotifier {
@@ -49,6 +50,7 @@ class CustomerNotifier extends ChangeNotifier {
   int? editCustomerId = null;
   final call = ApiManager();
 
+  String module="CustomerMaster";
 
   Future<dynamic> InsertCustomerDbHit(BuildContext context,bool fromSale) async {
     updatecustomerLoader(true);
@@ -107,8 +109,9 @@ class CustomerNotifier extends ChangeNotifier {
 
 
       });
-    } catch (e) {
+    } catch (e,stackTrace) {
       updatecustomerLoader(false);
+      errorLog("CUS01 ${e.toString()}", stackTrace,"Error CUS01",module,module, "${Sp.insertCustomerDetail}");
       CustomAlert().commonErrorAlert(context, "${Sp.insertCustomerDetail}", e.toString());
     }
   }
@@ -167,9 +170,9 @@ class CustomerNotifier extends ChangeNotifier {
         updatecustomerLoader(false);
       });
     }
-    catch (e) {
+    catch (e,stackTrace) {
       updatecustomerLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.getCustomerDetail}", e.toString());
+      errorLog("CUS02 ${e.toString()}", stackTrace,"Error CUS02",module,module, "${Sp.getCustomerDetail}");
     }
   }
 
@@ -193,9 +196,8 @@ class CustomerNotifier extends ChangeNotifier {
           GetCustomerDetailDbhit(Get.context!, null);
         }
       });
-    } catch (e) {
-
-      CustomAlert().commonErrorAlert(Get.context!, "${Sp.deleteCustomerDetail}", e.toString());
+    } catch (e,stackTrace) {
+      errorLog("CUS03 ${e.toString()}", stackTrace,"Error CUS03",module,module, "${Sp.deleteCustomerDetail}");
     }
   }
 

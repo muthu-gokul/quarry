@@ -20,6 +20,7 @@ import 'package:quarry/model/plantModel/plantUserModel.dart';
 import 'package:quarry/styles/constants.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 
+import '../utils/errorLog.dart';
 import '../utils/utils.dart';
 import 'quarryNotifier.dart';
 
@@ -27,7 +28,7 @@ class EmployeeNotifier extends ChangeNotifier{
 
   final call=ApiManager();
 
-
+  String module="Employee Master";
 
   List<PlantUserModel> plantList=[];
   int plantCount=0;
@@ -77,9 +78,9 @@ class EmployeeNotifier extends ChangeNotifier{
         updateEmployeeLoader(false);
       });
     }
-    catch(e){
+    catch(e,stackTrace){
       updateEmployeeLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.MasterdropDown}" , e.toString());
+      errorLog("EMP05 ${e.toString()}", stackTrace,"Error EMP01",module,module, "${Sp.MasterdropDown}_GetPlant");
     }
   }
 
@@ -146,9 +147,10 @@ class EmployeeNotifier extends ChangeNotifier{
         updateEmployeeLoader(false);
       });
     }
-    catch (e) {
+    catch (e,stackTrace) {
       updateEmployeeLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.MasterdropDown}", e.toString());
+      errorLog("EMP06 ${e.toString()}", stackTrace,"Error EMP06",module,module, "${Sp.MasterdropDown}_EmpDrp");
+
     }
   }
 
@@ -345,9 +347,10 @@ class EmployeeNotifier extends ChangeNotifier{
 
 
       });
-    }catch(e){
+    }catch(e,stackTrace){
       updateEmployeeLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.insertEmployeeDetail}" , e.toString());
+      errorLog("EMP06 ${e.toString()}", stackTrace,"Error EMP06",module,module, isEmployeeEdit?"${Sp.updateEmployeeDetail}": "${Sp.insertEmployeeDetail}");
+
     }
 
 
@@ -427,9 +430,9 @@ class EmployeeNotifier extends ChangeNotifier{
 
         updateEmployeeLoader(false);
       });
-    }catch(e){
+    }catch(e,stackTrace){
       updateEmployeeLoader(false);
-      CustomAlert().commonErrorAlert(context, "${Sp.getEmployeeDetail}" , e.toString());
+      errorLog("EMP07 ${e.toString()}", stackTrace,"Error EMP06",module,module, "${Sp.getEmployeeDetail}");
     }
 
 

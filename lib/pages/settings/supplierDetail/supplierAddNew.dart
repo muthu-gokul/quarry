@@ -220,6 +220,7 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                         });
                                     },
                                     labelText: 'Address',
+                                    regExp: addressReg,
                                     onChange: (v){},
                                     textEditingController: qn.supplierAddress,
                                     onEditComplete: (){
