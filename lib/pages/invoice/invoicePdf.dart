@@ -66,10 +66,10 @@ invoicePdf(context,bool view) async {
                       children: [
                         pw.Text("From",style: pw.TextStyle(fontSize: 16,color: PdfColor.fromInt(0xFF3b3b3d),fontWeight: pw.FontWeight.bold)),
                         pw.SizedBox(height: 10),
-                        pw.FittedBox(
-                          child:  pw.Text(inv.pdfHeader![0]['InvoiceType']=='Receivable'?"${inv.pdfHeader![0]['PlantName']}":"${inv.pdfHeader![0]['PartyName']}",
+                        /*pw.FittedBox(
+                          child:*/  pw.Text(inv.pdfHeader![0]['InvoiceType']=='Receivable'?"${inv.pdfHeader![0]['PlantName']}":"${inv.pdfHeader![0]['PartyName']}",
                               style: pw.TextStyle(fontSize: 25,color: PdfColor.fromInt(0xFF3b3b3d),fontWeight: pw.FontWeight.bold)),
-                        ),
+                        //),
                         pw.SizedBox(height: 10),
                         /*pw.Text("Rajmahal complex, opp to bus stand,Hosur-635109.",style: pw.TextStyle(fontSize: 15,color: PdfColor.fromInt(0xFF3b3b3d)),
                             textAlign: pw.TextAlign.left),*/
@@ -85,10 +85,10 @@ invoicePdf(context,bool view) async {
                       children: [
                         pw.Text("To",style: pw.TextStyle(fontSize: 16,color: PdfColor.fromInt(0xFF3b3b3d),fontWeight: pw.FontWeight.bold)),
                         pw.SizedBox(height: 10),
-                        pw.FittedBox(
-                          child:  pw.Text(inv.pdfHeader![0]['InvoiceType']=='Receivable'?"${inv.pdfHeader![0]['PartyName']}":"${inv.pdfHeader![0]['PlantName']}",
+                       /* pw.FittedBox(
+                          child:*/  pw.Text(inv.pdfHeader![0]['InvoiceType']=='Receivable'?"${inv.pdfHeader![0]['PartyName']}":"${inv.pdfHeader![0]['PlantName']}",
                               style: pw.TextStyle(fontSize: 25,color: PdfColor.fromInt(0xFF3b3b3d),fontWeight: pw.FontWeight.bold)),
-                        ),
+                        //),
                         pw.SizedBox(height: 10),
                         /*pw.Text("Rajmahal complex, opp to bus stand,Hosur-635109.",style: pw.TextStyle(fontSize: 15,color: PdfColor.fromInt(0xFF3b3b3d)),
                             textAlign: pw.TextAlign.right),*/
@@ -128,7 +128,7 @@ invoicePdf(context,bool view) async {
                         child: pw.FittedBox(
                           child:   RichText(
                             text: TextSpan(
-                              text: 'Purchase No : ',
+                              text:inv.pdfHeader![0]['InvoiceType']=='Payable'? 'Purchase No : ':'Sale No : ',
                               style:pw.TextStyle(fontSize: 14,color: PdfColor.fromInt(0xFF3b3b3d),fontWeight: pw.FontWeight.bold),
                               children: <TextSpan>[
                                 TextSpan(text: '${inv.pdfHeader![0]['PurchaseNumber']??""}', style: pw.TextStyle(fontSize: 16,color: PdfColor.fromInt(0xFF3b3b3d),fontWeight: pw.FontWeight.normal)),
@@ -143,7 +143,7 @@ invoicePdf(context,bool view) async {
                         child: pw.FittedBox(
                           child:   RichText(
                             text: TextSpan(
-                              text: 'Expected Date : ',
+                              text:inv.pdfHeader![0]['InvoiceType']=='Payable'? 'Expected Date : ':'Sale Date : ',
                               style:pw.TextStyle(fontSize: 14,color: PdfColor.fromInt(0xFF3b3b3d),fontWeight: pw.FontWeight.bold),
                               children: <TextSpan>[
                                 TextSpan(text: '${inv.pdfHeader![0]['ExpectedDate']==null?"":DateFormat.yMMMd().format(DateTime.parse(inv.pdfHeader![0]['ExpectedDate']))}',

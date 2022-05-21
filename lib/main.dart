@@ -49,7 +49,8 @@ void main() {
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await FlutterDownloader.initialize(
-      debug: false
+      debug: false,
+    ignoreSsl: true
   );
   runZonedGuarded(() {
     runApp(MyApp());

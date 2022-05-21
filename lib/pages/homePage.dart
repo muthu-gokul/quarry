@@ -47,6 +47,7 @@ import 'package:quarry/styles/constants.dart';
 import 'package:quarry/styles/size.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/animation/fadeanimation.dart';
+import 'package:quarry/widgets/loader.dart';
 import '../styles/size.dart';
 import 'dashboard/dashboardHome.dart';
 import 'dieselManagement/dieselGrid.dart';
@@ -65,7 +66,7 @@ import 'settings/supplierDetail/supplierGrid.dart';
 import 'settings/vehicleDetail/vehicleDetailsGrid.dart';
 
 
-
+var mainLoader=false.obs;
 
 class HomePage extends StatefulWidget {
   @override
@@ -472,76 +473,84 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
               ),
             ),
           ),
-          body: drawer.menuSelected==1?QuaryAddNew(drawerCallback: (){
-            scaffoldkey.currentState!.openDrawer();
-          },):
-          drawer.menuSelected==2?MaterialDetailsGrid(drawerCallback: (){
-            scaffoldkey.currentState!.openDrawer();
-          },):
-          drawer.menuSelected==4?SaleGrid(drawerCallback: (){
-            scaffoldkey.currentState!.openDrawer();
-          },):
-          drawer.menuSelected==5?CustomerMaster(drawerCallback: (){
-            scaffoldkey.currentState!.openDrawer();
-          },):
-          drawer.menuSelected==6?MachineDetailsGrid(drawerCallback: (){
-            scaffoldkey.currentState!.openDrawer();
-          },):
-          drawer.menuSelected==7?VehicleDetailsGrid(drawerCallback: (){
-            scaffoldkey.currentState!.openDrawer();
-          },):
-          drawer.menuSelected==8?SupplierDetailsGrid(drawerCallback: (){
-            scaffoldkey.currentState!.openDrawer();
-          },):
-          drawer.menuSelected==9?PurchaseDetailsGrid(drawerCallback: (){
-            scaffoldkey.currentState!.openDrawer();
-          },):
-          drawer.menuSelected==10?ProfileScreen(drawerCallback: (){
-            scaffoldkey.currentState!.openDrawer();
-          },):
-          drawer.menuSelected==11?GoodsReceivedGrid(drawerCallback: (){
-            scaffoldkey.currentState!.openDrawer();
-          },):
-          drawer.menuSelected==12?ProductionGrid(drawerCallback: (){
-            scaffoldkey.currentState!.openDrawer();
-          },):
-          drawer.menuSelected==13?DieselGrid(drawerCallback: (){
-            scaffoldkey.currentState!.openDrawer();
-          },):
-          drawer.menuSelected==14?InvoiceGrid(drawerCallback: (){
-            scaffoldkey.currentState!.openDrawer();
-          },):
-          drawer.menuSelected==15?PaymentGrid(drawerCallback: (){
-            scaffoldkey.currentState!.openDrawer();
-          },):
-          drawer.menuSelected==16?ReportGrid(drawerCallback: (){
-            scaffoldkey.currentState!.openDrawer();
-          },):
-          drawer.menuSelected==17?EmployeeMasterGrid(drawerCallback: (){
-            scaffoldkey.currentState!.openDrawer();
-          },):
-          drawer.menuSelected==18?EmployeeAttendanceGrid(drawerCallback: (){
-            scaffoldkey.currentState!.openDrawer();
-          },):
-          drawer.menuSelected==19?EmployeeAdvanceLoanGrid(drawerCallback: (){
-            scaffoldkey.currentState!.openDrawer();
-          },):
-          drawer.menuSelected==20?EmployeeSalaryGrid(drawerCallback: (){
-            scaffoldkey.currentState!.openDrawer();
-          },):
-          drawer.menuSelected==21?MachineManagementGrid(drawerCallback: (){
-            scaffoldkey.currentState!.openDrawer();
-          },):
-          drawer.menuSelected==22?DashBoardHome(drawerCallback: (){
-            scaffoldkey.currentState!.openDrawer();
-          },):
-          drawer.menuSelected==23?UserAccess(drawerCallback: (){
-            scaffoldkey.currentState!.openDrawer();
-          },):
-          drawer.menuSelected==24?PlanDetail(drawerCallback: (){
-            scaffoldkey.currentState!.openDrawer();
-          },):
-          Container()
+          body: Stack(
+            children: [
+              drawer.menuSelected==1?QuaryAddNew(drawerCallback: (){
+                scaffoldkey.currentState!.openDrawer();
+              },):
+              drawer.menuSelected==2?MaterialDetailsGrid(drawerCallback: (){
+                scaffoldkey.currentState!.openDrawer();
+              },):
+              drawer.menuSelected==4?SaleGrid(drawerCallback: (){
+                scaffoldkey.currentState!.openDrawer();
+              },):
+              drawer.menuSelected==5?CustomerMaster(drawerCallback: (){
+                scaffoldkey.currentState!.openDrawer();
+              },):
+              drawer.menuSelected==6?MachineDetailsGrid(drawerCallback: (){
+                scaffoldkey.currentState!.openDrawer();
+              },):
+              drawer.menuSelected==7?VehicleDetailsGrid(drawerCallback: (){
+                scaffoldkey.currentState!.openDrawer();
+              },):
+              drawer.menuSelected==8?SupplierDetailsGrid(drawerCallback: (){
+                scaffoldkey.currentState!.openDrawer();
+              },):
+              drawer.menuSelected==9?PurchaseDetailsGrid(drawerCallback: (){
+                scaffoldkey.currentState!.openDrawer();
+              },):
+              drawer.menuSelected==10?ProfileScreen(drawerCallback: (){
+                scaffoldkey.currentState!.openDrawer();
+              },):
+              drawer.menuSelected==11?GoodsReceivedGrid(drawerCallback: (){
+                scaffoldkey.currentState!.openDrawer();
+              },):
+              drawer.menuSelected==12?ProductionGrid(drawerCallback: (){
+                scaffoldkey.currentState!.openDrawer();
+              },):
+              drawer.menuSelected==13?DieselGrid(drawerCallback: (){
+                scaffoldkey.currentState!.openDrawer();
+              },):
+              drawer.menuSelected==14?InvoiceGrid(drawerCallback: (){
+                scaffoldkey.currentState!.openDrawer();
+              },):
+              drawer.menuSelected==15?PaymentGrid(drawerCallback: (){
+                scaffoldkey.currentState!.openDrawer();
+              },):
+              drawer.menuSelected==16?ReportGrid(drawerCallback: (){
+                scaffoldkey.currentState!.openDrawer();
+              },):
+              drawer.menuSelected==17?EmployeeMasterGrid(drawerCallback: (){
+                scaffoldkey.currentState!.openDrawer();
+              },):
+              drawer.menuSelected==18?EmployeeAttendanceGrid(drawerCallback: (){
+                scaffoldkey.currentState!.openDrawer();
+              },):
+              drawer.menuSelected==19?EmployeeAdvanceLoanGrid(drawerCallback: (){
+                scaffoldkey.currentState!.openDrawer();
+              },):
+              drawer.menuSelected==20?EmployeeSalaryGrid(drawerCallback: (){
+                scaffoldkey.currentState!.openDrawer();
+              },):
+              drawer.menuSelected==21?MachineManagementGrid(drawerCallback: (){
+                scaffoldkey.currentState!.openDrawer();
+              },):
+              drawer.menuSelected==22?DashBoardHome(drawerCallback: (){
+                scaffoldkey.currentState!.openDrawer();
+              },):
+              drawer.menuSelected==23?UserAccess(drawerCallback: (){
+                scaffoldkey.currentState!.openDrawer();
+              },):
+              drawer.menuSelected==24?PlanDetail(drawerCallback: (){
+                scaffoldkey.currentState!.openDrawer();
+              },):
+              Container(),
+
+
+
+
+            ],
+          )
       ),
     );
   }
@@ -924,7 +933,7 @@ class AccountsPageState extends State<AccountsPage> with TickerProviderStateMixi
                       widget.voidCallback!();
 
                       Provider.of<DrawerNotifier>(context,listen: false).changeMenu(14);
-                      Provider.of<InvoiceNotifier>(context, listen: false).GetInvoiceDbHit(context,null);
+
                     },
                   ),
                   DrawerContent(

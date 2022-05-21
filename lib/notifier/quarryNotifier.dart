@@ -2201,6 +2201,7 @@ class QuarryNotifier extends ChangeNotifier{
   String companyLogoUrl="";
   File? sampleImage;
   GetQuarryDetailDbhit(BuildContext context) async {
+    sampleImage=null;
   //  updateInsertCompanyLoader(true);
     var body={
       "Fields": [
@@ -2241,7 +2242,7 @@ class QuarryNotifier extends ChangeNotifier{
           CD_Cinno.text= t1[0]['CompanyCINNumber']??"";
           CD_email.text= t1[0]['CompanyEmail']??"";
           CD_website.text= t1[0]['CompanyWebsite']??"";
-          CompanyLogo= t1[0]['CompanyLogo'];
+          CompanyLogo= t1[0]['CompanyLogo']??"";
           companyLogoUrl=ApiManager().attachmentUrl+CompanyLogo;
           //CompanyLogoFolder= t1[0]['CompanyLogoFolderName']??"";
         }

@@ -670,8 +670,7 @@ class _EmployeeMasterViewState extends State<EmployeeMasterView> with TickerProv
     );
   }
 
-  TextStyle tableTextStyle=TextStyle(fontFamily: 'RR',color: AppTheme.gridTextColor);
-  Color tableColor=Colors.white;
+
 
   Route _createRoute() {
     return PageRouteBuilder(
@@ -687,7 +686,8 @@ class _EmployeeMasterViewState extends State<EmployeeMasterView> with TickerProv
     );
   }
 
-
+  TextStyle tableTextStyle=TextStyle(fontFamily: 'RR',color: AppTheme.gridTextColor);
+  Color tableColor=Colors.white;
   TableRow tableRow(var title, var value){
     return  TableRow(
         children: [

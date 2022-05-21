@@ -735,17 +735,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                                },
                                                child: Container(
                                                  width: 110,
-                                             //   height: 40,
-                                                /* decoration: BoxDecoration(
-                                                     boxShadow: [
-                                                       BoxShadow(
-                                                         color: AppTheme.yellowColor.withOpacity(0.7),
-                                                         spreadRadius: -3,
-                                                         blurRadius: 15,
-                                                         offset: Offset(0, 7), // changes position of shadow
-                                                       )
-                                                     ]
-                                                 ),*/
+                                                 height: 40,
                                                  child:FittedBox(child: Image.asset("assets/bottomIcons/update-text-icon.png")),
                                                ),
                                              ),
@@ -764,6 +754,7 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                                },
                                                child: Container(
                                                  width: 110,
+                                                 height: 40,
                                                  child:FittedBox(
                                                    child: Image.asset("assets/bottomIcons/cancel-text-icon.png")
                                                  ),

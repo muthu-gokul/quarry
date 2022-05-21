@@ -17,6 +17,9 @@ import 'package:quarry/widgets/fittedText.dart';
 import 'package:quarry/widgets/loader.dart';
 import 'package:quarry/widgets/navigationBarIcon.dart';
 import 'package:quarry/widgets/dateRangePicker.dart' as DateRagePicker;
+import 'package:syncfusion_flutter_charts/charts.dart';
+
+import '../../../widgets/linearProgressBar.dart';
 
 class PurchaseDashBoard extends StatefulWidget {
 
@@ -29,16 +32,28 @@ class PurchaseDashBoard extends StatefulWidget {
 class _PurchaseDashBoardState extends State<PurchaseDashBoard> {
   ScrollController? silverController;
   double silverBodyTopMargin=0;
-  List<DateTime?> picked=[];
+
   int selIndex=-1;
+  List<dynamic> saleData=[];
+  late Future saleFuture;
+  getData(){
+    saleData=Provider.of<DashboardNotifier>(context,listen: false).saleData;
+    return Future.value(saleData);
+  }
 
   @override
   void initState() {
+    saleFuture=getData();
     Provider.of<DashboardNotifier>(context,listen: false).DashBoardDbHit(context,
         "Purchase",
-        DateFormat("yyyy-MM-dd").format(DateTime.now().subtract(Duration(days: 90))).toString(),
+        DateFormat("yyyy-MM-dd").format(DateTime.now().subtract(Duration(days: 6))).toString(),
         DateFormat("yyyy-MM-dd").format(DateTime.now()).toString()
-    );
+    ).then((value){
+      saleFuture=getData();
+      /*Timer(Duration(milliseconds: 100),(){
+        chartSeriesController?.animate();
+      });*/
+    });
     WidgetsBinding.instance.addPostFrameCallback((_){
       silverController=new ScrollController();
 
@@ -65,6 +80,9 @@ class _PurchaseDashBoardState extends State<PurchaseDashBoard> {
     super.initState();
   }
 
+  ChartSeriesController? chartSeriesController;
+
+  List<DateTime?> picked=[];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -92,88 +110,49 @@ class _PurchaseDashBoardState extends State<PurchaseDashBoard> {
                                 Navigator.pop(context);
                               },
                             ),
-
-                            Container(
-                              height: 40,
-                              width: SizeConfig.screenWidth!*0.57,
-                              padding:EdgeInsets.only(left: 10,right: 10),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(25),
-                                  color: AppTheme.yellowColor
-                              ),
-                              child: Row(
-                                children: [
-                                  Container(
-                                    height: 30,
-                                    width: 30,
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: Colors.white
-                                    ),
-                                  ),
-                                  SizedBox(width: 5,),
-                                  Column(
-                                    mainAxisAlignment:MainAxisAlignment.center,
-                                    crossAxisAlignment:CrossAxisAlignment.start,
-                                    children: [
-                                      Text("Purchase & \nReceived",style: TextStyle(fontFamily: 'RM',fontSize: 10,color: AppTheme.bgColor),),
-                                     // SizedBox(height: 2,),
-                                     // Text("    All Product Sale",style: TextStyle(fontFamily: 'RR',fontSize: 10,color: AppTheme.bgColor),),
-                                    ],
-                                  ),
-                                  Spacer(),
-                                  Column(
-                                    mainAxisAlignment:MainAxisAlignment.center,
-                                    crossAxisAlignment:CrossAxisAlignment.end,
-                                    children: [
-                                      FittedText(
-                                        height: 15,
-                                        width: SizeConfig.screenWidth!*0.23,
-                                        alignment: Alignment.centerRight,
-                                        text: "${formatCurrency.format(db.currentSaleT!['TotalSale']??0.0)}",
-                                        textStyle: TextStyle(fontFamily: 'RM',fontSize: 14,color: AppTheme.bgColor),
-                                      ),
-                                      // Text("${db.currentSaleT['TotalSale']}",style: TextStyle(fontFamily: 'RM',fontSize: 14,color: AppTheme.bgColor),),
-                                      SizedBox(height: 2,),
-                                      Text("${db.currentSaleT!['TotalQuantity']} ${db.currentSaleT!['UnitName']}",style: TextStyle(fontFamily: 'RM',fontSize: 9,color: AppTheme.bgColor),),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
+                            Text("Purchase DashBoard",style: AppTheme.TSWhite166,),
                             Spacer(),
                             GestureDetector(
                                 onTap: () async{
                                   final List<DateTime?>?  picked1 = await DateRagePicker.showDatePicker(
-                                      context: context,
-                                      initialFirstDate: new DateTime.now(),
-                                      initialLastDate: (new DateTime.now()),
-                                      firstDate: db.dateTime,
-                                      lastDate: (new DateTime.now())
+                                    context: context,
+                                    initialFirstDate: new DateTime.now(),
+                                    initialLastDate: (new DateTime.now()),
+                                    firstDate: db.dateTime,
+                                    lastDate: (new DateTime.now()),
+
                                   );
                                   if (picked1 != null && picked1.length == 2) {
                                     setState(() {
                                       picked=picked1;
+                                      //  db.saleData.clear();
                                     });
+
                                     db.DashBoardDbHit(context,
                                         "Purchase",
                                         DateFormat("yyyy-MM-dd").format(picked[0]!).toString(),
                                         DateFormat("yyyy-MM-dd").format(picked[1]!).toString()
-                                    );
+                                    ).then((value){
+                                      saleFuture=getData();
+                                    });
                                   }
                                   else if(picked1!=null && picked1.length ==1){
                                     setState(() {
                                       picked=picked1;
+                                      //  db.saleData.clear();
                                     });
+
                                     db.DashBoardDbHit(context,
                                         "Purchase",
                                         DateFormat("yyyy-MM-dd").format(picked[0]!).toString(),
                                         DateFormat("yyyy-MM-dd").format(picked[0]!).toString()
-                                    );
+                                    ).then((value){
+                                      saleFuture=getData();
+                                    });
                                   }
-
                                 },
-                                child: SvgPicture.asset("assets/svg/calender.svg",width: 27,height: 27,color: AppTheme.dashCalendar,)),
+                                child: SvgPicture.asset("assets/svg/calender.svg",width: 25,height: 25,color: AppTheme.dashCalendar,)
+                            ),
                             SizedBox(width: 20,)
                           ],
                         ),
@@ -184,14 +163,100 @@ class _PurchaseDashBoardState extends State<PurchaseDashBoard> {
                     pinned: true,
                     flexibleSpace: FlexibleSpaceBar(
                         background: Container(
-                          color: Color(0XFF353535),
                           width: SizeConfig.screenWidth,
                           margin:EdgeInsets.only(top: 55),
-                          child: HighCharts(
-                            data: db.currentSalesApex,
-                            isHighChart: false,
-                            isLoad: db.isChartLoad,
+                          child: FutureBuilder<dynamic>(
+                            future: saleFuture,
+                            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                              if( snapshot.connectionState == ConnectionState.waiting){
+                                return Container();
+                                // return  Center(child: Text('Please wait its loading...'));
+                              }
+                              else{
+                                if (snapshot.hasError)
+                                  return Center(child: Text('Error: ${snapshot.error}',style: AppTheme.TSWhite16,));
+                                else
+                                  return  Stack(
+                                    children: [
+                                      Positioned(
+                                          left:80,
+                                          child:saleData.isEmpty?Container(): Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text("Purchase",style: TextStyle(fontFamily: 'RR',fontSize: 18,color: AppTheme.yellowColor,letterSpacing: 0.1),),
+                                              RichText(
+                                                text: TextSpan(
+                                                  text: 'Total : ${formatCurrency.format(db.saleT!['TotalPurchase'])} / ',
+                                                  style: AppTheme.saleChartTotal,
+                                                  children: <TextSpan>[
+                                                    TextSpan(text: '${db.saleT!['TotalQuantity']} ${db.saleT!['UnitName']}',
+                                                      style: AppTheme.saleChartQty,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+
+
+                                            ],
+                                          )
+                                      ),
+                                      SfCartesianChart(
+                                        legend: Legend(isVisible: false, opacity: 0.7),
+                                        title: ChartTitle(text: ''),
+                                        plotAreaBorderWidth: 0,
+                                        primaryXAxis: CategoryAxis(
+                                            interval: 1,
+                                            majorGridLines: const MajorGridLines(width: 0),
+                                            //  minorGridLines: const MinorGridLines(width: 1,color: Colors.white),
+                                            axisLine:const AxisLine(width: 1),
+                                            edgeLabelPlacement: EdgeLabelPlacement.none,
+                                            labelPlacement:saleData.length==1?LabelPlacement.betweenTicks: LabelPlacement.onTicks
+                                        ),
+                                        primaryYAxis: NumericAxis(
+                                            numberFormat: NumberFormat.currency(locale: 'HI',name: "",decimalDigits: 1),
+                                            axisLine: const AxisLine(width: 0),
+                                            majorTickLines: const MajorTickLines(size: 0),
+                                            majorGridLines: const MajorGridLines(width: 0),
+                                            labelStyle: TextStyle(color: AppTheme.yAxisText)
+                                        ),
+                                        series:[
+                                          SplineAreaSeries<dynamic, String>(
+                                            animationDuration:2000,
+                                            onRendererCreated: (ChartSeriesController c){
+                                              chartSeriesController=c;
+                                            },
+                                            markerSettings: MarkerSettings(
+                                                isVisible:saleData.length==1? true:false,
+                                                color: AppTheme.yellowColor
+                                            ),
+                                            dataSource: saleData,
+                                            borderColor: Color(0xFFFEBF10),
+                                            borderWidth: 3,
+                                            gradient: LinearGradient(
+                                              colors: [Color(0xFF343434),Color(0xFFFEBF10).withOpacity(0.5)],
+                                              begin: Alignment.bottomCenter,
+                                              end: Alignment.topCenter,
+                                              //  stops: [0,30]
+                                            ),
+                                            name: 'Purchase',
+                                            xValueMapper: (dynamic sales, _) =>DateFormat("MMMd").format(DateTime.parse(sales['Date'])),
+                                            yValueMapper: (dynamic sales, _) => sales['TotalPurchase'],
+                                          ),
+                                        ],
+                                        tooltipBehavior: TooltipBehavior(
+                                            enable: true,
+                                            duration: 10000,
+                                            format: "point.x : point.y"
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                              }
+                            },
                           ),
+
+
+
                         )
                     ),
                   ),
@@ -206,10 +271,116 @@ class _PurchaseDashBoardState extends State<PurchaseDashBoard> {
                   borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10)),
                   color: Color(0xFFF6F7F9),
                 ),
+                child: db.saleT2!.isEmpty?Container(
+                  width: SizeConfig.screenWidth,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+
+
+                      SvgPicture.asset("assets/nodata.svg",height: 300,),
+                      SizedBox(height: 30,),
+                      Text("No Data",style: TextStyle(fontSize: 18,fontFamily:'RMI',color: AppTheme.addNewTextFieldText),),
+
+                    ],
+                  ),
+                ): ListView.builder(
+                  itemCount: db.saleT2!.length,
+                  itemBuilder: (ctx,i){
+                    return Align(
+                      alignment: Alignment.center,
+                      child: Container(
+                        height: 65,
+                        width: SizeConfig.screenWidth!*0.95,
+                        margin: EdgeInsets.only(bottom: 20),
+                        padding: EdgeInsets.only(left: 10,right: 10),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(50),
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.15),
+                                spreadRadius: 1,
+                                blurRadius: 5,
+                                offset: Offset(1, 8), // changes position of shadow
+                              )
+                            ]
+                        ),
+                        child: Row(
+                          children: [
+                            Container(
+                              height: 40,
+                              width: 40,
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: AppTheme.yellowColor,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: AppTheme.yellowColor.withOpacity(0.4),
+                                      spreadRadius: 1,
+                                      blurRadius: 5,
+                                      offset: Offset(0, 6), // changes position of shadow
+                                    )
+                                  ]
+                              ),
+                              alignment: Alignment.center,
+                              child: Image.asset("assets/bottomIcons/add-material.png",height: 25,),
+                            ),
+                            SizedBox(width: 10,),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  width:(SizeConfig.screenWidth!*0.95)-80,
+                                  child: Row(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Text("${db.saleT2![i]['MaterialName']} / ",style: TextStyle(fontFamily: 'RR',color: Color(0xFFBDBCBD),fontSize: 14),),
+                                      Text("${formatCurrency.format(db.saleT2![i]['TotalPurchase']??0.0)}",style: TextStyle(fontFamily: 'RM',color: Color(0xFF999999),fontSize: 14),),
+                                      Text("  ${db.saleT2![i]['TotalQuantity']} ${db.saleT2![i]['UnitName']}",style: TextStyle(fontFamily: 'RR',color: Color(0xFF999999),fontSize: 10),),
+                                      Spacer(),
+                                      FittedText(
+                                        height: 18,
+                                        width: 50,
+                                        text: "${db.saleT2![i]['PurchasePercentage']} %",
+                                        alignment: Alignment.bottomRight,
+                                        textStyle: TextStyle(fontFamily: 'RR',color: Color(0xFF999999),fontSize: 14),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(height: 5,),
+                                LinearPercentIndicator(
+                                  width:(SizeConfig.screenWidth!*0.95)-80,
+                                  animation: true,
+                                  lineHeight: 8.0,
+                                  animationDuration: 1000,
+                                  percent: (db.saleT2![i]['PurchasePercentage'])/100.0,
+                                  linearStrokeCap: LinearStrokeCap.roundAll,
+                                  padding: EdgeInsets.only(left: 0),
+                                  // progressColor: AppTheme.yellowColor,
+                                  backgroundColor: Color(0xFFEAEAEA),
+                                  linearGradient: LinearGradient(colors: [Color(0xFFF9E6AA),AppTheme.yellowColor,],),
+                                  leading: Container(),
+                                  trailing: Container(),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
 
 
               ),
             ),
+
+
+
 
             Loader(
               isLoad: db.isLoad,
@@ -219,5 +390,4 @@ class _PurchaseDashBoardState extends State<PurchaseDashBoard> {
       ),
     );
   }
-
 }

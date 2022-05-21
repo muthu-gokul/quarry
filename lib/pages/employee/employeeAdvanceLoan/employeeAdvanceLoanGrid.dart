@@ -12,6 +12,8 @@ import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/bottomBarAddButton.dart';
 import 'package:quarry/widgets/navigationBarIcon.dart';
 
+import '../../../widgets/editDelete.dart';
+
 
 
 class EmployeeAdvanceLoanGrid extends StatefulWidget {
@@ -565,68 +567,34 @@ class _EmployeeAdvanceLoanGridState extends State<EmployeeAdvanceLoanGrid> {
                         child: Stack(
 
                           children: [
-                            AnimatedPositioned(
-                              bottom:showEdit?5:-60,
-                              duration: Duration(milliseconds: 300,),
-                              curve: Curves.bounceOut,
-                              child: Container(
-
-                                  width: SizeConfig.screenWidth,
-                                  child: Row(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-
-                                      GestureDetector(
-                                        onTap: (){
-                                          if(userAccessMap[38]){
-                                            eal.updateisEdit(true);
-                                            eal.EmployeeAdvanceDropDownValues(context).then((value) {
-                                              eal.GetEmployeeAttendanceLoanDbHit(context, eal.gridData![selectedIndex!]['EmployeeId']);
-                                              Navigator.push(context, _createRoute());
-                                              setState(() {
-                                                showEdit=false;
-                                                selectedIndex=-1;
-                                              });
-                                            });
-                                          }
-                                          else{
-                                            CustomAlert().accessDenied2();
-                                          }
-
-
-                                        },
-                                        child:Container(
-                                          width: 130,
-                                          height: 50,
-                                          padding: EdgeInsets.only(left: 20),
-                                          child:FittedBox(
-                                            child: Container(
-                                                height: 55,
-                                                width: 130,
-                                                alignment: Alignment.centerLeft,
-                                                child: FittedBox(child: Image.asset("assets/bottomIcons/edit-text-icon.png"))
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      Spacer(),
-                                      Container(
-                                        width: 130,
-                                        height: 50,
-                                        padding: EdgeInsets.only(right: 20),
-                                        child:FittedBox(
-                                          child: Container(
-                                              height: 47,
-                                              width: 130,
-                                              alignment: Alignment.centerRight,
-                                              child: FittedBox(child: Image.asset("assets/bottomIcons/delete-text-icon.png"))
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                              ),
+                            EditDelete(
+                              showEdit: showEdit,
+                              editTap: (){
+                                eal.updateisEdit(true);
+                                eal.EmployeeAdvanceDropDownValues(context).then((value) {
+                                  eal.GetEmployeeAttendanceLoanDbHit(context, eal.gridData![selectedIndex!]['EmployeeId']);
+                                  Navigator.push(context, _createRoute());
+                                  setState(() {
+                                    showEdit=false;
+                                    selectedIndex=-1;
+                                  });
+                                });
+                              },
+                              deleteTap: (){
+                                CustomAlert(
+                                    callback: (){
+                                      eal.deleteById(eal.gridData![selectedIndex!]['EmployeeId']);
+                                      Navigator.pop(context);
+                                    },
+                                    Cancelcallback: (){
+                                      Navigator.pop(context);
+                                    }
+                                ).yesOrNoDialog(context, "", "Are you sure want to delete this Data ?");
+                              },
+                              hasEditAccess: userAccessMap[38],
+                              hasDeleteAccess: userAccessMap[38],
                             ),
+
 
 
 

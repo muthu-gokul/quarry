@@ -1636,270 +1636,22 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
                                                             });
                                                           },
                                                         ),
-
-
                                                         Container(
-                                                          margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!,top:SizeConfig.height20!,),
-                                                          height:SizeConfig.height50,
-                                                          width: SizeConfig.width320,
-                                                          decoration: BoxDecoration(
-                                                              borderRadius: BorderRadius.circular(3),
-                                                              border: Border.all(color: AppTheme.addNewTextFieldBorder)
-
-                                                          ),
-                                                          child:Row(
-                                                            children: [
-                                                              Container(
-                                                                  padding: EdgeInsets.only(left: SizeConfig.width10!),
-                                                                  width: SizeConfig.width140!-2,
-                                                                  child: Text("Empty Vehicle Weight")
-                                                              ),
-
-                                                              Container(
-                                                                  height: SizeConfig.height50,
-                                                                  width: 1,
-                                                                  color: AppTheme.addNewTextFieldBorder
-                                                              ),
-
-                                                              Container(
-                                                                  padding: EdgeInsets.only(left: SizeConfig.width10!),
-                                                                  width: SizeConfig.width140!-1,
-                                                                  child: Text(qn.SS_EmptyWeightOfVehicle==null?"":"${qn.SS_EmptyWeightOfVehicle!+" Ton"}")),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                        Container(
-                                                          margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!),
-                                                          height:SizeConfig.height50,
-                                                          width: SizeConfig.width320,
-                                                          decoration: BoxDecoration(
-
-                                                            // borderRadius: BorderRadius.circular(3),
-                                                              border: Border(left: BorderSide(color: AppTheme.addNewTextFieldBorder),
-                                                                  right: BorderSide(color: AppTheme.addNewTextFieldBorder),bottom: BorderSide(color: AppTheme.addNewTextFieldBorder)
-                                                              )
-
-                                                          ),
-                                                          child: Row(
-                                                            children: [
-                                                              Container(
-                                                                  padding: EdgeInsets.only(left: SizeConfig.width10!),
-                                                                  width: SizeConfig.width140!-2,
-                                                                  child: Text("Vehicle Type")
-                                                              ),
-
-                                                              Container(
-                                                                  height: SizeConfig.height50,
-                                                                  width: 1,
-                                                                  color: AppTheme.addNewTextFieldBorder
-                                                              ),
-
-                                                              Container(
-                                                                  padding: EdgeInsets.only(left: SizeConfig.width10!),
-                                                                  width: SizeConfig.width140!-1,
-                                                                  child: Text("${qn.SS_VehicleTypeName??""}")),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                        Container(
-                                                          margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!),
-                                                          height:SizeConfig.height50,
-                                                          width: SizeConfig.width320,
-                                                          decoration: BoxDecoration(
-
-                                                            // borderRadius: BorderRadius.circular(3),
-                                                              border: Border(left: BorderSide(color: AppTheme.addNewTextFieldBorder),
-                                                                  right: BorderSide(color: AppTheme.addNewTextFieldBorder),bottom:BorderSide(color: AppTheme.addNewTextFieldBorder))
-
-                                                          ),
-                                                          child: Row(
-                                                            children: [
-                                                              Container(
-                                                                  padding: EdgeInsets.only(left: SizeConfig.width10!),
-                                                                  width: SizeConfig.width140!-2,
-                                                                  child: Text("Material Name")
-                                                              ),
-
-                                                              Container(
-                                                                  height: SizeConfig.height50,
-                                                                  width: 1,
-                                                                  color: AppTheme.addNewTextFieldBorder
-                                                              ),
-
-                                                              Container(
-                                                                  padding: EdgeInsets.only(left: SizeConfig.width10!),
-                                                                  width: SizeConfig.width140!-1,
-                                                                  child: Text("${qn.SS_MaterialName??""}")),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                        Container(
-                                                          margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!),
-                                                          height:SizeConfig.height50,
-                                                          width: SizeConfig.width320,
-                                                          decoration: BoxDecoration(
-
-                                                            // borderRadius: BorderRadius.circular(3),
-                                                              border: Border(left: BorderSide(color: AppTheme.addNewTextFieldBorder),
-                                                                  right: BorderSide(color: AppTheme.addNewTextFieldBorder),bottom:BorderSide(color: AppTheme.addNewTextFieldBorder))
-
-                                                          ),
-                                                          child: Row(
-                                                            children: [
-
-                                                              Container(
-                                                                  padding: EdgeInsets.only(left: SizeConfig.width10!),
-                                                                  width: SizeConfig.width140!-2,
-                                                                  child: Text("Required Qty")
-                                                              ),
-
-                                                              Container(
-                                                                  height: SizeConfig.height50,
-                                                                  width: 1,
-                                                                  color: AppTheme.addNewTextFieldBorder
-                                                              ),
-
-                                                              Container(
-                                                                  padding: EdgeInsets.only(left: SizeConfig.width10!),
-                                                                  width: SizeConfig.width140!-1,
-                                                                  child: Text("${qn.SS_RequiredMaterialQty??""} ${qn.SS_RequiredMaterialQtyUnit??""}")),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                        Container(
-                                                          margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!),
-                                                          height:SizeConfig.height50,
-                                                          width: SizeConfig.width320,
-                                                          decoration: BoxDecoration(
-
-                                                            // borderRadius: BorderRadius.circular(3),
-                                                              border: Border(left: BorderSide(color: AppTheme.addNewTextFieldBorder),
-                                                                  right: BorderSide(color: AppTheme.addNewTextFieldBorder),bottom:BorderSide(color: AppTheme.addNewTextFieldBorder))
-
-                                                          ),
-                                                          child: Row(
-                                                            children: [
-
-                                                              Container(
-                                                                  padding: EdgeInsets.only(left: SizeConfig.width10!),
-                                                                  width: SizeConfig.width140!-2,
-                                                                  child: Text("Amount")
-                                                              ),
-
-                                                              Container(
-                                                                  height: SizeConfig.height50,
-                                                                  width: 1,
-                                                                  color: AppTheme.addNewTextFieldBorder
-                                                              ),
-
-                                                              Container(
-                                                                  padding: EdgeInsets.only(left: SizeConfig.width10!),
-                                                                  width: SizeConfig.width140!-1,
-                                                                  child: Text("${qn.SS_Amount??""}")),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                        qn.OG_discountValue!=null?qn.OG_discountValue!>0?Container(
-                                                          margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!),
-                                                          height:SizeConfig.height50,
-                                                          width: SizeConfig.width320,
-                                                          decoration: BoxDecoration(
-
-                                                            // borderRadius: BorderRadius.circular(3),
-                                                              border: Border(left: BorderSide(color: AppTheme.addNewTextFieldBorder),
-                                                                  right: BorderSide(color: AppTheme.addNewTextFieldBorder),bottom:BorderSide(color: AppTheme.addNewTextFieldBorder))
-
-                                                          ),
-                                                          child: Row(
-                                                            children: [
-
-                                                              Container(
-                                                                  padding: EdgeInsets.only(left: SizeConfig.width10!),
-                                                                  width: SizeConfig.width140!-2,
-                                                                  child: Text("Discount")
-                                                              ),
-
-                                                              Container(
-                                                                  height: SizeConfig.height50,
-                                                                  width: 1,
-                                                                  color: AppTheme.addNewTextFieldBorder
-                                                              ),
-
-                                                              Container(
-                                                                  padding: EdgeInsets.only(left: SizeConfig.width10!),
-                                                                  width: SizeConfig.width140!-1,
-                                                                  child: Text(qn.OG_discountValue!=null?"${qn.OG_discountValue??""} ${qn.OG_isPercentage==0?"Rs":"%"}":"")
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ):Container():Container(),
-                                                        Container(
-                                                          margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!),
-                                                          height:SizeConfig.height50,
-                                                          width: SizeConfig.width320,
-                                                          decoration: BoxDecoration(
-
-                                                            // borderRadius: BorderRadius.circular(3),
-                                                              border: Border(left: BorderSide(color: AppTheme.addNewTextFieldBorder),
-                                                                  right: BorderSide(color: AppTheme.addNewTextFieldBorder),bottom:BorderSide(color: AppTheme.addNewTextFieldBorder))
-
-                                                          ),
-                                                          child: Row(
-                                                            children: [
-
-                                                              Container(
-                                                                  padding: EdgeInsets.only(left: SizeConfig.width10!),
-                                                                  width: SizeConfig.width140!-2,
-                                                                  child: Text("Payment Type")
-                                                              ),
-
-                                                              Container(
-                                                                  height: SizeConfig.height50,
-                                                                  width: 1,
-                                                                  color: AppTheme.addNewTextFieldBorder
-                                                              ),
-
-                                                              Container(
-                                                                  padding: EdgeInsets.only(left: SizeConfig.width10!),
-                                                                  width: SizeConfig.width140!-1,
-                                                                  child: Text("${qn.SS_PaymentCategoryName??""}")),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                        Container(
-                                                          margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!),
-                                                          height:SizeConfig.height50,
-                                                          width: SizeConfig.width320,
-                                                          decoration: BoxDecoration(
-
-                                                            // borderRadius: BorderRadius.circular(3),
-                                                              border: Border(left: BorderSide(color: AppTheme.addNewTextFieldBorder),
-                                                                  right: BorderSide(color: AppTheme.addNewTextFieldBorder),bottom:BorderSide(color: AppTheme.addNewTextFieldBorder))
-
-                                                          ),
-                                                          child: Row(
-                                                            children: [
-
-                                                              Container(
-                                                                  padding: EdgeInsets.only(left: SizeConfig.width10!),
-                                                                  width: SizeConfig.width140!-2,
-                                                                  child: Text("Total Weight")
-                                                              ),
-
-                                                              Container(
-                                                                  height: SizeConfig.height50,
-                                                                  width: 1,
-                                                                  color: AppTheme.addNewTextFieldBorder
-                                                              ),
-
-                                                              Container(
-                                                                  height:SizeConfig.height50,
-                                                                  padding: EdgeInsets.only(left: SizeConfig.width10!),
-                                                                  width: SizeConfig.width140!-1,
-                                                                  alignment: Alignment.centerLeft,
-                                                                  child: Text(qn.SS_TotalWeight==null?"":"${qn.SS_TotalWeight! + " Ton"}")),
-                                                            ],
-                                                          ),
+                                                            margin: EdgeInsets.only(top: 10,left:SizeConfig.width20!,right:SizeConfig.width20!),
+                                                            color: tableColor,
+                                                            child: Table(
+                                                              border: tableBorder,
+                                                              children: [
+                                                                tableRow("Empty Vehicle Weight", qn.SS_EmptyWeightOfVehicle==null?"":"${qn.SS_EmptyWeightOfVehicle!+" Ton"}"),
+                                                                tableRow("Vehicle Type", "${qn.SS_VehicleTypeName??""}"),
+                                                                tableRow("Material Name", "${qn.SS_MaterialName??""}"),
+                                                                tableRow("Required Qty", "${qn.SS_RequiredMaterialQty??""} ${qn.SS_RequiredMaterialQtyUnit??""}"),
+                                                                tableRow("Amount", "${qn.SS_Amount??""}"),
+                                                                tableRow("Discount", qn.OG_discountValue!=null?"${qn.OG_discountValue??""} ${qn.OG_isPercentage==0?"Rs":"%"}":"0.0"),
+                                                                tableRow("Payment Type", "${qn.SS_PaymentCategoryName??""}"),
+                                                                tableRow("Total Weight", qn.SS_TotalWeight==null?"":"${qn.SS_TotalWeight! + " Ton"}"),
+                                                                ],
+                                                            )
                                                         ),
 
                                                         GestureDetector(
@@ -2662,6 +2414,30 @@ class _SalesDetailState extends State<SalesDetail> with TickerProviderStateMixin
   TextStyle tableTextStyle=TextStyle(fontFamily: 'RR',color: AppTheme.bgColor);
   TextStyle tableTextStyle2=TextStyle(fontFamily: 'RR',color: AppTheme.gridTextColor);
   Color tableColor=Colors.white;
+
+
+  // TextStyle tableTextStyle=TextStyle(fontFamily: 'RR',color: AppTheme.gridTextColor);
+  // Color tableColor=Colors.white;
+  TableRow tableRow(var title, var value){
+    return  TableRow(
+        children: [
+          Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Text("$title",
+                style: tableTextStyle,
+              )
+          ),
+
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Text("$value",
+              style: tableTextStyle,
+            ),
+          ),
+        ]
+    );
+  }
+
 }
 
 class SidePopUpParent extends StatelessWidget {

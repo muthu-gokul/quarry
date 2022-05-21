@@ -119,6 +119,7 @@ class Sp{
   static String insertEmployeeAdvanceLoanDetail="USP_InsertEmployeeAdvanceLoanDetail";
   static String updateEmployeeAdvanceLoanDetail="USP_UpdateEmployeeAdvanceLoanDetail";
   static String getEmployeeAdvanceLoanDetail="USP_GetEmployeeAdvanceLoanDetail";
+  static String deleteEmployeeAdvanceLoanDetail="USP_Web_DeleteEmployeeAdvanceLoanDetail";
 
 
   static String getEmployeeSalaryLoanDetail="USP_GetEmployeeSalaryDetail";

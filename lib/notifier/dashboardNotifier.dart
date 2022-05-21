@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/api/ApiManager.dart';
 import 'package:quarry/api/sp.dart';
@@ -13,6 +14,8 @@ import 'package:quarry/styles/constants.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/calculation.dart';
 
+import '../utils/utils.dart';
+
 class DashboardNotifier extends ChangeNotifier{
   final call=ApiManager();
   String TypeName="";
@@ -21,7 +24,7 @@ class DashboardNotifier extends ChangeNotifier{
 //
   List<MenuModel> menu=[
   MenuModel(title:"Sale",image: "assets/svg/drawer/sales-form.svg"),
-  MenuModel(title:"Purchase & Received",image: "assets/svg/drawer/purchase.svg"),
+  MenuModel(title:"Purchase",image: "assets/svg/drawer/purchase.svg"),
   MenuModel(title:"Production",image: "assets/svg/drawer/production.svg"),
   MenuModel(title:"Attendance",image: "assets/svg/drawer/employee/employeeAttendance.svg"),
   MenuModel(title:"Counters",image: "assets/svg/drawer/settings/customer.svg"),
@@ -35,11 +38,37 @@ class DashboardNotifier extends ChangeNotifier{
   List<dynamic> currentSaleData=[];
   String currentSalesApex='';
 
+  List plantList=[];
+  List planList=[];
+  var selectPlantId="";
+  var selectPlantName="";
+  getPlantList() async{
+    var response=await getMasterDrpWeb("DashBoard", "PlantId", null, null);
+    if(response!="null" && response!=''){
+      try{
+        var parsed=jsonDecode(response);
+        var table=parsed['Table'] as List;
+        plantList=table;
+        if(plantList.length>0){
+          selectPlantId=plantList[0]['Id'].toString();
+          selectPlantName=plantList[0]['Text'];
+          currentSaleDbHit(Get.context!,
+              "Sale",
+              DateFormat("yyyy-MM-dd").format(DateTime.now().subtract(Duration(days: 6))).toString(),
+              DateFormat("yyyy-MM-dd").format(DateTime.now()).toString()
+          );
+        }
+      }catch(e,stackTrace){}
+    }
+  }
+
   Future<dynamic> currentSaleDbHit(BuildContext context,String typeName,String fromDate,String toDate) async {
+    print("Curent ");
     updateisLoad(true);
     parameters=[
       ParameterModel(Key: "SpName", Type: "String", Value: "${Sp.getDashboard}"),
       ParameterModel(Key: "LoginUserId", Type: "int", Value: Provider.of<QuarryNotifier>(context,listen: false).UserId),
+      ParameterModel(Key: "PlantId", Type: "int", Value: selectPlantId),
       ParameterModel(Key: "FromDate", Type: "String", Value: fromDate),
       ParameterModel(Key: "ToDate", Type: "String", Value:toDate),
       ParameterModel(Key: "TypeName", Type: "String", Value:typeName),
@@ -49,16 +78,16 @@ class DashboardNotifier extends ChangeNotifier{
     var body={
       "Fields": parameters.map((e) => e.toJson()).toList()
     };
+
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
-        if(value!='F'){
+        if(value!='null'){
           var parsed=json.decode(value);
           if(typeName=='Sale'){
             currentSaleT=parsed['Table'][0];
             currentSaleData=parsed['Table1'] as List;
             updateisLoad(false);
           }
-
         }
         else{
           updateisLoad(false);
@@ -77,6 +106,7 @@ class DashboardNotifier extends ChangeNotifier{
   parameters=[
     ParameterModel(Key: "SpName", Type: "String", Value: "${Sp.getDashboard}"),
     ParameterModel(Key: "LoginUserId", Type: "int", Value: Provider.of<QuarryNotifier>(context,listen: false).UserId),
+    ParameterModel(Key: "PlantId", Type: "int", Value: selectPlantId),
     ParameterModel(Key: "FromDate", Type: "String", Value: fromDate),
     ParameterModel(Key: "ToDate", Type: "String", Value:toDate),
     ParameterModel(Key: "TypeName", Type: "String", Value:typeName),
@@ -106,6 +136,9 @@ class DashboardNotifier extends ChangeNotifier{
           }
           else if(typeName=='Purchase'){
             updateisLoad(false);
+            saleT=parsed['Table'][0];
+            saleData=parsed['Table1'] as List;
+            saleT2=parsed['Table2'] as List?;
           }
           else if(typeName=='Production'){
             totalProductionQty=0.0;

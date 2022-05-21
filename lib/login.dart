@@ -22,6 +22,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'api/sp.dart';
 import 'main.dart';
+import 'model/parameterMode.dart';
 import 'notifier/loginNotifier.dart';
 import 'notifier/profileNotifier.dart';
 import 'pages/homePage.dart';
@@ -146,7 +147,9 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
   }
 
   String module="Login";
-
+  bool isPlantDeActive=false;
+  bool isUserPlantMapped=false;
+  String userPlantMappedMessage="";
   @override
   Widget build(BuildContext context) {
 
@@ -197,10 +200,9 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                 // "Value": "TetroPos_QMSTest1"
                 // "Value": "QMS1"
               },
-
             ]
           };
-          print(json.encode(body));
+         // print(json.encode(body));
 
 
           try {
@@ -211,10 +213,15 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
 
               if(value!="null" && value!=''){
                 var parsed = json.decode(value);
+                print(parsed);
+                //return;
                 if (parsed["Table"] != null) {
                   setState(() {
                     userGroupName=parsed['Table'][0]['UserGroupName'];
                     userGroupId=parsed['Table'][0]['UserGroupId'];
+                    isUserPlantMapped=parsed['Table'][0]['IsUserPlantMapped'];
+                    isPlantDeActive=parsed['Table'][0]['IsPlantDeActive'];
+                    userPlantMappedMessage=parsed['Table'][0]['UserPlantMappedMessage'];
                   });
                   try{
                     var t1=parsed['Table1'] as List;
@@ -230,10 +237,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
 
                   }
 
-
                   loginNotifier.fetchUserDetails(parsed);
-                  print(loginNotifier.userDetail.loginTblOutput![0].Status);
-
                   if (loginNotifier.userDetail.loginTblOutput![0].Status) {
                     if(prefEmail!.isEmpty && prefPassword!.isEmpty){
                       _setCredentials(username.text, password.text);
@@ -244,36 +248,39 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                     quarryNotifier.initUserDetail(loginNotifier.userDetail.loginTable![0].UserId,
                         loginNotifier.userDetail.loginTable![0].UserName,
                         loginNotifier.userDetail.loginTable![0].DataBaseName,context);
-                    Provider.of<QuarryNotifier>(context,listen: false).GetQuarryDetailDbhit(context);
-                    Provider.of<QuarryNotifier>(context,listen: false).GetplantDetailDbhit(context,null,this);
-                    Provider.of<ProfileNotifier>(context, listen: false).GetUserDetailDbHit(context,loginNotifier.userDetail.loginTable![0].UserId);
-
-                    Navigator.of(context).pushReplacement(PageRouteBuilder(
-                      pageBuilder: (context, animation, secondaryAnimation) =>HomePage(),
-
-                      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                        var begin = Offset(0.0, -1.0);
-                        var end = Offset.zero;
-                        var curve = Curves.ease;
-                        animation = CurvedAnimation(curve: Curves.easeIn, parent: animation);
-
-                        return FadeTransition(
-                          opacity: animation,
-                          child: child,
-                        );
-                      },
-                    )
-                    );
-
-
-
 
                     setState(() {
                       loginvalidation = false;
-
                       node.unfocus();
                       isLoading=false;
                     });
+                    // navToHome(loginNotifier.userDetail.loginTable![0].UserId);
+                    // return;
+
+                    if(isUserPlantMapped){
+                      if(isPlantDeActive){
+                        CustomAlert(
+                            Cancelcallback: (){
+                              Navigator.pop(context);
+                            },
+                            callback: (){
+                              deActivatePlant(loginNotifier.userDetail.loginTable![0].UserId, loginNotifier.userDetail.loginTable![0].DataBaseName);
+                              navToHome(loginNotifier.userDetail.loginTable![0].UserId);
+                            }
+                        ).confirmDialog("One of your Plants is disabled. Do you want to continue ?",);
+                      }
+                      else{
+                        navToHome(loginNotifier.userDetail.loginTable![0].UserId);
+                      }
+                    }
+                    else{
+                      CustomAlert().commonErrorAlert2(context, userPlantMappedMessage, "");
+                    }
+
+                    //navigation
+                  //  navToHome(loginNotifier.userDetail.loginTable![0].UserId);
+
+
                   }
                   else {
                     setState(() {
@@ -282,6 +289,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                       shakecontroller.forward(from: 0.0);
                     });
                   }
+
                 }
                 else {
                   setState(() {
@@ -634,5 +642,34 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
     RegExp regex = new RegExp(pattern as String);
     return (!regex.hasMatch(value)) ? false : true;
   }
+
+  navToHome(int? userId){
+    Provider.of<QuarryNotifier>(context,listen: false).GetQuarryDetailDbhit(context);
+    Provider.of<QuarryNotifier>(context,listen: false).GetplantDetailDbhit(context,null,this);
+    Provider.of<ProfileNotifier>(context, listen: false).GetUserDetailDbHit(context,userId);
+    Navigator.of(context).pushReplacement(PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) =>HomePage(),
+
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        var begin = Offset(0.0, -1.0);
+        var end = Offset.zero;
+        var curve = Curves.ease;
+        animation = CurvedAnimation(curve: Curves.easeIn, parent: animation);
+
+        return FadeTransition(
+          opacity: animation,
+          child: child,
+        );
+      },
+    ));
+  }
+
+  deActivatePlant(userId,dbName){
+    List<ParameterModel> parameters= [];
+    parameters.add(ParameterModel(Key: "LoginUserId", Type: "int", Value: userId));
+    parameters.add(ParameterModel(Key: "DBName", Type: "String", Value: dbName));
+    ApiManager().DeactivatePlant(parameters);
+  }
+
 }
 

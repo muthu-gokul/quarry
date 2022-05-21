@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:date_format/date_format.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/api/ApiManager.dart';
@@ -145,7 +146,8 @@ class EmployeeAdvanceLoanNotifier extends ChangeNotifier{
   int? selectedMonthDue=null;
   double? emiAmount=0.0;
 
-  List<dynamic> monthList=[{"Due":2},{"Due":3},{"Due":4},{"Due":5},{"Due":6},{"Due":7},{"Due":8},{"Due":9},{"Due":10},{"Due":11},{"Due":12}];
+  List<dynamic> monthList=List<Map>.generate(24,(i) => {"Due":i+1});
+ // List<dynamic> monthList=[{"Due":2},{"Due":3},{"Due":4},{"Due":5},{"Due":6},{"Due":7},{"Due":8},{"Due":9},{"Due":10},{"Due":11},{"Due":12}];
 
   clearAmount(){
     advanceAmountController.clear();
@@ -294,7 +296,7 @@ class EmployeeAdvanceLoanNotifier extends ChangeNotifier{
 
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
-        if(value!=null){
+        if(value!="null"){
           var parsed=json.decode(value);
           var t=parsed['Table'] as List?;
 
@@ -336,7 +338,28 @@ class EmployeeAdvanceLoanNotifier extends ChangeNotifier{
   }
 
 
-
+  Future<dynamic> deleteById(int id) async {
+    parameters=[
+      ParameterModel(Key: "SpName", Type: "String", Value:  "${Sp.deleteEmployeeAdvanceLoanDetail}"),
+      ParameterModel(Key: "LoginUserId", Type: "int", Value: Provider.of<QuarryNotifier>(Get.context!,listen: false).UserId),
+      ParameterModel(Key: "EmployeeId", Type: "String", Value: id),
+      ParameterModel(Key: "database", Type: "String", Value:Provider.of<QuarryNotifier>(Get.context!,listen: false).DataBaseName),
+    ];
+    var body = {
+      "Fields": parameters.map((e) => e.toJson()).toList()
+    };
+    try {
+      await call.ApiCallGetInvoke(body, Get.context!).then((value) {
+        if (value != "null") {
+          //var parsed = json.decode(value);
+          CustomAlert().deletePopUp();
+          GetEmployeeAttendanceLoanDbHit(Get.context!, null);
+        }
+      });
+    } catch (e,stackTrace) {
+      errorLog("EMP15 ${e.toString()}", stackTrace,"Error EMP15",module,module, "${Sp.deleteCustomerDetail}");
+    }
+  }
 
 
 

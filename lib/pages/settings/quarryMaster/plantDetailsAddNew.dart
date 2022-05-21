@@ -27,6 +27,8 @@ import 'package:quarry/widgets/sidePopUp/sidePopUpWithoutSearch.dart';
 import 'package:quarry/widgets/validationErrorText.dart';
 
 import '../../../utils/utils.dart';
+import '../../../widgets/loader.dart';
+import '../../homePage.dart';
 
 
 
@@ -367,7 +369,7 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
                                                       children: [
                                                         GestureDetector(
                                                           onTap:(){
-                                                            //  print(getAttachmentUrl("${qn.PO_PlantLicenseList[index].documentFolderName}/${qn.PO_PlantLicenseList[index].documentFileName}"));
+                                                             // print(getAttachmentUrl("${qn.PO_PlantLicenseList[index].documentFolderName}/${qn.PO_PlantLicenseList[index].documentFileName}"));
                                                             requestDownload(getAttachmentUrl("${qn.PO_PlantLicenseList[index].documentFolderName}/${qn.PO_PlantLicenseList[index].documentFileName}"), qn.PO_PlantLicenseList[index].documentFileName??"DownloadedFile");
                                                           },
                                                           child: Container(
@@ -610,15 +612,18 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
 
                       GestureDetector(
                         onTap: () async{
-                          FilePickerResult? result = await FilePicker.platform.pickFiles();
+                          if(isEdit){
+                            FilePickerResult? result = await FilePicker.platform.pickFiles();
 
-                          if (result != null) {
-                            setState(() {
-                              qn.licenseDoc= File(result.files.single.path!);
-                            });
-                          } else {
-                            // User canceled the picker
+                            if (result != null) {
+                              setState(() {
+                                qn.licenseDoc= File(result.files.single.path!);
+                              });
+                            } else {
+                              // User canceled the picker
+                            }
                           }
+
                         },
                         child: Container(
                           height: SizeConfig.height70,
@@ -935,6 +940,9 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
 
                 ),
               ),
+
+
+              Obx(() => Loader(isLoad: mainLoader.value,))
             ],
           )
       ),

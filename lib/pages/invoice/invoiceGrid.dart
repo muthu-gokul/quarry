@@ -78,6 +78,9 @@ class InvoiceGridState extends State<InvoiceGrid> with TickerProviderStateMixin{
         verticalLeft.jumpTo(verticalRight.offset);
       }
     });
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Provider.of<InvoiceNotifier>(context, listen: false).GetInvoiceDbHit(context,null);
+    });
     super.initState();
   }
 

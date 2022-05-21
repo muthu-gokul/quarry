@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:quarry/notifier/dashboardNotifier.dart';
 import 'package:quarry/pages/dashboard/attendanceDashBoard/attendanceDashBoard.dart';
 import 'package:quarry/pages/dashboard/counterDashBoard/counterDashBoard.dart';
+import 'package:quarry/pages/dashboard/dashboardPlant.dart';
 import 'package:quarry/pages/dashboard/invoiceDashBoard/invoiceDashBoard.dart';
 import 'package:quarry/pages/dashboard/productionDashBoard/productionDashBoard.dart';
 import 'package:quarry/pages/dashboard/purchaseDashBoard/purchaseDashBoard.dart';
@@ -41,11 +42,12 @@ class _DashBoardHomeState extends State<DashBoardHome> {
 
   @override
   void didChangeDependencies() {
-    Provider.of<DashboardNotifier>(context,listen: false).currentSaleDbHit(context,
+   /* Provider.of<DashboardNotifier>(context,listen: false).currentSaleDbHit(context,
         "Sale",
         DateFormat("yyyy-MM-dd").format(DateTime.now().subtract(Duration(days: 6))).toString(),
         DateFormat("yyyy-MM-dd").format(DateTime.now()).toString()
-    );
+    );*/
+    Provider.of<DashboardNotifier>(context,listen: false).getPlantList();
     super.didChangeDependencies();
   }
 
@@ -224,6 +226,13 @@ class _DashBoardHomeState extends State<DashBoardHome> {
                               ),
                             ),
                             Spacer(),
+                            GestureDetector(
+                              onTap: (){
+                                Navigator.push(context, _plantRoute());
+                              },
+                              child: SvgPicture.asset("assets/bottomIcons/plant-slection.svg",height: 30,width: 30,
+                                color: db.plantList.length<=1?Colors.white.withOpacity(0.4):Colors.white,),
+                            ),
                             IconButton(onPressed: (){
                               db.currentSaleDbHit(context,
                                   "Sale",
@@ -238,7 +247,7 @@ class _DashBoardHomeState extends State<DashBoardHome> {
                                 });*/
                               });
                             }, icon: Icon(Icons.refresh,color: AppTheme.dashCalendar,)),
-                            SizedBox(width: 20,)
+                            SizedBox(width: 5,)
                           ],
                         ),
                       ),
@@ -397,9 +406,9 @@ class _DashBoardHomeState extends State<DashBoardHome> {
                           Navigator.push(context, MaterialPageRoute(builder: (context)=>StockDashBoard()));
                         }
                       },
-                      child:i==1?Container(
+                      child:/*i==1?Container(
                         width: 0,height: 0,
-                      ): Container(
+                      ):*/ Container(
                         height: SizeConfig.screenWidth!*0.27,
                         width: SizeConfig.screenWidth!*0.27,
                         padding: EdgeInsets.only(left: 10,right: 10),
@@ -442,5 +451,16 @@ class _DashBoardHomeState extends State<DashBoardHome> {
       ),
     );
   }
+  Route _plantRoute() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => DashboardPlantList(),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
 
+        return SlideTransition(
+          position: Tween<Offset>(begin: Offset(-1.0,0.0), end: Offset.zero).animate(animation),
+          child: child,
+        );
+      },
+    );
+  }
 }

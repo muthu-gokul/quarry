@@ -334,7 +334,7 @@ class _EmployeeAdvanceAddNewState extends State<EmployeeAdvanceAddNew> {
                                             });
                                             scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                           },
-
+                                          onChange: (v){},
                                           onEditComplete: () {
                                             node.unfocus();
                                             Timer(Duration(milliseconds: 100), (){
@@ -356,7 +356,7 @@ class _EmployeeAdvanceAddNewState extends State<EmployeeAdvanceAddNew> {
                                             });
                                             scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                           },
-
+                                          onChange: (v){},
                                           onEditComplete: () {
                                             node.unfocus();
                                             Timer(Duration(milliseconds: 100), (){
@@ -437,7 +437,7 @@ class _EmployeeAdvanceAddNewState extends State<EmployeeAdvanceAddNew> {
                                             });
                                             scrollController!.animateTo(100, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                           },
-
+                                          onChange: (v){},
                                           onEditComplete: () {
                                             node.unfocus();
                                             Timer(Duration(milliseconds: 100), (){
