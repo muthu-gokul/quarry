@@ -42,6 +42,43 @@ class ProfileAvatar extends StatelessWidget {
     );
   }
 }
+class LogoAvatar extends StatelessWidget {
+  String imageUrl;
+  File? imageFile;
+  double radius;
+  double height;
+  LogoAvatar({Key? key,required this.imageUrl,required this.imageFile,this.radius=100,this.height=100}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: height,
+      width: radius,
+      decoration: BoxDecoration(
+        color: AppTheme.avatarBorderColor,
+        //shape: BoxShape.circle
+      ),
+      alignment: Alignment.center,
+      child: Container(
+        height: height-3,
+        width: radius-3,
+        decoration: BoxDecoration(
+            //shape: BoxShape.circle,
+          color: Colors.white
+        ),
+        alignment: Alignment.center,
+        clipBehavior: Clip.antiAlias,
+        child: imageFile!=null?Image.file(imageFile!,):
+        Image.network(imageUrl,
+          errorBuilder: (a,b,c){
+            return Image.asset("assets/svg/drawer/avatar.png",height: height-3,width: radius-3,fit: BoxFit.cover,);
+          },
+          fit: BoxFit.contain,
+          height: height-3, width: radius-3
+        ),
+      ),
+    );
+  }
+}
 
 
 

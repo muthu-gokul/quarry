@@ -146,6 +146,7 @@ class SupplierNotifier extends ChangeNotifier{
       "Fields": parameters.map((e) => e.toJson()).toList()
     };
 
+    log("$body");
 
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {

@@ -54,3 +54,6 @@ v-1.0.18
 v-10.0.18.1
 1. download image from http
 2. mainLoader in homePage
+
+v-1.0.19
+1. plant doc download

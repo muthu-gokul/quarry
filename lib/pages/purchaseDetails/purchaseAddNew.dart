@@ -1059,6 +1059,7 @@ class PurchaseOrdersAddNewState extends State<PurchaseOrdersAddNew> with TickerP
                     // physics: isListScroll?AlwaysScrollableScrollPhysics():NeverScrollableScrollPhysics(),
 
                     children: [
+                      SizedBox(height: 20,),
                       Container(
 
                           margin: EdgeInsets.only(left:SizeConfig.width20!,right:SizeConfig.width20!,),

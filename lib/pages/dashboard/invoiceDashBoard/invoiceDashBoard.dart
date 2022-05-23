@@ -281,43 +281,58 @@ class _InvoiceDashBoardState extends State<InvoiceDashBoard> {
                                     ),
                                   ),
 
-                                  InvoiceList(value: db.customerInvPaidPer, totalInvoice: db.customerInvPaid, title: "Paid",ontap: (){
-                                    Navigator.push(context, MaterialPageRoute(builder: (ctx)=>InvoiceDetails(title: "Customer Paid Invoice",
-                                    list: db.customerInvListT2.where((element) => element['Status']=='Paid').toList(),
+                                  InvoiceList(
+                                    value: db.customerInvPaidPer,
+                                    totalInvoice: db.customerInvPaid,
+                                    title: "Paid",
+                                    ontap: (){
+                                    Navigator.push(context, MaterialPageRoute(builder: (ctx)=>InvoiceDetails(
+                                      title: "Customer Paid Invoice",
+                                      list: db.customerInvListT2.where((element) => element['Status']=='Paid').toList(),
+                                      date: picked.length==1?"${DateFormat("dd/MM/yyyy").format(picked[0]!)}":
+                                        picked.length==2?"${DateFormat("dd/MM/yyyy").format(picked[0]!)} - ${DateFormat("dd/MM/yyyy").format(picked[1]!)}":"Today",
+                                      textColor: Color(0xFF78AD97),
+                                      statusColor: Color(0xFFC6E7DB),
+                                      counter: db.customerInvCounterT1,
+                                      name: 'CustomerName',
+                                      )
+                                     )
+                                    );
+                                  },),
+                                  InvoiceList(
+                                    value: db.customerInvUnPaidPer,
+                                    totalInvoice: db.customerInvUnPaid,
+                                    title: "Unpaid",
+                                    ontap: (){
+                                    Navigator.push(context, MaterialPageRoute(builder: (ctx)=>InvoiceDetails(
+                                        title: "Customer Unpaid Invoice",
+                                        list: db.customerInvListT2.where((element) => element['Status']=='Unpaid').toList(),
                                         date: picked.length==1?"${DateFormat("dd/MM/yyyy").format(picked[0]!)}":
                                         picked.length==2?"${DateFormat("dd/MM/yyyy").format(picked[0]!)} - ${DateFormat("dd/MM/yyyy").format(picked[1]!)}":"Today",
-                                        textColor: Color(0xFF78AD97),
-                                        statusColor: Color(0xFFC6E7DB),
+                                        textColor: Color(0xFFC27573),
+                                        statusColor: Color(0xFFEFC2C3),
                                         counter: db.customerInvCounterT1,
                                         name: 'CustomerName',
                                       )
                                      )
                                     );
                                   },),
-                                  InvoiceList(value: db.customerInvUnPaidPer, totalInvoice: db.customerInvUnPaid, title: "Unpaid",ontap: (){
-                                    Navigator.push(context, MaterialPageRoute(builder: (ctx)=>InvoiceDetails(title: "Customer Unpaid Invoice",
-                                      list: db.customerInvListT2.where((element) => element['Status']=='Unpaid').toList(),
-                                      date: picked.length==1?"${DateFormat("dd/MM/yyyy").format(picked[0]!)}":
-                                      picked.length==2?"${DateFormat("dd/MM/yyyy").format(picked[0]!)} - ${DateFormat("dd/MM/yyyy").format(picked[1]!)}":"Today",
-                                      textColor: Color(0xFFC27573),
-                                      statusColor: Color(0xFFEFC2C3),
-                                      counter: db.customerInvCounterT1,
-                                      name: 'CustomerName',
-                                    )
-                                    )
-                                    );
-                                  },),
-                                  InvoiceList(value: db.customerInvPartiallyPaidPer, totalInvoice: db.customerInvPartiallyPaid, title: "Partially",ontap: (){
-                                    Navigator.push(context, MaterialPageRoute(builder: (ctx)=>InvoiceDetails(title: "Customer Partially Paid Invoice",
-                                      list: db.customerInvListT2.where((element) => element['Status']=='Partially Paid').toList(),
-                                      date: picked.length==1?"${DateFormat("dd/MM/yyyy").format(picked[0]!)}":
-                                      picked.length==2?"${DateFormat("dd/MM/yyyy").format(picked[0]!)} - ${DateFormat("dd/MM/yyyy").format(picked[1]!)}":"Today",
-                                      textColor: Color(0xFFF1AC42),
-                                      statusColor: Color(0xFFF6D148).withOpacity(0.5),
-                                      counter: db.customerInvCounterT1,
-                                      name: 'CustomerName',
-                                    )
-                                    )
+                                  InvoiceList(
+                                    value: db.customerInvPartiallyPaidPer,
+                                    totalInvoice: db.customerInvPartiallyPaid,
+                                    title: "Partially",
+                                    ontap: (){
+                                    Navigator.push(context, MaterialPageRoute(builder: (ctx)=>InvoiceDetails(
+                                        title: "Customer Partially Paid Invoice",
+                                        list: db.customerInvListT2.where((element) => element['Status']=='Partially Paid').toList(),
+                                        date: picked.length==1?"${DateFormat("dd/MM/yyyy").format(picked[0]!)}":
+                                        picked.length==2?"${DateFormat("dd/MM/yyyy").format(picked[0]!)} - ${DateFormat("dd/MM/yyyy").format(picked[1]!)}":"Today",
+                                        textColor: Color(0xFFF1AC42),
+                                        statusColor: Color(0xFFF6D148).withOpacity(0.5),
+                                        counter: db.customerInvCounterT1,
+                                        name: 'CustomerName',
+                                      )
+                                     )
                                     );
                                   },),
                                 ],
@@ -362,43 +377,58 @@ class _InvoiceDashBoardState extends State<InvoiceDashBoard> {
                                   ),
                                 ),
 
-                                InvoiceList(value: db.supplierInvPaidPer, totalInvoice: db.supplierInvPaid, title: "Paid",ontap: (){
-                                  Navigator.push(context, MaterialPageRoute(builder: (ctx)=>InvoiceDetails(title: "Supplier Paid Invoice",
-                                    list: db.supplierInvListT6.where((element) => element['Status']=='Paid').toList(),
-                                    date: picked.length==1?"${DateFormat("dd/MM/yyyy").format(picked[0]!)}":
-                                    picked.length==2?"${DateFormat("dd/MM/yyyy").format(picked[0]!)} - ${DateFormat("dd/MM/yyyy").format(picked[1]!)}":"Today",
-                                    textColor: Color(0xFF78AD97),
-                                    statusColor: Color(0xFFC6E7DB),
-                                    counter: db.supplierInvCounterT5,
-                                    name: 'SupplierName',
-                                  )
-                                  )
+                                InvoiceList(
+                                  value: db.supplierInvPaidPer,
+                                  totalInvoice: db.supplierInvPaid,
+                                  title: "Paid",
+                                  ontap: (){
+                                  Navigator.push(context, MaterialPageRoute(builder: (ctx)=>InvoiceDetails(
+                                      title: "Supplier Paid Invoice",
+                                      list: db.supplierInvListT6.where((element) => element['Status']=='Paid').toList(),
+                                      date: picked.length==1?"${DateFormat("dd/MM/yyyy").format(picked[0]!)}":
+                                      picked.length==2?"${DateFormat("dd/MM/yyyy").format(picked[0]!)} - ${DateFormat("dd/MM/yyyy").format(picked[1]!)}":"Today",
+                                      textColor: Color(0xFF78AD97),
+                                      statusColor: Color(0xFFC6E7DB),
+                                      counter: db.supplierInvCounterT5,
+                                      name: 'SupplierName',
+                                    )
+                                   )
                                   );
                                 },),
-                                InvoiceList(value: db.supplierInvUnPaidPer, totalInvoice: db.supplierInvUnPaid, title: "Unpaid",ontap: (){
-                                  Navigator.push(context, MaterialPageRoute(builder: (ctx)=>InvoiceDetails(title: "Supplier Unpaid Invoice",
-                                    list: db.supplierInvListT6.where((element) => element['Status']=='Unpaid').toList(),
-                                    date: picked.length==1?"${DateFormat("dd/MM/yyyy").format(picked[0]!)}":
-                                    picked.length==2?"${DateFormat("dd/MM/yyyy").format(picked[0]!)} - ${DateFormat("dd/MM/yyyy").format(picked[1]!)}":"Today",
-                                    textColor: Color(0xFFC27573),
-                                    statusColor: Color(0xFFEFC2C3),
-                                    counter: db.supplierInvCounterT5,
-                                    name: 'SupplierName',
-                                  )
-                                  )
+                                InvoiceList(
+                                  value: db.supplierInvUnPaidPer,
+                                  totalInvoice: db.supplierInvUnPaid,
+                                  title: "Unpaid",
+                                  ontap: (){
+                                  Navigator.push(context, MaterialPageRoute(builder: (ctx)=>InvoiceDetails(
+                                      title: "Supplier Unpaid Invoice",
+                                      list: db.supplierInvListT6.where((element) => element['Status']=='Unpaid').toList(),
+                                      date: picked.length==1?"${DateFormat("dd/MM/yyyy").format(picked[0]!)}":
+                                      picked.length==2?"${DateFormat("dd/MM/yyyy").format(picked[0]!)} - ${DateFormat("dd/MM/yyyy").format(picked[1]!)}":"Today",
+                                      textColor: Color(0xFFC27573),
+                                      statusColor: Color(0xFFEFC2C3),
+                                      counter: db.supplierInvCounterT5,
+                                      name: 'SupplierName',
+                                     )
+                                    )
                                   );
                                 },),
-                                InvoiceList(value: db.supplierInvPartiallyPaidPer, totalInvoice: db.supplierInvPartiallyPaid, title: "Partially",ontap: (){
-                                  Navigator.push(context, MaterialPageRoute(builder: (ctx)=>InvoiceDetails(title: "Supplier Partially Paid Invoice",
-                                    list: db.supplierInvListT6.where((element) => element['Status']=='Partially Paid').toList(),
-                                    date: picked.length==1?"${DateFormat("dd/MM/yyyy").format(picked[0]!)}":
-                                    picked.length==2?"${DateFormat("dd/MM/yyyy").format(picked[0]!)} - ${DateFormat("dd/MM/yyyy").format(picked[1]!)}":"Today",
-                                    textColor: Color(0xFFF1AC42),
-                                    statusColor: Color(0xFFF6D148).withOpacity(0.5),
-                                    counter: db.supplierInvCounterT5,
-                                    name: 'SupplierName',
-                                  )
-                                  )
+                                InvoiceList(
+                                  value: db.supplierInvPartiallyPaidPer,
+                                  totalInvoice: db.supplierInvPartiallyPaid,
+                                  title: "Partially",
+                                  ontap: (){
+                                  Navigator.push(context, MaterialPageRoute(builder: (ctx)=>InvoiceDetails(
+                                      title: "Supplier Partially Paid Invoice",
+                                      list: db.supplierInvListT6.where((element) => element['Status']=='Partially Paid').toList(),
+                                      date: picked.length==1?"${DateFormat("dd/MM/yyyy").format(picked[0]!)}":
+                                      picked.length==2?"${DateFormat("dd/MM/yyyy").format(picked[0]!)} - ${DateFormat("dd/MM/yyyy").format(picked[1]!)}":"Today",
+                                      textColor: Color(0xFFF1AC42),
+                                      statusColor: Color(0xFFF6D148).withOpacity(0.5),
+                                      counter: db.supplierInvCounterT5,
+                                      name: 'SupplierName',
+                                    )
+                                   )
                                   );
                                 },),
                               ],

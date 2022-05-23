@@ -22,7 +22,7 @@ class LogoPicker extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        ProfileAvatar(imageUrl: imageUrl, imageFile: imageFile,radius: 80,),
+        LogoAvatar(imageUrl: imageUrl, imageFile: imageFile,radius: 100,),
         SizedBox(height: 20,),
         Align(
           alignment: Alignment.center,

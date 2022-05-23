@@ -13,7 +13,8 @@ class PlantLicenseModel{
     this.documentFolderName,
     this.scaleController,
     this.isEdit,
-    this.isDelete
+    this.isDelete,
+    required this.documentImage
   });
 
   int? plantId;
@@ -24,6 +25,7 @@ class PlantLicenseModel{
   DateTime? toDate;
   String? documentFileName;
   String? documentFolderName;
+  String documentImage;
   AnimationController? scaleController;
   bool? isEdit;
   bool? isDelete;
@@ -37,6 +39,7 @@ class PlantLicenseModel{
     toDate: json["ToDate"]!=null?DateFormat("yyyy-MM-dd").parse(json["ToDate"]):null,
     documentFileName: json["DocumentFileName"],
     documentFolderName: json["DocumentFolderName"],
+    documentImage: json["DocumentImage"],
       scaleController: AnimationController(duration: Duration(milliseconds: 300,),vsync: tickerProviderStateMixin),
       isEdit: true,
       isDelete: false

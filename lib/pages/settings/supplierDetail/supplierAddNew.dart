@@ -361,7 +361,8 @@ class SupplierDetailAddNewState extends State<SupplierDetailAddNew> with TickerP
                                     labelText: 'GST Number',
                                     textEditingController: qn.supplierGstNo,
                                     scrollPadding: 400,
-                                    regExp: '[A-Za-z0-9  ]',
+                                    regExp: '[A-Za-z0-9]',
+                                    textLength: gstLength,
                                     onChange: (v){},
                                     onEditComplete: (){
                                       node.unfocus();

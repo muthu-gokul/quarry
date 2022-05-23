@@ -236,11 +236,14 @@ class DashboardNotifier extends ChangeNotifier{
               customerInvUnPaidPer=(customerInvUnPaid/totalCustomerInv)*100;
             }
 
+            print(customerInvListT2);
 
             var t3=parsed['Table3'] as List;
+            print(t3);
             customerInvListT2.forEach((element) {
               element['bills']=[];
-              element['bills']=t3.where((ele) => ele['CustomerId']==element['CustomerId']).toList();
+              element['bills']=t3.where((ele) => ele['CustomerId'].toString()==element['CustomerId'].toString()
+                  && ele['InvoiceId'].toString()==element['InvoiceId'].toString()).toList();
             });
 
             //Supplier
@@ -260,8 +263,6 @@ class DashboardNotifier extends ChangeNotifier{
               supplierInvPartiallyPaidPer=(supplierInvPartiallyPaid/totalSupplierInv)*100;
               supplierInvUnPaidPer=(supplierInvUnPaid/totalSupplierInv)*100;
             }
-
-
             var t5=parsed['Table5'] as List;
             supplierInvCounterT5=t5[0];
 
@@ -269,7 +270,9 @@ class DashboardNotifier extends ChangeNotifier{
             var t7=parsed['Table7'] as List;
             supplierInvListT6.forEach((element) {
               element['bills']=[];
-              element['bills']=t7.where((ele) => ele['SupplierId']==element['SupplierId']).toList();
+              element['bills']=t7.where((ele) => ele['SupplierId'].toString()==element['SupplierId'].toString()
+                  && ele['InvoiceId'].toString()==element['InvoiceId'].toString()
+              ).toList();
             });
 
             updateisLoad(false);

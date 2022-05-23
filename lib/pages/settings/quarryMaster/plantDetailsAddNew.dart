@@ -370,7 +370,8 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
                                                         GestureDetector(
                                                           onTap:(){
                                                              // print(getAttachmentUrl("${qn.PO_PlantLicenseList[index].documentFolderName}/${qn.PO_PlantLicenseList[index].documentFileName}"));
-                                                            requestDownload(getAttachmentUrl("${qn.PO_PlantLicenseList[index].documentFolderName}/${qn.PO_PlantLicenseList[index].documentFileName}"), qn.PO_PlantLicenseList[index].documentFileName??"DownloadedFile");
+                                                            //requestDownload(getAttachmentUrl("${qn.PO_PlantLicenseList[index].documentFolderName}/${qn.PO_PlantLicenseList[index].documentFileName}"), qn.PO_PlantLicenseList[index].documentFileName??"DownloadedFile");
+                                                            requestDownload(getAttachmentUrl("${qn.PO_PlantLicenseList[index].documentImage}"), qn.PO_PlantLicenseList[index].documentFileName??"DownloadedFile");
                                                           },
                                                           child: Container(
                                                             height: 30,
@@ -676,7 +677,8 @@ class PlantDetailsAddNewState extends State<PlantDetailsAddNew> with TickerProvi
                                         documentFolderName: qn.licenseLogoFolder,
                                         scaleController: AnimationController(duration: Duration(milliseconds: 300), vsync: this),
                                         isEdit: false,
-                                        isDelete: false
+                                        isDelete: false,
+                                        documentImage: "${qn.licenseLogoFolder}/${qn.licenseLogo}"
                                     )
                                 );
                               });

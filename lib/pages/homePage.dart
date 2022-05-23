@@ -49,6 +49,7 @@ import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/animation/fadeanimation.dart';
 import 'package:quarry/widgets/loader.dart';
 import '../styles/size.dart';
+import '../utils/widgetUtils.dart';
 import 'dashboard/dashboardHome.dart';
 import 'dieselManagement/dieselGrid.dart';
 import 'employee/employeeAdvanceLoan/employeeAdvanceLoanGrid.dart';
@@ -184,13 +185,13 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                 }
 
                               },
-                              child: Container(
+                              child: ProfileAvatar(imageUrl: pn.userLogoUrl, imageFile: null,radius: 100,),
+                              /*child: Container(
                                 height: 100,
                                 width: 100,
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   color: AppTheme.yellowColor,
-
                                 ),
                                 clipBehavior: Clip.antiAlias,
                                 child: Center(
@@ -201,7 +202,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                   ),
                                 ),
 
-                              ),
+                              ),*/
                             ),
                             SizedBox(height: 10,),
                             Text(pn.selectedSalutation==null?"${pn.firstName.text} ${pn.lastName.text}":

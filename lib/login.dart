@@ -1,33 +1,21 @@
 import 'dart:convert';
-import 'dart:developer';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
 import 'package:intl/intl.dart';
-
-import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
-import 'package:http/http.dart' as http;
-
-import 'package:permission_handler/permission_handler.dart';
 import 'package:quarry/api/ApiManager.dart';
 import 'package:quarry/model/userAccessModel.dart';
 import 'package:quarry/notifier/quarryNotifier.dart';
 import 'package:quarry/styles/constants.dart';
 import 'package:quarry/utils/errorLog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'api/sp.dart';
-import 'main.dart';
 import 'model/parameterMode.dart';
 import 'notifier/loginNotifier.dart';
 import 'notifier/profileNotifier.dart';
 import 'pages/homePage.dart';
 import 'styles/app_theme.dart';
-import 'styles/size.dart';
 import 'styles/size.dart';
 import 'widgets/alertDialog.dart';
 
@@ -96,23 +84,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
 
   @override
   void initState() {
-    passwordvisible = true;
-    loginvalidation=false;
-    shakecontroller = AnimationController(duration: const Duration(milliseconds: 500), vsync: this);
-    username.clear();
-    password.clear();
-    offsetAnimation = Tween(begin: 0.0, end: 28.0)
-        .chain(CurveTween(curve: Curves.elasticIn))
-        .animate(shakecontroller)
-      ..addStatusListener((status) {
-        if (status == AnimationStatus.completed) {
-          shakecontroller.reverse().whenComplete(() {
-            setState(() {
-              loginvalidation=false;
-            });
-          });
-        }
-      });
+
 
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
@@ -124,6 +96,26 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
 
           _loadCredentials();
         });
+
+
+      passwordvisible = true;
+      loginvalidation=false;
+      shakecontroller = AnimationController(duration: const Duration(milliseconds: 500), vsync: this);
+      username.clear();
+      password.clear();
+      offsetAnimation = Tween(begin: 0.0, end: 28.0)
+          .chain(CurveTween(curve: Curves.elasticIn))
+          .animate(shakecontroller)
+        ..addStatusListener((status) {
+          if (status == AnimationStatus.completed) {
+            shakecontroller.reverse().whenComplete(() {
+              setState(() {
+                loginvalidation=false;
+              });
+            });
+          }
+        });
+
     });
 
 

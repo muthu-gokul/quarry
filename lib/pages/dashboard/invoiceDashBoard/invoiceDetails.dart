@@ -243,7 +243,7 @@ class _InvoiceDetailsState extends State<InvoiceDetails> {
                                         color: widget.statusColor,
                                       ),
                                       alignment: Alignment.center,
-                                      child: Text("${widget.list[i]['Bill']} Bills",
+                                      child: Text("${widget.list[i]['bills'].length} Bills",
                                         style: TextStyle(fontFamily: 'RB',fontSize: 10,color: widget.textColor),
                                         ),
                                     ),
