@@ -2245,6 +2245,7 @@ class QuarryNotifier extends ChangeNotifier{
           CompanyLogo= t1[0]['CompanyLogo']??"";
           companyLogoUrl=ApiManager().attachmentUrl+CompanyLogo;
           //CompanyLogoFolder= t1[0]['CompanyLogoFolderName']??"";
+          notifyListeners();
         }
 
      //   updateInsertCompanyLoader(false);
@@ -2261,6 +2262,7 @@ class QuarryNotifier extends ChangeNotifier{
   UpdateQuarryDetailDbhit(BuildContext context) async {
 
     updateInsertCompanyLoader(true);
+    CompanyLogo="";
     if(sampleImage!=null){
       CompanyLogo=await uploadFile(CompanyLogoFolder,sampleImage!);
     }

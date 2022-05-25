@@ -14,7 +14,9 @@ class LogoPicker extends StatelessWidget {
   Function(File) onCropped;
   String description;
   String btnTitle;
-  LogoPicker({required this.imageUrl,this.imageFile,required this.onCropped,this.description="Upload Your Company Logo",this.btnTitle="Choose File"});
+  bool isEnable;
+  LogoPicker({required this.imageUrl,this.imageFile,required this.onCropped,this.description="Upload Your Company Logo",
+    this.btnTitle="Choose File",this.isEnable=true});
 
 
   @override
@@ -32,9 +34,9 @@ class LogoPicker extends StatelessWidget {
         ),
         SizedBox(height: 10,),
         GestureDetector(
-          onTap: (){
+          onTap:isEnable?  (){
             getImage(onCropped);
-          },
+          }:null,
           child:  Align(
             alignment: Alignment.center,
             child: Container(

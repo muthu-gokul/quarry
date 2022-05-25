@@ -99,47 +99,16 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
 
   }
 
-/*
-  uploadImg() async{
-    final postUri = Uri.parse("${ApiManager().baseUrl}api/Common/Upload?BaseFolder=Company");
-    print(postUri);
-
-    http.MultipartRequest request = http.MultipartRequest('POST', postUri);
-    List files=[sampleImage];
-    for(int i=0;i<1;i++){
-      File imageFile = files[i];
-      var stream = new http.ByteStream(imageFile.openRead());
-      var length = await imageFile.length();
-
-      var multipartFile = new http.MultipartFile("files_1", stream, length,
-          filename: imageFile.path.split('/').last);
-      // var multipartFile = new http.MultipartFile.fromString("image", imageFile.path);
-      request.files.add(multipartFile);
-    }
-
-    print(request.files[0].filename);
-    print(request.files[0].contentType);
-    var response = await request.send();
-    final res = await http.Response.fromStream(response);
-    print(res.body);
-
-    //image_picker1901717223796553713
-  }
-*/
 
   @override
   void initState() {
     isEdit=false;
     WidgetsBinding.instance.addPostFrameCallback((_){
-
-
       scrollController=new ScrollController();
       listViewController=new ScrollController();
       setState(() {
         silverBodyTopMargin=0;
       });
-
-
     });
     super.initState();
   }
@@ -555,7 +524,8 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                                                qn.sampleImage=file;
                                                qn.companyLogoUrl="";
                                              });
-                                           }
+                                           },
+                                          isEnable: isEdit,
                                        ),
 
 
@@ -638,7 +608,12 @@ class _QuaryAddNewState extends State<QuaryAddNew> with TickerProviderStateMixin
                        child: Row(
                          children: [
                            GestureDetector(
-                             onTap: widget.drawerCallback,
+                             onTap: (){
+                               widget.drawerCallback!();
+                               setState((){
+                                 isEdit=false;
+                               });
+                             },
                              child: NavBarIcon(),
                            ),
 

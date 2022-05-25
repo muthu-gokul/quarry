@@ -61,3 +61,5 @@ v-1.0.19
 v-1.0.21
 1. Changed foreground Image
 2. Employee report last filter issue fixed
+3. logo and launcher icons changed
+4. employee attendance already loggedIn

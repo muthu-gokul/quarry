@@ -199,3 +199,25 @@ Future<String> getMasterDrpWeb(String page,String typeName, dynamic refId,  dyna
     //CustomAlert().commonErrorAlert(Get.context!, "Error G01", "Contact Administration");
   }
 }
+
+Future<String> PostCall(List<ParameterModel> parameterList) async {
+
+  List<ParameterModel> parameterObj= await getParameterEssential();
+  parameterObj.addAll(parameterList);
+  var body={
+    "Fields": parameterObj.map((e) => e.toJson()).toList()
+  };
+  var result="";
+  try{
+    await ApiManager().ApiCallGetInvoke(body,Get.context!).then((value) {
+      result=value;
+    });
+    return result;
+  }
+  catch(e,stackTrace){
+    String spName=parameterObj.firstWhere((element) => element.Key.toLowerCase()=='spname').Value;
+    errorLog("UTI02 ${e.toString()}", stackTrace,"Error UTI02","Util","Util", spName);
+    return result;
+    //CustomAlert().commonErrorAlert(Get.context!, "Error G01", "Contact Administration");
+  }
+}

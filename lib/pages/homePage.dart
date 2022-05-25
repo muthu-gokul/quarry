@@ -1,4 +1,6 @@
 
+import 'dart:async';
+import 'dart:convert';
 import 'dart:isolate';
 import 'dart:ui';
 
@@ -11,6 +13,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:quarry/login.dart';
+import 'package:quarry/model/parameterMode.dart';
 import 'package:quarry/notifier/customerNotifier.dart';
 import 'package:quarry/notifier/dashboardNotifier.dart';
 import 'package:quarry/notifier/dieselNotifier.dart';
@@ -45,6 +48,7 @@ import 'package:quarry/pages/users/profile.dart';
 import 'package:quarry/styles/app_theme.dart';
 import 'package:quarry/styles/constants.dart';
 import 'package:quarry/styles/size.dart';
+import 'package:quarry/utils/utils.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 import 'package:quarry/widgets/animation/fadeanimation.dart';
 import 'package:quarry/widgets/loader.dart';
@@ -93,8 +97,11 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
         Provider.of<DrawerNotifier>(context,listen: false).changeMenu(10);
       }
     });
+    getNotificationList();
     super.initState();
   }
+
+  DateTime loginTime=DateTime.now();
 
   clearDataByNotifier(){
     Provider.of<CustomerNotifier>(context,listen: false).clearAll();
@@ -131,6 +138,32 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
       scaffoldkey.currentState!.openEndDrawer();
     });
   }
+
+  getNotificationList() async{
+    var response=await PostCall([ParameterModel(Key: 'SpName', Type: "String", Value: "USP_GetActiveStatusNotification")]);
+    print("getNotificationList $response");
+    if(response!=''){
+      var parsed=jsonDecode(response);
+      setState((){
+        var table=parsed['Table'] as List;
+        expireNotificationList= table.where((element) => element['Notification']!='').toList();
+      });
+      Timer(Duration(seconds: 10), () {
+        removeNoti();
+      });
+    }
+  }
+
+
+
+  removeNoti(){
+    setState((){
+      expireNotificationList.removeWhere((element) => element['IsPermanent']==0);
+    });
+  }
+
+
+  List expireNotificationList=[];
 
   @override
   Widget build(BuildContext context) {
@@ -547,8 +580,62 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
               },):
               Container(),
 
+              Visibility(
+                visible: expireNotificationList.isNotEmpty,
+                child: Positioned(
+                  top: 5,
+                  left: 50,
+                  right: 50,
+                  child: Container(
+                    padding: EdgeInsets.all(15),
+                    decoration: BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.circular(10)
+                    ),
+                    constraints: BoxConstraints(
+                        minHeight: 50,
+                        maxHeight: 150
+                    ),
+                    child: ListView.builder(
+                      itemCount: expireNotificationList.length,
+                      shrinkWrap: true,
+                      itemBuilder: (ctx,index){
+
+                        return Container(
+                          padding: EdgeInsets.all(5),
+                          child: Text("${expireNotificationList[index]['PlantName']} : ${expireNotificationList[index]['Notification']}",
+                            style: AppTheme.TSWhiteML,
+                          ),
+                        );
+                        /*StreamBuilder<int>(
+                          stream: _stopwatch(10,index),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState == ConnectionState.active){
+                              if(snapshot.data==1){
+                               // setState((){
+                                  //expireNotificationList.removeAt(index);
+                               // });
+                              }
+                              return Container(
+                                padding: EdgeInsets.all(5),
+                                child: Text("${expireNotificationList[index]['PlantName']}: ${expireNotificationList[index]['Notification']}",
+                                  style: AppTheme.TSWhiteML,),
+                              );
+                            }
+                            return Container(
+                              width: 0,
+                            );
 
 
+                          },
+                        );*/
+
+
+                      },
+                    ),
+                  ),
+                ),
+              ),
 
             ],
           )

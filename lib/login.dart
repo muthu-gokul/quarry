@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
@@ -89,7 +90,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
 
-      allowAccess();
+
       SharedPreferences.getInstance()
         ..then((prefs) {
           setState(() => this._Loginprefs = prefs);
@@ -115,7 +116,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
             });
           }
         });
-
+      allowAccess();
     });
 
 
@@ -158,8 +159,6 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
 
 
     SizeConfig().init(context);
-    print(SizeConfig.screenHeight);
-    print(SizeConfig.screenWidth);
     func() async {
       node.unfocus();
       try{
@@ -208,6 +207,10 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                 print(parsed);
                 //return;
                 if (parsed["Table"] != null) {
+                  if(parsed["Table"][0]['IsAdmin']){
+                    CustomAlert().accessDenied2();
+                    return;
+                  }
                   setState(() {
                     userGroupName=parsed['Table'][0]['UserGroupName'];
                     userGroupId=parsed['Table'][0]['UserGroupId'];
@@ -256,6 +259,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                               Navigator.pop(context);
                             },
                             callback: (){
+                              Navigator.pop(context);
                               deActivatePlant(loginNotifier.userDetail.loginTable![0].UserId, loginNotifier.userDetail.loginTable![0].DataBaseName);
                               navToHome(loginNotifier.userDetail.loginTable![0].UserId);
                             }
@@ -329,7 +333,8 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                   children: [
 
                     SizedBox(height: _height * 0.15,),
-                    SvgPicture.asset("assets/images/qms.svg",height: 100,),
+                    //SvgPicture.asset("assets/images/qms.svg",height: 100,),
+                    SvgPicture.asset("assets/images/logo.svg",height: 100,),
                     SizedBox(height: 20,),
                     Form(
                         key: _loginFormKey,
@@ -639,6 +644,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
     Provider.of<QuarryNotifier>(context,listen: false).GetQuarryDetailDbhit(context);
     Provider.of<QuarryNotifier>(context,listen: false).GetplantDetailDbhit(context,null,this);
     Provider.of<ProfileNotifier>(context, listen: false).GetUserDetailDbHit(context,userId);
+    //Get.off(HomePage());
     Navigator.of(context).pushReplacement(PageRouteBuilder(
       pageBuilder: (context, animation, secondaryAnimation) =>HomePage(),
 

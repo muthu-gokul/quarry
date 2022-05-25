@@ -134,7 +134,7 @@ class EmployeeAttendanceNotifier extends ChangeNotifier{
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
 
-        if(value!=null){
+        if(value!="null"){
           var parsed=json.decode(value);
 
 

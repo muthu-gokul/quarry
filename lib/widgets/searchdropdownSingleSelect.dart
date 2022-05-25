@@ -158,7 +158,10 @@ class DropDownField extends FormField<String> {
                   child: TextFormField(
                     onTap: (){
                       state._showdropdown=true;
-                      ontap!();
+                      if(ontap!=null){
+                        ontap!();
+                      }
+
                     },
                     // autovalidate: true,
                     controller: state._effectiveController,
@@ -206,7 +209,10 @@ class DropDownField extends FormField<String> {
                       print(state._showdropdown);
                       nodeFocus!();
                       SystemChannels.textInput.invokeMethod('TextInput.hide');
-                      onEditingcomplete!();
+                      if(onEditingcomplete!=null){
+                        onEditingcomplete!();
+                      }
+
                     },
 
                     onSaved: setter,
