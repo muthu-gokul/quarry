@@ -99,9 +99,10 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<UserAccessNotifier>(create:(_)=>UserAccessNotifier()),
       ],
       child: GetMaterialApp(
-        title: 'Quarry Management',
+        title: 'Geomine QMS',
         debugShowCheckedModeBanner: false,
         home: SplashScreen(),
+        color: Colors.white,
        // home: Sp(),
 
       ),

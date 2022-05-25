@@ -1594,7 +1594,7 @@ List<dynamic>? vehicleTypeList=[];
 
     employeeShift!.forEach((element) {
       if(element['IsActive']==1){
-        filterEmployeeReportGridList=tempEmployeeReportDesignationFilter.where((ele) => ele['EmployeeShiftId']==element['EmployeeShiftId']).toList();
+        filterEmployeeReportGridList=filterEmployeeReportGridList+tempEmployeeReportDesignationFilter.where((ele) => ele['EmployeeShiftId']==element['EmployeeShiftId']).toList();
       }
     });
 

@@ -57,3 +57,7 @@ v-10.0.18.1
 
 v-1.0.19
 1. plant doc download
+
+v-1.0.21
+1. Changed foreground Image
+2. Employee report last filter issue fixed

@@ -1,24 +1,16 @@
-<vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="108dp"
-    android:height="108dp"
-    android:viewportWidth="108"
-    android:viewportHeight="108">
-  <group android:scaleX="0.80689657"
-      android:scaleY="0.80689657"
-      android:translateX="18.9"
-      android:translateY="19.505173">
-    <path
-        android:pathData="M43.5,42.75m-41.22,0a41.22,41.22 0,1 1,82.44 0a41.22,41.22 0,1 1,-82.44 0"
-        android:fillColor="#E6B427"/>
-    <group>
-      <clip-path
-          android:pathData="M43.5,42.75m-41.22,0a41.22,41.22 0,1 1,82.44 0a41.22,41.22 0,1 1,-82.44 0"/>
-      <path
-          android:pathData="M0.358,9.441c0,0 24.718,-0.289 27.259,4.331l0.347,6.295c0,0 0.636,0.635 0.751,-0.693c0,0 1.328,-7.219 7.391,-8.374c0,0 4.679,2.079 3.061,13.687h6.008l0.347,6.527l4.506,6.352c0,0 6.467,1.041 9.527,-0.519c0,0 0.23,4.158 -2.539,7.219c0,0 9.702,3.696 20.732,-4.1c0,0 -0.463,10.798 -18.829,16.748c0,0 1.099,10.972 -11.897,12.3c0,0 -9.586,-9.125 -16.458,-9.065l-0.462,-5.373l-2.598,-4.389l-1.041,-0.058l0.693,2.196l-0.23,3.752c0,0 -8.606,10.916 0.75,20.675H0.531L0.358,9.441z"
-          android:fillColor="#FFFFFF"/>
-    </group>
-    <path
-        android:pathData="M40.843,39.607c0,0 4.864,0.898 5.314,6.288C46.157,45.895 41.067,45.669 40.843,39.607z"
-        android:fillColor="#E6B427"/>
-  </group>
-</vector>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Modify this file to customize your launch splash screen -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+  <item android:drawable="@android:color/white" />
+
+  <!-- You can insert your own image assets here -->
+  <item>
+    <bitmap
+        android:src="@drawable/logo" />
+  </item>
+  <!-- <item>
+      <bitmap
+          android:gravity="center"
+          android:src="@mipmap/launch_image" />
+  </item> -->
+</layer-list>
