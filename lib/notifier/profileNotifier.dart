@@ -104,8 +104,7 @@ class ProfileNotifier extends ChangeNotifier{
           "Value": Provider.of<QuarryNotifier>(context,listen: false).DataBaseName
         }
       ]
-    };
-
+    };print(body);
     try{
       await call.ApiCallGetInvoke(body,context).then((value) {
         if(value!="null"){
@@ -183,7 +182,7 @@ class ProfileNotifier extends ChangeNotifier{
 
             userLogoFileName= t[0]['UserImage'];
             userLogoUrl=ApiManager().attachmentUrl+userLogoFileName;
-
+            logoFile=null;
           }
           else{
 
