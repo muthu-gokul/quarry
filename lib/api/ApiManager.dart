@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 
 import 'package:provider/provider.dart';
 import 'package:quarry/model/parameterMode.dart';
+import 'package:quarry/utils/errorLog.dart';
 import 'package:quarry/widgets/alertDialog.dart';
 
 //BuildContext context
@@ -41,6 +42,7 @@ class ApiManager{
         msg=json.decode(response.body);
         print("MSG $msg");
          CustomAlert().commonErrorAlert2(Get.context!, "${msg["Message"]}", "");
+         errorLog(response.body, null , "Api call", "", "ApiManager", body['Fields'][0]['Value'],showAlert: false);
          return "null";
         // return response.statusCode.toString();
       }

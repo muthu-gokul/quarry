@@ -63,3 +63,6 @@ v-1.0.21
 2. Employee report last filter issue fixed
 3. logo and launcher icons changed
 4. employee attendance already loggedIn
+
+v-1.0.22 - yet to publish
+1. Added error Log in apimanager

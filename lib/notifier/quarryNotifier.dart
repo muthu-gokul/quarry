@@ -131,7 +131,6 @@ class QuarryNotifier extends ChangeNotifier{
     catch(e,stackTrace){
       updateInsertSaleLoader(false);
       errorLog("QN07 ${e.toString()}", stackTrace,"Error QN07",module,module, "${Sp.MasterdropDown}");
-
     }
   }
 

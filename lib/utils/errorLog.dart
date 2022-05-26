@@ -9,8 +9,10 @@ import '../model/parameterMode.dart';
 import '../styles/constants.dart';
 import '../widgets/alertDialog.dart';
 
-errorLog(var error,var stackTrace, var title,var module,var appPage,var spName,{bool fromLogin=false}) async{
-  CustomAlert().commonErrorAlert(Get.context!, title, "Contact Administration");
+errorLog(var error,var stackTrace, var title,var module,var appPage,var spName,{bool fromLogin=false,bool showAlert=true}) async{
+  if(showAlert){
+      CustomAlert().commonErrorAlert(Get.context!, title, "Contact Administration");
+  }
   FirebaseCrashlytics.instance.recordError(error, stackTrace);
 
   parameters=[
@@ -32,5 +34,8 @@ errorLog(var error,var stackTrace, var title,var module,var appPage,var spName,{
     "Fields": parameters.map((e) => e.toJson()).toList()
   };
   print("errorLog $body");
-  ApiManager().ApiCallGetInvoke(body, Get.context!);
+
+    ApiManager().ApiCallGetInvoke(body, Get.context!);
+
+
 }
