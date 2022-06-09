@@ -64,5 +64,8 @@ v-1.0.21
 3. logo and launcher icons changed
 4. employee attendance already loggedIn
 
-v-1.0.22 - yet to publish
+v-1.0.22
 1. Added error Log in apimanager
+2. sale invoice plant address added
+
+v-1.0.23

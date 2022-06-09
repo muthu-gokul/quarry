@@ -181,6 +181,7 @@ class CustomerModel {
 class SaleDetails{
   int? SaleId;
   String? SaleNumber;
+  String? invoiceNumber;
   int? PlantId;
   String? PlantName;
   int? VehicleTypeId;
@@ -231,6 +232,14 @@ class SaleDetails{
   String? driverName;
   String? driverContactNumber;
 
+
+  String? plantAddress;
+  String? plantCity;
+  String? plantState;
+  String? plantCountry;
+  String? plantZipCode;
+  String? plantContactNumber;
+
   SaleDetails({this.SaleId,this.SaleNumber,this.VehicleNumber,this.VehicleTypeId,
   this.VehicleTypeName,this.EmptyWeightOfVehicle,this.MaterialId,this.MaterialName,
  this.RequiredMaterialQty, this.LoadWeightOfVehicle,this.Amount,this.PaymentCategoryId,this.MaterialUnitPrice,
@@ -251,7 +260,14 @@ class SaleDetails{
     this.driverContactNumber,
     this.RoundedTotalAmount,
     this.MaterialHSNCode,
-    this.isTax
+    this.isTax,
+    this.invoiceNumber,
+    this.plantAddress,
+    this.plantCity,
+    this.plantContactNumber,
+    this.plantCountry,
+    this.plantState,
+    this.plantZipCode,
   });
 
 
@@ -259,8 +275,13 @@ class SaleDetails{
     return new SaleDetails(
       SaleId: json['SaleId'],
       SaleNumber: json['SaleNumber'],
+      invoiceNumber: json['InvoiceNumber'],
       PlantId: json['PlantId'],
       PlantName: json['PlantName'],
+      plantAddress: json['PlantAddress'],
+      plantCity: json['PlantCity'],
+      plantState: json['PlantState'],
+      plantContactNumber: json['PlantContactNumber'],
       VehicleNumber: json['VehicleNumber'],
       VehicleTypeId: json['VehicleTypeId'],
       VehicleTypeName: json['VehicleTypeName'],

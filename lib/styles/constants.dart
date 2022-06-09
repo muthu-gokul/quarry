@@ -43,4 +43,4 @@ TableBorder tableBorder=TableBorder.all(
     borderRadius: BorderRadius.circular(3)
 );
 
-String appVersion="v - 1.0.22";
+String appVersion="v - 1.0.23";

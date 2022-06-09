@@ -122,7 +122,7 @@ reportView(context,String mailid,int saleIndex) async {
                       children: [
                         pw.Padding(
                           padding: pw.EdgeInsets.all(10),
-                          child: pw.Text("Invoice No     : ${qn.saleDetailsGrid[saleIndex].SaleNumber}"),
+                          child: pw.Text("Invoice No     : ${qn.saleDetailsGrid[saleIndex].invoiceNumber??""}"),
                         ),
                         pw.Padding(
                           padding: pw.EdgeInsets.all(10),
@@ -164,11 +164,11 @@ reportView(context,String mailid,int saleIndex) async {
                         children: [
                           pw.Padding(
                             padding: pw.EdgeInsets.all(10),
-                            child: pw.Text("Billed To   : ${qn.saleDetailsGrid[saleIndex].customerName??""}"),
+                            child: pw.Text("Billed From   : ${qn.saleDetailsGrid[saleIndex].PlantName??""}"),
                           ),
                           pw.Padding(
                             padding: pw.EdgeInsets.all(10),
-                            child:pw.Text("PO No/Order No :"),
+                            child:pw.Text("PO No/Order No : ${qn.saleDetailsGrid[saleIndex].SaleNumber??""}"),
                           ),
 
                         ]
@@ -178,11 +178,11 @@ reportView(context,String mailid,int saleIndex) async {
                         children: [
                           pw.Padding(
                             padding: pw.EdgeInsets.all(10),
-                            child: pw.Text("Name     : ${qn.saleDetailsGrid[saleIndex].customerName??""}"),
+                            child: pw.Text("Name     : ${qn.saleDetailsGrid[saleIndex].PlantName??""}"),
                           ),
                           pw.Padding(
                             padding: pw.EdgeInsets.all(10),
-                            child:pw.Text("Delivery To :"),
+                            child:pw.Text("Delivery To : ${qn.saleDetailsGrid[saleIndex].customerName??""}"),
                           ),
 
                         ]
@@ -201,7 +201,7 @@ reportView(context,String mailid,int saleIndex) async {
                                     ),
                                     pw.Container(
                                       width: 150,
-                                      child:  pw.Text("${qn.saleDetailsGrid[saleIndex].customerAddress??""} \n ${qn.saleDetailsGrid[saleIndex].customerCity??""},${qn.saleDetailsGrid[saleIndex].customerState??""}",
+                                      child:  pw.Text("${qn.saleDetailsGrid[saleIndex].plantAddress??""}",
                                           style: pw.TextStyle(),textAlign: pw.TextAlign.left)
                                       // child: pw.Text("SY NO 154/1B Kushthanapalli(village),Sevaganapalli(post),Hosur,TamilNadu"
                                       //     ,style: pw.TextStyle(),textAlign: pw.TextAlign.left)
@@ -220,7 +220,10 @@ reportView(context,String mailid,int saleIndex) async {
                                   ),
                                   pw.Container(
                                       width: 150,
-                                      child: pw.Text("")
+                                      child:  pw.Text("${qn.saleDetailsGrid[saleIndex].customerAddress??""} \n ${qn.saleDetailsGrid[saleIndex].customerCity??""},${qn.saleDetailsGrid[saleIndex].customerState??""}",
+                                          style: pw.TextStyle(),textAlign: pw.TextAlign.left)
+                                    // child: pw.Text("SY NO 154/1B Kushthanapalli(village),Sevaganapalli(post),Hosur,TamilNadu"
+                                    //     ,style: pw.TextStyle(),textAlign: pw.TextAlign.left)
                                   ),
                                 ]
                             ),
@@ -234,11 +237,11 @@ reportView(context,String mailid,int saleIndex) async {
                         children: [
                           pw.Padding(
                             padding: pw.EdgeInsets.all(10),
-                            child: pw.Text("GSTIN     : ${qn.saleDetailsGrid[saleIndex].customerGstNumber??""}"),
+                            child: pw.Text("GSTIN     : ${qn.CD_gstno.text}"),
                           ),
                           pw.Padding(
                             padding: pw.EdgeInsets.all(10),
-                            child:pw.Text("GSTIN     :"),
+                            child:pw.Text("GSTIN     : ${qn.saleDetailsGrid[saleIndex].customerGstNumber??""}"),
                           ),
 
                         ]
@@ -248,11 +251,11 @@ reportView(context,String mailid,int saleIndex) async {
                         children: [
                           pw.Padding(
                             padding: pw.EdgeInsets.all(10),
-                            child: pw.Text("State      : ${qn.saleDetailsGrid[saleIndex].customerState??""}"),
+                            child: pw.Text("State      : ${qn.saleDetailsGrid[saleIndex].plantState??""}"),
                           ),
                           pw.Padding(
                             padding: pw.EdgeInsets.all(10),
-                            child:pw.Text("State      :"),
+                            child:pw.Text("State      : ${qn.saleDetailsGrid[saleIndex].customerState??""}"),
                           ),
 
                         ]
